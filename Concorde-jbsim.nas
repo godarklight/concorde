@@ -989,7 +989,7 @@ targetwind = func {
    windkt = getprop("/environment/wind-speed-kt");
    if( windkt > 0 ) {
        winddeg = getprop("/environment/wind-from-heading-deg");
-       vordeg = getprop("/radios/nav/radials/target-radial-deg");
+       vordeg = getprop("/instrumentation/nav/radials/target-radial-deg");
        offsetdeg = vordeg - winddeg;
        # north crossing
        if( offsetdeg > 180 ) {
