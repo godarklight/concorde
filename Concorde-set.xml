@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<PropertyList>
+ <sim>
+
+  <description>Concorde</description>
+
+  <flight-model>jsb</flight-model>
+  <aero>Concorde</aero>
+
+  <systems>
+   <autopilot>
+    <path>Aircraft/Concorde/Systems/Concorde-autopilot.xml</path>
+   </autopilot>
+   <electrical>
+    <path>Aircraft/Generic/generic-electrical.xml</path>
+   </electrical>
+  </systems> 
+  
+  <sound>
+   <audible>true</audible>
+   <path>Aircraft/Concorde/Sounds/Concorde-sound.xml</path>
+  </sound>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-2D-captain.xml</path>
+   <visibility>true</visibility>
+  </panel>
+  <panel_2>
+   <path>Aircraft/Concorde/Panels/Concorde-2D-center.xml</path>
+  </panel_2>
+  
+  <model>
+   <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
+  </model>
+  
+  <view> <!-- adjust pilot in cockpit -->
+   <internal archive="y">true</internal>
+   <config>
+     <!-- x/y/z == right/up/back -->
+     <x-offset-m archive="y">-0.525</x-offset-m>
+     <y-offset-m archive="y">3.2</y-offset-m>
+     <z-offset-m archive="y">-25.23</z-offset-m>
+     <pitch-offset-deg archive="y">-4.0</pitch-offset-deg>
+   </config>
+  </view>
+
+  <chase-distance-m type="double" archive="y">-45.0</chase-distance-m> <!-- long fuselage -->
+
+ </sim>
+   
+  <consumables>
+  <fuel>
+   <!-- overrides JBSim, which only sees US gallons (6.6 pound = 1 US gal = 3.875 l) -->
+
+   <!-- For max take off weight (408000 lb / 93000 kg fuel), put in comment this section.
+        Default is max landing weight (245000 lb / 19000 kg fuel).
+   -->
+
+   <tank n="4">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="5">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="6">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="7">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="8">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="9">
+    <level-gal_us>506.0</level-gal_us>
+   </tank>
+   <tank n="10">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="11">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="12">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+
+<!-- tanks numbers -->
+
+   <!-- engine supply (only them feed engines !) -->
+   <tank n="0">
+    <tank-num type="string" archive="y">1</tank-num>
+   </tank>
+   <tank n="1">
+    <tank-num type="string" archive="y">2</tank-num>
+   </tank>
+   <tank n="2">
+    <tank-num type="string" archive="y">3</tank-num>
+   </tank>
+   <tank n="3">
+    <tank-num type="string" archive="y">4</tank-num>
+   </tank>
+   <!-- main storage -->
+   <tank n="4">
+    <tank-num type="string" archive="y">5</tank-num>
+   </tank>
+   <tank n="5">
+    <tank-num type="string" archive="y">6</tank-num>
+   </tank>
+   <tank n="6">
+    <tank-num type="string" archive="y">7</tank-num>
+   </tank>
+   <tank n="7">
+    <tank-num type="string" archive="y">8</tank-num>
+   </tank>
+   <!-- trim -->
+   <tank n="8">
+    <tank-num type="string" archive="y">9</tank-num> <!-- tank 9 (forward) -->
+   </tank>
+   <tank n="9">
+    <tank-num type="string" archive="y">10</tank-num>
+   </tank>
+   <tank n="10">
+    <tank-num type="string" archive="y">11</tank-num> <!-- tank 11 (rear) -->
+   </tank>
+   <!-- auxiliary -->
+   <tank n="11">
+    <tank-num type="string" archive="y">5A</tank-num>
+   </tank>
+   <tank n="12">
+    <tank-num type="string" archive="y">7A</tank-num>
+  </tank>
+  </fuel>
+ </consumables>
+
+<!-- engine numbers -->
+ 
+ <engines>
+  <engine n="0">
+    <running>true</running>
+    <engine-num type="int">1</engine-num> <!-- button -->
+  </engine>
+  <engine n="1">
+    <running>true</running>
+    <engine-num type="int">2</engine-num>
+  </engine>
+  <engine n="2">
+    <running>true</running>
+    <engine-num type="int">3</engine-num>
+  </engine>
+  <engine n="3">
+    <running>true</running>
+    <engine-num type="int">4</engine-num>
+  </engine>
+ </engines>
+
+ <radios>
+  <dme>
+    <switch-position>1</switch-position>
+  </dme>
+ </radios>
+
+ <input>
+    <keyboard>
+      <key n="2">
+        <name>Ctrl-B</name>
+        <desc>Afterburner</desc>
+        <binding n= "0">
+          <command>property-toggle</command>
+          <property>controls/engines/engine[0]/augmentation</property>
+        </binding>
+        <binding n= "1">
+          <command>property-toggle</command>
+          <property>controls/engines/engine[1]/augmentation</property>
+        </binding>
+        <binding n= "2">
+          <command>property-toggle</command>
+          <property>controls/engines/engine[2]/augmentation</property>
+        </binding>
+        <binding n= "3">
+          <command>property-toggle</command>
+          <property>controls/engines/engine[3]/augmentation</property>
+        </binding>
+      </key>
+
+<!-- http://www.concordesst.com :
+
+     Autopilot can be easily disconnected from a thumb switch on the yoke.
+
+-->
+	<key n="12">
+      <name>CTRL-L</name>
+      <desc>Disable autopilot</desc>
+        <binding>
+          <command>property-assign</command>
+	    <property>autopilot/locks/altitude</property>
+	    <value type="string"></value>
+	  </binding>
+        <binding>
+          <command>property-assign</command>
+	    <property>autopilot/locks/altitude2</property>
+	    <value type="string"></value>
+	  </binding>
+        <binding>
+          <command>property-assign</command>
+	    <property>autopilot/locks/heading</property>
+	    <value type="string"></value>
+	  </binding>
+        <binding>
+          <command>property-assign</command>
+	    <property>autopilot/locks/vertical</property>
+	    <value type="string"></value>
+	  </binding>
+      </key>
+    </keyboard>
+ </input>
+
+<!-- autopilot -->
+
+ <autopilot>
+  <settings>
+   <heading-bug-deg>283</heading-bug-deg>
+   <target-altitude-ft>10000</target-altitude-ft>
+   <target-speed-kt>250</target-speed-kt>
+  </settings>
+ </autopilot>
+
+ <instrumentation>
+
+<!-- decision altitude -->
+  <radio-altimeter>
+   <decision-ft>210</decision-ft>
+  </radio-altimeter>
+
+<!-- specific DME -->
+  <dme>
+   <switch-position>1</switch-position>
+   <frequencies>
+    <source>/radios/nav[0]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+ </instrumentation>
+
+ <nasal>
+  <Concorde>
+   <file>Aircraft/Concorde/Concorde-jbsim.nas</file>
+  </Concorde>
+ </nasal>
+
+</PropertyList>
+
+

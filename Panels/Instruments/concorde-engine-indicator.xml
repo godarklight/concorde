@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+
+<!-- Engine indicator lights -->
+
+<PropertyList>
+
+ <name>Engine indicator lights</name>
+ <w-base>90</w-base>
+ <h-base>20</h-base>
+
+ <params>
+  <running-select>/engines/engine[0]/running</running-select>
+  <reheat-select>/engines/engine[0]/augmentation</reheat-select>
+  <reverser-select>/engines/engine[0]/reversed</reverser-select>
+ </params>
+
+ <layers>
+
+ <layer>
+  <name>go light</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/running-select"/>
+     <value>true</value>
+    </equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.33</x1>
+    <y1>0.0</y1>
+    <x2>0.42</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background go</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+    <w>30</w>
+    <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ <layer>
+  <name>contingency light</name>
+   <type>switch</type>
+  <layer>
+   <condition>
+    <property alias="../../../../../params/reheat-select"/>
+   </condition>
+   <name>On</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.33</x1>
+    <y1>0.0</y1>
+    <x2>0.42</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background contingency</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+   </texture>
+    <w>30</w>
+    <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title contingency</name>
+   <type>text</type>
+   <point-size>11</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CON</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>13</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-7</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ <layer>
+  <name>reverser light</name>
+   <type>switch</type>
+  <layer>
+   <condition>
+    <property alias="../../../../../params/reverser-select"/>
+   </condition>
+   <name>On</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.33</x1>
+    <y1>0.0</y1>
+    <x2>0.42</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background reverser</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-indicator.rgb</path>
+   </texture>
+    <w>30</w>
+    <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title reverser</name>
+   <type>text</type>
+   <point-size>11</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>REV</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>44</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-7</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

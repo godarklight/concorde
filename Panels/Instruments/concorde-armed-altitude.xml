@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+
+<!-- Altitude mode armed -->
+
+<PropertyList>
+ <name>Altitude armed</name>
+ <w-base>40</w-base>
+ <h-base>20</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <and>
+       <equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>altitude-hold</value>
+       </equals>
+       <or>
+        <less-than-equals>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-min-ft</property>
+        </less-than-equals>
+        <greater-than-equals>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-max-ft</property>
+        </greater-than-equals>
+       </or>
+      </and>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.31</x1>
+     <y1>0.0</y1>
+     <x2>0.44</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>110</w>
+     <h>30</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <condition>
+      <or>
+       <not-equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>altitude-hold</value>
+       </not-equals>
+       <and>
+        <greater-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-min-ft</property>
+        </greater-than>
+        <less-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-max-ft</property>
+        </less-than>
+       </and>
+      </or>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>110</w>
+     <h>30</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background lighted</name>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/altitude</property>
+      <value>altitude-hold</value>
+     </equals>
+     <or>
+      <less-than-equals>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+      </less-than-equals>
+      <greater-than-equals>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+      </greater-than-equals>
+     </or>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>110</w>
+   <h>30</h>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <condition>
+    <or>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value>altitude-hold</value>
+     </not-equals>
+     <and>
+      <greater-than>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+      </greater-than>
+      <less-than>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+      </less-than>
+     </and>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>110</w>
+   <h>30</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

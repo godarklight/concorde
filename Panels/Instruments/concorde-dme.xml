@@ -1,0 +1,469 @@
+<?xml version="1.0"?>
+
+<!-- Concorde DME : real tuner seems to have 2 frequencies, displayed at the same time (no knob) -->
+
+<PropertyList>
+
+ <name>Concorde DME</name>
+ <w-base>120</w-base>
+ <h-base>60</h-base>
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>120</w>
+    <h>50</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- DME 1 -->
+  <layer>
+   <name>Title DME 1</name>
+   <type>text</type>
+   <point-size>13</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DME-1</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>35</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Unit DME 1</name>
+   <type>text</type>
+   <point-size>13</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>MILES</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-58</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-42</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 1 not in range</name>
+   <type>text</type>
+   <condition>
+    <or>
+     <not>
+      <property>/instrumentation/dme/in-range</property>
+     </not>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>3</value>
+     </equals>
+    </or>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>---.-</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-50</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 1 overflow</name>
+   <type>text</type>
+   <condition>
+    <and>
+     <property>/instrumentation/dme/in-range</property>
+     <greater-than>
+      <property>/instrumentation/dme/indicated-distance-nm</property>
+      <value type="double">999.9</value>
+     </greater-than>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>1</value>
+     </equals>
+    </and>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>999.9</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-50</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 1 display</name>
+   <type>text</type>
+   <condition>
+    <and>
+     <property>/instrumentation/dme/in-range</property>
+     <less-than-equals>
+      <property>/instrumentation/dme/indicated-distance-nm</property>
+      <value type="double">999.9</value>
+     </less-than-equals>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>1</value>
+     </equals>
+    </and>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/dme/indicated-distance-nm</property>
+     <format>%5.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-50</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- DME 2 -->
+  <layer>
+   <name>Title DME 2</name>
+   <type>text</type>
+   <point-size>13</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DME-2</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>35</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Unit DME 2</name>
+   <type>text</type>
+   <point-size>13</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>MILES</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>7</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-42</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 2 not in range</name>
+   <type>text</type>
+   <condition>
+    <or>
+     <not>
+      <property>/instrumentation/dme/in-range</property>
+     </not>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>1</value>
+     </equals>
+    </or>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>---.-</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 2 overflow</name>
+   <type>text</type>
+   <condition>
+    <and>
+     <property>/instrumentation/dme/in-range</property>
+     <greater-than>
+      <property>/instrumentation/dme/indicated-distance-nm</property>
+      <value type="double">999.9</value>
+     </greater-than>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>3</value>
+     </equals>
+    </and>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>999.9</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>DME 2 display</name>
+   <type>text</type>
+   <condition>
+    <and>
+     <property>/instrumentation/dme/in-range</property>
+     <less-than-equals>
+      <property>/instrumentation/dme/indicated-distance-nm</property>
+      <value type="double">999.9</value>
+     </less-than-equals>
+     <equals>
+      <property>/instrumentation/dme/switch-position</property>
+      <value>3</value>
+     </equals>
+    </and>
+   </condition>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.5</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/dme/indicated-distance-nm</property>
+     <format>%5.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- knob (tuner has only 1 frequency) -->
+
+  <layer>
+   <name>knob rotation</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
+    <x1>0.53125</x1>
+    <x2>0.59765625</x2>
+    <y1>0.05859375</y1>
+    <y2>0.1484375</y2>
+   </texture>
+   <w>16</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-24</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <property>/instrumentation/dme/switch-position</property>
+     <min>0</min>
+     <max>3</max>
+     <scale>90</scale>
+     <offset>-180</offset>
+    </transformation>
+    <transformation>
+    <type>y-shift</type>
+    <offset>-4.0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>knob right</name>
+   <button>0</button>
+   <x>0</x>
+   <y>-32</y>
+   <w>50</w>
+   <h>50</h>
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/dme/switch-position</property>
+    <step>2</step>
+    <min>1</min>
+    <max>3</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/instrumentation/dme/frequencies/source</property>
+    <value>/radios/nav[1]/frequencies/selected-mhz</value>
+   </binding>
+  </action>
+
+  <action>
+   <name>knob left</name>
+   <button>0</button>
+   <x>-50</x>
+   <y>-32</y>
+   <w>50</w>
+   <h>50</h>
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/dme/switch-position</property>
+    <step>-2</step>
+    <min>1</min>
+    <max>3</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/instrumentation/dme/frequencies/source</property>
+    <value>/radios/nav[0]/frequencies/selected-mhz</value>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

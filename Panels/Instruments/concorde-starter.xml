@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<!-- engine starter light -->
+
+<PropertyList>
+ <name>Engine Sarter</name>
+ <w-base>28</w-base>
+ <h-base>28</h-base>
+
+ <params>
+  <starter>/engines/engine[0]/cutoff</starter>
+  <control-starter>/controls/engines/engine[0]/starter</control-starter>
+ </params>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Starter light</name>
+   <type>switch</type>
+    <layer>
+     <condition>
+      <property alias="../../../../../params/starter"/>
+     </condition>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.3</x1>
+     <y1>0.0</y1>
+     <x2>0.45</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>28</w>
+     <h>28</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>28</w>
+     <h>28</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>28</w>
+   <h>29</h>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>15</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>S</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-9</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+ 
+ <actions>
+  <action>
+   <desc>Engine starter</desc>
+   <button>0</button>
+   <x>-12</x>
+   <y>-13</y>
+   <w>26</w>
+   <h>26</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/control-starter"/>
+   </binding>
+  </action>
+ </actions>
+
+</PropertyList>

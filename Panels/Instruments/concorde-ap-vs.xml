@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+
+<!-- Vertical Speed hold -->
+
+<PropertyList>
+ <name>Vertical Speed hold</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Button light</name>
+   <type>switch</type>
+    <layer>
+     <condition>
+      <or>
+       <equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>vertical-speed-hold</value>
+       </equals>
+       <equals>
+        <property>/autopilot/locks/altitude2</property>
+        <value>vertical-speed-with-throttle</value>
+       </equals>
+      </or>
+     </condition>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.37</x1>
+     <y1>0.0</y1>
+     <x2>0.38</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background lighted</name>
+   <condition>
+    <or>
+     <equals>
+      <property>/autopilot/locks/altitude</property>
+      <value>vertical-speed-hold</value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value>vertical-speed-with-throttle</value>
+     </equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <condition>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value>vertical-speed-hold</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value>vertical-speed-with-throttle</value>
+     </not-equals>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>46</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>VS</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-45</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-11</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+ 
+ <actions>
+
+  <action>
+   <desc>Vertical Speed hold</desc>
+   <condition>
+    <not-equals>
+     <property>/autopilot/locks/altitude</property>
+     <value type="string">vertical-speed-hold</value>
+    </not-equals>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-13</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude</property>
+    <value type="string">vertical-speed-hold</value>
+   </binding>
+  </action>
+
+  <action>
+   <desc>Disable Vertical Speed</desc>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value type="string">vertical-speed-hold</value>
+    </equals>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-13</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude</property>
+    <value type="string"></value>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

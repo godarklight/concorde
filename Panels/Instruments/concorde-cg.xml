@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+
+<!--
+-->
+
+<PropertyList>
+
+ <name>Center of Gravity display</name>
+ <w-base>10</w-base>
+ <h-base>40</h-base>
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>55</w>
+    <h>80</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>14</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Corridor min display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>4</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>instrumentation/cg/min-percent</property>
+     <format>%2.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>35</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Forward</name>
+   <type>text</type>
+   <point-size>9</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>FWD</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>33</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Center of Gravity</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>4</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>instrumentation/cg/percent</property>
+     <format>%2.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Corridor max display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>4</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>instrumentation/cg/max-percent</property>
+     <format>%2.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Aft</name>
+   <type>text</type>
+   <point-size>9</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AFT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-17</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>8</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CG%C0</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-6</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+
+<!-- Concorde sound -->
+ 
+<PropertyList>
+
+ <fx>
+  <engine>
+   <name>engine</name>
+   <path>Sounds/jet.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <or>
+     <property>/engines/engine[0]/running</property>
+     <property>/engines/engine[1]/running</property>     
+     <property>/engines/engine[2]/running</property>     
+     <property>/engines/engine[3]/running</property>     
+    </or>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.05</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.05</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.05</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.05</offset>
+   </volume>    
+  </engine>
+
+  <engine>
+   <name>whine</name>
+   <path>Sounds/whine.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <or>
+     <property>/engines/engine[0]/running</property>
+     <property>/engines/engine[1]/running</property>     
+     <property>/engines/engine[2]/running</property>     
+     <property>/engines/engine[3]/running</property>     
+    </or>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.1</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.1</offset>
+   </volume> 
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.1</offset>
+   </volume> 
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.10</factor>
+    <offset>0.1</offset>
+   </volume> 
+
+   <pitch>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>log</type>
+    <factor>0.20</factor>
+    <offset>0.10</offset>
+   </pitch>
+   <pitch>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>log</type>
+    <factor>0.20</factor>
+    <offset>0.10</offset>
+   </pitch>   
+   <pitch>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>log</type>
+    <factor>0.20</factor>
+    <offset>0.10</offset>
+   </pitch>   
+   <pitch>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>log</type>
+    <factor>0.20</factor>
+    <offset>0.10</offset>
+   </pitch>   
+  </engine>
+
+  <rumble>
+   <name>rumble</name>
+   <mode>looped</mode>
+   <path>Sounds/rumble.wav</path>
+   <condition>
+    <or>
+     <property>/gear/gear[0]/wow</property>
+     <property>/gear/gear[1]/wow</property>
+     <property>/gear/gear[2]/wow</property>
+    </or>
+   </condition>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <type>log</type>
+    <factor>0.5</factor>
+   </volume>
+  </rumble>
+
+  <gear>
+   <name>gear</name>
+   <mode>in-transit</mode>
+   <path>Sounds/gear.wav</path>
+   <property>/gear/gear[0]/position-norm</property>
+   <pitch>
+    <internal>dt_play</internal>
+    <offset>1.0</offset>
+    <factor>-0.001</factor>
+   </pitch>
+  </gear>
+
+  <gear>
+   <name>gear-lock</name>
+   <path>Sounds/gear-lck.wav</path>
+   <condition>
+    <equals>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>0</value>
+    </equals>
+   </condition>
+  </gear>
+
+  <gear>
+   <name>gear-horn</name>
+   <path>Sounds/gear-hrn.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <or>
+      <equals>
+       <property>autopilot/locks/altitude</property>
+       <value>gs1-hold</value>
+      </equals>
+      <equals>
+       <property>autopilot/locks/vertical</property>
+       <value>autoland</value>
+      </equals>
+     </or>
+     <not-equals>
+      <property>gear/gear[0]/position-norm</property>
+      <value>1.0</value>
+     </not-equals>
+     <less-than>
+      <property>position/altitude-agl-ft</property>
+      <value>1500</value>
+     </less-than>
+    </and>
+   </condition>      
+  </gear>
+
+  <squeal>
+   <name>squeal</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <or>
+     <property>/gear/gear[0]/wow</property>
+     <property>/gear/gear[1]/wow</property>
+     <property>/gear/gear[2]/wow</property>
+    </or>
+   </condition>
+   <volume>
+    <property>/velocities/speed-down-fps</property>
+    <factor>0.05</factor>
+   </volume>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+   </volume>
+   <volume>
+    <internal>dt_stop</internal>
+    <factor>0.05</factor>
+    <max>1.0</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0025</factor>
+    <offset>1.2</offset>
+   </pitch>
+  </squeal>
+ 
+  <flap>
+   <name>flaps</name>
+   <mode>in-transit</mode>
+   <path>Sounds/flaps.wav</path>
+   <property>/surface-positions/flap-pos-norm</property>
+   <volume>
+    <factor>0.15</factor>
+   </volume>
+  </flap>
+
+  <wind>
+   <name>wind</name>
+   <mode>looped</mode>
+   <path>Sounds/wind.wav</path>
+   <property>/velocities/airspeed-kt</property>
+   <volume>
+    <property>/position/altitude-ft</property>
+    <factor>-0.000015</factor>
+    <offset>1.0</offset>
+    <min>0.1</min>
+    <max>1.0</max>
+   </volume>
+   <volume>
+     <property>/velocities/airspeed-kt</property>
+     <factor>0.0015</factor>
+     <min>0.03</min>
+     <max>0.25</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+    <offset>1.25</offset>
+   </pitch>
+  </wind>
+ 
+  <stall>
+   <name>stall</name>
+   <path>Sounds/stall.wav</path>
+   <condition>
+    <and>
+     <property>/sim/alarms/stall-warning</property>
+     <greater-than> <!-- irritating on ground -->
+      <property>/position/altitude-agl-ft</property>
+      <value>20</value>
+     </greater-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <min>30.0</min>
+   </volume>
+  </stall>
+ 
+  <overspeed>
+   <name>overspeed</name>
+   <mode>looped</mode>
+   <path>Sounds/overspeed.wav</path>
+   <condition>
+    <or>
+     <greater-than>
+      <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+      <property n="1">/instrumentation/airspeed-indicator/vmo-kt</property>
+     </greater-than>
+     <greater-than>
+      <property>/velocities/mach</property>
+      <property n="1">/instrumentation/mach-indicator/mmo-mach</property>
+     </greater-than>
+    </or>
+   </condition>
+   <volume>
+    <min>1.7</min>
+   </volume>
+   <pitch>
+    <offset>1.38</offset> <!-- 11025 hz -->
+   </pitch>   
+  </overspeed>
+
+<!-- no binding yet?
+  <click>
+   <name>click</name>
+   <path>Sounds/click.wav</path>
+  </click>
+-->
+
+</fx>
+ 
+</PropertyList>
+
+
+

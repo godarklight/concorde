@@ -1,0 +1,1269 @@
+<?xml version="1.0"?>
+
+<!-- Concorde British Airways
+
+    - http://www.concordesst.com :
+
+    Flight systems (range up and down) : inner elevons 9 deg, middle and outer elevons 23.5 deg, rudder 30 deg.
+    Actual travel limits are a little lower than these mechanical limits.
+
+    Gear :
+    - nose has plus minus 60 deg steering angle.
+    - up process takes 12 s : door opening 2 s, gear retract 8 s, door closing 8 s.
+
+    Nose / Visor : UP, visor down, nose -5 deg, nose DOWN -12.5 deg.
+
+    Constants :
+    - 0.05 : door is opened, gear starts to lower.
+    - 0.95 : gear locks, doors start to close.
+    - exception : tail gear door moves with gear.
+
+-->
+
+<!-- TO DO :
+ - 3D bug : the tail wheel door seems tool long (one part of tail gear hole is closed by the small left and right doors.
+ - all axis are correct !
+ - temporisation of wing gear inner doors and front gear main doors.
+ - 3D bug : the wing gears seems a little too long, and cross the inner doors.
+ - 3D : improve animation of nose / visor.
+-->
+ 
+<PropertyList>
+  <path>concorde.ac</path>
+  <offsets>
+   <x-m>-1.23</x-m> <!-- match the center of gravity of FDM (tail wheel doesn't touch the ground at 10 deg pitch) -->
+   <z-m>1.72</z-m> <!-- make the wheels touch the ground, when changes center of gravity -->
+   <roll-deg>0</roll-deg>
+   <heading-deg>0</heading-deg>
+  </offsets>
+
+<!-- NOSE -->
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Nose</object-name>
+  <property>/surface-positions/flap-pos-norm</property>
+  <interpolation> <!-- real angles -->
+    <entry>
+     <ind>0.0</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.34</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.68</ind>
+     <dep>-5</dep>
+    </entry>
+    <entry>
+     <ind>1.0</ind>
+     <dep>-12.5</dep>
+    </entry>
+  </interpolation>
+  <center>
+   <x-m>-24.0</x-m>
+   <y-m>0</y-m>
+   <z-m>1.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Screen</object-name>
+  <property>/surface-positions/flap-pos-norm</property>
+  <interpolation> <!-- not real angles : move with nose to get a nice visual effect -->
+    <entry>
+     <ind>0.0</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.34</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.68</ind>
+     <dep>-3</dep>
+    </entry>
+    <entry>
+     <ind>1.0</ind>
+     <dep>-7.5</dep>
+    </entry>
+  </interpolation>
+  <center>
+   <x-m>-23.0</x-m>
+   <y-m>0</y-m>
+   <z-m>2.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+<!-- FRONT GEAR -->
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Fwheels</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>-90</factor>
+  <offset-deg>90</offset-deg>
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Fwheels</object-name>
+  <property>controls/flight/rudder</property>
+  <factor>-60</factor> <!-- real steering is 60 deg -->
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Fwheels</object-name>
+  <condition>
+   <less-than>
+    <property>/position/altitude-agl-ft</property>
+    <value>50.0</value>
+   </less-than>
+  </condition>
+  <property>/velocities/uBody-fps</property>
+  <factor>-2.0</factor>
+  <center>
+   <x-m>-12.11</x-m>
+   <y-m>0</y-m>
+   <z-m>-4.66</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Fwheels</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Fstrut</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>-90</factor>
+  <offset-deg>90</offset-deg>
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Fstrut</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Fram</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>-90</factor>
+  <offset-deg>90</offset-deg>
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Fram</object-name>
+  <property>controls/flight/rudder</property>
+  <factor>-60</factor> <!-- real steering is 60 deg -->
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Fram</object-name> <!-- visible through door -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.05</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Fhub</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>-90</factor>
+  <offset-deg>90</offset-deg>
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Fhub</object-name>
+  <property>controls/flight/rudder</property>
+  <factor>-60</factor> <!-- real steering is 60 deg -->
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.9</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Fhub</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>OFLbigdoor</object-name> <!-- main door left -->
+  <property>gear/gear[0]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>74.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>0.95</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>74.0</dep> <!-- locks the door once gear down -->
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>-14.2</x-m>
+   <y-m>-0.66</y-m>
+   <z-m>-1.15</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0.025</y>
+   <z>-0.05</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>OFlsmalldoor</object-name> <!-- door always open left -->
+  <property>gear/gear[0]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>74.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>-0.66</y-m>
+   <z-m>-1.2</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>-0.025</y>
+   <z>-0.06</z>
+  </axis>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>OFRbigdoor</object-name> <!-- main door right -->
+  <property>gear/gear[0]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>-74.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>0.95</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>-74.0</dep> <!-- locks the door once gear down -->
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>-14.2</x-m>
+   <y-m>0.66</y-m>
+   <z-m>-1.15</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>-0.025</y>
+   <z>-0.05</z>
+  </axis>
+ </animation> 
+
+  <animation>
+  <type>rotate</type>
+  <object-name>OFRsmalldoor</object-name> <!-- door always open right -->
+  <property>gear/gear[0]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>-74.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>-12.0</x-m>
+   <y-m>0.66</y-m>
+   <z-m>-1.2</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0.025</y>
+   <z>-0.06</z>
+  </axis>
+ </animation> 
+
+  <animation>
+  <type>rotate</type>
+  <object-name>OFlegdoor</object-name> <!-- door behind the wheel -->
+  <property>gear/gear[0]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>66.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>-10.9</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.55</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+<!-- RIGHT GEAR -->
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Rmainwheels</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>120</factor>
+  <offset-deg>-90</offset-deg>
+  <min-deg>-120</min-deg>
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Rmainwheels</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>RMainstrut</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>120</factor>
+  <offset-deg>-90</offset-deg>
+  <min-deg>-120</min-deg>
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>RMainstrut</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Rmainram</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>120</factor>
+  <offset-deg>-90</offset-deg>
+  <min-deg>-120</min-deg>
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Rmainram</object-name> <!-- visible through wing -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Rmainhub</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>120</factor>
+  <offset-deg>-90</offset-deg>
+  <min-deg>-120</min-deg>
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Rmainhub</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>OROmaindoor</object-name> <!-- external right door -->
+  <property>gear/gear[1]/position-norm</property>
+  <offset-deg>-90</offset-deg>
+  <factor>170</factor>
+  <offset>-0.5</offset> <!-- 1 0 is 0.5 minus 0.5 -->
+  <min-deg>-85</min-deg> <!-- temporisation 85 minus 85 is 0 minus 85 -->
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>3.9</y-m>
+   <z-m>-1.45</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>ORImaindoor</object-name> <!-- internal right door -->
+  <property>gear/gear[1]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>74.2</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>
+  <condition>
+   <less-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.05</value>
+   </less-than>
+  </condition>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>0.1</y-m>
+   <z-m>-2.05</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+<!-- LEFT GEAR -->
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Lmainwheels</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-120</factor>
+  <offset-deg>90</offset-deg>
+  <min-deg>0</min-deg>
+  <max-deg>120</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Lmainwheels</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+ 
+ <animation>
+ <type>rotate</type>
+  <object-name>LMainstrut</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-120</factor>
+  <offset-deg>90</offset-deg>
+  <min-deg>0</min-deg>
+  <max-deg>120</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>LMainstrut</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+ 
+ <animation>
+ <type>rotate</type>
+  <object-name>Lmainram</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-120</factor>
+  <offset-deg>90</offset-deg>
+  <min-deg>0</min-deg>
+  <max-deg>120</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Lmainram</object-name> <!-- visible through wing -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+ 
+ <animation>
+ <type>rotate</type>
+  <object-name>Lmainhub</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-120</factor>
+  <offset-deg>90</offset-deg>
+  <min-deg>0</min-deg>
+  <max-deg>120</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-3.8</y-m>
+   <z-m>-1.3</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Lmainhub</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>OLOmaindoor</object-name> <!-- external left door -->
+  <property>gear/gear[2]/position-norm</property>
+  <offset-deg>90</offset-deg>
+  <factor>-170</factor>
+  <offset>-0.5</offset> <!-- 1 0 is 0.5 minus 0.5 -->
+  <min-deg>0</min-deg> <!-- temporisation minus 85 85 is 0 85 -->
+  <max-deg>85</max-deg>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-3.9</y-m>
+   <z-m>-1.45</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>OLImaindoor</object-name> <!-- internal left door -->
+  <property>gear/gear[2]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>-79.4</dep> <!-- dissymmetry -->
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>
+  <center>
+   <x-m>5.5</x-m>
+   <y-m>-0.1</y-m>
+   <z-m>-2.05</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+<!-- TAIL GEAR -->
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Tailwheels</object-name>
+  <property>gear/gear[3]/position-norm</property>
+  <factor>50</factor>
+  <offset-deg>-50</offset-deg>
+  <center>
+   <x-m>22.9</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.1</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Tailwheels</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Tailstrut</object-name>
+  <property>gear/gear[3]/position-norm</property>
+  <factor>50</factor>
+  <offset-deg>-50</offset-deg>
+  <center>
+   <x-m>22.9</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.1</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Tailstrut</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+  <animation>
+ <type>rotate</type>
+  <object-name>Tailram</object-name>
+  <property>gear/gear[3]/position-norm</property>
+  <factor>50</factor>
+  <offset-deg>-50</offset-deg>
+  <center>
+   <x-m>22.9</x-m> <!-- real axis is along the leg door -->
+   <y-m>0.0</y-m>
+   <z-m>-1.1</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Tailram</object-name> <!-- spare frame rate -->
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Littledoorleft.</object-name> <!-- small left door -->
+  <property>gear/gear[3]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>90.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>90.0</dep>
+    </entry>
+    <entry>
+      <ind>0.15</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>24.2</x-m>
+   <y-m>-0.26</y-m>
+   <z-m>-1.32</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0.25</z> <!-- slope 1 for 4 -->
+  </axis>
+ </animation>
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Littledoorright</object-name> <!-- small right door -->
+  <property>gear/gear[3]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>-90.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>-90.0</dep>
+    </entry>
+    <entry>
+      <ind>0.15</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>24.2</x-m>
+   <y-m>0.26</y-m>
+   <z-m>-1.32</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0.25</z> <!-- slope 1 for 4 -->
+  </axis>
+ </animation> 
+
+  <animation>
+  <type>rotate</type>
+  <object-name>Taildoorfront</object-name> <!-- door behind the wheel -->
+  <property>gear/gear[3]/position-norm</property>
+   <interpolation>
+    <entry>
+      <ind>0.0</ind>
+      <dep>-36.0</dep>
+    </entry>
+    <entry>
+      <ind>0.05</ind>
+      <dep>-36.0</dep>
+    </entry>
+    <entry>
+      <ind>0.15</ind>
+      <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>0.0</dep>
+    </entry>
+  </interpolation>   
+  <center>
+   <x-m>22.95</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.25</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation> 
+
+<!-- RIGHT WING -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RO ailaron</object-name> <!-- outer elevon -->
+  <property>controls/flight/aileron</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RO ailaron</object-name> <!-- outer elevon -->
+  <property>controls/flight/elevator</property>
+  <factor>-22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RI ailaron</object-name> <!-- middle elevon -->
+  <property>controls/flight/aileron</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RI ailaron</object-name> <!-- middle elevon -->
+  <property>controls/flight/elevator</property>
+  <factor>-22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>R flap</object-name> <!-- inner elevon : no flap -->
+  <property>controls/flight/aileron</property>
+  <factor>8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>R flap</object-name> <!-- inner elevon : no flap -->
+  <property>controls/flight/elevator</property>
+  <factor>-8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+<!-- LEFT WING -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LO ailaron</object-name> <!-- outer elevon -->
+  <property>controls/flight/aileron</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LO ailaron</object-name> <!-- outer elevon -->
+  <property>controls/flight/elevator</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LI ailaron</object-name> <!-- middle elevon -->
+  <property>controls/flight/aileron</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LI ailaron</object-name> <!-- middle elevon -->
+  <property>controls/flight/elevator</property>
+  <factor>22.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>L flap</object-name> <!-- inner elevon : no flap -->
+  <property>controls/flight/aileron</property>
+  <factor>8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>L flap</object-name> <!-- inner elevon : no flap -->
+  <property>controls/flight/elevator</property>
+  <factor>8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>14.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.5</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+<!-- RUDDER -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Upper rudder</object-name>
+  <property>controls/flight/rudder</property>
+  <factor>29</factor> <!-- max real is 30 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>23.51</x-m>
+   <y-m>0.0</y-m>
+   <z-m>2.21</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Lower rudder</object-name>
+  <property>controls/flight/rudder</property>
+  <factor>29</factor> <!-- max real is 30 deg -->
+  <offset-deg>0</offset-deg>   
+  <center>
+   <x-m>23.51</x-m>
+   <y-m>0.0</y-m>
+   <z-m>2.21</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+</PropertyList>

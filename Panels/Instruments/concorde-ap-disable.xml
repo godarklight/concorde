@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+
+<!-- Disable autopilot -->
+
+<PropertyList>
+
+ <name>Disable autopilot</name>
+ <w-base>104</w-base>
+ <h-base>36</h-base>
+
+
+ <layers>
+  <layer>
+   <name>background enabled</name>
+   <condition>
+    <or>
+     <not-equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </not-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </equals>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Title enabled</name>
+   <condition>
+    <or>
+     <not-equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </not-equals>
+    </or>
+   </condition>
+   <type>text</type>
+   <point-size>46</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-43</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <point-size>46</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-43</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-20</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+ 
+ <actions>
+
+<!-- pitch hold and heading hold is default on activation -->
+
+  <action>
+   <desc>Enable autopilot</desc>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </equals>
+    </and>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-24</y>
+   <w>104</w>
+   <h>37</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude</property>
+    <value type="string">pitch-hold</value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/settings/target-pitch-deg</property>
+    <property n="1">/orientation/pitch-deg</property>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/heading</property>
+    <value type="string">true-heading-hold</value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/settings/true-heading-deg</property>
+    <property n="1">/orientation/heading-deg</property>
+   </binding>
+  </action>
+
+  <action>
+   <desc>Disable autopilot</desc>
+   <condition>
+    <or>
+     <not-equals>
+      <property>/autopilot/locks/vertical</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/altitude2</property>
+      <value></value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value></value>
+     </not-equals>
+    </or>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-24</y>
+   <w>104</w>
+   <h>37</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/vertical</property>
+    <value type="string"></value>
+   </binding>
+    <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/heading</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude2</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude</property>
+    <value type="string"></value>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<!-- Altitude Hold -->
+
+<PropertyList>
+ <name>Altitude Hold</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>46</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AH</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-45</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-11</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+ 
+ <actions>
+
+  <action>
+   <desc>Altitude Hold</desc>
+   <button>0</button>
+   <x>-52</x>
+   <y>-13</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/altitude</property>
+    <value type="string">altitude-hold</value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/settings/target-altitude-ft</property>
+    <property n="1">/position/altitude-ft</property>
+  </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

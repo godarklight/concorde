@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<!--
+-->
+
+<PropertyList>
+
+ <name>Digital Side Slip indicator</name>
+ <w-base>40</w-base>
+ <h-base>10</h-base>
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>55</w>
+    <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>62</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Left</name>
+   <type>text</type>
+   <point-size>16</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>L</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Side Slip display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>instrumentation/slip-skid-ball/indicated-slip-skid</property>
+     <format>%2.f</format>
+     <scale>-27.0</scale> <!-- to get -15/+15 (which unit ?) -->
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>50</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>3</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Right</name>
+   <type>text</type>
+   <point-size>16</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>R</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>100</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

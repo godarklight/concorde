@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+
+<!-- INS Mode -->
+
+<PropertyList>
+ <name>INS Mode</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Button light</name>
+   <type>switch</type>
+    <layer>
+     <condition>
+      <and>
+       <equals>
+        <property>/autopilot/locks/heading</property>
+        <value>true-heading-hold</value>
+       </equals>
+       <not-equals>
+        <property>/autopilot/route-manager/wp[0]/id</property>
+        <value></value>
+       </not-equals>
+      </and>
+     </condition>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.37</x1>
+     <y1>0.0</y1>
+     <x2>0.38</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background lighted</name>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value>true-heading-hold</value>
+     </equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value></value>
+     </not-equals>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <condition>
+    <or>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value>true-heading-hold</value>
+     </not-equals>
+     <equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value></value>
+     </equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>46</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>IN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-11</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+ 
+ <actions>
+
+  <action>
+   <desc>INS engaged</desc>
+   <condition>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value>true-heading-hold</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value></value>
+     </not-equals>
+    </and>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-13</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/heading</property>
+    <value type="string">true-heading-hold</value>
+   </binding>
+  </action>
+
+  <action>
+   <desc>Disable INS</desc>
+   <condition>
+    <and>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value>true-heading-hold</value>
+     </equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value></value>
+     </not-equals>
+    </and>
+   </condition>
+   <button>0</button>
+   <x>-52</x>
+   <y>-13</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/heading</property>
+    <value type="string"></value>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

@@ -1,0 +1,918 @@
+<?xml version="1.0"?>
+
+<!--
+Concorde 2D panel (CAPTAIN, with fuel and overhead)
+
+Organized like the real one at http://www.concordesst.com/.
+See also pictures at http://www.airliners.net/info/.
+
+This is an upgraded Concorde, where :
+- TCAS replaces clock/timer.
+- clock/timer replaces TMO temperature.
+
+Instruments, which are not real :
+- fuel and overhead panels are hypothetical (no image).
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!--
+Concorde autopilot like the real one : http://www.concordesst.com
+
+     MH  IH  |  IN  TH  |  HH  TU  PH  |  MP  CL  IP  AH
+         IA  |  BB  VO  |      GA  LA  |  GL  CR  VS  AA
+       AT                          AP
+
+MH : Mach Hold (current)
+AT : Autothrottle
+IH : Indicated Air Speed Hold (current); default when autothrottle enabled.
+IA : Indicated Air Speed Acquire (dial)
+IN : Inertial Navigation System mode : track between 2 points beeing fed from the INS.
+BB : Back Beam is a flight director mode, not an autopilot mode. It will only operate with autopilot disengaged, and
+     permits tracking of a back beam localizer.
+TH : Track or Heading (dial) : heading mode follows the compass direction, while track mode will follow the direct route,
+     taking into account wind speeds.
+VO : VOR 1 Lock
+HH : Heading Hold (current); default when autopilot engaged.
+TU : Turbulence mode, only used in moderate to severe turbulence. It holds the existing pitch and heading, and reduces
+     the trim rate to smoothen the ride.
+GA : An automatic go around is initiated when 2 throttles have been moved forward in autoland or glide mode.
+     Holds pitch at 15 deg.
+PH : Pitch Hold; default when autopilot engaged.
+LA : Autoland : glide slope 1 + Nav 1 Loc
+AP : Autopilot
+MP : Mach Hold (current), with pitch. If the autothrottle is engaged, it will take precedence, and the autopilot will
+     default to Pitch Hold.
+GL : Glide : glide slope 1 + Nav 1 Lock
+CL : max CLimb sets speed at Vmo; once reached, holds it with pitch.  
+CR : max CRuise engaged shortly after Mach 2, is an extension of Max Climb. If the aircraft begins to overspeed due to
+     temperature changes, the autothrottle will slow the aircraft down. Once at the correct speed, Mach Hold will
+     disengage, and Max Cruise will re-engage. It also prevents the aircraft exceeding the maximum operating temperature
+     (TMO) of 127 deg Celsius on the tip of the nose. 
+IP : Indicated Air Speed Hold (current), with pitch
+VS : Vertical Speed
+AH : Altitude Hold (current)
+AA : Altitude Acquire (dial)
+
+BB is not implemented.
+
+
+Acquired modes have a light.
+During the capture, a triangle lights below VO, LA, GL and AA, until the acquisition.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde 2D Captain Panel</name>
+ <background>Aircraft/Concorde/Panels/Textures/concorde-panel-bg.rgb</background>
+ <w>1424</w>
+ <h>468</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+<!-- AUTOPILOT -->
+
+<!-- AUTOTHROTTLE -->
+
+  <instrument include="Instruments/concorde-ap-mh.xml">
+   <name>Mach Hold</name>
+   <x>255</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ih.xml">
+   <name>IAS Hold</name>
+   <x>290</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ia.xml">
+   <name>IAS Acquired</name>
+   <x>290</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+<!-- HEADING -->
+
+  <instrument include="Instruments/concorde-ap-in.xml">
+   <name>INS Mode</name>
+   <x>360</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-bb.xml">
+   <name>Back Beam</name>
+   <x>360</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-th.xml">
+   <name>Track Heading</name>
+   <x>395</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-vo.xml">
+   <name>VOR Lock</name>
+   <x>395</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-hh.xml">
+   <name>Heading Hold</name>
+   <x>435</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+<!-- ALTITUDE -->
+
+  <instrument include="Instruments/concorde-ap-tu.xml">
+   <name>Turbulence Mode</name>
+   <x>470</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ga.xml">
+   <name>Go Around Mode</name>
+   <x>470</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ph.xml">
+   <name>Pitch Hold</name>
+   <x>505</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-la.xml">
+   <name>Autoland Mode</name>
+   <x>505</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-mp.xml">
+   <name>Mach with Pitch Hold</name>
+   <x>545</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-gl.xml">
+   <name>Glide slope mode</name>
+   <x>545</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-cl.xml">
+   <name>Max Climb mode</name>
+   <x>580</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-cr.xml">
+   <name>Max Climb mode</name>
+   <x>580</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ip.xml">
+   <name>IAS with Pitch hold</name>
+   <x>615</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-vs.xml">
+   <name>Vertical Speed hold</name>
+   <x>615</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-ah.xml">
+   <name>Altitude Hold</name>
+   <x>650</x>
+   <y>455</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-aa.xml">
+   <name>Altitude Acquire</name>
+   <x>650</x>
+   <y>430</y>
+   <w>30</w>
+   <h>20</h>
+  </instrument>
+
+<!-- armed lights -->
+
+  <instrument include="Instruments/concorde-armed-vor.xml">
+   <name>VOR armed</name>
+   <x>395</x>
+   <y>416</y>
+   <w>10</w>
+   <h>5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-armed-land.xml">
+   <name>Autoland armed</name>
+   <x>505</x>
+   <y>416</y>
+   <w>10</w>
+   <h>5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-armed-glide.xml">
+   <name>Autoland armed</name>
+   <x>545</x>
+   <y>416</y>
+   <w>10</w>
+   <h>5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-armed-altitude.xml">
+   <name>Altitude armed</name>
+   <x>650</x>
+   <y>416</y>
+   <w>10</w>
+   <h>5</h>
+  </instrument>
+
+<!-- frequencies -->
+
+  <instrument include="Instruments/concorde-nav.xml">
+   <name>NAV 1 dial</name>
+   <params>
+    <frq-disp>/radios/nav[0]/frequencies/selected-mhz</frq-disp>
+    <frq-ctrl>/radios/nav[0]/frequencies/selected-mhz</frq-ctrl>
+   </params>
+   <x>129</x>
+   <y>437</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-nav.xml">
+   <name>NAV 2 dial</name>
+   <params>
+    <frq-disp>/radios/nav[1]/frequencies/selected-mhz</frq-disp>
+    <frq-ctrl>/radios/nav[1]/frequencies/selected-mhz</frq-ctrl>
+   </params>
+   <x>709</x>
+   <y>437</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+<!-- dials -->
+
+  <instrument include="Instruments/concorde-ap-speed-kt.xml">
+   <name>Speed dial</name>
+   <params>
+    <spd-disp>/autopilot/settings/target-speed-kt</spd-disp>
+    <spd-ctrl>/autopilot/settings/target-speed-kt</spd-ctrl>
+   </params>
+   <x>167</x>
+   <y>397</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-disable-at.xml">
+   <name>Autothrottle</name>
+   <x>270</x>
+   <y>396</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-heading-deg.xml">
+   <name>Heading dial</name>
+   <params>
+    <spd-disp>/autopilot/settings/heading-bug-deg</spd-disp>
+    <spd-ctrl>/autopilot/settings/heading-bug-deg</spd-ctrl>
+   </params>
+   <x>293</x>
+   <y>397</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-vor1-deg.xml">
+   <name>VOR 1 dial</name>
+   <params>
+    <spd-disp>/radios/nav/radials/selected-deg</spd-disp>
+    <spd-ctrl>/radios/nav/radials/selected-deg</spd-ctrl>
+   </params>
+   <x>385</x>
+   <y>397</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-disable.xml">
+   <name>Autopilot</name>
+   <x>505</x>
+   <y>396</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-vertical-speed.xml">
+   <name>Vertical speed dial</name>
+   <params>
+    <tcr-disp>/autopilot/settings/vertical-speed-fpm</tcr-disp>
+    <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
+   </params>
+   <x>529</x>
+   <y>397</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-altitude-ft.xml">
+   <name>Altitude dial</name>
+   <params>
+    <tcr-disp>/autopilot/settings/target-altitude-ft</tcr-disp>
+    <tcr-ctrl>/autopilot/settings/target-altitude-ft</tcr-ctrl>
+   </params>
+   <x>685</x>
+   <y>397</y>
+   <w>100</w>
+   <h>29</h>
+  </instrument>
+
+<!-- CAPTAIN extreme left -->
+
+  <instrument include="Instruments/concorde-aoa.xml">
+   <name>AoA display</name>
+   <x>20</x>
+   <y>80</y>
+   <w>10</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-accl.xml">
+   <name>Accel display</name>
+   <x>20</x>
+   <y>-10</y>
+   <w>10</w>
+   <h>40</h>
+  </instrument>
+
+<!-- CAPTAIN far left -->
+
+  <instrument include="Instruments/concorde-alarm-gear.xml">
+   <name>Alarm on Gear</name>
+   <x>190</x>
+   <y>368</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-land.xml">
+   <name>Warning on Autoland</name>
+   <x>390</x>
+   <y>368</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-dh.xml">
+   <name>Warning on Decision Height</name>
+   <x>445</x>
+   <y>368</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-standby-asi.xml">
+   <name>Standby KIAS display</name>
+   <x>115</x>
+   <y>215</y>
+   <w>110</w>
+   <h>110</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-dme.xml">
+   <name>DME Display</name>
+   <x>115</x>
+   <y>85</y>
+   <w>110</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tas.xml">
+   <name>TAS Display</name>
+   <x>115</x>
+   <y>25</y>
+   <w>110</w>
+   <h>55</h>
+  </instrument>
+
+<!-- CAPTAIN left -->
+
+  <instrument include="Instruments/concorde-asi.xml">
+   <name>KIAS display</name>
+   <x>240</x>
+   <y>290</y>
+   <w>130</w>
+   <h>130</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-mach-max.xml">
+   <name>Mach Max display</name>
+   <x>188</x>
+   <y>195</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-mmo.xml">
+   <name>MMO display</name>
+   <x>188</x>
+   <y>170</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-mach-min.xml">
+   <name>Mach Min display</name>
+   <x>188</x>
+   <y>145</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="../../Instruments/nav1.xml">
+   <name>VOR 2 Gauge</name>
+   <params>
+    <nav-to-flag>/radios/nav[1]/to-flag</nav-to-flag>
+    <nav-from-flag>/radios/nav[1]/from-flag</nav-from-flag>
+    <nav-radial-selected>/radios/nav[1]/radials/selected-deg</nav-radial-selected>
+    <nav-gs-needle-deflection>/radios/nav[1]/gs-needle-deflection</nav-gs-needle-deflection>
+    <nav-heading-needle-deflection>/radios/nav[1]/heading-needle-deflection</nav-heading-needle-deflection>
+    <nav-has-gs-needle>/sim/instrument-options/nav[1]/has-gs-needle</nav-has-gs-needle>
+    <nav-needles-pivot>/sim/instrument-options/nav[1]/needles-pivot</nav-needles-pivot>
+   </params>
+   <x>245</x>
+   <y>70</y>
+   <w>120</w>
+   <h>120</h>
+  </instrument>
+
+<!-- CAPTAIN center -->
+
+  <instrument include="Instruments/concorde-horizon.xml">
+   <name>Attitude Indicator</name>
+   <x>395</x>
+   <y>272</y>
+   <w>170</w>
+   <h>170</h>
+  </instrument>
+
+  <instrument include="../../Instruments/hsi-bk-hi.xml">
+   <name>Horizontal Situation Indicator</name>
+   <x>395</x>
+   <y>107</y>
+   <w>150</w>
+   <h>150</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-side-slip.xml">
+   <name>Side Slip Indicator</name>
+   <x>337</x>
+   <y>5</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+<!-- CAPTAIN right -->
+
+  <instrument include="Instruments/concorde-vsi.xml">
+   <name>Vsi display</name>
+   <x>510</x>
+   <y>258</y>
+   <w>10</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-radio-alt.xml">
+   <name>Elevation AGL display</name>
+   <x>534</x>
+   <y>315</y>
+   <w>100</w>
+   <h>100</h>
+  </instrument>
+
+   <instrument include="Instruments/concorde-altimeter.xml">
+   <name>Altimeter</name>
+   <x>580</x>
+   <y>195</y>
+   <w>130</w>
+   <h>130</h>
+  </instrument>
+
+   <instrument include="../../Instruments/adf.xml">
+   <name>ADF</name>
+   <x>545</x>
+   <y>70</y>
+   <w>120</w>
+   <h>120</h>
+  </instrument>
+
+<!-- CAPTAIN far right -->
+
+  <instrument include="Instruments/concorde-horizon.xml">
+   <name>Standby Attitude Indicator</name>
+   <x>707</x>
+   <y>305</y>
+   <w>105</w>
+   <h>105</h>
+  </instrument>
+
+  <instrument include="../../Instruments/radar.xml">
+   <name>TCAS</name>
+   <x>707</x>
+   <y>200</y>
+   <w>100</w>
+   <h>100</h>
+  </instrument>
+
+  <instrument include="../../Instruments/clock.xml">
+   <name>Chronometer</name>
+   <x>655</x>
+   <y>85</y>
+   <w>90</w>
+   <h>90</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-markerbeacon.xml">
+   <name>Marker Beacon Indicators</name>
+   <x>780</x>
+   <y>315</y>
+   <w>70</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-cg.xml">
+   <name>Center of Gravity</name>
+   <x>730</x>
+   <y>70</y>
+   <w>16</w>
+   <h>50</h>
+  </instrument>
+
+<!-- ENGINEER -->
+
+<!-- pumps -->
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump</name>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump</dump-ctrl>
+   </params>
+   <x>847</x>
+   <y>445</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump (confirm)</name>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump2</dump-ctrl>
+   </params>
+   <x>897</x>
+   <y>445</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-forward.xml">
+   <name>Forward pump</name>
+   <x>989</x>
+   <y>395</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-aft.xml">
+   <name>Aft pump</name>
+   <x>989</x>
+   <y>205</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-cross.xml">
+   <name>Cross pump</name>
+   <x>920</x>
+   <y>154</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-engine.xml">
+   <name>Engine pump</name>
+   <x>989</x>
+   <y>154</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+<!-- tanks -->
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 8 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[8]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[8]/level-lb</lbs-select>
+   </params>
+   <x>830</x>
+   <y>382</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 9 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[9]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[9]/level-lb</lbs-select>
+   </params>
+   <x>830</x>
+   <y>355</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 1 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+   </params>
+   <x>772</x>
+   <y>328</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 4 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[3]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+   </params>
+   <x>868</x>
+   <y>328</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 5 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[4]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[4]/level-lb</lbs-select>
+   </params>
+   <x>772</x>
+   <y>301</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 8 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[7]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[7]/level-lb</lbs-select>
+   </params>
+   <x>868</x>
+   <y>301</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 6 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[5]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[5]/level-lb</lbs-select>
+   </params>
+   <x>772</x>
+   <y>274</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 7 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[6]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[6]/level-lb</lbs-select>
+   </params>
+   <x>868</x>
+   <y>274</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 2 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[1]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+   </params>
+   <x>772</x>
+   <y>247</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 3 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[2]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+   </params>
+   <x>868</x>
+   <y>247</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- rear tanks -->
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 5A display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[11]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[11]/level-lb</lbs-select>
+   </params>
+   <x>772</x>
+   <y>220</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 7A display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[12]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[12]/level-lb</lbs-select>
+   </params>
+   <x>868</x>
+   <y>220</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 11 display</name>
+   <params>
+    <tank-num>/consumables/fuel/tank[10]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[10]/level-lb</lbs-select>
+   </params>
+   <x>830</x>
+   <y>193</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- totals -->
+
+  <instrument include="Instruments/concorde-kgph.xml">
+   <name>Fuel Flow</name>
+   <x>822</x>
+   <y>97</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-kg.xml">
+   <name>Fuel Total</name>
+   <x>824</x>
+   <y>70</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+<!-- OVERHEAD PANEL -->
+
+  <instrument include="../../Instruments/magcompass.xml">
+   <name>Magnetic Compass</name>
+   <x>940</x>
+   <y>484</y>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-cg.xml">
+   <name>Alarm on Center of Gravity</name>
+   <x>850</x>
+   <y>50</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-speed.xml">
+   <name>Alarm on Overspeed</name>
+   <x>920</x>
+   <y>50</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-park.xml">
+   <name>Warning on Parking Break</name>
+   <x>850</x>
+   <y>20</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-nose-visor.xml">
+   <name>Warning on Nose/Visor</name>
+   <x>920</x>
+   <y>20</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-reheat.xml">
+   <name>Warning on Reheat</name>
+   <x>988</x>
+   <y>20</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

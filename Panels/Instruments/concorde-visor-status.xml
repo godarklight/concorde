@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+
+<!-- Concorde visor status
+
+     WARNING : hysteresis.
+-->
+
+<PropertyList>
+
+ <name>Visor status</name>
+ <w-base>35</w-base>
+ <h-base>10</h-base>
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>70</w>
+    <h>30</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>46</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Visor transit</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property>/surface-positions/flap-pos-norm</property>
+      <value>0.0</value>
+     </greater-than>
+     <less-than-equals>
+      <property>/surface-positions/flap-pos-norm</property>
+      <value>0.31</value>
+     </less-than-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>----</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>8</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Visor up</name>
+   <condition>
+    <equals>
+     <property>/surface-positions/flap-pos-norm</property>
+     <value>0.0</value>
+    </equals>
+   </condition>
+   <type>text</type>
+   <point-size>17</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Visor down</name>
+   <condition>
+    <greater-than>
+     <property>/surface-positions/flap-pos-norm</property>
+     <value>0.31</value>
+    </greater-than>
+   </condition>
+   <type>text</type>
+   <point-size>16</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DOWN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>14</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>16</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>VISOR</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>15</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-25</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

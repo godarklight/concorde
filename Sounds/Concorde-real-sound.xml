@@ -1,0 +1,586 @@
+<?xml version="1.0"?>
+
+<!-- Concorde original sounds from Ryuji Ozawa.
+
+   Available at http://wwww.flightsim.com, as consnd98.zip (FS98 sound).
+
+   Since this file is not GPL, you must download and install yourself the sounds.
+   Rename the following files in Aircraft/Concorde/Sounds :
+   - con1 -> concorde-jet.                    (idle)
+   - con2 -> concorde-takeoff.                (takeoff)
+   - con3 -> concorde-cruise.                 (cruise)       
+   - con5 -> concorde-external-taxi.          (nozzle)
+   - con7 -> concorde-external-takeoff.       (reheat)
+
+   All sounds are at 22050 hz, while Plib waits for 8000 : hence the pitch offset of 2.75 = 22050/8000.
+
+   Not tested with OpenAL (max pitch 2.0) : I think the pitch 2.75 is to remove.
+
+
+   References :
+   ==========
+
+   - http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 :
+
+   Cockpit is very noisy until nose is streamlined.
+
+   - http://www.concordesst.com :
+
+   Shortly after takeoff, the aircraft enters the noise abatement procedure, where the re-heats are turn off and power
+   is reduced. The secondary nozzles are opened further to allow more air to enter, quietening down the exhaust.
+   The secondary air doors also open at this stage to allow air to by pass the engine.
+
+   At slow speeds all the air into the engine is primary airflow and the secondary air doors are kept closed. Keeping
+   them closed also prevents the engine ingests any of its own exhaust gas. At around Mach 0.55 the secondary exhaust
+   buckets begin to open as a function of Mach number to be fully open at when the aircraft is at Mach 1.1.
+
+-->
+ 
+<PropertyList>
+
+ <fx>
+
+<!-- internal engine -->
+
+  <engine>
+   <name>internal taxi</name>
+   <path>Aircraft/Concorde/Sounds/concorde-jet.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </less-than>
+     <not>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </not>     
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.06</factor>
+    <offset>0.03</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.06</factor>
+    <offset>0.03</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.06</factor>
+    <offset>0.03</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.06</factor>
+    <offset>0.03</offset>
+   </volume>    
+
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+  </engine>
+
+  <engine>
+   <name>internal takeoff</name>
+   <path>Aircraft/Concorde/Sounds/concorde-takeoff.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </less-than>
+     <or>
+      <property>/engines/engine[0]/augmentation</property>
+      <property>/engines/engine[1]/augmentation</property>
+      <property>/engines/engine[2]/augmentation</property>
+      <property>/engines/engine[3]/augmentation</property>
+     </or>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.045</factor>
+    <offset>0.05</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.045</factor>
+    <offset>0.05</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.045</factor>
+    <offset>0.05</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.045</factor>
+    <offset>0.05</offset>
+   </volume>    
+
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+  </engine>
+
+  <engine>
+   <name>internal cruise</name>
+   <path>Aircraft/Concorde/Sounds/concorde-cruise.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <greater-than-equals>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </greater-than-equals>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.03</factor>
+    <offset>0.02</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.03</factor>
+    <offset>0.02</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.03</factor>
+    <offset>0.02</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.03</factor>
+    <offset>0.02</offset>
+   </volume>    
+
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+  </engine>
+
+<!-- external engine -->
+
+  <engine>
+   <name>external taxi</name>
+   <path>Aircraft/Concorde/Sounds/concorde-external-taxi.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </less-than>
+     <not>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </not>     
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.003</factor>
+    <offset>0.01</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.003</factor>
+    <offset>0.01</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.003</factor>
+    <offset>0.01</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.003</factor>
+    <offset>0.01</offset>
+   </volume>    
+
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+  </engine>
+
+  <engine>
+   <name>external takeoff</name>
+   <path>Aircraft/Concorde/Sounds/concorde-external-takeoff.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <or>
+      <greater-than-equals>
+       <property>/velocities/mach</property>
+       <value>0.55</value>     
+      </greater-than-equals>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </or>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.0035</factor>
+    <offset>0.01</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.0035</factor>
+    <offset>0.01</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.0035</factor>
+    <offset>0.01</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.0035</factor>
+    <offset>0.01</offset>
+   </volume>    
+
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+   <pitch>
+    <offset>2.75</offset>
+   </pitch>   
+  </engine>
+
+<!-- default sounds -->
+ 
+  <overspeed>
+   <name>overspeed</name>
+   <mode>looped</mode>
+   <path>Sounds/overspeed.wav</path>
+   <condition>
+     <or>
+      <greater-than>
+       <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+       <property n="1">/instrumentation/airspeed-indicator/vmo-kt</property>
+      </greater-than>
+      <greater-than>
+       <property>/velocities/mach</property>
+       <property n="1">/instrumentation/mach-indicator/mmo-mach</property>
+      </greater-than>
+     </or>
+   </condition>
+   <volume>
+    <max>0.4</max>
+    <min>0.1</min>
+   </volume>
+   <pitch>
+    <offset>1.38</offset> <!-- 11025 hz -->
+   </pitch>   
+  </overspeed>
+
+  <rumble>
+   <name>rumble</name>
+   <mode>looped</mode>
+   <path>Sounds/rumble.wav</path>
+   <condition>
+    <and>
+     <less-than> <!-- BUG : wow not reset, when starting in flight -->
+      <property>/position/altitude-agl-ft</property>
+      <value>50</value>
+     </less-than>
+     <or>
+      <property>/gear/gear[0]/wow</property>
+      <property>/gear/gear[1]/wow</property>
+      <property>/gear/gear[2]/wow</property>
+     </or>
+     <greater-than> <!-- only rumble on taxi -->
+      <property>/velocities/airspeed-kt</property>
+      <value>10</value>     
+     </greater-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <type>log</type>
+    <factor>0.5</factor>
+   </volume>
+  </rumble>
+
+  <gear>
+   <name>gear</name>
+   <mode>in-transit</mode>
+   <path>Sounds/gear.wav</path>
+   <property>/gear/gear[0]/position-norm</property>
+   <pitch>
+    <internal>dt_play</internal>
+    <offset>1.0</offset>
+    <factor>-0.001</factor>
+   </pitch>
+  </gear>
+
+  <gear>
+   <name>gear-lock</name>
+   <path>Sounds/gear-lck.wav</path>
+   <condition>
+    <equals>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>0</value>
+    </equals>
+   </condition>
+  </gear>
+
+  <gear>
+   <name>gear-horn</name>
+   <path>Sounds/gear-hrn.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <or>
+      <equals>
+       <property>autopilot/locks/altitude</property>
+       <value>gs1-hold</value>
+      </equals>
+      <equals>
+       <property>autopilot/locks/vertical</property>
+       <value>autoland</value>
+      </equals>
+     </or>
+     <not-equals>
+      <property>gear/gear[0]/position-norm</property>
+      <value>1.0</value>
+     </not-equals>
+     <less-than>
+      <property>position/altitude-agl-ft</property>
+      <value>1500</value>
+     </less-than>
+    </and>
+   </condition>      
+  </gear>
+
+  <squeal>
+   <name>squeal</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <or>
+     <property>/gear/gear[0]/wow</property>
+     <property>/gear/gear[1]/wow</property>
+     <property>/gear/gear[2]/wow</property>
+    </or>
+   </condition>
+   <volume>
+    <property>/velocities/speed-down-fps</property>
+    <factor>0.05</factor>
+   </volume>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+   </volume>
+   <volume>
+    <internal>dt_stop</internal>
+    <factor>0.05</factor>
+    <max>1.0</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0025</factor>
+    <offset>1.2</offset>
+   </pitch>
+  </squeal>
+ 
+  <flap>
+   <name>flaps</name>
+   <mode>in-transit</mode>
+   <path>Sounds/flaps.wav</path>
+   <property>/surface-positions/flap-pos-norm</property>
+   <volume>
+    <factor>0.15</factor>
+   </volume>
+  </flap>
+
+  <wind>
+   <name>wind</name>
+   <mode>looped</mode>
+   <path>Sounds/wind.wav</path>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <greater-than>
+      <property>/surface-positions/flap-pos-norm</property> <!-- until noose is streamlined (0.34 = visor down) -->
+      <value>0.34</value>     
+     </greater-than>
+     <greater-than>
+      <property>/velocities/airspeed-kt</property>
+      <value>50</value> <!-- enough speed -->     
+     </greater-than>
+   </and>
+   </condition>
+   <volume>
+    <property>/position/altitude-ft</property>
+    <factor>-0.000015</factor>
+    <offset>1.0</offset>
+    <min>0.1</min>
+    <max>1.0</max>
+   </volume>
+   <volume>
+     <property>/velocities/airspeed-kt</property>
+     <factor>0.0015</factor>
+     <min>0.03</min>
+     <max>0.25</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+    <offset>1.25</offset>
+   </pitch>
+  </wind>
+ 
+  <stall>
+   <name>stall</name>
+   <path>Sounds/stall.wav</path>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/alarms/stall-warning</property>
+     <greater-than> <!-- irritating on ground -->
+      <property>/position/altitude-agl-ft</property>
+      <value>20</value>
+     </greater-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <min>30.0</min>
+   </volume>
+  </stall>
+
+<!-- no binding yet?
+  <click>
+   <name>click</name>
+   <path>Sounds/click.wav</path>
+  </click>
+-->
+
+</fx>
+ 
+</PropertyList>
+
+
+

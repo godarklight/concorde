@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+
+<!-- -->
+
+<PropertyList>
+
+ <name>Dial heading</name>
+ <w-base>124</w-base>
+ <h-base>40</h-base>
+
+ <params>
+  <spd-disp>/autopilot/settings/heading-bug-deg</spd-disp>
+  <spd-ctrl>/autopilot/settings/heading-bug-deg</spd-ctrl>
+ </params>
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>70</w>
+    <h>40</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>33</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Incr 10</name>
+   <type>text</type>
+   <point-size>22</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>+</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-3</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-4</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Decr 10</name>
+   <type>text</type>
+   <point-size>22</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>-</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-1</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-22</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Incr 1</name>
+   <type>text</type>
+   <point-size>22</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>+</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-4</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Decr 1</name>
+   <type>text</type>
+   <point-size>22</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>-</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-22</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>AP heading display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>8</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property alias="../../../../../params/spd-disp"/>
+     <format>%03.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-8</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>16</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>HG</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>72</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-12</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>Minus 10</name>
+   <button>0</button>
+   <x>2</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>-10</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <x>2</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>10</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 1</name>
+   <button>0</button>
+   <x>16</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>-1</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 1</name>
+   <button>0</button>
+   <x>16</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>1</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

@@ -1,0 +1,195 @@
+<PropertyList>
+
+ <name>Gear</name>
+ <w-base>40</w-base>
+ <h-base>100</h-base>
+
+ <layers>
+ <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/flaps.rgb</path>
+    <x1>0.988</x1>
+    <y1>0.25</y1>
+    <x2>.99</x2>
+    <y2>0.62</y2>
+  </texture>    
+   <w>5</w>
+   <h>50</h>
+
+ 
+  
+</layer> 
+
+  <layer>
+   <name>Landing Gear</name>
+   <type>text</type>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>L/GEAR</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-18</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Up</name>
+   <type>text</type>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-7</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>45</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<layer>
+   <name>Handle</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/handles.rgb</path>
+    <x1>0.387</x1>
+    <x2>0.525</x2>
+    <y1>0.5</y1>
+    <y2>1.0</y2>
+   </texture>
+   <w>20</w>
+   <h>55</h>
+ <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <property>/controls/gear/gear-down</property>
+     <min>0.0</min>
+     <max>1.0</max>
+     <scale>0.0</scale>
+     <offset>.05</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <property>/controls/gear/gear-down</property>
+     <min>0.0</min>
+     <max>1.0</max>
+     <scale>-50.0</scale>
+     <offset>28</offset>
+    </transformation>
+    <transformation>
+    <type>rotation</type>
+    <offset>180</offset>
+    </transformation>
+   </transformations>     
+  </layer>
+
+  <layer>
+   <name>Neutral</name>
+   <type>text</type>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>N</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>20</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Down</name>
+   <type>text</type>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DOWN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-14</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-70</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+<!-- on the ground, up selection is inhibited -->
+
+ <actions>
+
+  <action>
+   <name>extend</name>
+   <condition>
+    <greater-than>
+     <property>/position/altitude-agl-ft</property>
+     <value>11.0</value>
+    </greater-than>
+   </condition>
+   <button>0</button>
+   <x>-16</x>
+   <y>-50</y>
+   <w>32</w>
+   <h>96</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/controls/gear/gear-down</property>
+    <min>1.0</min>
+    <max>0.0</max>    
+   </binding>
+  </action> 
+
+</actions>
+</PropertyList>
