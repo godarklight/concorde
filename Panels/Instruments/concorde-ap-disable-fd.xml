@@ -132,27 +132,6 @@
 
   <action>
    <desc>Enable flight director</desc>
-   <condition>
-    <not>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
-    </not>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-24</y>
-   <w>104</w>
-   <h>37</h>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable flight director</desc>
-   <condition>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-24</y>

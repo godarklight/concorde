@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Concorde altimeter adapted from T38.
+<!-- Concorde altimeter (adapted from T38).
+
+The behaviour of the yellow light is hypothetical.
+
 
 Added thousands digital readout.
 Mar 2003, David Culp, davidculp2@attbi.com
@@ -291,6 +294,123 @@ properties' values.
     </transformation>
    </transformations>
   </layer> 
+
+<!-- Yellow light within plus/minus 1000 ft, except the last plus/minus 100 ft -->
+
+<!-- translucent lens -->  
+  <layer>
+   <name>Warning light</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <and>
+       <equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>altitude-hold</value>
+       </equals>
+       <less-than>
+        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property n="1">/instrumentation/altimeter/target-max-ft</property>
+       </less-than>
+       <greater-than>
+        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property n="1">/instrumentation/altimeter/target-min-ft</property>
+       </greater-than>
+       <or>
+        <greater-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/light-max-ft</property>
+        </greater-than>
+        <less-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/light-min-ft</property>
+        </less-than>
+       </or>
+      </and>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.31</x1>
+     <y1>0.0</y1>
+     <x2>0.44</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>17</w>
+     <h>17</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <condition>
+      <or>
+       <not-equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>altitude-hold</value>
+       </not-equals>
+       <greater-than-equals>
+        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property n="1">/instrumentation/altimeter/target-max-ft</property>
+       </greater-than-equals>
+       <less-than-equals>
+        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property n="1">/instrumentation/altimeter/target-min-ft</property>
+       </less-than-equals>
+       <and>
+        <less-than-equals>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/light-max-ft</property>
+        </less-than-equals>
+        <greater-than-equals>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/light-min-ft</property>
+        </greater-than-equals>
+       </and>
+      </or>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>17</w>
+     <h>17</h>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-52</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>17</w>
+   <h>17</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-52</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
  </layers>
 

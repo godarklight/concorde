@@ -113,114 +113,16 @@
  
  <actions>
 
-<!-- only if no autothrottle -->
-
   <action>
    <desc>Mach with Pitch hold</desc>
-   <condition>
-    <and>
-     <equals>
-      <property>/autopilot/locks/speed</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/speed2</property>
-      <value></value>
-     </equals>
-    </and>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string">mach-with-pitch</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-mach</property>
-    <property n="1">/velocities/mach</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
-   </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.automachexport();</script>
-   </binding>
-  </action>
-
-<!-- default to pitch hold when autothrottle -->
-
-  <action>
-   <desc>Pitch Hold</desc>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/locks/speed</property>
-      <value>mach-with-pitch</value>
-     </not-equals>
-     <or>
-      <not-equals>
-       <property>/autopilot/locks/speed</property>
-       <value></value>
-      </not-equals>
-      <not-equals>
-       <property>/autopilot/locks/speed2</property>
-       <value></value>
-      </not-equals>
-     </or>
-    </and>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">pitch-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-pitch-deg</property>
-    <property n="1">/orientation/pitch-deg</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
-    <value type="string"></value>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Mach with Pitch hold</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/speed</property>
-     <value>mach-with-pitch</value>
-    </equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
+    <script>globals.Concorde.atmachpitchexport();</script>
    </binding>
   </action>
 

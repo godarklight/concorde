@@ -5,8 +5,6 @@
 <!-- known problems:
      - roll on heading hold above Mach 1.0 (first PID only) : might be the FDM (?).
      Solved by a rudder trim, which unlocks the roll at Mach speeds.
-     - vertical speed modes are excellent; but since their input is not the indicated climb rate, they never match it.
-     Because indicated vertical speed is always lower (?). 
 -->
 
 <!-- Each component is evaluated in the order specified.  You can make up -->
@@ -456,7 +454,7 @@
       <value>altitude-hold</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/internal/target-climb-rate-fps</prop>
@@ -521,7 +519,7 @@
       <value>agl-hold</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/internal/target-climb-rate-fps</prop>
@@ -555,7 +553,7 @@
       <value>gs1-hold</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/radios/nav[0]/gs-rate-of-climb</prop>
@@ -587,7 +585,7 @@
       <value>vertical-speed-hold</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -620,7 +618,7 @@
       <value>vertical-speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>

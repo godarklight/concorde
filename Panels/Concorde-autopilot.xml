@@ -9,6 +9,7 @@ ALIGNMENT :
 - position of autopilot buttons seems independent of Concorde version.
 - but their alignment with the instruments of Captain/Center/Copilot is more or less to the left or right.
 - the choiced alignment has the most buttons visible by the Captain (left).
+- reference is http://www.airliners.net/open.file/373509/L/ (Air France F-BVFB, Markus Mosshamer).
 
 WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
 even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
@@ -403,7 +404,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <frq-disp>/radios/nav[1]/frequencies/selected-mhz</frq-disp>
     <frq-ctrl>/radios/nav[1]/frequencies/selected-mhz</frq-ctrl>
    </params>
-   <x>1040</x>
+   <x>1075</x>
    <y>470</y>
    <w>121</w>
    <h>34</h>
@@ -546,7 +547,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <tcr-disp>/autopilot/settings/target-altitude-ft</tcr-disp>
     <tcr-ctrl>/autopilot/settings/target-altitude-ft</tcr-ctrl>
    </params>
-   <x>900</x>
+   <x>910</x>
    <y>499</y>
    <w>121</w>
    <h>34</h>

@@ -29,11 +29,11 @@ Emulation : in reality, the engineer switches the rating.
         </equals>
         <greater-than>
          <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-         <property n="1">/instrumentation/altimeter/target-min-ft</property>
+         <property n="1">/instrumentation/altimeter/light-min-ft</property>
         </greater-than>
         <less-than>
          <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-         <property n="1">/instrumentation/altimeter/target-max-ft</property>
+         <property n="1">/instrumentation/altimeter/light-max-ft</property>
         </less-than>
         <greater-than>
          <property>/position/altitude-agl-ft</property>
@@ -82,11 +82,11 @@ Emulation : in reality, the engineer switches the rating.
       </equals>
       <greater-than>
        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+       <property n="1">/instrumentation/altimeter/light-min-ft</property>
       </greater-than>
       <less-than>
        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+       <property n="1">/instrumentation/altimeter/light-max-ft</property>
       </less-than>
       <greater-than>
        <property>/position/altitude-agl-ft</property>
@@ -121,11 +121,11 @@ Emulation : in reality, the engineer switches the rating.
       </not-equals>
       <less-than-equals>
        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+       <property n="1">/instrumentation/altimeter/light-min-ft</property>
       </less-than-equals>
       <greater-than-equals>
        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+       <property n="1">/instrumentation/altimeter/light-max-ft</property>
       </greater-than-equals>
       <less-than-equals>
        <property>/position/altitude-agl-ft</property>

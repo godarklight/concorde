@@ -154,67 +154,16 @@
  
  <actions>
 
-<!-- IAS hold is default on activation -->
-
   <action>
    <desc>Enable autothrottle</desc>
-   <condition>
-    <and>
-     <equals>
-      <property>/autopilot/locks/speed</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/speed2</property>
-      <value></value>
-     </equals>
-    </and>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-24</y>
    <w>104</w>
    <h>37</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string">speed-with-throttle</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-speed-kt</property>
-    <property n="1">/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable autothrottle</desc>
-   <condition>
-    <or>
-     <not-equals>
-      <property>/autopilot/locks/speed</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/speed2</property>
-      <value></value>
-     </not-equals>
-    </or>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-24</y>
-   <w>104</w>
-   <h>37</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.atexport();</script>
    </binding>
   </action>
 

@@ -202,87 +202,8 @@
  
  <actions>
 
-<!-- pitch hold and heading hold is default on activation -->
-
   <action>
    <desc>Enable autopilot</desc>
-   <condition>
-    <and>
-     <equals>
-      <property>/autopilot/locks/vertical</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/altitude</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/altitude2</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/heading</property>
-      <value></value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value></value>
-     </equals>
-    </and>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-24</y>
-   <w>104</w>
-   <h>37</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">pitch-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-pitch-deg</property>
-    <property n="1">/orientation/pitch-deg</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string">true-heading-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/true-heading-deg</property>
-    <property n="1">/orientation/heading-deg</property>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable autopilot</desc>
-   <condition>
-    <or>
-     <not-equals>
-      <property>/autopilot/locks/vertical</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/altitude</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/altitude2</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/heading</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value></value>
-     </not-equals>
-    </or>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-24</y>
@@ -290,7 +211,7 @@
    <h>37</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apdiscexport();</script>
+    <script>globals.Concorde.apexport();</script>
    </binding>
   </action>
 

@@ -115,43 +115,6 @@
 
   <action>
    <desc>Autoland</desc>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/locks/vertical</property>
-      <value type="string">autoland-armed</value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/vertical</property>
-      <value type="string">autoland</value>
-     </not-equals>
-    </and>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.aplandexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Autoland</desc>
-   <condition>
-    <or>
-     <equals>
-      <property>/autopilot/locks/vertical</property>
-      <value type="string">autoland-armed</value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/vertical</property>
-      <value type="string">autoland</value>
-     </equals>
-    </or>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

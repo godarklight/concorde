@@ -145,31 +145,6 @@
 
   <action>
    <desc>Glide slope mode</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">gs1-hold</value>
-    </not-equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.apglideexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Glide slope mode</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">gs1-hold</value>
-    </equals>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

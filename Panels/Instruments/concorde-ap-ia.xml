@@ -115,31 +115,6 @@
 
   <action>
    <desc>IAS hold</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/speed</property>
-     <value>speed-with-throttle</value>
-    </not-equals>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.atspeedexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable IAS hold</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/speed</property>
-     <value>speed-with-throttle</value>
-    </equals>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

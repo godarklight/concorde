@@ -61,6 +61,10 @@
    <w>104</w>
    <h>26</h>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.atdiscthrottleexport();</script>
+   </binding>
+   <binding>
     <command>property-assign</command>
     <property>/autopilot/settings/target-speed-kt</property>
     <property n="1">/instrumentation/airspeed-indicator/indicated-speed-kt</property>

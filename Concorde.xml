@@ -1,8 +1,8 @@
-<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.01">
+<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.02">
 <!--
   File:     Concorde.xml
   Author:   Aero-Matic v 0.71
-  Date:     9 august 2004
+  Date:     16 october 2004
 
   Inputs:
     name:          Concorde
@@ -41,6 +41,7 @@
   --------------
     - tail wheel can touch the runway on takeoff or autoland.
     - uses flaps as nose (temporary).
+    - without an additional PID, above Mach 1, autopilot heading hold would lock with a right roll.
 
 
   Notation :
@@ -94,7 +95,7 @@
     --------------------------------------------------------
     Totals       211200 lb       211797 lb          56.23
 
-    - http://perso.wanadoo.fr/hsors/FS_Soft/FAQ-FS2K2-Decode_Forum.txt
+    - http://perso.wanadoo.fr/hsors/FS_Soft/FAQ-FS2K2-Decode_Forum.txt/
 
     Ron Freimuth (for MSFS) :
  
@@ -148,7 +149,8 @@ Roll:   113 * 6142 =   694,000, Max:  1,432,000
 Yaw:    797 * 6142 = 4,897,000, Max: 10,100,000
 Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
 
-    - http://www.concordesst.com :
+    - http://www.concordesst.com/ :
+
     Length : overall 202'4", nose to cockpit 24'.
     Height : fuselage max external 10'10".
     Width : fuselage max external 9'5".
@@ -193,6 +195,8 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Flight systems (range up and down) : inner elevons 9°, middle and outer elevons 23.5°, rudder 30°.
     Actual travel limits are a little lower than these mechanical limits.
 
+    Turbulence mode reduces the trim rate.
+
     Gear :
     - main gear : track 7'72", brakes.
     - nose : wheelbase to main gear 59'8 1/4", no brake, +/-60° steering angle.
@@ -236,7 +240,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Fuel : capacity 95680 kg, 20500 kg/h, 10000 at arrival.
     Aero reference point steps back of 2 m at Mach 2.
 
-    - http://www.club-concorde.org :
+    - http://www.club-concorde.org/ :
 
     Min runway : takeoff 3600 m, landing : 2200 m..
     Max wing loading : 488 kg/m2.
@@ -244,7 +248,8 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Takeoff speed : 214 kt.
     Landing speed : 130 kt, max 162 kt.
 
-    - http://www.bea-fr.org/docspa/2000/f-sc000725/htm/f-sc000725.html :
+    - http://www.bea-fr.org/docspa/2000/f-sc000725/htm/f-sc000725.html/
+      (incident report, july 2000) :
 
     Droop nose : 0.53 m.
     Front gear from nose (without droop nose) : 18.7 m.
@@ -256,7 +261,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     TABLE A corresponds to an effective filling at 95% of tanks (94% for tank 5).
     It is possible to surpass fuel gauges with 1660 additional liters.
 
-    - http://www.aoe.vt.edu/~mason/Mason_f/ConfigAeroSupersonicNotes.pdf (Willian H. Mason) :
+    - http://www.aoe.vt.edu/~mason/Mason_f/ConfigAeroSupersonicNotes.pdf/ (Willian H. Mason) :
 
     From "Jean Rech and Clive S. Leyman, A Case Study by Aerospatiale and British Aerospace on the Concorde, AIAA
     Professional studies series" :
@@ -283,6 +288,18 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
 
     Areas (sq ft) : wings (gross) 3856, elevons (total) 344.44, fin (excluding dorsal fin) 365, rudder 112.
 
+    - http://www.dft.gov.uk/stellent/groups/dft_avsafety/documents/page/dft_avsafety_029047.hcsp/
+      (incident report, 13 june 2003) :
+
+    The fuel tanks are arranged in 3 groups : the left main transfer group, the right main transfer and the trim transfer.
+    The left and right main transfer groups store fuel in the wings and sections of the center fuselage, and both groups
+    are comprised of 3 main tanks, which supply 2 collector tanks per group, from which the engines are fed.
+
+    The collector tanks on the right main transfer group are tanks 3 and 4, which feed engines 3 and 4 respectively.
+    The main fuel transfer system transfers fuel from the main transfer tanks to the collector tanks at a rate sufficiently
+    high to ensure that the collectors tanks are always maintained in a near full condition.
+
+
 -->
 
  <METRICS>
@@ -298,40 +315,39 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
 
     <!-- ORIGIN (0,0,0) is at NOSE -->
 
-    <!-- changed moments (XX 3419278, YY 22486091, ZZ 21487661), horizontal tail area (964.00), horizontal tail
-         arm (91.05), vertical tail area (771.20), empty weight (244800), center of gravity (1335.4, 0.0, -60.7),
-         aero reference point (1335.4, 0.0, 0.0) and eye point location (170.0, -32.0, 80.0).
-
-         Center of gravity :
-         - level at wing level : => -1/4 of max external fuselage height.
+    <!-- Center of gravity :
+         - level at wing level : => -1/4 of max external fuselage height (130 in.).
          - 51.7%, inside corridor of C0 (maximum takeoff load) => real C0 starts over front gear location (18.7 m).
 
          Aero refence point :
          - level at wing level => -1/8 of max external fuselage height.
          - back of center of gravity reduces autopilot roll (step back at supersonic cruise). It has been found that
          200 inches behind CG reduces AUTOPILOT ROLL.
-         - => at Mach 2, real value is 62% of C0.
+         => at Mach 2, real value is 62% of C0.
 
-         Eye point location : length from nose to cockpit, 1/4 of max external fuselage width, 1/4 of max fuselage height.
+         Eye point location : length from nose to cockpit, 1/4 of max external fuselage width (113 in.),
+                              1/4 of max fuselage height.
 
-         Add ac_wingincidence : 1/20 of wing chord.
+         Add ac_wingincidence : 1/20 of wing chord (C0).
 
     -->
 
-   AC_WINGAREA  3856.00
-   AC_WINGSPAN  83.83
-   AC_CHORD     90.75
-   AC_VTAILAREA 365.0
-   AC_WINGINCIDENCE 2.86
-   AC_LV        91.05
-   AC_IXX       1432000
-   AC_IYY       19034000
-   AC_IZZ       10100000
-   AC_IXZ       0
-   AC_EMPTYWT   203000
-   AC_CGLOC     1299.4   0.0 -32.5
-   AC_AERORP    1410.4   0.0 -16.25
-   AC_EYEPTLOC  288.0  -56.5  32.5
+   AC_WINGAREA  3856.00                    <!-- ft2 -->
+   AC_WINGSPAN  83.83                      <!-- ft -->
+   AC_CHORD     90.75                      <!-- ft2 -->               <!-- aeromatic 46.0 (C0) -->
+   <!-- AC_HTAILAREA 964.00 -->            <!-- ft -->
+   <!-- AC_HTAILARM  18.00 -->             <!-- ft -->
+   AC_VTAILAREA 365.0                      <!-- ft2 -->               <!-- aeromatic 771.20 -->
+   AC_WINGINCIDENCE 2.86                   <!-- deg -->               <!-- aeromatic none (0.0) -->
+   AC_LV        91.05                      <!-- ? -->                 <!-- aeromatic 91.05 -->
+   AC_IXX       1432000                    <!-- slug ft2 -->          <!-- aeromatic 3419278 -->
+   AC_IYY       19034000                   <!-- slug ft2 -->          <!-- aeromatic 22486091 -->
+   AC_IZZ       10100000                   <!-- slug ft2 -->          <!-- aeromatic 21487661 -->
+   AC_IXZ       0                          <!-- slug ft2 -->
+   AC_EMPTYWT   203000                     <!-- lb -->                <!-- aeromatic 244800 -->
+   AC_CGLOC     1299.4   0.0  -32.5        <!-- in -->                <!-- aeromatic 1335.4, 0.0, -60.7 -->
+   AC_AERORP    1410.4   0.0  -16.25       <!-- in -->                <!-- aeromatic 1335.4, 0.0, 0.0 -->
+   AC_EYEPTLOC  288.0  -28.25  32.5        <!-- in -->                <!-- aeromatic 170.0, -32.0, 80.0 -->
    AC_VRP       0  0  0
  </METRICS>
  <UNDERCARRIAGE>
@@ -352,15 +368,20 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     -->
 
     <!-- parametrization :
-         - gear at (nose 2/7, wing 4/7) tail 6/7 of length;
-         => real values for nose (18.7 m) and wing (18.7 m + 18.2 m).
-         - height at -5/4 of max fuselage height
+         - gear in length (2428 in.) : nose 2/7, wing 4/7, tail 6/7;
+         => real values for nose (18.7 m = 736.2 in.) and wing (18.7 m + 18.2 m = 1452.8 in.).
+
+         - height at -5/4 of max fuselage height (130 in.).
+
+         - tyre diameter of main gears, at 3/42 of the length between the gears (18.2 m) = 51.2 in.
     -->
  
-  AC_GEAR NOSE_LG   736.2  0.0 -162.5 122400.0 40800.0  0.5  0.8  0.02 STEERABLE NONE  60.0 RETRACT
-  AC_GEAR LEFT_MLG  1452.8 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED LEFT  0 RETRACT
-  AC_GEAR RIGHT_MLG 1452.8 152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED RIGHT 0 RETRACT
-  AC_GEAR TAIL      2081.0 0.0 20.0 122400.0 40800.0  0.5  0.8  0.02 FIXED NONE 0 RETRACT
+  AC_GEAR NOSE_LG    736.2  0.0 -162.5 122400.0 40800.0  0.5  0.8  0.02 STEERABLE NONE  60.0 RETRACT
+  AC_GEAR LEFT_FWD   1427.2 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED LEFT  0 RETRACT
+  AC_GEAR LEFT_REAR  1478.4 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED LEFT  0 RETRACT
+  AC_GEAR RIGHT_FWD  1427.2 152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED RIGHT 0 RETRACT
+  AC_GEAR RIGHT_REAR 1478.4 152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED RIGHT 0 RETRACT
+  AC_GEAR TAIL       2081.0 0.0 20.0 122400.0 40800.0  0.5  0.8  0.02 FIXED NONE 0 RETRACT
  </UNDERCARRIAGE>
  <PROPULSION>
 
@@ -388,24 +409,20 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     -->
 
   <!-- parametrization :
-       - engine center at 5/7 of length, -2/5 of fuselage height (width 1/5 of main gear track);
-       border aligned with main gear track.
-       - => real width is 1.65 m = (11 - 7.7) / 2.
+       - engine center at 5/7 of length (2428 in.), -2/5 of fuselage height (130 in.).
+       - half diameter at 1/5 of main gear track; border aligned with main gear track (304 in. / 2).
+       => real engine diameter is 1.65 m = (11 - 7.7) / 2.
+
        - thruster center 3/4 of length, aligned with engines.
   -->
   
-  <!-- suppose that tanks 1 to 4 feed all engines -->
-
   <AC_ENGINE FILE="Olympus593Mrk610">
     XLOC 1734
     YLOC -249.4
-    ZLOC -52
+    ZLOC -52                                                          <!-- aeromatic -40 -->
     PITCH 0
     YAW 0
     FEED 0
-    FEED 1
-    FEED 2
-    FEED 3
     <AC_THRUSTER FILE="direct">
       XLOC 1821
       YLOC -249.4
@@ -421,10 +438,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     ZLOC -52
     PITCH 0
     YAW 0
-    FEED 0
     FEED 1
-    FEED 2
-    FEED 3
     <AC_THRUSTER FILE="direct">
       XLOC 1821
       YLOC -184.5
@@ -440,10 +454,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     ZLOC -52
     PITCH 0
     YAW 0
-    FEED 0
-    FEED 1
     FEED 2
-    FEED 3
     <AC_THRUSTER FILE="direct">
       XLOC 1821
       YLOC 184.5
@@ -459,9 +470,6 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     ZLOC -52
     PITCH 0
     YAW 0
-    FEED 0
-    FEED 1
-    FEED 2
     FEED 3
     <AC_THRUSTER FILE="direct">
       XLOC 1821
@@ -475,7 +483,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
   <!-- tank parametrization :
        - length, gear position (length and track), and tank 5 radius;
        - to check against engine center.
-       - => real arm (% of MAC).
+
+       => real length is arm, % of MAC (see table above) : real MAC (C0 1089 in.) starts at 18.7 m (736.2 in.).
+       => real half gear track is 7.7 m / 2 (151.6 in.).
   -->
 
   <!-- configuration for take off with maximum weight :
@@ -485,18 +495,26 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
   -->
 
   <AC_TANK TYPE="FUEL" NUMBER="0">
-    <!-- tank 1 : forward tank 5; center + radius = tank 5 border; 1/2 radius of tank 5; align 3/4 of gear track -->
+    <!-- tank 1 : forward tank 5; center + radius = tank 5 border;
+
+         39.80 % MAC;
+         1/2 radius of tank 5; align 3/4 of gear track.
+    -->
 
     XLOC 1170 
     YLOC -114 
-    ZLOC -12 
+    ZLOC -12                                                    <!-- aeromatic -12 -->
     RADIUS 50 
     CAPACITY  9255.01
     CONTENTS  9255.01
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="1">
-    <!-- tank 2 : backward tank 6; center - radius = tank 6 border; 1/2 radius of tank 5; align 1/2 of gear track;
-                  near engine center -->
+    <!-- tank 2 : backward tank 6; center - radius = tank 6 border;
+
+         76.10 % MAC.
+         1/2 radius of tank 5; align 1/2 of gear track;
+         near engine center.
+    -->
 
     XLOC 1565 
     YLOC -76 
@@ -506,8 +524,12 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  10075.13
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="2">
-    <!-- tank 3 : backward tank 7; center - radius = tank 7 border; 1/2 radius of tank 5; align 1/2 of gear track;
-                  near engine center -->
+    <!-- tank 3 : backward tank 7; center - radius = tank 7 border;
+
+         76.10 % MAC.
+         1/2 radius of tank 5; align 1/2 of gear track;
+         near engine center.
+    -->
 
     XLOC 1565
     YLOC 76 
@@ -517,7 +539,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  10075.13
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="3">
-    <!-- tank 4 : forward tank 8; center + radius = tank 8 border; 1/2 radius of tank 5; align 3/4 of gear track -->
+    <!-- tank 4 : forward tank 8; center + radius = tank 8 border;
+
+         39.80 % MAC;
+         1/2 radius of tank 5; align 3/4 of gear track.
+    -->
 
     XLOC 1170 
     YLOC 114 
@@ -527,7 +553,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  9255.01
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="4">
-    <!-- tank 5 : align forward left gear; center + radius = gear position -->
+    <!-- tank 5 : align forward left gear; center + radius = gear position.
+
+         49.40 % MAC.
+    -->
+
     <!-- 15873.28, if not balanced -->
 
     XLOC 1274 
@@ -538,8 +568,13 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  16099.26
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="5">
-    <!-- tank 6 : backward left gear; center - radius = gear position; 3/2 radius of tank 5; align 1/2 of gear track
-                  before engine center -->
+    <!-- tank 6 : backward left gear; center - radius = gear position;
+
+         66.70 % MAC.
+         3/2 radius of tank 5; align 1/2 of gear track;
+         before engine center.
+    -->
+
     <!-- 25544.96, if not balanced -->
 
     XLOC 1463 
@@ -550,7 +585,13 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26923.95
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="6">
-    <!-- tank 7 : align backward right gear; center - radius = gear position; before engine center -->
+    <!-- tank 7 : align backward right gear; center - radius = gear position;
+
+         64.70 % MAC.
+         radius of tank 5;
+         before engine center.
+    -->
+
     <!-- 16325.23, if not balanced -->
 
     XLOC 1441
@@ -561,7 +602,12 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  16099.26
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="7">
-    <!-- tank 8 : forward right gear; center + radius = gear position; 3/2 radius of tank 5; align 1/2 of gear track -->
+    <!-- tank 8 : forward right gear; center + radius = gear position;
+
+         46.70 % MAC.
+         3/2 radius of tank 5; align 1/2 of gear track.
+    -->
+
     <!-- 28302.95, if not balanced -->
 
     XLOC 1245
@@ -572,7 +618,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26923.95
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="8">
-    <!-- tank 9 : forward tank 10; center + radius = tank 10 border; 3/2 radius of tank 5; centred on plane axis -->
+    <!-- tank 9 : forward tank 10; center + radius = tank 10 border;
+
+         16.90 % MAC.
+         3/2 radius of tank 5; centred on plane axis.
+    -->
 
     XLOC 920 
     YLOC 0 
@@ -582,7 +632,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  24462.49
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="9">
-    <!-- tank 10 : forward tanks 1 & 4; center + radius = tank 1 border; 1/2 radius of tank 5; centered on plane axis -->
+    <!-- tank 10 : forward tanks 1 & 4; center + radius = tank 1 border;
+
+         30.50 % MAC.
+         1/2 radius of tank 5; centered on plane axis.
+    -->
 
     XLOC 1068 
     YLOC 0 
@@ -592,7 +646,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26329.81
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="10">
-    <!-- tank 11 : in the rear; center at 5/6 of length; 1/2 radius of tank 5; centered on plane axis -->
+    <!-- tank 11 : in the rear; center at 5/6 of length;
+
+         113.90 % MAC.
+         1/2 radius of tank 5; centered on plane axis.
+    -->
 
     XLOC 1977 
     YLOC 0 
@@ -602,7 +660,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  19735.31
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="11">
-    <!-- tank 5A : left of tank 6; center = tank 6 border; radius of tank 5; align 5/2 of gear track -->
+    <!-- tank 5A : left of tank 6; center = tank 6 border;
+
+         74.80 % MAC.
+         radius of tank 5; align 5/2 of gear track.
+    -->
 
     XLOC 1551 
     YLOC -380 
@@ -612,7 +674,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  4905.29
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="12">
-    <!-- tank 7A : right of tank 7; center = tank 7 border; radius of tank 5; align 5/2 of gear track -->
+    <!-- tank 7A : right of tank 7; center = tank 7 border;
+
+         74.80 % MAC.
+         radius of tank 5; align 5/2 of gear track.
+    -->
 
     XLOC 1551
     YLOC 380 
@@ -629,7 +695,8 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Elevator Control" TYPE="AEROSURFACE_SCALE">
-      <-- => change -0.35/0.30 to -0.39/0.39 rad (22.5 deg) -->
+      <!-- => change -0.35/0.30 to -0.39/0.39 rad (22.5 deg).
+      -->
 
       INPUT   fcs/pitch-trim-sum
       MIN     -0.390
@@ -642,7 +709,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Left Aileron Control" TYPE="AEROSURFACE_SCALE">
-      <-- => change 0.35 to 0.39 rad (22.5 deg) -->
+      <!-- => change 0.35 to 0.39 rad (22.5 deg) -->
 
       INPUT   fcs/roll-trim-sum
       MIN    -0.39
@@ -650,7 +717,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       OUTPUT  fcs/left-aileron-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Right Aileron Control" TYPE="AEROSURFACE_SCALE">
-      <-- => change 0.35 to 0.39 rad (22.5 deg) -->
+      <!-- => change 0.35 to 0.39 rad (22.5 deg) -->
 
       INPUT  -fcs/roll-trim-sum
       MIN    -0.39
@@ -694,7 +761,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Rudder Control" TYPE="AEROSURFACE_SCALE">
-      <-- => change 0.35 to 0.51 rad (29 deg) -->
+      <!-- => change 0.35 to 0.51 rad (29 deg) -->
 
       INPUT   fcs/rudder-sum
       MIN     -0.51
@@ -702,7 +769,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       OUTPUT  fcs/rudder-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Flaps Control" TYPE="KINEMAT">
-     <!-- use flaps as nose (temporary) -->
+     <!-- changed 30 deg / 3 positions : use flaps as nose (temporary) -->
 
      INPUT   fcs/flap-cmd-norm
      DETENTS 4
@@ -713,7 +780,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
      OUTPUT  fcs/flap-pos-deg
    </COMPONENT>
    <COMPONENT NAME="Gear Control" TYPE="KINEMAT">
-     <!-- => up in 12 s -->
+     <!-- changed 5 s => up in 12 s -->
 
      INPUT   gear/gear-cmd-norm
      DETENTS 2
@@ -731,7 +798,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
  </FLIGHT_CONTROL>
  <AERODYNAMICS>
 
-  <!-- => real -5.5°, 16.5° -->
+  <!-- added : => real -5.5°, 16.5° -->
   AC_ALPHALIMITS -0.096 0.29
 
   <AXIS NAME="LIFT">
@@ -819,7 +886,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
         1.57       1.500       1.500       1.500       1.500       1.500
     </COEFFICIENT>
     <COEFFICIENT NAME="CDi" TYPE="VECTOR">
-       <!-- add mach column : supersonic decreases drag.
+       <!-- add mach column :
+            - respect the thrust X 2.7 by air intakes.
+            - supersonic decreases drag.
        -->
 
       Induced_drag
@@ -831,6 +900,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
        1.4       0.032
     </COEFFICIENT>
     <COEFFICIENT NAME="CDmach" TYPE="VECTOR">
+       <!-- add Mach 2.0 :
+            - respect the thrust X 2.7 by air intakes.
+            - adjust consumption during supersonic cruise.
+       -->
+
        Drag_due_to_mach
        5
        velocities/mach-norm
@@ -839,7 +913,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
        0.79      0.000
        1.1       0.023
        1.8       0.015
-       2.0       0.001
+       2.0       0.007
     </COEFFICIENT>
     <COEFFICIENT NAME="CDflap" TYPE="VALUE">
        <!-- nose drag (temporary) -->

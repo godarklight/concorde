@@ -80,6 +80,64 @@ below 750 ft/minute : more speed enables to land with less pitch and vertical sp
 - the tail wheel protects the reversers from hitting the ground (A).
 
 
+Consumption
+===========
+It decreases with altitude, from FL500 to FL580 (60 ft/min. during 2h10).
+Fuel must be just below 19000 kg with the direct route (short SID/STAR). So that it remains enough fuel, in case the
+SID/STAR becomes long.
+
+Examples
+--------
+KJFK 22L - EGLL 27R OCKHAM 1 FOXTROT, 3140 NM:
+- acceleration at LINND.
+- westerly wind < 5 kt : remove at least 1000 kg of fuel.
+- deceleration 40 NM after BANDU (BARIX missing).
+- short STAR (NIGIT, OCK).
+
+EGLL 09R COMPTON 3 - KJFK 04L CAMRN 3 (SIE), 3322 NM (calibration route) :
+- short SID (WOD, CPT). Acceleration 30 NM before MERLY.
+- stable at FL500 with 70000 kg, 2h25 from LYNUS, at 2700 NM and 18500 kg.
+- cold, 275 deg 27 kt westerly (jetstreams are rather around FL330), Mach 2.02, climbing slowly until 58000 ft.
+- deceleration 250 NM before LYNUS : INS indicates 24300 kg at LYNUS, and 21000 kg at KJFK (480 NM).
+- short STAR : 17500 kg at landing. 
+
+EGLL 27L COMPTON 3 - KJFK 22L DE LANCEY (DNY.PWL2), 3383 NM :
+- short SID (WOD, CPT). Acceleration 30 NM before MERLY.
+- stable at FL500 with 67100 kg, 2h10 from LINND, at 2500 NM and 16300 kg.
+- warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57000 ft.
+- deceleration 250 NM before LINND : INS indicates 25100 kg at LINND, and 20400 kg at KJFK (590 NM).
+- long STAR : 15800 kg at landing.
+
+LFPG 08L BVS (8G 8K) - KJFK 04L CAMRN 3 (SIE), 3492 NM :
+- short SID (RSY, LFPP, CRL, BVS). Acceleration after the sea shore.
+- stable at FL500 with 68900 kg, 2h31 from LYNUS, at 2800 NM and 9300 kg.
+- cold, 27 kt westerly, Mach 2.02, climbing slowly until 58000 ft.
+- deceleration 250 NM before LYNUS : INS indicates 19700 kg at LYNUS, and 16500 kg at KJFK (480 NM).
+- short STAR : 14100 kg at landing.
+
+LFPG 26L - KJFK 22L DE LANCEY (DNY.PWL2), 3541 NM.
+- short SID. Acceleration after the sea shore.
+- stable at FL500 with 64900 kg, 2h15 from LINND, at 2600 NM and 11600 kg.
+- warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57000 ft.
+- deceleration 250 NM before LINND : INS indicates 21300 kg at LINND, and 16600 kg at KJFK (590 NM).
+- long STAR : 11500 kg at landing.
+
+TBPB (Barbados) - EGLL 27R OCKHAM 1 FOXTROT, 3661 NM :
+- no SID. Acceleration at FL260.
+- stable at FL500 with 70600 kg, 2h50 from TUTON, at 3100 NM and 5900 kg.
+- cold, 85 deg 9 kt easterly (tropics), Mach 2.02, climbing slowly until 58000 ft.
+- deceleration 230 NM before TUTON (40 NM after BANDU) : INS indicates 18700 kg at TUTON, and 17300 kg at EGLL (330 NM).
+- short STAR : 14500 kg at landing.
+
+Cruise
+------
+Full at Mach 0.95 (530 kt true) FL260 : 19300 kg/h.
+Average (depends of altitude) at Mach 2.02 : 20500 kg/h.
+Empty at Mach 0.95 (525 kt true) FL380 : 12600 kg/h. 
+
+To increase the range, decrease the Mach drag at Mach 2.0.
+
+
 Customizing
 ===========
 Set file has 2 configurations (max payload) :
@@ -115,8 +173,9 @@ Overriden
 
 Engineer
 --------
-- "Aft" transfers forwards trim tanks (9 & 10) to aft trim tanks (11, 5A & 7A). "Forward" does the reverse transfer.
-- "Engine" transfers trim tanks to the engine supply tanks (1, 2, 3 & 4) : choose the direction "Aft" or "Forw".
+Tanks 1 2 3 4 feed respectively engines 1 2 3 4.
+- "Aft" transfers forwards trim tanks (9 & 10) to aft trim tanks (11). "Forward" does the reverse transfer.
+- "Engine" transfers trim tanks to the main tanks (5, 6, 7, 8, 5A & 7A) : choose the direction "Aft" or "Forw".
 - "Jettison" (2 buttons for confirmation) dumps the rear tanks (11, 5A, 7A, 2 & 3).
 - Activate "Cross", to balance the dissymetrical tanks.
 - "kg/h" checks that fuel pumping matches the fuel flow indicated by the engines.
@@ -145,14 +204,6 @@ Autopilot
 - At supersonic speed, no speed up above X 2.
 
 
-Real 3D cockpit
-===============
-- blue (instrument panels), white beige (walls) and black (window pillars and sills).
-- pilot seat, near the 2nd pillar. As instruments (artificial horizon, ASI) are close, the reading at landing is easy.
-- engineer panel seems to cover the 2nd window of copilot.
-- overhead panel stops before the engineer panel.
-
-
 JBSim
 =====
 - maximum thrust (without air intakes) at FL500 is 10093 lb, matching the real value of 10000 lb !
@@ -162,58 +213,23 @@ JBSim
 - consumption London - New York : correct landing weight at KJFK.
 - fuel around 20500 kg/h at Mach 2.02 (E).
 
-Consumption
------------
-It decreases with altitude, from FL500 to FL580.
-Fuel must be just below 19000 kg with the direct route (short SID/STAR). So that it remains enough fuel, in case the
-SID/STAR becomes long.
-
-EGLL 09R COMPTON 3 - KJFK 04L CAMRN 3 (SIE), 3322 NM (calibration route) :
-- short SID (WOD, CPT). Acceleration 30 NM before MERLY.
-- reaches FL500 with 70000 kg, 2h25 from LYNUS, at 2700 NM and 18500 kg.
-- 27 kt westerly (jetstreams are rather around FL330), Mach 2.02, climbing slowly until 58000 ft.
-- deceleration 250 NM before LYNUS : INS indicates 24300 kg at LYNUS, and 21000 kg at KJFK.
-- short STAR : 17500 kg at landing. 
-
-EGLL 27L COMPTON 3 - KJFK 22L DE LANCEY (DNY.PWL2), 3383 NM :
-- deceleration 250 NM before LINND.
-- long STAR.
-
-KJFK 22L - EGLL 27R OCKHAM 1 FOXTROT, 3140 NM:
-- acceleration at LINND.
-- westerly wind < 5 kt : remove at least 1000 kg of fuel.
-- short STAR (NIGIT, OCK).
-
-LFPG 26L - KJFK 22L DE LANCEY (DNY.PWL2), 3541 NM.
-- short SID. Acceleration after the sea shore.
-- long STAR.
-
-LFPG 08L BVS (8G 8K) - KJFK 04L CAMRN 3 (SIE), 3492 NM :
-- short SID (RSY, LFPP, CRL, BVS). Acceleration after the sea shore.
-- reaches FL500 with 71500 kg, 2h35 from LYNUS, at 2880 NM and 17300 kg.
-- 27 kt westerly, Mach 2.02, climbing slowly until 58000 ft.
-- deceleration 250 NM before LYNUS : INS indicates 24400 kg at LYNUS, and 21200 kg at KJFK.
-- short STAR : 18800 kg at landing. 
-
 
 TO DO
 =====
-- turbulence mode doesn't filter turbulence (disable yaw damper ?).
-- control (?) max cruise mode with TMO temperature (B).
+- control max cruise mode with TMO temperature (B).
 - reduce nasal code with Flightgear subsystems : Mach autopilot, fuel pumping, cross-feeding, cabine altitude, true
 airspeed and ground speed.
 - replace digital instruments by real analog textures.
 - 3D instruments, keeping the 3D cockpit complete (temporary cohabitation 2D/3D instruments).
 - missing in Flightgear : engine rating, 2 ADF, 2 DME.
 - make transparent the external windows of cockpit.
-- check the subsonic range.
 - system failures.
-- abacus to fill the tanks, as function of aloft winds.
 
 TO DO JBSim
 -----------
-- extrapolate the engine tables at 60000 ft and Mach 2.2.
-- tabulation on a right column the aeromatic values.
+- turbulence filter.
+- check the subsonic range.
+- abacus to fill the tanks, as function of aloft winds.
 
 
 Known problems
@@ -227,20 +243,18 @@ Known problems JBSim
 - aero reference point has its position of Mach 2.0 (static).
 - very light waddling at mach 2 (autopilot rudder trim, to solve roll of autopilot heading at Mach speeds).
 - AoA at 180°, when one breaks strongly (empty tanks).
-- at Mach 1.7, military thrust must be lower than augmented thrust.
-- only 1 tank seems to feed each engine :
-http://www.dft.gov.uk/stellent/groups/dft_avsafety/documents/page/dft_avsafety_029047.hcsp
 - no support of engine rating.
 - cannot disable yaw damper.
-- near Mach 2, setting vertical speed at +60 ft/min, can go down. While /velocities/vertical-speed-fps, controlled by
-autopilot, is correct.
 - cannot start engines, when they have runned out of fuel.
 
 Known problems autopilot
 ------------------------
-- vertical speed autopilot is excellent; but at high altitude it doesn't match the indicated vertical speed, since its
-input is the physical vertical speed (/velocities/vertical-speed-fps).
+- near Mach 2, setting vertical speed at +60 ft/min, VSI doesn't match altimeter, which may even go down. While
+/velocities/vertical-speed-fps, controlled by autopilot, is correct.
+Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510.
+Needs an IVSI (Instantaneous VSI), which works by pressure and matches the altimeter reading.
 - confirm autoland landing speed, whatever the wind and fuel weight.
+- avoid autoland by gusty wind.
 - autothrottles Mach/speed with pitch might need some tuning.
 
 Known problems 2D instruments
@@ -250,15 +264,11 @@ Known problems 2D instruments
 
 Known problems 3D cockpit
 -------------------------
-- panel can be too much white, depending of sun location : material and/or Flightgear lightning.
 - instruments have been disabled in external views, because there are transparent through aircraft.
 More gravely, copilot instruments hang outside the cockpit, because of a view shift to the right.
-
-Known problems 3D aircraft
---------------------------
-- since the introduction of 3D cockpit, there is a transparency of the front window edge, visible when the nose is down.
-- removing polygons (mainly the wings) will decrease the frame rate. But would it be better to wait for 256 MB cards ?
-Will wait them, before moving to 3D instruments : http://www.flight-manuals-on-cd.com/Concorde.html.
+- the magnetic compass has some vibrations, because one cannot place it far forwards, otherwise the pillar hides the
+ribbon (but not the black frame).
+- pedestal and engineer panels have a few vibrations.
 
 Known problems sound
 --------------------
@@ -281,17 +291,7 @@ References
 
 (E) http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814
 
-
-Credits
-=======
-Concorde model (without 3D cockpit) is from "Bogey" (unknown name and mail).
-It has been made available to Flightgear upon a request of Melchior Franz.
-
-See the forum of http://www.blender.org/, message from "Bogey", subject "Update Concord. Screen shots and download
-links" (24 october 2003 6:23 pm).
+    http://www.flight-manuals-on-cd.com/Concorde.html/
 
 
-Contact devel-list for the .blend file : distinct object group for the cockpit (lost at AC3D export/import).
-
-
-11 september 2004.
+16 october 2004.

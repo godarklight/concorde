@@ -145,31 +145,6 @@
 
   <action>
    <desc>Altitude Acquire</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/altitude</property>
-     <value>altitude-hold</value>
-    </not-equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.apaltitudeexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Altitude Acquire</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value>altitude-hold</value>
-    </equals>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

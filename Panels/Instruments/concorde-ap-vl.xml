@@ -145,31 +145,6 @@
 
   <action>
    <desc>VOR lock</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/heading</property>
-     <value type="string">nav1-hold</value>
-    </not-equals>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.apvorlocexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable VOR lock</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/heading</property>
-     <value type="string">nav1-hold</value>
-    </equals>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

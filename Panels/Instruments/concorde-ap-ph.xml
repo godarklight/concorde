@@ -115,31 +115,6 @@
 
   <action>
    <desc>Pitch hold</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">pitch-hold</value>
-    </not-equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.appitchexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Pitch hold</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">pitch-hold</value>
-    </equals>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

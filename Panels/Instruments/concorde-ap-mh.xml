@@ -115,60 +115,14 @@
 
   <action>
    <desc>Mach hold</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/speed</property>
-     <value>mach-with-throttle</value>
-    </not-equals>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string">mach-with-throttle</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-mach</property>
-    <property n="1">/velocities/mach</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
-   </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.automachexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Mach hold</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/speed</property>
-     <value>mach-with-throttle</value>
-    </equals>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
+    <script>globals.Concorde.atmachexport();</script>
    </binding>
   </action>
 

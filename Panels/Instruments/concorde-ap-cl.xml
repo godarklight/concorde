@@ -133,57 +133,14 @@
 
   <action>
    <desc>Max Climb</desc>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/locks/speed2</property>
-      <value type="string">maxclimb</value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/speed2</property>
-      <value type="string">maxcruise</value>
-     </not-equals>
-    </and>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string">maxclimb</value>
-   </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.maxclimbexport();</script>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Max Climb</desc>
-   <condition>
-    <or>
-     <equals>
-      <property>/autopilot/locks/speed2</property>
-      <value type="string">maxclimb</value>
-     </equals>
-     <equals>
-      <property>/autopilot/locks/speed2</property>
-      <value type="string">maxcruise</value>
-     </equals>
-    </or>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed2</property>
-    <value type="string"></value>
+    <script>globals.Concorde.apmaxclimbexport();</script>
    </binding>
   </action>
 

@@ -133,46 +133,14 @@
 
   <action>
    <desc>Vertical Speed hold</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">vertical-speed-hold</value>
-    </not-equals>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">vertical-speed-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
-    <value type="string"></value>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Vertical Speed</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value type="string">vertical-speed-hold</value>
-    </equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.apverticalexport();</script>
    </binding>
   </action>
 

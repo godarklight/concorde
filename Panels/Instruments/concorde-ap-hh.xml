@@ -61,13 +61,8 @@
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/heading-bug-deg</property>
-    <property n="1">/orientation/heading-magnetic-deg</property>
-   </binding>
-   <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apmagheadingexport();</script>
+    <script>globals.Concorde.apheadingholdexport();</script>
    </binding>
   </action>
 

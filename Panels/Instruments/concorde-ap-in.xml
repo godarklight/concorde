@@ -115,57 +115,14 @@
 
   <action>
    <desc>INS engaged</desc>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp[0]/id</property>
-      <value></value>
-     </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </not-equals>
-    </and>
-   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string">true-heading-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/horizontal</property>
-    <value type="string">ins</value>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable INS</desc>
-   <condition>
-     <equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </equals>
-   </condition>
-   <button>0</button>
-   <x>-53</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/horizontal</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.apinsexport();</script>
    </binding>
   </action>
 

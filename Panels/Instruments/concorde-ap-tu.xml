@@ -115,76 +115,14 @@
 
   <action>
    <desc>Turbulence Mode</desc>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>turbulence</value>
-    </not-equals>
-   </condition>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
-    <value type="string">turbulence</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">pitch-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-pitch-deg</property>
-    <property n="1">/orientation/pitch-deg</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string">true-heading-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/true-heading-deg</property>
-    <property n="1">/orientation/heading-deg</property>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/horizontal</property>
-    <value type="string"></value>
-   </binding>
-  </action>
-
-  <action>
-   <desc>Disable Turbulence Mode</desc>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>turbulence</value>
-    </equals>
-   </condition>
-   <button>0</button>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.apturbulenceexport();</script>
    </binding>
   </action>
 

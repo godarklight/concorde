@@ -4,6 +4,9 @@
 
     - all axis are correct !
 
+    When view vibrations in flight, instrument plans are intentionally moved back, and then magnified.
+
+
     - http://www.concordesst.com :
 
     Flight systems (range up and down) : inner elevons 9 deg, middle and outer elevons 23.5 deg, rudder 30 deg.
@@ -53,17 +56,17 @@
    <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
    <bottom-left>
     <x-m>-24.226</x-m>
-    <y-m>-0.38</y-m>
+    <y-m>-0.355</y-m>
     <z-m> 0.575</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-24.226</x-m>
-    <y-m> 0.79</y-m>
+    <y-m> 0.815</y-m>
     <z-m> 0.575</z-m>
    </bottom-right>
    <top-left>
     <x-m>-24.326</x-m>
-    <y-m>-0.38</y-m>
+    <y-m>-0.355</y-m>
     <z-m> 1.047</z-m>
    </top-left>
   </panel>
@@ -74,17 +77,17 @@
    <path>Aircraft/Concorde/Panels/Concorde-pilot.xml</path>
    <bottom-left>
     <x-m>-25.146</x-m>
-    <y-m>-1.18</y-m>
+    <y-m>-1.125</y-m>
     <z-m>-0.505</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-25.146</x-m>
-    <y-m> 3.41</y-m>
+    <y-m> 3.465</y-m>
     <z-m>-0.505</z-m>
    </bottom-right>
    <top-left>
     <x-m>-25.666</x-m>
-    <y-m>-1.18</y-m>
+    <y-m>-1.125</y-m>
     <z-m> 1.64</z-m>
    </top-left>
   </panel>
@@ -95,17 +98,17 @@
    <path>Aircraft/Concorde/Panels/Concorde-console-captain.xml</path>
    <bottom-left>
     <x-m>-23.18</x-m>
-    <y-m>-0.9</y-m>
+    <y-m>-1.0</y-m>
     <z-m> 0.4</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-23.18</x-m>
-    <y-m> 0.25</y-m>
+    <y-m> 0.15</y-m>
     <z-m> 0.4</z-m>
    </bottom-right>
    <top-left>
     <x-m>-23.78</x-m>
-    <y-m>-0.9</y-m>
+    <y-m>-1.0</y-m>
     <z-m> 0.4</z-m>
    </top-left>
   </panel>
@@ -116,39 +119,39 @@
    <path>Aircraft/Concorde/Panels/Concorde-console-copilot.xml</path>
    <bottom-left>
     <x-m>-23.18</x-m>
-    <y-m> 0.605</y-m>
+    <y-m> 0.755</y-m>
     <z-m> 0.4</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-23.18</x-m>
-    <y-m> 1.755</y-m>
+    <y-m> 1.905</y-m>
     <z-m> 0.4</z-m>
    </bottom-right>
    <top-left>
     <x-m>-23.78</x-m>
-    <y-m> 0.605</y-m>
+    <y-m> 0.755</y-m>
     <z-m> 0.4</z-m>
    </top-left>
   </panel>
 
- <!-- PEDESTAL -->
+ <!-- PEDESTAL (slope 1/25) -->
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-pedestal.xml</path>
    <bottom-left>
     <x-m>-23.03</x-m>
-    <y-m>-0.075</y-m>
+    <y-m>-0.055</y-m>
     <z-m> 0.35</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-23.03</x-m>
-    <y-m> 1.075</y-m>
+    <y-m> 1.095</y-m>
     <z-m> 0.35</z-m>
    </bottom-right>
    <top-left>
     <x-m>-23.63</x-m>
-    <y-m>-0.075</y-m>
-    <z-m> 0.35</z-m>
+    <y-m>-0.055</y-m>
+    <z-m> 0.374</z-m>
    </top-left>
   </panel>
 
@@ -167,7 +170,7 @@
    <top-left>
     <x-m>-23.05</x-m>
     <y-m> 0.075</y-m>
-    <z-m> 0.35</z-m>
+    <z-m> 0.374</z-m>
    </top-left>
   </panel>
 
@@ -216,19 +219,19 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead.xml</path>
    <bottom-left>
-    <x-m>-23.956</x-m>
-    <y-m>-0.11</y-m>
-    <z-m> 1.7</z-m>
+    <x-m>-24.45</x-m>
+    <y-m> 0.1</y-m>
+    <z-m> 1.93</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.956</x-m>
-    <y-m> 0.68</y-m>
-    <z-m> 1.7</z-m>
+    <x-m>-24.45</x-m>
+    <y-m> 2.35</y-m>
+    <z-m> 1.93</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.656</x-m>
-    <y-m>-0.11</y-m>
-    <z-m> 2.0</z-m>
+    <x-m>-23.55</x-m>
+    <y-m> 0.1</y-m>
+    <z-m> 2.13</z-m>
    </top-left>
   </panel>
 
@@ -236,17 +239,17 @@
    <path>Aircraft/Concorde/Panels/Concorde-overhead-pillar.xml</path>
    <bottom-left>
     <x-m>-23.586</x-m>
-    <y-m>-0.6</y-m>
+    <y-m>-0.605</y-m>
     <z-m> 1.47</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-23.586</x-m>
-    <y-m>-0.02</y-m>
+    <y-m>-0.025</y-m>
     <z-m> 1.47</z-m>
    </bottom-right>
    <top-left>
     <x-m>-23.436</x-m>
-    <y-m>-0.6</y-m>
+    <y-m>-0.605</y-m>
     <z-m> 1.59</z-m>
    </top-left>
   </panel>

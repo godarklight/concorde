@@ -412,10 +412,10 @@
    <max-dist>8000.0</max-dist>
   </engine>
 
-<!-- engine -->
+<!-- engine start -->
 
   <engine>
-   <name>engine start</name>
+   <name>engine 1 2 start</name>
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
@@ -436,6 +436,26 @@
        <value>37</value>
       </greater-than>
      </and>
+    </or>
+   </condition>
+   <position>
+    <x>-5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
+   <volume>
+    <max>0.3</max>
+   </volume>
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </engine>
+
+  <engine>
+   <name>engine 3 4 start</name>
+   <path>Sounds/exhaust_start.wav</path>
+   <mode>once</mode>
+   <condition>
+    <or>
      <and>
       <property>/engines/engine[2]/cranking</property>
       <property>/engines/engine[2]/starter</property>
@@ -454,6 +474,11 @@
      </and>
     </or>
    </condition>
+   <position>
+    <x>5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
    <volume>
     <max>0.3</max>
    </volume>
@@ -461,8 +486,10 @@
    <max-dist>8000.0</max-dist>
   </engine>
 
+<!-- engine shutdown -->
+
   <engine>
-   <name>engine shutdown</name>
+   <name>engine 1 2 shutdown</name>
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
@@ -481,6 +508,26 @@
        <value>20</value>
       </greater-than>
      </and>
+    </or>
+   </condition>
+   <position>
+    <x>-5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
+   <volume>
+    <max>0.5</max>
+   </volume>
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </engine>
+
+  <engine>
+   <name>engine 3 4 shutdown</name>
+   <path>Sounds/exhaust_shutdown.wav</path>
+   <mode>once</mode>
+   <condition>
+    <or>
      <and>
       <property>/engines/engine[2]/cutoff</property>
       <greater-than>
@@ -497,6 +544,11 @@
      </and>
     </or>
    </condition>
+   <position>
+    <x>5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
    <volume>
     <max>0.5</max>
    </volume>
