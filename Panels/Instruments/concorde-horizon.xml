@@ -159,7 +159,7 @@ properties' values.
     </transformation>
     <transformation>
      <type>x-shift</type>
-     <property>/radios/nav[0]/heading-needle-deflection</property>
+     <property>/instrumentation/nav[0]/heading-needle-deflection</property>
      <min>-12.0</min>
      <max>12.0</max>
      <scale>4.0</scale>
@@ -181,7 +181,7 @@ properties' values.
    <name>GS needle left</name>
    <condition>
     <and>
-     <property>/radios/nav[0]/has-gs</property>
+     <property>/instrumentation/nav[0]/has-gs</property>
      <property>/instrumentation/attitude-indicator/config/flight-director</property>
     </and>
    </condition>
@@ -201,7 +201,7 @@ properties' values.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property>/radios/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>3.7</scale>
@@ -214,7 +214,7 @@ properties' values.
    <name>GS needle right</name>
    <condition>
     <and>
-     <property>/radios/nav[0]/has-gs</property>
+     <property>/instrumentation/nav[0]/has-gs</property>
      <property>/instrumentation/attitude-indicator/config/flight-director</property>
     </and>
    </condition>
@@ -234,7 +234,7 @@ properties' values.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property>/radios/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>3.7</scale>
@@ -250,7 +250,7 @@ properties' values.
    <condition>
     <and>
      <not>
-      <property>/radios/nav[0]/in-range</property>
+      <property>/instrumentation/nav[0]/in-range</property>
      </not>
      <property>/instrumentation/attitude-indicator/config/flight-director</property>
     </and>

@@ -139,7 +139,7 @@
    <name>OFF 1 flag</name>
    <condition>
     <not>
-     <property>/radios/nav[0]/in-range</property>
+     <property>/instrumentation/nav[0]/in-range</property>
     </not>
    </condition>
    <texture>
@@ -167,7 +167,7 @@
    <name>OFF 2 flag</name>
    <condition>
     <not>
-     <property>/radios/nav[1]/in-range</property>
+     <property>/instrumentation/nav[1]/in-range</property>
     </not>
    </condition>
    <texture>
@@ -194,7 +194,7 @@
   <layer>
    <name>Needle VOR 1</name>
    <condition>
-    <property>/radios/nav[0]/in-range</property>
+    <property>/instrumentation/nav[0]/in-range</property>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -208,7 +208,7 @@
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/radios/nav[0]/heading-deg</property>
+     <property>/instrumentation/nav[0]/heading-deg</property>
      <min>-360</min>
      <max>360</max>
     </transformation>
@@ -230,7 +230,7 @@
    <name>Needle VOR 1 out of range</name>
    <condition>
     <not>
-     <property>/radios/nav[0]/in-range</property>
+     <property>/instrumentation/nav[0]/in-range</property>
     </not>
    </condition>
    <texture>
@@ -265,7 +265,7 @@
   <layer>
    <name>Needle VOR 2</name>
    <condition>
-    <property>/radios/nav[1]/in-range</property>
+    <property>/instrumentation/nav[1]/in-range</property>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -279,7 +279,7 @@
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/radios/nav[1]/heading-deg</property>
+     <property>/instrumentation/nav[1]/heading-deg</property>
      <min>-360</min>
      <max>360</max>
     </transformation>
@@ -300,7 +300,7 @@
   <layer>
    <name>Needle tip VOR 2</name>
    <condition>
-    <property>/radios/nav[1]/in-range</property>
+    <property>/instrumentation/nav[1]/in-range</property>
    </condition>
    <w>16</w>
    <h>16</h>
@@ -314,7 +314,7 @@
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/radios/nav[1]/heading-deg</property>
+     <property>/instrumentation/nav[1]/heading-deg</property>
      <min>-360</min>
      <max>360</max>
     </transformation>
@@ -340,7 +340,7 @@
    <name>Needle VOR 2 out of range</name>
    <condition>
     <not>
-     <property>/radios/nav[1]/in-range</property>
+     <property>/instrumentation/nav[1]/in-range</property>
     </not>
    </condition>
    <texture>
@@ -376,7 +376,7 @@
    <name>Needle tip VOR 2 out of range</name>
    <condition>
     <not>
-     <property>/radios/nav[1]/in-range</property>
+     <property>/instrumentation/nav[1]/in-range</property>
     </not>
    </condition>
    <w>16</w>

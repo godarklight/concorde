@@ -23,11 +23,11 @@
        </equals>
        <or>
         <equals>
-         <property>/radios/nav[0]/in-range</property>
+         <property>/instrumentation/nav[0]/in-range</property>
          <value>false</value>
         </equals>
         <equals>
-         <property>/radios/nav[0]/nav-loc</property>
+         <property>/instrumentation/nav[0]/nav-loc</property>
          <value>false</value>
         </equals>
        </or>
@@ -53,11 +53,11 @@
        </not-equals>
        <and>
         <not-equals>
-         <property>/radios/nav[0]/in-range</property>
+         <property>/instrumentation/nav[0]/in-range</property>
          <value>false</value>
         </not-equals>
         <not-equals>
-         <property>/radios/nav[0]/nav-loc</property>
+         <property>/instrumentation/nav[0]/nav-loc</property>
          <value>false</value>
         </not-equals>
        </and>
@@ -85,11 +85,11 @@
      </equals>
      <or>
       <equals>
-       <property>/radios/nav[0]/in-range</property>
+       <property>/instrumentation/nav[0]/in-range</property>
        <value>false</value>
       </equals>
       <equals>
-       <property>/radios/nav[0]/nav-loc</property>
+       <property>/instrumentation/nav[0]/nav-loc</property>
        <value>false</value>
       </equals>
      </or>
@@ -116,11 +116,11 @@
      </not-equals>
      <and>
       <not-equals>
-       <property>/radios/nav[0]/in-range</property>
+       <property>/instrumentation/nav[0]/in-range</property>
        <value>false</value>
       </not-equals>
       <not-equals>
-       <property>/radios/nav[0]/nav-loc</property>
+       <property>/instrumentation/nav[0]/nav-loc</property>
        <value>false</value>
       </not-equals>
      </and>

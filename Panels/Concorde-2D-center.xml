@@ -534,12 +534,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/navcom-kx155.xml">
    <name>NavCom 2 Radio</name>
    <params>
-    <comm-freq-selected-prop>/radios/comm[1]/frequencies/selected-mhz</comm-freq-selected-prop>
-    <comm-freq-standby-prop>/radios/comm[1]/frequencies/standby-mhz</comm-freq-standby-prop>
-    <nav-freq-selected-prop>/radios/nav[1]/frequencies/selected-mhz</nav-freq-selected-prop>
-    <nav-freq-standby-prop>/radios/nav[1]/frequencies/standby-mhz</nav-freq-standby-prop>
-    <nav-morse-id-volume-prop>/radios/nav[1]/volume</nav-morse-id-volume-prop>
-    <nav-morse-ident-toggle-prop>/radios/nav[1]/ident</nav-morse-ident-toggle-prop>
+    <comm-freq-selected-prop>/instrumentation/comm[1]/frequencies/selected-mhz</comm-freq-selected-prop>
+    <comm-freq-standby-prop>/instrumentation/comm[1]/frequencies/standby-mhz</comm-freq-standby-prop>
+    <nav-freq-selected-prop>/instrumentation/nav[1]/frequencies/selected-mhz</nav-freq-selected-prop>
+    <nav-freq-standby-prop>/instrumentation/nav[1]/frequencies/standby-mhz</nav-freq-standby-prop>
+    <nav-morse-id-volume-prop>/instrumentation/nav[1]/volume</nav-morse-id-volume-prop>
+    <nav-morse-ident-toggle-prop>/instrumentation/nav[1]/ident</nav-morse-ident-toggle-prop>
    </params>
    <x>880</x>
    <y>255</y>

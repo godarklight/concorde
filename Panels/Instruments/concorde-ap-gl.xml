@@ -21,11 +21,11 @@
         <value>gs1-hold</value>
        </equals>
        <equals>
-        <property>/radios/nav[0]/in-range</property>
+        <property>/instrumentation/nav[0]/in-range</property>
         <value>true</value>
        </equals>
        <equals>
-        <property>/radios/nav[0]/has-gs</property>
+        <property>/instrumentation/nav[0]/has-gs</property>
         <value>true</value>
        </equals>
       </and>
@@ -64,11 +64,11 @@
       <value>gs1-hold</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/in-range</property>
+      <property>/instrumentation/nav[0]/in-range</property>
       <value>true</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/has-gs</property>
+      <property>/instrumentation/nav[0]/has-gs</property>
       <value>true</value>
      </equals>
     </and>
@@ -93,11 +93,11 @@
       <value>gs1-hold</value>
      </not-equals>
      <equals>
-      <property>/radios/nav[0]/in-range</property>
+      <property>/instrumentation/nav[0]/in-range</property>
       <value>false</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/has-gs</property>
+      <property>/instrumentation/nav[0]/has-gs</property>
       <value>false</value>
      </equals>
     </or>

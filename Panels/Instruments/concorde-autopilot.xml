@@ -854,11 +854,11 @@ During the capture, VO, LA, GL and AA are yellow, until the acquisition.
       <value>nav1-hold</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/in-range</property>
+      <property>/instrumentation/nav[0]/in-range</property>
       <value>true</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/nav-loc</property>
+      <property>/instrumentation/nav[0]/nav-loc</property>
       <value>true</value>
      </equals>
     </and>
@@ -898,11 +898,11 @@ During the capture, VO, LA, GL and AA are yellow, until the acquisition.
      </equals>
      <or>
       <equals>
-       <property>/radios/nav[0]/in-range</property>
+       <property>/instrumentation/nav[0]/in-range</property>
        <value>false</value>
       </equals>
       <equals>
-       <property>/radios/nav[0]/nav-loc</property>
+       <property>/instrumentation/nav[0]/nav-loc</property>
        <value>false</value>
       </equals>
      </or>
@@ -1146,11 +1146,11 @@ During the capture, VO, LA, GL and AA are yellow, until the acquisition.
       <value>gs1-hold</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/in-range</property>
+      <property>/instrumentation/nav[0]/in-range</property>
       <value>true</value>
      </equals>
      <equals>
-      <property>/radios/nav[0]/has-gs</property>
+      <property>/instrumentation/nav[0]/has-gs</property>
       <value>true</value>
      </equals>
     </and>
@@ -1190,11 +1190,11 @@ During the capture, VO, LA, GL and AA are yellow, until the acquisition.
      </equals>
      <or>
       <equals>
-       <property>/radios/nav[0]/in-range</property>
+       <property>/instrumentation/nav[0]/in-range</property>
        <value>false</value>
       </equals>
       <equals>
-       <property>/radios/nav[0]/has-gs</property>
+       <property>/instrumentation/nav[0]/has-gs</property>
        <value>false</value>
       </equals>
      </or>
