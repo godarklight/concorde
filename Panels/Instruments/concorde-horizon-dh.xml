@@ -33,12 +33,6 @@
     </layer>
     <layer>
      <name>off</name>
-     <condition>
-      <greater-than-equals>
-       <property>/position/altitude-agl-ft</property>
-       <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
-      </greater-than-equals>
-     </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.0</x1>

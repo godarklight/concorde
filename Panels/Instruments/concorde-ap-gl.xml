@@ -13,104 +13,73 @@
   <layer>
    <name>Button light</name>
    <type>switch</type>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+    <condition>
+     <and include="concorde-cond-glideslope.xml">
+      <equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>gs1-hold</value>
+      </equals>
+     </and>
+    </condition>
+
     <layer>
-     <condition>
-      <and>
-       <equals>
-        <property>/autopilot/locks/altitude</property>
-        <value>gs1-hold</value>
-       </equals>
-       <equals>
-        <property>/instrumentation/nav[0]/in-range</property>
-        <value>true</value>
-       </equals>
-       <equals>
-        <property>/instrumentation/nav[0]/has-gs</property>
-        <value>true</value>
-       </equals>
-      </and>
-     </condition>
-     <name>on</name>
+     <name>lamp on</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.37</x1>
-     <y1>0.0</y1>
-     <x2>0.38</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.37</x1>
+      <y1>0.0</y1>
+      <x2>0.38</x2>
+      <y2>0.095</y2>
      </texture>
      <w>104</w>
      <h>26</h>
     </layer>
     <layer>
-     <name>off</name>
+     <name>background lighted</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
      </texture>
      <w>104</w>
      <h>26</h>
+    </layer>
    </layer>
-  </layer>
 
-  <layer>
-   <name>background lighted</name>
-   <condition>
-    <and>
-     <equals>
-      <property>/autopilot/locks/altitude</property>
-      <value>gs1-hold</value>
-     </equals>
-     <equals>
-      <property>/instrumentation/nav[0]/in-range</property>
-      <value>true</value>
-     </equals>
-     <equals>
-      <property>/instrumentation/nav[0]/has-gs</property>
-      <value>true</value>
-     </equals>
-    </and>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
-  </layer>
-
-  <layer>
-   <name>background</name>
-   <condition>
-    <or>
-     <not-equals>
-      <property>/autopilot/locks/altitude</property>
-      <value>gs1-hold</value>
-     </not-equals>
-     <equals>
-      <property>/instrumentation/nav[0]/in-range</property>
-      <value>false</value>
-     </equals>
-     <equals>
-      <property>/instrumentation/nav[0]/has-gs</property>
-      <value>false</value>
-     </equals>
-    </or>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <layer>
+     <name>lamp off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>0.25</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+   </layer>
   </layer>
 
   <layer>
@@ -153,6 +122,10 @@
    <binding>
     <command>nasal</command>
     <script>globals.Concorde.apglideexport();</script>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

@@ -78,12 +78,12 @@ CR : max CRuise engaged shortly after Mach 2, is an extension of Max Climb. If t
      disengage, and Max Cruise will re-engage. It also prevents the aircraft exceeding the maximum operating temperature
      (TMO) of 127 deg Celsius on the tip of the nose. 
 IP : Indicated Air Speed Hold (current), with pitch
-VS : Vertical Speed
+VS : Vertical Speed Hold.
 AH : Altitude Hold (current)
 AA : Altitude Acquire (dial)
 AS : Altitude Select.
 
-BB and VR are not implemented.
+BB is not implemented.
 
 
 Acquired modes have a light.
@@ -111,7 +111,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-mh.xml">
    <name>Mach Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>15</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>305</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>300</x>
    <y>540</y>
@@ -122,7 +135,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ih.xml">
    <name>IAS Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>15</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>305</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>335</x>
    <y>540</y>
@@ -133,10 +159,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ia.xml">
    <name>IAS Acquired</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>15</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>335</x>
-   <y>510</y>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -146,7 +185,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-in.xml">
    <name>INS Mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>445</x>
    <y>540</y>
@@ -157,10 +209,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-bb.xml">
    <name>Back Beam</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>445</x>
-   <y>510</y>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -168,7 +233,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-th.xml">
    <name>Track Heading</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>505</x>
    <y>540</y>
@@ -179,10 +257,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-vl.xml">
    <name>VOR Lock</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>505</x>
-   <y>510</y>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -190,7 +281,18 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-hh.xml">
    <name>Heading Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>360</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </greater-than>
+    </and>
    </condition>
    <x>560</x>
    <y>540</y>
@@ -203,7 +305,18 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-tu.xml">
    <name>Turbulence Mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>360</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </greater-than>
+    </and>
    </condition>
    <x>615</x>
    <y>540</y>
@@ -214,10 +327,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ga.xml">
    <name>Go Around Mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>360</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </greater-than>
+    </and>
    </condition>
    <x>615</x>
-   <y>510</y>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -225,9 +349,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ph.xml">
    <name>Pitch Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>687.5</x>
+   <x>707.5</x>
    <y>540</y>
    <w>30</w>
    <h>20</h>
@@ -236,10 +371,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-la.xml">
    <name>Autoland Mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>687.5</x>
-   <y>510</y>
+   <x>707.5</x>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -247,9 +393,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-mp.xml">
    <name>Mach with Pitch Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>731</x>
+   <x>771</x>
    <y>540</y>
    <w>30</w>
    <h>20</h>
@@ -258,10 +415,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-gl.xml">
    <name>Glide slope mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>731</x>
-   <y>510</y>
+   <x>771</x>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -269,21 +437,43 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-cl.xml">
    <name>Max Climb mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>774</x>
+   <x>824</x>
    <y>540</y>
    <w>30</w>
    <h>20</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-cr.xml">
-   <name>Max Climb mode</name>
+   <name>Cruise mode</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>774</x>
-   <y>510</y>
+   <x>824</x>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -291,9 +481,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ip.xml">
    <name>IAS with Pitch hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>818</x>
+   <x>888</x>
    <y>540</y>
    <w>30</w>
    <h>20</h>
@@ -302,10 +503,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-vs.xml">
    <name>Vertical Speed hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>818</x>
-   <y>510</y>
+   <x>888</x>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -313,9 +525,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-ah.xml">
    <name>Altitude Hold</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>345</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>860</x>
+   <x>960</x>
    <y>540</y>
    <w>30</w>
    <h>20</h>
@@ -324,10 +547,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-aa.xml">
    <name>Altitude Acquire</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>345</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>860</x>
-   <y>510</y>
+   <x>960</x>
+   <y>496</y>
    <w>30</w>
    <h>20</h>
   </instrument>
@@ -337,10 +571,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-armed-vor.xml">
    <name>VOR armed</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>505</x>
-   <y>496</y>
+   <y>482</y>
    <w>10</w>
    <h>5</h>
   </instrument>
@@ -348,10 +595,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-armed-land.xml">
    <name>Autoland armed</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>687.5</x>
-   <y>496</y>
+   <x>707.5</x>
+   <y>482</y>
    <w>10</w>
    <h>5</h>
   </instrument>
@@ -359,10 +617,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-armed-glide.xml">
    <name>Glide armed</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>731</x>
-   <y>496</y>
+   <x>771</x>
+   <y>482</y>
    <w>10</w>
    <h>5</h>
   </instrument>
@@ -370,27 +639,75 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-armed-altitude.xml">
    <name>Altitude armed</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>345</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>860</x>
-   <y>496</y>
+   <x>960</x>
+   <y>482</y>
    <w>10</w>
    <h>5</h>
   </instrument>
 
 <!-- frequencies -->
 
+  <instrument include="Instruments/concorde-alarm-land.xml">
+   <name>Alarm autoland</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>30</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>315</value>
+      </greater-than>
+     </or>
+    </and>
+   </condition>
+   <x>90</x>
+   <y>420</y>
+   <w>50</w>
+   <h>26</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-ap-nav.xml">
    <name>NAV 1 dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>20</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>310</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <params>
     <frq-disp>/instrumentation/nav[0]/frequencies/selected-mhz</frq-disp>
     <frq-ctrl>/instrumentation/nav[0]/frequencies/selected-mhz</frq-ctrl>
    </params>
    <x>160</x>
-   <y>470</y>
+   <y>450</y>
    <w>121</w>
    <h>34</h>
   </instrument>
@@ -398,16 +715,49 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-nav.xml">
    <name>NAV 2 dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>340</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>275</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <frq-disp>/instrumentation/nav[1]/frequencies/selected-mhz</frq-disp>
     <frq-ctrl>/instrumentation/nav[1]/frequencies/selected-mhz</frq-ctrl>
    </params>
-   <x>1075</x>
-   <y>470</y>
+   <x>1165</x>
+   <y>450</y>
    <w>121</w>
    <h>34</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-land.xml">
+   <name>Alarm autoland (copilot)</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>335</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>270</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>1380</x>
+   <y>420</y>
+   <w>50</w>
+   <h>26</h>
   </instrument>
 
 <!-- dials -->
@@ -415,10 +765,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable-at.xml">
    <name>Autothrottle</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>15</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>305</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>300</x>
-   <y>436</y>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
@@ -426,10 +789,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable-at.xml">
    <name>Autothrottle 2</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>15</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>300</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>335</x>
-   <y>436</y>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
@@ -437,14 +813,27 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-speed-kt.xml">
    <name>Speed dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>10</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>300</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <params>
     <spd-disp>/autopilot/settings/target-speed-kt</spd-disp>
     <spd-ctrl>/autopilot/settings/target-speed-kt</spd-ctrl>
    </params>
    <x>357</x>
-   <y>499</y>
+   <y>479</y>
    <w>121</w>
    <h>34</h>
   </instrument>
@@ -452,25 +841,51 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable-fd.xml">
    <name>Flight Director</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <x>445</x>
-   <y>436</y>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-heading-deg.xml">
-   <name>Heading dial</name>
+   <name>Heading 1 dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>290</value>
+      </greater-than>
+     </or>
+    </and>
    </condition>
    <params>
     <hdg-ctrl>/autopilot/settings/heading-bug-deg</hdg-ctrl>
     <true-hdg-ctrl>/autopilot/settings/true-heading-deg</true-hdg-ctrl>
    </params>
    <x>485</x>
-   <y>472</y>
+   <y>422</y>
    <w>171</w>
    <h>77</h>
   </instrument>
@@ -478,14 +893,25 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-vor1-deg.xml">
    <name>VOR 1 dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>360</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <spd-disp>/instrumentation/nav/radials/selected-deg</spd-disp>
     <spd-ctrl>/instrumentation/nav/radials/selected-deg</spd-ctrl>
    </params>
    <x>577</x>
-   <y>472</y>
+   <y>422</y>
    <w>121</w>
    <h>34</h>
   </instrument>
@@ -493,10 +919,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable.xml">
    <name>Autopilot</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>670</x>
-   <y>436</y>
+   <x>690</x>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
@@ -504,25 +941,73 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable.xml">
    <name>Autopilot 2</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>705</x>
-   <y>436</y>
+   <x>725</x>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-ap-vertical-speed.xml">
-   <name>Vertical speed dial</name>
+  <instrument include="Instruments/concorde-ap-heading-deg.xml">
+   <name>Heading 2 dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>355</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
-    <tcr-disp>/autopilot/settings/vertical-speed-fpm</tcr-disp>
-    <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
+    <hdg-ctrl>/autopilot/settings/heading-bug-deg</hdg-ctrl>
+    <true-hdg-ctrl>/autopilot/settings/true-heading-deg</true-hdg-ctrl>
    </params>
-   <x>745</x>
-   <y>472</y>
+   <x>765</x>
+   <y>422</y>
+   <w>171</w>
+   <h>77</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ap-vor1-deg.xml">
+   <name>VOR 2 dial</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>280</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <spd-disp>/instrumentation/nav/radials/selected-deg</spd-disp>
+    <spd-ctrl>/instrumentation/nav/radials/selected-deg</spd-ctrl>
+   </params>
+   <x>857</x>
+   <y>422</y>
    <w>121</w>
    <h>34</h>
   </instrument>
@@ -530,10 +1015,21 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-disable-fd.xml">
    <name>Flight Director 2</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>345</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>275</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>860</x>
-   <y>436</y>
+   <x>960</x>
+   <y>366</y>
    <w>30</w>
    <h>30</h>
   </instrument>
@@ -541,14 +1037,25 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-altitude-ft.xml">
    <name>Altitude dial</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>345</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>275</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <tcr-disp>/autopilot/settings/target-altitude-ft</tcr-disp>
     <tcr-ctrl>/autopilot/settings/target-altitude-ft</tcr-ctrl>
    </params>
-   <x>910</x>
-   <y>499</y>
+   <x>1020</x>
+   <y>479</y>
    <w>121</w>
    <h>34</h>
   </instrument>

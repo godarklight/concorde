@@ -1,0 +1,757 @@
+<?xml version="1.0"?>
+
+<!-- Concorde 3D PEDESTAL top
+
+Organized like the real one at http://www.concordesst.com/.
+See also pictures at http://www.airliners.net/info/.
+
+ALIGNMENT : the throttle horizontal is around the pedestal trapezoid (narrowing).
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde Pedestal Top</name>
+ <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
+ <w>1024</w>
+ <h>508</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+<!-- PEDESTAL -->
+
+<!-- INS 1 -->
+
+  <instrument include="Instruments/concorde-ins.xml">
+   <name>INS Computer</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <on-ctrl>/instrumentation/ins[0]/on</on-ctrl>
+    <selector-ctrl>/instrumentation/ins[0]/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+   </params>
+   <x>100</x>
+   <y>670</y>
+   <w>108</w>
+   <h>48</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-1.xml">
+   <name>INS 1 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>220</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-2.xml">
+   <name>INS 2 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+   </params>
+   <x>245</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-3.xml">
+   <name>INS 3 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>270</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-4.xml">
+   <name>INS 4 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>220</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-5.xml">
+   <name>INS 5 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>245</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-6.xml">
+   <name>INS 6 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>270</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-7.xml">
+   <name>INS 7 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>220</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-8.xml">
+   <name>INS 8 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+   </params>
+   <x>245</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-9.xml">
+   <name>INS 9 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>270</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-0.xml">
+   <name>INS 0 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>220</x>
+   <y>610</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-clear.xml">
+   <name>INS Clear button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <on-ctrl>/instrumentation/ins[0]/on</on-ctrl>
+   </params>
+   <x>256</x>
+   <y>610</y>
+   <w>35</w>
+   <h>23</h>
+  </instrument>
+
+<!-- INS 2 -->
+
+  <instrument include="Instruments/concorde-ins.xml">
+   <name>INS Computer 2</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-29</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <on-ctrl>/instrumentation/ins[1]/on</on-ctrl>
+    <selector-ctrl>/instrumentation/ins[1]/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+   </params>
+   <x>415</x>
+   <y>670</y>
+   <w>108</w>
+   <h>48</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-1.xml">
+   <name>INS2 1 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>535</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-2.xml">
+   <name>INS2 2 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-70</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+   </params>
+   <x>560</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-3.xml">
+   <name>INS2 3 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-70</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>585</x>
+   <y>685</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-4.xml">
+   <name>INS2 4 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>535</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-5.xml">
+   <name>INS2 5 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>560</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-6.xml">
+   <name>INS2 6 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>585</x>
+   <y>660</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-7.xml">
+   <name>INS2 7 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>535</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-8.xml">
+   <name>INS2 8 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+   </params>
+   <x>560</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-9.xml">
+   <name>INS2 9 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </less-than>
+      <and include="Concorde-optimize-captain.xml">
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-15</value>
+       </less-than>
+      </and>
+     </or>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>585</x>
+   <y>635</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-0.xml">
+   <name>INS2 0 button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>535</x>
+   <y>610</y>
+   <w>23</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-clear.xml">
+   <name>INS2 Clear button</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <on-ctrl>/instrumentation/ins[1]/on</on-ctrl>
+   </params>
+   <x>571</x>
+   <y>610</y>
+   <w>35</w>
+   <h>23</h>
+  </instrument>
+
+<!-- MIDDLE -->
+
+  <instrument include="Instruments/concorde-temperature.xml">
+   <name>OAT/TMO temperatures</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-30</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-90</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>130</x>
+   <y>495</y>
+   <w>81.25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-datum.xml">
+   <name>Datum adjust unit</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>305</x>
+   <y>540</y>
+   <w>250</w>
+   <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-temperature.xml">
+   <name>OAT/TMO temperatures (copilot)</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>555</x>
+   <y>495</y>
+   <w>81.25</w>
+   <h>25</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

@@ -61,6 +61,19 @@ PUMPPMIN = 4;
 # AIRSPEED METER
 # ==============
 
+# ias light, when discrepancy with the autothrottle
+iaslight = func {
+   speedmode = getprop("/autopilot/locks/speed");
+   if( speedmode == "speed-with-throttle" ) {
+       speedkt = getprop("/autopilot/settings/target-speed-kt");
+       # ias light within 10 kt
+       minkt = speedkt - 10;
+       setprop("/instrumentation/airspeed-indicator/light-min-kt",minkt);
+       maxkt = speedkt + 10;
+       setprop("/instrumentation/airspeed-indicator/light-max-kt",maxkt);
+   }
+}
+
 # maximum operating speed (kt)
 calcvmoktcron = func {
    altitudeft = getprop("/instrumentation/altimeter/indicated-altitude-ft");
@@ -214,6 +227,8 @@ calcvmoktcron = func {
        setprop("/instrumentation/airspeed-indicator/overspeed-kt", maxkt);
        setprop("/instrumentation/mach-indicator/overspeed-mach", maxmach);
    }
+
+   iaslight();
 
    # re-schedule the next call
    settimer(calcvmoktcron, 5.0);
@@ -1081,6 +1096,11 @@ else {
 
    setprop("/instrumentation/cabine-altitude/cabine-inhg",cabineinhg);
    setprop("/instrumentation/cabine-altitude/indicated-altitude-ft",cabinealtft);
+
+# differential pressure
+   pressureinhg = getprop("/systems/pressurization/atmosphere-inhg");
+   diffinhg = cabineinhg - pressureinhg;
+   setprop("/systems/pressurization/differential-inhg",diffinhg);
 }
 
 # cabine altitude meter (pressurization)
@@ -1454,6 +1474,77 @@ calcverticalfpscron = func {
 }
 
 
+# ==============
+# TEST OF LIGHTS
+# ==============
+
+# test of landing lights
+testlandexport = func {
+   test = getprop("/instrumentation/test-landing/on");
+   if( test == nil or test != 1.0 ) {
+       test = 1.0;
+   }
+   else {
+       test = 0.0;
+   }
+
+   setprop("/instrumentation/test-landing/on",test);
+
+   # re-schedule the next call
+   if( test == 1.0 ) {
+       settimer(testlandexport, 3.0);
+   }
+}
+
+# test of marker beacon lights
+testmarkerexport = func {
+   outer = getprop("/instrumentation/marker-beacons/test-outer");
+   middle = getprop("/instrumentation/marker-beacons/test-middle");
+   inner = getprop("/instrumentation/marker-beacons/test-inner");
+   if( ( outer == nil or outer != 1.0 ) and ( middle == nil or middle != 1.0 ) and ( inner == nil or inner != 1.0 ) ) {
+       setprop("/instrumentation/marker-beacons/test-outer",1.0);
+       end = "false";
+   }
+   elsif( outer == 1.0 ) {
+       setprop("/instrumentation/marker-beacons/test-outer",0.0);
+       setprop("/instrumentation/marker-beacons/test-middle",1.0);
+       end = "false";
+   }
+   elsif( middle == 1.0 ) {
+       setprop("/instrumentation/marker-beacons/test-middle",0.0);
+       setprop("/instrumentation/marker-beacons/test-inner",1.0);
+       end = "false";
+   }
+   else  {
+       setprop("/instrumentation/marker-beacons/test-inner",0.0);
+       end = "true";
+   }
+
+   # re-schedule the next call
+   if( end == "false" ) {
+       settimer(testmarkerexport, 1.5);
+   }
+}
+
+# test of overhead alarm lights
+testoverheadexport = func {
+   test = getprop("/instrumentation/test-overhead/on");
+   if( test == nil or test != 1.0 ) {
+       test = 1.0;
+   }
+   else {
+       test = 0.0;
+   }
+
+   setprop("/instrumentation/test-overhead/on",test);
+
+   # re-schedule the next call
+   if( test == 1.0 ) {
+       settimer(testoverheadexport, 3.0);
+   }
+}
+
+
 # ===============
 # AUTOPILOT MODES
 # ===============
@@ -1484,6 +1575,178 @@ apexport = func {
    else {
        apdiscexport();
    }
+}
+
+# datum adjust of autopilot, arguments
+# - step plus/minus 1 (fast) or 0.1 (slow)
+datumapexport = func {
+   sign=arg[0];
+
+   altitudemode = getprop("/autopilot/locks/altitude");
+
+   # plus/minus 11 deg
+   if( altitudemode == "pitch-hold" ) {
+       # 0.1 or 0.5 deg per key
+       if( sign >= -0.1 and sign <= 0.1 ) {
+           value = 1.0 * sign;
+           step = 0.90909 * sign;
+       }
+       else {
+           value = 0.5 * sign;
+           step = 0.454545 * sign;
+       }
+   }
+   # plus/minus 600 ft (real)
+   elsif( altitudemode == "altitude-hold" ) {
+       # 20 or 60 ft per second (real) : 10 or 50 ft per key
+       if( sign >= -0.1 and sign <= 0.1 ) {
+           value = 100.0 * sign;
+           step = 1.66667 * sign;
+       }
+       else {
+           value = 50.0 * sign;
+           step = 0.83333 * sign;
+       }
+   }
+   # plus/minus 20 kt (real)
+   elsif( altitudemode == "speed-with-pitch" ) {
+       # 0.7 or 2 kt per second (real) : 0.5 or 1 kt per key
+       if( sign >= -0.1 and sign <= 0.1 ) {
+           value = 5.0 * sign;
+           step = 0.25 * sign;
+       }
+       else {
+           value = 1.0 * sign;
+           step = 0.5 * sign;
+       }
+   }
+   # plus/minus 0.06 Mach (real)
+   elsif( altitudemode == "mach-with-pitch" ) {
+       # 0.002 or 0.007 Mach per second (real)
+       if( sign >= -0.1 and sign <= 0.1 ) {
+           value = 0.02 * sign;
+           step = 3.33333 * sign;
+       }
+       else {
+           value = 0.007 * sign;
+           step = 1.166667 * sign;
+       }
+   }
+   # plus/minus 6000 ft/min (real)
+   elsif( altitudemode == "vertical-speed-hold" ) {
+       # 80 or 800 ft/min per second (real) : 10 or 100 ft/min per key
+       if( sign >= -0.1 and sign <= 0.1 ) {
+           value = 100.0 * sign;
+           step = 0.16667 * sign;
+       }
+       else {
+           value = 100.0 * sign;
+           step = 0.16667 * sign;
+       }
+   }
+   # default (touches cursor)
+   else {
+       step = 1.0 * sign;
+   }
+
+   # limited to plus/minus 10 steps
+   datum = getprop("/autopilot/datum/altitude");
+   if( datum == nil ) {
+       datum = step;
+   }
+   else {
+       datumold = datum;
+       datum = datum + step;
+
+       # maximum value of cursor
+       if( datum > 10.0 and datumold < 10.0 ) {
+           maxstep = 10.0 - datumold;
+           ratio = maxstep / step;
+           value = ratio * value;
+           datum = 10.0;
+       }
+       # minimum value of cursor
+       elsif( datum < -10.0 and datumold > -10.0 ) {
+           maxstep = -10.0 - datumold;
+           ratio = maxstep / step;
+           value = ratio * value;
+           datum = -10.0;
+       }
+   }
+
+   if( datum >= -10.0 and datum <= 10.0 ) {
+       if( altitudemode == "pitch-hold" ) {
+           targetdeg = getprop("/autopilot/settings/target-pitch-deg");
+           targetdeg = targetdeg + value;
+           setprop("/autopilot/settings/target-pitch-deg",targetdeg);
+       }
+       elsif( altitudemode == "altitude-hold" ) {
+           targetft = getprop("/autopilot/settings/target-altitude-ft");
+           targetft = targetft + value;
+           setprop("/autopilot/settings/target-altitude-ft",targetft);
+       }
+       elsif( altitudemode == "speed-with-pitch" ) {
+           targetkt = getprop("/autopilot/settings/target-speed-kt");
+           targetkt = targetkt + value;
+           setprop("/autopilot/settings/target-speed-kt",targetkt);
+       }
+       elsif( altitudemode == "mach-with-pitch" ) {
+           targetmach = getprop("/autopilot/settings/target-mach");
+           targetmach = targetmach + value;
+           setprop("/autopilot/settings/target-mach",targetmach);
+       }
+       elsif( altitudemode == "vertical-speed-hold" ) {
+           targetfpm = getprop("/autopilot/settings/vertical-speed-fpm");
+           if( targetfpm == nil ) {
+               targetfpm = 0.0;
+           }
+           targetfpm = targetfpm + value;
+           setprop("/autopilot/settings/vertical-speed-fpm",targetfpm);
+       }
+
+       setprop("/autopilot/datum/altitude",datum);
+   }
+}
+
+# ---------------
+# FLIGHT DIRECTOR
+# ---------------
+
+# activate autopilot
+fdexport = func {
+   fd =  getprop("/instrumentation/attitude-indicator/config/flight-director");
+   if( fd == nil or !fd ) {
+       ap = props.globals.getNode("/autopilot").getChildren("locks");
+       altitude = ap[0].getChild("altitude").getValue();
+       altitude2 = ap[0].getChild("altitude2").getValue();
+       heading = ap[0].getChild("heading").getValue();
+       vertical = ap[0].getChild("vertical").getValue();
+       horizontal = ap[0].getChild("horizontal").getValue();
+ 
+       # pitch hold is default on activation
+       if( ( altitude == "" or altitude == nil ) and ( altitude2 == "" or altitude2 == nil ) and
+           ( heading == "" or heading == nil ) and ( vertical == "" or vertical == nil ) and
+           ( horizontal == "" or horizontal == nil ) ) {
+           appitchexport();
+       }
+   }
+}
+
+# flashing light
+flashinglightcron = func {
+   light = getprop("/instrumentation/generic/flashing-light");
+   if( light == nil or light != 1.0 ) {
+       light = 1.0;
+       lightsec = 7.0;
+   }
+   else {
+       light = 0.0;
+       lightsec = 0.2;
+   }
+   setprop("/instrumentation/generic/flashing-light",light);
+
+   # re-schedule the next call
+   settimer(flashinglightcron, lightsec);
 }
 
 # -------------
@@ -1656,7 +1919,7 @@ autolandcron = func {
                    setprop("/autopilot/locks/altitude","gs1-hold");
                    # near VREF (no wind)
                    targetwind();
-                   setprop("/autopilot/locks/speed","speed-with-throttle");
+                   # pilot must activate autothrottle (IAS hold)
                }
                setprop("/autopilot/locks/heading","nav1-hold");
                apdischorizontalexport();
@@ -1710,7 +1973,7 @@ apturbulenceexport = func {
    }
    else {
        apdiscverticalexport();
-	 apdiscaltitudeexport();
+       apdiscaltitudeexport();
        apdischeadingexport(); 
    }
 }
@@ -1730,10 +1993,10 @@ altitudelightcron = func {
    altitudemode = getprop("/autopilot/locks/altitude");
    if( altitudemode == "altitude-hold" ) {
        altft = getprop("/autopilot/settings/target-altitude-ft");
-       # altimeter light within 1000 ft
-       minft = altft - 1000;
+       # altimeter light within 1200 ft
+       minft = altft - 1200;
        setprop("/instrumentation/altimeter/target-min-ft",minft);
-       maxft = altft + 1000;
+       maxft = altft + 1200;
        setprop("/instrumentation/altimeter/target-max-ft",maxft);
        # no altimeter light within 50 ft
        minft = altft - 50;
@@ -1743,38 +2006,6 @@ altitudelightcron = func {
 
        # re-schedule the next call
        settimer(altitudelightcron, 15.0);
-   }
-}
-
-# datum adjust of pitch
-datumpitchexport = func {
-   sign=arg[0];
-
-   # plus/minus 11 deg
-   datumdeg = getprop("/autopilot/datum/pitch-deg");
-   step = 1.0 * sign;
-   if( datumdeg == nil ) {
-       datumdeg = step;
-   }
-   else {
-       datumdeg = datumdeg + step;
-   }
-   if( datumdeg >= -22.0 and datumdeg <= 22.0 ) {
-       degrange = "true";
-       setprop("/autopilot/datum/pitch-deg",datumdeg);
-   }
-   else {
-       degrange = "false";
-   }
-
-   altitudemode = getprop("/autopilot/locks/altitude");
-   if( altitudemode == "pitch-hold" ) {
-       if( degrange == "true" ) {
-           targetdeg = getprop("/autopilot/settings/target-pitch-deg");
-           step = 0.5 * sign;
-           targetdeg = targetdeg + step;
-           setprop("/autopilot/settings/target-pitch-deg",targetdeg);
-       }
    }
 }
 
@@ -1789,6 +2020,14 @@ apaltitudeexport = func {
    else {
        apdiscaltitudeexport();
    }
+}
+
+# autopilot altitude hold
+apaltitudeholdexport = func {
+   altitudeft = getprop("/position/altitude-ft");
+   setprop("/autopilot/settings/target-altitude-ft",altitudeft);
+   apdiscaltitudeexport();
+   apaltitudeexport();
 }
 
 # autopilot glide slope
@@ -1828,9 +2067,64 @@ appitchexport = func {
 apverticalexport = func {
    altitudemode = getprop("/autopilot/locks/altitude");
    if( altitudemode != "vertical-speed-hold" ) {
+       speedfps = getprop("/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps");
+       speedfpm = speedfps * 60;
+       setprop("/autopilot/settings/vertical-speed-fpm",speedfpm);
        setprop("/autopilot/locks/altitude","vertical-speed-hold");
        apdiscverticalexport();
    }
+   else {
+       apdiscaltitudeexport();
+   }
+}
+
+# speed with pitch
+apspeedpitchexport = func {
+   altitudemode = getprop("/autopilot/locks/altitude");
+
+   # only if no autothrottle
+   if( altitudemode != "speed-with-pitch" ) {
+       speedmode = getprop("/autopilot/locks/speed");
+       speedmode2 = getprop("/autopilot/locks/speed2");
+       if( ( speedmode == nil or speedmode == "" ) and ( speedmode2 == nil or speedmode2 == "" ) ) {
+           speedkt = getprop("/instrumentation/airspeed-indicator/indicated-speed-kt");
+           setprop("/autopilot/settings/target-speed-kt",speedkt);
+           setprop("/autopilot/locks/altitude","speed-with-pitch");
+           apdiscverticalexport();
+       }
+
+       # default to pitch hold if autothrottle
+       else {
+           appitchexport();
+       }
+   }
+   else {
+       apdiscaltitudeexport();
+   }
+}
+
+# mach with pitch
+apmachpitchexport = func {
+   altitudemode = getprop("/autopilot/locks/altitude");
+
+   # only if no autothrottle
+   if( altitudemode != "mach-with-pitch" ) {
+       speedmode = getprop("/autopilot/locks/speed");
+       speedmode2 = getprop("/autopilot/locks/speed2");
+       if( ( speedmode == nil or speedmode == "" ) and ( speedmode2 == nil or speedmode2 == "" ) ) {
+           speedmach = getprop("/velocities/mach");
+           setprop("/autopilot/settings/target-mach",speedmach);
+           setprop("/autopilot/locks/altitude","mach-with-pitch");
+           automachcron();
+           apdiscverticalexport();
+       }
+
+       # default to pitch hold if autothrottle
+       else {
+           appitchexport();
+       }
+   }
+
    else {
        apdiscaltitudeexport();
    }
@@ -2015,7 +2309,8 @@ maxclimbcron = func {
            # then holds the VMO with pitch
            else {
               setprop("/autopilot/settings/target-speed-kt",vmokt);
-              setprop("/autopilot/locks/speed","speed-with-pitch");
+              setprop("/autopilot/locks/altitude","speed-with-pitch");
+              atdiscspeedexport();
            }
 
            if( speedmode == "maxcruise" ) {
@@ -2122,48 +2417,19 @@ atmachexport = func {
    }
 }
 
-# speed with pitch
-atspeedpitchexport = func {
-   speedmode = getprop("/autopilot/locks/speed");
-   if( speedmode != "speed-with-pitch" ) {
-       speedkt = getprop("/instrumentation/airspeed-indicator/indicated-speed-kt");
-       setprop("/autopilot/settings/target-speed-kt",speedkt);
-       setprop("/autopilot/locks/speed","speed-with-pitch");
-       atdiscspeed2export();
-   }
-   else{
-       atdiscthrottleexport();
-   }
-}
-
-# mach with pitch
-atmachpitchexport = func {
-   speedmode = getprop("/autopilot/locks/speed");
-   speedmode2 = getprop("/autopilot/locks/speed2");
-
-   # only if no autothrottle
-   if( speedmode == "" and speedmode2 == "" ) {
-       speedmach = getprop("/velocities/mach");
-       setprop("/autopilot/settings/target-mach",speedmach);
-       setprop("/autopilot/locks/speed","mach-with-pitch");
-       atdiscspeed2export();
-       automachcron();
-   }
-
-   # default to pitch hold if autothrottle
-   elsif( speedmode != "mach-with-pitch" and ( speedmode != "" or speedmode2 != "" ) ) {
-       appitchexport();
-   }
-
-   else{
-       atdiscthrottleexport();
-   }
+# speed hold
+atspeedholdexport = func {
+   atdiscthrottleexport();
+   speedkt = getprop("/instrumentation/airspeed-indicator/indicated-speed-kt");
+   setprop("/autopilot/settings/target-speed-kt",speedkt);
+   atspeedexport();
 }
 
 # mach speed modes (temporary)
 automachcron = func {
    speedmode = getprop("/autopilot/locks/speed");
-   if( speedmode == "mach-with-throttle" or speedmode == "mach-with-pitch" ) {
+   altitudemode = getprop("/autopilot/locks/altitude");
+   if( speedmode == "mach-with-throttle" or altitudemode == "mach-with-pitch" ) {
        speedkt = getprop("/velocities/airspeed-kt");
        # speed of sound
        if( speedkt > 50 ) {
@@ -2185,80 +2451,124 @@ automachcron = func {
    setprop("/autopilot/internal/automach",status);
 }
 
-# datum adjust of autothrottle
-datumthrottleexport = func {
+# datum adjust of autothrottle, argument :
+# - step : plus/minus 1
+datumatexport = func {
    sign=arg[0];
 
-   # plus/minus 22 kt or 0.06 Mach (real)
-   datumkt = getprop("/autopilot/datum/speed-kt");
-   step = 1.0 * sign;
-   if( datumkt == nil ) {
-       datumkt = step;
+   speedmode = getprop("/autopilot/locks/speed");
+
+   # plus/minus 0.06 Mach (real)
+   if( speedmode == "mach-with-throttle" ) {
+       # 0.006 Mach per second (real)
+       value = 0.006 * sign;
+       step = 1.0 * sign;
    }
+   # plus/minus 22 kt (real)
+   elsif( speedmode == "speed-with-throttle" ) {
+       # 2 kt per second (real) : 1 kt per key
+       value = 1.0 * sign;
+       step = 0.454545 * sign;
+   }
+   # default (touches cursor)
    else {
-       datumkt = datumkt + step;
-   }
-   if( datumkt >= -22.0 and datumkt <= 22.0 ) {
-       ktrange = "true";
-       setprop("/autopilot/datum/speed-kt",datumkt);
-   }
-   else {
-       ktrange = "false";
+       step = 1.0 * sign;
    }
 
-   speedmode = getprop("/autopilot/locks/speed");
-   if( speedmode == "mach-with-throttle" or speedmode == "mach-with-pitch" ) {
-       if( ktrange == "true" ) {
-           targetmach = getprop("/autopilot/settings/target-mach");
-           step = 0.002727 * sign;
-           targetmach = targetmach + step;
-           setprop("/autopilot/settings/target-mach",targetmach);
+   # limited to plus/minus 10 steps
+   datum = getprop("/autopilot/datum/speed");
+   if( datum == nil ) {
+       datum = step;
+   }
+   else {
+       datumold = datum;
+       datum = datum + step;
+
+       # maximum value of cursor
+       if( datum > 10.0 and datumold < 10.0 ) {
+           maxstep = 10.0 - datumold;
+           ratio = maxstep / step;
+           value = ratio * value;
+           datum = 10.0;
+       }
+       # minimum value of cursor
+       elsif( datum < -10.0 and datumold > -10.0 ) {
+           maxstep = -10.0 - datumold;
+           ratio = maxstep / step;
+           value = ratio * value;
+           datum = -10.0;
        }
    }
-   elsif( speedmode == "speed-with-throttle" or speedmode == "speed-with-pitch" ) {
-       if( ktrange == "true" ) {
+
+   if( datum >= -10.0 and datum <= 10.0 ) {
+       if( speedmode == "mach-with-throttle" ) {
+           targetmach = getprop("/autopilot/settings/target-mach");
+           targetmach = targetmach + value;
+           setprop("/autopilot/settings/target-mach",targetmach);
+       }
+       elsif( speedmode == "speed-with-throttle" ) {
            targetkt = getprop("/autopilot/settings/target-speed-kt");
-           step = 1.0 * sign;
-           targetkt = targetkt + step;
+           targetkt = targetkt + value;
            setprop("/autopilot/settings/target-speed-kt",targetkt);
        }
+
+       setprop("/autopilot/datum/speed",datum);
    }
 }
 
 # ==============
 # INITIALIZATION
 # ==============
-init = func {
-   # tank content
-   tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
-   tanks[0].getChild("content-lb").setValue( CONTENT1LB );
-   tanks[1].getChild("content-lb").setValue( CONTENT2LB );
-   tanks[2].getChild("content-lb").setValue( CONTENT3LB );
-   tanks[3].getChild("content-lb").setValue( CONTENT4LB );
-   tanks[4].getChild("content-lb").setValue( CONTENT5LB );
-   tanks[5].getChild("content-lb").setValue( CONTENT6LB );
-   tanks[6].getChild("content-lb").setValue( CONTENT7LB );
-   tanks[7].getChild("content-lb").setValue( CONTENT8LB );
-   tanks[8].getChild("content-lb").setValue( CONTENT9LB );
-   tanks[9].getChild("content-lb").setValue( CONTENT10LB );
-   tanks[10].getChild("content-lb").setValue( CONTENT11LB );
-   tanks[11].getChild("content-lb").setValue( CONTENT5ALB );
-   tanks[12].getChild("content-lb").setValue( CONTENT7ALB );
 
-   # tank number
-   tanks[0].getChild("tank-num").setValue( "1" );
-   tanks[1].getChild("tank-num").setValue( "2" );
-   tanks[2].getChild("tank-num").setValue( "3" );
-   tanks[3].getChild("tank-num").setValue( "4" );
-   tanks[4].getChild("tank-num").setValue( "5" );
-   tanks[5].getChild("tank-num").setValue( "6" );
-   tanks[6].getChild("tank-num").setValue( "7" );
-   tanks[7].getChild("tank-num").setValue( "8" );
-   tanks[8].getChild("tank-num").setValue( "9" );
-   tanks[9].getChild("tank-num").setValue( "10" );
-   tanks[10].getChild("tank-num").setValue( "11" );
-   tanks[11].getChild("tank-num").setValue( "5A" );
-   tanks[12].getChild("tank-num").setValue( "7A" );
+# tank initialization, arguments :
+# - tank no
+# - tank label
+# - tank content lb
+# - over full, if true
+# - under full, if true
+# - low levell, if true
+inittank = func {
+   no = arg[0];
+   label = arg[1];
+   contentlb = arg[2];
+   overfull = arg[3];
+   underfull = arg[4];
+   lowlevel = arg[5];
+
+   tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
+   tanks[no].getChild("tank-num").setValue( label );
+   tanks[no].getChild("content-lb").setValue( contentlb );
+
+   # optional :  must be created by instrument XML
+   if( overfull == "true" ) {
+       valuelb = contentlb * 0.97;
+       tanks[no].getChild("over-full-lb").setValue( valuelb );
+   }
+   if( underfull == "true" ) {
+       valuelb = contentlb * 0.80;
+       tanks[no].getChild("under-full-lb").setValue( valuelb );
+   }
+   if( lowlevel == "true" ) {
+       valuelb = contentlb * 0.20;
+       tanks[no].getChild("low-level-lb").setValue( valuelb );
+   }
+}
+
+# general initialization
+init = func {
+   inittank( 0,  "1",  CONTENT1LB,  "true",  "true",  "true" );
+   inittank( 1,  "2",  CONTENT2LB,  "true",  "true",  "true" );
+   inittank( 2,  "3",  CONTENT3LB,  "true",  "true",  "true" );
+   inittank( 3,  "4",  CONTENT4LB,  "true",  "true",  "true" );
+   inittank( 4,  "5",  CONTENT5LB,  "true",  "false", "false" );
+   inittank( 5,  "6",  CONTENT6LB,  "false", "false", "false" );
+   inittank( 6,  "7",  CONTENT7LB,  "true",  "false", "false" );
+   inittank( 7,  "8",  CONTENT8LB,  "false", "false", "false" );
+   inittank( 8,  "9",  CONTENT9LB,  "false", "false", "false" );
+   inittank( 9,  "10", CONTENT10LB, "false", "false", "false" );
+   inittank( 10, "11", CONTENT11LB, "true",  "false", "false" );
+   inittank( 11, "5A", CONTENT5ALB, "false", "false", "false" );
+   inittank( 12, "7A", CONTENT7ALB, "false", "false", "false" );
 
    # engine number
    engines = props.globals.getNode("/engines/").getChildren("engine");
@@ -2278,6 +2588,7 @@ init = func {
    settimer(calcvmoktcron, 0);
    settimer(feedenginescron, 0);
    settimer(inslightcron,0);
+   settimer(flashinglightcron,0);
    settimer(calccabineftcron,0);
    settimer(calctmodegccron,0);
 }

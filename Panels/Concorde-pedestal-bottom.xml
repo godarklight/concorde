@@ -56,7 +56,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins.xml">
    <name>INS Computer 3</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-85</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <on-ctrl>/instrumentation/ins[2]/on</on-ctrl>
@@ -72,7 +83,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-1.xml">
    <name>INS3 1 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
    </condition>
    <x>345</x>
    <y>415</y>
@@ -83,7 +105,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-2.xml">
    <name>INS3 2 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <wpt-ctrl>/instrumentation/ins[2]/waypoint</wpt-ctrl>
@@ -97,7 +130,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-3.xml">
    <name>INS3 3 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <x>395</x>
    <y>415</y>
@@ -108,7 +152,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-4.xml">
    <name>INS3 4 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
    </condition>
    <x>345</x>
    <y>390</y>
@@ -119,7 +174,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-5.xml">
    <name>INS3 5 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <x>370</x>
    <y>390</y>
@@ -130,7 +196,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-6.xml">
    <name>INS3 6 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <x>395</x>
    <y>390</y>
@@ -141,7 +218,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-7.xml">
    <name>INS3 7 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
    </condition>
    <x>345</x>
    <y>365</y>
@@ -152,7 +240,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-8.xml">
    <name>INS3 8 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <wpt-ctrl>/instrumentation/ins[2]/waypoint</wpt-ctrl>
@@ -166,7 +265,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-9.xml">
    <name>INS3 9 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <x>395</x>
    <y>365</y>
@@ -177,7 +287,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-0.xml">
    <name>INS3 0 button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-80</value>
+     </greater-than>
+    </and>
    </condition>
    <x>345</x>
    <y>340</y>
@@ -188,7 +309,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-ins-clear.xml">
    <name>INS3 Clear button</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-75</value>
+     </greater-than>
+    </and>
    </condition>
    <params>
     <on-ctrl>/instrumentation/ins[2]/on</on-ctrl>
@@ -204,7 +336,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/navcom-kx155.xml">
    <name>NavCom 1 Radio</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+    </and>
    </condition>
    <x>125</x>
    <y>283</y>
@@ -215,7 +354,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/navcom-kx155.xml">
    <name>NavCom 2 Radio</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
+    </and>
    </condition>
    <params>
     <comm-freq-selected-prop>/instrumentation/comm[1]/frequencies/selected-mhz</comm-freq-selected-prop>
@@ -234,7 +380,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/adf-radio.xml">
    <name>ADF Radio</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-20</value>
+     </less-than>
+    </and>
    </condition>
    <x>125</x>
    <y>107</y>

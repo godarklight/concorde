@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!-- Concorde alarm on center of gravity
+-->
+
+<PropertyList>
+
+  <and>
+   <greater-than>
+    <property>instrumentation/cg/percent</property>
+    <property n="1">instrumentation/cg/min-percent</property>
+   </greater-than>
+   <less-than>
+    <property>instrumentation/cg/percent</property>
+    <property n="1">instrumentation/cg/max-percent</property>
+   </less-than>
+  </and>
+
+</PropertyList>

@@ -9,36 +9,39 @@
 
 
  <layers>
+
 <!-- translucent lens -->  
   <layer>
    <name>Pump light</name>
    <type>switch</type>
-    <layer>
-     <condition>
-       <property>/systems/fuel-pump/forward</property>
-     </condition>
-     <name>on</name>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.0</y1>
-     <x2>0.5</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
-    <layer>
-     <name>off</name>
-     <texture>
+   <layer>
+    <name>off</name>
+    <condition>
+     <not>
+      <property>/systems/fuel-pump/forward</property>
+     </not>
+    </condition>
+    <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>0.25</x2>
      <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
    </layer>
   </layer>
 
@@ -100,7 +103,12 @@
     <command>property-toggle</command>
     <property>/systems/fuel-pump/forward</property>
    </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
   </action>
+
  </actions>
 
 </PropertyList>

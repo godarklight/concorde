@@ -7,6 +7,9 @@
    AL_INVALID_VALUE error on alGenSources (Device->MaxNoOfSources reached ?).
 
 
+   Sounds are adjusted to the level of ATIS voice.
+
+
    References :
    ==========
 
@@ -178,10 +181,13 @@
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/velocities/airspeed-kt</property>
      <greater-than>
       <property>/surface-positions/flap-pos-norm</property> <!-- until noose is streamlined (0.34 = visor down) -->
       <value>0.34</value>     
+     </greater-than>
+     <greater-than>
+      <property>/velocities/airspeed-kt</property>
+      <value>50</value> <!-- enough speed -->
      </greater-than>
     </and>
    </condition>
@@ -572,6 +578,8 @@
       <property>/gear/gear[0]/wow</property>
       <property>/gear/gear[1]/wow</property>
       <property>/gear/gear[2]/wow</property>
+      <property>/gear/gear[3]/wow</property>
+      <property>/gear/gear[4]/wow</property>
      </or>
      <greater-than> <!-- only rumble on taxi -->
       <property>/instrumentation/tas-indicator/indicated-tas-kt</property> <!-- more accurate -->
@@ -620,21 +628,10 @@
    <path>Sounds/gear-hrn.wav</path>
    <mode>looped</mode>
    <condition>
-    <and>
-     <not-equals>
-      <property>gear/gear[0]/position-norm</property>
-      <value>1.0</value>
-     </not-equals>
-     <less-than>
-      <property>position/altitude-agl-ft</property>
-      <value>1500</value>
-     </less-than>
-     <less-than>
-      <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
-      <value>0.0</value>
-     </less-than>
+    <and include="../Panels/Instruments/concorde-cond-gear.xml">
+     <property>/sim/current-view/internal</property>
     </and>
-   </condition>      
+   </condition>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </gear>
@@ -647,6 +644,8 @@
      <property>/gear/gear[0]/wow</property>
      <property>/gear/gear[1]/wow</property>
      <property>/gear/gear[2]/wow</property>
+     <property>/gear/gear[3]/wow</property>
+     <property>/gear/gear[4]/wow</property>
     </or>
    </condition>
    <volume>
@@ -685,14 +684,11 @@
  
   <stall>
    <name>stall</name>
+   <mode>looped</mode>
    <path>Sounds/stall.wav</path>
    <condition>
-    <and>
-     <property>/sim/alarms/stall-warning</property>
-     <greater-than> <!-- irritating on ground -->
-      <property>/position/altitude-agl-ft</property>
-      <value>20</value>
-     </greater-than>
+    <and include="../Panels/Instruments/concorde-cond-stall.xml">
+     <property>/sim/current-view/internal</property>
     </and>
    </condition>
    <volume>
@@ -708,30 +704,43 @@
    <mode>looped</mode>
    <path>Sounds/overspeed.wav</path>
    <condition>
-    <or>
-     <greater-than>
-      <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-      <property n="1">/instrumentation/airspeed-indicator/overspeed-kt</property>
-     </greater-than>
-     <greater-than>
-      <property>/velocities/mach</property>
-      <property n="1">/instrumentation/mach-indicator/overspeed-mach</property>
-     </greater-than>
-    </or>
+    <and include="../Panels/Instruments/concorde-cond-overspeed.xml">
+     <property>/sim/current-view/internal</property>
+    </and>
    </condition>
    <volume>
-    <min>1.7</min>
+    <max>0.4</max>
+    <min>0.1</min>
    </volume>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </overspeed>
 
-<!-- no binding yet?
+<!-- cannot disable click in external views, otherwise heard when ctrl-V -->
+
   <click>
-   <name>click</name>
-   <path>Sounds/click.wav</path>
+   <name>click on</name>
+   <path>Aircraft/Concorde/Sounds/click.wav</path>
+   <condition>
+    <property>/instrumentation/generic/click</property>
+   </condition>
+   <volume>
+    <factor>0.2</factor>
+   </volume>
   </click>
--->
+
+  <click>
+   <name>click off</name>
+   <path>Aircraft/Concorde/Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>/instrumentation/generic/click</property>
+    </not>
+   </condition>
+   <volume>
+    <factor>0.2</factor>
+   </volume>
+  </click>
 
 </fx>
  

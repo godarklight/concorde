@@ -53,11 +53,22 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <instruments>
 
   <instrument include="../../Instruments/wxradar.xml">
-   <name>Weather Radar (Copilot)</name>
+   <name>Weather Radar</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/captain-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>750</x>
+   <x>45</x>
    <y>595</y>
    <w>140</w>
    <h>140</h>

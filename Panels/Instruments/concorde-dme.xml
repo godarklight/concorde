@@ -85,126 +85,127 @@
   </layer>
 
   <layer>
-   <name>DME 1 not in range</name>
-   <type>text</type>
-   <condition>
-    <or>
-     <not>
+   <name>DME 1</name>
+   <type>switch</type>
+
+   <layer>
+    <name>DME 1 in range</name>
+    <type>switch</type>
+    <condition>
+     <and>
       <property>/instrumentation/dme/in-range</property>
-     </not>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>3</value>
-     </equals>
-    </or>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>---.-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-50</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+      <equals>
+       <property>/instrumentation/dme/switch-position</property>
+       <value>1</value>
+      </equals>
+     </and>
+    </condition>
+
+    <layer>
+     <name>DME 1 display</name>
+     <type>text</type>
+     <condition>
+      <less-than-equals>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <value type="double">999.9</value>
+      </less-than-equals>
+     </condition>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <format>%5.1f</format>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-50</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>DME 1 overflow</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>999.9</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-50</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+
+   <layer>
+    <name>DME 1 not in range</name>
+    <type>text</type>
+    <condition>
+     <or>
+      <not>
+       <property>/instrumentation/dme/in-range</property>
+      </not>
+      <equals>
+       <property>/instrumentation/dme/switch-position</property>
+       <value>3</value>
+      </equals>
+     </or>
+    </condition>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.5</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>---.-</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-50</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
   </layer>
 
-  <layer>
-   <name>DME 1 overflow</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <greater-than>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">999.9</value>
-     </greater-than>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>1</value>
-     </equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>999.9</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-50</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>DME 1 display</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <less-than-equals>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">999.9</value>
-     </less-than-equals>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>1</value>
-     </equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/dme/indicated-distance-nm</property>
-     <format>%5.1f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-50</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
 
 <!-- DME 2 -->
   <layer>
@@ -262,125 +263,125 @@
   </layer>
 
   <layer>
-   <name>DME 2 not in range</name>
-   <type>text</type>
-   <condition>
-    <or>
-     <not>
+   <name>DME 2</name>
+   <type>switch</type>
+
+   <layer>
+    <name>DME 2 in range</name>
+    <type>switch</type>
+    <condition>
+     <and>
       <property>/instrumentation/dme/in-range</property>
-     </not>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>1</value>
-     </equals>
-    </or>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>---.-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
+      <equals>
+       <property>/instrumentation/dme/switch-position</property>
+       <value>3</value>
+      </equals>
+     </and>
+    </condition>
 
-  <layer>
-   <name>DME 2 overflow</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <greater-than>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">999.9</value>
-     </greater-than>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>3</value>
-     </equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>999.9</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
+    <layer>
+     <name>DME 2 display</name>
+     <type>text</type>
+     <condition>
+      <less-than-equals>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <value type="double">999.9</value>
+      </less-than-equals>
+     </condition>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <format>%5.1f</format>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>10</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
 
-  <layer>
-   <name>DME 2 display</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <less-than-equals>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">999.9</value>
-     </less-than-equals>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>3</value>
-     </equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.5</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/dme/indicated-distance-nm</property>
-     <format>%5.1f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+    <layer>
+     <name>DME 2 overflow</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>999.9</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>10</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+
+   <layer>
+    <name>DME 2 not in range</name>
+    <type>text</type>
+    <condition>
+     <or>
+      <not>
+       <property>/instrumentation/dme/in-range</property>
+      </not>
+      <equals>
+       <property>/instrumentation/dme/switch-position</property>
+       <value>1</value>
+      </equals>
+     </or>
+    </condition>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.5</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>---.-</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>10</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
   </layer>
 
 <!-- knob (tuner has only 1 frequency) -->

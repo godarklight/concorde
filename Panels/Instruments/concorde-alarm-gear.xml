@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- Concorde alarm on Terrain, supposed to be a gear alarm -->
+<!-- Concorde alarm on Terrain :
+
+     - excessive rate of descent below 2500 ft.
+     - excessive closure rate with ground.
+     - loss of altitude below 700 ft, after takeoff (NOT IMPLEMENTED) or goaround.
+     - gear not locked below 500 ft, or nose not down below 200 ft on approach.
+-->
 
 <PropertyList>
- <name>Alarm Gear</name>
+ <name>Alarm Terrain</name>
  <w-base>104</w-base>
  <h-base>26</h-base>
 
@@ -14,50 +20,10 @@
    <name>Alarm light</name>
    <type>switch</type>
     <layer>
-     <name>on</name>
-     <condition>
-      <and>
-       <not-equals>
-        <property>gear/gear[0]/position-norm</property>
-        <value>1.0</value>
-       </not-equals>
-       <less-than>
-        <property>position/altitude-agl-ft</property>
-        <value>1500</value>
-       </less-than>
-       <less-than>
-        <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
-        <value>0.0</value>
-       </less-than>
-    </and>
-     </condition>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.0</y1>
-     <x2>0.5</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
-    <layer>
      <name>off</name>
      <condition>
-      <or>
-       <equals>
-        <property>gear/gear[0]/position-norm</property>
-        <value>1.0</value>
-       </equals>
-       <greater-than-equals>
-        <property>position/altitude-agl-ft</property>
-        <value>1500</value>
-       </greater-than-equals>
-       <greater-than-equals>
-        <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
-        <value>0.0</value>
-       </greater-than-equals>
-      </or>
+      <not include="concorde-cond-terrain.xml">
+      </not>
      </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -68,7 +34,19 @@
      </texture>
      <w>104</w>
      <h>26</h>
-   </layer>
+    </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
   </layer>
 
   <layer>
@@ -86,30 +64,68 @@
 
   <layer>
    <name>Title</name>
-   <type>text</type>
-   <point-size>29</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>Terrai</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-43</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-6</offset>
-    </transformation>
-   </transformations>
+   <type>switch</type>
+
+   <layer>
+    <name>Title real</name>
+    <condition>
+     <not>
+      <property>/sim/panel/visibility</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>17</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>TERRAIN</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-40</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-3</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Title 2D panel</name>
+    <type>text</type>
+    <point-size>29</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>TERR</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-42</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-6</offset>
+     </transformation>
+    </transformations>
+   </layer>
   </layer>
+
  </layers>
 
 </PropertyList>

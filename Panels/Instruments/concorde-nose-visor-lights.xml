@@ -15,66 +15,6 @@
   <name>transit light</name>
    <type>switch</type>
   <layer>
-   <name>On</name>
-   <condition>
-    <or>
-     <and>
-      <greater-than>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.0</value>
-      </greater-than>
-      <less-than-equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.31</value>
-      </less-than-equals>
-     </and>
-     <and>
-      <greater-than>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.34</value>
-      </greater-than>
-      <or>
-       <less-than-equals>
-        <property>/surface-positions/flap-pos-norm</property>
-        <value>0.65</value>
-       </less-than-equals>
-       <greater-than-equals>
-        <property>/surface-positions/flap-pos-norm</property>
-        <value>0.69</value>
-       </greater-than-equals>
-      </or>
-      <less-than>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>1.0</value>
-      </less-than>
-     </and>
-    </or>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>30</w>
-   <h>30</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>60</offset>
-    </transformation>
-    <transformation>
-     <type>rotation</type>
-     <offset>90</offset>
-    </transformation>
-   </transformations>
-  </layer>
-  <layer>
    <name>Off</name>
    <condition>
     <and>
@@ -134,6 +74,32 @@
     </transformation>
    </transformations>
   </layer>
+  <layer>
+   <name>On</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>30</w>
+   <h>30</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>60</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>90</offset>
+    </transformation>
+   </transformations>
+  </layer>
  </layer>
 
   <layer>
@@ -159,24 +125,24 @@
   <name>5 deg light</name>
    <type>switch</type>
   <layer>
-   <name>On</name>
+   <name>Off</name>
    <condition>
-    <and>
-     <greater-than>
+    <or>
+     <less-than-equals>
       <property>/surface-positions/flap-pos-norm</property>
       <value>0.65</value>
-     </greater-than>
-     <less-than>
+     </less-than-equals>
+     <greater-than-equals>
       <property>/surface-positions/flap-pos-norm</property>
       <value>1.0</value>
-     </less-than>
-    </and>
+     </greater-than-equals>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
+    <x1>0.0</x1>
     <y1>0.0</y1>
-    <x2>0.41</x2>
+    <x2>0.25</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>
@@ -197,24 +163,12 @@
    </transformations>
   </layer>
   <layer>
-   <name>Off</name>
-   <condition>
-    <or>
-     <less-than-equals>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>0.65</value>
-     </less-than-equals>
-     <greater-than-equals>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>1.0</value>
-     </greater-than-equals>
-    </or>
-   </condition>
+   <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
+    <x1>0.34</x1>
     <y1>0.0</y1>
-    <x2>0.25</x2>
+    <x2>0.41</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>
@@ -319,12 +273,6 @@
   </layer>
   <layer>
    <name>Off</name>
-   <condition>
-    <not-equals>
-     <property>/surface-positions/flap-pos-norm</property>
-     <value>1.0</value>
-    </not-equals>
-   </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
     <x1>0.0</x1>

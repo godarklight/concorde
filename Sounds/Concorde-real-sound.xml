@@ -13,34 +13,7 @@
    - con7 -> concorde-external-takeoff.       (reheat)
 
 
-   The number of sound is limited, because low hardware gets OpenAL errors in SGSoundSample::SGSoundSample() :
-   AL_INVALID_VALUE error on alGenSources (Device->MaxNoOfSources reached ?).
-
-
-   References :
-   ==========
-
-   - Thunder is audible until 8 km.
-
-   - http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 :
-
-   Cockpit is very noisy until nose is streamlined.
-
-   - http://www.concordesst.com :
-
-   Shortly after takeoff, the aircraft enters the noise abatement procedure, where the re-heats are turn off and power
-   is reduced. The secondary nozzles are opened further to allow more air to enter, quietening down the exhaust.
-   The secondary air doors also open at this stage to allow air to by pass the engine.
-
-   At slow speeds all the air into the engine is primary airflow and the secondary air doors are kept closed. Keeping
-   them closed also prevents the engine ingests any of its own exhaust gas. At around Mach 0.55 the secondary exhaust
-   buckets begin to open as a function of Mach number to be fully open at when the aircraft is at Mach 1.1.
-
-
-   Positions of engines :
-   - 4 and 6 m in width.
-   - 40 m in length, from nose.
-
+   See also comments in Concorde-sound.xml (level of common sounds is identical).
 -->
  
 <PropertyList>
@@ -82,25 +55,25 @@
     <property>/engines/engine[0]/thrust_lb[0]</property>
     <type>sqrt</type>
     <factor>0.004</factor>
-    <offset>0.01</offset>
+    <offset>0.035</offset>
    </volume>
    <volume>
     <property>/engines/engine[1]/thrust_lb[0]</property>
     <type>sqrt</type>
     <factor>0.004</factor>
-    <offset>0.01</offset>
+    <offset>0.035</offset>
    </volume>    
    <volume>
     <property>/engines/engine[2]/thrust_lb[0]</property>
     <type>sqrt</type>
     <factor>0.004</factor>
-    <offset>0.01</offset>
+    <offset>0.035</offset>
    </volume>    
    <volume>
     <property>/engines/engine[3]/thrust_lb[0]</property>
     <type>sqrt</type>
     <factor>0.004</factor>
-    <offset>0.01</offset>
+    <offset>0.035</offset>
    </volume>    
   </engine>
 
@@ -178,25 +151,25 @@
     <property>/engines/engine[0]/thrust_lb[0]</property>
     <type>ln</type>
     <factor>0.03</factor>
-    <offset>0.02</offset>
+    <offset>0.03</offset>
    </volume>
    <volume>
     <property>/engines/engine[1]/thrust_lb[0]</property>
     <type>ln</type>
     <factor>0.03</factor>
-    <offset>0.02</offset>
+    <offset>0.03</offset>
    </volume>    
    <volume>
     <property>/engines/engine[2]/thrust_lb[0]</property>
     <type>ln</type>
     <factor>0.03</factor>
-    <offset>0.02</offset>
+    <offset>0.03</offset>
    </volume>    
    <volume>
     <property>/engines/engine[3]/thrust_lb[0]</property>
     <type>ln</type>
     <factor>0.03</factor>
-    <offset>0.02</offset>
+    <offset>0.03</offset>
    </volume>    
   </engine>
 
@@ -498,30 +471,6 @@
   </engine>
 
 <!-- default sounds -->
- 
-  <overspeed>
-   <name>overspeed</name>
-   <mode>looped</mode>
-   <path>Sounds/overspeed.wav</path>
-   <condition>
-     <or>
-      <greater-than>
-       <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-       <property n="1">/instrumentation/airspeed-indicator/overspeed-kt</property>
-      </greater-than>
-      <greater-than>
-       <property>/velocities/mach</property>
-       <property n="1">/instrumentation/mach-indicator/overspeed-mach</property>
-      </greater-than>
-     </or>
-   </condition>
-   <volume>
-    <max>0.4</max>
-    <min>0.1</min>
-   </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
-  </overspeed>
 
   <rumble>
    <name>rumble</name>
@@ -537,6 +486,8 @@
       <property>/gear/gear[0]/wow</property>
       <property>/gear/gear[1]/wow</property>
       <property>/gear/gear[2]/wow</property>
+      <property>/gear/gear[3]/wow</property>
+      <property>/gear/gear[4]/wow</property>
      </or>
      <greater-than> <!-- only rumble on taxi -->
       <property>/instrumentation/tas-indicator/indicated-tas-kt</property> <!-- more accurate -->
@@ -585,22 +536,10 @@
    <path>Sounds/gear-hrn.wav</path>
    <mode>looped</mode>
    <condition>
-    <and>
+    <and include="../Panels/Instruments/concorde-cond-gear.xml">
      <property>/sim/current-view/internal</property>
-     <not-equals>
-      <property>gear/gear[0]/position-norm</property>
-      <value>1.0</value>
-     </not-equals>
-     <less-than>
-      <property>position/altitude-agl-ft</property>
-      <value>1500</value>
-     </less-than>
-     <less-than>
-      <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
-      <value>0.0</value>
-     </less-than>
     </and>
-   </condition>      
+   </condition>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </gear>
@@ -613,6 +552,8 @@
      <property>/gear/gear[0]/wow</property>
      <property>/gear/gear[1]/wow</property>
      <property>/gear/gear[2]/wow</property>
+     <property>/gear/gear[3]/wow</property>
+     <property>/gear/gear[4]/wow</property>
     </or>
    </condition>
    <volume>
@@ -648,18 +589,14 @@
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </flap>
- 
+
   <stall>
    <name>stall</name>
+   <mode>looped</mode>
    <path>Sounds/stall.wav</path>
    <condition>
-    <and>
+    <and include="../Panels/Instruments/concorde-cond-stall.xml">
      <property>/sim/current-view/internal</property>
-     <property>/sim/alarms/stall-warning</property>
-     <greater-than> <!-- irritating on ground -->
-      <property>/position/altitude-agl-ft</property>
-      <value>20</value>
-     </greater-than>
     </and>
    </condition>
    <volume>
@@ -669,13 +606,49 @@
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </stall>
+ 
+  <overspeed>
+   <name>overspeed</name>
+   <mode>looped</mode>
+   <path>Sounds/overspeed.wav</path>
+   <condition>
+    <and include="../Panels/Instruments/concorde-cond-overspeed.xml">
+     <property>/sim/current-view/internal</property>
+    </and>
+   </condition>
+   <volume>
+    <max>0.4</max>
+    <min>0.1</min>
+   </volume>
+   <reference-dist>10.0</reference-dist>
+   <max-dist>20.0</max-dist>
+  </overspeed>
 
-<!-- no binding yet?
+<!-- cannot disable click in external views, otherwise heard when ctrl-V -->
+
   <click>
-   <name>click</name>
-   <path>Sounds/click.wav</path>
+   <name>click on</name>
+   <path>Aircraft/Concorde/Sounds/click.wav</path>
+   <condition>
+    <property>/instrumentation/generic/click</property>
+   </condition>
+   <volume>
+    <max>0.2</max>
+   </volume>
   </click>
--->
+
+  <click>
+   <name>click off</name>
+   <path>Aircraft/Concorde/Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>/instrumentation/generic/click</property>
+    </not>
+   </condition>
+   <volume>
+    <max>0.2</max>
+   </volume>
+  </click>
 
 </fx>
  

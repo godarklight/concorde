@@ -454,7 +454,7 @@ Light meaning :
    <name>background left door</name>
    <type>switch</type>
    <layer>
-    <name>door closes</name>
+    <name>door closed</name>
     <condition>
      <and>
       <not>
@@ -487,20 +487,7 @@ Light meaning :
     </transformations>
    </layer>
    <layer>
-    <name>door</name>
-    <condition>
-     <or>
-      <property>/controls/gear/gear-down</property>
-      <equals>
-       <property>/gear/gear[1]/position-norm</property>
-       <value>0.0</value>
-      </equals>
-      <greater-than-equals>
-       <property>/gear/gear[1]/position-norm</property>
-       <value>0.05</value>
-      </greater-than-equals>
-     </or>
-    </condition>
+    <name>door opened</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
     </texture>
@@ -602,7 +589,7 @@ Light meaning :
    <name>background nose door</name>
    <type>switch</type>
    <layer>
-    <name>door closes</name>
+    <name>door closed</name>
     <condition>
      <and>
       <not>
@@ -635,20 +622,7 @@ Light meaning :
     </transformations>
    </layer>
    <layer>
-    <name>door</name>
-    <condition>
-     <or>
-      <property>/controls/gear/gear-down</property>
-      <equals>
-       <property>/gear/gear[0]/position-norm</property>
-       <value>0.0</value>
-      </equals>
-      <greater-than-equals>
-       <property>/gear/gear[0]/position-norm</property>
-       <value>0.05</value>
-      </greater-than-equals>
-     </or>
-    </condition>
+    <name>door opened</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
     </texture>
@@ -848,7 +822,7 @@ Light meaning :
    <name>background right door</name>
    <type>switch</type>
    <layer>
-    <name>door closes</name>
+    <name>door closed</name>
     <condition>
      <and>
       <not>
@@ -881,20 +855,7 @@ Light meaning :
     </transformations>
    </layer>
    <layer>
-    <name>door</name>
-    <condition>
-     <or>
-      <property>/controls/gear/gear-down</property>
-      <equals>
-       <property>/gear/gear[2]/position-norm</property>
-       <value>0.0</value>
-      </equals>
-      <greater-than-equals>
-       <property>/gear/gear[2]/position-norm</property>
-       <value>0.05</value>
-      </greater-than-equals>
-     </or>
-    </condition>
+    <name>door opened</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
     </texture>

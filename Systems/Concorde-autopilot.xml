@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- Concorde autopilot -->
+<!-- Concorde autopilot
 
-<!-- known problems:
+     Speed with pitch and Mach with pitch are considered autopilot modes (datum).
+
+     Known problems:
      - roll on heading hold above Mach 1.0 (first PID only) : might be the FDM (?).
      Solved by a rudder trim, which unlocks the roll at Mach speeds.
 -->
@@ -144,7 +146,7 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <Kp>0.4</Kp>        <!-- proportional gain (0.1) -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -239,7 +241,7 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <Kp>0.4</Kp>        <!-- proportional gain (0.1) -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -595,7 +597,7 @@
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.01</Kp>      <!-- proportional gain -->
+      <Kp>-0.02</Kp>      <!-- proportional gain (0.01) -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -725,7 +727,7 @@
     <name>Speed hold (vary pitch) Stage #1</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/altitude</prop>
       <value>speed-with-pitch</value>
     </enable>
     <input>
@@ -754,7 +756,7 @@
     <name>Speed hold (vary pitch) Stage #2</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/altitude</prop>
       <value>speed-with-pitch</value>
     </enable>
     <input>
@@ -786,7 +788,7 @@
     <name>Mach hold (vary pitch) Stage #1</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/altitude</prop>
       <value>mach-with-pitch</value>
     </enable>
     <input>
@@ -815,7 +817,7 @@
     <name>Mach hold (vary pitch) Stage #2</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/altitude</prop>
       <value>mach-with-pitch</value>
     </enable>
     <input>

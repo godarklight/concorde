@@ -121,7 +121,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[0]/n2</n2-select>
    </params>
    <x>144</x>
-   <y>390</y>
+   <y>382</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -132,7 +132,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[1]/n2</n2-select>
    </params>
    <x>246</x>
-   <y>390</y>
+   <y>382</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -143,7 +143,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[2]/n2</n2-select>
    </params>
    <x>348</x>
-   <y>390</y>
+   <y>382</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -154,7 +154,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[3]/n2</n2-select>
    </params>
    <x>450</x>
-   <y>390</y>
+   <y>382</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -167,7 +167,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[0]/n1</n1-select>
    </params>
    <x>144</x>
-   <y>290</y>
+   <y>274</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -178,7 +178,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[1]/n1</n1-select>
    </params>
    <x>246</x>
-   <y>290</y>
+   <y>274</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -189,7 +189,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[2]/n1</n1-select>
    </params>
    <x>348</x>
-   <y>290</y>
+   <y>274</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -200,7 +200,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[3]/n1</n1-select>
    </params>
    <x>450</x>
-   <y>290</y>
+   <y>274</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -213,7 +213,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <ff-select>/engines/engine[0]/fuel-flow_pph</ff-select>
    </params>
    <x>144</x>
-   <y>190</y>
+   <y>166</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -224,7 +224,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <ff-select>/engines/engine[1]/fuel-flow_pph</ff-select>
    </params>
    <x>246</x>
-   <y>190</y>
+   <y>166</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -235,7 +235,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <ff-select>/engines/engine[2]/fuel-flow_pph</ff-select>
    </params>
    <x>348</x>
-   <y>190</y>
+   <y>166</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -246,101 +246,59 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <ff-select>/engines/engine[3]/fuel-flow_pph</ff-select>
    </params>
    <x>450</x>
-   <y>190</y>
+   <y>166</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-<!-- EGT -->
+<!-- Nozzle -->
 
-  <instrument include="Instruments/concorde-engine-egt.xml">
-   <name>Engine 1 EGT</name>
+  <instrument include="Instruments/concorde-engine-nozzle.xml">
+   <name>Engine 1 Nozzle</name>
    <params>
-    <egt-select>/engines/engine[0]/egt_degf</egt-select>
+    <nozzle-select>engines/engine[0]/nozzle-pos-norm</nozzle-select>
+    <reheat-select>/controls/engines/engine[0]/augmentation</reheat-select>
    </params>
    <x>144</x>
-   <y>90</y>
+   <y>58</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-egt.xml">
-   <name>Engine 2 EGT</name>
+  <instrument include="Instruments/concorde-engine-nozzle.xml">
+   <name>Engine 2 Nozzle</name>
    <params>
-    <egt-select>/engines/engine[1]/egt_degf</egt-select>
+    <nozzle-select>engines/engine[1]/nozzle-pos-norm</nozzle-select>
+    <reheat-select>/controls/engines/engine[1]/augmentation</reheat-select>
    </params>
    <x>246</x>
-   <y>90</y>
+   <y>58</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-egt.xml">
-   <name>Engine 3 EGT</name>
+  <instrument include="Instruments/concorde-engine-nozzle.xml">
+   <name>Engine 3 Nozzle</name>
    <params>
-    <egt-select>/engines/engine[2]/egt_degf</egt-select>
+    <nozzle-select>engines/engine[2]/nozzle-pos-norm</nozzle-select>
+    <reheat-select>/controls/engines/engine[2]/augmentation</reheat-select>
    </params>
    <x>348</x>
-   <y>90</y>
+   <y>58</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-egt.xml">
-   <name>Engine 4 EGT</name>
+  <instrument include="Instruments/concorde-engine-nozzle.xml">
+   <name>Engine 4 Nozzle</name>
    <params>
-    <egt-select>/engines/engine[3]/egt_degf</egt-select>
+    <nozzle-select>engines/engine[3]/nozzle-pos-norm</nozzle-select>
+    <reheat-select>/controls/engines/engine[3]/augmentation</reheat-select>
    </params>
    <x>450</x>
-   <y>90</y>
+   <y>58</y>
    <w>100</w>
    <h>100</h>
-  </instrument>
-
-<!-- ENGINEER reheat -->
-
-  <instrument include="Instruments/concorde-engine-reheat.xml">
-   <name>Engine 1 reheat</name>
-   <params>
-    <reheat-select>/engines/engine[0]/augmentation</reheat-select>
-   </params>
-   <x>144</x>
-   <y>20</y>
-   <w>25</w>
-   <h>25</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-reheat.xml">
-   <name>Engine 2 reheat</name>
-   <params>
-    <reheat-select>/engines/engine[1]/augmentation</reheat-select>
-   </params>
-   <x>246</x>
-   <y>20</y>
-   <w>25</w>
-   <h>25</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-reheat.xml">
-   <name>Engine 3 reheat</name>
-   <params>
-    <reheat-select>/engines/engine[2]/augmentation</reheat-select>
-   </params>
-   <x>348</x>
-   <y>20</y>
-   <w>25</w>
-   <h>25</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-reheat.xml">
-   <name>Engine 4 reheat</name>
-   <params>
-    <reheat-select>/engines/engine[3]/augmentation</reheat-select>
-   </params>
-   <x>450</x>
-   <y>20</y>
-   <w>25</w>
-   <h>25</h>
   </instrument>
 
 <!-- CENTER right -->

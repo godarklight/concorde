@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 
-<!-- Max VD is 565 kt -->
+<!--Concorde speed setting indicator.
+
+    Real range is 130 to 400 kt.
+-->
 
 <PropertyList>
 
- <name>Digital speed</name>
+ <name>Speed setting indicator</name>
  <w-base>124</w-base>
  <h-base>40</h-base>
 
@@ -213,8 +216,8 @@
     <command>property-adjust</command>
     <property alias="../../../../params/spd-ctrl"/>
     <step>-10</step>
-    <min>0</min>
-    <max>565</max>
+    <min>130</min>
+    <max>400</max>
     <wrap>0</wrap>
    </binding>
   </action>
@@ -230,8 +233,8 @@
     <command>property-adjust</command>
     <property alias="../../../../params/spd-ctrl"/>
     <step>10</step>
-    <min>0</min>
-    <max>565</max>
+    <min>130</min>
+    <max>400</max>
     <wrap>0</wrap>
    </binding>
   </action>
@@ -247,8 +250,8 @@
     <command>property-adjust</command>
     <property alias="../../../../params/spd-ctrl"/>
     <step>-1</step>
-    <min>0</min>
-    <max>565</max>
+    <min>130</min>
+    <max>400</max>
     <wrap>0</wrap>
    </binding>
   </action>
@@ -264,8 +267,8 @@
     <command>property-adjust</command>
     <property alias="../../../../params/spd-ctrl"/>
     <step>1</step>
-    <min>0</min>
-    <max>565</max>
+    <min>130</min>
+    <max>400</max>
     <wrap>0</wrap>
    </binding>
   </action>

@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Concorde engine rating : cruise
+<!-- Concorde engine rating : cruise.
 
-Flightgear has support for engine rating.
+Flightgear doesn't have support for engine rating.
 Emulation : in reality, the engineer switches the rating.
-
 -->
 
 <PropertyList>
@@ -19,134 +18,71 @@ Emulation : in reality, the engineer switches the rating.
   <layer>
    <name>Button light</name>
    <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <or include="concorde-cond-takeoff.xml">
+      <not include="concorde-cond-cruise.xml">
+      </not>
+     </or>
+    </condition>
+
     <layer>
-     <condition>
-      <or>
-       <and>
-        <equals>
-         <property>/autopilot/locks/altitude</property>
-         <value>altitude-hold</value>
-        </equals>
-        <greater-than>
-         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-         <property n="1">/instrumentation/altimeter/light-min-ft</property>
-        </greater-than>
-        <less-than>
-         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-         <property n="1">/instrumentation/altimeter/light-max-ft</property>
-        </less-than>
-        <greater-than>
-         <property>/position/altitude-agl-ft</property>
-         <value>1500.0</value>
-        </greater-than>
-       </and>
-       <greater-than-equals>
-        <property>/velocities/mach</property>
-        <value>1.95</value> <!-- see check-list -->
-       </greater-than-equals>
-      </or>
-     </condition>
-     <name>on</name>
+     <name>lamp off</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.37</x1>
-     <y1>0.0</y1>
-     <x2>0.38</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>0.25</x2>
+      <y2>0.095</y2>
      </texture>
      <w>104</w>
      <h>26</h>
     </layer>
     <layer>
-     <name>off</name>
+     <name>background</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
      </texture>
      <w>104</w>
      <h>26</h>
+    </layer>
    </layer>
-  </layer>
 
-  <layer>
-   <name>background lighted</name>
-   <condition>
-    <or>
-     <and>
-      <equals>
-       <property>/autopilot/locks/altitude</property>
-       <value>altitude-hold</value>
-      </equals>
-      <greater-than>
-       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/light-min-ft</property>
-      </greater-than>
-      <less-than>
-       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/light-max-ft</property>
-      </less-than>
-      <greater-than>
-       <property>/position/altitude-agl-ft</property>
-       <value>1500.0</value>
-      </greater-than>
-     </and>
-     <greater-than-equals>
-      <property>/velocities/mach</property>
-      <value>1.95</value> <!-- see check-list -->
-     </greater-than-equals>
-    </or>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
-  </layer>
-
-  <layer>
-   <name>background</name>
-   <condition>
-    <and>
-     <or>
-      <not-equals>
-       <property>/autopilot/locks/altitude</property>
-       <value>altitude-hold</value>
-      </not-equals>
-      <less-than-equals>
-       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/light-min-ft</property>
-      </less-than-equals>
-      <greater-than-equals>
-       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-       <property n="1">/instrumentation/altimeter/light-max-ft</property>
-      </greater-than-equals>
-      <less-than-equals>
-       <property>/position/altitude-agl-ft</property>
-       <value>1500.0</value>
-      </less-than-equals>
-     </or>
-     <less-than>
-      <property>/velocities/mach</property>
-      <value>1.95</value> <!-- see check-list -->
-     </less-than>
-    </and>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+   <layer>
+    <name>on</name>
+    <type>group</type>
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.37</x1>
+      <y1>0.0</y1>
+      <x2>0.38</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background lighted</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+   </layer>
   </layer>
 
   <layer>

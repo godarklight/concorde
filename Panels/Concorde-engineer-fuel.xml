@@ -2,7 +2,10 @@
 
 <!-- Concorde 3D ENGINEER fuel panel
 
-This panel is hypothetical (no image).
+Like the real panel.
+
+These visuals are not real :
+- fuel flow kg/minute.
 
 WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
 even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
@@ -52,10 +55,21 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-cg.xml">
    <name>Center of Gravity</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>180</x>
-   <y>330</y>
+   <x>320</x>
+   <y>500</y>
    <w>16</w>
    <h>50</h>
   </instrument>
@@ -65,10 +79,21 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-pump-forward.xml">
    <name>Forward pump</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>300</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>509</x>
-   <y>405</y>
+   <x>529</x>
+   <y>555</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -76,21 +101,21 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-pump-aft.xml">
    <name>Aft pump</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>300</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>509</x>
-   <y>215</y>
-   <w>45</w>
-   <h>23</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-pump-cross.xml">
-   <name>Cross pump</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <x>440</x>
-   <y>164</y>
+   <x>529</x>
+   <y>525</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -98,252 +123,23 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-pump-engine.xml">
    <name>Engine pump</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>300</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>509</x>
-   <y>164</y>
+   <x>529</x>
+   <y>474</y>
    <w>45</w>
    <h>23</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-pump-dump.xml">
-   <name>Dump pump</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <dump-ctrl>/systems/fuel-pump/dump</dump-ctrl>
-   </params>
-   <x>757</x>
-   <y>405</y>
-   <w>45</w>
-   <h>23</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-pump-dump.xml">
-   <name>Dump pump (confirm)</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <dump-ctrl>/systems/fuel-pump/dump2</dump-ctrl>
-   </params>
-   <x>707</x>
-   <y>405</y>
-   <w>45</w>
-   <h>23</h>
-  </instrument>
-
-<!-- tanks -->
-
-  <instrument include="Instruments/concorde-tank.xml">
-   <name>Tank 8 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[8]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[8]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[8]/content-lb</content-select>
-   </params>
-   <x>350</x>
-   <y>392</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank.xml">
-   <name>Tank 9 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[9]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[9]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[9]/content-lb</content-select>
-   </params>
-   <x>350</x>
-   <y>365</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 1 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[0]/content-lb</content-select>
-   </params>
-   <x>292</x>
-   <y>338</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 4 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[3]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[3]/content-lb</content-select>
-   </params>
-   <x>388</x>
-   <y>338</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 5 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[4]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[4]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[4]/content-lb</content-select>
-   </params>
-   <x>292</x>
-   <y>311</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 8 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[7]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[7]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[7]/content-lb</content-select>
-   </params>
-   <x>388</x>
-   <y>311</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 6 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[5]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[5]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[5]/content-lb</content-select>
-   </params>
-   <x>292</x>
-   <y>284</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 7 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[6]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[6]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[6]/content-lb</content-select>
-   </params>
-   <x>388</x>
-   <y>284</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 2 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[1]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[1]/content-lb</content-select>
-   </params>
-   <x>292</x>
-   <y>257</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 3 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[2]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[2]/content-lb</content-select>
-   </params>
-   <x>388</x>
-   <y>257</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-<!-- rear tanks -->
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 5A display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[11]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[11]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[11]/content-lb</content-select>
-   </params>
-   <x>292</x>
-   <y>230</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank-short.xml">
-   <name>Tank 7A display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[12]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[12]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[12]/content-lb</content-select>
-   </params>
-   <x>388</x>
-   <y>230</y>
-   <w>40</w>
-   <h>7</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-tank.xml">
-   <name>Tank 11 display</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <params>
-    <tank-num>/consumables/fuel/tank[10]/tank-num</tank-num>
-    <lbs-select>/consumables/fuel/tank[10]/level-lb</lbs-select>
-    <content-select>/consumables/fuel/tank[10]/content-lb</content-select>
-   </params>
-   <x>350</x>
-   <y>203</y>
-   <w>40</w>
-   <h>7</h>
   </instrument>
 
 <!-- totals -->
@@ -351,10 +147,21 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-kgph.xml">
    <name>Fuel Flow</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>230</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>155</x>
-   <y>207</y>
+   <x>365</x>
+   <y>417</y>
    <w>40</w>
    <h>10</h>
   </instrument>
@@ -362,12 +169,708 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-kg.xml">
    <name>Fuel Total</name>
    <condition>
-    <property>/sim/current-view/internal</property>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>230</value>
+     </greater-than>
+    </and>
    </condition>
-   <x>157</x>
-   <y>180</y>
+   <x>365</x>
+   <y>390</y>
    <w>40</w>
    <h>10</h>
+  </instrument>
+
+<!-- main tranks -->
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 5 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[4]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[4]/over-full-lb</over-full-select>
+   </params>
+   <x>115</x>
+   <y>590</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 5 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[4]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[4]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[4]/content-lb</content-select>
+   </params>
+   <x>57</x>
+   <y>550</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 6 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[5]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[5]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[5]/content-lb</content-select>
+   </params>
+   <x>57</x>
+   <y>420</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 7 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[6]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[6]/over-full-lb</over-full-select>
+   </params>
+   <x>720</x>
+   <y>590</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 7 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[6]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[6]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[6]/content-lb</content-select>
+   </params>
+   <x>662</x>
+   <y>550</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 8 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[7]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[7]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[7]/content-lb</content-select>
+   </params>
+   <x>662</x>
+   <y>420</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- engine tanks -->
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 1 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[0]/content-lb</content-select>
+   </params>
+   <x>-42</x>
+   <y>340</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 1 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[0]/over-full-lb</over-full-select>
+   </params>
+   <x>140</x>
+   <y>370</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-u-full.xml">
+   <name>Tank 1 under full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>240</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+    <under-full-select>/consumables/fuel/tank[0]/under-full-lb</under-full-select>
+   </params>
+   <x>140</x>
+   <y>345</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-low-level.xml">
+   <name>Tank 1 low level</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>240</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+    <low-level-select>/consumables/fuel/tank[0]/low-level-lb</low-level-select>
+   </params>
+   <x>140</x>
+   <y>320</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 2 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[1]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[1]/content-lb</content-select>
+   </params>
+   <x>140</x>
+   <y>340</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 2 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[1]/over-full-lb</over-full-select>
+   </params>
+   <x>322</x>
+   <y>370</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-u-full.xml">
+   <name>Tank 2 under full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>230</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+    <under-full-select>/consumables/fuel/tank[1]/under-full-lb</under-full-select>
+   </params>
+   <x>322</x>
+   <y>345</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-low-level.xml">
+   <name>Tank 2 low level</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>230</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+    <low-level-select>/consumables/fuel/tank[1]/low-level-lb</low-level-select>
+   </params>
+   <x>322</x>
+   <y>320</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 3 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>305</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[2]/over-full-lb</over-full-select>
+   </params>
+   <x>523</x>
+   <y>370</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-u-full.xml">
+   <name>Tank 3 under full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>305</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+    <under-full-select>/consumables/fuel/tank[2]/under-full-lb</under-full-select>
+   </params>
+   <x>523</x>
+   <y>345</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-low-level.xml">
+   <name>Tank 3 low level</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>305</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+    <low-level-select>/consumables/fuel/tank[2]/low-level-lb</low-level-select>
+   </params>
+   <x>523</x>
+   <y>320</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 3 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>300</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[2]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[2]/content-lb</content-select>
+   </params>
+   <x>510</x>
+   <y>340</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 4 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[3]/over-full-lb</over-full-select>
+   </params>
+   <x>705</x>
+   <y>370</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-u-full.xml">
+   <name>Tank 4 under full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+    <under-full-select>/consumables/fuel/tank[3]/under-full-lb</under-full-select>
+   </params>
+   <x>705</x>
+   <y>345</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-low-level.xml">
+   <name>Tank 4 low level</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+    <low-level-select>/consumables/fuel/tank[3]/low-level-lb</low-level-select>
+   </params>
+   <x>705</x>
+   <y>320</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 4 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>290</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>210</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[3]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[3]/content-lb</content-select>
+   </params>
+   <x>692</x>
+   <y>340</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- rear tanks -->
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 11 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[10]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[10]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[10]/content-lb</content-select>
+   </params>
+   <x>367</x>
+   <y>280</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-o-full.xml">
+   <name>Tank 11 over full</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>225</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <lbs-select>/consumables/fuel/tank[10]/level-lb</lbs-select>
+    <over-full-select>/consumables/fuel/tank[10]/over-full-lb</over-full-select>
+   </params>
+   <x>427</x>
+   <y>260</y>
+   <w>52</w>
+   <h>26</h>
+  </instrument>
+
+<!-- cross pumps -->
+
+  <instrument include="Instruments/concorde-pump-cross.xml">
+   <name>Cross pump left</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>190</x>
+   <y>240</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-cross.xml">
+   <name>Cross pump right</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>300</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>660</x>
+   <y>240</y>
+   <w>45</w>
+   <h>23</h>
   </instrument>
 
  </instruments>

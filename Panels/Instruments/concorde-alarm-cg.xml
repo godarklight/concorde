@@ -13,53 +13,37 @@
   <layer>
    <name>Alarm light</name>
    <type>switch</type>
-    <layer>
-     <name>on</name>
-     <condition>
-      <or>
-       <less-than>
-        <property>instrumentation/cg/percent</property>
-        <property n="1">instrumentation/cg/min-percent</property>
-       </less-than>
-       <greater-than>
-        <property>instrumentation/cg/percent</property>
-        <property n="1">instrumentation/cg/max-percent</property>
-       </greater-than>
-      </or>
-     </condition>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.0</y1>
-     <x2>0.5</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
-    <layer>
-     <name>off</name>
-     <condition>
-      <and>
-       <greater-than-equals>
-        <property>instrumentation/cg/percent</property>
-        <property n="1">instrumentation/cg/min-percent</property>
-       </greater-than-equals>
-       <less-than-equals>
-        <property>instrumentation/cg/percent</property>
-        <property n="1">instrumentation/cg/max-percent</property>
-       </less-than-equals>
-      </and>
-     </condition>
-     <texture>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-cg.xml">
+      <equals>
+       <property>/instrumentation/test-overhead/on</property>
+       <value>0.0</value>
+      </equals>
+     </or>
+    </condition>
+    <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>0.25</x2>
      <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
    </layer>
   </layer>
 

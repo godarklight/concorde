@@ -12,58 +12,48 @@
 
   <layer>
    <name>T/O Center of Gravity</name>
-    <type>switch</type>
-     <layer>
-      <condition>
-       <not>
-        <property>/instrumentation/cg/max-performance-to</property>
-       </not>
-      </condition>
-      <name>on</name>
-      <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-      <x1>0.0</x1>
-      <y1>0.74</y1>
-      <x2>0.25</x2>
-      <y2>1.0</y2>
-      </texture>
-      <w>40</w>
-      <h>40</h>
-    <transformations>
-      <transformation>
-      <type>y-shift</type>
-      <offset>3</offset>
-      </transformation>
-    </transformations>
-    </layer>
-    <layer>
-    <name>off</name>
+   <type>switch</type>
+   <layer>
+    <name>normal</name>
+    <condition>
+     <not>
+      <property>/instrumentation/cg/max-performance-to</property>
+     </not>
+    </condition>
     <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.31</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.74</y1>
+     <x2>0.25</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>40</w>
+    <h>40</h>
+    <transformations>
+     <transformation>
+      <type>y-shift</type>
+      <offset>2.75</offset>
+     </transformation>
+    </transformations>
+   </layer>
+   <layer>
+    <name>54 percent</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.31</y2>
     </texture>
     <w>40</w>
     <h>47</h>
-    </layer>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>0</offset>
-      </transformation>
-    <transformation>
-    <type>y-shift</type>
-    <offset>0</offset>
-    </transformation>
-   </transformations>
+   </layer>
   </layer>
 
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>13</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -78,7 +68,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-92</offset>
+     <offset>-82</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -90,7 +80,7 @@
   <layer>
    <name>Norm Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>13</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -105,11 +95,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-25</offset>
+     <offset>-22</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>29</offset>
+     <offset>30</offset>
     </transformation>
    </transformations>
   </layer>
@@ -117,7 +107,7 @@
   <layer>
    <name>54% Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>13</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -132,11 +122,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-16</offset>
+     <offset>-13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-33</offset>
+     <offset>-34</offset>
     </transformation>
    </transformations>
   </layer>
@@ -155,6 +145,10 @@
    <binding>
     <command>property-toggle</command>
     <property>/instrumentation/cg/max-performance-to</property>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+
+<!-- Concorde 3D ENGINEER fuel panel (top)
+
+Like the real one.
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde Engineer Fuel Panel Top</name>
+ <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
+ <w>1024</w>
+ <h>508</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+<!-- jettison -->
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump</dump-ctrl>
+   </params>
+   <x>647</x>
+   <y>480</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump (confirm)</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>285</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump2</dump-ctrl>
+   </params>
+   <x>697</x>
+   <y>480</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+<!-- trim tanks -->
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 9 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>305</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[8]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[8]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[8]/content-lb</content-select>
+   </params>
+   <x>330</x>
+   <y>440</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 10 display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>305</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>230</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[9]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[9]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[9]/content-lb</content-select>
+   </params>
+   <x>330</x>
+   <y>355</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- rear tanks -->
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 5A display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[11]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[11]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[11]/content-lb</content-select>
+   </params>
+   <x>120</x>
+   <y>355</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 7A display</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/engineer-seat</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>295</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>220</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[12]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[12]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[12]/content-lb</content-select>
+   </params>
+   <x>540</x>
+   <y>355</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

@@ -6,8 +6,13 @@
 <PropertyList>
 
  <name>Digital IVSI display</name>
- <w-base>10</w-base>
- <h-base>40</h-base>
+ <w-base>100</w-base>
+ <h-base>200</h-base>
+
+ <params>
+  <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
+ </params>
+
 
  <layers>
 
@@ -16,8 +21,8 @@
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>38</w>
-    <h>75</h>
+    <w>48</w>
+    <h>85</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -25,285 +30,313 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>60</offset>
+     <offset>55</offset>
     </transformation>
    </transformations>
   </layer>
 
-<!-- BACKGROUND -->
+<!-- DOWN -->
 
   <layer>
-   <name>background (DN)</name>
-   <condition>
+   <name>background</name>
+   <type>switch</type>
+
+   <layer>
+    <name>down</name>
+    <type>group</type>
+    <condition>
      <less-than-equals>
       <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
       <value>0.008</value> <!-- avoids flikker on ground -->
      </less-than-equals>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-ground-bg.rgb</path>
-   </texture>
-    <w>35</w>
-    <h>70</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>15</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>60</offset>
-    </transformation>
-   </transformations>
+    </condition>
+
+    <layer>
+     <name>background (DN)</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-ground-bg.rgb</path>
+     </texture>
+     <w>45</w>
+     <h>80</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>15</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>55</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>Title (DN)</name>
+     <type>text</type>
+     <point-size>16</point-size>
+     <color>
+      <red>1.0</red>
+      <green>1.0</green>
+      <blue>1.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>DN</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-11</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-31</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>Vertical speed</name>
+     <type>switch</type>
+
+     <layer>
+      <name>VSI display (ground 0 plus)</name>
+      <condition>
+       <greater-than-equals>
+        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>0.0</value>
+       </greater-than-equals>
+      </condition>
+      <type>text</type>
+      <font>led</font>
+      <point-size>7</point-size>
+      <color>
+       <red>1.0</red>
+       <green>1.0</green>
+       <blue>1.0</blue>
+      </color>
+      <chunks>
+       <chunk>
+        <type>number-value</type>
+        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+        <format>%1.1f</format> <!-- can be negativ (sign) -->
+        <scale>0.06</scale> <!-- X 60 -->
+       </chunk>
+      </chunks>
+      <transformations>
+       <transformation>
+        <type>x-shift</type>
+        <offset>0</offset>
+       </transformation>
+       <transformation>
+        <type>y-shift</type>
+        <offset>48</offset>
+       </transformation>
+      </transformations>
+     </layer>
+
+     <layer>
+      <name>VSI display (ground 0 minus)</name>
+      <condition>
+       <and>
+        <less-than>
+         <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+         <value>0.0</value>
+        </less-than>
+        <greater-than-equals>
+         <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+         <value>-0.008</value>
+        </greater-than-equals>
+       </and>
+      </condition>
+      <type>text</type>
+      <font>led</font>
+      <point-size>7</point-size>
+      <color>
+       <red>1.0</red>
+       <green>1.0</green>
+       <blue>1.0</blue>
+      </color>
+      <chunks>
+       <chunk>
+        <type>number-value</type>
+        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+        <format>%1.1f</format> <!-- can be negativ (sign) -->
+        <scale>-0.06</scale> <!-- X 60 -->
+       </chunk>
+      </chunks>
+      <transformations>
+       <transformation>
+        <type>x-shift</type>
+        <offset>0</offset>
+       </transformation>
+       <transformation>
+        <type>y-shift</type>
+        <offset>48</offset>
+       </transformation>
+      </transformations>
+     </layer>
+
+     <layer>
+      <name>VSI display (DN)</name>
+      <condition>
+       <less-than>
+        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-0.008</value>
+       </less-than>
+      </condition>
+      <type>text</type>
+      <font>led</font>
+      <point-size>7</point-size>
+      <color>
+       <red>1.0</red>
+       <green>1.0</green>
+       <blue>1.0</blue>
+      </color>
+      <chunks>
+       <chunk>
+        <type>number-value</type>
+        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+        <format>%1.1f</format> <!-- can be negativ (sign) -->
+        <scale>-0.06</scale> <!-- X 60 -->
+       </chunk>
+      </chunks>
+      <transformations>
+       <transformation>
+        <type>x-shift</type>
+        <offset>0</offset>
+       </transformation>
+       <transformation>
+        <type>y-shift</type>
+        <offset>48</offset>
+       </transformation>
+      </transformations>
+     </layer>
+    </layer>
+
+   </layer>
+
+<!-- UP -->
+
+   <layer>
+    <name>up</name>
+    <type>group</type>
+
+    <layer>
+     <name>background (UP)</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-azure-sky-bg.rgb</path>
+     </texture>
+     <w>45</w>
+     <h>80</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>15</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>55</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>Title (UP)</name>
+     <type>text</type>
+     <point-size>16</point-size>
+     <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>1.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>UP</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+      <type>x-shift</type>
+      <offset>-11</offset>
+     </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-31</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>VSI display (UP)</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>1.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+       <format>%1.1f</format> <!-- can be negativ (sign) -->
+       <scale>0.06</scale> <!-- X 60 -->
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>0</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>48</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+
   </layer>
 
-  <layer>
-   <name>background (UP)</name>
-   <condition>
-     <greater-than>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value>
-     </greater-than>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-azure-sky-bg.rgb</path>
-   </texture>
-    <w>35</w>
-    <h>70</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>15</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>60</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-<!-- VERTICAL SPEED -->
+<!--DATUM --> 
 
   <layer>
    <condition>
-    <and>
-     <less-than-equals>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value>
-     </less-than-equals>
-     <greater-than-equals>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.0</value>
-     </greater-than-equals>
-    </and>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value>vertical-speed-hold</value>
+    </equals>
    </condition>
-   <name>VSI display (ground 0 plus)</name>
+   <name>Datum display</name>
    <type>text</type>
    <font>led</font>
-   <point-size>7</point-size>
+   <point-size>6</point-size>
    <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
+    <red>0.9</red>
+    <green>0.9</green>
+    <blue>0.0</blue>
    </color>
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-     <format>%1.1f</format> <!-- can be negativ (sign) -->
-     <scale>0.06</scale> <!-- X 60 -->
+     <property>/autopilot/settings/vertical-speed-fpm/</property>
+     <format>%1.2f</format> <!-- can be negativ (sign) -->
+     <scale>0.001</scale>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>4</offset>
+     <offset>-3</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>64</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <condition>
-    <and>
-     <less-than>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.0</value>
-     </less-than>
-     <greater-than-equals>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>-0.008</value>
-     </greater-than-equals>
-    </and>
-   </condition>
-   <name>VSI display (ground 0 minus)</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-     <format>%1.1f</format> <!-- can be negativ (sign) -->
-     <scale>-0.06</scale> <!-- X 60 -->
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>64</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <condition>
-     <less-than>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>-0.008</value>
-     </less-than>
-   </condition>
-   <name>VSI display (DN)</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-     <format>%1.1f</format> <!-- can be negativ (sign) -->
-     <scale>-0.06</scale> <!-- X 60 -->
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>64</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <condition>
-     <greater-than>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value>
-     </greater-than>
-   </condition>
-   <name>VSI display (UP)</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>0.5</red>
-    <green>0.5</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-     <format>%1.1f</format> <!-- can be negativ (sign) -->
-     <scale>0.06</scale> <!-- X 60 -->
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>64</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-<!-- UP / DOWN -->
-
-  <layer>
-   <name>Title (DN)</name>
-   <condition>
-     <less-than-equals>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value>
-     </less-than-equals>
-   </condition>
-   <type>text</type>
-   <point-size>16</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>DN</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>3</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>35</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title (UP)</name>
-   <condition>
-     <greater-than>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value>
-     </greater-than>
-   </condition>
-   <type>text</type>
-   <point-size>16</point-size>
-   <color>
-    <red>0.5</red>
-    <green>0.5</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>UP</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>35</offset>
+     <offset>48</offset>
     </transformation>
    </transformations>
   </layer>
@@ -311,32 +344,165 @@
 <!-- UNIT -->
 
   <layer>
-   <name>Title</name>
-   <type>text</type>
-   <point-size>10</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>FT/MINx1000</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-20</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>7</offset>
-    </transformation>
-   </transformations>
+   <name>Unit</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Unit small</name>
+    <condition>
+     <not>
+      <property>/sim/panel/visibility</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>FT/MINx1000</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-5</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Unit 2D panel</name>
+    <type>text</type>
+    <point-size>10</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>FT/MINx1000</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-17</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Minus 100</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value>vertical-speed-hold</value>
+    </equals>
+   </condition>
+   <x>0</x>
+   <y>20</y>
+   <w>15</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/tcr-ctrl"/>
+    <step>-100</step>
+    <min>-6000</min>
+    <max>6000</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 10</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value>vertical-speed-hold</value>
+    </equals>
+   </condition>
+   <x>15</x>
+   <y>20</y>
+   <w>15</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/tcr-ctrl"/>
+    <step>-10</step>
+    <min>-6000</min>
+    <max>6000</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 100</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value>vertical-speed-hold</value>
+    </equals>
+   </condition>
+   <x>0</x>
+   <y>70</y>
+   <w>15</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/tcr-ctrl"/>
+    <step>100</step>
+    <min>-6000</min>
+    <max>6000</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/altitude</property>
+     <value>vertical-speed-hold</value>
+    </equals>
+   </condition>
+   <x>15</x>
+   <y>70</y>
+   <w>15</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/tcr-ctrl"/>
+    <step>10</step>
+    <min>-6000</min>
+    <max>6000</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

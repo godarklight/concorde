@@ -8,7 +8,6 @@
  <h-base>28</h-base>
 
  <params>
-  <starter>/engines/engine[0]/cutoff</starter>
   <control-starter>/controls/engines/engine[0]/starter</control-starter>
  </params>
 
@@ -18,32 +17,34 @@
   <layer>
    <name>Starter light</name>
    <type>switch</type>
-    <layer>
-     <condition>
-      <property alias="../../../../../params/starter"/>
-     </condition>
-     <name>on</name>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.3</x1>
-     <y1>0.0</y1>
-     <x2>0.45</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>28</w>
-     <h>28</h>
-    </layer>
-    <layer>
-     <name>off</name>
-     <texture>
+   <layer>
+    <name>off</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/control-starter"/>
+     </not>
+    </condition>
+    <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>0.25</x2>
      <y2>0.095</y2>
-     </texture>
-     <w>28</w>
-     <h>28</h>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.3</x1>
+     <y1>0.0</y1>
+     <x2>0.45</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>28</w>
+    <h>28</h>
    </layer>
   </layer>
 
@@ -99,6 +100,10 @@
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/control-starter"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
  </actions>

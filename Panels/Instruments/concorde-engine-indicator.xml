@@ -2,7 +2,7 @@
 
 <!-- Engine indicator lights :
 
-- contingency doesn't exist in Flightgear.
+- configuration doesn't exist in Flightgear.
 - reverser is not implemented by JBSim.
 
 -->
@@ -15,11 +15,13 @@
 
  <params>
   <running-select>/engines/engine[0]/running</running-select>
-  <contingency-select>/engines/engine[0]/contingency</contingency-select>
+  <configuration-select>/engines/engine[0]/configuration</configuration-select>
   <reverser-select>/engines/engine[0]/reversed</reverser-select>
  </params>
 
  <layers>
+
+<!-- GO LIGHT -->
 
  <layer>
   <name>go light</name>
@@ -27,10 +29,7 @@
   <layer>
    <name>On</name>
    <condition>
-    <equals>
-     <property alias="../../../../../../params/running-select"/>
-     <value>true</value>
-    </equals>
+    <property alias="../../../../../params/running-select"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -95,19 +94,23 @@
    </transformations>
   </layer>
 
+<!-- CONFIGURATION -->
+
  <layer>
-  <name>contingency light</name>
-   <type>switch</type>
+  <name>configuration light</name>
+  <type>switch</type>
   <layer>
+   <name>Off</name>
    <condition>
-    <property alias="../../../../../params/contingency-select"/>
+    <not>
+     <property alias="../../../../../../params/configuration-select"/>
+    </not>
    </condition>
-   <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.33</x1>
+    <x1>0.0</x1>
     <y1>0.0</y1>
-    <x2>0.42</x2>
+    <x2>0.25</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>
@@ -124,12 +127,12 @@
    </transformations>
   </layer>
   <layer>
-   <name>Off</name>
+   <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
+    <x1>0.33</x1>
     <y1>0.0</y1>
-    <x2>0.25</x2>
+    <x2>0.42</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>
@@ -148,7 +151,7 @@
  </layer>
 
   <layer>
-   <name>background contingency</name>
+   <name>background configuration</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
    </texture>
@@ -167,7 +170,7 @@
   </layer>
 
   <layer>
-   <name>Title contingency</name>
+   <name>Title configuration</name>
    <type>text</type>
    <point-size>11</point-size>
    <color>
@@ -184,7 +187,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>16</offset>
+     <offset>17</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -193,19 +196,23 @@
    </transformations>
   </layer>
 
+<!-- REVERSER -->
+
  <layer>
   <name>reverser light</name>
-   <type>switch</type>
+  <type>switch</type>
   <layer>
+   <name>Off</name>
    <condition>
-    <property alias="../../../../../params/reverser-select"/>
+    <not>
+     <property alias="../../../../../../params/reverser-select"/>
+    </not>
    </condition>
-   <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.33</x1>
+    <x1>0.0</x1>
     <y1>0.0</y1>
-    <x2>0.42</x2>
+    <x2>0.25</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>
@@ -222,12 +229,12 @@
    </transformations>
   </layer>
   <layer>
-   <name>Off</name>
+   <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
+    <x1>0.33</x1>
     <y1>0.0</y1>
-    <x2>0.25</x2>
+    <x2>0.42</x2>
     <y2>0.095</y2>
    </texture>
    <w>30</w>

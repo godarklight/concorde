@@ -15,13 +15,25 @@
    <name>darken background</name>
    <type>switch</type>
     <layer>
-     <name>on</name>
+     <name>off</name>
      <condition>
-      <equals>
+      <not-equals>
        <property>/autopilot/route-manager/wp/id</property>
        <value>NOT-USED</value>
-      </equals>
-    </condition>
+      </not-equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>on</name>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.25</x1>
@@ -32,18 +44,6 @@
      <w>104</w>
      <h>26</h>
     </layer>
-    <layer>
-     <name>off</name>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-   </layer>
   </layer>
 
   <layer>
@@ -86,176 +86,165 @@
    </transformations>
   </layer>
 
-  <layer>
-   <name>Miles overflow</name>
-   <condition>
-    <and>
-     <greater-than>
-      <property>/autopilot/route-manager/wp/dist</property>
-      <value type="double">9999.0</value>
-     </greater-than>
-     <equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </equals>
-    </and>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>14</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.85</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>9999</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-40</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-12</offset>
-    </transformation>
-   </transformations>
-  </layer>
+<!-- INS -->
 
   <layer>
    <name>Miles</name>
-   <condition>
-    <and>
-     <less-than-equals>
-      <property>/autopilot/route-manager/wp/dist</property>
-      <value type="double">9999.0</value>
-     </less-than-equals>
-     <equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </equals>
-    </and>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>14</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.85</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/autopilot/route-manager/wp/dist</property>
-     <format>%4.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-40</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-12</offset>
-    </transformation>
-   </transformations>
-  </layer>
+   <type>switch</type>
 
-  <layer>
-   <name>DME 1 overflow</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <greater-than>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">9999.0</value>
-     </greater-than>
+   <layer>
+    <name>INS</name>
+    <type>switch</type>
+    <condition>
      <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>1</value>
-     </equals>
-     <not-equals>
       <property>/autopilot/locks/horizontal</property>
       <value>ins</value>
-     </not-equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>14</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.85</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>9999</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-40</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-12</offset>
-    </transformation>
-   </transformations>
-  </layer>
+     </equals>
+    </condition>
 
-  <layer>
-   <name>DME 1 distance</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <less-than-equals>
-      <property>/instrumentation/dme/indicated-distance-nm</property>
-      <value type="double">9999.0</value>
-     </less-than-equals>
-     <equals>
-      <property>/instrumentation/dme/switch-position</property>
-      <value>1</value>
-     </equals>
-     <not-equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </not-equals>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>14</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.85</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/dme/indicated-distance-nm</property>
-     <format>%4.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-40</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-12</offset>
-    </transformation>
-   </transformations>
+    <layer>
+     <name>INS distance</name>
+     <condition>
+      <less-than-equals>
+       <property>/autopilot/route-manager/wp/dist</property>
+       <value type="double">9999.0</value>
+      </less-than-equals>
+     </condition>
+     <type>text</type>
+     <font>led</font>
+     <point-size>14</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/autopilot/route-manager/wp/dist</property>
+       <format>%4.0f</format>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-40</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-12</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>INS overflow</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>14</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>9999</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-40</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-12</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+
+<!-- DME -->
+
+   <layer>
+    <name>Miles DME</name>
+    <type>switch</type>
+    <condition>
+     <and>
+      <property>/instrumentation/dme/in-range</property>
+      <equals>
+       <property>/instrumentation/dme/switch-position</property>
+       <value>1</value>
+      </equals>
+     </and>
+    </condition>
+
+    <layer>
+     <name>DME 1 distance</name>
+     <type>text</type>
+     <condition>
+      <less-than-equals>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <value type="double">9999.0</value>
+      </less-than-equals>
+     </condition>
+     <font>led</font>
+     <point-size>14</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/instrumentation/dme/indicated-distance-nm</property>
+       <format>%4.0f</format>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-40</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-12</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>DME 1 overflow</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>14</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>9999</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-40</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-12</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+
   </layer>
 
  </layers>

@@ -2,133 +2,136 @@
 
 <!-- Disable flight director -->
 
+
 <PropertyList>
 
- <name>Flight Director</name>
+ <name>Disable flight director</name>
  <w-base>104</w-base>
  <h-base>36</h-base>
 
 
  <layers>
-  <layer>
-   <name>background enabled</name>
-   <condition>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-1</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>1</offset>
-    </transformation>
-   </transformations>
-  </layer>
 
   <layer>
-   <name>background</name>
-   <condition>
-    <not>
+   <name>Switch</name>
+   <type>switch</type>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+    <condition>
      <property>/instrumentation/attitude-indicator/config/flight-director</property>
-    </not>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-1</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-10</offset>
-    </transformation>
-   </transformations>
-   <w>104</w>
-   <h>26</h>
-  </layer>
+    </condition>
 
-  <layer>
-   <name>Title enabled</name>
-   <condition>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
-   </condition>
-   <type>text</type>
-   <point-size>46</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>FD</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-31</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-4</offset>
-    </transformation>
-   </transformations>
-  </layer>
+    <layer>
+     <name>switch enabled</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>1</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>1</offset>
+      </transformation>
+     </transformations>
+    </layer>
+    <layer>
+     <name>Title enabled</name>
+     <type>text</type>
+     <point-size>46</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>FD</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-29</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-4</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
 
-  <layer>
-   <name>Title</name>
-   <condition>
-    <not>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
-    </not>
-   </condition>
-   <type>text</type>
-   <point-size>46</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>FD</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-31</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-15</offset>
-    </transformation>
-   </transformations>
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <layer>
+     <name>switch off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>1</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-10</offset>
+      </transformation>
+     </transformations>
+    </layer>
+    <layer>
+     <name>Title</name>
+     <type>text</type>
+     <point-size>46</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>FD</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-29</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-5</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
   </layer>
 
  </layers>
  
  <actions>
+
+<!-- unable to set a boolean with Nasal ! -->
 
   <action>
    <desc>Enable flight director</desc>
@@ -138,8 +141,16 @@
    <w>104</w>
    <h>37</h>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.fdexport();</script>
+   </binding>
+   <binding>
     <command>property-toggle</command>
     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

@@ -15,12 +15,109 @@
 
   <layer>
    <name>background</name>
-   <condition>
-    <or>
-     <less-than-equals>
+   <type>switch</type>
+
+   <layer>
+    <name>background normal</name>
+    <condition>
+     <or>
+      <less-than-equals>
+       <property>/surface-positions/flap-pos-norm</property>
+       <value>0.34</value>
+      </less-than-equals>
+      <and>
+       <greater-than>
+        <property>/surface-positions/flap-pos-norm</property>
+        <value>0.65</value>
+       </greater-than>
+       <less-than>
+        <property>/surface-positions/flap-pos-norm</property>
+        <value>0.69</value>
+       </less-than>
+      </and>
+      <equals>
+       <property>/surface-positions/flap-pos-norm</property>
+       <value>1.0</value>
+      </equals>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    </texture>
+    <w>60</w>
+    <h>50</h>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>46</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>21</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>background transit</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>60</w>
+    <h>50</h>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>46</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>21</offset>
+     </transformation>
+    </transformations>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Nose down</name>
+    <condition>
+     <equals>
       <property>/surface-positions/flap-pos-norm</property>
-      <value>0.34</value>
-     </less-than-equals>
+      <value>1.0</value>
+     </equals>
+    </condition>
+    <type>text</type>
+    <point-size>16</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>DOWN</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>19</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>17</offset>
+     </transformation>
+    </transformations>
+   </layer>
+ 
+   <layer>
+    <name>Nose 5 deg</name>
+    <condition>
      <and>
       <greater-than>
        <property>/surface-positions/flap-pos-norm</property>
@@ -31,173 +128,64 @@
        <value>0.69</value>
       </less-than>
      </and>
-     <equals>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>1.0</value>
-     </equals>
-    </or>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
-   </texture>
-    <w>60</w>
-    <h>50</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>46</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>21</offset>
-    </transformation>
-   </transformations>
-  </layer>
+    </condition>
+    <type>text</type>
+    <point-size>17</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>5 DEG</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>17</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>17</offset>
+     </transformation>
+    </transformations>
+   </layer>
 
-  <layer>
-   <name>background transit</name>
-   <condition>
-    <and>
-     <greater-than>
+   <layer>
+    <name>Nose up</name>
+    <condition>
+     <less-than-equals>
       <property>/surface-positions/flap-pos-norm</property>
       <value>0.34</value>
-     </greater-than>
-     <or>
-      <less-than-equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.65</value>
-      </less-than-equals>
-      <greater-than-equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.69</value>
-      </greater-than-equals>
-     </or>
-     <less-than>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>1.0</value>
-     </less-than>
-    </and>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
-   </texture>
-    <w>60</w>
-    <h>50</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>46</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>21</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Nose up</name>
-   <condition>
-    <less-than-equals>
-     <property>/surface-positions/flap-pos-norm</property>
-     <value>0.34</value>
-    </less-than-equals>
-   </condition>
-   <type>text</type>
-   <point-size>17</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>UP</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>35</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>17</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Nose 5 deg</name>
-   <condition>
-    <and>
-     <greater-than>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>0.65</value>
-     </greater-than>
-     <less-than>
-      <property>/surface-positions/flap-pos-norm</property>
-      <value>0.69</value>
-     </less-than>
-    </and>
-   </condition>
-   <type>text</type>
-   <point-size>17</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>5 DEG</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>17</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>17</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Nose down</name>
-   <condition>
-    <equals>
-     <property>/surface-positions/flap-pos-norm</property>
-     <value>1.0</value>
-    </equals>
-   </condition>
-   <type>text</type>
-   <point-size>16</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>DOWN</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>19</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>17</offset>
-    </transformation>
-   </transformations>
+     </less-than-equals>
+    </condition>
+    <type>text</type>
+    <point-size>17</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>UP</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>35</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>17</offset>
+     </transformation>
+    </transformations>
+   </layer>
   </layer>
 
   <layer>

@@ -80,7 +80,7 @@ CR : max CRuise engaged shortly after Mach 2, is an extension of Max Climb. If t
      disengage, and Max Cruise will re-engage. It also prevents the aircraft exceeding the maximum operating temperature
      (TMO) of 127 deg Celsius on the tip of the nose. 
 IP : Indicated Air Speed Hold (current), with pitch
-VS : Vertical Speed
+VS : Vertical Speed Hold
 AH : Altitude Hold (current)
 AA : Altitude Acquire (dial)
 AS : Altitude Select.
@@ -336,6 +336,14 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- dials -->
 
+  <instrument include="Instruments/concorde-alarm-land.xml">
+   <name>Alarm on Autoland</name>
+   <x>117</x>
+   <y>435</y>
+   <w>50</w>
+   <h>20</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-ap-disable-at.xml">
    <name>Autothrottle</name>
    <x>200</x>
@@ -388,18 +396,6 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>30</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-ap-vertical-speed.xml">
-   <name>Vertical speed dial</name>
-   <params>
-    <tcr-disp>/autopilot/settings/vertical-speed-fpm</tcr-disp>
-    <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
-   </params>
-   <x>540</x>
-   <y>437</y>
-   <w>100</w>
-   <h>29</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-ap-disable-fd.xml">
    <name>Flight director</name>
    <x>650</x>
@@ -442,7 +438,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-alarm-gear.xml">
    <name>Alarm on Gear</name>
-   <x>190</x>
+   <x>155</x>
    <y>388</y>
    <w>50</w>
    <h>20</h>
@@ -450,15 +446,23 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-alarm-cg.xml">
    <name>Alarm on Center of Gravity</name>
-   <x>245</x>
+   <x>210</x>
    <y>388</y>
    <w>50</w>
    <h>20</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-ils-deviation.xml">
+   <name>ILS deviation</name>
+   <x>375</x>
+   <y>388</y>
+   <w>22</w>
+   <h>11</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-warning-land.xml">
    <name>Warning on Autoland</name>
-   <x>390</x>
+   <x>410</x>
    <y>388</y>
    <w>50</w>
    <h>20</h>
@@ -600,8 +604,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>Vsi display</name>
    <x>510</x>
    <y>278</y>
-   <w>10</w>
-   <h>40</h>
+   <w>100</w>
+   <h>200</h>
   </instrument>
 
   <instrument include="Instruments/concorde-radio-alt.xml">
@@ -630,7 +634,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- CAPTAIN far right -->
 
-  <instrument include="Instruments/concorde-horizon.xml">
+  <instrument include="Instruments/concorde-standby-hor.xml">
    <name>Standby Attitude Indicator</name>
    <x>707</x>
    <y>330</y>
@@ -697,7 +701,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-cg.xml">
    <name>Center of Gravity</name>
    <x>730</x>
-   <y>75</y>
+   <y>50</y>
    <w>16</w>
    <h>50</h>
   </instrument>
@@ -959,13 +963,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <y>524</y>
   </instrument>
 
-  <instrument include="Instruments/concorde-alarm-speed.xml">
-   <name>Alarm on Overspeed</name>
-   <x>850</x>
-   <y>50</y>
-   <w>50</w>
-   <h>20</h>
-  </instrument>
+<!-- copy from CENTER PANEL -->
 
   <instrument include="Instruments/concorde-warning-park.xml">
    <name>Warning on Parking Break</name>

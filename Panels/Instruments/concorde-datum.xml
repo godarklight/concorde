@@ -26,12 +26,12 @@ in the basic heading mode.
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>80</w>
+    <w>60</w>
     <h>30</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-55</offset>
+     <offset>-65</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -53,7 +53,7 @@ in the basic heading mode.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/autopilot/datum/speed-kt</property>
+     <property>/autopilot/datum/speed</property>
      <format>%2.0f</format>
     </chunk>
    </chunks>
@@ -72,7 +72,7 @@ in the basic heading mode.
   <layer>
    <name>Title autothrottle</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -99,7 +99,7 @@ in the basic heading mode.
   <layer>
    <name>Increment</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -126,7 +126,7 @@ in the basic heading mode.
   <layer>
    <name>Decrement</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -157,12 +157,12 @@ in the basic heading mode.
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>80</w>
+    <w>60</w>
     <h>30</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>85</offset>
+     <offset>100</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -184,14 +184,14 @@ in the basic heading mode.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/autopilot/datum/pitch-deg</property>
+     <property>/autopilot/datum/altitude</property>
      <format>%2.0f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>70</offset>
+     <offset>88</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -203,7 +203,7 @@ in the basic heading mode.
   <layer>
    <name>Title autopilot</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -218,7 +218,7 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>17</offset>
+     <offset>42</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -230,7 +230,7 @@ in the basic heading mode.
   <layer>
    <name>Nose down</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -245,7 +245,7 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>40</offset>
+     <offset>65</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -257,7 +257,7 @@ in the basic heading mode.
   <layer>
    <name>Nose up</name>
    <type>text</type>
-   <point-size>13</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -272,7 +272,7 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>50</offset>
+     <offset>73</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -288,52 +288,78 @@ in the basic heading mode.
   <action>
    <name>Plus 1 kt / 0.01 Mach</name>
    <button>0</button>
-   <x>-90</x>
+   <x>-100</x>
    <y>0</y>
    <w>70</w>
    <h>17</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.datumthrottleexport(1.0);</script>
+    <script>globals.Concorde.datumatexport(1.0);</script>
    </binding>
   </action>
 
   <action>
    <name>Minus 1 kt / 0.01 Mach</name>
    <button>0</button>
-   <x>-90</x>
+   <x>-100</x>
    <y>-59</y>
    <w>70</w>
    <h>17</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.datumthrottleexport(-1.0);</script>
+    <script>globals.Concorde.datumatexport(-1.0);</script>
    </binding>
   </action>
 
   <action>
-   <name>Minus 1 deg</name>
+   <name>Minus altitude</name>
    <button>0</button>
-   <x>49</x>
+   <x>64</x>
    <y>0</y>
-   <w>70</w>
+   <w>33</w>
    <h>17</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.datumpitchexport(-1.0);</script>
+    <script>globals.Concorde.datumapexport(-1.0);</script>
    </binding>
   </action>
 
   <action>
-   <name>Plus 1 deg</name>
+   <name>Minus altitude (slow)</name>
    <button>0</button>
-   <x>49</x>
-   <y>-59</y>
-   <w>70</w>
+   <x>101</x>
+   <y>0</y>
+   <w>33</w>
    <h>17</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.datumpitchexport(1.0);</script>
+    <script>globals.Concorde.datumapexport(-0.1);</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus altitude</name>
+   <button>0</button>
+   <x>64</x>
+   <y>-59</y>
+   <w>33</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumapexport(1.0);</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus altitude (slow)</name>
+   <button>0</button>
+   <x>101</x>
+   <y>-59</y>
+   <w>33</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumapexport(0.1);</script>
    </binding>
   </action>
 

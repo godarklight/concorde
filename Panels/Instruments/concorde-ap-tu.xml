@@ -9,78 +9,76 @@
 
 
  <layers>
+
 <!-- translucent lens -->  
   <layer>
    <name>Button light</name>
    <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <not-equals>
+      <property>/autopilot/locks/vertical</property>
+      <value>turbulence</value>
+     </not-equals>
+    </condition>
+
     <layer>
-     <condition>
-      <equals>
-       <property>/autopilot/locks/vertical</property>
-       <value>turbulence</value>
-      </equals>
-     </condition>
-     <name>on</name>
+     <name>lamp off</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.37</x1>
-     <y1>0.0</y1>
-     <x2>0.38</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>0.25</x2>
+      <y2>0.095</y2>
      </texture>
      <w>104</w>
      <h>26</h>
     </layer>
     <layer>
-     <name>off</name>
+     <name>background</name>
      <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
      </texture>
      <w>104</w>
      <h>26</h>
+    </layer>
    </layer>
-  </layer>
 
-  <layer>
-   <name>background lighted</name>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>turbulence</value>
-    </equals>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
-  </layer>
-
-  <layer>
-   <name>background</name>
-   <condition>
-    <not-equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>turbulence</value>
-    </not-equals>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+   <layer>
+    <name>on</name>
+    <type>group</type>
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.37</x1>
+      <y1>0.0</y1>
+      <x2>0.38</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background lighted</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+   </layer>
   </layer>
 
   <layer>
@@ -123,6 +121,10 @@
    <binding>
     <command>nasal</command>
     <script>globals.Concorde.apturbulenceexport();</script>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

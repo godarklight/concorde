@@ -4,18 +4,18 @@ Weight (lbs) : max take off 408000, zero fuel 203000, operating empty 173500, ma
                max landing 245000.
 
 Speeds :
+    V max for jettison (fuel)                    : Mach 0.93.
+    V max for windscreen wiper operation         : 325 kt.
+    V visor down or operating                    : 325 kt.
+    V nose 5 or operating between UP and 5       : 325 kt.
+    V nose DOWN or operating between 5 and DOWN  : 270 kt (at altitudes below 20000 ft).
+    V landing lights                             : 270 kt.
     Vlo (landing gear operation)                 : 270 kt.
     Vle (landing gear extended)                  : 270 kt.
-    V visor down or operating                    : 325 kt.
-    V nose 5° or operating between UP and 5°     : 325 kt.
-    V nose DOWN or operating between 5° and DOWN : 270 kt (at altitudes below 20000 ft).
-    V landing lights                             : 270 kt.
     Vmc (minimum control speed with engine inoperative)
-    Vmcg (ground)                                : 116 kt.
-    Vmc (takeoff)                                : 132 kt.
     Vmcl (approach)                              : 150 kt.
-    V max for windscreen wiper operation         : 325 kt.
-    V max for jettison (fuel)                    : Mach 0.93.
+    Vmc (takeoff)                                : 132 kt.
+    Vmcg (ground)                                : 116 kt.
     Vla above 41000 ft (lowest autorized)        : 300 kt.
     Vla 15000/41000 ft                           : 250 kt.
     Vla below 15000 ft                           : VREF or V2 or V3.
@@ -52,10 +52,10 @@ Supersonic climb
 - start afterburner with VS at 3500 ft/minute; then decrease at 2500-1500-1000-700 ft/minute.
 - at Mach 1.1, drag starts to decrease.
 - stay inside the corridor of Mach/center of gravity. Below the minimum means a too high altitude for the current Mach
-speed : accelerate by reducing climb speed.
+  speed : accelerate by reducing climb speed.
 - if required (pressure/temperature) after Mach 1.2, reduce at 100 ft/minute to break the Mach 1.3 final barrier.
 - at Mach 1.3, air intakes open progressively, providing additional thrust. This is the hardest speed to reach,
-burning much fuel, which would be otherwise in excess at landing.
+  burning much fuel, which would be otherwise in excess at landing.
 - climb from Mach 0.95 (28000 ft) to Mach 1.7 (47000 ft) lasts 10 minutes (A).
 
 Supersonic cruise
@@ -75,14 +75,14 @@ Supersonic descent
 Landing
 -------
 - approach speed : 190 kt (A).
-- at 750 ft AGL, disable the autopilot, keep the trim of the glide slope mode; control with speed and pitch, touch down
-below 750 ft/minute : more speed enables to land with less pitch and vertical speed; more pitch reduces the descent rate.
+- at 750 ft AGL, disable autopilot and autothrottle, keep the trim of the glide slope mode;
+  maintain pitch at 10 degrees, control descent rate with speed (throttle).
 - the tail wheel protects the reversers from hitting the ground (A).
 
 
 Consumption
 ===========
-It decreases with altitude, from FL500 to FL580 (60 ft/min. during 2h10).
+Consumption decreases with altitude, from FL500 to FL580 (60 ft/min. during 2h10).
 Fuel must be just below 19000 kg with the direct route (short SID/STAR). So that it remains enough fuel, in case the
 SID/STAR becomes long.
 
@@ -135,26 +135,37 @@ Full at Mach 0.95 (530 kt true) FL260 : 19300 kg/h.
 Average (depends of altitude) at Mach 2.02 : 20500 kg/h.
 Empty at Mach 0.95 (525 kt true) FL380 : 12600 kg/h. 
 
-To increase the range, decrease the Mach drag at Mach 2.0.
+To increase the supersonic range, decrease the Mach drag at Mach 2.0.
 
 
 Customizing
 ===========
-Set file has 2 configurations (max payload) :
+If your preferences.xml doesn't have 6 views, update Concorde-set.xml.
+
+Fuel load
+---------
+Concorde-set.xml has 2 configurations (max payload) :
 - maximum landing weight, 245000 lb (19000 kg fuel).
 - maximum takeoff weight, 408000 lb (93000 kg fuel, London - New York) : put in comment the US gallons
-(inheritance from JBSim).
+  (inheritance from JSBSim).
 
 Sounds
 ------
-concorde-real-sound.xml tells, how to install real Concorde sounds.
+See concorde-real-sound.xml to install real Concorde sounds.
+
+Frame rate
+----------
+The number of instruments is :
+- optimized for a view at 55 degrees.
+- minimum straight forwards the Captain heading (landing) : press "shift up arrow" to align the view.
 
 
 Keyboard
 ========
 - "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
-- "ctrl-E" : toggles "E"ngineer/Captain view.
+- "ctrl-E" : "E"ngineer view.
 - "ctrl-F" : a"F"terburner.
+- "ctrl-O" : "O"verhead view.
 
 Overriden
 ---------
@@ -166,22 +177,24 @@ Overriden
 - "ctrl-N" : nav 1 hold.
 - "ctrl-P" : pitch hold.
 - "ctrl-S" : autothrottle.
-- "page up" : increases autothrottle (+/-22 kt, +/-0.06 Mach).
-- "page down" : decreases autothrottle.
-- "up" : increases pitch hold (+/- 11 deg).
-- "down" : decreases pitch hold.
+- "page up / page down" : increases / decreases speed hold, Mach hold.
+- "up / down" : increases / decreases (fast) altitude hold, vertical speed hold, pitch hold, speed hold with pitch,
+   Mach hold with pitch.
+- "home / end" : increases / decreases (slow) altitude hold, vertical speed hold, pitch hold, speed hold with pitch,
+   Mach hold with pitch.
 
 Engineer
 --------
-Tanks 1 2 3 4 feed respectively engines 1 2 3 4.
-- "Aft" transfers forwards trim tanks (9 & 10) to aft trim tanks (11). "Forward" does the reverse transfer.
+Collector tanks 1 2 3 4 feed respectively engines 1 2 3 4.
+- "Aft" transfers forwards trim tanks (9 & 10) to aft trim tanks (11).
+  "Forward" does the reverse transfer.
 - "Engine" transfers trim tanks to the main tanks (5, 6, 7, 8, 5A & 7A) : choose the direction "Aft" or "Forw".
 - "Jettison" (2 buttons for confirmation) dumps the rear tanks (11, 5A, 7A, 2 & 3).
-- Activate "Cross", to balance the dissymetrical tanks.
+- activate "Cross", to balance the dissymetrical tanks.
 - "kg/h" checks that fuel pumping matches the fuel flow indicated by the engines.
-- "T/O CG" (Max performance takeoff at 54% CG) increases maximum center of gravity, from takeoff to Mach 0.45.
+- "T/O CG" : max performance takeoff at 54% CG, increases maximum center of gravity until Mach 0.45.
 - "105t"/"165t" reduces VMO and increases maximum center of gravity (105 t = 13900 kg fuel).
-- engine start : activate the starter, before removing the cutoff.
+- to start an engine, activate the starter, before removing the cutoff.
 
 Inertial Navigation System
 --------------------------
@@ -189,23 +202,45 @@ Inertial Navigation System
 - "2" (up) and "8" (down) scrolls the waypoints.
 - "CLear" turns on/off the INS. 
 
-Alarms
-------
-- "Terrain" : too low gear (horn).
-- "M/CG" : center of gravity out of corridor.
-- "Speed" : overspeed (clink).
-
 Autopilot
 ---------
 - "HDG" is magnetic heading, and "TRK" true heading.
-- "Max Climb" mode sets the autothrottle to VMO (MMO above 50200 ft) (B).
+- "Max Climb" sets the autothrottle to VMO (MMO above 50200 ft) (B).
 - See the panel file for capabilies of autopilot and autothrottle.
 - At subsonic speed, no speed up above X 3.
 - At supersonic speed, no speed up above X 2.
 
 
-JBSim
-=====
+Alarms
+======
+- "TERRAIN" : loss of altitude, excessive descent speed, excessive touch down speed (900 ft/min);
+              too low gear at approach, nose not down at touch down.
+- "M/CG" : center of gravity outside of corridor.
+- "AP" : instrument failure, abnormal pitch, abnormal AoA.
+- "AT" : instrument failure, autothrottle expected.
+- "ILS" : missing ILS.
+- "AUTO LAND" : autothrottle expected, ILS missing, outside path at touch down.
+
+Sound
+-----
+- horn : loss of altitude, excessive descent speed, excessive touch down speed (900 ft/min);
+         too low gear at approach, nose not down at touch down;
+         too low speed.
+- rattle : overspeed.
+- whistle : JSBSim stall (rare), aft center of gravity warning, underspeed.
+
+Overhead
+--------
+- "ENG" : stopped engine.
+- "FUEL" : collector tank too low.
+
+Engineer
+--------
+- "LOW LEVEL" : collector tank too low.
+
+
+JSBSim
+======
 - maximum thrust (without air intakes) at FL500 is 10093 lb, matching the real value of 10000 lb !
 - center of gravity inside corridor.
 - the geometry is real data.
@@ -218,63 +253,63 @@ TO DO
 =====
 - control max cruise mode with TMO temperature (B).
 - reduce nasal code with Flightgear subsystems : Mach autopilot, fuel pumping, cross-feeding, cabine altitude, true
-airspeed and ground speed.
-- replace digital instruments by real analog textures.
+  airspeed and ground speed.
+- replace digital instruments by real analog 2D textures (could serve as default for other aircrafts).
+- review night vision.
 - 3D instruments, keeping the 3D cockpit complete (temporary cohabitation 2D/3D instruments).
 - missing in Flightgear : engine rating, 2 ADF, 2 DME.
-- make transparent the external windows of cockpit.
-- system failures.
 
-TO DO JBSim
------------
+TO DO JSBSim
+------------
 - turbulence filter.
 - check the subsonic range.
 - abacus to fill the tanks, as function of aloft winds.
+- no inverser at landing.
+- aero reference point has its position of Mach 2.0 (static).
+- no support of engine rating.
 
 
 Known problems
 ==============
 - press "Aft" the first time to make the trim pumps working (Nasal bug ?).
 
-Known problems JBSim
---------------------
-- no inverser at landing.
+Known problems JSBSim
+---------------------
 - fuel consumption too low at idle (ground).
-- aero reference point has its position of Mach 2.0 (static).
 - very light waddling at mach 2 (autopilot rudder trim, to solve roll of autopilot heading at Mach speeds).
 - AoA at 180°, when one breaks strongly (empty tanks).
-- no support of engine rating.
 - cannot disable yaw damper.
 - cannot start engines, when they have runned out of fuel.
 
 Known problems autopilot
 ------------------------
-- near Mach 2, setting vertical speed at +60 ft/min, VSI doesn't match altimeter, which may even go down. While
-/velocities/vertical-speed-fps, controlled by autopilot, is correct.
-Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510.
-Needs an IVSI (Instantaneous VSI), which works by pressure and matches the altimeter reading.
-- confirm autoland landing speed, whatever the wind and fuel weight.
+- "Autoland" alarm : autoland outside ILS at touch down.
+- "Terrain" alarm : autoland too fast at touch down.
 - avoid autoland by gusty wind.
+- near Mach 2, setting vertical speed at +60 ft/min, VSI doesn't match altimeter, which may even go down. While
+  /velocities/vertical-speed-fps, controlled by autopilot, is correct.
+  Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510;
+  needs an IVSI (Instantaneous VSI), which works by pressure and matches the altimeter reading.
+- confirm autoland landing speed, whatever the wind and fuel weight.
 - autothrottles Mach/speed with pitch might need some tuning.
 
 Known problems 2D instruments
 -----------------------------
-- uniform lightning of artificial horizon's attitude warning, when negativ pitch.
 - TCAS (radar) only works with 2D panel.
+- most instruments are optimized with "group" and "switch" : priority to autoland, if not the most common layer.
 
 Known problems 3D cockpit
 -------------------------
 - instruments have been disabled in external views, because there are transparent through aircraft.
-More gravely, copilot instruments hang outside the cockpit, because of a view shift to the right.
+  More gravely, copilot instruments hang outside the cockpit, because of a view shift to the right.
+  The clickable areas of the Captain view don't match those of the Engineer view.
 - the magnetic compass has some vibrations, because one cannot place it far forwards, otherwise the pillar hides the
-ribbon (but not the black frame).
-- pedestal and engineer panels have a few vibrations.
+  ribbon (but not the black frame).
 
 Known problems sound
 --------------------
-- fading with distance (tower views) doesn't work with engine real sounds.
-- with low hardware, exception through OpenAL errors, when too many sounds : remove for example engine start/shutdown.
-This is why engine shutdown/start sound is the same for all views.
+- exception through OpenAL errors (low hardware ?) means too many sounds : remove for example engine start/shutdown.
+  This is why engine shutdown/start sound is the same for all views.
 
 
 References
@@ -282,16 +317,17 @@ References
 (A) http://www.airliners.net/discussions/tech_ops/ :
     search by key words.
 
-(B) http://sebby2.free.fr/pm2/PM2C_V2_MANUAL.exe/ (www.fsfrance.com/Projets/Mach2/Download.htm) :
+(B) http://sebby2.free.fr/pm2/PM2C_V2_MANUAL.exe/ or http://www.fsfrance.com/Projets/Mach2/Download.htm/ :
     scan of an Air France ops manual (in French).
 
-(C) http://www.titanic.com/story/159/Concorde/.
+(C) http://www.titanic.com/story/159/Concorde/ .
 
-(D) http://www.concorde-jet.com/.
+(D) http://www.concorde-jet.com/ .
 
-(E) http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814
+(E) http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 .
 
-    http://www.flight-manuals-on-cd.com/Concorde.html/
+    http://www.flight-manuals-on-cd.com/Concorde.html/ :
+    British Airways flight manual 1979, 1600 pages. 
 
 
-16 october 2004.
+8 january 2005.

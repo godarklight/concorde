@@ -2,6 +2,9 @@
 
 <!-- Concorde airspeed and Mach indicator (merged), with VMO.
 
+The ias light is real.
+
+
 Adapted from T-38 Airspeed Indicator with digital readout added
 David Culp, Mar 2003, davidculp2@attbi.com, based on:
 
@@ -66,7 +69,7 @@ properties' values.
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/velocities/airspeed-kt</property>
+      <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
       <min>50.0</min>
       <max>590.0</max>
       <format>%4.0f</format>
@@ -84,8 +87,16 @@ properties' values.
     </transformations>
   </layer>
 
+ <!-- the Mach 0.45 limitation concerns the machmeter -->
+
   <layer>
     <name>Digital mach</name>
+    <condition>
+     <greater-than-equals>
+      <property>/velocities/mach</property>
+      <value>0.45</value>
+     </greater-than-equals>
+    </condition>
     <type>text</type>
     <font>led</font>
     <point-size>6</point-size>
@@ -98,7 +109,7 @@ properties' values.
      <chunk>
       <type>number-value</type>
       <property>/velocities/mach</property>
-      <min>0.40</min>
+      <min>0.45</min>
       <format>%1.2f</format>
      </chunk>
     </chunks>
@@ -128,7 +139,7 @@ properties' values.
    <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/velocities/airspeed-kt</property>
+      <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
       <min>50.0</min>
       <max>590.0</max>
       <scale>1.0</scale>
@@ -220,7 +231,90 @@ properties' values.
     </transformations>
   </layer>
 
-  </layers>
+<!-- Yellow light within plus/minus 5 kt -->
+
+<!-- translucent lens -->
+  <layer>
+   <name>Warning light</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <condition>
+      <or>
+       <not-equals>
+        <property>/autopilot/locks/speed</property>
+        <value>speed-with-throttle</value>
+       </not-equals>
+       <and>
+        <greater-than-equals>
+         <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+         <property n="1">/instrumentation/airspeed-indicator/light-min-kt</property>
+        </greater-than-equals>
+        <less-than-equals>
+         <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+         <property n="1">/instrumentation/airspeed-indicator/light-max-kt</property>
+        </less-than-equals>
+       </and>
+      </or>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>16</w>
+     <h>16</h>
+   </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.31</x1>
+     <y1>0.0</y1>
+     <x2>0.44</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>16</w>
+     <h>16</h>
+    </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-52</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>16</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-52</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
 </PropertyList>
 
 

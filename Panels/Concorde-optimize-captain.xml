@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!-- Super optimization of captain view for landing : within plus/minus 7 deg, the number of instrument is minimum.
+-->
+
+<PropertyList>
+
+ <and>
+  <less-than>
+   <property>/sim/current-view/goal-heading-offset-deg</property>
+   <value>357</value>
+  </less-than>
+  <greater-than>
+   <property>/sim/current-view/goal-heading-offset-deg</property>
+   <value>7</value>
+  </greater-than>
+ </and>
+
+</PropertyList>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!-- Concorde alarm on Terrain :
+
+     - excessive rate of descent below 2500 ft.
+     - excessive closure rate with ground.
+     - loss of altitude below 700 ft, after takeoff or goaround.
+     - gear not locked below 500 ft, or nose not down below 200 ft on approach.
+-->
+
+<PropertyList>
+
+  <or>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>2500</value>
+    </less-than>
+    <less-than>
+     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+     <value>-50.0</value> <!-- 3000 ft/min (50 s) -->
+    </less-than>
+   </and>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>200</value>
+    </less-than>
+    <less-than>
+     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+     <value>-15.0</value> <!-- touch down below 900 ft/min -->
+    </less-than>
+   </and>
+   <and>
+    <less-than>
+     <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
+     <value>-5.0</value> <!-- not null on taxi -->
+    </less-than>
+    <or>
+     <and>
+      <less-than>
+       <property>position/altitude-agl-ft</property>
+       <value>700</value>
+      </less-than>
+      <or>
+       <equals>
+       <property>autopilot/locks/vertical</property>
+        <value>goaround</value>
+       </equals>
+       <less-than>
+        <property>/surface-positions/flap-pos-norm</property>
+        <value>1.0</value>
+       </less-than>
+      </or>
+     </and>
+     <and>
+      <not-equals>
+       <property>gear/gear[0]/position-norm</property>
+       <value>1.0</value>
+       </not-equals>
+      <less-than>
+       <property>position/altitude-agl-ft</property>
+       <value>500</value>
+      </less-than>
+     </and>
+     <and>
+      <less-than>
+       <property>/surface-positions/flap-pos-norm</property>
+       <value>1.0</value>
+      </less-than>
+      <less-than>
+       <property>position/altitude-agl-ft</property>
+       <value>200</value>
+      </less-than>
+     </and>
+    </or>
+   </and>
+  </or>
+
+</PropertyList>

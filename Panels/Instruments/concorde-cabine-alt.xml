@@ -59,7 +59,7 @@
   </layer>
 
   <layer>
-   <name>Title below</name>
+   <name>Title</name>
    <type>text</type>
    <point-size>14</point-size>
    <color>
@@ -77,6 +77,33 @@
     <transformation>
      <type>x-shift</type>
      <offset>40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>32</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Unit</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>ft</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>60</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

@@ -198,6 +198,79 @@
    </transformations>
   </layer>
 
+<!-- red alarm light -->
+
+<!-- translucent lens -->
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-cg.xml">
+      <equals>
+       <property>/instrumentation/generic/flashing-light</property>
+       <value>0.0</value>
+      </equals>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>8</w>
+    <h>10</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.31</x1>
+     <y1>0.0</y1>
+     <x2>0.44</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>8</w>
+    <h>10</h>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>13</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>65</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>8</w>
+   <h>10</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>13</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>65</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  </layers>
 
 </PropertyList>

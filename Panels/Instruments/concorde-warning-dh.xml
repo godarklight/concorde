@@ -16,10 +16,16 @@
     <layer>
      <name>on</name>
      <condition>
-      <less-than>
-       <property>/position/altitude-agl-ft</property>
-       <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
-      </less-than>
+      <or>
+       <equals>
+        <property>/instrumentation/test-landing/on</property>
+        <value>1.0</value>
+       </equals>
+       <less-than>
+        <property>/position/altitude-agl-ft</property>
+        <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
+       </less-than>
+      </or>
      </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -33,12 +39,6 @@
     </layer>
     <layer>
      <name>off</name>
-     <condition>
-      <greater-than-equals>
-       <property>/position/altitude-agl-ft</property>
-       <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
-      </greater-than-equals>
-     </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
      <x1>0.0</x1>
