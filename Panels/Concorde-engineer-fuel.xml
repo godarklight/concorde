@@ -1,0 +1,375 @@
+<?xml version="1.0"?>
+
+<!-- Concorde 3D ENGINEER fuel panel
+
+This panel is hypothetical (no image).
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde Engineer Fuel Panel</name>
+ <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
+ <w>1024</w>
+ <h>508</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+<!-- ENGINEER -->
+
+  <instrument include="Instruments/concorde-cg.xml">
+   <name>Center of Gravity</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>180</x>
+   <y>330</y>
+   <w>16</w>
+   <h>50</h>
+  </instrument>
+
+<!-- pumps -->
+
+  <instrument include="Instruments/concorde-pump-forward.xml">
+   <name>Forward pump</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>509</x>
+   <y>405</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-aft.xml">
+   <name>Aft pump</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>509</x>
+   <y>215</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-cross.xml">
+   <name>Cross pump</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>440</x>
+   <y>164</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-engine.xml">
+   <name>Engine pump</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>509</x>
+   <y>164</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump</dump-ctrl>
+   </params>
+   <x>757</x>
+   <y>405</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-dump.xml">
+   <name>Dump pump (confirm)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <dump-ctrl>/systems/fuel-pump/dump2</dump-ctrl>
+   </params>
+   <x>707</x>
+   <y>405</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+<!-- tanks -->
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 8 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[8]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[8]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[8]/content-lb</content-select>
+   </params>
+   <x>350</x>
+   <y>392</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 9 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[9]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[9]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[9]/content-lb</content-select>
+   </params>
+   <x>350</x>
+   <y>365</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 1 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[0]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[0]/content-lb</content-select>
+   </params>
+   <x>292</x>
+   <y>338</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 4 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[3]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[3]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[3]/content-lb</content-select>
+   </params>
+   <x>388</x>
+   <y>338</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 5 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[4]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[4]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[4]/content-lb</content-select>
+   </params>
+   <x>292</x>
+   <y>311</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 8 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[7]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[7]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[7]/content-lb</content-select>
+   </params>
+   <x>388</x>
+   <y>311</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 6 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[5]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[5]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[5]/content-lb</content-select>
+   </params>
+   <x>292</x>
+   <y>284</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 7 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[6]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[6]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[6]/content-lb</content-select>
+   </params>
+   <x>388</x>
+   <y>284</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 2 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[1]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[1]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[1]/content-lb</content-select>
+   </params>
+   <x>292</x>
+   <y>257</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 3 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[2]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[2]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[2]/content-lb</content-select>
+   </params>
+   <x>388</x>
+   <y>257</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- rear tanks -->
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 5A display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[11]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[11]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[11]/content-lb</content-select>
+   </params>
+   <x>292</x>
+   <y>230</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank-short.xml">
+   <name>Tank 7A display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[12]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[12]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[12]/content-lb</content-select>
+   </params>
+   <x>388</x>
+   <y>230</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tank.xml">
+   <name>Tank 11 display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <tank-num>/consumables/fuel/tank[10]/tank-num</tank-num>
+    <lbs-select>/consumables/fuel/tank[10]/level-lb</lbs-select>
+    <content-select>/consumables/fuel/tank[10]/content-lb</content-select>
+   </params>
+   <x>350</x>
+   <y>203</y>
+   <w>40</w>
+   <h>7</h>
+  </instrument>
+
+<!-- totals -->
+
+  <instrument include="Instruments/concorde-kgph.xml">
+   <name>Fuel Flow</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>155</x>
+   <y>207</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-kg.xml">
+   <name>Fuel Total</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>157</x>
+   <y>180</y>
+   <w>40</w>
+   <h>10</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

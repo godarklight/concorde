@@ -101,11 +101,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-48</offset>
+     <offset>-34</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -150,6 +150,11 @@
     <command>property-assign</command>
     <property>/autopilot/settings/true-heading-deg</property>
     <property n="1">/orientation/heading-deg</property>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/horizontal</property>
+    <value type="string"></value>
    </binding>
   </action>
 

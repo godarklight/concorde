@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Track Heading -->
+<!-- Concorde Track/Heading -->
 
 <PropertyList>
- <name>Track Heading</name>
+ <name>Track/Heading</name>
  <w-base>104</w-base>
  <h-base>26</h-base>
 
@@ -15,10 +15,16 @@
    <type>switch</type>
     <layer>
      <condition>
-      <equals>
-       <property>/autopilot/locks/heading</property>
-       <value>dg-heading-hold</value>
-      </equals>
+      <or>
+       <equals>
+        <property>/autopilot/locks/heading</property>
+        <value>dg-heading-hold</value>
+       </equals>
+       <equals>
+        <property>/autopilot/locks/heading</property>
+        <value>true-heading-hold</value>
+       </equals>
+      </or>
      </condition>
      <name>on</name>
      <texture>
@@ -48,10 +54,16 @@
   <layer>
    <name>background lighted</name>
    <condition>
-    <equals>
-     <property>/autopilot/locks/heading</property>
-     <value>dg-heading-hold</value>
-    </equals>
+     <or>
+      <equals>
+       <property>/autopilot/locks/heading</property>
+       <value>dg-heading-hold</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/heading</property>
+       <value>true-heading-hold</value>
+      </equals>
+     </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
@@ -67,10 +79,16 @@
   <layer>
    <name>background</name>
    <condition>
-    <not-equals>
-     <property>/autopilot/locks/heading</property>
-     <value>dg-heading-hold</value>
-    </not-equals>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value>dg-heading-hold</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value>true-heading-hold</value>
+     </not-equals>
+    </and>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
@@ -101,11 +119,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-49</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -114,42 +132,52 @@
  <actions>
 
   <action>
-   <desc>Track Heading</desc>
+   <desc>Track heading</desc>
    <condition>
-    <not-equals>
-     <property>/autopilot/locks/heading</property>
-     <value type="string">dg-heading-hold</value>
-    </not-equals>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value type="string">dg-heading-hold</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/heading</property>
+      <value type="string">true-heading-hold</value>
+     </not-equals>
+    </and>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string">dg-heading-hold</value>
+    <command>nasal</command>
+    <script>globals.Concorde.apheadingexport();</script>
    </binding>
   </action>
 
   <action>
    <desc>Disable Track Heading</desc>
    <condition>
-    <equals>
-     <property>/autopilot/locks/heading</property>
-     <value type="string">dg-heading-hold</value>
-    </equals>
+    <or>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value type="string">dg-heading-hold</value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/heading</property>
+      <value type="string">true-heading-hold</value>
+     </equals>
+    </or>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.apheadingexport();</script>
    </binding>
   </action>
 

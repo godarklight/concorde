@@ -2,7 +2,7 @@
 <PropertyList>
  <sim>
 
-  <description>Concorde</description>
+  <description>Concorde-3d</description>
 
   <flight-model>jsb</flight-model>
   <aero>Concorde</aero>
@@ -23,7 +23,7 @@
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-2D-captain.xml</path>
-   <visibility>true</visibility>
+   <visibility>false</visibility>
   </panel>
   <panel_2>
    <path>Aircraft/Concorde/Panels/Concorde-2D-center.xml</path>
@@ -33,125 +33,36 @@
    <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
   </model>
   
-  <view> <!-- adjust pilot in cockpit -->
+  <!-- pilot seat in cockpit. CAUTION : changing height shifts the 2D instruments ! -->
+
+  <view>
    <internal archive="y">true</internal>
    <config>
      <!-- x/y/z == right/up/back -->
+     <x-offset-m archive="y">-0.375</x-offset-m>
+     <y-offset-m archive="y">2.45</y-offset-m>
+     <z-offset-m archive="y">-24.5</z-offset-m>
+     <pitch-offset-deg archive="y">-17.0</pitch-offset-deg> <!-- look at the instruments -->
+   </config>
+
+   <seat>
+    <engineer type="bool">false</engineer>
+   </seat>
+
+   <!-- for only 2D panel, substitute -->
+<!--
+   <config>
      <x-offset-m archive="y">-0.525</x-offset-m>
-     <y-offset-m archive="y">3.2</y-offset-m>
+     <y-offset-m archive="y">2.5</y-offset-m>
      <z-offset-m archive="y">-25.23</z-offset-m>
      <pitch-offset-deg archive="y">-4.0</pitch-offset-deg>
    </config>
+-->
   </view>
 
   <chase-distance-m type="double" archive="y">-45.0</chase-distance-m> <!-- long fuselage -->
 
  </sim>
-   
-  <consumables>
-  <fuel>
-   <!-- overrides JBSim, which only sees US gallons (6.6 pound = 1 US gal = 3.875 l) -->
-
-   <!-- For max take off weight (408000 lb / 93000 kg fuel), put in comment this section.
-        Default is max landing weight (245000 lb / 19000 kg fuel).
-   -->
-
-   <tank n="4">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="5">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="6">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="7">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="8">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="9">
-    <level-gal_us>506.0</level-gal_us>
-   </tank>
-   <tank n="10">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="11">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="12">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-
-<!-- tanks numbers -->
-
-   <!-- engine supply (only them feed engines !) -->
-   <tank n="0">
-    <tank-num type="string" archive="y">1</tank-num>
-   </tank>
-   <tank n="1">
-    <tank-num type="string" archive="y">2</tank-num>
-   </tank>
-   <tank n="2">
-    <tank-num type="string" archive="y">3</tank-num>
-   </tank>
-   <tank n="3">
-    <tank-num type="string" archive="y">4</tank-num>
-   </tank>
-   <!-- main storage -->
-   <tank n="4">
-    <tank-num type="string" archive="y">5</tank-num>
-   </tank>
-   <tank n="5">
-    <tank-num type="string" archive="y">6</tank-num>
-   </tank>
-   <tank n="6">
-    <tank-num type="string" archive="y">7</tank-num>
-   </tank>
-   <tank n="7">
-    <tank-num type="string" archive="y">8</tank-num>
-   </tank>
-   <!-- trim -->
-   <tank n="8">
-    <tank-num type="string" archive="y">9</tank-num> <!-- tank 9 (forward) -->
-   </tank>
-   <tank n="9">
-    <tank-num type="string" archive="y">10</tank-num>
-   </tank>
-   <tank n="10">
-    <tank-num type="string" archive="y">11</tank-num> <!-- tank 11 (rear) -->
-   </tank>
-   <!-- auxiliary -->
-   <tank n="11">
-    <tank-num type="string" archive="y">5A</tank-num>
-   </tank>
-   <tank n="12">
-    <tank-num type="string" archive="y">7A</tank-num>
-  </tank>
-  </fuel>
- </consumables>
-
-<!-- engine numbers -->
- 
- <engines>
-  <engine n="0">
-    <running>true</running>
-    <engine-num type="int">1</engine-num> <!-- button -->
-  </engine>
-  <engine n="1">
-    <running>true</running>
-    <engine-num type="int">2</engine-num>
-  </engine>
-  <engine n="2">
-    <running>true</running>
-    <engine-num type="int">3</engine-num>
-  </engine>
-  <engine n="3">
-    <running>true</running>
-    <engine-num type="int">4</engine-num>
-  </engine>
- </engines>
 
  <radios>
   <dme>
@@ -159,60 +70,309 @@
   </dme>
  </radios>
 
+ <nasal>
+  <Concorde>
+   <file>Aircraft/Concorde/Concorde-jbsim.nas</file>
+  </Concorde>
+ </nasal>
+
  <input>
-    <keyboard>
-      <key n="2">
-        <name>Ctrl-B</name>
-        <desc>Afterburner</desc>
-        <binding n= "0">
-          <command>property-toggle</command>
-          <property>controls/engines/engine[0]/augmentation</property>
-        </binding>
-        <binding n= "1">
-          <command>property-toggle</command>
-          <property>controls/engines/engine[1]/augmentation</property>
-        </binding>
-        <binding n= "2">
-          <command>property-toggle</command>
-          <property>controls/engines/engine[2]/augmentation</property>
-        </binding>
-        <binding n= "3">
-          <command>property-toggle</command>
-          <property>controls/engines/engine[3]/augmentation</property>
-        </binding>
-      </key>
+  <keyboard>
 
-<!-- http://www.concordesst.com :
+   <key n="1">
+    <name>Ctrl-A</name>
+    <desc>Toggle autopilot altitude lock.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apaltitudeexport();</script>
+    </binding>
+   </key>
 
-     Autopilot can be easily disconnected from a thumb switch on the yoke.
+<!-- Autopilot is easily disconnected from a thumb switch on the yoke. -->
 
--->
-	<key n="12">
-      <name>CTRL-L</name>
-      <desc>Disable autopilot</desc>
-        <binding>
-          <command>property-assign</command>
-	    <property>autopilot/locks/altitude</property>
-	    <value type="string"></value>
-	  </binding>
-        <binding>
-          <command>property-assign</command>
-	    <property>autopilot/locks/altitude2</property>
-	    <value type="string"></value>
-	  </binding>
-        <binding>
-          <command>property-assign</command>
-	    <property>autopilot/locks/heading</property>
-	    <value type="string"></value>
-	  </binding>
-        <binding>
-          <command>property-assign</command>
-	    <property>autopilot/locks/vertical</property>
-	    <value type="string"></value>
-	  </binding>
-      </key>
-    </keyboard>
+   <key n="4">
+    <name>CTRL-D</name>
+    <desc>Disconnect autopilot</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apdiscexport();</script>
+    </binding>
+   </key>
+
+<!-- Seats -->
+
+   <key n="5">
+    <name>Ctrl-E</name>
+    <desc>Toggle engineer/captain view</desc>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <!-- backups captain seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/view[0]/seat/engineer</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/view[0]/seat/captain-heading-offset-deg</property>
+     <property n="1">/sim/current-view/goal-heading-offset-deg</property>
+    </binding>
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/view[0]/seat/engineer</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/view[0]/seat/captain-pitch-offset-deg</property>
+     <property n="1">/sim/current-view/goal-pitch-offset-deg</property>
+    </binding>
+
+    <!-- fixed engineer seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/view[0]/seat/engineer</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/goal-heading-offset-deg</property>
+     <value type="double">244</value>
+    </binding>
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/view[0]/seat/engineer</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/goal-pitch-offset-deg</property>
+     <value type="double">-10</value>
+    </binding>
+
+    <!-- restores captain seat -->
+
+    <binding>
+     <condition>
+      <property>/sim/view[0]/seat/engineer</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/goal-heading-offset-deg</property>
+     <property n="1">/sim/view[0]/seat/captain-heading-offset-deg</property>
+    </binding>
+    <binding>
+     <condition>
+      <property>/sim/view[0]/seat/engineer</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/goal-pitch-offset-deg</property>
+     <property n="1">/sim/view[0]/seat/captain-pitch-offset-deg</property>
+    </binding>
+
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/view[0]/seat/engineer</property>
+    </binding>
+   </key>
+
+<!-- Reheat -->
+
+   <key n="6">
+    <name>Ctrl-F</name>
+    <desc>Reheat</desc>
+    <binding n= "0">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[0]/augmentation</property>
+    </binding>
+    <binding n= "1">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[1]/augmentation</property>
+    </binding>
+    <binding n= "2">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[2]/augmentation</property>
+    </binding>
+    <binding n= "3">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[3]/augmentation</property>
+    </binding>
+   </key>
+
+   <key n="7">
+    <name>Ctrl-G</name>
+    <desc>Toggle autopilot glide slope lock.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apglideexport();</script>
+    </binding>
+   </key>
+
+   <key n="8">
+    <name>Ctrl-H</name>
+    <desc>Toggle autopilot heading lock.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apheadingexport();</script>
+    </binding>
+   </key>
+
+   <key n="14">
+    <name>Ctrl-N</name>
+    <desc>Toggle autopilot nav1 lock.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apvorlocexport();</script>
+    </binding>
+   </key>
+
+   <key n="16">
+    <name>Ctrl-P</name>
+    <desc>Toggle pitch hold.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.appitchexport();</script>
+    </binding>
+   </key>
+
+   <key n="19">
+    <name>Ctrl-S</name>
+    <desc>Toggle auto-throttle lock.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.atspeedexport();</script>
+    </binding>
+   </key>
+
+<!-- datum adjust (overrides default) -->
+
+   <key n="357">
+    <name>Up</name>
+    <desc>Increase elevator or autopilot altitude.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       if( getprop("/autopilot/locks/altitude") == "pitch-hold" ) {
+           globals.Concorde.datumpitchexport(1.0);
+       }
+       # default
+       else {
+           controls.incElevator(0.05, -100);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="359">
+    <name>Down</name>
+    <desc>Decrease elevator or autopilot altitude.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       if( getprop("/autopilot/locks/altitude") == "pitch-hold" ) {
+           globals.Concorde.datumpitchexport(-1.0);
+       }
+       # default
+       else {
+           controls.incElevator(-0.05, 100);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="360">
+    <name>PageUp</name>
+    <desc>Increase throttle or autopilot autothrottle.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       speedmode = getprop("/autopilot/locks/speed");
+       if( speedmode != nil and speedmode != "" ) {
+           globals.Concorde.datumthrottleexport(1.0);
+       }
+       # default
+       else {
+           controls.incThrottle(0.01, 1.0);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="361">
+    <name>PageDown</name>
+    <desc>Decrease throttle or autopilot autothrottle.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       speedmode = getprop("/autopilot/locks/speed");
+       if( speedmode != nil and speedmode != "" ) {
+           globals.Concorde.datumthrottleexport(-1.0);
+       }
+       # default
+       else {
+           controls.incThrottle(-0.01, -1.0);
+       }
+     </script>
+    </binding>
+   </key>
+
+  </keyboard>
  </input>
+
+<!-- instruments -->
+
+ <instrumentation>
+
+  <ins>
+   <on type="bool" archive="y">true</on>
+  </ins>
+
+  <radar>
+   <range type="int" archive="y">40</range>
+   <minimized type="bool" archive="y">false</minimized>
+  </radar>
+
+<!-- specific DME -->
+  <dme>
+   <switch-position>1</switch-position>
+   <frequencies>
+    <source>/radios/nav[0]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+
+<!-- ============= -->
+<!-- customization -->
+<!-- ============= -->
+
+<!-- decision altitude -->
+  <radio-altimeter>
+   <decision-ft>211</decision-ft> <!-- offset : 211 = 200 ft -->
+  </radio-altimeter>
+
+ </instrumentation>
+
+<!-- engines on -->
+ 
+ <engines>
+  <engine n="0">
+    <running>true</running>
+  </engine>
+  <engine n="1">
+    <running>true</running>
+  </engine>
+  <engine n="2">
+    <running>true</running>
+  </engine>
+  <engine n="3">
+    <running>true</running>
+  </engine>
+ </engines>
 
 <!-- autopilot -->
 
@@ -223,29 +383,59 @@
    <target-speed-kt>250</target-speed-kt>
   </settings>
  </autopilot>
+   
+ <consumables>
+  <fuel>
+   <!-- overrides JBSim, which only sees US gallons (6.6 pound = 1 US gal = 3.875 l) -->
 
- <instrumentation>
+   <!-- For max take off weight (408000 lb / 93000 kg fuel), put in comment this section.
+        This default filling is max landing weight (245000 lb / 19000 kg fuel).
+   -->
 
-<!-- decision altitude -->
-  <radio-altimeter>
-   <decision-ft>210</decision-ft>
-  </radio-altimeter>
+<!--
+   <tank n="0">
+    <level-gal_us>334.0</level-gal_us>
+   </tank>
+   <tank n="1">
+    <level-gal_us>334.0</level-gal_us>
+   </tank>
+   <tank n="2">
+    <level-gal_us>334.0</level-gal_us>
+   </tank>
+   <tank n="3">
+    <level-gal_us>334.0</level-gal_us>
+   </tank>
+   <tank n="4">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="5">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="6">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="7">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="8">
+    <level-gal_us>2219.0</level-gal_us>
+   </tank>
+   <tank n="9">
+    <level-gal_us>0.0</level-gal_us>
+   </tank>
+   <tank n="10">
+    <level-gal_us>1336.0</level-gal_us>
+   </tank>
+   <tank n="11">
+    <level-gal_us>743.0</level-gal_us>
+   </tank>
+   <tank n="12">
+    <level-gal_us>743.0</level-gal_us>
+   </tank>
+-->
 
-<!-- specific DME -->
-  <dme>
-   <switch-position>1</switch-position>
-   <frequencies>
-    <source>/radios/nav[0]/frequencies/selected-mhz</source>
-   </frequencies>
-  </dme>
-
- </instrumentation>
-
- <nasal>
-  <Concorde>
-   <file>Aircraft/Concorde/Concorde-jbsim.nas</file>
-  </Concorde>
- </nasal>
+  </fuel>
+ </consumables>
 
 </PropertyList>
 

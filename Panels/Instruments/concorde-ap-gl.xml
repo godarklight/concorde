@@ -131,11 +131,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-32</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -157,14 +157,8 @@
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">gs1-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/heading</property>
-    <value type="string">nav1-hold</value>
+    <command>nasal</command>
+    <script>globals.Concorde.apglideexport();</script>
    </binding>
   </action>
 
@@ -182,9 +176,8 @@
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.apglideexport();</script>
    </binding>
   </action>
 

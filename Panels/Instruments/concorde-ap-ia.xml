@@ -101,11 +101,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-38</offset>
+     <offset>-26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -114,7 +114,7 @@
  <actions>
 
   <action>
-   <desc>Heading hold</desc>
+   <desc>IAS hold</desc>
    <condition>
     <not-equals>
      <property>/autopilot/locks/speed</property>
@@ -122,19 +122,18 @@
     </not-equals>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string">speed-with-throttle</value>
+    <command>nasal</command>
+    <script>globals.Concorde.atspeedexport();</script>
    </binding>
   </action>
 
   <action>
-   <desc>Disable Heading hold</desc>
+   <desc>Disable IAS hold</desc>
    <condition>
     <equals>
      <property>/autopilot/locks/speed</property>
@@ -142,14 +141,13 @@
     </equals>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.atspeedexport();</script>
    </binding>
   </action>
 

@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+
+<!-- Concorde engine rating : cruise
+
+Flightgear has support for engine rating.
+Emulation : in reality, the engineer switches the rating.
+
+-->
+
+<PropertyList>
+ <name>Engine rating cruise</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+
+<!-- translucent lens -->  
+  <layer>
+   <name>Button light</name>
+   <type>switch</type>
+    <layer>
+     <condition>
+      <or>
+       <and>
+        <equals>
+         <property>/autopilot/locks/altitude</property>
+         <value>altitude-hold</value>
+        </equals>
+        <greater-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-min-ft</property>
+        </greater-than>
+        <less-than>
+         <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+         <property n="1">/instrumentation/altimeter/target-max-ft</property>
+        </less-than>
+        <greater-than>
+         <property>/position/altitude-agl-ft</property>
+         <value>1500.0</value>
+        </greater-than>
+       </and>
+       <greater-than-equals>
+        <property>/velocities/mach</property>
+        <value>1.95</value> <!-- see check-list -->
+       </greater-than-equals>
+      </or>
+     </condition>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.37</x1>
+     <y1>0.0</y1>
+     <x2>0.38</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background lighted</name>
+   <condition>
+    <or>
+     <and>
+      <equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>altitude-hold</value>
+      </equals>
+      <greater-than>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+      </greater-than>
+      <less-than>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+      </less-than>
+      <greater-than>
+       <property>/position/altitude-agl-ft</property>
+       <value>1500.0</value>
+      </greater-than>
+     </and>
+     <greater-than-equals>
+      <property>/velocities/mach</property>
+      <value>1.95</value> <!-- see check-list -->
+     </greater-than-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <condition>
+    <and>
+     <or>
+      <not-equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>altitude-hold</value>
+      </not-equals>
+      <less-than-equals>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-min-ft</property>
+      </less-than-equals>
+      <greater-than-equals>
+       <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+       <property n="1">/instrumentation/altimeter/target-max-ft</property>
+      </greater-than-equals>
+      <less-than-equals>
+       <property>/position/altitude-agl-ft</property>
+       <value>1500.0</value>
+      </less-than-equals>
+     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>1.95</value> <!-- see check-list -->
+     </less-than>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>40</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CRS</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-46</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+
+</PropertyList>

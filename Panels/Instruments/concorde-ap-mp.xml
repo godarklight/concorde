@@ -101,11 +101,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-48</offset>
+     <offset>-34</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -118,10 +118,16 @@
   <action>
    <desc>Mach with Pitch hold</desc>
    <condition>
-    <equals>
-     <property>/autopilot/locks/speed</property>
-     <value></value>
-    </equals>
+    <and>
+     <equals>
+      <property>/autopilot/locks/speed</property>
+      <value></value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/speed2</property>
+      <value></value>
+     </equals>
+    </and>
    </condition>
    <button>0</button>
    <x>-52</x>
@@ -138,6 +144,15 @@
     <property>/autopilot/settings/target-mach</property>
     <property n="1">/velocities/mach</property>
    </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.automachexport();</script>
+   </binding>
   </action>
 
 <!-- default to pitch hold when autothrottle -->
@@ -150,10 +165,16 @@
       <property>/autopilot/locks/speed</property>
       <value>mach-with-pitch</value>
      </not-equals>
-     <not-equals>
-      <property>/autopilot/locks/speed</property>
-      <value></value>
-     </not-equals>
+     <or>
+      <not-equals>
+       <property>/autopilot/locks/speed</property>
+       <value></value>
+      </not-equals>
+      <not-equals>
+       <property>/autopilot/locks/speed2</property>
+       <value></value>
+      </not-equals>
+     </or>
     </and>
    </condition>
    <button>0</button>
@@ -170,6 +191,11 @@
     <command>property-assign</command>
     <property>/autopilot/settings/target-pitch-deg</property>
     <property n="1">/orientation/pitch-deg</property>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/vertical</property>
+    <value type="string"></value>
    </binding>
   </action>
 
@@ -189,6 +215,11 @@
    <binding>
     <command>property-assign</command>
     <property>/autopilot/locks/speed</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
     <value type="string"></value>
    </binding>
   </action>

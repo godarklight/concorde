@@ -1,0 +1,1102 @@
+<?xml version="1.0"?>
+
+<!-- Concorde 3D PILOT panel
+
+Organized like the real one at http://www.concordesst.com/.
+See also pictures at http://www.airliners.net/info/.
+
+This is an upgraded Concorde, where :
+- TCAS replaces clock/timer.
+- clock/timer replaces TMO temperature.
+
+ALIGNMENT :
+- with pedestal and yokes.
+- side slip is slightly below the panel, in front of yoke.
+- cabine pressure is below the panel, left above the pedestal, along the horizontal of area percentage.
+- copilot DME slightly overlaps above the pedestal.
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde Pilot Panel</name>
+ <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
+ <w>1024</w>
+ <h>508</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+<!-- CAPTAIN extreme left -->
+
+  <instrument include="Instruments/concorde-aoa.xml">
+   <name>AoA display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>-36</x>
+   <y>35</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-accl.xml">
+   <name>Accel display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>-36</x>
+   <y>-15</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+<!-- CAPTAIN far left -->
+
+  <instrument include="Instruments/concorde-alarm-gear.xml">
+   <name>Alarm on Gear</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>75</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-cg.xml">
+   <name>Alarm on Center of Gravity</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>102.5</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-land.xml">
+   <name>Warning on Autoland</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>170</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-dh.xml">
+   <name>Warning on Decision Height</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>197.5</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-standby-asi.xml">
+   <name>Standby KIAS display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>22.5</x>
+   <y>94</y>
+   <w>65</w>
+   <h>65</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-dme.xml">
+   <name>DME Display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>22.5</x>
+   <y>30</y>
+   <w>65</w>
+   <h>32.5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-tas.xml">
+   <name>TAS Display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>22</x>
+   <y>-6</y>
+   <w>70</w>
+   <h>35</h>
+  </instrument>
+
+<!-- CAPTAIN left -->
+
+  <instrument include="Instruments/concorde-asi.xml">
+   <name>KIAS display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>95</x>
+   <y>164</y>
+   <w>77.5</w>
+   <h>77.5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-machmeter.xml">
+   <name>Machmeter display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>62.5</x>
+   <y>100</y>
+   <w>25</w>
+   <h>37.5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-compass-vor.xml">
+   <name>VOR 1 and 2 Gauge</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>97.5</x>
+   <y>17.5</y>
+   <w>70</w>
+   <h>70</h>
+  </instrument>
+
+<!-- CAPTAIN center -->
+
+  <instrument include="Instruments/concorde-horizon-attitude.xml">
+   <name>Attitude Indicator (alarm on attitude)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>150</x>
+   <y>195</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-horizon-dh.xml">
+   <name>Attitude Indicator (decision altitude)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>212</x>
+   <y>195</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-horizon.xml">
+   <name>Attitude Indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>182.5</x>
+   <y>156</y>
+   <w>95</w>
+   <h>95</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi-miles.xml">
+   <name>HSI miles</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>153</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi.xml">
+   <name>HSI title</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>182</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi-speed.xml">
+   <name>HSI ground speed</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>211</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="../../Instruments/hsi-bk-hi.xml">
+   <name>Horizontal Situation Indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>182.5</x>
+   <y>36</y>
+   <w>85</w>
+   <h>85</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-side-slip.xml">
+   <name>Side Slip Indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>146</x>
+   <y>-31</y>
+   <w>24</w>
+   <h>6</h>
+  </instrument>
+
+<!-- CAPTAIN right -->
+
+  <instrument include="Instruments/concorde-vsi.xml">
+   <name>Vsi display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>245</x>
+   <y>140</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-radio-alt.xml">
+   <name>Elevation AGL display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>257</x>
+   <y>172.5</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+   <instrument include="Instruments/concorde-altimeter.xml">
+   <name>Altimeter</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>280</x>
+   <y>100</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+   <instrument include="Instruments/concorde-compass-adf.xml">
+   <name>ADF</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>267.5</x>
+   <y>17.5</y>
+   <w>70</w>
+   <h>70</h>
+  </instrument>
+
+<!-- CAPTAIN far right -->
+
+  <instrument include="Instruments/concorde-horizon.xml">
+   <name>Standby Attitude Indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>350</x>
+   <y>173</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="../../Instruments/radar.xml">
+   <name>TCAS</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>349</x>
+   <y>103</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="../../Instruments/clock.xml">
+   <name>Chronometer</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>327.5</x>
+   <y>20</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-markerbeacon.xml">
+   <name>Marker Beacon Indicators</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>390</x>
+   <y>177.5</y>
+   <w>35</w>
+   <h>11</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-rating-cty.xml">
+   <name>Engine Rating Contingency</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>390</x>
+   <y>120</y>
+   <w>15</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-rating-to.xml">
+   <name>Engine Rating Take/Off</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>390</x>
+   <y>107.5</y>
+   <w>15</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-rating-clb.xml">
+   <name>Engine Rating Climb</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>390</x>
+   <y>95</y>
+   <w>15</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-rating-crs.xml">
+   <name>Engine Rating Ctuise</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>390</x>
+   <y>82.5</y>
+   <w>15</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-cg.xml">
+   <name>Center of Gravity</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>365</x>
+   <y>17.5</y>
+   <w>8</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-cabine-alt.xml">
+   <name>Cabine altitude</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>332</x>
+   <y>-55</y>
+   <w>28</w>
+   <h>7</h>
+  </instrument>
+
+<!-- CENTER left -->
+
+  <instrument include="Instruments/concorde-kg.xml">
+   <name>Fuel weight display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>523</x>
+   <y>188</y>
+   <w>24</w>
+   <h>6</h>
+  </instrument>
+
+<!-- Engine indicators -->
+
+  <instrument include="Instruments/concorde-engine-indicator.xml">
+   <name>Engine 1 indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <running-select>/engines/engine[0]/running</running-select>
+    <reheat-select>/engines/engine[0]/augmentation</reheat-select>
+    <reverser-select>/engines/engine[0]/reversed</reverser-select>
+   </params>
+   <x>413</x>
+   <y>179</y>
+   <w>40</w>
+   <h>8</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-indicator.xml">
+   <name>Engine 2 indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <running-select>/engines/engine[1]/running</running-select>
+    <reheat-select>/engines/engine[1]/augmentation</reheat-select>
+    <reverser-select>/engines/engine[1]/reversed</reverser-select>
+   </params>
+   <x>459</x>
+   <y>179</y>
+   <w>40</w>
+   <h>8</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-indicator.xml">
+   <name>Engine 3 indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <running-select>/engines/engine[2]/running</running-select>
+    <reheat-select>/engines/engine[2]/augmentation</reheat-select>
+    <reverser-select>/engines/engine[2]/reversed</reverser-select>
+   </params>
+   <x>505</x>
+   <y>179</y>
+   <w>40</w>
+   <h>8</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-indicator.xml">
+   <name>Engine 4 indicator</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <running-select>/engines/engine[3]/running</running-select>
+    <reheat-select>/engines/engine[3]/augmentation</reheat-select>
+    <reverser-select>/engines/engine[3]/reversed</reverser-select>
+   </params>
+   <x>551</x>
+   <y>179</y>
+   <w>40</w>
+   <h>8</h>
+  </instrument>
+
+<!-- N2 -->
+
+  <instrument include="Instruments/concorde-engine-n2.xml">
+   <name>Engine 1 N2</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n2-select>/engines/engine[0]/n2</n2-select>
+   </params>
+   <x>427</x>
+   <y>147</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n2.xml">
+   <name>Engine 2 N2</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n2-select>/engines/engine[1]/n2</n2-select>
+   </params>
+   <x>473</x>
+   <y>147</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n2.xml">
+   <name>Engine 3 N2</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n2-select>/engines/engine[2]/n2</n2-select>
+   </params>
+   <x>519</x>
+   <y>147</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n2.xml">
+   <name>Engine 4 N2</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n2-select>/engines/engine[3]/n2</n2-select>
+   </params>
+   <x>565</x>
+   <y>147</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+<!-- N1 -->
+
+  <instrument include="Instruments/concorde-engine-n1.xml">
+   <name>Engine 1 N1</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[0]/n1</n1-select>
+   </params>
+   <x>427</x>
+   <y>99</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n1.xml">
+   <name>Engine 2 N1</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[1]/n1</n1-select>
+   </params>
+   <x>473</x>
+   <y>99</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n1.xml">
+   <name>Engine 3 N1</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[2]/n1</n1-select>
+   </params>
+   <x>519</x>
+   <y>99</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-n1.xml">
+   <name>Engine 4 N1</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[3]/n1</n1-select>
+   </params>
+   <x>565</x>
+   <y>99</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+<!-- Fuel Flow -->
+
+  <instrument include="Instruments/concorde-engine-fuel.xml">
+   <name>Engine 1 fuel flow</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <ff-select>/engines/engine[0]/fuel-flow_pph</ff-select>
+   </params>
+   <x>427</x>
+   <y>51</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-fuel.xml">
+   <name>Engine 2 fuel flow</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <ff-select>/engines/engine[1]/fuel-flow_pph</ff-select>
+   </params>
+   <x>473</x>
+   <y>51</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-fuel.xml">
+   <name>Engine 3 fuel flow</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <ff-select>/engines/engine[2]/fuel-flow_pph</ff-select>
+   </params>
+   <x>519</x>
+   <y>51</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-fuel.xml">
+   <name>Engine 4 fuel flow</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <ff-select>/engines/engine[3]/fuel-flow_pph</ff-select>
+   </params>
+   <x>565</x>
+   <y>51</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+<!-- EGT -->
+
+  <instrument include="Instruments/concorde-engine-egt.xml">
+   <name>Engine 1 EGT</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <egt-select>/engines/engine[0]/egt_degf</egt-select>
+   </params>
+   <x>427</x>
+   <y>3</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-egt.xml">
+   <name>Engine 2 EGT</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <egt-select>/engines/engine[1]/egt_degf</egt-select>
+   </params>
+   <x>473</x>
+   <y>3</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-egt.xml">
+   <name>Engine 3 EGT</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <egt-select>/engines/engine[2]/egt_degf</egt-select>
+   </params>
+   <x>519</x>
+   <y>3</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-egt.xml">
+   <name>Engine 4 EGT</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <params>
+    <egt-select>/engines/engine[3]/egt_degf</egt-select>
+   </params>
+   <x>565</x>
+   <y>3</y>
+   <w>45</w>
+   <h>45</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-gear.xml">
+   <name>Landing Gear selector</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>605</x>
+   <y>15</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
+<!-- CENTER right -->
+
+  <instrument include="Instruments/concorde-nose-visor.xml">
+   <name>Nose/visor selector</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>625</x>
+   <y>187</y>
+   <w>20</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-nose-visor-lights.xml">
+   <name>Nose/visor selector</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>650</x>
+   <y>172</y>
+   <w>15</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-visor-status.xml">
+   <name>Visor status</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>655</x>
+   <y>201</y>
+   <w>15</w>
+   <h>5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-nose-status.xml">
+   <name>Nose status</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>655</x>
+   <y>162</y>
+   <w>15</w>
+   <h>5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-gear-lights.xml">
+   <name>Gear lights</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>650</x>
+   <y>105</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-aoa.xml">
+   <name>AoA display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>599</x>
+   <y>80</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-accl.xml">
+   <name>Acceleration display</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>599</x>
+   <y>40</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-dme.xml">
+   <name>DME Display (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>665</x>
+   <y>5</y>
+   <w>65</w>
+   <h>32.5</h>
+  </instrument>
+
+<!-- COPILOT far left -->
+
+  <instrument include="Instruments/concorde-warning-land.xml">
+   <name>Warning on Autoland (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>830</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-warning-dh.xml">
+   <name>Warning on Decision Height (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>857.5</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-alarm-cg.xml">
+   <name>Alarm on Center of Gravity (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>720</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+<!-- COPILOT left -->
+
+  <instrument include="Instruments/concorde-asi.xml">
+   <name>KIAS display (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>740</x>
+   <y>164</y>
+   <w>77.5</w>
+   <h>77.5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-machmeter.xml">
+   <name>Machmeter display (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>706.5</x>
+   <y>100</y>
+   <w>25</w>
+   <h>37.5</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-compass-vor.xml">
+   <name>VOR 1 and 2 Gauge (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>742.5</x>
+   <y>17.5</y>
+   <w>70</w>
+   <h>70</h>
+  </instrument>
+
+<!-- COPILOT center -->
+
+  <instrument include="Instruments/concorde-horizon-attitude.xml">
+   <name>Attitude indicator (alarm on attitude) (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>795</x>
+   <y>195</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-horizon-dh.xml">
+   <name>Attitude Indicator (decision altitude) (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>857</x>
+   <y>195</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-horizon.xml">
+   <name>Attitude Indicator (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>827.5</x>
+   <y>156</y>
+   <w>95</w>
+   <h>95</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi-miles.xml">
+   <name>HSI miles (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>798</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi.xml">
+   <name>HSI title (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>826</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi-speed.xml">
+   <name>HSI ground speed (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>855</x>
+   <y>82</y>
+   <w>28</w>
+   <h>9</h>
+  </instrument>
+
+  <instrument include="../../Instruments/hsi-bk-hi.xml">
+   <name>Horizontal Situation Indicator (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>827.5</x>
+   <y>36</y>
+   <w>85</w>
+   <h>85</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-side-slip.xml">
+   <name>Side Slip Indicator (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>793</x>
+   <y>-31</y>
+   <w>24</w>
+   <h>6</h>
+  </instrument>
+
+<!-- COPILOT right -->
+
+  <instrument include="Instruments/concorde-alarm-gear.xml">
+   <name>Alarm on Gear (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>945</x>
+   <y>209</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vsi.xml">
+   <name>Vsi display (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>890</x>
+   <y>140</y>
+   <w>6</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-radio-alt.xml">
+   <name>Elevation AGL display (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>902</x>
+   <y>172.5</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+   <instrument include="Instruments/concorde-altimeter.xml">
+   <name>Altimeter (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>925</x>
+   <y>100</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+   <instrument include="Instruments/concorde-compass-adf.xml">
+   <name>ADF (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>912.5</x>
+   <y>17.5</y>
+   <w>70</w>
+   <h>70</h>
+  </instrument>
+
+<!-- COPILOT far right -->
+
+  <instrument include="Instruments/concorde-markerbeacon.xml">
+   <name>Marker Beacon Indicators (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>1010</x>
+   <y>177.5</y>
+   <w>35</w>
+   <h>11</h>
+  </instrument>
+
+  <instrument include="../../Instruments/radar.xml">
+   <name>TCAS (Copilot)</name>
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+   <x>986</x>
+   <y>22.5</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

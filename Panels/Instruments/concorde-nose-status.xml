@@ -15,11 +15,33 @@
 
   <layer>
    <name>background</name>
+   <condition>
+    <or>
+     <less-than-equals>
+      <property>/surface-positions/flap-pos-norm</property>
+      <value>0.34</value>
+     </less-than-equals>
+     <and>
+      <greater-than>
+       <property>/surface-positions/flap-pos-norm</property>
+       <value>0.65</value>
+      </greater-than>
+      <less-than>
+       <property>/surface-positions/flap-pos-norm</property>
+       <value>0.69</value>
+      </less-than>
+     </and>
+     <equals>
+      <property>/surface-positions/flap-pos-norm</property>
+      <value>1.0</value>
+     </equals>
+    </or>
+   </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>70</w>
-    <h>30</h>
+    <w>60</w>
+    <h>50</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -27,13 +49,13 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>13</offset>
+     <offset>21</offset>
     </transformation>
    </transformations>
   </layer>
 
   <layer>
-   <name>Nose transit</name>
+   <name>background transit</name>
    <condition>
     <and>
      <greater-than>
@@ -56,28 +78,19 @@
      </less-than>
     </and>
    </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>----</text>
-    </chunk>
-   </chunks>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+   </texture>
+    <w>60</w>
+    <h>50</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>32</offset>
+     <offset>46</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>8</offset>
+     <offset>21</offset>
     </transformation>
    </transformations>
   </layer>
@@ -106,11 +119,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>30</offset>
+     <offset>35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset>
+     <offset>17</offset>
     </transformation>
    </transformations>
   </layer>
@@ -145,11 +158,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>14</offset>
+     <offset>17</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset>
+     <offset>17</offset>
     </transformation>
    </transformations>
   </layer>
@@ -178,11 +191,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>14</offset>
+     <offset>19</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset>
+     <offset>17</offset>
     </transformation>
    </transformations>
   </layer>
@@ -190,7 +203,7 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>16</point-size>
+   <point-size>17</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -205,11 +218,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>19</offset>
+     <offset>21</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>-20</offset>
     </transformation>
    </transformations>
   </layer>

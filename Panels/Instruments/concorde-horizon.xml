@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 
-<!--
-Improved artificial horizon instrument.
-Mar 20 2000
-Martin Dressler dr@musicabona.cz
-Artificial horizont from C172RG small versionn
+<!-- Concorde artificial horizon
+
+Adapted from Martin Dressler dr@musicabona.cz
+Artificial horizon from C172RG small version
 GPL
 _______________________________________________________________________________
 
@@ -30,7 +29,7 @@ properties' values.
 
 <PropertyList>
 
- <name>C172RG-mini Artifical horizon</name>
+ <name>Concorde Artifical horizon</name>
 
  <w-base>128</w-base>
  <h-base>128</h-base>
@@ -39,7 +38,7 @@ properties' values.
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/attitude-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
     <x1>0.0</x1>
     <y1>0.0</y1>
     <x2>0.5</x2>
@@ -59,7 +58,7 @@ properties' values.
   <layer>
    <name>pitch</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/attitude-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
     <x1>0.5</x1>
     <y1>0.0</y1>
     <x2>0.875</x2>
@@ -89,7 +88,7 @@ properties' values.
   <layer>
    <name>roll</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/attitude-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
     <x1>0.5</x1>
     <y1>0.5</y1>
     <x2>1.0</x2>
@@ -109,7 +108,7 @@ properties' values.
   <layer>
    <name>plane</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/attitude-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
     <x1>0.5</x1>
     <y1>0.25</y1>
     <x2>0.75</x2>
@@ -129,12 +128,152 @@ properties' values.
   <layer>
    <name>foreground</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/attitude-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
     <x1>0.0</x1>
     <y1>0.5</y1>
     <x2>0.5</x2>
     <y2>1.0</y2>
    </texture>
+  </layer>
+
+<!-- VOR -->
+
+  <layer>
+   <name>VOR needle</name>
+   <condition>
+    <property>/instrumentation/attitude-indicator/config/flight-director</property>
+   </condition>
+   <w>5</w>
+   <h>61</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.801875</x1>
+    <x2>0.8515625</x2>
+    <y1>0.359375</y1>
+    <y2>0.6796875</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-23</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <property>/radios/nav[0]/heading-needle-deflection</property>
+     <min>-12.0</min>
+     <max>12.0</max>
+     <scale>4.0</scale>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>20</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <offset>1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- glide slope -->
+
+  <layer>
+   <name>GS needle left</name>
+   <condition>
+    <and>
+     <property>/radios/nav[0]/has-gs</property>
+     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+    </and>
+   </condition>
+   <w>10</w>
+   <h>10</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.796875</x1>
+    <x2>0.875</x2>
+    <y1>0.6796875</y1>
+    <y2>0.765625</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <property>/radios/nav[0]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>3.7</scale>
+     <offset>-1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+				  
+  <layer>
+   <name>GS needle right</name>
+   <condition>
+    <and>
+     <property>/radios/nav[0]/has-gs</property>
+     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+    </and>
+   </condition>
+   <w>10</w>
+   <h>10</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.875</x1>
+    <x2>0.953125</x2>
+    <y1>0.6796875</y1>
+    <y2>0.765625</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <property>/radios/nav[0]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>3.7</scale>
+     <offset>-1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Out of range -->
+
+  <layer>
+   <name>NAV OFF</name>
+   <condition>
+    <and>
+     <not>
+      <property>/radios/nav[0]/in-range</property>
+     </not>
+     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+    </and>
+   </condition>
+   <w>26</w>
+   <h>15</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.796875</x1>
+    <x2>1.0</x2>
+    <y1>0.765625</y1>
+    <y2>0.8828125</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-45</offset>
+    </transformation>
+   </transformations>
   </layer>
 
  </layers>

@@ -47,6 +47,36 @@ properties' values.
      <h>112</h>
     </layer>
 
+  <layer>
+    <name>Digital mach</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/velocities/mach</property>
+      <min>0.40</min>
+      <format>%1.2f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-16</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>10</offset>
+     </transformation>
+    </transformations>
+  </layer>
+
     <layer>
     <name>needle</name>
    <texture>
@@ -150,36 +180,6 @@ properties' values.
      <type>y-shift</type>
      <offset>-2</offset>
     </transformation>
-    </transformations>
-  </layer>
-
-  <layer>
-    <name>Digital mach</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>7</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>number-value</type>
-      <property>/velocities/mach</property>
-      <min>0.40</min>
-      <format>%1.2f</format>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-16</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>10</offset>
-     </transformation>
     </transformations>
   </layer>
 

@@ -2,6 +2,7 @@
 <!-- 
   File:     Olympus593Mrk610.xml
   Author:   Aero-Matic v 0.7
+  Date:     9 august 2004
 
   Inputs:
     name:           Olympus593Mrk610
@@ -61,7 +62,7 @@
     At Mach 2.04, fuel flow is 45200 lb/h.
     
 --> 
-<FG_SIMTURBINE NAME="Olympus593Mrk610"> 
+<FG_TURBINE NAME="Olympus593Mrk610"> 
   <!--
      MILTHRUST     max static thrust (without afterburner) at S.L. (installed), lbf
      MAXTHRUST     max static thrust with afterburner at S.L. (installed), lbf
@@ -117,8 +118,7 @@
          - x 1.2 at Mach 1.4.
          - x 1.4 at Mach 1.6.
          - x 1.8 at Mach 1.8.
-         - x 2.7 at Mach 2.0.
-         - accelerate deceleration.
+         - x 2.0 at Mach 2.0 (accelerate deceleration).
     -->
 
     Idle_power_thrust_air_intakes
@@ -138,7 +138,7 @@
     1.4   0.0    0.0    0.0    0.0    0.0    0.0662 0.0960
     1.6   0.0    0.0    0.0    0.0    0.0    0.0773 0.1280
     1.8   0.0    0.0    0.0    0.0    0.0    0.0994 0.1440
-    2.0   0.0    0.0    0.0    0.0    0.0    0.1490 0.2160
+    2.0   0.0    0.0    0.0    0.0    0.0    0.1104 0.1600
   </TABLE>
 
   <TABLE NAME="MilAirIntakes" TYPE="TABLE">
@@ -282,4 +282,4 @@
     1.3   1.1360 1.1360 1.1360 1.1360 1.1360 1.1360 1.1360
     2.04  2.7030 2.7030 2.7030 2.7030 2.7030 2.7030 2.7030
   </TABLE>
-</FG_SIMTURBINE>
+</FG_TURBINE>

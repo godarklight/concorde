@@ -48,11 +48,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-60</offset>
+     <offset>-55</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>35</offset>
+     <offset>38</offset>
     </transformation>
    </transformations>
   </layer>
@@ -75,11 +75,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-58</offset>
+     <offset>-56</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-42</offset>
+     <offset>-37</offset>
     </transformation>
    </transformations>
   </layer>
@@ -225,11 +225,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>5</offset>
+     <offset>12</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>35</offset>
+     <offset>38</offset>
     </transformation>
    </transformations>
   </layer>
@@ -252,11 +252,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>7</offset>
+     <offset>14</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-42</offset>
+     <offset>-37</offset>
     </transformation>
    </transformations>
   </layer>
@@ -422,10 +422,16 @@
 
   <action>
    <name>knob right</name>
+   <condition>
+    <equals>
+     <property>/instrumentation/dme/switch-position</property>
+     <value>1</value>
+    </equals>
+   </condition>
    <button>0</button>
-   <x>0</x>
+   <x>-60</x>
    <y>-32</y>
-   <w>50</w>
+   <w>120</w>
    <h>50</h>
    <binding>
     <command>property-adjust</command>
@@ -444,10 +450,16 @@
 
   <action>
    <name>knob left</name>
+   <condition>
+    <equals>
+     <property>/instrumentation/dme/switch-position</property>
+     <value>3</value>
+    </equals>
+   </condition>
    <button>0</button>
-   <x>-50</x>
+   <x>-60</x>
    <y>-32</y>
-   <w>50</w>
+   <w>120</w>
    <h>50</h>
    <binding>
     <command>property-adjust</command>

@@ -41,11 +41,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-33</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -62,14 +62,13 @@
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">altitude-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
     <property>/autopilot/settings/target-altitude-ft</property>
     <property n="1">/position/altitude-ft</property>
-  </binding>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.apaltitudeexport();</script>
+   </binding>
   </action>
 
  </actions>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Concorde TAS : not clear, which frequencies is chosen (knob ?) -->
+<!-- Concorde TAS (true air speed) -->
 
 <PropertyList>
 
@@ -30,54 +30,8 @@
   </layer>
 
   <layer>
-   <name>TAS overflow</name>
-   <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <greater-than>
-      <property>/instrumentation/dme/indicated-ground-speed-kt</property>
-      <value type="double">999</value>
-     </greater-than>
-    </and>
-   </condition>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>999</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-30</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
    <name>TAS display</name>
    <type>text</type>
-   <condition>
-    <and>
-     <property>/instrumentation/dme/in-range</property>
-     <less-than-equals>
-      <property>/instrumentation/dme/indicated-ground-speed-kt</property>
-      <value type="double">999</value>
-     </less-than-equals>
-    </and>
-   </condition>
    <font>led</font>
    <point-size>7</point-size>
    <color>
@@ -88,14 +42,14 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/dme/indicated-ground-speed-kt</property>
-     <format>%3.0f</format>
+     <property>/instrumentation/tas-indicator/indicated-tas-kt</property>
+     <format>%4.0f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-30</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -122,11 +76,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>5</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-5</offset>
+     <offset>-2</offset>
     </transformation>
    </transformations>
   </layer>

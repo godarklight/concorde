@@ -115,93 +115,6 @@ properties' values.
   </layer>
 
   <layer>
-   <name>long needle (hundreds)</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
-    <x1>0.8</x1>
-    <y1>0.78125</y1>
-    <x2>0.8375</x2>
-    <y2>1.0</y2>
-   </texture>
-   <w>6</w>
-   <h>48</h>
-   <transformations>
-    <transformation>
-     <type>rotation</type>
-     <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-     <max>100000.0</max>
-     <scale>0.36</scale>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>20.0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>button</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
-    <x1>0.6171875</x1>
-    <y1>0.2421875</y1>
-    <x2>0.7890625</x2>
-    <y2>0.4140625</y2>
-   </texture>
-   <w>15</w>
-   <h>15</h>
-  </layer>
-  <layer>
-   <name>glare shield</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/bezel1.rgb</path>
-    <x1>0.5</x1>
-    <y1>0.0</y1>
-    <x2>1.0</x2>
-    <y2>0.5</y2>
-   </texture>
-  <w>128</w>
-  <h>128</h>
- <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>2</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-2</offset>
-    </transformation>
-    </transformations>
-  </layer>
-   <layer>
-   <name>Knob</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/blister.rgb</path>
-    <x1>0.25</x1>
-    <y1>0.75</y1>
-    <x2>0.5</x2>
-    <y2>1.0</y2>
-   </texture>
-   <h>24</h>
-   <w>24</w>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-45</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-45</offset>
-    </transformation>
-    <transformation>
-     <type>rotation</type>
-     <offset>180</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-
-  <layer>
    <name>ftx1000 - digital</name>
    <type>text</type>
    <font>led</font>
@@ -290,7 +203,94 @@ properties' values.
     </transformation>
    </transformations>
   </layer>
- 
+
+  <layer>
+   <name>long needle (hundreds)</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.8</x1>
+    <y1>0.78125</y1>
+    <x2>0.8375</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>6</w>
+   <h>48</h>
+   <transformations>
+    <transformation>
+     <type>rotation</type>
+     <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+     <max>100000.0</max>
+     <scale>0.36</scale>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>20.0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>button</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.6171875</x1>
+    <y1>0.2421875</y1>
+    <x2>0.7890625</x2>
+    <y2>0.4140625</y2>
+   </texture>
+   <w>15</w>
+   <h>15</h>
+  </layer>
+
+  <layer>
+   <name>glare shield</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/bezel1.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>0.5</y2>
+   </texture>
+  <w>128</w>
+  <h>128</h>
+ <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>2</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-2</offset>
+    </transformation>
+    </transformations>
+  </layer>
+
+   <layer>
+   <name>Knob</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/blister.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
+   </texture>
+   <h>24</h>
+   <w>24</w>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-45</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-45</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>180</offset>
+    </transformation>
+   </transformations>
+  </layer> 
 
  </layers>
 

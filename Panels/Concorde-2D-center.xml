@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-Concorde 2D panel (CENTER, woth overhead and pedestal)
+Concorde 2D panel (CENTER, with engineer, overhead and pedestal)
 
 Organized like the real one at http://www.concordesst.com/.
 See also pictures at http://www.airliners.net/info/.
@@ -9,7 +9,6 @@ See also pictures at http://www.airliners.net/info/.
 Instruments, which are not real :
 - overhead panel is hypothetical (no image).
 - button < 106 t influences VMO and center of gravity corridor.
-- button Max TO (Max performance Takeoff) increases center of gravity corridor until Mach 0.45.
 
 WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
 even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
@@ -48,7 +47,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde 2D Panel</name>
  <background>Aircraft/Concorde/Panels/Textures/concorde-panel-bg.rgb</background>
  <w>1424</w>
- <h>468</h>
+ <h>508</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -59,7 +58,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-kg.xml">
    <name>Fuel weight display</name>
    <x>391</x>
-   <y>440</y>
+   <y>480</y>
    <w>40</w>
    <h>10</h>
   </instrument>
@@ -70,11 +69,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 1 indicator</name>
    <params>
     <running-select>/engines/engine[0]/running</running-select>
-    <reheat-select>/engines/engine[0]/augmentation</reheat-select>
     <reverser-select>/engines/engine[0]/reversed</reverser-select>
    </params>
    <x>115</x>
-   <y>415</y>
+   <y>455</y>
    <w>90</w>
    <h>20</h>
   </instrument>
@@ -83,11 +81,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 2 indicator</name>
    <params>
     <running-select>/engines/engine[1]/running</running-select>
-    <reheat-select>/engines/engine[1]/augmentation</reheat-select>
     <reverser-select>/engines/engine[1]/reversed</reverser-select>
    </params>
    <x>217</x>
-   <y>415</y>
+   <y>455</y>
    <w>90</w>
    <h>20</h>
   </instrument>
@@ -96,11 +93,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 3 indicator</name>
    <params>
     <running-select>/engines/engine[2]/running</running-select>
-    <reheat-select>/engines/engine[2]/augmentation</reheat-select>
     <reverser-select>/engines/engine[2]/reversed</reverser-select>
    </params>
    <x>319</x>
-   <y>415</y>
+   <y>455</y>
    <w>90</w>
    <h>20</h>
   </instrument>
@@ -109,11 +105,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 4 indicator</name>
    <params>
     <running-select>/engines/engine[3]/running</running-select>
-    <reheat-select>/engines/engine[3]/augmentation</reheat-select>
     <reverser-select>/engines/engine[3]/reversed</reverser-select>
    </params>
    <x>421</x>
-   <y>415</y>
+   <y>455</y>
    <w>90</w>
    <h>20</h>
   </instrument>
@@ -126,7 +121,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[0]/n2</n2-select>
    </params>
    <x>144</x>
-   <y>350</y>
+   <y>390</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -137,7 +132,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[1]/n2</n2-select>
    </params>
    <x>246</x>
-   <y>350</y>
+   <y>390</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -148,7 +143,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[2]/n2</n2-select>
    </params>
    <x>348</x>
-   <y>350</y>
+   <y>390</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -159,7 +154,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n2-select>/engines/engine[3]/n2</n2-select>
    </params>
    <x>450</x>
-   <y>350</y>
+   <y>390</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -172,7 +167,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[0]/n1</n1-select>
    </params>
    <x>144</x>
-   <y>250</y>
+   <y>290</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -183,7 +178,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[1]/n1</n1-select>
    </params>
    <x>246</x>
-   <y>250</y>
+   <y>290</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -194,7 +189,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[2]/n1</n1-select>
    </params>
    <x>348</x>
-   <y>250</y>
+   <y>290</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -205,101 +200,147 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[3]/n1</n1-select>
    </params>
    <x>450</x>
-   <y>250</y>
+   <y>290</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
 <!-- Fuel Flow -->
 
-  <instrument include="Instruments/concorde-fuel-flow.xml">
+  <instrument include="Instruments/concorde-engine-fuel.xml">
    <name>Engine 1 fuel flow</name>
    <params>
     <ff-select>/engines/engine[0]/fuel-flow_pph</ff-select>
    </params>
    <x>144</x>
-   <y>150</y>
+   <y>190</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-fuel-flow.xml">
+  <instrument include="Instruments/concorde-engine-fuel.xml">
    <name>Engine 2 fuel flow</name>
    <params>
     <ff-select>/engines/engine[1]/fuel-flow_pph</ff-select>
    </params>
    <x>246</x>
-   <y>150</y>
+   <y>190</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-fuel-flow.xml">
+  <instrument include="Instruments/concorde-engine-fuel.xml">
    <name>Engine 3 fuel flow</name>
    <params>
     <ff-select>/engines/engine[2]/fuel-flow_pph</ff-select>
    </params>
    <x>348</x>
-   <y>150</y>
+   <y>190</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-fuel-flow.xml">
+  <instrument include="Instruments/concorde-engine-fuel.xml">
    <name>Engine 4 fuel flow</name>
    <params>
     <ff-select>/engines/engine[3]/fuel-flow_pph</ff-select>
    </params>
    <x>450</x>
-   <y>150</y>
+   <y>190</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
 <!-- EGT -->
 
-  <instrument include="Instruments/concorde-egt.xml">
+  <instrument include="Instruments/concorde-engine-egt.xml">
    <name>Engine 1 EGT</name>
    <params>
     <egt-select>/engines/engine[0]/egt_degf</egt-select>
    </params>
    <x>144</x>
-   <y>50</y>
+   <y>90</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-egt.xml">
+  <instrument include="Instruments/concorde-engine-egt.xml">
    <name>Engine 2 EGT</name>
    <params>
     <egt-select>/engines/engine[1]/egt_degf</egt-select>
    </params>
    <x>246</x>
-   <y>50</y>
+   <y>90</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-egt.xml">
+  <instrument include="Instruments/concorde-engine-egt.xml">
    <name>Engine 3 EGT</name>
    <params>
     <egt-select>/engines/engine[2]/egt_degf</egt-select>
    </params>
    <x>348</x>
-   <y>50</y>
+   <y>90</y>
    <w>100</w>
    <h>100</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-egt.xml">
+  <instrument include="Instruments/concorde-engine-egt.xml">
    <name>Engine 4 EGT</name>
    <params>
     <egt-select>/engines/engine[3]/egt_degf</egt-select>
    </params>
    <x>450</x>
-   <y>50</y>
+   <y>90</y>
    <w>100</w>
    <h>100</h>
+  </instrument>
+
+<!-- ENGINEER reheat -->
+
+  <instrument include="Instruments/concorde-engine-reheat.xml">
+   <name>Engine 1 reheat</name>
+   <params>
+    <reheat-select>/engines/engine[0]/augmentation</reheat-select>
+   </params>
+   <x>144</x>
+   <y>20</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-reheat.xml">
+   <name>Engine 2 reheat</name>
+   <params>
+    <reheat-select>/engines/engine[1]/augmentation</reheat-select>
+   </params>
+   <x>246</x>
+   <y>20</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-reheat.xml">
+   <name>Engine 3 reheat</name>
+   <params>
+    <reheat-select>/engines/engine[2]/augmentation</reheat-select>
+   </params>
+   <x>348</x>
+   <y>20</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-reheat.xml">
+   <name>Engine 4 reheat</name>
+   <params>
+    <reheat-select>/engines/engine[3]/augmentation</reheat-select>
+   </params>
+   <x>450</x>
+   <y>20</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
 <!-- CENTER right -->
@@ -307,7 +348,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-nose-visor.xml">
    <name>Nose/visor selector</name>
    <x>580</x>
-   <y>405</y>
+   <y>445</y>
    <w>40</w>
    <h>80</h>
   </instrument>
@@ -315,7 +356,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-nose-visor-lights.xml">
    <name>Nose/visor selector</name>
    <x>630</x>
-   <y>375</y>
+   <y>415</y>
    <w>30</w>
    <h>80</h>
   </instrument>
@@ -323,7 +364,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-visor-status.xml">
    <name>Visor status</name>
    <x>650</x>
-   <y>425</y>
+   <y>472</y>
    <w>30</w>
    <h>10</h>
   </instrument>
@@ -331,49 +372,49 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-nose-status.xml">
    <name>Nose status</name>
    <x>650</x>
-   <y>355</y>
+   <y>395</y>
    <w>30</w>
    <h>10</h>
   </instrument>
 
   <instrument include="Instruments/concorde-gear-lights.xml">
    <name>Gear lights</name>
-   <x>565</x>
-   <y>240</y>
+   <x>640</x>
+   <y>280</y>
    <w>110</w>
    <h>110</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-gear.xml">
-   <name>Landing Gear selector</name>
-   <x>565</x>
-   <y>100</y>
-   <w>80</w>
-   <h>80</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-aoa.xml">
    <name>AoA display</name>
-   <x>670</x>
-   <y>190</y>
+   <x>540</x>
+   <y>255</y>
    <w>10</w>
    <h>40</h>
   </instrument>
 
   <instrument include="Instruments/concorde-accl.xml">
-   <name>Accel display</name>
-   <x>670</x>
-   <y>110</y>
+   <name>Acceleration display</name>
+   <x>540</x>
+   <y>175</y>
    <w>10</w>
    <h>40</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-gear.xml">
+   <name>Landing Gear selector</name>
+   <x>560</x>
+   <y>120</y>
+   <w>80</w>
+   <h>80</h>
+  </instrument>
+
 <!-- PEDESTAL -->
 
-  <instrument include="../../Instruments/oat.xml">
-   <name>Outside temperature</name>
-   <x>730</x>
-   <y>130</y>
+  <instrument include="Instruments/concorde-temperature.xml">
+   <name>OAT/TMO temperatures</name>
+   <x>835</x>
+   <y>450</y>
    <w>65</w>
    <h>20</h>
   </instrument>
@@ -430,7 +471,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>80</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-reheat.xml">
+  <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 0 reheat quadrant</name>
    <params>
     <engine-reheat-select>/controls/engines/engine[0]/augmentation</engine-reheat-select>
@@ -441,7 +482,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>38</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-reheat.xml">
+  <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 1 reheat quadrant</name>
    <params>
     <engine-reheat-select>/controls/engines/engine[1]/augmentation</engine-reheat-select>
@@ -452,7 +493,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>38</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-reheat.xml">
+  <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 2 reheat quadrant</name>
    <params>
     <engine-reheat-select>/controls/engines/engine[2]/augmentation</engine-reheat-select>
@@ -463,7 +504,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>38</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-reheat.xml">
+  <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 3 reheat quadrant</name>
    <params>
     <engine-reheat-select>/controls/engines/engine[3]/augmentation</engine-reheat-select>
@@ -510,122 +551,124 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <y>181</y>
   </instrument>
 
-<!-- OVERHEAD -->
+<!-- ENGINEER -->
 
-  <instrument include="Instruments/concorde-weight-105t.xml">
-   <name>Weight selector</name>
-   <x>890</x>
-   <y>450</y>
-   <w>65</w>
-   <h>24</h>
+  <instrument include="Instruments/concorde-cg-max-to.xml">
+   <name>Max Performance TO</name>
+   <x>970</x>
+   <y>460</y>
+   <w>45</w>
+   <h>45</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-max-to.xml">
-   <name>Max Performance TO</name>
-   <x>965</x>
-   <y>450</y>
+<!-- OVERHEAD -->
+
+  <instrument include="Instruments/concorde-cg-weight-105t.xml">
+   <name>Weight selector</name>
+   <x>37</x>
+   <y>290</y>
    <w>65</w>
    <h>24</h>
   </instrument>
 
 <!-- Engine cutoff -->
 
-  <instrument include="Instruments/concorde-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-cutoff.xml">
    <name>Engine 1 cutoff</name>
    <params>
     <eng-num>/engines/engine[0]/engine-num</eng-num>
     <cutoff>/engines/engine[0]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
    </params>
-   <x>20</x>
-   <y>160</y>
+   <x>22</x>
+   <y>200</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-starter.xml">
+  <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 1 starter</name>
    <params>
     <starter>/engines/engine[0]/starter</starter>
     <control-starter>/controls/engines/engine[0]/starter</control-starter>
    </params>
-   <x>50</x>
-   <y>160</y>
+   <x>52</x>
+   <y>200</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-cutoff.xml">
    <name>Engine 2 cutoff</name>
    <params>
     <eng-num>/engines/engine[1]/engine-num</eng-num>
     <cutoff>/engines/engine[1]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
    </params>
-   <x>20</x>
-   <y>120</y>
+   <x>22</x>
+   <y>160</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-starter.xml">
+  <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 2 starter</name>
    <params>
     <starter>/engines/engine[1]/starter</starter>
     <control-starter>/controls/engines/engine[1]/starter</control-starter>
    </params>
-   <x>50</x>
-   <y>120</y>
+   <x>52</x>
+   <y>160</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-cutoff.xml">
    <name>Engine 3 cutoff</name>
    <params>
     <eng-num>/engines/engine[2]/engine-num</eng-num>
     <cutoff>/engines/engine[2]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
    </params>
-   <x>20</x>
-   <y>80</y>
+   <x>22</x>
+   <y>120</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-starter.xml">
+  <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 3 starter</name>
    <params>
     <starter>/engines/engine[2]/starter</starter>
     <control-starter>/controls/engines/engine[2]/starter</control-starter>
    </params>
-   <x>50</x>
-   <y>80</y>
+   <x>52</x>
+   <y>120</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-cutoff.xml">
    <name>Engine 4 cutoff</name>
    <params>
     <eng-num>/engines/engine[3]/engine-num</eng-num>
     <cutoff>/engines/engine[3]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
    </params>
-   <x>20</x>
-   <y>40</y>
+   <x>22</x>
+   <y>80</y>
    <w>28</w>
    <h>28</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-starter.xml">
+  <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 4 starter</name>
    <params>
     <starter>/engines/engine[3]/starter</starter>
     <control-starter>/controls/engines/engine[3]/starter</control-starter>
    </params>
-   <x>50</x>
-   <y>40</y>
+   <x>52</x>
+   <y>80</y>
    <w>28</w>
    <h>28</h>
   </instrument>

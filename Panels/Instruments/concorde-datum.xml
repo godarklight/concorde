@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+
+<!-- Concorde datum adjust unit
+
+http://www.concordesst.com/ :
+
+- autothrottle speed setting : +/-22 kt, +/-0.06 Mach.
+- autopilot turn : this will turn aircraft at a roll rate of 5 deg per second. This is HDG/TRK mode will cause a revision
+in the basic heading mode.
+- various settings for pitch, depending of mode, e.g. ALT HOLD or MACH HOLD.
+
+-->
+
+<PropertyList>
+
+ <name>Datum adjust unit</name>
+ <w-base>250</w-base>
+ <h-base>120</h-base>
+
+ <layers>
+
+<!-- autothrottle -->
+
+  <layer>
+   <name>Ajust autothrottle</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>80</w>
+    <h>30</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-55</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-20</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Autothrottle</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/datum/speed-kt</property>
+     <format>%2.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-78</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-28</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title autothrottle</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-123</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-25</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Increment</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>INCREMENT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-100</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Decrement</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DECREMENT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-103</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-55</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- autopilot -->
+
+  <layer>
+   <name>Ajust autopilot</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>80</w>
+    <h>30</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>85</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-19</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Pitch deg</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/datum/pitch-deg</property>
+     <format>%2.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>70</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-28</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title autopilot</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>17</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-25</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Nose down</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>NOSE DOWN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>37</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Nose up</name>
+   <type>text</type>
+   <point-size>14</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>NOSE UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>47</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-55</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>Plus 1 kt / 0.01 Mach</name>
+   <button>0</button>
+   <x>-90</x>
+   <y>0</y>
+   <w>70</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumthrottleexport(1.0);</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 1 kt / 0.01 Mach</name>
+   <button>0</button>
+   <x>-90</x>
+   <y>-59</y>
+   <w>70</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumthrottleexport(-1.0);</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 1 deg</name>
+   <button>0</button>
+   <x>49</x>
+   <y>0</y>
+   <w>70</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumpitchexport(-1.0);</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 1 deg</name>
+   <button>0</button>
+   <x>49</x>
+   <y>-59</y>
+   <w>70</w>
+   <h>17</h>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.datumpitchexport(1.0);</script>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

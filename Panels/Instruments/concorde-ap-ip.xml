@@ -102,11 +102,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-33</offset>
+     <offset>-21</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -137,6 +137,11 @@
     <property>/autopilot/settings/target-speed-kt</property>
     <property n="1">/instrumentation/airspeed-indicator/indicated-speed-kt</property>
    </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
+    <value type="string"></value>
+   </binding>
   </action>
 
   <action>
@@ -155,6 +160,11 @@
    <binding>
     <command>property-assign</command>
     <property>/autopilot/locks/speed</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
     <value type="string"></value>
    </binding>
   </action>

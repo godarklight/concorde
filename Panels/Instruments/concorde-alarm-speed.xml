@@ -19,11 +19,11 @@
       <or>
        <greater-than>
         <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-        <property n="1">/instrumentation/airspeed-indicator/vmo-kt</property>
+        <property n="1">/instrumentation/airspeed-indicator/overspeed-kt</property>
        </greater-than>
        <greater-than>
         <property>/velocities/mach</property>
-        <property n="1">/instrumentation/mach-indicator/mmo-mach</property>
+        <property n="1">/instrumentation/mach-indicator/overspeed-mach</property>
        </greater-than>
       </or>
      </condition>
@@ -43,11 +43,11 @@
       <and>
        <less-than-equals>
         <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-        <property n="1">/instrumentation/airspeed-indicator/vmo-kt</property>
+        <property n="1">/instrumentation/airspeed-indicator/overspeed-kt</property>
        </less-than-equals>
        <less-than-equals>
         <property>/velocities/mach</property>
-        <property n="1">/instrumentation/mach-indicator/mmo-mach</property>
+        <property n="1">/instrumentation/mach-indicator/overspeed-mach</property>
        </less-than-equals>
       </and>
      </condition>
@@ -94,11 +94,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-56</offset>
+     <offset>-45</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-12</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>

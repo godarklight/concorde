@@ -2,6 +2,8 @@
 
 <!-- Concorde British Airways
 
+    - all axis are correct !
+
     - http://www.concordesst.com :
 
     Flight systems (range up and down) : inner elevons 9 deg, middle and outer elevons 23.5 deg, rudder 30 deg.
@@ -15,27 +17,261 @@
 
     Constants :
     - 0.05 : door is opened, gear starts to lower.
-    - 0.95 : gear locks, doors start to close.
-    - exception : tail gear door moves with gear.
+    - 0.95 : gear locks, door starts to close.
+
+    Exception, tail gear door moves with gear :
+    - 0.05 : door start to open.
+    - 0.15 : door start to close.
 
 -->
 
 <!-- TO DO :
- - 3D bug : the tail wheel door seems tool long (one part of tail gear hole is closed by the small left and right doors.
- - all axis are correct !
- - temporisation of wing gear inner doors and front gear main doors.
- - 3D bug : the wing gears seems a little too long, and cross the inner doors.
- - 3D : improve animation of nose / visor.
+    - 3D bug : the tail wheel door seems too long (one part of tail gear hole is closed by the small left and right doors.
+    - temporisation of wing gear inner doors and front gear main doors.
+    - 3D bug : the wing gears seems a little too long, and cross the inner doors.
 -->
  
 <PropertyList>
   <path>concorde.ac</path>
   <offsets>
-   <x-m>-1.23</x-m> <!-- match the center of gravity of FDM (tail wheel doesn't touch the ground at 10 deg pitch) -->
-   <z-m>1.72</z-m> <!-- make the wheels touch the ground, when changes center of gravity -->
+<!-- match the center of gravity of FDM (tail wheel doesn't touch the ground at 10 deg pitch) -->
+   <x-m>-1.23</x-m>
+<!-- makes the wheels touch the ground, when changes center of gravity.
+     When changing this value, also adjust the seat to keep the 2D instruments. -->
+   <z-m>1.02</z-m>
    <roll-deg>0</roll-deg>
    <heading-deg>0</heading-deg>
   </offsets>
+
+ <!-- ======================================= -->
+ <!-- panel models (X/Y/Z depth/width/height) -->
+ <!-- ======================================= -->
+
+ <!-- AUTOPILOT -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
+   <bottom-left>
+    <x-m>-24.226</x-m>
+    <y-m>-0.38</y-m>
+    <z-m> 0.575</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-24.226</x-m>
+    <y-m> 0.79</y-m>
+    <z-m> 0.575</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-24.326</x-m>
+    <y-m>-0.38</y-m>
+    <z-m> 1.047</z-m>
+   </top-left>
+  </panel>
+
+ <!-- PILOT -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pilot.xml</path>
+   <bottom-left>
+    <x-m>-25.146</x-m>
+    <y-m>-1.18</y-m>
+    <z-m>-0.505</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-25.146</x-m>
+    <y-m> 3.41</y-m>
+    <z-m>-0.505</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-25.666</x-m>
+    <y-m>-1.18</y-m>
+    <z-m> 1.64</z-m>
+   </top-left>
+  </panel>
+
+ <!-- CAPTAIN -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-captain.xml</path>
+   <bottom-left>
+    <x-m>-23.18</x-m>
+    <y-m>-0.9</y-m>
+    <z-m> 0.4</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.18</x-m>
+    <y-m> 0.25</y-m>
+    <z-m> 0.4</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.78</x-m>
+    <y-m>-0.9</y-m>
+    <z-m> 0.4</z-m>
+   </top-left>
+  </panel>
+
+ <!-- COPILOT -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-copilot.xml</path>
+   <bottom-left>
+    <x-m>-23.18</x-m>
+    <y-m> 0.605</y-m>
+    <z-m> 0.4</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.18</x-m>
+    <y-m> 1.755</y-m>
+    <z-m> 0.4</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.78</x-m>
+    <y-m> 0.605</y-m>
+    <z-m> 0.4</z-m>
+   </top-left>
+  </panel>
+
+ <!-- PEDESTAL -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pedestal.xml</path>
+   <bottom-left>
+    <x-m>-23.03</x-m>
+    <y-m>-0.075</y-m>
+    <z-m> 0.35</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.03</x-m>
+    <y-m> 1.075</y-m>
+    <z-m> 0.35</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.63</x-m>
+    <y-m>-0.075</y-m>
+    <z-m> 0.35</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pedestal-bottom.xml</path>
+   <bottom-left>
+    <x-m>-22.45</x-m>
+    <y-m> 0.075</y-m>
+    <z-m> 0.35</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-22.45</x-m>
+    <y-m> 1.225</y-m>
+    <z-m> 0.35</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.05</x-m>
+    <y-m> 0.075</y-m>
+    <z-m> 0.35</z-m>
+   </top-left>
+  </panel>
+
+ <!-- ENGINEER -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-engine.xml</path>
+   <bottom-left>
+    <x-m>-22.85</x-m>
+    <y-m> 0.675</y-m>
+    <z-m> 0.96</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.05</x-m>
+    <y-m> 0.975</y-m>
+    <z-m> 0.96</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.5</x-m>
+    <y-m> 0.825</y-m>
+    <z-m> 1.65</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel.xml</path>
+   <bottom-left>
+    <x-m>-22.9</x-m>
+    <y-m> 0.775</y-m>
+    <z-m> 0.43</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.52</x-m>
+    <y-m> 0.75</y-m>
+    <z-m> 0.43</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.9</x-m>
+    <y-m> 0.775</y-m>
+    <z-m> 1.30</z-m>
+   </top-left>
+  </panel>
+
+ <!-- OVERHEAD -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead.xml</path>
+   <bottom-left>
+    <x-m>-23.956</x-m>
+    <y-m>-0.11</y-m>
+    <z-m> 1.7</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.956</x-m>
+    <y-m> 0.68</y-m>
+    <z-m> 1.7</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.656</x-m>
+    <y-m>-0.11</y-m>
+    <z-m> 2.0</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead-pillar.xml</path>
+   <bottom-left>
+    <x-m>-23.586</x-m>
+    <y-m>-0.6</y-m>
+    <z-m> 1.47</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.586</x-m>
+    <y-m>-0.02</y-m>
+    <z-m> 1.47</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.436</x-m>
+    <y-m>-0.6</y-m>
+    <z-m> 1.59</z-m>
+   </top-left>
+  </panel>
+
+<!-- LOD for specific objects -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Cockpit</object-name> <!-- removes the AC3D GROUP -->
+   <condition>
+    <property>/sim/current-view/internal</property>
+   </condition>
+  </animation>
+
+<!-- ========== -->
+<!-- Animations -->
+<!-- ========== -->
+
+<!-- LOD for the model as a whole -->
+
+  <animation>
+   <type>range</type>
+   <min-m>0</min-m>
+   <max-m>16000</max-m>
+  </animation>
 
 <!-- NOSE -->
 
@@ -334,6 +570,23 @@
  </animation>
 
  <animation>
+  <type>select</type>
+  <object-name>OFLbigdoor</object-name>
+  <condition>
+   <and>
+    <greater-than>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>0.0</value>
+    </greater-than>
+    <less-than>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>1.0</value>
+    </less-than>
+   </and>
+  </condition>
+ </animation>
+
+ <animation>
   <type>rotate</type>
   <object-name>OFlsmalldoor</object-name> <!-- door always open left -->
   <property>gear/gear[0]/position-norm</property>
@@ -361,6 +614,17 @@
    <y>-0.025</y>
    <z>-0.06</z>
   </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>OFlsmalldoor</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
  </animation>
 
   <animation>
@@ -397,6 +661,23 @@
   </axis>
  </animation> 
 
+ <animation>
+  <type>select</type>
+  <object-name>OFRbigdoor</object-name>
+  <condition>
+   <and>
+    <greater-than>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>0.0</value>
+    </greater-than>
+    <less-than>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>1.0</value>
+    </less-than>
+   </and>
+  </condition>
+ </animation>
+
   <animation>
   <type>rotate</type>
   <object-name>OFRsmalldoor</object-name> <!-- door always open right -->
@@ -427,6 +708,17 @@
   </axis>
  </animation> 
 
+ <animation>
+  <type>select</type>
+  <object-name>OFRsmalldoor</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
   <animation>
   <type>rotate</type>
   <object-name>OFlegdoor</object-name> <!-- door behind the wheel -->
@@ -456,6 +748,45 @@
    <z>0</z>
   </axis>
  </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>OFlegdoor</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Fucdclosed</object-name>
+  <condition>
+   <or>
+    <equals>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>1.0</value>
+    </equals>
+    <equals>
+     <property>/gear/gear[0]/position-norm</property>
+     <value>0.0</value>
+    </equals>
+   </or>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Fsucdclosed</object-name>
+  <condition>
+   <equals>
+    <property>/gear/gear[0]/position-norm</property>
+    <value>0.0</value>
+   </equals>
+  </condition>
+ </animation>
 
 <!-- RIGHT GEAR -->
 
@@ -605,6 +936,28 @@
  </animation>
 
  <animation>
+  <type>select</type>
+  <object-name>OROmaindoor</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>ROdoorclosed</object-name>
+  <condition>
+   <equals>
+    <property>/gear/gear[1]/position-norm</property>
+    <value>0.0</value>
+   </equals>
+  </condition>
+ </animation>
+
+ <animation>
   <type>rotate</type>
   <object-name>ORImaindoor</object-name> <!-- internal right door -->
   <property>gear/gear[1]/position-norm</property>
@@ -618,16 +971,14 @@
       <dep>0.0</dep>
     </entry>
     <entry>
-      <ind>1.0</ind>
+      <ind>0.95</ind>
       <dep>0.0</dep>
     </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>74.2</dep> <!-- locks the door once gear down -->
+    </entry>
   </interpolation>
-  <condition>
-   <less-than>
-    <property>/gear/gear[1]/position-norm</property>
-    <value>0.05</value>
-   </less-than>
-  </condition>
   <center>
    <x-m>5.5</x-m>
    <y-m>0.1</y-m>
@@ -638,6 +989,40 @@
    <y>0</y>
    <z>0</z>
   </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>ORImaindoor</object-name>
+  <condition>
+   <and>
+    <greater-than>
+     <property>/gear/gear[1]/position-norm</property>
+     <value>0.0</value>
+    </greater-than>
+    <less-than>
+     <property>/gear/gear[1]/position-norm</property>
+     <value>1.0</value>
+    </less-than>
+   </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RIdoorclosed</object-name>
+  <condition>
+   <or>
+    <equals>
+     <property>/gear/gear[1]/position-norm</property>
+     <value>0.0</value>
+    </equals>
+    <equals>
+     <property>/gear/gear[1]/position-norm</property>
+     <value>1.0</value>
+    </equals>
+   </or>
+  </condition>
  </animation>
 
 <!-- LEFT GEAR -->
@@ -788,6 +1173,28 @@
  </animation>
 
  <animation>
+  <type>select</type>
+  <object-name>OLOmaindoor</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LOdoorclosed</object-name>
+  <condition>
+   <equals>
+    <property>/gear/gear[2]/position-norm</property>
+    <value>0.0</value>
+   </equals>
+  </condition>
+ </animation>
+
+ <animation>
   <type>rotate</type>
   <object-name>OLImaindoor</object-name> <!-- internal left door -->
   <property>gear/gear[2]/position-norm</property>
@@ -801,8 +1208,12 @@
       <dep>0.0</dep>
     </entry>
     <entry>
-      <ind>1.0</ind>
+      <ind>0.95</ind>
       <dep>0.0</dep>
+    </entry>
+    <entry>
+      <ind>1.0</ind>
+      <dep>-79.4</dep> <!-- locks the door once gear down -->
     </entry>
   </interpolation>
   <center>
@@ -815,6 +1226,40 @@
    <y>0</y>
    <z>0</z>
   </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>OLImaindoor</object-name>
+  <condition>
+   <and>
+    <greater-than>
+     <property>/gear/gear[2]/position-norm</property>
+     <value>0.0</value>
+    </greater-than>
+    <less-than>
+     <property>/gear/gear[2]/position-norm</property>
+     <value>1.0</value>
+    </less-than>
+   </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LIdoorclosed</object-name>
+  <condition>
+   <or>
+    <equals>
+     <property>/gear/gear[2]/position-norm</property>
+     <value>0.0</value>
+    </equals>
+    <equals>
+     <property>/gear/gear[2]/position-norm</property>
+     <value>1.0</value>
+    </equals>
+   </or>
+  </condition>
  </animation>
 
 <!-- TAIL GEAR -->
@@ -940,6 +1385,17 @@
   </axis>
  </animation>
 
+ <animation>
+  <type>select</type>
+  <object-name>Littledoorleft.</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.05</value>
+   </greater-than>
+  </condition>
+ </animation>
+
   <animation>
   <type>rotate</type>
   <object-name>Littledoorright</object-name> <!-- small right door -->
@@ -973,6 +1429,17 @@
    <z>0.25</z> <!-- slope 1 for 4 -->
   </axis>
  </animation> 
+
+ <animation>
+  <type>select</type>
+  <object-name>Littledoorright</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.05</value>
+   </greater-than>
+  </condition>
+ </animation>
 
   <animation>
   <type>rotate</type>
@@ -1008,11 +1475,33 @@
   </axis>
  </animation> 
 
+ <animation>
+  <type>select</type>
+  <object-name>Taildoorfront</object-name>
+  <condition>
+   <greater-than>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.05</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Taildoorclosed</object-name>
+  <condition>
+   <less-than-equals>
+    <property>/gear/gear[3]/position-norm</property>
+    <value>0.05</value>
+   </less-than-equals>
+  </condition>
+ </animation>
+
 <!-- RIGHT WING -->
 
  <animation>
   <type>rotate</type>
-  <object-name>RO ailaron</object-name> <!-- outer elevon -->
+  <object-name>ROailaron</object-name> <!-- outer elevon -->
   <property>controls/flight/aileron</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1030,7 +1519,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>RO ailaron</object-name> <!-- outer elevon -->
+  <object-name>ROailaron</object-name> <!-- outer elevon -->
   <property>controls/flight/elevator</property>
   <factor>-22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1048,7 +1537,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>RI ailaron</object-name> <!-- middle elevon -->
+  <object-name>RIailaron</object-name> <!-- middle elevon -->
   <property>controls/flight/aileron</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1066,7 +1555,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>RI ailaron</object-name> <!-- middle elevon -->
+  <object-name>RIailaron</object-name> <!-- middle elevon -->
   <property>controls/flight/elevator</property>
   <factor>-22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1084,7 +1573,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>R flap</object-name> <!-- inner elevon : no flap -->
+  <object-name>Rflap</object-name> <!-- inner elevon : no flap -->
   <property>controls/flight/aileron</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
@@ -1102,7 +1591,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>R flap</object-name> <!-- inner elevon : no flap -->
+  <object-name>Rflap</object-name> <!-- inner elevon : no flap -->
   <property>controls/flight/elevator</property>
   <factor>-8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
@@ -1122,7 +1611,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>LO ailaron</object-name> <!-- outer elevon -->
+  <object-name>LOailaron</object-name> <!-- outer elevon -->
   <property>controls/flight/aileron</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1140,7 +1629,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>LO ailaron</object-name> <!-- outer elevon -->
+  <object-name>LOailaron</object-name> <!-- outer elevon -->
   <property>controls/flight/elevator</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1158,7 +1647,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>LI ailaron</object-name> <!-- middle elevon -->
+  <object-name>LIailaron</object-name> <!-- middle elevon -->
   <property>controls/flight/aileron</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1176,7 +1665,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>LI ailaron</object-name> <!-- middle elevon -->
+  <object-name>LIailaron</object-name> <!-- middle elevon -->
   <property>controls/flight/elevator</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
@@ -1194,7 +1683,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>L flap</object-name> <!-- inner elevon : no flap -->
+  <object-name>Lflap</object-name> <!-- inner elevon : no flap -->
   <property>controls/flight/aileron</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
@@ -1212,7 +1701,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>L flap</object-name> <!-- inner elevon : no flap -->
+  <object-name>Lflap</object-name> <!-- inner elevon : no flap -->
   <property>controls/flight/elevator</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
@@ -1232,7 +1721,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>Upper rudder</object-name>
+  <object-name>Upperrudder</object-name>
   <property>controls/flight/rudder</property>
   <factor>29</factor> <!-- max real is 30 deg -->
   <offset-deg>0</offset-deg>   
@@ -1250,7 +1739,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>Lower rudder</object-name>
+  <object-name>Lowerrudder</object-name>
   <property>controls/flight/rudder</property>
   <factor>29</factor> <!-- max real is 30 deg -->
   <offset-deg>0</offset-deg>   

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Alarm on Gear -->
+<!-- Concorde alarm on Terrain, supposed to be a gear alarm -->
 
 <PropertyList>
  <name>Alarm Gear</name>
@@ -17,16 +17,6 @@
      <name>on</name>
      <condition>
       <and>
-       <or>
-        <equals>
-         <property>autopilot/locks/altitude</property>
-         <value>gs1-hold</value>
-        </equals>
-        <equals>
-         <property>autopilot/locks/vertical</property>
-         <value>autoland</value>
-        </equals>
-       </or>
        <not-equals>
         <property>gear/gear[0]/position-norm</property>
         <value>1.0</value>
@@ -35,7 +25,11 @@
         <property>position/altitude-agl-ft</property>
         <value>1500</value>
        </less-than>
-      </and>
+       <less-than>
+        <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+        <value>0.0</value>
+       </less-than>
+    </and>
      </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -51,14 +45,6 @@
      <name>off</name>
      <condition>
       <or>
-       <not-equals>
-        <property>autopilot/locks/altitude</property>
-        <value>gs1-hold</value>
-       </not-equals>
-       <not-equals>
-        <property>autopilot/locks/vertical</property>
-        <value>autoland</value>
-       </not-equals>
        <equals>
         <property>gear/gear[0]/position-norm</property>
         <value>1.0</value>
@@ -66,6 +52,10 @@
        <greater-than-equals>
         <property>position/altitude-agl-ft</property>
         <value>1500</value>
+       </greater-than-equals>
+       <greater-than-equals>
+        <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+        <value>0.0</value>
        </greater-than-equals>
       </or>
      </condition>
@@ -112,11 +102,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-55</offset>
+     <offset>-43</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-12</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>

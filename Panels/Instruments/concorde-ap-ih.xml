@@ -41,11 +41,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-38</offset>
+     <offset>-26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -56,19 +56,18 @@
   <action>
    <desc>IAS hold</desc>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/autopilot/locks/speed</property>
-    <value type="string">speed-with-throttle</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
     <property>/autopilot/settings/target-speed-kt</property>
     <property n="1">/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.atspeedexport();</script>
    </binding>
   </action>
 

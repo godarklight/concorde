@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 
-<!-- Engine indicator lights -->
+<!-- Engine indicator lights :
+
+- contingency doesn't exist in Flightgear.
+- reverser is not implemented by JBSim.
+
+-->
 
 <PropertyList>
 
@@ -10,7 +15,7 @@
 
  <params>
   <running-select>/engines/engine[0]/running</running-select>
-  <reheat-select>/engines/engine[0]/augmentation</reheat-select>
+  <contingency-select>/engines/engine[0]/contingency</contingency-select>
   <reverser-select>/engines/engine[0]/reversed</reverser-select>
  </params>
 
@@ -95,7 +100,7 @@
    <type>switch</type>
   <layer>
    <condition>
-    <property alias="../../../../../params/reheat-select"/>
+    <property alias="../../../../../params/contingency-select"/>
    </condition>
    <name>On</name>
    <texture>
@@ -179,11 +184,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>13</offset>
+     <offset>16</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-7</offset>
+     <offset>-4</offset>
     </transformation>
    </transformations>
   </layer>
@@ -277,11 +282,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>44</offset>
+     <offset>47</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-7</offset>
+     <offset>-4</offset>
     </transformation>
    </transformations>
   </layer>

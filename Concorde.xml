@@ -1,7 +1,8 @@
-<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.0">
+<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.01">
 <!--
   File:     Concorde.xml
   Author:   Aero-Matic v 0.71
+  Date:     9 august 2004
 
   Inputs:
     name:          Concorde
@@ -243,7 +244,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Takeoff speed : 214 kt.
     Landing speed : 130 kt, max 162 kt.
 
-    - http://www.bea-fr.org :
+    - http://www.bea-fr.org/docspa/2000/f-sc000725/htm/f-sc000725.html :
 
     Droop nose : 0.53 m.
     Front gear from nose (without droop nose) : 18.7 m.
@@ -272,6 +273,15 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     2.0          53.5                58.5                62.0   
     
     (all positions in % of aerodynamic chord C0, 90.748 feet).
+
+    - http://www.titanic.com/story/159/Concorde/ :
+
+    Runway : 11200 ft takeoff, 7300 ft landing.
+    Max climb rate : 5000 ft/s.
+    Range : 3550 nm supersonic, 2760 nm subsonic (Mach 0.95 FL300).
+    Maximum operating altitude : 60000 ft.
+
+    Areas (sq ft) : wings (gross) 3856, elevons (total) 344.44, fin (excluding dorsal fin) 365, rudder 112.
 
 -->
 
@@ -738,7 +748,6 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
         -->
 
          Change_in_lift_due_to_ground_effect
-
          5
          aero/h_b-mac-ft
          none
@@ -823,13 +832,14 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     </COEFFICIENT>
     <COEFFICIENT NAME="CDmach" TYPE="VECTOR">
        Drag_due_to_mach
-       4
+       5
        velocities/mach-norm
        aero/qbar-psf|metrics/Sw-sqft
        0.0       0.000
        0.79      0.000
        1.1       0.023
        1.8       0.015
+       2.0       0.001
     </COEFFICIENT>
     <COEFFICIENT NAME="CDflap" TYPE="VALUE">
        <!-- nose drag (temporary) -->

@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+
+<!-- Concorde T/O CG switch (center of gravity at 54%) -->
+
+<PropertyList>
+
+ <name>Max performance Take Off</name>
+ <w-base>52</w-base>
+ <h-base>52</h-base>
+
+ <layers>
+
+  <layer>
+   <name>T/O Center of Gravity</name>
+    <type>switch</type>
+     <layer>
+      <condition>
+       <not>
+        <property>/instrumentation/cg/max-performance-to</property>
+       </not>
+      </condition>
+      <name>on</name>
+      <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.74</y1>
+      <x2>0.25</x2>
+      <y2>1.0</y2>
+      </texture>
+      <w>40</w>
+      <h>40</h>
+    <transformations>
+      <transformation>
+      <type>y-shift</type>
+      <offset>3</offset>
+      </transformation>
+    </transformations>
+    </layer>
+    <layer>
+    <name>off</name>
+    <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.31</y2>
+    </texture>
+    <w>40</w>
+    <h>47</h>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>0</offset>
+      </transformation>
+    <transformation>
+    <type>y-shift</type>
+    <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>15</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>T/O CG</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-92</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Norm Title</name>
+   <type>text</type>
+   <point-size>15</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>NORM</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-25</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>29</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>54% Title</name>
+   <type>text</type>
+   <point-size>15</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>54%</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-16</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-33</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>toggle Take/Off CG</name>
+   <button>0</button>
+   <x>-22</x>
+   <y>-19</y>
+   <w>44</w>
+   <h>44</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/cg/max-performance-to</property>
+   </binding>
+  </action>
+
+ </actions>
+ 
+</PropertyList>

@@ -15,10 +15,16 @@
    <type>switch</type>
     <layer>
      <condition>
-      <equals>
-       <property>/autopilot/locks/vertical</property>
-       <value>maxclimb</value>
-      </equals>
+      <or>
+       <equals>
+        <property>/autopilot/locks/speed2</property>
+        <value>maxclimb</value>
+       </equals>
+       <equals>
+        <property>/autopilot/locks/speed2</property>
+        <value>maxcruise</value>
+       </equals>
+      </or>
      </condition>
      <name>on</name>
      <texture>
@@ -48,10 +54,16 @@
   <layer>
    <name>background lighted</name>
    <condition>
-    <equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>maxclimb</value>
-    </equals>
+    <or>
+     <equals>
+      <property>/autopilot/locks/speed2</property>
+      <value>maxclimb</value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/speed2</property>
+      <value>maxcruise</value>
+     </equals>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
@@ -67,10 +79,16 @@
   <layer>
    <name>background</name>
    <condition>
-    <not-equals>
-     <property>/autopilot/locks/vertical</property>
-     <value>maxclimb</value>
-    </not-equals>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/speed2</property>
+      <value>maxclimb</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/speed2</property>
+      <value>maxcruise</value>
+     </not-equals>
+    </and>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
@@ -101,11 +119,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-32</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -116,10 +134,16 @@
   <action>
    <desc>Max Climb</desc>
    <condition>
-    <not-equals>
-     <property>/autopilot/locks/vertical</property>
-     <value type="string">maxclimb</value>
-    </not-equals>
+    <and>
+     <not-equals>
+      <property>/autopilot/locks/speed2</property>
+      <value type="string">maxclimb</value>
+     </not-equals>
+     <not-equals>
+      <property>/autopilot/locks/speed2</property>
+      <value type="string">maxcruise</value>
+     </not-equals>
+    </and>
    </condition>
    <button>0</button>
    <x>-52</x>
@@ -128,18 +152,28 @@
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
+    <property>/autopilot/locks/speed2</property>
     <value type="string">maxclimb</value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.maxclimbexport();</script>
    </binding>
   </action>
 
   <action>
    <desc>Disable Max Climb</desc>
    <condition>
-    <equals>
-     <property>/autopilot/locks/vertical</property>
-     <value type="string">maxclimb</value>
-    </equals>
+    <or>
+     <equals>
+      <property>/autopilot/locks/speed2</property>
+      <value type="string">maxclimb</value>
+     </equals>
+     <equals>
+      <property>/autopilot/locks/speed2</property>
+      <value type="string">maxcruise</value>
+     </equals>
+    </or>
    </condition>
    <button>0</button>
    <x>-52</x>
@@ -148,7 +182,7 @@
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/autopilot/locks/vertical</property>
+    <property>/autopilot/locks/speed2</property>
     <value type="string"></value>
    </binding>
   </action>

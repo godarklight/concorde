@@ -101,11 +101,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -127,14 +127,8 @@
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string">pitch-hold</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/autopilot/settings/target-pitch-deg</property>
-    <property n="1">/orientation/pitch-deg</property>
+    <command>nasal</command>
+    <script>globals.Concorde.appitchexport();</script>
    </binding>
   </action>
 
@@ -152,9 +146,8 @@
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/autopilot/locks/altitude</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.appitchexport();</script>
    </binding>
   </action>
 

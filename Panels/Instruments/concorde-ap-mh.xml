@@ -101,11 +101,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-38</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -122,7 +122,7 @@
     </not-equals>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
@@ -136,6 +136,15 @@
     <property>/autopilot/settings/target-mach</property>
     <property n="1">/velocities/mach</property>
    </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.automachexport();</script>
+   </binding>
   </action>
 
   <action>
@@ -147,13 +156,18 @@
     </equals>
    </condition>
    <button>0</button>
-   <x>-52</x>
+   <x>-53</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
     <command>property-assign</command>
     <property>/autopilot/locks/speed</property>
+    <value type="string"></value>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property>/autopilot/locks/speed2</property>
     <value type="string"></value>
    </binding>
   </action>

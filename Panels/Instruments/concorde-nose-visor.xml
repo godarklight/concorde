@@ -50,7 +50,13 @@ extended/retracted in three steps.
     <y2>1.0</y2>
    </texture>
    <w>22</w>
-   <h>80</h>
+   <h>110</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
   </layer>
 
 <!-- flap -->
@@ -69,15 +75,15 @@ extended/retracted in three steps.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>0</offset>
+     <offset>-10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property alias="../../../../../params/flaps-select"/>
      <min>0.0</min>
      <max>1.0</max>
-     <scale>-40</scale>
-     <offset>20</offset>
+     <scale>-80</scale>
+     <offset>40</offset>
     </transformation>
    </transformations>
   </layer>
@@ -100,11 +106,719 @@ extended/retracted in three steps.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-30</offset>
+     <offset>-38</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-75</offset>
+     <offset>-73</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- === -->
+<!-- LED -->
+<!-- === -->
+
+<!-- visor up left -->
+
+ <layer>
+  <name>visor up left led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>0.0</value>
+    </equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <not-equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>0.0</value>
+    </not-equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background visor up left</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- visor up right -->
+
+ <layer>
+  <name>visor up right led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>0.0</value>
+    </equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <not-equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>0.0</value>
+    </not-equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background visor up right</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>40</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- visor down left -->
+
+ <layer>
+  <name>visor down left led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.31</value>
+     </greater-than>
+     <less-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.35</value>
+     </less-than>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <or>
+     <less-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.31</value>
+     </less-than-equals>
+     <greater-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.35</value>
+     </greater-than-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background visor down left</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- visor down right -->
+
+ <layer>
+  <name>visor down right led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.31</value>
+     </greater-than>
+     <less-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.35</value>
+     </less-than>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <or>
+     <less-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.31</value>
+     </less-than-equals>
+     <greater-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.35</value>
+     </greater-than-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background visor down right</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- 5 deg left -->
+
+ <layer>
+  <name>5 deg left led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.65</value>
+     </greater-than>
+     <less-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>1.0</value>
+     </less-than>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <or>
+     <less-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.65</value>
+     </less-than-equals>
+     <greater-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>1.0</value>
+     </greater-than-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background 5 deg left</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- 5 deg right -->
+
+ <layer>
+  <name>5 deg right led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.65</value>
+     </greater-than>
+     <less-than>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>1.0</value>
+     </less-than>
+    </and>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <or>
+     <less-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>0.65</value>
+     </less-than-equals>
+     <greater-than-equals>
+      <property alias="../../../../../../../params/flaps-select"/>
+      <value>1.0</value>
+     </greater-than-equals>
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background 5 deg right</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- nose down left -->
+
+ <layer>
+  <name>nose down left led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>1.0</value>
+    </equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <not-equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>1.0</value>
+    </not-equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background nose down left</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- nose down right -->
+
+ <layer>
+  <name>nose down right led</name>
+   <type>switch</type>
+  <layer>
+   <name>On</name>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>1.0</value>
+    </equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.34</x1>
+    <y1>0.0</y1>
+    <x2>0.41</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  <layer>
+   <name>Off</name>
+   <condition>
+    <not-equals>
+     <property alias="../../../../../../params/flaps-select"/>
+     <value>1.0</value>
+    </not-equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.25</x2>
+    <y2>0.095</y2>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layer>
+
+  <layer>
+   <name>background nose down right</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+   </texture>
+   <w>8</w>
+   <h>16</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
     </transformation>
    </transformations>
   </layer>
@@ -115,16 +829,16 @@ extended/retracted in three steps.
 
 <!-- flap extend/retract -->
   <action>
-   <name>Flap Retract</name>
+   <name>Flap Extend</name>
    <button>0</button>
-   <x>-9</x>
-   <y>-35</y>
-   <w>18</w>
-   <h>18</h>
+   <x>-34.5</x>
+   <y>7</y>
+   <w>48</w>
+   <h>48</h>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/flaps-select"/>
-    <step>-0.25</step>
+    <step>0.25</step>
     <min>0</min>
     <max>1.0</max>
     <wrap>false</wrap>
@@ -132,16 +846,16 @@ extended/retracted in three steps.
   </action>
 
   <action>
-   <name>Flap Extend</name>
+   <name>Flap Retract</name>
    <button>0</button>
-   <x>-9</x>
-   <y>10</y>
-   <w>18</w>
-   <h>18</h>
+   <x>-34.5</x>
+   <y>-55</y>
+   <w>48</w>
+   <h>48</h>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/flaps-select"/>
-    <step>0.25</step>
+    <step>-0.25</step>
     <min>0</min>
     <max>1.0</max>
     <wrap>false</wrap>

@@ -1,0 +1,1451 @@
+<?xml version="1.0"?>
+
+<!-- Concorde Inertial Navigation System
+
+The LED is real (with probably different display).
+
+-->
+
+<PropertyList>
+ <name>INS Computer</name>
+ <w-base>108</w-base>
+ <h-base>48</h-base>
+
+ <params>
+  <on-ctrl>/instrumentation/ins/on</on-ctrl>
+  <selector-ctrl>/instrumentation/ins/selector</selector-ctrl>
+  <wpt-ctrl>/instrumentation/ins/waypoint</wpt-ctrl>
+ </params>
+
+
+ <layers>
+
+<!-- translucent lens (partially used) -->  
+  <layer>
+   <name>darken background left</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value>NOT-USED</value>
+      </equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>100</w>
+     <h>46</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>100</w>
+     <h>46</h>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>77</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background left led</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>100</w>
+   <h>46</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>77</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- translucent lens (partially used) -->  
+  <layer>
+   <name>darken background right</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value>NOT-USED</value>
+      </equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>120</w>
+     <h>46</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>120</w>
+     <h>46</h>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>120</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>77</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background right led</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>120</w>
+   <h>46</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>120</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>77</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- POSITION -->
+
+  <layer>
+   <name>Latitude</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <or>
+      <less-than>
+       <property alias="../../../../../../../params/selector-ctrl"/>
+       <value type="double">1</value>
+      </less-than>
+      <greater-than>
+       <property alias="../../../../../../../params/selector-ctrl"/>
+       <value type="double">3</value>
+      </greater-than>
+     </or>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/position/latitude-deg</property>
+     <format>%2.2f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Longitude</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <or>
+      <less-than>
+       <property alias="../../../../../../../params/selector-ctrl"/>
+       <value type="double">1</value>
+      </less-than>
+      <greater-than>
+       <property alias="../../../../../../../params/selector-ctrl"/>
+       <value type="double">3</value>
+      </greater-than>
+     </or>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/position/longitude-deg</property>
+     <format>%3.2f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- WAYPOINT -->
+
+  <layer>
+   <name>Ident</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp/id</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Fuel -->
+
+  <layer>
+   <name>Fuel</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp/fuel-kg</property>
+     <format>%5.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Miles -->
+
+  <layer>
+   <name>Miles (overflow)</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than>
+      <property>/autopilot/route-manager/wp/dist</property>
+      <value type="double">9999.0</value>
+     </greater-than>
+     <not-equals>
+      <property>/autopilot/route-manager/wp/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>9999</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Miles</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <less-than-equals>
+      <property>/autopilot/route-manager/wp/dist</property>
+      <value type="double">9999.0</value>
+     </less-than-equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp/dist</property>
+     <format>%4.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Estimated Time of Arrival -->
+
+  <layer>
+   <name>ETA</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp/eta</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title waypoint</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </greater-than-equals>
+     <less-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </less-than-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </not-equals>
+     <not-equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </not-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>1</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>155</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- NEXT WAYPOINT -->
+
+  <layer>
+   <name>Ident 2</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[1]/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp[1]/id</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Fuel -->
+
+  <layer>
+   <name>Fuel 2</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[1]/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp[1]/fuel-kg</property>
+     <format>%5.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Miles -->
+
+  <layer>
+   <name>Miles 2 (overflow)</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than>
+      <property>/autopilot/route-manager/wp[1]/dist</property>
+      <value type="double">9999.0</value>
+     </greater-than>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[1]/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>9999</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Miles 2</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <less-than-equals>
+      <property>/autopilot/route-manager/wp[1]/dist</property>
+      <value type="double">9999.0</value>
+     </less-than-equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[1]/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp[1]/dist</property>
+     <format>%4.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Estimated Time of Arrival -->
+
+  <layer>
+   <name>ETA 2</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[1]/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp[1]/eta</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title next waypoint</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </greater-than-equals>
+     <less-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </less-than-equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>2</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>155</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- DESTINATION -->
+
+  <layer>
+   <name>Ident 3</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp-last/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp-last/id</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Fuel -->
+
+  <layer>
+   <name>Fuel 3</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp-last/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp-last/fuel-kg</property>
+     <format>%5.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Miles -->
+
+  <layer>
+   <name>Miles 3 (overflow)</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than>
+      <property>/autopilot/route-manager/wp-last/dist</property>
+      <value type="double">9999.0</value>
+     </greater-than>
+     <not-equals>
+      <property>/autopilot/route-manager/wp-last/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>9999</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Miles 3</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <less-than-equals>
+      <property>/autopilot/route-manager/wp-last/dist</property>
+      <value type="double">9999.0</value>
+     </less-than-equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp-last/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/autopilot/route-manager/wp-last/dist</property>
+     <format>%4.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- Estimated Time of Arrival -->
+
+  <layer>
+   <name>ETA 3</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property>/autopilot/route-manager/wp-last/id</property>
+      <value type="string"></value>
+     </not-equals>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property>/autopilot/route-manager/wp-last/eta</property>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title destination</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <greater-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">1</value>
+     </greater-than-equals>
+     <less-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">2</value>
+     </less-than-equals>
+     <equals>
+      <property alias="../../../../../../params/wpt-ctrl"/>
+      <value type="double">2</value>
+     </equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>L</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>155</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- WIND -->
+
+  <layer>
+   <name>Direction</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">3</value>
+     </equals>
+     <greater-than>
+      <property>/position/altitude-agl-ft</property> <!-- works only with flight -->
+      <value type="double">20</value>
+     </greater-than>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/environment/wind-from-heading-deg</property>
+     <format>%03.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Speed</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">3</value>
+     </equals>
+     <greater-than>
+      <property>/position/altitude-agl-ft</property> <!-- works only with flight -->
+      <value type="double">20</value>
+     </greater-than>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/environment/wind-speed-kt</property>
+     <format>%3.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Speed (ground)</name>
+   <condition>
+    <and>
+     <property alias="../../../../../params/on-ctrl"/>
+     <equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value type="double">3</value>
+     </equals>
+     <less-than-equals>
+      <property>/position/altitude-agl-ft</property> <!-- works only with flight -->
+      <value type="double">20</value>
+     </less-than-equals>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>9</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>GND</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>73</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>68</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- SELECTOR -->
+
+  <layer>
+   <name>Title position</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>POS</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-20</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title waypoint</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>WAY PT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title distance/time</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DST/TIME</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title wind</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>WIND</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>38</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-20</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>knob rotation</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
+    <x1>0.53125</x1>
+    <x2>0.59765625</x2>
+    <y1>0.05859375</y1>
+    <y2>0.1484375</y2>
+   </texture>
+   <w>16</w>
+   <h>20</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-14</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <property alias="../../../../../params/selector-ctrl"/>
+     <min>0</min>
+     <max>3</max>
+     <scale>60</scale>
+     <offset>-90</offset>
+    </transformation>
+    <transformation>
+    <type>y-shift</type>
+    <offset>-4</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>selector left</name>
+   <button>0</button>
+   <x>-50</x>
+   <y>-22</y>
+   <w>50</w>
+   <h>50</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/selector-ctrl"/>
+    <step>-1</step>
+    <min>0</min>
+    <max>3</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+  <action>
+   <name>selector right</name>
+   <button>0</button>
+   <x>0</x>
+   <y>-22</y>
+   <w>50</w>
+   <h>50</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/selector-ctrl"/>
+    <step>1</step>
+    <min>0</min>
+    <max>3</max>
+    <wrap>0</wrap>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>
