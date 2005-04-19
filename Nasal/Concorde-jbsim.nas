@@ -926,10 +926,10 @@ PRESSURIZEMAXFT = 8000.0;
 # - "true" if below 8000 ft
 cabinealtitude = func {
    cabineinhg = arg[0];
-   interpolate = arg[1];
+   interpol = arg[1];
 
    # one supposes instrument calibrated by standard atmosphere
-if( interpolate == "true" ) {
+if( interpol == "true" ) {
    ratio = cabineinhg / 29.92;
 
    # guess below sea level
@@ -1178,12 +1178,12 @@ calccabineftcron = func {
 
    # one supposes instrument calibrated by standard atmosphere
    if( outflowinhg != 0 or cabineinhg > PRESSURIZEMININHG ) {
-       interpolate = "true";
+       interpol = "true";
    }
 
    # above 8000 ft
    else {
-       interpolate = "false";
+       interpol = "false";
    }
 
    # ================
@@ -1195,14 +1195,14 @@ calccabineftcron = func {
        if( variationftpm < -PRESSURIZEFTPM or variationftpm > PRESSURIZEFTPM ) {
            outflowinhg = 0.0;
            cabineinhg = targetinhg;
-           interpolate = "true";        
+           interpol = "true";
        }
        # relocation on ground (change of airport)
        elsif( aglft < 1.0 ) {
            outflowinhg = 0.0;
            targetinhg = pressureinhg;
            cabineinhg = targetinhg;
-           interpolate = "true";
+           interpol = "true";
        }
    }
 
@@ -1210,7 +1210,7 @@ calccabineftcron = func {
    setprop("/systems/pressurization/target-inhg",targetinhg);
    setprop("/systems/pressurization/outflow-inhg",outflowinhg);
    setprop("/systems/pressurization/altitude-sea-ft",altseaft);
-   cabinealtitude( cabineinhg, interpolate );        
+   cabinealtitude( cabineinhg, interpol );
 
    # re-schedule the next call
    settimer(calccabineftcron, PRESSURIZESEC);
