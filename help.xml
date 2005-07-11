@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+ <sim>
+  <help>
+    <key>
+      <name>[ ]</name>
+      <desc>raise/lower nose</desc>
+    </key>
+    <key>
+      <name>Ctrl-A</name>
+      <desc>toggle autopilot altitude lock.</desc>
+    </key>
+    <key>
+      <name>CTRL-D</name>
+      <desc>disconnect autopilot</desc>
+    </key>
+    <key>
+      <name>Ctrl-E</name>
+      <desc>toggle engineer/captain view</desc>
+     </key>
+     <key>
+       <name>Ctrl-F</name>
+       <desc>reheat</desc>
+     </key>
+     <key>
+       <name>Ctrl-O</name>
+       <desc>toggle overhead view</desc>
+     </key>
+     <line>V max for jettison (fuel): Mach 0.93</line>
+     <line>V visor down or operating: 325 kt</line>
+     <line>V nose 5 or operating between UP and 5: 325 kt</line>
+     <line>V nose DOWN or operating between 5 and DOWN: 270 kt (&lt; 20000 ft)</line>
+     <line>Vle (landing gear extended): 270 kt</line>
+     <line>Vmcl (approach): 150 kt</line>
+     <line>Vmc (takeoff): 132 kt</line>
+     <line>Vmcg (ground): 116 kt</line>
+     <text>________________________Procedures_________________________
+Takeoff (408000 lb): nose 5 degree, afterburner, V1 165 kt, VR 195 kt, pitch 13.5 degree at rotation, V2 220 kt
+Subsonic cruise: Mach 0.95
+Acceleration: afterburner at Mach 0.93; air intakes starts closing at Mach 1.3; stop afterburner at Mach 1.7
+Supersonic cruise: Mach 2.0 at FL500
+Landing (245000 lb): nose 12.5 degree, VREF 162 kt, pitch 10 degree at touch down
+Taxi: nose 5 degree, only 2 engines
+
+Runway: 11200 ft takeoff, 7300 ft landing
+Max climb rate: 5000 ft/s
+Range: 3550 nm supersonic, 2760 nm subsonic (Mach 0.95 FL300)
+Duration: Paris--New York 3h45, London Heathrow--New York 3h50
+Maximum operating altitude: 60000 ft
+Maximum total temperature (TMO): 127 deg C on nose.
+
+
+__________________________Takeoff__________________________
+- the visor is raised not long after takeoff, to make cockpit quieter
+- the visor protects the windscreen from the 125 deg C temperature at Mach 2
+
+______________________Subsonic cruise______________________
+- Mach 0.93 at FL250, or Mach 0.95 at FL260 (full load)
+
+______________________Supersonic climb_____________________
+- start afterburner with VS at 3500 ft/minute; then decrease at 2500-1500-1000-700 ft/minute
+- at Mach 1.1, drag starts to decrease
+- stay inside the corridor of Mach/center of gravity. Below the minimum means a too high altitude for the current Mach speed: accelerate by reducing climb speed
+- if required (pressure/temperature) after Mach 1.2, reduce at 100 ft/minute to break the Mach 1.3 final barrier
+- at Mach 1.3, air intakes open progressively, providing additional thrust. This is the hardest speed to reach, burning much fuel, which would be otherwise in excess at landing
+- climb from Mach 0.95 (28000 ft) to Mach 1.7 (47000 ft) lasts 10 minutes
+
+_____________________Supersonic cruise_____________________
+- from London-Heathrow, Mach 2 is reached 40 minutes - 650 NM (Bristol Channel) - after takeoff (A).
+- cruise at Mach 2 consumes 20.5 tons/hour
+- transatlantic flight at Mach 2 lasts 2 hours; 2h35 above Mach 1
+- at FL500 Mach 2, slow climb rate of 50-60 ft/minute, to reduce fuel consumption
+
+_____________________Supersonic descent____________________
+- decelerate speed until 325-380 kt before starting the descent
+- deceleration is started at 250 NM: 165 NM from Mach 2.0 FL580 to Mach 1.0 at FL350
+- maintain the 50 ft climb rate to accelerate the deceleration
+- slowly increase the descent rate, keeping the 325-380 kt speed: slow at FL580, higher at lower altitudes
+
+__________________________Landing__________________________
+- approach speed: 190 kt
+- at 750 ft AGL, disable autopilot and autothrottle, keep the trim of the glide slope mode; maintain pitch at 10 degrees, control descent rate with speed (throttle)
+- the tail wheel protects the reversers from hitting the ground
+     </text>
+   </help>
+ </sim>
+</PropertyList>
+
+
