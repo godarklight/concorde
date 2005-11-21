@@ -41,7 +41,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde Engineer Overhead Panel</name>
  <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
  <w>1024</w>
- <h>508</h>
+ <h>512</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -56,13 +56,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/overhead-seat</property>
+     <property>/sim/current-view/seat/overhead</property>
     </and>
    </condition>
    <params>
     <eng-num>/engines/engine[0]/engine-num</eng-num>
     <cutoff>/engines/engine[0]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
    </params>
    <x>42</x>
    <y>400</y>
@@ -75,13 +76,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/overhead-seat</property>
+     <property>/sim/current-view/seat/overhead</property>
     </and>
    </condition>
    <params>
     <eng-num>/engines/engine[1]/engine-num</eng-num>
     <cutoff>/engines/engine[1]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
    </params>
    <x>82</x>
    <y>400</y>
@@ -94,13 +96,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/overhead-seat</property>
+     <property>/sim/current-view/seat/overhead</property>
     </and>
    </condition>
    <params>
     <eng-num>/engines/engine[2]/engine-num</eng-num>
     <cutoff>/engines/engine[2]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
    </params>
    <x>122</x>
    <y>400</y>
@@ -113,13 +116,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/overhead-seat</property>
+     <property>/sim/current-view/seat/overhead</property>
     </and>
    </condition>
    <params>
     <eng-num>/engines/engine[3]/engine-num</eng-num>
     <cutoff>/engines/engine[3]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
    </params>
    <x>162</x>
    <y>400</y>

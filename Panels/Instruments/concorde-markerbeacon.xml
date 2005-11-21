@@ -36,16 +36,18 @@ properties' values.
    <name>lamp</name>
    <type>switch</type>
    <layer>
+    <name>on</name>
     <condition>
      <or>
-      <equals>
-       <property>/instrumentation/marker-beacon/test-outer</property>
-       <value>1.0</value>
-      </equals>
+      <and include="concorde-cond-voltage-marker.xml">
+       <equals>
+        <property>/instrumentation/marker-beacon/test-outer</property>
+        <value>on</value>
+       </equals>
+      </and>
       <property>/instrumentation/marker-beacon/outer</property>
      </or>
     </condition>
-    <name>on</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
      <x1>0.5</x1>
@@ -125,16 +127,18 @@ properties' values.
    <name>lamp</name>
    <type>switch</type>
    <layer>
+    <name>on</name>
     <condition>
      <or>
-      <equals>
-       <property>/instrumentation/marker-beacon/test-middle</property>
-       <value>1.0</value>
-      </equals>
+      <and include="concorde-cond-voltage-marker.xml">
+       <equals>
+        <property>/instrumentation/marker-beacon/test-middle</property>
+        <value>on</value>
+       </equals>
+      </and>
       <property>/instrumentation/marker-beacon/middle</property> 
      </or>
     </condition>
-    <name>on</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
      <x1>0.5</x1>
@@ -216,10 +220,12 @@ properties' values.
    <layer>
     <condition>
      <or>
-      <equals>
-       <property>/instrumentation/marker-beacon/test-inner</property>
-       <value>1.0</value>
-      </equals>
+      <and include="concorde-cond-voltage-marker.xml">
+       <equals>
+        <property>/instrumentation/marker-beacon/test-inner</property>
+        <value>on</value>
+       </equals>
+      </and>
       <property>/instrumentation/marker-beacon/inner</property> 
      </or>
     </condition>

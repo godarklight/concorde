@@ -19,16 +19,30 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <and>
-      <not-equals>
-       <property>/autopilot/locks/heading</property>
-       <value>dg-heading-hold</value>
-      </not-equals>
-      <not-equals>
-       <property>/autopilot/locks/heading</property>
-       <value>true-heading-hold</value>
-      </not-equals>
-     </and>
+     <or>
+      <and>
+       <not-equals>
+        <property>/autopilot/locks/heading</property>
+        <value>dg-heading-hold</value>
+       </not-equals>
+       <not-equals>
+        <property>/autopilot/locks/heading</property>
+        <value>true-heading-hold</value>
+       </not-equals>
+      </and>
+      <equals>
+       <property>/autopilot/locks/horizontal</property>
+       <value>magnetic</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/horizontal</property>
+       <value>ins</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/horizontal</property>
+       <value>vor</value>
+      </equals>
+     </or>
     </condition>
 
     <layer>
@@ -120,6 +134,7 @@
 
   <action>
    <desc>Track heading</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

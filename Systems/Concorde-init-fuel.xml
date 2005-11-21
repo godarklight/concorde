@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<!-- Concorde tanks :
+
+     - density is always 6.6 because of JSBSim.
+     - tank 9 = 24462.49 lb = 3706.438 US gal, rounded to 3706.43;
+     for the digital tanks, green when full.
+-->
+
+
+<PropertyList>
+
+<!-- collector -->
+
+  <tank n="0">
+   <capacity-gal_us>1402.27</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="1">
+   <capacity-gal_us>1526.53</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="2">
+   <capacity-gal_us>1526.53</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="3">
+   <capacity-gal_us>1402.27</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+
+<!-- main -->
+
+<!-- simplify by removing dissymetries -->
+<!--
+  <tank n="4">
+   <capacity-gal_us>2405.04</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="5">
+   <capacity-gal_us>3870.45</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="6">
+   <capacity-gal_us>2473.52</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="7">
+   <capacity-gal_us>4288.33</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+-->
+
+  <tank n="4">
+   <capacity-gal_us>2439.28</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="5">
+   <capacity-gal_us>4079.38</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="6">
+   <capacity-gal_us>2439.28</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="7">
+   <capacity-gal_us>4079.38</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+
+<!-- trim -->
+
+  <tank n="8">
+   <capacity-gal_us>3706.43</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="9">
+   <capacity-gal_us>3989.36</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="10">
+   <capacity-gal_us>3478.96</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+
+<!-- auxilliary -->
+
+  <tank n="11">
+   <capacity-gal_us>743.22</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+  <tank n="12">
+   <capacity-gal_us>743.22</capacity-gal_us>
+   <density-ppg>6.6</density-ppg>
+  </tank>
+
+</PropertyList>

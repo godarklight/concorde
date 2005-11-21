@@ -6,14 +6,16 @@
      - nose down above 270 kt.
      - visor not locked up at speed above Mach 0.95.
      - pitch below minus 6 deg above Mach 1.0.
+     - enough voltage.
 -->
 
 <PropertyList>
 
+ <and>
   <or>
    <greater-than>
-    <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
-    <property n="1">/instrumentation/airspeed-indicator/overspeed-kt</property>
+    <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+    <property n="1">/instrumentation/airspeed-indicator[0]/overspeed-kt</property>
    </greater-than>
    <greater-than>
     <property>/velocities/mach</property>
@@ -25,7 +27,7 @@
      <value>1.0</value>
     </equals>
     <greater-than>
-     <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+     <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
      <value>270</value>
     </greater-than>
    </and>
@@ -50,5 +52,8 @@
     </greater-than>
    </and>
   </or>
+  <not include="concorde-cond-voltage-bulb.xml"/>
+ </and>
+
 
 </PropertyList>

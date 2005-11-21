@@ -18,10 +18,16 @@
     <type>group</type>
     <name>on</name>
     <condition>
-     <equals>
-      <property>/autopilot/locks/speed</property>
-      <value>speed-with-throttle</value>
-     </equals>
+     <and>
+      <equals>
+       <property>/autopilot/locks/speed</property>
+       <value>speed-with-throttle</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/speed2</property>
+       <value>speed-acquire</value>
+      </equals>
+     </and>
     </condition>
 
     <layer>
@@ -112,6 +118,7 @@
 
   <action>
    <desc>IAS hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

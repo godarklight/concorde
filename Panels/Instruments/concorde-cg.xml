@@ -14,10 +14,14 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-cg.rgb</path>
+    <x1>0.32</x1>
+    <y1>0.0</y1>
+    <x2>0.68</x2>
+    <y2>1.0</y2>
    </texture>
-    <w>55</w>
-    <h>80</h>
+    <w>25</w>
+    <h>95</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -25,175 +29,155 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>14</offset>
+     <offset>8</offset>
     </transformation>
    </transformations>
   </layer>
 
   <layer>
-   <name>Corridor min display</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>4.5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
+   <name>Corridor min display (FWD)</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.6914</x1>
+    <y1>0.78125</y1>
+    <x2>0.7289</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>4</w>
+   <h>12</h>
+   <transformations>
+    <transformation>
+     <type>rotation</type>
+     <offset>-90</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-18.75</offset> <!-- right border -->
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <offset>50</offset> <!-- centered at 50.0 -->
+    </transformation>
+    <transformation>
+     <condition include="concorde-cond-voltage-inst.xml"/>
+     <type>x-shift</type>
      <property>instrumentation/cg/min-percent</property>
-     <format>%2.1f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>35</offset>
+     <min>50.0</min>
+     <max>60.5</max>
+     <scale>1.0</scale>
+     <interpolation>
+      <entry><ind>50.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>60.5</ind><dep>-74.0</dep></entry>
+      </interpolation>
     </transformation>
    </transformations>
-  </layer>
-
-  <layer>
-   <name>Forward</name>
-   <type>text</type>
-   <point-size>9</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>FWD</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>17</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>37</offset>
-    </transformation>
-   </transformations>
-  </layer>
+  </layer> 
 
   <layer>
    <name>Center of Gravity</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>4.5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.8</x1>
+    <y1>0.78125</y1>
+    <x2>0.8375</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>4</w>
+   <h>12</h>
+   <transformations>
+    <transformation>
+     <type>rotation</type>
+     <offset>90</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>5.75</offset> <!-- left border -->
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset> <!-- centered at 55.5 -->
+    </transformation>
+    <transformation>
+     <condition include="concorde-cond-voltage-inst.xml"/>
+     <type>x-shift</type>
      <property>instrumentation/cg/percent</property>
-     <format>%2.1f</format>
-    </chunk>
-   </chunks>
+     <min>50.0</min>
+     <max>60.5</max>
+     <scale>1.0</scale>
+     <interpolation>
+      <entry><ind>50.0</ind><dep>-39.0</dep></entry>
+      <entry><ind>55.5</ind><dep>  0.0</dep></entry>
+      <entry><ind>60.5</ind><dep> 35.0</dep></entry>
+      </interpolation>
+    </transformation>
+   </transformations>
+  </layer> 
+
+  <layer>
+   <name>Corridor max display (AFT)</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.6914</x1>
+    <y1>0.78125</y1>
+    <x2>0.7289</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>4</w>
+   <h>12</h>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>-10</offset>
+     <type>rotation</type>
+     <offset>-90</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>10</offset>
+     <offset>-18.75</offset> <!-- start at border -->
     </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Corridor max display</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>4.5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-28</offset> <!-- centered at 61.0 -->
+    </transformation>
+    <transformation>
+     <condition include="concorde-cond-voltage-inst.xml"/>
+     <type>x-shift</type>
      <property>instrumentation/cg/max-percent</property>
-     <format>%2.1f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-15</offset>
+     <min>50.5</min>
+     <max>61.0</max>
+     <scale>1.0</scale>
+     <interpolation>
+      <entry><ind>50.0</ind><dep> 78.0</dep></entry>
+      <entry><ind>61.0</ind><dep>  0.0</dep></entry>
+      </interpolation>
     </transformation>
    </transformations>
-  </layer>
+  </layer> 
 
   <layer>
-   <name>Aft</name>
-   <type>text</type>
-   <point-size>9</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>AFT</text>
-    </chunk>
-   </chunks>
+   <name>OFF flag</name>
+   <condition>
+    <not include="concorde-cond-voltage-inst.xml"/>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>20</w>
+   <h>8</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>17</offset>
+     <offset>8</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-13</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title</name>
-   <type>text</type>
-   <point-size>8</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>CG%C0</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-2</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
-     <type>y-shift</type>
-     <offset>-37</offset>
+     <type>rotation</type>
+     <offset>45</offset>
     </transformation>
    </transformations>
   </layer>
@@ -208,18 +192,17 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-cg.xml">
-      <equals>
-       <property>/instrumentation/generic/flashing-light</property>
-       <value>0.0</value>
-      </equals>
+      <or include="concorde-cond-flashing-light.xml">
+       <not include="concorde-cond-voltage-inst.xml"/>
+      </or>
      </or>
     </condition>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.75</y1>
+     <x2>0.5</x2>
+     <y2>1.0</y2>
     </texture>
     <w>8</w>
     <h>10</h>
@@ -227,11 +210,11 @@
    <layer>
     <name>on</name>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.31</x1>
-     <y1>0.0</y1>
-     <x2>0.44</x2>
-     <y2>0.095</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+     <x1>0.5</x1>
+     <y1>0.75</y1>
+     <x2>0.75</x2>
+     <y2>1.0</y2>
     </texture>
     <w>8</w>
     <h>10</h>
@@ -251,11 +234,11 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-led.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
      <x2>1.0</x2>
-     <y2>0.9</y2>
+     <y2>1.0</y2>
    </texture>
    <w>8</w>
    <h>10</h>

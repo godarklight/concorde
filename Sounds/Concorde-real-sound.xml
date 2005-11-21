@@ -4,16 +4,24 @@
 
    Available at http://wwww.flightsim.com, as consnd98.zip (FS98 sound).
 
-   Since this file is not GPL, you must download and install yourself the sounds.
-   Rename the following files in Aircraft/Concorde/Sounds :
-   - con1 -> concorde-jet.                    (idle)
-   - con2 -> concorde-takeoff.                (takeoff)
-   - con3 -> concorde-cruise.                 (cruise)       
-   - con5 -> concorde-external-taxi.          (nozzle)
-   - con7 -> concorde-external-takeoff.       (reheat)
+   Since this file is not GPL, you must download and install yourself the sounds (without renaming) :
+   - con1 (internal idle).
+   - con2 (internal takeoff).
+   - con3 (internal cruise).
+   - con5 (external nozzle).
+   - con7 (external reheat).
 
 
    See also comments in Concorde-sound.xml (level of common sounds is identical).
+
+
+   References :
+   ==========
+
+   - http://www.flightlevel350.net/ :
+
+   Concorde is noisy outside, even at taxi : video of takeoff by Graham Brown at EGGP.
+
 -->
  
 <PropertyList>
@@ -26,7 +34,7 @@
 
   <engine>
    <name>internal taxi</name>
-   <path>Aircraft/Concorde/Sounds/concorde-jet.wav</path>
+   <path>Aircraft/Concorde/Sounds/con1.wav</path>
    <mode>looped</mode>
    <condition>
     <and>
@@ -79,7 +87,7 @@
 
   <engine>
    <name>internal takeoff</name>
-   <path>Aircraft/Concorde/Sounds/concorde-takeoff.wav</path>
+   <path>Aircraft/Concorde/Sounds/con2.wav</path>
    <mode>looped</mode>
    <condition>
     <and>
@@ -130,7 +138,7 @@
 
   <engine>
    <name>internal cruise</name>
-   <path>Aircraft/Concorde/Sounds/concorde-cruise.wav</path>
+   <path>Aircraft/Concorde/Sounds/con3.wav</path>
    <mode>looped</mode>
    <condition>
     <and>
@@ -214,7 +222,7 @@
 
   <engine>
    <name>external taxi</name>
-   <path>Aircraft/Concorde/Sounds/concorde-external-taxi.wav</path>
+   <path>Aircraft/Concorde/Sounds/con5.wav</path>
    <mode>looped</mode>
    <condition>
     <and>
@@ -271,7 +279,7 @@
 
   <engine>
    <name>external takeoff</name>
-   <path>Aircraft/Concorde/Sounds/concorde-external-takeoff.wav</path>
+   <path>Aircraft/Concorde/Sounds/con7.wav</path>
    <mode>looped</mode>
    <condition>
     <and>
@@ -333,24 +341,29 @@
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[0]/cranking</property>
-      <property>/engines/engine[0]/starter</property>
-      <greater-than>
-       <property>/engines/engine[0]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[1]/cranking</property>
-      <property>/engines/engine[1]/starter</property>
-      <greater-than>
-       <property>/engines/engine[1]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[0]/cranking</property>
+       <property>/engines/engine[0]/starter</property>
+       <greater-than>
+        <property>/engines/engine[0]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[1]/cranking</property>
+       <property>/engines/engine[1]/starter</property>
+       <greater-than>
+        <property>/engines/engine[1]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
     <x>-5.0</x>
@@ -369,24 +382,29 @@
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[2]/cranking</property>
-      <property>/engines/engine[2]/starter</property>
-      <greater-than>
-       <property>/engines/engine[2]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[3]/cranking</property>
-      <property>/engines/engine[3]/starter</property>
-      <greater-than>
-       <property>/engines/engine[3]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[2]/cranking</property>
+       <property>/engines/engine[2]/starter</property>
+       <greater-than>
+        <property>/engines/engine[2]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[3]/cranking</property>
+       <property>/engines/engine[3]/starter</property>
+       <greater-than>
+        <property>/engines/engine[3]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
     <x>5.0</x>
@@ -407,22 +425,27 @@
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[0]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[0]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[1]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[1]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[0]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[0]/n2</property>
+        <value>30</value> <!-- on starter, N2 increases till 25 -->
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[1]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[1]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
     <x>-5.0</x>
@@ -441,22 +464,27 @@
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[2]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[2]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[3]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[3]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[2]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[2]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[3]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[3]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
     <x>5.0</x>
@@ -478,6 +506,7 @@
    <path>Sounds/rumble.wav</path>
    <condition>
     <and>
+     <property>/sim/current-view/internal</property>
      <less-than> <!-- BUG : wow not reset, when starting in flight -->
       <property>/position/altitude-agl-ft</property>
       <value>50</value>

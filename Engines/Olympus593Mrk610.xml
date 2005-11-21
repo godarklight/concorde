@@ -2,7 +2,8 @@
 <!-- 
   File:     Olympus593Mrk610.xml
   Author:   Aero-Matic v 0.7
-  Version:  16 september 2004
+  Version:  1.03
+  Date:     21 february 2005
 
   Inputs:
     name:           Olympus593Mrk610
@@ -13,7 +14,7 @@
 
 
   References :
-  ----------
+  ==========
     - http://www.airweb.faa.gov/Regulatory_and_Guidance_Library/rgMakeModel.nsf/MainFrame?OpenFrameSet
     (FAA certificate, E20eu - 15 january 1981, Olympus).
 
@@ -22,7 +23,7 @@
 
                                Static         N1 (low       N2 (high                  Time
     Condition                thrust (lb)    compressor)    compressor)      EGT       limit
-    -----------------------------------------------------------------------------------------
+    .........................................................................................
     Start and relight             -              -              -          550°C      2 s
     Contingency                 38130           102%          106.8%       883°C      2.5 s
     Takeoff (with reheat)       37080           102%          105.7%       806°C      5 minutes
@@ -84,17 +85,19 @@
      TABLE(3)      water-injection multiplier vs. altitude and mach
   -->
 
-  <!-- - TSFC 10500 kg/h / 31350 lbs.
-       Get the right consumption at max thrust.
+  <!-- - TSFC 10500 kg/h / 31350 lbs :
+       Get the right consumption at max thrust (sea level).
        Depends strongly of center of gravity and aero reference point.
-       - ATSFC 22500 kg/h / 37080 lbs.
-       Get the right consumption at afterburner.
+       - ATSFC 22500 kg/h / 37080 lbs :
+       Get the right consumption at afterburner (sea level).
+
+       Adjust the TSFC to get 20500 kg/h on average, at Mach 2.02 between 50000-57800 ft (60 ft/min during 2h10).
   -->
 
   MILTHRUST 31350
   MAXTHRUST 37080
   BYPASSRATIO 0.0
-  TSFC 0.738
+  TSFC 1.144                        <!-- 0.738 x 1.55 -->
   ATSFC 1.338
   IDLEN1 30.0
   IDLEN2 60.0

@@ -8,6 +8,11 @@
  <w-base>104</w-base>
  <h-base>36</h-base>
 
+ <params>
+  <channel>/autopilot/locks/channel/at[0]/on</channel>
+  <voltage>/systems/electrical/outputs/autopilot1</voltage>
+ </params>
+
 
  <layers>
 
@@ -19,16 +24,22 @@
     <name>on</name>
     <type>group</type>
     <condition>
-     <or>
-      <not-equals>
-       <property>/autopilot/locks/speed</property>
-       <value></value>
-      </not-equals>
-      <not-equals>
-       <property>/autopilot/locks/speed2</property>
-       <value></value>
-      </not-equals>
-     </or>
+     <and>
+      <equals>
+       <property alias="../../../../../../../params/channel"/>
+       <value>on</value>
+      </equals>
+      <or>
+       <not-equals>
+        <property>/autopilot/locks/speed</property>
+        <value></value>
+       </not-equals>
+       <not-equals>
+        <property>/autopilot/locks/speed2</property>
+        <value></value>
+       </not-equals>
+      </or>
+     </and>
     </condition>
 
     <layer>
@@ -142,10 +153,61 @@
   <action>
    <desc>Enable autothrottle</desc>
    <button>0</button>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../params/voltage"/>
+      <value>20.0</value>
+     </greater-than>
+     <not-equals>
+      <property alias="../../../../../../params/channel"/>
+      <value>on</value>
+     </not-equals>
+    </and>
+   </condition>
    <x>-52</x>
    <y>-24</y>
    <w>104</w>
    <h>37</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/channel"/>
+    <value>on</value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.atexport();</script>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <desc>Disable autothrottle</desc>
+   <button>0</button>
+   <condition>
+    <and>
+     <greater-than>
+      <property alias="../../../../../../params/voltage"/>
+      <value>20.0</value>
+     </greater-than>
+     <equals>
+      <property alias="../../../../../../params/channel"/>
+      <value>on</value>
+     </equals>
+    </and>
+   </condition>
+   <x>-52</x>
+   <y>-24</y>
+   <w>104</w>
+   <h>37</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/channel"/>
+    <value></value>
+   </binding>
    <binding>
     <command>nasal</command>
     <script>globals.Concorde.atexport();</script>

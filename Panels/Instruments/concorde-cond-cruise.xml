@@ -12,12 +12,12 @@
     <value>altitude-hold</value>
    </equals>
    <greater-than>
-    <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter/light-min-ft</property>
+    <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+    <property n="1">/instrumentation/altimeter[0]/light-min-ft</property>
    </greater-than>
    <less-than>
-    <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter/light-max-ft</property>
+    <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+    <property n="1">/instrumentation/altimeter[0]/light-max-ft</property>
    </less-than>
    <not include="concorde-cond-takeoff.xml">
    </not>

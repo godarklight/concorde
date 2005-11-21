@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+
+<!-- Initialize instrumentation  :
+
+
+     - Nasal instruments are also serviceable.
+
+
+     - IMPORTANT : by default, Concorde comes with the C++ IVSI.
+
+       With /velocities/vertical-speed-fps near Mach 2, setting vertical speed at +60 ft/min, IVSI doesn't match altimeter,
+       which may even go down. While /velocities/vertical-speed-fps, controlled by autopilot, is correct :
+       compare IVSI with /autopilot/internal/vert-speed-fpm.
+       Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510; during the 2 hours
+       of the Mach 2 cruise, one must constantly check the real climb rate (50 ft/min = 3000 ft in 1 hour), and adjust
+       the autopilot.
+
+       To avoid this annoyance, the C++ IVSI (Instantaneous VSI) works by pressure and matches the altimeter reading.
+       It doesn't make measure, when the pressure rate of change is too strong (external weather).
+
+       To swap to /velocities/vertical-speed-fps :
+       a) set serviceable to false;
+       b) remove the comment around the alias of /velocities/vertical-speed-fps.
+-->
+
+<PropertyList>
+
+<!-- NASAL -->
+
+  <cabine-altitude>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <cabine-inhg>29.92</cabine-inhg>
+   <indicated-altitude-ft>0.0</indicated-altitude-ft>
+  </cabine-altitude>
+
+  <differential-pressure>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <differential-inhg>0.0</differential-inhg>
+  </differential-pressure>
+
+  <flight-director>
+   <fd>
+    <on></on>
+   </fd>
+   <fd n="1">
+    <on></on>
+   </fd>
+   <state></state>
+  </flight-director>
+
+  <tank-pressure>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <differential-psi>0.0</differential-psi>
+  </tank-pressure>
+
+<!-- TCAS -->
+
+<!-- 1) initialize the number of visible traffics -->
+
+  <tcas>
+   <serviceable type="bool">true</serviceable>
+   <range type="int" archive="y">45</range>
+   <traffics>
+    <traffic n="0">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="1">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="2">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="3">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="4">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="5">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="6">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="7">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+    <traffic n="8">
+     <distance-nm>9999.0</distance-nm>
+    </traffic>
+   </traffics>
+  </tcas>
+
+<!-- 2) required by AI -->
+
+  <radar>
+   <range type="int" archive="y">40</range>
+  </radar>
+
+
+<!-- EMULATED -->
+
+  <inst-vertical-speed-indicator>
+   <serviceable type="bool" archive="y">true</serviceable>
+<!--
+   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
+-->
+  </inst-vertical-speed-indicator>
+
+  <radio-altimeter>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
+  </radio-altimeter>
+
+
+<!-- DEFAULT -->
+
+<!-- specific ADF -->
+
+  <adf n="1">
+   <mode>adf</mode>
+   <serviceable type="bool">true</serviceable>
+  </adf>
+
+<!-- specific DME -->
+
+  <dme>
+   <frequencies>
+    <source>/instrumentation/nav[0]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+  <dme n="1">
+   <serviceable type="bool">true</serviceable>
+   <frequencies>
+    <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+<!-- standby -->
+
+  <airspeed-indicator n="1">
+   <serviceable type="bool">true</serviceable>
+  </airspeed-indicator>
+
+  <altimeter n="1">
+   <serviceable type="bool">true</serviceable>
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter>
+
+  <attitude-indicator n="1">
+   <serviceable type="bool">true</serviceable>
+  </attitude-indicator>
+
+<!-- emergency relight selector -->
+
+  <emergency-relight>
+   <selector type="double">0.0</selector> <!-- off -->
+  </emergency-relight>
+
+<!-- voltmeters -->
+
+  <ac-voltmeter>
+   <selector type="double">0.0</selector> <!-- vertical -->
+  </ac-voltmeter>
+
+  <dc-voltmeter>
+   <selector type="double">0.0</selector> <!-- vertical -->
+  </dc-voltmeter>
+
+</PropertyList>

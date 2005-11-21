@@ -12,8 +12,9 @@
  <h-base>40</h-base>
 
  <params>
-  <spd-disp>/autopilot/settings/target-speed-kt</spd-disp>
-  <spd-ctrl>/autopilot/settings/target-speed-kt</spd-ctrl>
+  <spd-disp>/autopilot/settings/dial-speed-kt</spd-disp>
+  <spd-ctrl>/autopilot/settings/dial-speed-kt</spd-ctrl>
+  <spd-auto>/autopilot/settings/target-speed-kt</spd-auto>
  </params>
 
  <layers>
@@ -208,6 +209,12 @@
   <action>
    <name>Minus 10</name>
    <button>0</button>
+   <condition>
+    <not-equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </not-equals>
+   </condition>
    <x>2</x>
    <y>-19</y>
    <w>14</w>
@@ -225,6 +232,12 @@
   <action>
    <name>Plus 10</name>
    <button>0</button>
+   <condition>
+    <not-equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </not-equals>
+   </condition>
    <x>2</x>
    <y>1</y>
    <w>14</w>
@@ -242,6 +255,12 @@
   <action>
    <name>Minus 1</name>
    <button>0</button>
+   <condition>
+    <not-equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </not-equals>
+   </condition>
    <x>16</x>
    <y>-19</y>
    <w>14</w>
@@ -259,6 +278,12 @@
   <action>
    <name>Plus 10</name>
    <button>0</button>
+   <condition>
+    <not-equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </not-equals>
+   </condition>
    <x>16</x>
    <y>1</y>
    <w>14</w>
@@ -270,6 +295,120 @@
     <min>130</min>
     <max>400</max>
     <wrap>0</wrap>
+   </binding>
+  </action>
+
+<!-- transfert to autopilot -->
+
+  <action>
+   <name>Minus 10</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </equals>
+   </condition>
+   <x>2</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>-10</step>
+    <min>130</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/spd-auto"/>
+    <property n="1" alias="../../../../params/spd-ctrl"/>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </equals>
+   </condition>
+   <x>2</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>10</step>
+    <min>130</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/spd-auto"/>
+    <property n="1" alias="../../../../params/spd-ctrl"/>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 1</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </equals>
+   </condition>
+   <x>16</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>-1</step>
+    <min>130</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/spd-auto"/>
+    <property n="1" alias="../../../../params/spd-ctrl"/>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <condition>
+    <equals>
+     <property>/autopilot/locks/speed2</property>
+     <value>speed-acquire</value>
+    </equals>
+   </condition>
+   <x>16</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/spd-ctrl"/>
+    <step>1</step>
+    <min>130</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/spd-auto"/>
+    <property n="1" alias="../../../../params/spd-ctrl"/>
    </binding>
   </action>
 

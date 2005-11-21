@@ -1,0 +1,758 @@
+<?xml version="1.0"?>
+
+<!-- CAUTION, if preferences.xml isn't with 6 views, update below :
+
+     - cycle keys "v" and "V".
+     - seats keys "Ctrl-E", "Ctrl-J", "Ctrl-K", "Ctrl-O".
+     - eventually "Ctrl-V".
+
+
+     For simplification, trims (elevator, autopilot and autothrottle) works without voltage; which could be wrong if
+     electrical commands.
+-->
+
+
+<PropertyList>
+
+   <key n="1">
+    <name>Ctrl-A</name>
+    <desc>Toggle autopilot altitude lock.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.apaltitudeexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+<!-- Autopilot is easily disconnected from a thumb switch on the yoke. -->
+
+   <key n="4">
+    <name>CTRL-D</name>
+    <desc>Disconnect autopilot</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apdiscexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+<!-- Engineer Seat -->
+
+   <key n="5">
+    <name>Ctrl-E</name>
+    <desc>Toggle engineer/captain view</desc>
+
+    <!-- engineer seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/current-view/seat/engineer</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">6</value>
+    </binding>
+
+    <!--captain seat -->
+
+    <binding>
+     <condition>
+      <property>/sim/current-view/seat/engineer</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/engineer</property>
+    </binding>
+
+    <binding>
+     <condition>
+      <and>
+       <not>
+        <property>/sim/current-view/seat/overhead</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/copilot</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/steward</property>
+       </not>
+      </and>
+     </condition>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/captain</property>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/overhead</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/copilot</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/steward</property>
+     <value type="bool">false</value>
+    </binding>
+   </key>
+
+<!-- Reheat -->
+
+   <key n="6">
+    <name>Ctrl-F</name>
+    <desc>Reheat</desc>
+    <binding n= "0">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[0]/augmentation</property>
+    </binding>
+    <binding n= "1">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[1]/augmentation</property>
+    </binding>
+    <binding n= "2">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[2]/augmentation</property>
+    </binding>
+    <binding n= "3">
+     <command>property-toggle</command>
+     <property>controls/engines/engine[3]/augmentation</property>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+   <key n="7">
+    <name>Ctrl-G</name>
+    <desc>Toggle autopilot glide slope lock.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.apglideexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+   <key n="8">
+    <name>Ctrl-H</name>
+    <desc>Toggle autopilot heading lock.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.apheadingexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+<!-- Copilot Seat -->
+
+   <key n="10">
+    <name>Ctrl-J</name>
+    <desc>Toggle copilot view.</desc>
+
+    <!-- copilot seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/current-view/seat/copilot</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">8</value>
+    </binding>
+
+    <!--captain seat -->
+
+    <binding>
+     <condition>
+      <property>/sim/current-view/seat/copilot</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/copilot</property>
+    </binding>
+
+    <binding>
+     <condition>
+      <and>
+       <not>
+        <property>/sim/current-view/seat/engineer</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/overhead</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/steward</property>
+       </not>
+      </and>
+     </condition>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/captain</property>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/engineer</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/overhead</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/steward</property>
+     <value type="bool">false</value>
+    </binding>
+   </key>
+
+<!-- Steward Seat -->
+
+   <key n="11">
+    <name>Ctrl-K</name>
+    <desc>Toggle steward view.</desc>
+
+    <!-- steward seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/current-view/seat/steward</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">9</value>
+    </binding>
+
+    <!--captain seat -->
+
+    <binding>
+     <condition>
+      <property>/sim/current-view/seat/steward</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/steward</property>
+    </binding>
+
+    <binding>
+     <condition>
+      <and>
+       <not>
+        <property>/sim/current-view/seat/engineer</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/overhead</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/copilot</property>
+       </not>
+      </and>
+     </condition>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/captain</property>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/engineer</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/overhead</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/copilot</property>
+     <value type="bool">false</value>
+    </binding>
+   </key>
+
+   <key n="12">
+    <name>Ctrl-L</name>
+    <desc>Virtual copilot</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.apcopilotexport();</script>
+    </binding>
+   </key>
+
+   <key n="14">
+    <name>Ctrl-N</name>
+    <desc>Toggle autopilot nav1 lock.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.apvorlocexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+<!-- Overhead Seat -->
+
+   <key n="15">
+    <name>Ctrl-O</name>
+    <desc>Toggle overhead view.</desc>
+
+    <!-- overhead seat -->
+
+    <binding>
+     <condition>
+      <not>
+       <property>/sim/current-view/seat/overhead</property>
+      </not>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">7</value>
+    </binding>
+
+    <!--captain seat -->
+
+    <binding>
+     <condition>
+      <property>/sim/current-view/seat/overhead</property>
+     </condition>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/overhead</property>
+    </binding>
+
+    <binding>
+     <condition>
+      <and>
+       <not>
+        <property>/sim/current-view/seat/engineer</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/copilot</property>
+       </not>
+       <not>
+        <property>/sim/current-view/seat/steward</property>
+       </not>
+      </and>
+     </condition>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/captain</property>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/engineer</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/copilot</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/steward</property>
+     <value type="bool">false</value>
+    </binding>
+   </key>
+
+   <key n="16">
+    <name>Ctrl-P</name>
+    <desc>Toggle pitch hold.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.appitchexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+   <key n="19">
+    <name>Ctrl-S</name>
+    <desc>Toggle auto-throttle lock.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
+     <command>nasal</command>
+     <script>globals.Concorde.atspeedexport();</script>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+<!-- Views -->
+
+   <key n="22">
+    <name>Ctrl-V</name>
+    <desc>Select initial view (view 0).</desc>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/view-number</property>
+     <value type="int">0</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/engineer</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/overhead</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/copilot</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/steward</property>
+     <value type="bool">false</value>
+    </binding>
+
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/seat/captain</property>
+     <value type="bool">true</value>
+    </binding>
+   </key>
+
+   <key n="86">
+    <name>V</name>
+    <desc>Scroll in reverse through views.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       # if specific view, step once more to ignore captain view 
+       if( getprop("/sim/current-view/seat/engineer") ) {
+           if( getprop("/sim/current-view/view-number") == 1 ) {
+               view.stepView(-2);
+               view.stepView(-2);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/overhead") ) {
+           if( getprop("/sim/current-view/view-number") == 1 ) {
+               view.stepView(-2);
+               view.stepView(-1);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 7 ) {
+               view.stepView(-1);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/copilot") ) {
+           if( getprop("/sim/current-view/view-number") == 1 ) {
+               view.stepView(-2);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 8 ) {
+               view.stepView(-2);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/steward") ) {
+           if( getprop("/sim/current-view/view-number") == 1 ) {
+               view.stepView(-1);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 9 ) {
+               view.stepView(-3);
+           }
+       }
+       else {
+           if( getprop("/sim/current-view/view-number") == 0 ) {
+               view.stepView(-1);
+               view.stepView(-3);
+           }
+       }
+       # default
+       view.stepView(-1);
+     </script>
+    </binding>
+   </key>
+
+   <key n="113">
+    <name>q</name>
+    <desc>reset speed-up.</desc>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/speed-up</property>
+     <value>1</value>
+    </binding>
+   </key>
+
+   <key n="118">
+    <name>v</name>
+    <desc>Cycle view</desc>
+    <desc>Scroll through views.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       # if specific view, step once more to ignore captain view 
+       if( getprop("/sim/current-view/seat/engineer") ) {
+           if( getprop("/sim/current-view/view-number") == 6 ) {
+               view.stepView(4);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/overhead") ) {
+           if( getprop("/sim/current-view/view-number") == 5 ) {
+               view.stepView(1);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 7 ) {
+               view.stepView(3);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/copilot") ) {
+           if( getprop("/sim/current-view/view-number") == 5 ) {
+               view.stepView(2);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 8 ) {
+               view.stepView(2);
+           }
+       }
+       elsif( getprop("/sim/current-view/seat/steward") ) {
+           if( getprop("/sim/current-view/view-number") == 5 ) {
+               view.stepView(3);
+           }
+           elsif( getprop("/sim/current-view/view-number") == 9 ) {
+               view.stepView(1);
+           }
+       }
+       else {
+           if( getprop("/sim/current-view/view-number") == 5 ) {
+               view.stepView(4);
+           }
+       }
+       # default
+       view.stepView(1);
+     </script>
+    </binding>
+   </key>
+
+<!-- datum adjust (overrides default) -->
+
+   <key n="357">
+    <name>Up</name>
+    <desc>Increase elevator or autopilot altitude.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       altitudemode = getprop("/autopilot/locks/altitude");
+       if( altitudemode != nil and altitudemode != "" ) {
+           globals.Concorde.datumapexport(1.0);
+       }
+       # default
+       else {
+           controls.incElevator(0.05, -100);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="359">
+    <name>Down</name>
+    <desc>Decrease elevator or autopilot altitude.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       altitudemode = getprop("/autopilot/locks/altitude");
+       if( altitudemode != nil and altitudemode != "" ) {
+           globals.Concorde.datumapexport(-1.0);
+       }
+       # default
+       else {
+           controls.incElevator(-0.05, 100);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="360">
+    <name>PageUp</name>
+    <desc>Increase throttle or autopilot autothrottle.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       speedmode = getprop("/autopilot/locks/speed");
+       if( speedmode != nil and speedmode != "" ) {
+           globals.Concorde.datumatexport(1.0);
+       }
+       # default
+       else {
+           controls.incThrottle(0.01, 1.0);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="361">
+    <name>PageDown</name>
+    <desc>Decrease throttle or autopilot autothrottle.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       speedmode = getprop("/autopilot/locks/speed");
+       if( speedmode != nil and speedmode != "" ) {
+           globals.Concorde.datumatexport(-1.0);
+       }
+       # default
+       else {
+           controls.incThrottle(-0.01, -1.0);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="362">
+    <name>Home</name>
+    <desc>Increase elevator trim.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       altitudemode = getprop("/autopilot/locks/altitude");
+       if( altitudemode != nil and altitudemode != "" ) {
+           globals.Concorde.datumapexport(0.1);
+       }
+       # default
+       else {
+           trim = getprop("/controls/flight/elevator-trim");
+           trim = trim + 0.001;
+           setprop("/controls/flight/elevator-trim",trim);
+       }
+     </script>
+    </binding>
+   </key>
+
+   <key n="363">
+    <name>End</name>
+    <desc>Decrease elevator trim.</desc>
+    <repeatable type="bool">true</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       altitudemode = getprop("/autopilot/locks/altitude");
+       if( altitudemode != nil and altitudemode != "" ) {
+           globals.Concorde.datumapexport(-0.1);
+       }
+       # default
+       else {
+           trim = getprop("/controls/flight/elevator-trim");
+           trim = trim - 0.001;
+           setprop("/controls/flight/elevator-trim",trim);
+       }
+     </script>
+    </binding>
+   </key>
+
+<!-- gear -->
+
+   <key n="71">
+    <name>G</name>
+    <desc>Gear down.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-gear-down.xml"/>
+     <command>property-assign</command>
+     <property>/controls/gear/gear-down</property>
+     <value type="double">1.0</value>
+    </binding>
+   </key>
+
+   <key n="103">
+    <name>g</name>
+    <desc>Gear Up.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-gear-up.xml"/>
+     <command>property-assign</command>
+     <property>/controls/gear/gear-down</property>
+     <value type="double">0.0</value>
+    </binding>
+   </key>
+
+<!-- flaps (nose) -->
+
+   <key n="91">
+    <name>[</name>
+    <desc>Decrease flaps.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-nose-up.xml"/>
+     <command>nasal</command>
+     <script>controls.stepFlaps(-1)</script>
+    </binding>
+   </key>
+
+   <key n="93">
+    <name>]</name>
+    <desc>Increase flaps.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-nose-down.xml"/>
+     <command>nasal</command>
+     <script>controls.stepFlaps(1)</script>
+    </binding>
+   </key>
+
+</PropertyList>
+
+

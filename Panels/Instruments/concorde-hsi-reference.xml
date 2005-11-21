@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!-- Concorde HSI reference -->
+
+<PropertyList>
+ <name>HSI reference</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+
+  <layer>
+   <name>Title</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Title magnetic</name>
+    <condition>
+     <not>
+      <property>/instrumentation/hsi/ins-source</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>26</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>MAG</text>
+     </chunk>
+     </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-31</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-8</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Title true</name>
+    <condition>
+     <property>/instrumentation/hsi/ins-source</property>
+    </condition>
+    <type>text</type>
+    <point-size>26</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>TRUE</text>
+     </chunk>
+     </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-38</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-8</offset>
+     </transformation>
+    </transformations>
+   </layer>
+  </layer>
+ 
+ </layers>
+
+</PropertyList>

@@ -41,7 +41,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde Engineer Air Intakes Panel</name>
  <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
  <w>1024</w>
- <h>508</h>
+ <h>512</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -54,21 +54,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>340</value>
+      <value>350</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
+      <value>280</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>10</value>
+     </less-than>
     </and>
    </condition>
-   <x>140</x>
-   <y>540</y>
-   <w>36</w>
-   <h>9</h>
+   <x>100</x>
+   <y>535</y>
+   <w>32</w>
+   <h>8</h>
   </instrument>
 
   <instrument include="Instruments/concorde-eng-tmo.xml">
@@ -76,21 +80,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>335</value>
+      <value>340</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
+      <value>275</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </less-than>
     </and>
    </condition>
-   <x>240</x>
-   <y>540</y>
-   <w>36</w>
-   <h>9</h>
+   <x>190</x>
+   <y>535</y>
+   <w>32</w>
+   <h>8</h>
   </instrument>
 
   <instrument include="Instruments/concorde-eng-altimeter.xml">
@@ -98,21 +106,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
       <value>335</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
+      <value>270</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </less-than>
     </and>
    </condition>
-   <x>340</x>
-   <y>540</y>
-   <w>36</w>
-   <h>9</h>
+   <x>280</x>
+   <y>535</y>
+   <w>32</w>
+   <h>8</h>
   </instrument>
 
 <!-- oil pressure -->
@@ -122,22 +134,26 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>345</value>
+      <value>350</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
+      <value>280</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
    </params>
-   <x>150</x>
-   <y>490</y>
+   <x>110</x>
+   <y>495</y>
    <w>70</w>
    <h>70</h>
   </instrument>
@@ -147,22 +163,26 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>340</value>
+      <value>345</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
+      <value>275</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <oil-select>/engines/engine[1]/oil-pressure-psi</oil-select>
    </params>
-   <x>250</x>
-   <y>490</y>
+   <x>200</x>
+   <y>495</y>
    <w>70</w>
    <h>70</h>
   </instrument>
@@ -172,22 +192,26 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>335</value>
+      <value>340</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
+      <value>270</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <oil-select>/engines/engine[2]/oil-pressure-psi</oil-select>
    </params>
-   <x>350</x>
-   <y>490</y>
+   <x>285</x>
+   <y>495</y>
    <w>70</w>
    <h>70</h>
   </instrument>
@@ -197,22 +221,26 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/engineer-seat</property>
+     <property>/sim/current-view/seat/engineer</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>330</value>
+      <value>335</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
+      <value>265</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <oil-select>/engines/engine[3]/oil-pressure-psi</oil-select>
    </params>
-   <x>450</x>
-   <y>490</y>
+   <x>370</x>
+   <y>495</y>
    <w>70</w>
    <h>70</h>
   </instrument>

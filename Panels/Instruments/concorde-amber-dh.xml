@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<!-- Warning on Decision height -->
+
+<PropertyList>
+ <name>Decision height</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Warning light</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <condition>
+      <or include="concorde-cond-voltage-bulb.xml">
+       <and>
+        <not include="concorde-cond-test-land.xml"/>
+        <greater-than-equals>
+         <property>/position/altitude-agl-ft</property>
+         <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
+        </greater-than-equals>
+       </and>
+      </or>
+     </condition>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.25</x1>
+      <y1>0.75</y1>
+      <x2>0.5</x2>
+      <y2>1.0</y2>
+     </texture>
+     <w>52</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+     <x1>0.5</x1>
+     <y1>0.75</y1>
+     <x2>0.75</x2>
+     <y2>1.0</y2>
+     </texture>
+     <w>52</w>
+     <h>26</h>
+    </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-dh.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>52</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

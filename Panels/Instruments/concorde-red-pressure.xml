@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on Pressurization :
+
+    - cabine above 10000 ft.
+    - differential pressure above 11 PSI (758 mb).
+-->
+
+<PropertyList>
+ <name>Alarm on Pressurization</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-pressure-under.xml">
+       <or include="concorde-cond-pressure-over.xml"/>
+       <or include="concorde-cond-test-overhead.xml"/>
+       <property>/systems/pressurization/serviceable</property>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-press.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.31</y1>
+     <x2>1.0</x2>
+     <y2>0.72</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

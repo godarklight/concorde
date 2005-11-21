@@ -1,0 +1,182 @@
+<!-- Concorde fuel management -->
+
+<!-- The pumps are always processed by their raw number. For example, the transfer below :
+     1) engine.
+     2) collector.
+     3) trim.
+
+     Type of transfer :
+     - all-source : spreads the rate over all source tanks (true), or only the 1st source tank (false, default) not empty.
+     - all-destination : spreads the rate over all destination tanks (true), or only the 1st destination tank (false, default)
+     not empty.
+
+     "on" is true (default is false), for a pump activated by default.
+
+     The fields "rank" and "name" are comments, and not used.
+     But rank helps to figure which /systems/fuel/pumps/on[i] activates the pump.
+
+     WARNING : the tanks depend of /consumables/fuel/tank[i]/capacity-gal_us and
+     /consumables/fuel/tank[i]/density-ppg to be defined in the -set file of the aircraft (automatic if Yasim).
+
+     As pumping happens in lb, it is theorically possible to have tanks with different density :
+     fuel of source density becomes of destination density (mix only true with large tank).
+-->
+
+<PropertyList>
+
+<!-- INTER CONNECT -->
+
+<!-- tanks 1 and 4 -->
+ <inter-connect>
+  <rank>0</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>collector forward</name>
+  <tank-left>0</tank-left>
+  <tank-right>3</tank-right>
+ </inter-connect>
+
+<!-- tanks 5 and 7 -->
+ <inter-connect>
+  <rank>1</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>main left</name>
+  <tank-left>4</tank-left>
+  <tank-right>6</tank-right>
+ </inter-connect>
+
+<!-- tanks 6 and 8 -->
+ <inter-connect>
+  <rank>2</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>main right</name>
+  <tank-left>5</tank-left>
+  <tank-right>7</tank-right>
+ </inter-connect>
+
+<!-- tanks 2 and 3 -->
+ <inter-connect>
+  <rank>3</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>collector rear</name>
+  <tank-left>1</tank-left>
+  <tank-right>2</tank-right>
+ </inter-connect>
+
+<!-- tanks 5A and 7A -->
+ <inter-connect>
+  <rank>4</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>auxiliary</name>
+  <tank-left>11</tank-left>
+  <tank-right>12</tank-right>
+ </inter-connect>
+
+
+<!-- JETTISON -->
+
+<!-- tank 11 (tail) -->
+ <jettison>
+  <rank>5</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>tail</name>
+  <tank>10</tank>
+ </jettison>
+
+<!-- tank 5A and 7A (rear outboard) -->
+ <jettison>
+  <rank>6</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>rear outboard</name>
+  <tank>11</tank>
+  <tank>12</tank>
+ </jettison>
+
+<!-- tank 2 and 3 (rear inboard) -->
+ <jettison>
+  <rank>7</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>rear inboard</name>
+  <tank>1</tank>
+  <tank>2</tank>
+ </jettison>
+
+
+<!-- TRANSFER -->
+
+<!-- trim 9 and 10 to 5 and 7 -->
+ <transfer>
+  <rank>8</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>engine aft</name>
+  <all-source type="bool">false</all-source> 
+  <tank-source>8</tank-source>
+  <tank-source>9</tank-source>
+  <all-destination type="bool">true</all-destination> 
+  <tank-destination>4</tank-destination>
+  <tank-destination>6</tank-destination>
+ </transfer>
+
+<!-- trim 11 to 5 and 7 -->
+ <transfer>
+  <rank>9</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>engine forward</name>
+  <tank-source>10</tank-source>
+  <all-destination type="bool">true</all-destination> 
+  <tank-destination>4</tank-destination>
+  <tank-destination>6</tank-destination>
+ </transfer>
+
+<!-- tank 5, 6 and 5A to collector 1 and 2 -->
+ <transfer>
+  <rank>10</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>collector left</name>
+  <on type="bool">true</on> 
+  <all-source type="bool">true</all-source> 
+  <tank-source>4</tank-source>
+  <tank-source>5</tank-source>
+  <tank-source>11</tank-source>
+  <all-destination type="bool">true</all-destination> 
+  <tank-destination>0</tank-destination>
+  <tank-destination>1</tank-destination>
+ </transfer>
+
+<!-- tank 7, 8 and 7A to collector 3 and 4 -->
+ <transfer>
+  <rank>11</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>collector right</name>
+  <on type="bool">true</on> 
+  <all-source type="bool">true</all-source> 
+  <tank-source>6</tank-source>
+  <tank-source>7</tank-source>
+  <tank-source>12</tank-source>
+  <all-destination type="bool">true</all-destination> 
+  <tank-destination>2</tank-destination>
+  <tank-destination>3</tank-destination>
+ </transfer>
+
+<!-- trim 9 and 10 to trim 11 -->
+ <transfer>
+  <rank>12</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>trim aft</name>
+  <all-source type="bool">false</all-source> 
+  <tank-source>8</tank-source>
+  <tank-source>9</tank-source>
+  <tank-destination>10</tank-destination>
+ </transfer>
+
+<!-- trim 11 to trim 9 and 10 -->
+ <transfer>
+  <rank>13</rank>
+  <flow-gal_per_s>6.0</flow-gal_per_s>
+  <name>trim forward</name>
+  <tank-source>10</tank-source>
+  <all-destination type="bool">false</all-destination> 
+  <tank-destination>8</tank-destination>
+  <tank-destination>9</tank-destination>
+ </transfer>
+
+</PropertyList>

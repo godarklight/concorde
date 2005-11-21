@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 
-<!--
-Concorde 2D panel (CAPTAIN, with fuel and overhead)
+<!-- Concorde 2D panel (CAPTAIN).
+
+With fuel (and overhead), because the swapping with the center panel is long.
 
 Organized like the real one at http://www.concordesst.com/.
 See also pictures at http://www.airliners.net/info/.
@@ -99,8 +100,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
  <name>Concorde 2D Captain Panel</name>
  <background>Aircraft/Concorde/Panels/Textures/concorde-panel-bg.rgb</background>
- <w>1424</w>
- <h>508</h>
+ <w>1140</w>
+ <h>510</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -112,7 +113,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-mh.xml">
    <name>Mach Hold</name>
-   <x>255</x>
+   <x>325</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -120,7 +121,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ih.xml">
    <name>IAS Hold</name>
-   <x>290</x>
+   <x>360</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -128,7 +129,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ia.xml">
    <name>IAS Acquired</name>
-   <x>290</x>
+   <x>360</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -138,7 +139,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-in.xml">
    <name>INS Mode</name>
-   <x>345</x>
+   <x>465</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -146,7 +147,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-bb.xml">
    <name>Back Beam</name>
-   <x>345</x>
+   <x>465</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -154,7 +155,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-th.xml">
    <name>Track Heading</name>
-   <x>380</x>
+   <x>500</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -162,7 +163,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-vl.xml">
    <name>VOR Lock</name>
-   <x>380</x>
+   <x>500</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -170,7 +171,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-hh.xml">
    <name>Heading Hold</name>
-   <x>435</x>
+   <x>535</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -180,7 +181,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-tu.xml">
    <name>Turbulence Mode</name>
-   <x>470</x>
+   <x>570</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -188,7 +189,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ga.xml">
    <name>Go Around Mode</name>
-   <x>470</x>
+   <x>570</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -196,7 +197,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ph.xml">
    <name>Pitch Hold</name>
-   <x>505</x>
+   <x>635</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -204,7 +205,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-la.xml">
    <name>Autoland Mode</name>
-   <x>505</x>
+   <x>635</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -212,7 +213,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-mp.xml">
    <name>Mach with Pitch Hold</name>
-   <x>545</x>
+   <x>670</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -220,7 +221,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-gl.xml">
    <name>Glide slope mode</name>
-   <x>545</x>
+   <x>670</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -228,7 +229,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-cl.xml">
    <name>Max Climb mode</name>
-   <x>580</x>
+   <x>705</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -236,7 +237,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-cr.xml">
    <name>Max Climb mode</name>
-   <x>580</x>
+   <x>705</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -244,7 +245,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ip.xml">
    <name>IAS with Pitch hold</name>
-   <x>615</x>
+   <x>740</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -252,7 +253,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-vs.xml">
    <name>Vertical Speed hold</name>
-   <x>615</x>
+   <x>740</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -260,7 +261,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-ah.xml">
    <name>Altitude Hold</name>
-   <x>650</x>
+   <x>775</x>
    <y>495</y>
    <w>30</w>
    <h>20</h>
@@ -268,7 +269,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-aa.xml">
    <name>Altitude Acquire</name>
-   <x>650</x>
+   <x>775</x>
    <y>470</y>
    <w>30</w>
    <h>20</h>
@@ -278,7 +279,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-armed-vor.xml">
    <name>VOR armed</name>
-   <x>380</x>
+   <x>500</x>
    <y>456</y>
    <w>10</w>
    <h>5</h>
@@ -286,15 +287,15 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-armed-land.xml">
    <name>Autoland armed</name>
-   <x>505</x>
+   <x>635</x>
    <y>456</y>
    <w>10</w>
    <h>5</h>
   </instrument>
 
   <instrument include="Instruments/concorde-armed-glide.xml">
-   <name>Autoland armed</name>
-   <x>545</x>
+   <name>Glide armed</name>
+   <x>670</x>
    <y>456</y>
    <w>10</w>
    <h>5</h>
@@ -302,7 +303,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-armed-altitude.xml">
    <name>Altitude armed</name>
-   <x>650</x>
+   <x>775</x>
    <y>456</y>
    <w>10</w>
    <h>5</h>
@@ -316,10 +317,18 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <frq-disp>/instrumentation/nav[0]/frequencies/selected-mhz</frq-disp>
     <frq-ctrl>/instrumentation/nav[0]/frequencies/selected-mhz</frq-ctrl>
    </params>
-   <x>129</x>
-   <y>477</y>
+   <x>150</x>
+   <y>472</y>
    <w>100</w>
    <h>29</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hsi-source.xml">
+   <name>HSI source</name>
+   <x>275</x>
+   <y>480</y>
+   <w>32</w>
+   <h>32</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-nav.xml">
@@ -328,38 +337,34 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <frq-disp>/instrumentation/nav[1]/frequencies/selected-mhz</frq-disp>
     <frq-ctrl>/instrumentation/nav[1]/frequencies/selected-mhz</frq-ctrl>
    </params>
-   <x>709</x>
-   <y>477</y>
+   <x>929</x>
+   <y>472</y>
    <w>100</w>
    <h>29</h>
   </instrument>
 
 <!-- dials -->
 
-  <instrument include="Instruments/concorde-alarm-land.xml">
+  <instrument include="Instruments/concorde-red-land.xml">
    <name>Alarm on Autoland</name>
-   <x>117</x>
-   <y>435</y>
+   <x>107</x>
+   <y>445</y>
    <w>50</w>
    <h>20</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-disable-at.xml">
    <name>Autothrottle</name>
-   <x>200</x>
-   <y>436</y>
+   <x>325</x>
+   <y>426</y>
    <w>30</w>
    <h>30</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-speed-kt.xml">
    <name>Speed dial</name>
-   <params>
-    <spd-disp>/autopilot/settings/target-speed-kt</spd-disp>
-    <spd-ctrl>/autopilot/settings/target-speed-kt</spd-ctrl>
-   </params>
-   <x>245</x>
-   <y>437</y>
+   <x>385</x>
+   <y>477</y>
    <w>100</w>
    <h>29</h>
   </instrument>
@@ -370,7 +375,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <hdg-ctrl>/autopilot/settings/heading-bug-deg</hdg-ctrl>
     <true-hdg-ctrl>/autopilot/settings/true-heading-deg</true-hdg-ctrl>
    </params>
-   <x>335</x>
+   <x>450</x>
    <y>437</y>
    <w>140</w>
    <h>65</h>
@@ -382,7 +387,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <spd-disp>/instrumentation/nav/radials/selected-deg</spd-disp>
     <spd-ctrl>/instrumentation/nav/radials/selected-deg</spd-ctrl>
    </params>
-   <x>422</x>
+   <x>527</x>
    <y>437</y>
    <w>100</w>
    <h>29</h>
@@ -390,16 +395,16 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-ap-disable.xml">
    <name>Autopilot</name>
-   <x>505</x>
-   <y>436</y>
+   <x>645</x>
+   <y>426</y>
    <w>30</w>
    <h>30</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-disable-fd.xml">
    <name>Flight director</name>
-   <x>650</x>
-   <y>436</y>
+   <x>775</x>
+   <y>426</y>
    <w>30</w>
    <h>30</h>
   </instrument>
@@ -410,44 +415,36 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <tcr-disp>/autopilot/settings/target-altitude-ft</tcr-disp>
     <tcr-ctrl>/autopilot/settings/target-altitude-ft</tcr-ctrl>
    </params>
-   <x>700</x>
-   <y>437</y>
+   <x>830</x>
+   <y>477</y>
    <w>100</w>
    <h>29</h>
   </instrument>
 
 <!-- CAPTAIN extreme left -->
 
-  <instrument include="Instruments/concorde-aoa.xml">
-   <name>AoA display</name>
+  <instrument include="Instruments/concorde-accl-aoa.xml">
+   <name>g and AoA display</name>
    <x>20</x>
    <y>100</y>
    <w>10</w>
    <h>40</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-accl.xml">
-   <name>Accel display</name>
-   <x>20</x>
-   <y>10</y>
-   <w>10</w>
-   <h>40</h>
-  </instrument>
-
 <!-- CAPTAIN far left -->
 
-  <instrument include="Instruments/concorde-alarm-gear.xml">
-   <name>Alarm on Gear</name>
+  <instrument include="Instruments/concorde-red-terrain.xml">
+   <name>Alarm on Terrain</name>
    <x>155</x>
-   <y>388</y>
+   <y>398</y>
    <w>50</w>
    <h>20</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-alarm-cg.xml">
+  <instrument include="Instruments/concorde-red-cg.xml">
    <name>Alarm on Center of Gravity</name>
    <x>210</x>
-   <y>388</y>
+   <y>398</y>
    <w>50</w>
    <h>20</h>
   </instrument>
@@ -460,36 +457,28 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>11</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-warning-land.xml">
+  <instrument include="Instruments/concorde-green-land2.xml">
    <name>Warning on Autoland</name>
    <x>410</x>
    <y>388</y>
-   <w>50</w>
-   <h>20</h>
+   <w>46</w>
+   <h>23</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-warning-dh.xml">
+  <instrument include="Instruments/concorde-amber-dh.xml">
    <name>Warning on Decision Height</name>
-   <x>445</x>
+   <x>440</x>
    <y>388</y>
-   <w>50</w>
-   <h>20</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-standby-asi.xml">
-   <name>Standby KIAS display</name>
-   <x>115</x>
-   <y>205</y>
-   <w>110</w>
-   <h>110</h>
+   <w>44</w>
+   <h>22</h>
   </instrument>
 
   <instrument include="Instruments/concorde-dme.xml">
    <name>DME Display</name>
    <x>115</x>
-   <y>90</y>
-   <w>110</w>
-   <h>55</h>
+   <y>83</y>
+   <w>106</w>
+   <h>53</h>
   </instrument>
 
   <instrument include="Instruments/concorde-tas.xml">
@@ -504,7 +493,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-asi.xml">
    <name>KIAS display</name>
-   <x>240</x>
+   <x>232</x>
    <y>308</y>
    <w>135</w>
    <h>135</h>
@@ -512,16 +501,16 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-machmeter.xml">
    <name>Machmeter display</name>
-   <x>188</x>
-   <y>205</y>
-   <w>40</w>
-   <h>60</h>
+   <x>245</x>
+   <y>182</y>
+   <w>105</w>
+   <h>105</h>
   </instrument>
 
   <instrument include="Instruments/concorde-compass-vor.xml">
    <name>VOR 1 and 2 Gauge</name>
    <x>245</x>
-   <y>75</y>
+   <y>65</y>
    <w>120</w>
    <h>120</h>
   </instrument>
@@ -566,8 +555,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>16</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-hsi.xml">
-   <name>HSI title</name>
+  <instrument include="Instruments/concorde-hsi-reference.xml">
+   <name>HSI reference</name>
    <x>395</x>
    <y>184</y>
    <w>50</w>
@@ -582,7 +571,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>16</h>
   </instrument>
 
-  <instrument include="../../Instruments/hsi-bk-hi.xml">
+  <instrument include="Instruments/concorde-hsi.xml">
    <name>Horizontal Situation Indicator</name>
    <x>395</x>
    <y>102</y>
@@ -600,18 +589,26 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- CAPTAIN right -->
 
+  <instrument include="Instruments/concorde-speed-up.xml">
+   <name>Speed up</name>
+   <x>590</x>
+   <y>410</y>
+   <w>10</w>
+   <h>40</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-vsi.xml">
-   <name>Vsi display</name>
-   <x>510</x>
-   <y>278</y>
-   <w>100</w>
-   <h>200</h>
+   <name>IVSI</name>
+   <x>481</x>
+   <y>255</y>
+   <w>50</w>
+   <h>100</h>
   </instrument>
 
   <instrument include="Instruments/concorde-radio-alt.xml">
-   <name>Elevation AGL display</name>
-   <x>534</x>
-   <y>335</y>
+   <name>Radio altimeter</name>
+   <x>628</x>
+   <y>321</y>
    <w>100</w>
    <h>100</h>
   </instrument>
@@ -627,22 +624,14 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <instrument include="Instruments/concorde-compass-adf.xml">
    <name>ADF</name>
    <x>545</x>
-   <y>75</y>
+   <y>65</y>
    <w>120</w>
    <h>120</h>
   </instrument>
 
 <!-- CAPTAIN far right -->
 
-  <instrument include="Instruments/concorde-standby-hor.xml">
-   <name>Standby Attitude Indicator</name>
-   <x>707</x>
-   <y>330</y>
-   <w>105</w>
-   <h>105</h>
-  </instrument>
-
-  <instrument include="../../Instruments/radar.xml">
+  <instrument include="Instruments/concorde-tcas.xml">
    <name>TCAS</name>
    <x>707</x>
    <y>211</y>
@@ -652,8 +641,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="../../Instruments/clock.xml">
    <name>Chronometer</name>
-   <x>655</x>
-   <y>90</y>
+   <x>665</x>
+   <y>70</y>
    <w>90</w>
    <h>90</h>
   </instrument>
@@ -700,10 +689,18 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-cg.xml">
    <name>Center of Gravity</name>
-   <x>730</x>
-   <y>50</y>
-   <w>16</w>
-   <h>50</h>
+   <x>745</x>
+   <y>49</y>
+   <w>12</w>
+   <h>48</h>
+  </instrument>
+
+<!-- OVERHEAD PANEL -->
+
+  <instrument include="../../Instruments/magcompass.xml">
+   <name>Magnetic Compass</name>
+   <x>940</x>
+   <y>524</y>
   </instrument>
 
 <!-- ENGINEER -->
@@ -713,10 +710,10 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-dump.xml">
    <name>Dump pump</name>
    <params>
-    <dump-ctrl>/systems/fuel-pump/dump</dump-ctrl>
+    <dump-ctrl>/systems/fuel/pump/dump</dump-ctrl>
    </params>
-   <x>847</x>
-   <y>485</y>
+   <x>939</x>
+   <y>405</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -724,10 +721,10 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-dump.xml">
    <name>Dump pump (confirm)</name>
    <params>
-    <dump-ctrl>/systems/fuel-pump/dump2</dump-ctrl>
+    <dump-ctrl>/systems/fuel/pump/dump2</dump-ctrl>
    </params>
-   <x>897</x>
-   <y>485</y>
+   <x>989</x>
+   <y>405</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -735,7 +732,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-forward.xml">
    <name>Forward pump</name>
    <x>989</x>
-   <y>435</y>
+   <y>355</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -743,7 +740,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-aft.xml">
    <name>Aft pump</name>
    <x>989</x>
-   <y>245</y>
+   <y>165</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -751,7 +748,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-cross.xml">
    <name>Cross pump</name>
    <x>920</x>
-   <y>194</y>
+   <y>114</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -759,7 +756,15 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-pump-engine.xml">
    <name>Engine pump</name>
    <x>989</x>
-   <y>194</y>
+   <y>114</y>
+   <w>45</w>
+   <h>23</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pump-auxilliary.xml">
+   <name>Auxilliary pump</name>
+   <x>989</x>
+   <y>63</y>
    <w>45</w>
    <h>23</h>
   </instrument>
@@ -774,7 +779,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[8]/content-lb</content-select>
    </params>
    <x>830</x>
-   <y>422</y>
+   <y>342</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -787,7 +792,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[9]/content-lb</content-select>
    </params>
    <x>830</x>
-   <y>395</y>
+   <y>315</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -800,7 +805,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[0]/content-lb</content-select>
    </params>
    <x>772</x>
-   <y>368</y>
+   <y>288</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -813,7 +818,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[3]/content-lb</content-select>
    </params>
    <x>868</x>
-   <y>368</y>
+   <y>288</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -826,7 +831,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[4]/content-lb</content-select>
    </params>
    <x>772</x>
-   <y>341</y>
+   <y>261</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -839,7 +844,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[7]/content-lb</content-select>
    </params>
    <x>868</x>
-   <y>341</y>
+   <y>261</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -852,7 +857,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[5]/content-lb</content-select>
    </params>
    <x>772</x>
-   <y>314</y>
+   <y>234</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -865,7 +870,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[6]/content-lb</content-select>
    </params>
    <x>868</x>
-   <y>314</y>
+   <y>234</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -878,7 +883,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[1]/content-lb</content-select>
    </params>
    <x>772</x>
-   <y>287</y>
+   <y>207</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -891,7 +896,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[2]/content-lb</content-select>
    </params>
    <x>868</x>
-   <y>287</y>
+   <y>207</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -906,7 +911,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[11]/content-lb</content-select>
    </params>
    <x>772</x>
-   <y>260</y>
+   <y>180</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -919,7 +924,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[12]/content-lb</content-select>
    </params>
    <x>868</x>
-   <y>260</y>
+   <y>180</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -932,7 +937,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
     <content-select>/consumables/fuel/tank[10]/content-lb</content-select>
    </params>
    <x>830</x>
-   <y>233</y>
+   <y>153</y>
    <w>40</w>
    <h>7</h>
   </instrument>
@@ -942,47 +947,51 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-kgph.xml">
    <name>Fuel Flow</name>
    <x>822</x>
-   <y>137</y>
+   <y>46</y>
    <w>40</w>
    <h>10</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-kg.xml">
-   <name>Fuel Total</name>
-   <x>824</x>
-   <y>110</y>
-   <w>40</w>
-   <h>10</h>
-  </instrument>
-
-<!-- OVERHEAD PANEL -->
-
-  <instrument include="../../Instruments/magcompass.xml">
-   <name>Magnetic Compass</name>
-   <x>940</x>
-   <y>524</y>
   </instrument>
 
 <!-- copy from CENTER PANEL -->
 
-  <instrument include="Instruments/concorde-warning-park.xml">
+  <instrument include="Instruments/concorde-gui-park.xml">
    <name>Warning on Parking Break</name>
+   <condition>
+    <equals>
+     <property>controls/gear[0]/brake-parking</property>
+     <value>1.0</value>
+    </equals>
+   </condition>
    <x>850</x>
    <y>20</y>
    <w>50</w>
    <h>20</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-warning-nose-visor.xml">
+  <instrument include="Instruments/concorde-gui-nose-visor.xml">
    <name>Warning on Nose/Visor</name>
+   <condition>
+    <greater-than>
+     <property>surface-positions/flap-pos-norm</property>
+     <value>0.0</value>
+    </greater-than>
+   </condition>
    <x>920</x>
    <y>20</y>
    <w>50</w>
    <h>20</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-warning-reheat.xml">
+  <instrument include="Instruments/concorde-gui-reheat.xml">
    <name>Warning on Reheat</name>
+   <condition>
+    <or>
+     <property>engines/engine[0]/augmentation</property>
+     <property>engines/engine[1]/augmentation</property>
+     <property>engines/engine[2]/augmentation</property>
+     <property>engines/engine[3]/augmentation</property>
+    </or>
+   </condition>
    <x>988</x>
    <y>20</y>
    <w>50</w>

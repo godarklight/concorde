@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<!-- Warning on autoland 3 : 2 channels. -->
+
+<PropertyList>
+ <name>Autoland 3 check</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Warning light</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <and>
+       <not include="concorde-cond-voltage-bulb.xml"/>
+       <or include="concorde-cond-test-land.xml">
+        <and>
+         <or include="concorde-cond-land.xml"/> <!-- because of BUG ? -->
+         <equals>
+          <property>/autopilot/locks/channel/ap[0]/on</property>
+          <value>on</value>
+         </equals>
+         <equals>
+          <property>/autopilot/locks/channel/ap[1]/on</property>
+          <value>on</value>
+         </equals>
+        </and>
+       </or>
+      </and>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.32</x1>
+     <y1>0.0</y1>
+     <x2>0.43</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>60</w>
+     <h>30</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>60</w>
+     <h>30</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-land3.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>52</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
-<!--
+<!-- Side slip indicator in degrees.
 -->
 
 <PropertyList>
 
- <name>Digital Side Slip indicator</name>
+ <name>Side Slip indicator</name>
  <w-base>40</w-base>
  <h-base>10</h-base>
 
@@ -14,10 +14,14 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-side-slip.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.44</y1>
+     <x2>1.0</x2>
+     <y2>0.62</y2>
    </texture>
-    <w>55</w>
-    <h>20</h>
+    <w>100</w>
+    <h>18</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -31,85 +35,105 @@
   </layer>
 
   <layer>
-   <name>Left</name>
-   <type>text</type>
-   <point-size>16</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>L</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>4</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
    <name>Side Slip display</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>instrumentation/slip-skid-ball/indicated-slip-skid</property>
-     <format>%2.f</format>
-     <scale>-27.0</scale> <!-- to get -15/+15 (which unit ?) -->
-    </chunk>
-   </chunks>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.8465625</x1>
+    <x2>0.948125</x2>
+    <y1>0.449375</y1>
+    <y2>0.5375</y2>
+   </texture>
+   <w>11</w>
+   <h>11</h>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>46</offset>
-    </transformation>
+     <type>rotation</type>
+     <offset>-180</offset> <!-- vertical -->
+    </transformation> 
     <transformation>
      <type>y-shift</type>
-     <offset>3</offset>
+     <offset>-4</offset> <!-- aligned vertical -->
+    </transformation> 
+    <transformation>
+     <type>x-shift</type>
+     <offset>-58</offset> <!-- 0 deg -->
+    </transformation> 
+    <transformation>
+     <condition include="concorde-cond-voltage-inst.xml"/>
+     <type>x-shift</type>
+     <property>instrumentation/slip-skid-ball/indicated-slip-skid</property> <!-- which unit ? -->
+     <min>-15.0</min>
+     <max>15.0</max>
+     <scale>1.0</scale>
+     <interpolation> <!-- index must increase, because of lookup ! -->
+      <entry><ind>-15.0</ind><dep>-41.0</dep></entry>
+      <entry><ind> -5.0</ind><dep>-20.0</dep></entry>
+      <entry><ind>  0.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>  5.0</ind><dep> 20.0</dep></entry>
+      <entry><ind> 15.0</ind><dep> 41.0</dep></entry>
+     </interpolation>
     </transformation>
    </transformations>
   </layer>
 
   <layer>
-   <name>Right</name>
-   <type>text</type>
-   <point-size>16</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>R</text>
-    </chunk>
-   </chunks>
+   <name>OFF flag</name>
+   <condition>
+    <or>
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not> 
+      <property>instrumentation/slip-skid-ball/serviceable</property>
+     </not> 
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>18</w>
+   <h>7</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>107</offset>
+     <offset>47</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>4</offset>
+     <offset>13.25</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>OFF flag 2</name>
+   <condition>
+    <or>
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not> 
+      <property>instrumentation/slip-skid-ball/serviceable</property>
+     </not> 
+    </or>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>18</w>
+   <h>7</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>68</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>13.25</offset>
     </transformation>
    </transformations>
   </layer>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on DC Main Bus :
+
+     - voltage below 25 volts on 1 or both buses.
+-->
+
+<PropertyList>
+
+  <and>
+   <greater-than>
+    <property>/systems/electrical/outputs/probe/dc-maina</property>
+    <value>25.0</value>
+   </greater-than>
+   <greater-than>
+    <property>/systems/electrical/outputs/probe/dc-mainb</property>
+    <value>25.0</value>
+   </greater-than>
+  </and>
+
+</PropertyList>

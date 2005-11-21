@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+
+<!-- - creates  booleans (impossible with Nasal), which would otherwise be empty strings by default.
+     - makes more readable the initialization state.
+
+     - see model animation for gear times.
+-->
+
+<PropertyList>
+
+<!-- avoids crash by JSBSim -->
+
+  <circuit-breakers>
+   <instrument-lights type="bool">true</instrument-lights>
+  </circuit-breakers>
+
+  <electric>
+   <ac>
+    <generator1 type="bool">true</generator1>                 <!-- generator to main bus -->
+    <generator2 type="bool">true</generator2>
+    <generator3 type="bool">true</generator3>
+    <generator4 type="bool">true</generator4>
+    <ground type="bool">false</ground>                        <!-- ground service -->
+    <gpb type="bool">false</gpb>                              <!-- ground power breaker -->
+    <btb1 type="bool">true</btb1>                             <!-- bus tie breaker -->
+    <btb2 type="bool">true</btb2>
+    <btb3 type="bool">true</btb3>
+    <btb4 type="bool">true</btb4>
+    <ssb type="bool">true</ssb>                               <!-- split system breaker -->
+    <essential1 type="bool">true</essential1>                 <!-- main to essential -->
+    <essential2 type="bool">true</essential2>
+    <essential3 type="bool">true</essential3>
+    <essential4 type="bool">true</essential4>
+    <relight1 type="bool">true</relight1>                     <!-- relight to main bus -->
+    <relight2 type="bool">true</relight2>
+    <relight3 type="bool">true</relight3>
+    <relight4 type="bool">true</relight4>
+    <standby type="bool">true</standby>                       <!-- standby to AC essential -->
+    <emergency>
+     <arm type="bool">true</arm>                              <!-- emergency generator armed -->
+     <generator type="bool">false</generator>                 <!-- generator to emergency bus -->
+     <manual type="bool">false</manual>
+     <asb type="bool">true</asb>                              <!-- auto shed breaker -->
+     <essential1 type="bool">false</essential1>               <!-- emergency bus to AC essential -->
+     <essential2 type="bool">false</essential2>
+     <essential3 type="bool">false</essential3>
+     <essential4 type="bool">false</essential4>
+     <relight1 type="bool">false</relight1>                   <!-- emergency to relight -->
+     <relight2 type="bool">false</relight2>
+     <relight3 type="bool">false</relight3>
+     <relight4 type="bool">false</relight4>
+     <standby type="bool">false</standby>                     <!-- standby to DC essential (RAT not deployed) -->
+    </emergency>
+   </ac>
+   <dc>
+    <master-bat type="bool">true</master-bat>                 <!-- battery B -->
+    <maina type="bool">true</maina>                           <!-- AC essential to DC main (TRU) -->
+    <mainb type="bool">true</mainb>
+    <essentiala type="bool">true</essentiala>                 <!-- AC essential to DC essential (TRU) -->
+    <essentialb type="bool">true</essentialb>
+    <emsa type="bool">true</emsa>                             <!-- essential / main split -->
+    <emsb type="bool">true</emsb>
+   </dc>
+  </electric>
+
+<!-- remove to be compatible with C++ electrical system -->
+
+  <engines>
+   <engine n="0">
+    <master-bat type="bool">true</master-bat>                 <!-- battery A -->
+    <master-alt type="bool">true</master-alt>                 <!-- generator -->
+   </engine>
+   <engine n="1">
+    <master-alt type="bool">true</master-alt>                 <!-- generator -->
+   </engine>
+   <engine n="2">
+    <master-alt type="bool">true</master-alt>                 <!-- generator -->
+   </engine>
+   <engine n="3">
+    <master-alt type="bool">true</master-alt>                 <!-- generator -->
+   </engine>
+  </engines>
+
+  <fuel>
+   <tank n="0">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <pump n="2" type="bool">true</pump>
+    <aft-trim type="bool">false</aft-trim>
+   </tank>
+   <tank n="1">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <pump n="2" type="bool">true</pump>
+    <aft-trim type="bool">false</aft-trim>          <!-- always -->
+   </tank>
+   <tank n="2">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <pump n="2" type="bool">true</pump>
+    <aft-trim type="bool">false</aft-trim>          <!-- always -->
+   </tank>
+   <tank n="3">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <pump n="2" type="bool">true</pump>
+    <aft-trim type="bool">false</aft-trim>
+   </tank>
+   <tank n="4">
+    <pump n="0" type="bool">true</pump>             <!-- 5 to 1 -->
+    <pump n="1" type="bool">true</pump>             <!-- 5 to 2 -->
+   </tank>
+   <tank n="5">
+    <pump n="0" type="bool">true</pump>             <!-- 6 to 1 -->
+    <pump n="1" type="bool">true</pump>             <!-- 6 to 2 -->
+   </tank>
+   <tank n="6">
+    <pump n="0" type="bool">true</pump>             <!-- 7 to 3 -->
+    <pump n="1" type="bool">true</pump>             <!-- 7 to 4 -->
+   </tank>
+   <tank n="7">
+    <pump n="0" type="bool">true</pump>             <!-- 8 to 3 -->
+    <pump n="1" type="bool">true</pump>             <!-- 8 to 4 -->
+   </tank>
+   <tank n="8">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+   </tank>
+   <tank n="9">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+   </tank>
+   <tank n="10">
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+   </tank>
+   <tank n="11">      <!-- 5A -->
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <trans-valve type="bool">false</trans-valve>    <!-- not connected -->
+   </tank>
+   <tank n="12">      <!-- 7A -->
+    <pump n="0" type="bool">true</pump>
+    <pump n="1" type="bool">true</pump>
+    <trans-valve type="bool">false</trans-valve>    <!-- not connected -->
+   </tank>
+  </fuel>
+
+  <hydraulic>
+   <circuits>
+    <circuit n="0">
+     <onloada type="bool">true</onloada>
+     <shuta type="bool">false</shuta>
+     <guarda type="bool">true</guarda>
+     <onloadb type="bool">true</onloadb>
+     <shutb type="bool">false</shutb>
+     <guardb type="bool">true</guardb>
+    </circuit>
+    <circuit n="1">
+     <onloada type="bool">true</onloada>
+     <shuta type="bool">false</shuta>
+     <guarda type="bool">true</guarda>
+     <onloadb type="bool">true</onloadb>
+     <shutb type="bool">false</shutb>
+     <guardb type="bool">true</guardb>
+    </circuit>
+    <circuit n="2">
+     <onloada type="bool">true</onloada>
+     <shuta type="bool">false</shuta>
+     <guarda type="bool">true</guarda>
+     <onloadb type="bool">true</onloadb>
+     <shutb type="bool">false</shutb>
+     <guardb type="bool">true</guardb>
+    </circuit>
+   </circuits>
+  </hydraulic>
+
+  <gear>
+   <time>
+    <main>    
+     <door-opened>0.17</door-opened>
+     <lower-gear>0.17</lower-gear>
+     <gear-locked>0.83</gear-locked>
+     <close-door>0.83</close-door>
+    </main>    
+    <tail>    
+     <open-door>0.17</open-door>
+     <close-door>0.50</close-door>
+     <gear-locked>0.83</gear-locked>
+    </tail>    
+   </time>
+  </gear>
+
+<!-- hysteresis -->
+
+  <nose-visor>
+   <visor>
+    <up>0.0</up>
+    <down-min>0.31</down-min>           <!-- min = greater than / less than equals -->
+    <down-max>0.35</down-max>           <!-- max = less than / greater than equals -->
+   </visor>
+   <nose>
+    <up-min>0.34</up-min>
+    <deg5-min>0.65</deg5-min>
+    <deg5-max>0.69</deg5-max>
+    <down>1.0</down>
+   </nose>
+  </nose-visor>
+
+  <pneumatic>
+   <engine n="0">
+    <bleed-valve type="bool">true</bleed-valve>
+   </engine>
+   <engine n="1">
+    <bleed-valve type="bool">true</bleed-valve>
+   </engine>
+   <engine n="2">
+    <bleed-valve type="bool">true</bleed-valve>
+   </engine>
+   <engine n="3">
+    <bleed-valve type="bool">true</bleed-valve>
+   </engine>
+  </pneumatic>
+
+</PropertyList>

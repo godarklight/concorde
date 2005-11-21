@@ -9,6 +9,10 @@
  <w-base>104</w-base>
  <h-base>36</h-base>
 
+ <params>
+  <flight-director>/instrumentation/flight-director/fd[0]/on</flight-director>
+ </params>
+
 
  <layers>
 
@@ -20,7 +24,10 @@
     <name>on</name>
     <type>group</type>
     <condition>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+     <equals>
+      <property alias="../../../../../../params/flight-director"/>
+      <value>on</value>
+     </equals>
     </condition>
 
     <layer>
@@ -131,22 +138,59 @@
  
  <actions>
 
-<!-- unable to set a boolean with Nasal ! -->
-
   <action>
    <desc>Enable flight director</desc>
+   <condition>
+    <and include="concorde-cond-voltage-autopilot.xml">
+     <not-equals>
+      <property alias="../../../../../../params/flight-director"/>
+      <value>on</value>
+     </not-equals>
+    </and>
+   </condition>
    <button>0</button>
    <x>-53</x>
    <y>-24</y>
    <w>104</w>
    <h>37</h>
    <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/flight-director"/>
+    <value>on</value>
+   </binding>
+   <binding>
     <command>nasal</command>
     <script>globals.Concorde.fdexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <desc>Disable flight director</desc>
+   <condition>
+    <and include="concorde-cond-voltage-autopilot.xml">
+     <equals>
+      <property alias="../../../../../../params/flight-director"/>
+      <value>on</value>
+     </equals>
+    </and>
+   </condition>
+   <button>0</button>
+   <x>-53</x>
+   <y>-24</y>
+   <w>104</w>
+   <h>37</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/flight-director"/>
+    <value></value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.fdexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

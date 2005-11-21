@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+
+<!-- Ground power available.
+-->
+
+<PropertyList>
+ <name>Ground Power Available</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>indicator light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <equals>
+       <property>/systems/electrical/outputs/probe/ac-gpb</property>
+       <value>0.0</value>
+      </equals>
+     </or>
+    </condition>
+
+    <layer>
+     <name>lamp off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>0.25</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+    </layer>
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+    </layer>
+   </layer>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.37</x1>
+      <y1>0.0</y1>
+      <x2>0.38</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+    </layer>
+    <layer>
+     <name>background lighted</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+    </layer>
+   </layer>
+
+  </layer>
+
+  <layer>
+   <name>Title line 1</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>GROUND PWR</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-47</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>3</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title line 2</name>
+   <type>text</type>
+   <point-size>12</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AVAILABLE</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-36</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-7</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

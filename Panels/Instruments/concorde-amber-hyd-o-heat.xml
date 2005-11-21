@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<!-- Overheat of hydraulical reservoir. 
+-->
+
+<PropertyList>
+ <name>Fault on overheat</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Fault light</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <condition>
+      <or include="concorde-cond-voltage-bulb.xml">
+       <or include="concorde-cond-test-eng-aft.xml"/>
+      </or>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>90</offset>
+     </transformation>
+    </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-o-heat.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+   <transformations>
+    <transformation>
+     <type>rotation</type>
+     <offset>90</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- Concorde temperatures -->
+<!-- Concorde temperatures :
+
+     - altimeter out of order (ISA).
+     - no voltage.
+-->
 
 <PropertyList>
  <name>Digital TMO and OAT</name>
@@ -18,12 +22,16 @@
     <x2>0.9</x2>
     <y2>0.3</y2>
    </texture>
-   <w>80</w>
-   <h>100</h>
+   <w>130</w>
+   <h>140</h>
    <transformations>
     <transformation>
+     <type>x-shift</type>
+     <offset>-37</offset>
+    </transformation>
+    <transformation>
      <type>y-shift</type>
-     <offset>10</offset>
+     <offset>-11</offset>
     </transformation>
    </transformations>
   </layer>
@@ -31,20 +39,43 @@
 <!-- Maximum Total Temperature -->
 
   <layer>
-   <name>TMO</name>
+   <name>TMO display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>8</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/temperature/indicated-tmo-degc</property>
+     <format>%.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-29</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>34</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>TMO power management</name>
    <type>switch</type>
 
    <layer>
-    <name>TMO display (subsonic)</name>
-    <condition>
-     <less-than>
-      <property>/velocities/mach</property>
-      <value>1.0</value>
-     </less-than>
-    </condition>
+    <name>Total Title</name>
+    <condition include="concorde-cond-voltage-inst.xml"/>
     <type>text</type>
-    <font>led</font>
-    <point-size>8</point-size>
+    <point-size>15</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -52,51 +83,76 @@
     </color>
     <chunks>
      <chunk>
-      <type>number-value</type>
-      <property>/environment/temperature-degc</property>
-      <format>%.1f</format>
+      <type>literal</type>
+      <text>Total</text>
      </chunk>
     </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-20</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>34</offset>
-     </transformation>
-    </transformations>
    </layer>
 
    <layer>
-    <name>TMO display (supersonic)</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>8</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>number-value</type>
-      <property>/instrumentation/temperature/indicated-tmo-degc</property>
-      <format>%.1f</format>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-20</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>34</offset>
-     </transformation>
-    </transformations>
+    <name>TMO off</name>
+    <type>group</type>
+
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-off-bg.rgb</path>
+      <x1>0.6</x1>
+      <y1>0.2</y1>
+      <x2>0.9</x2>
+      <y2>0.3</y2>
+     </texture>
+     <w>55</w>
+     <h>18</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>25</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>6</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>Total title</name>
+     <type>text</type>
+     <point-size>15</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>Total</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-22</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-6</offset>
+      </transformation>
+     </transformations>
+    </layer>
    </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-93</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>37</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -111,17 +167,17 @@
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>TMO</text>
+     <text>TMO 128 C</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-95</offset>
+     <offset>-82</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>37</offset>
+     <offset>10</offset>
     </transformation>
    </transformations>
   </layer>
@@ -141,45 +197,106 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/environment/temperature-degc</property>
+     <property>/instrumentation/temperature/indicated-static-degc</property>
      <format>%.1f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-20</offset>
+     <offset>-38</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>0</offset>
+     <offset>-20</offset>
     </transformation>
    </transformations>
   </layer>
 
   <layer>
-   <name>OAT Title</name>
-   <type>text</type>
-   <point-size>15</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>Static</text>
-    </chunk>
-   </chunks>
+   <name>OAT power management</name>
+   <type>switch</type>
+
+   <layer>
+    <name>OAT Title</name>
+    <condition include="concorde-cond-voltage-inst.xml"/>
+    <type>text</type>
+    <point-size>15</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>Static</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>OAT off</name>
+    <type>group</type>
+
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-off-bg.rgb</path>
+      <x1>0.6</x1>
+      <y1>0.2</y1>
+      <x2>0.9</x2>
+      <y2>0.3</y2>
+     </texture>
+     <w>55</w>
+     <h>18</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>25</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>6</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>OAT title</name>
+     <type>text</type>
+     <point-size>15</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>Static</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-22</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-6</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-95</offset>
+     <offset>-93</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>3</offset>
+     <offset>-17</offset>
     </transformation>
    </transformations>
   </layer>
@@ -202,11 +319,134 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-5</offset>
+     <offset>-40</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-31</offset>
+     <offset>-44</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- ISA Temperature -->
+
+  <layer>
+   <name>ISA display</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>8</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/temperature/isa-degc</property>
+     <format>%.1f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-29</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-72</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>ISA power management</name>
+   <type>switch</type>
+
+   <layer>
+    <name>ISA Title</name>
+    <condition>
+     <and include="concorde-cond-voltage-inst.xml">
+      <property>/instrumentation/altimeter[0]/serviceable</property>
+     </and>
+    </condition>
+    <type>text</type>
+    <point-size>15</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>ISA</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>ISA off</name>
+    <type>group</type>
+
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-off-bg.rgb</path>
+      <x1>0.6</x1>
+      <y1>0.2</y1>
+      <x2>0.9</x2>
+      <y2>0.3</y2>
+     </texture>
+     <w>55</w>
+     <h>18</h>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>25</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>6</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>ISA title</name>
+     <type>text</type>
+     <point-size>15</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>ISA</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-22</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>-6</offset>
+      </transformation>
+     </transformations>
+    </layer>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-93</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-71</offset>
     </transformation>
    </transformations>
   </layer>

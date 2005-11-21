@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<!-- Fault on Collector tanks :
+
+     - tank below at low level.
+     - tank pressure below -2 PSI.
+     - fuel low pressure.
+-->
+
+<PropertyList>
+ <name>Fault Fuel</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Fault light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-overhead.xml">
+       <greater-than>
+        <property>/consumables/fuel/tank[0]/level-lb</property>
+        <property n="1">/consumables/fuel/tank[0]/low-level-lb</property>
+       </greater-than>
+       <greater-than>
+        <property>/consumables/fuel/tank[1]/level-lb</property>
+        <property n="1">/consumables/fuel/tank[1]/low-level-lb</property>
+       </greater-than>
+       <greater-than>
+        <property>/consumables/fuel/tank[2]/level-lb</property>
+        <property n="1">/consumables/fuel/tank[2]/low-level-lb</property>
+       </greater-than>
+       <greater-than>
+        <property>/consumables/fuel/tank[3]/level-lb</property>
+        <property n="1">/consumables/fuel/tank[3]/low-level-lb</property>
+       </greater-than>
+       <or include="concorde-cond-tank-pressure.xml"/>
+       <or>
+        <property>/controls/fuel/tank[0]/pump[0]</property>
+        <property>/controls/fuel/tank[0]/pump[1]</property>
+        <property>/controls/fuel/tank[0]/pump[2]</property>
+       </or>
+       <or>
+        <property>/controls/fuel/tank[1]/pump[0]</property>
+        <property>/controls/fuel/tank[1]/pump[1]</property>
+        <property>/controls/fuel/tank[1]/pump[2]</property>
+       </or>
+       <or>
+        <property>/controls/fuel/tank[2]/pump[0]</property>
+        <property>/controls/fuel/tank[2]/pump[1]</property>
+        <property>/controls/fuel/tank[2]/pump[2]</property>
+       </or>
+       <or>
+        <property>/controls/fuel/tank[3]/pump[0]</property>
+        <property>/controls/fuel/tank[3]/pump[1]</property>
+        <property>/controls/fuel/tank[3]/pump[2]</property>
+       </or>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>Background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-fuel.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -89,17 +89,15 @@
 <!-- INS -->
 
   <layer>
-   <name>Speed</name>
-   <type>switch</type>
-
-   <layer>
     <name>INS speed</name>
     <type>switch</type>
     <condition>
-     <equals>
-      <property>/autopilot/locks/horizontal</property>
-      <value>ins</value>
-     </equals>
+     <and include="concorde-cond-voltage-hsi.xml">
+      <not-equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value></value>
+      </not-equals>
+     </and>
     </condition>
 
     <layer>
@@ -164,86 +162,6 @@
       </transformation>
      </transformations>
     </layer>
-   </layer>
-
-<!-- DME -->
-
-   <layer>
-    <name>DME speed</name>
-    <type>switch</type>
-    <condition>
-     <and>
-      <property>/instrumentation/dme/in-range</property>
-      <equals>
-       <property>/instrumentation/dme/switch-position</property>
-       <value>1</value>
-      </equals>
-     </and>
-    </condition>
-
-    <layer>
-     <name>DME 1 speed</name>
-     <type>text</type>
-     <condition>
-      <less-than>
-       <property>/instrumentation/dme/indicated-ground-speed-kt</property>
-       <value>1200.0</value>
-      </less-than>
-     </condition>
-     <font>led</font>
-     <point-size>14</point-size>
-     <color>
-      <red>0.85</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/instrumentation/dme/indicated-ground-speed-kt</property>
-       <format>%4.0f</format>
-      </chunk>
-     </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>-40</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>-12</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>DME 1 overflow</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>14</point-size>
-     <color>
-      <red>0.85</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>9999</text>
-      </chunk>
-     </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>-40</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>-12</offset>
-      </transformation>
-     </transformations>
-    </layer>
-   </layer>
 
   </layer>
 

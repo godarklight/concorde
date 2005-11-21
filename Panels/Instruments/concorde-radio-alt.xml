@@ -1,12 +1,20 @@
 <?xml version="1.0"?>
 
-<!-- Concorde radio altimeter -->
+<!-- Concorde radio altimeter :
+
+     - altitude must be offset of 11 ft, because of JSBSim.
+-->
 
 <PropertyList>
 
  <name>Radio altimeter</name>
- <w-base>100</w-base>
- <h-base>100</h-base>
+ <w-base>128</w-base>
+ <h-base>128</h-base>
+
+ <params>
+  <voltage>/systems/electrical/outputs/standby-radio-alt</voltage>
+ </params>
+
 
  <layers>
 
@@ -14,14 +22,14 @@
   <layer>
    <name>background altimeter</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-radio-alt.rgb</path>
    </texture>
-    <w>60</w>
-    <h>20</h>
+    <w>128</w>
+    <h>128</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>70</offset>
+     <offset>-50</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -31,202 +39,174 @@
   </layer>
 
   <layer>
-   <name>Title altimeter</name>
-   <type>text</type>
-   <point-size>15</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>Height</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>45</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>30</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Elevation AGL</name>
+   <name>OFF flag</name>
    <condition>
-    <greater-than-equals>
-     <property>/position/altitude-agl-ft</property>
-     <value>2511</value>
-    </greater-than-equals>
+    <or>
+     <less-than-equals>
+      <property alias="../../../../../../params/voltage"/>
+      <value>20.0</value>
+     </less-than-equals>
+     <not>
+      <property>/instrumentation/radio-altimeter/serviceable</property>
+     </not>
+    </or>
    </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>2500</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>52</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>3</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Elevation AGL (above 2500 ft)</name>
-   <condition>
-    <less-than>
-     <property>/position/altitude-agl-ft</property>
-     <value>2511</value>
-    </less-than>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/position/altitude-agl-ft</property>
-     <format>%0.f</format>
-     <offset>-10.8</offset> <!-- compensate the height of cockpit (JBSim) -->
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>52</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>3</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-<!-- decision altitude -->
-  <layer>
-   <name>background decision altitude</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
    </texture>
-    <w>60</w>
-    <h>20</h>
+   <w>30</w>
+   <h>17</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>70</offset>
+     <offset>-15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
+     <offset>35</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>-45</offset>
     </transformation>
    </transformations>
   </layer>
-
+  
   <layer>
-   <name>Incr 10</name>
-   <type>text</type>
-   <point-size>18</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
+   <name>DH bug</name>
+   <w>20</w>
+   <h>15</h>
+   <texture>
+    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.8515625</x1>
+    <x2>0.953125</x2>
+    <y1>0.359375</y1>
+    <y2>0.4375</y2>
+   </texture>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>42</offset>
+     <offset>-50</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 10</name>
-   <type>text</type>
-   <point-size>18</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>44</offset>
+     <offset>10</offset>
     </transformation>
     <transformation>
-     <type>y-shift</type>
-     <offset>-31</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decision altitude display</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
-   <color>
-    <red>0.85</red>
-    <green>0.85</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
+     <type>rotation</type>
      <property>/instrumentation/radio-altimeter/decision-ft</property>
-     <format>%3.0f</format>
-     <offset>-10.8</offset> <!-- compensate the height of cockpit (JBSim) -->
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>62</offset>
+     <scale>0.36</scale>
+     <offset>-3.96</offset> <!-- 11 ft because of JSBSim -->
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-27</offset>
+     <offset>52</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>needle</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.8</x1>
+    <y1>0.78125</y1>
+    <x2>0.8375</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>6</w>
+   <h>30</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-50</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <greater-than>
+        <property alias="../../../../../../../../params/voltage"/>
+        <value>20.0</value>
+       </greater-than>
+       <property>/instrumentation/radio-altimeter/serviceable</property>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property>
+     <min>11.0</min>
+     <max>2511.0</max>
+     <scale>1.0</scale>
+     <interpolation>
+      <entry><ind>  11</ind><dep>  0</dep></entry> <!-- offset 11 ft because of JSBSim -->
+      <entry><ind> 511</ind><dep>180</dep></entry>
+      <entry><ind>1511</ind><dep>270</dep></entry>
+      <entry><ind>2511</ind><dep>315</dep></entry>
+     </interpolation>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>34</offset> <!-- needle tail is black -->
+    </transformation>
+   </transformations>
+  </layer> 
+  
+  <layer>
+   <name>glare shield</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/bezel1.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>0.5</y2>
+   </texture>
+   <w>135</w>
+   <h>135</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-48</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>8</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ 
+<!-- decision altitude -->
+
+  <layer>
+   <name>DH Knob</name>
+   <w>27</w>
+   <h>27</h>
+   <texture>
+    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.0</x1>
+    <x2>0.171875</x2>
+    <y1>0.0</y1>
+    <y2>0.171875</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>9</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-49</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <property>/instrumentation/radio-altimeter/decision-ft</property>
+     <scale>-5</scale>
     </transformation>
    </transformations>
   </layer>
@@ -238,34 +218,32 @@
   <action>
    <name>Minus 10</name>
    <button>0</button>
-   <x>42</x>
-   <y>-33</y>
-   <w>12</w>
-   <h>12</h>
+   <x>-10</x>
+   <y>-62</y>
+   <w>20</w>
+   <h>25</h>
    <binding>
     <command>property-adjust</command>
     <property>/instrumentation/radio-altimeter/decision-ft</property>
     <step>-10</step>
-    <min>0</min>
-    <max>1000</max>
-    <wrap>1</wrap>
+    <min>11</min>
+    <max>511</max>
    </binding>
   </action>
 
   <action>
    <name>Plus 10</name>
    <button>0</button>
-   <x>42</x>
-   <y>-20</y>
-   <w>12</w>
-   <h>12</h>
+   <x>13</x>
+   <y>-62</y>
+   <w>20</w>
+   <h>25</h>
    <binding>
     <command>property-adjust</command>
     <property>/instrumentation/radio-altimeter/decision-ft</property>
     <step>10</step>
-    <min>0</min>
-    <max>1000</max>
-    <wrap>1</wrap>
+    <min>11</min>
+    <max>511</max>
    </binding>
   </action>
 

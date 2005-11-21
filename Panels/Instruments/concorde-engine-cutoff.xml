@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- engine cutoff -->
+<!-- engine cutoff :
+
+     - requires relight voltage to work.
+-->
+
 
 <PropertyList>
  <name>Engine Cutoff</name>
@@ -11,6 +15,7 @@
   <eng-num>/engines/engine[0]/engine-num</eng-num>
   <cutoff>/engines/engine[0]/cutoff</cutoff>
   <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
+  <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
  </params>
 
 
@@ -95,6 +100,12 @@
  <actions>
   <action>
    <desc>Engine cutoff</desc>
+   <condition>
+    <greater-than>
+     <property alias="../../../../../params/engine-relight"/>
+     <value>110.0</value>
+    </greater-than>
+   </condition>
    <button>0</button>
    <x>-12</x>
    <y>-13</y>

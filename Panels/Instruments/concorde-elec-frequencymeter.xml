@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+
+<!-- Frequencymeter :
+
+     - electrical systems only provides amps.
+-->
+
+<PropertyList>
+
+ <name>AC voltmeter</name>
+ <w-base>10</w-base>
+ <h-base>40</h-base>
+
+
+ <layers>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+   <w>40</w>
+   <h>30</h>
+  </layer>
+
+  <layer>
+   <name>Voltage</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Ground power</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>-3.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-gpb</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Emergency power</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>-2.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-emergencya</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Generator 1</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>-1.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-generator1</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Generator 2</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>0.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-generator2</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Generator 3</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>1.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-generator3</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Generator 4</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/instrumentation/ac-voltmeter/selector</property> 
+       <value>2.0</value>
+      </equals>
+      <greater-than>
+       <property>/systems/electrical/outputs/probe/ac-generator4</property>
+       <value>0.0</value>
+      </greater-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>400</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>No voltage</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>6</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+     <type>literal</type>
+     <text>0</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Unit</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CPS</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-25</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Unit (2nd line)</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>FREQ</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-7</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-32</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

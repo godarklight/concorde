@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+
+<!-- Fault on Electrical :
+
+    - generator disconnected.
+    - CSD low oil pressure (engine stopped).
+    - no voltage on AC Main Bus.
+    - no voltage on AC Essential Bus.
+    - battery islated
+-->
+
+<PropertyList>
+ <name>Fault on Electrical</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-overhead.xml">
+       <property>controls/engines/engine[0]/master-alt</property>
+       <property>controls/engines/engine[1]/master-alt</property>
+       <property>controls/engines/engine[2]/master-alt</property>
+       <property>controls/engines/engine[3]/master-alt</property>
+       <greater-than>
+        <property>/engines/engine[0]/oil-pressure-psi</property>
+        <value>15</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[1]/oil-pressure-psi</property>
+        <value>15</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[2]/oil-pressure-psi</property>
+        <value>15</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[3]/oil-pressure-psi</property>
+        <value>15</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-main1</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-main2</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-main3</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-main4</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-essential1</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-essential2</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-essential3</property>
+        <value>20</value>
+       </greater-than>
+       <greater-than>
+        <property>/systems/electrical/outputs/probe/ac-essential4</property>
+        <value>20</value>
+       </greater-than>
+       <property>/controls/engines/engine[0]/master-bat</property>
+       <property>/controls/electric/dc/master-bat</property>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-elec.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

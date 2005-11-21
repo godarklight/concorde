@@ -9,18 +9,82 @@
 
 
  <layers>
-
+<!-- translucent lens -->  
   <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
-     <x2>1.0</x2>
-     <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+   <name>Button light</name>
+   <type>switch</type>
+
+   <layer>
+    <type>group</type>
+    <name>on</name>
+    <condition>
+     <and>
+      <equals>
+       <property>/autopilot/locks/speed</property>
+       <value>speed-with-throttle</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/speed2</property>
+       <value></value>
+      </equals>
+      <not include="concorde-cond-land.xml"/>
+     </and>
+    </condition>
+
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+      <x1>0.37</x1>
+      <y1>0.0</y1>
+      <x2>0.38</x2>
+      <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+   </layer>
+
+   <layer>
+    <type>group</type>
+    <name>off</name>
+    <layer>
+     <name>lamp off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+   </layer>
   </layer>
 
   <layer>
@@ -55,6 +119,7 @@
 
   <action>
    <desc>IAS hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

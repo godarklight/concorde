@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 
-<!-- Instantaneous Vertical Speed Indicator 
+<!-- Instantaneous Vertical Speed Indicator :
+
+     - the real blue strip has a ratio of 6.5 (vertical/horizontal).
+     - the left black strip is slightly narrower than the right black strip.
+     - use feet/s, to authorize a swap to /velocities/vertical-speed-fps.
 -->
 
 <PropertyList>
 
- <name>Digital IVSI display</name>
- <w-base>100</w-base>
- <h-base>200</h-base>
+ <name>IVSI display</name>
+ <w-base>50</w-base>
+ <h-base>100</h-base>
 
  <params>
   <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
@@ -19,10 +23,14 @@
   <layer>
    <name>instrument background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+    <x1>0.43</x1>
+    <y1>0.0</y1>
+    <x2>0.57</x2>
+    <y2>1.0</y2>
    </texture>
-    <w>48</w>
-    <h>85</h>
+    <w>25</w>
+    <h>160</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -30,381 +38,493 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>55</offset>
+     <offset>37</offset>
     </transformation>
    </transformations>
   </layer>
 
-<!-- DOWN -->
+  <layer>
+   <name>Index</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+    <x1>0.78</x1>
+    <y1>0.78</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>11</w>
+   <h>11</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>22</offset> <!-- aligned right -->
+    </transformation> 
+    <transformation>
+     <type>y-shift</type>
+     <offset>37</offset> <!-- 0 ft/min -->
+    </transformation> 
+    <transformation>
+     <condition include="concorde-cond-voltage-inst.xml"/>
+     <type>y-shift</type>
+     <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+     <min>-100.0</min>
+     <max>100.0</max>
+     <scale>1.0</scale>
+     <interpolation> <!-- index must increase, because of lookup ! -->
+      <entry><ind> -100.0</ind><dep>-66.0</dep></entry>
+      <entry><ind>  -33.3</ind><dep>-39.0</dep></entry>
+      <entry><ind>  -16.7</ind><dep>-27.0</dep></entry>
+      <entry><ind>   0.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>   16.7</ind><dep> 27.0</dep></entry>
+      <entry><ind>   33.3</ind><dep> 39.0</dep></entry>
+      <entry><ind>  100.0</ind><dep> 66.0</dep></entry>
+     </interpolation>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- POSITIV WINDOW -->
 
   <layer>
-   <name>background</name>
+   <name>Overflow</name>
    <type>switch</type>
+   <condition include="concorde-cond-voltage-inst.xml"/>
 
    <layer>
-    <name>down</name>
+    <name>upper window</name>
     <type>group</type>
     <condition>
-     <less-than-equals>
-      <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-      <value>0.008</value> <!-- avoids flikker on ground -->
-     </less-than-equals>
+     <greater-than>
+      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <value>100</value>
+     </greater-than>
     </condition>
-
+  
     <layer>
-     <name>background (DN)</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-ground-bg.rgb</path>
-     </texture>
-     <w>45</w>
-     <h>80</h>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>15</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>55</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>Title (DN)</name>
-     <type>text</type>
-     <point-size>16</point-size>
-     <color>
-      <red>1.0</red>
-      <green>1.0</green>
-      <blue>1.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>DN</text>
-      </chunk>
-     </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>-11</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>-31</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>Vertical speed</name>
+     <name>speed in thousands of ft/min</name>
      <type>switch</type>
-
+  
      <layer>
-      <name>VSI display (ground 0 plus)</name>
-      <condition>
-       <greater-than-equals>
-        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-        <value>0.0</value>
-       </greater-than-equals>
-      </condition>
-      <type>text</type>
-      <font>led</font>
-      <point-size>7</point-size>
-      <color>
-       <red>1.0</red>
-       <green>1.0</green>
-       <blue>1.0</blue>
-      </color>
-      <chunks>
-       <chunk>
-        <type>number-value</type>
-        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-        <format>%1.1f</format> <!-- can be negativ (sign) -->
-        <scale>0.06</scale> <!-- X 60 -->
-       </chunk>
-      </chunks>
-      <transformations>
-       <transformation>
-        <type>x-shift</type>
-        <offset>0</offset>
-       </transformation>
-       <transformation>
-        <type>y-shift</type>
-        <offset>48</offset>
-       </transformation>
-      </transformations>
-     </layer>
-
-     <layer>
-      <name>VSI display (ground 0 minus)</name>
-      <condition>
-       <and>
-        <less-than>
-         <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-         <value>0.0</value>
-        </less-than>
-        <greater-than-equals>
-         <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-         <value>-0.008</value>
-        </greater-than-equals>
-       </and>
-      </condition>
-      <type>text</type>
-      <font>led</font>
-      <point-size>7</point-size>
-      <color>
-       <red>1.0</red>
-       <green>1.0</green>
-       <blue>1.0</blue>
-      </color>
-      <chunks>
-       <chunk>
-        <type>number-value</type>
-        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-        <format>%1.1f</format> <!-- can be negativ (sign) -->
-        <scale>-0.06</scale> <!-- X 60 -->
-       </chunk>
-      </chunks>
-      <transformations>
-       <transformation>
-        <type>x-shift</type>
-        <offset>0</offset>
-       </transformation>
-       <transformation>
-        <type>y-shift</type>
-        <offset>48</offset>
-       </transformation>
-      </transformations>
-     </layer>
-
-     <layer>
-      <name>VSI display (DN)</name>
+      <name>8000 ft/min</name>
       <condition>
        <less-than>
-        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-        <value>-0.008</value>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>141.7</value>
        </less-than>
       </condition>
-      <type>text</type>
-      <font>led</font>
-      <point-size>7</point-size>
-      <color>
-       <red>1.0</red>
-       <green>1.0</green>
-       <blue>1.0</blue>
-      </color>
-      <chunks>
-       <chunk>
-        <type>number-value</type>
-        <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-        <format>%1.1f</format> <!-- can be negativ (sign) -->
-        <scale>-0.06</scale> <!-- X 60 -->
-       </chunk>
-      </chunks>
-      <transformations>
-       <transformation>
-        <type>x-shift</type>
-        <offset>0</offset>
-       </transformation>
-       <transformation>
-        <type>y-shift</type>
-        <offset>48</offset>
-       </transformation>
-      </transformations>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.888</y1>
+       <x2>0.065</x2>
+       <y2>0.955</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
      </layer>
-    </layer>
+  
+     <layer>
+      <name>9000 ft/min</name>
+      <condition>
+       <less-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>158.3</value>
+       </less-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.810</y1> <!-- step 40/512 -->
+       <x2>0.065</x2>
+       <y2>0.877</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>10000 ft/min</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.732</y1>
+       <x2>0.065</x2>
+       <y2>0.799</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
 
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>16</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>109</offset>
+      </transformation>
+     </transformations>
+    </layer>
    </layer>
 
-<!-- UP -->
+<!-- NEGATIV WINDOW -->
 
    <layer>
-    <name>up</name>
+    <name>lower window</name>
     <type>group</type>
-
+    <condition>
+     <less-than>
+      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <value>-100</value>
+     </less-than>
+    </condition>
+  
     <layer>
-     <name>background (UP)</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-azure-sky-bg.rgb</path>
-     </texture>
-     <w>45</w>
-     <h>80</h>
+     <name>speed in thousands of ft/min</name>
+     <type>switch</type>
+  
+     <layer>
+      <name>-8000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-141.7</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.888</y1>
+       <x2>0.065</x2>
+       <y2>0.955</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>-9000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-158.3</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.810</y1> <!-- step 40/512 -->
+       <x2>0.065</x2>
+       <y2>0.877</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>-10000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-208.3</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.732</y1>
+       <x2>0.065</x2>
+       <y2>0.799</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>-15000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-291.7</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.654</y1>
+       <x2>0.065</x2>
+       <y2>0.721</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>-20000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-375.0</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.576</y1>
+       <x2>0.065</x2>
+       <y2>0.643</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+  
+     <layer>
+      <name>-25000 ft/min</name>
+      <condition>
+       <greater-than>
+        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <value>-458.3</value>
+       </greater-than>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.497</y1>
+       <x2>0.065</x2>
+       <y2>0.564</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+ 
+     <layer>
+      <name>-30000 ft/min</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+       <x1>0.010</x1>
+       <y1>0.419</y1>
+       <x2>0.065</x2>
+       <y2>0.486</y2>
+      </texture>
+      <w>9</w>
+      <h>11</h>
+     </layer>
+
      <transformations>
       <transformation>
        <type>x-shift</type>
-       <offset>15</offset>
+       <offset>16</offset>
       </transformation>
       <transformation>
        <type>y-shift</type>
-       <offset>55</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>Title (UP)</name>
-     <type>text</type>
-     <point-size>16</point-size>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>1.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>UP</text>
-      </chunk>
-     </chunks>
-     <transformations>
-      <transformation>
-      <type>x-shift</type>
-      <offset>-11</offset>
-     </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>-31</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>VSI display (UP)</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>7</point-size>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>1.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</property>
-       <format>%1.1f</format> <!-- can be negativ (sign) -->
-       <scale>0.06</scale> <!-- X 60 -->
-      </chunk>
-     </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>0</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>48</offset>
+       <offset>-35</offset>
       </transformation>
      </transformations>
     </layer>
    </layer>
+  </layer>
 
+<!-- OFF FLAGS -->
+
+  <layer>
+   <name>OFF flag</name>
+   <condition>
+    <or> 
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not>
+      <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
+     </not>
+    </or> 
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>20</w>
+   <h>8</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>14</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>52</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>90</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>OFF flag 2</name>
+   <condition>
+    <or> 
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not>
+      <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
+     </not>
+    </or> 
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>20</w>
+   <h>8</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>14</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>23</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>90</offset>
+    </transformation>
+   </transformations>
   </layer>
 
 <!--DATUM --> 
 
   <layer>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value>vertical-speed-hold</value>
-    </equals>
-   </condition>
-   <name>Datum display</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>6</point-size>
-   <color>
-    <red>0.9</red>
-    <green>0.9</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/autopilot/settings/vertical-speed-fpm/</property>
-     <format>%1.2f</format> <!-- can be negativ (sign) -->
-     <scale>0.001</scale>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-3</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>48</offset>
-    </transformation>
-   </transformations>
+   <name>command bug</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Datum slaved to vertical speed</name>
+    <condition>
+     <not-equals>
+      <property>/autopilot/locks/altitude</property>
+      <value>vertical-speed-hold</value>
+     </not-equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+     <x1>0.8465625</x1>
+     <x2>0.948125</x2>
+     <y1>0.449375</y1>
+     <y2>0.5375</y2>
+    </texture>
+    <w>9</w>
+    <h>9</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>-90</offset> <!-- horizontal right -->
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-5</offset> <!-- aligned left -->
+     </transformation> 
+     <transformation>
+      <type>x-shift</type>
+      <offset>37</offset> <!-- 0 ft/min -->
+     </transformation> 
+     <transformation>
+      <condition include="concorde-cond-voltage-inst.xml"/>
+      <type>x-shift</type>
+      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <min>-100.0</min>
+      <max>100.0</max>
+      <scale>1.0</scale>
+      <interpolation> <!-- index must increase, because of lookup ! -->
+      <entry><ind> -100.0</ind><dep>-66.0</dep></entry>
+      <entry><ind>  -33.3</ind><dep>-39.0</dep></entry>
+      <entry><ind>  -16.7</ind><dep>-27.0</dep></entry>
+      <entry><ind>   0.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>   16.7</ind><dep> 27.0</dep></entry>
+      <entry><ind>   33.3</ind><dep> 39.0</dep></entry>
+      <entry><ind>  100.0</ind><dep> 66.0</dep></entry>
+       </interpolation>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Datum display</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+     <x1>0.8465625</x1>
+     <x2>0.948125</x2>
+     <y1>0.449375</y1>
+     <y2>0.5375</y2>
+    </texture>
+    <w>9</w>
+    <h>9</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>-90</offset> <!-- horizontal right -->
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-5</offset> <!-- aligned left -->
+     </transformation> 
+     <transformation>
+      <type>x-shift</type>
+      <offset>37</offset> <!-- 0 ft/min -->
+     </transformation> 
+     <transformation>
+      <condition include="concorde-cond-voltage-inst.xml"/>
+      <type>x-shift</type>
+      <property alias="../../../../../../params/tcr-ctrl"/>
+      <min>-6000.0</min>
+      <max>6000.0</max>
+      <scale>1.0</scale>
+      <interpolation> <!-- index must increase, because of lookup ! -->
+       <entry><ind>-6000.0</ind><dep>-66.0</dep></entry>
+       <entry><ind>-2000.0</ind><dep>-39.0</dep></entry>
+       <entry><ind>-1000.0</ind><dep>-27.0</dep></entry>
+       <entry><ind>    0.0</ind><dep>  0.0</dep></entry>
+       <entry><ind> 1000.0</ind><dep> 27.0</dep></entry>
+       <entry><ind> 2000.0</ind><dep> 39.0</dep></entry>
+       <entry><ind> 6000.0</ind><dep> 66.0</dep></entry>
+       </interpolation>
+     </transformation>
+    </transformations>
+   </layer>
   </layer>
 
 <!-- UNIT -->
 
   <layer>
-   <name>Unit</name>
-   <type>switch</type>
-
-   <layer>
-    <name>Unit small</name>
-    <condition>
-     <not>
-      <property>/sim/panel/visibility</property>
-     </not>
-    </condition>
-    <type>text</type>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>literal</type>
-      <text>FT/MINx1000</text>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-5</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>0</offset>
-     </transformation>
-    </transformations>
-   </layer>
-
-   <layer>
-    <name>Unit 2D panel</name>
-    <type>text</type>
-    <point-size>10</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>literal</type>
-      <text>FT/MINx1000</text>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-17</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>0</offset>
-     </transformation>
-    </transformations>
-   </layer>
+   <name>Unit small</name>
+   <type>text</type>
+   <point-size>4</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>FT/MINx1000</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>1</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-50</offset>
+    </transformation>
+   </transformations>
   </layer>
 
  </layers>
@@ -421,7 +541,7 @@
     </equals>
    </condition>
    <x>0</x>
-   <y>20</y>
+   <y>-5</y>
    <w>15</w>
    <h>18</h>
    <binding>
@@ -444,7 +564,7 @@
     </equals>
    </condition>
    <x>15</x>
-   <y>20</y>
+   <y>-5</y>
    <w>15</w>
    <h>18</h>
    <binding>
@@ -467,7 +587,7 @@
     </equals>
    </condition>
    <x>0</x>
-   <y>70</y>
+   <y>60</y>
    <w>15</w>
    <h>18</h>
    <binding>
@@ -490,7 +610,7 @@
     </equals>
    </condition>
    <x>15</x>
-   <y>70</y>
+   <y>60</y>
    <w>15</w>
    <h>18</h>
    <binding>

@@ -418,34 +418,55 @@
    <max-dist>8000.0</max-dist>
   </engine>
 
-<!-- engine start -->
+<!-- engine start and stop -->
 
   <engine>
-   <name>engine 1 2 start</name>
+   <name>engine start</name>
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[0]/cranking</property>
-      <property>/engines/engine[0]/starter</property>
-      <greater-than>
-       <property>/engines/engine[0]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[1]/cranking</property>
-      <property>/engines/engine[1]/starter</property>
-      <greater-than>
-       <property>/engines/engine[1]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[0]/cranking</property>
+       <property>/engines/engine[0]/starter</property>
+       <greater-than>
+        <property>/engines/engine[0]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[1]/cranking</property>
+       <property>/engines/engine[1]/starter</property>
+       <greater-than>
+        <property>/engines/engine[1]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[2]/cranking</property>
+       <property>/engines/engine[2]/starter</property>
+       <greater-than>
+        <property>/engines/engine[2]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[3]/cranking</property>
+       <property>/engines/engine[3]/starter</property>
+       <greater-than>
+        <property>/engines/engine[3]/n2</property>
+        <value>37</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
-    <x>-5.0</x>
+    <x>0.0</x>
     <y>0.0</y>
     <z>-40.0</z>
    </position>
@@ -457,101 +478,48 @@
   </engine>
 
   <engine>
-   <name>engine 3 4 start</name>
-   <path>Sounds/exhaust_start.wav</path>
-   <mode>once</mode>
-   <condition>
-    <or>
-     <and>
-      <property>/engines/engine[2]/cranking</property>
-      <property>/engines/engine[2]/starter</property>
-      <greater-than>
-       <property>/engines/engine[2]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[3]/cranking</property>
-      <property>/engines/engine[3]/starter</property>
-      <greater-than>
-       <property>/engines/engine[3]/n2</property>
-       <value>37</value>
-      </greater-than>
-     </and>
-    </or>
-   </condition>
-   <position>
-    <x>5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
-   </position>
-   <volume>
-    <max>0.3</max>
-   </volume>
-   <reference-dist>500.0</reference-dist>
-   <max-dist>8000.0</max-dist>
-  </engine>
-
-<!-- engine shutdown -->
-
-  <engine>
-   <name>engine 1 2 shutdown</name>
+   <name>engine shutdown</name>
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <or>
-     <and>
-      <property>/engines/engine[0]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[0]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[1]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[1]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-    </or>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <and>
+       <property>/engines/engine[0]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[0]/n2</property>
+        <value>30</value> <!-- on starter, N2 increases till 25 -->
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[1]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[1]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[2]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[2]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+      <and>
+       <property>/engines/engine[3]/cutoff</property>
+       <greater-than>
+        <property>/engines/engine[3]/n2</property>
+        <value>30</value>
+       </greater-than>
+      </and>
+     </or>
+    </and>
    </condition>
    <position>
-    <x>-5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
-   </position>
-   <volume>
-    <max>0.5</max>
-   </volume>
-   <reference-dist>500.0</reference-dist>
-   <max-dist>8000.0</max-dist>
-  </engine>
-
-  <engine>
-   <name>engine 3 4 shutdown</name>
-   <path>Sounds/exhaust_shutdown.wav</path>
-   <mode>once</mode>
-   <condition>
-    <or>
-     <and>
-      <property>/engines/engine[2]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[2]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-     <and>
-      <property>/engines/engine[3]/cutoff</property>
-      <greater-than>
-       <property>/engines/engine[3]/n2</property>
-       <value>20</value>
-      </greater-than>
-     </and>
-    </or>
-   </condition>
-   <position>
-    <x>5.0</x>
+    <x>0.0</x>
     <y>0.0</y>
     <z>-40.0</z>
    </position>

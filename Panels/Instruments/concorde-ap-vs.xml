@@ -19,16 +19,18 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <and>
-      <not-equals>
-       <property>/autopilot/locks/altitude</property>
-       <value>vertical-speed-hold</value>
-      </not-equals>
-      <not-equals>
-       <property>/autopilot/locks/altitude2</property>
-       <value>vertical-speed-with-throttle</value>
-      </not-equals>
-     </and>
+     <or include="concorde-cond-land.xml">
+      <and>
+       <not-equals>
+        <property>/autopilot/locks/altitude</property>
+        <value>vertical-speed-hold</value>
+       </not-equals>
+       <not-equals>
+        <property>/autopilot/locks/altitude2</property>
+        <value>vertical-speed-with-throttle</value>
+       </not-equals>
+      </and>
+     </or>
     </condition>
 
     <layer>
@@ -119,6 +121,7 @@
 
   <action>
    <desc>Vertical Speed hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

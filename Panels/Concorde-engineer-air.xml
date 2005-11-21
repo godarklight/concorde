@@ -1,0 +1,604 @@
+<?xml version="1.0"?>
+
+<!-- Concorde 3D ENGINEER air bleed panel
+
+Like the real panel.
+
+WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
+even if both click areas (ctrl-C) don't overlap. Changing internal geometry of button avoids this drawback.
+
+_______________________________________________________________________
+
+This is a panel configuration file for the open-source flight
+simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
+FlightGear property list defining the panel's background texture and
+the location (and optionally, size) of the instruments that will
+appear on the panel.
+
+Each instrument is, itself, defined in an XML-encoded property list
+in a separate file.
+
+Co-ordinates are relative to the *bottom* left corner of the screen
+(as in OpenGL).  The total FlightGear window is always considered to
+be 1024x768, whatever its actual display size on the screen.  All
+paths are relative to $FG_ROOT.
+
+Note that the name of the element defining each instrument must be
+different, or else instrument definitions will be overwritten:
+that's not particularly XML-ish, but that's how property lists
+work in FlightGear right now.
+
+Each instrument has its own preferred width and height, but you can
+override those by providing <w>..</w> and <h>..</h> properties with the
+<x>...</x> and <y>...</y> properties.
+
+-->
+
+<!DOCTYPE PropertyList SYSTEM "panel.dtd">
+
+<PropertyList>
+
+ <name>Concorde Engineer Air Bleed Panel</name>
+ <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
+ <w>1024</w>
+ <h>512</h>
+ <y-offset>0</y-offset>
+ <view-height>500</view-height>
+
+ <instruments>
+
+  <instrument include="Instruments/concorde-title-air-bleed.xml">
+   <name>Air bleed control</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>10</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>80</x>
+   <y>395</y>
+   <w>32</w>
+   <h>32</h>
+  </instrument>
+
+<!-- BLEED VALVE -->
+
+  <instrument include="Instruments/concorde-conn-air-bleed-valve.xml">
+   <name>Bleed valve 1</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>340</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>265</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <running-status>/engines/engine[0]/running</running-status>
+    <engine-num>/engines/engine[0]/engine-num</engine-num>
+    <bleed-valve>/controls/pneumatic/engine[0]/bleed-valve</bleed-valve>
+   </params>
+   <x>-30</x>
+   <y>350</y>
+   <w>20</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-bleed-valve.xml">
+   <name>Bleed valve switch 1</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>335</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>260</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <bleed-valve>/controls/pneumatic/engine[0]/bleed-valve</bleed-valve>
+   </params>
+   <x>0</x>
+   <y>352</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-title-air-bleed-valves.xml">
+   <name>Bleed valves</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>255</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>35</x>
+   <y>350</y>
+   <w>24</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-conn-air-bleed-valve.xml">
+   <name>Bleed valve 2</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>10</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <running-status>/engines/engine[1]/running</running-status>
+    <engine-num>/engines/engine[1]/engine-num</engine-num>
+    <bleed-valve>/controls/pneumatic/engine[1]/bleed-valve</bleed-valve>
+   </params>
+   <x>105</x>
+   <y>350</y>
+   <w>20</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-bleed-valve.xml">
+   <name>Bleed valve switch 2</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <bleed-valve>/controls/pneumatic/engine[1]/bleed-valve</bleed-valve>
+   </params>
+   <x>135</x>
+   <y>352</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-conn-air-bleed-valve.xml">
+   <name>Bleed valve 3</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>10</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <running-status>/engines/engine[2]/running</running-status>
+    <engine-num>/engines/engine[2]/engine-num</engine-num>
+    <bleed-valve>/controls/pneumatic/engine[2]/bleed-valve</bleed-valve>
+   </params>
+   <x>175</x>
+   <y>350</y>
+   <w>20</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-bleed-valve.xml">
+   <name>Bleed valve switch 3</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>245</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <bleed-valve>/controls/pneumatic/engine[2]/bleed-valve</bleed-valve>
+   </params>
+   <x>205</x>
+   <y>352</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-title-air-bleed-valves.xml">
+   <name>Bleed valves</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>240</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>225</x>
+   <y>350</y>
+   <w>24</w>
+   <h>24</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-conn-air-bleed-valve.xml">
+   <name>Bleed valve 4</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>315</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>10</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <running-status>/engines/engine[3]/running</running-status>
+    <engine-num>/engines/engine[3]/engine-num</engine-num>
+    <bleed-valve>/controls/pneumatic/engine[3]/bleed-valve</bleed-valve>
+   </params>
+   <x>310</x>
+   <y>350</y>
+   <w>20</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-bleed-valve.xml">
+   <name>Bleed valve switch 4</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <bleed-valve>/controls/pneumatic/engine[3]/bleed-valve</bleed-valve>
+   </params>
+   <x>340</x>
+   <y>352</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+<!-- PRESSURE -->
+
+  <instrument include="Instruments/concorde-air-pressure.xml">
+   <name>Pressure engine 1</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>335</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>260</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[0]/n1</n1-select>
+    <running-status>/engines/engine[0]/running</running-status>
+    <bleed-valve>/controls/pneumatic/engine[0]/bleed-valve</bleed-valve>
+   </params>
+   <x>-25</x>
+   <y>290</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-pressure.xml">
+   <name>Pressure engine 2</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[1]/n1</n1-select>
+    <running-status>/engines/engine[1]/running</running-status>
+    <bleed-valve>/controls/pneumatic/engine[1]/bleed-valve</bleed-valve>
+   </params>
+   <x>110</x>
+   <y>290</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-pressure.xml">
+   <name>Pressure engine 3</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[2]/n1</n1-select>
+    <running-status>/engines/engine[2]/running</running-status>
+    <bleed-valve>/controls/pneumatic/engine[2]/bleed-valve</bleed-valve>
+   </params>
+   <x>180</x>
+   <y>290</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-air-pressure.xml">
+   <name>Pressure engine 4</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>235</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </greater-than>
+    </and>
+   </condition>
+   <params>
+    <n1-select>/engines/engine[3]/n1</n1-select>
+    <running-status>/engines/engine[3]/running</running-status>
+    <bleed-valve>/controls/pneumatic/engine[3]/bleed-valve</bleed-valve>
+   </params>
+   <x>315</x>
+   <y>290</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
+<!-- OVER PRESSURE -->
+
+  <instrument include="Instruments/concorde-amber-air-pressure.xml">
+   <name>Over pressure bleed 1</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>335</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>260</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>-30</x>
+   <y>220</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-air-pressure.xml">
+   <name>Over pressure bleed 2</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>255</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>105</x>
+   <y>220</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-air-pressure.xml">
+   <name>Over pressure bleed 3</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>250</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>175</x>
+   <y>220</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-air-pressure.xml">
+   <name>Over pressure bleed 4</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/sim/current-view/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>310</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>240</value>
+     </greater-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-5</value>
+     </greater-than>
+    </and>
+   </condition>
+   <x>310</x>
+   <y>220</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+ </instruments>
+
+</PropertyList>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
-<!--
-Throttle qquadrant.
+<!-- Concorde Nose / Visor command.
 
-December 2001 by John Check, j4strngs@rockfish.net
+
+Adapted from John Check, j4strngs@rockfish.net
 
 This is an instrument configuration file for the open-source flight
 simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
@@ -30,13 +30,10 @@ extended/retracted in three steps.
 
 <PropertyList>
 
- <name>flap quadrant</name>
+ <name>Nose/visor quadrant</name>
  <w-base>22</w-base>
  <h-base>80</h-base>
 
- <params>
-  <flaps-select>/controls/flight/flaps</flaps-select>
- </params>
 
  <layers>
 
@@ -79,7 +76,7 @@ extended/retracted in three steps.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property alias="../../../../../params/flaps-select"/>
+     <property>/controls/flight/flaps</property>
      <min>0.0</min>
      <max>1.0</max>
      <scale>-80</scale>
@@ -127,20 +124,23 @@ extended/retracted in three steps.
   <layer>
    <name>Off</name>
    <condition>
-    <not-equals>
-     <property alias="../../../../../../params/flaps-select"/>
-     <value>0.0</value>
-    </not-equals>
+    <or>
+     <not-equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/up</property>
+     </not-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
+    </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -155,14 +155,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -179,10 +179,10 @@ extended/retracted in three steps.
   <layer>
    <name>background visor up left</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -203,20 +203,23 @@ extended/retracted in three steps.
   <layer>
    <name>Off</name>
    <condition>
-    <not-equals>
-     <property alias="../../../../../../params/flaps-select"/>
-     <value>0.0</value>
-    </not-equals>
+    <or>
+     <not-equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/up</property>
+     </not-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
+    </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -231,14 +234,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -255,10 +258,10 @@ extended/retracted in three steps.
   <layer>
    <name>background visor up right</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -281,24 +284,25 @@ extended/retracted in three steps.
    <condition>
     <or>
      <less-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.31</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/down-min</property>
      </less-than-equals>
      <greater-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.35</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/down-max</property>
      </greater-than-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -313,14 +317,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -337,10 +341,10 @@ extended/retracted in three steps.
   <layer>
    <name>background visor down left</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -363,24 +367,25 @@ extended/retracted in three steps.
    <condition>
     <or>
      <less-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.31</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/down-min</property>
      </less-than-equals>
      <greater-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.35</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/down-max</property>
      </greater-than-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -395,14 +400,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -419,10 +424,10 @@ extended/retracted in three steps.
   <layer>
    <name>background visor down right</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -445,24 +450,25 @@ extended/retracted in three steps.
    <condition>
     <or>
      <less-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.65</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/deg5-min</property>
      </less-than-equals>
      <greater-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>1.0</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
      </greater-than-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -477,14 +483,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -501,10 +507,10 @@ extended/retracted in three steps.
   <layer>
    <name>background 5 deg left</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -527,24 +533,25 @@ extended/retracted in three steps.
    <condition>
     <or>
      <less-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>0.65</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/deg5-min</property>
      </less-than-equals>
      <greater-than-equals>
-      <property alias="../../../../../../../params/flaps-select"/>
-      <value>1.0</value>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
      </greater-than-equals>
+     <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -559,14 +566,14 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -583,10 +590,10 @@ extended/retracted in three steps.
   <layer>
    <name>background 5 deg right</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -607,20 +614,22 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <condition>
-    <equals>
-     <property alias="../../../../../../params/flaps-select"/>
-     <value>1.0</value>
-    </equals>
+    <and include="concorde-cond-voltage-nose.xml">
+     <equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
+     </equals>
+    </and>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -635,14 +644,14 @@ extended/retracted in three steps.
   <layer>
    <name>Off</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -659,10 +668,10 @@ extended/retracted in three steps.
   <layer>
    <name>background nose down left</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -683,20 +692,22 @@ extended/retracted in three steps.
   <layer>
    <name>On</name>
    <condition>
-    <equals>
-     <property alias="../../../../../../params/flaps-select"/>
-     <value>1.0</value>
-    </equals>
+    <and include="concorde-cond-voltage-nose.xml">
+     <equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
+     </equals>
+    </and>
    </condition>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.75</y1>
+    <x2>0.75</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -711,14 +722,14 @@ extended/retracted in three steps.
   <layer>
    <name>Off</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+    <x1>0.25</x1>
+    <y1>0.75</y1>
+    <x2>0.5</x2>
+    <y2>1.0</y2>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -735,10 +746,10 @@ extended/retracted in three steps.
   <layer>
    <name>background nose down right</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-led.rgb</path>
    </texture>
    <w>8</w>
-   <h>16</h>
+   <h>14</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -760,22 +771,20 @@ extended/retracted in three steps.
    <name>Flap Extend</name>
    <button>0</button>
    <condition>
-    <not-equals>
-     <property alias="../../../../../params/flaps-select"/>
-     <value>1.0</value>
-    </not-equals>
+    <and include="concorde-cond-nose-down.xml">
+     <not-equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
+     </not-equals>
+    </and>
    </condition>
    <x>-34.5</x>
    <y>7</y>
    <w>48</w>
    <h>48</h>
    <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/flaps-select"/>
-    <step>0.34</step>
-    <min>0</min>
-    <max>1.0</max>
-    <wrap>false</wrap>
+    <command>nasal</command>
+    <script>controls.flapsDown(1)</script>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -787,22 +796,20 @@ extended/retracted in three steps.
    <name>Flap Retract</name>
    <button>0</button>
    <condition>
-    <not-equals>
-     <property alias="../../../../../params/flaps-select"/>
-     <value>0.0</value>
-    </not-equals>
+    <and include="concorde-cond-nose-up.xml">
+     <not-equals>
+      <property>/controls/flight/flaps</property>
+      <property n="1">/controls/nose-visor/visor/up</property>
+     </not-equals>
+    </and>
    </condition>
    <x>-34.5</x>
    <y>-55</y>
    <w>48</w>
    <h>48</h>
    <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/flaps-select"/>
-    <step>-0.34</step>
-    <min>0</min>
-    <max>1.0</max>
-    <wrap>false</wrap>
+    <command>nasal</command>
+    <script>controls.flapsDown(-1)</script>
    </binding>
    <binding>
     <command>property-toggle</command>

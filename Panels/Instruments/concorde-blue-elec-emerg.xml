@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!-- Indicator of selection of emergency generator
+-->
+
+<PropertyList>
+ <name>Selection of emergency generator</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+
+<!-- translucent lens -->  
+  <layer>
+   <name>Selection light</name>
+   <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and>
+       <or include="concorde-cond-test-eng-aft.xml"/> <!-- bug -->
+       <not>
+        <property>/controls/electric/ac/emergency/essential1</property>
+       </not>
+       <not>
+        <property>/controls/electric/ac/emergency/essential2</property>
+       </not>
+       <not>
+        <property>/controls/electric/ac/emergency/essential3</property>
+       </not>
+       <not>
+        <property>/controls/electric/ac/emergency/essential4</property>
+       </not>
+      </and>
+     </or>
+    </condition>
+    <name>lamp off</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>20</h>
+   </layer>
+   <layer>
+    <name>lamp on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>20</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background on</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-selected.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.25</y1>
+    <x2>1.0</x2>
+    <y2>0.75</y2>
+   </texture>
+   <w>104</w>
+   <h>20</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

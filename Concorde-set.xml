@@ -1,31 +1,63 @@
 <?xml version="1.0"?>
 
-<!-- WARNING, if preferences.xml isn't with 6 views, update below :
-
-     - /sim/number-views.
-     - /sim/view n="6" and n="7".
-     - keys "V" and "v".
+<!-- CAUTION, if preferences.xml isn't with 6 views, update Concorde-views.xml and Concorde-keyboard.xml !
 -->
 
-<PropertyList include="help.xml">
+<!-- Version           CVS date                   Milestone
+     ==========================================================================================
+     1.0               July 2004                  FDM, 2D panel.
+     1.1               September 2004
+     1.2               October 2004               3D cockpit.
+     2.0               January 2005               First version with flight manual.
+                                                  Nose visible from cockpit.
+                                                  Engineer and overhead views.
+                                                  Instruments dynamic with the view angle.
+     2.1               not yet known              Electrical system, hydraulics, fuel pumps.
+                                                  Text in alarm textures.
+                                                  First instrument textures.
+                                                  Transparent windows.
+                                                  Copilot and steward views.
+     ==========================================================================================
+-->
 
- <sim>
+<PropertyList>
+
+ <sim include="Nasal/Concorde-views.xml">
+
   <description>Concorde</description>
-  <aircraft-version>2.0</aircraft-version>
   <status>early-production</status>
+  <aircraft-version>2.1</aircraft-version>
+
+  <startup>
+   <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
+  </startup>
 
   <flight-model>jsb</flight-model>
   <aero>Concorde</aero>
 
   <systems>
+   <path>Aircraft/Concorde/Systems/Concorde-systems.xml</path>
    <autopilot>
     <path>Aircraft/Concorde/Systems/Concorde-autopilot.xml</path>
    </autopilot>
+   <electrical>
+    <path>Aircraft/Concorde/Systems/Concorde-electrical.xml</path>
+   </electrical>
+   <fuel>
+    <path>Aircraft/Concorde/Systems/Concorde-fuel.xml</path>
+   </fuel>
   </systems> 
+
+  <instrumentation>
+   <path>Aircraft/Concorde/Systems/Concorde-instrumentation.xml</path>
+  </instrumentation>
   
   <sound>
    <audible>true</audible>
    <path>Aircraft/Concorde/Sounds/Concorde-sound.xml</path>
+<!--
+   <path>Aircraft/Concorde/Sounds/Concorde-real-sound.xml</path>
+-->
   </sound>
 
   <panel>
@@ -40,580 +72,67 @@
    <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
   </model>
   
-  <!-- pilot seat in cockpit. CAUTION : changing height shifts the 2D instruments ! -->
+  <chase-distance-m type="double" archive="y">-67.0</chase-distance-m> <!-- see all fuselage -->
 
-  <view>
-   <internal archive="y">true</internal>
-   <config>
-     <!-- x/y/z == right/up/back -->
-     <x-offset-m archive="y">-0.393</x-offset-m>
-     <y-offset-m archive="y">2.45</y-offset-m>
-     <z-offset-m archive="y">-24.5</z-offset-m>
-     <pitch-offset-deg archive="y">-17.0</pitch-offset-deg> <!-- look at the instruments -->
-   </config>
+  <presets include="Nasal/Concorde-fuel.xml">
 
-   <!-- for only 2D panel, substitute -->
+<!-- Filton 09 -->
 <!--
-   <internal archive="y">false</internal>
-   <config>
-     <x-offset-m archive="y">-0.525</x-offset-m>
-     <y-offset-m archive="y">2.5</y-offset-m>
-     <z-offset-m archive="y">-25.23</z-offset-m>
-     <pitch-offset-deg archive="y">-4.0</pitch-offset-deg>
-   </config>
+   <airport-id>EGTG</airport-id>
+   <runway>09</runway>
 -->
-  </view>
 
-  <!-- engineer seats -->
+<!-- Toulouse Blagnac 14L/14R -->
+<!--
+   <airport-id>LFBO</airport-id>
+   <runway>14L</runway>
+-->
+  </presets>
 
-  <current-view>
-   <captain-seat type="bool">true</captain-seat>
-   <engineer-seat type="bool">false</engineer-seat>
-   <overhead-seat type="bool">false</overhead-seat>
-  </current-view>
+  <help include="help.xml"/>
 
-  <number-views type="int">8</number-views>
-
-  <view n="6">
-    <name>Engineer View</name>
-    <type>lookfrom</type>
-    <internal type="bool">true</internal>
-    <config>
-      <from-model type="bool">true</from-model>
-      <from-model-idx type="int">0</from-model-idx>
-      <ground-level-nearplane-m type="double">0.5f</ground-level-nearplane-m>
-      <default-field-of-view-deg type="double">55.0</default-field-of-view-deg>
-      <default-pitch-deg type="double">0</default-pitch-deg>
-      <default-heading-deg type="double">0</default-heading-deg>
-      <front-direction-deg type="double">0</front-direction-deg>
-      <front-left-direction-deg type="double">45</front-left-direction-deg>
-      <left-direction-deg type="double">90</left-direction-deg>
-      <back-left-direction-deg type="double">135</back-left-direction-deg>
-      <back-direction-deg type="double">180</back-direction-deg>
-      <back-right-direction-deg type="double">225</back-right-direction-deg>
-      <right-direction-deg type="double">270</right-direction-deg>
-      <front-right-direction-deg type="double">315</front-right-direction-deg>
-      <!-- x/y/z == right/up/back -->
-      <x-offset-m archive="y">0.0</x-offset-m> <!-- behind the pedestal -->
-      <y-offset-m archive="y">2.45</y-offset-m> <!-- head at the bottom of the (tilted) top rack --> 
-      <z-offset-m archive="y">-23.45</z-offset-m> <!--in the middle of the rack --> 
-      <pitch-offset-deg archive="y">-20.0</pitch-offset-deg> <!-- look at the fuel instruments -->
-      <heading-offset-deg type="double">270</heading-offset-deg> <!-- parallel to the panel -->
-    </config>
-  </view>
-
-  <view n="7">
-    <name>Overhead View</name>
-    <type>lookfrom</type>
-    <internal type="bool">true</internal>
-    <config>
-      <from-model type="bool">true</from-model>
-      <from-model-idx type="int">0</from-model-idx>
-      <ground-level-nearplane-m type="double">0.5f</ground-level-nearplane-m>
-      <default-field-of-view-deg type="double">55.0</default-field-of-view-deg>
-      <default-pitch-deg type="double">0</default-pitch-deg>
-      <default-heading-deg type="double">0</default-heading-deg>
-      <front-direction-deg type="double">0</front-direction-deg>
-      <front-left-direction-deg type="double">45</front-left-direction-deg>
-      <left-direction-deg type="double">90</left-direction-deg>
-      <back-left-direction-deg type="double">135</back-left-direction-deg>
-      <back-direction-deg type="double">180</back-direction-deg>
-      <back-right-direction-deg type="double">225</back-right-direction-deg>
-      <right-direction-deg type="double">270</right-direction-deg>
-      <front-right-direction-deg type="double">315</front-right-direction-deg>
-      <!-- x/y/z == right/up/back -->
-      <x-offset-m archive="y">0.0</x-offset-m> <!-- seat rolls behind the pedestal -->
-      <y-offset-m archive="y">2.45</y-offset-m> <!-- rolling seat in front on the engineer panel -->
-      <z-offset-m archive="y">-23.95</z-offset-m> <!--seat stops behind the pedestal -->
-      <pitch-offset-deg archive="y">25.0</pitch-offset-deg> <!-- look at the rear panel -->
-      <heading-offset-deg type="double">0</heading-offset-deg> <!-- parallel to the panel -->
-    </config>
-  </view>
-
-  <chase-distance-m type="double" archive="y">-45.0</chase-distance-m> <!-- long fuselage -->
  </sim>
 
- <radios>
-  <dme>
-    <switch-position>1</switch-position>
-  </dme>
- </radios>
+ <consumables>
+  <fuel include="Systems/Concorde-init-fuel.xml"/>
+ </consumables>
 
  <nasal>
+  <Concorde-constant>
+   <file>Aircraft/Concorde/Nasal/Concorde-constants.nas</file>
+   <module>Concorde</module>
+  </Concorde-constant>
+  <Concorde-pressurization>
+   <file>Aircraft/Concorde/Nasal/Concorde-pressure.nas</file>
+   <module>Concorde</module>
+  </Concorde-pressurization>
+  <Concorde-hydraulic>
+   <file>Aircraft/Concorde/Nasal/Concorde-hydraulic.nas</file>
+   <module>Concorde</module>
+  </Concorde-hydraulic>
+  <Concorde-autopilot>
+   <file>Aircraft/Concorde/Nasal/Concorde-autopilot.nas</file>
+   <module>Concorde</module>
+  </Concorde-autopilot>
+  <Concorde-fuel>
+   <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
+   <module>Concorde</module>
+  </Concorde-fuel>
+  <Concorde-instrument>
+   <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
+   <module>Concorde</module>
+  </Concorde-instrument>
   <Concorde>
    <file>Aircraft/Concorde/Nasal/Concorde-jbsim.nas</file>
   </Concorde>
  </nasal>
 
  <input>
-  <keyboard>
-
-   <key n="1">
-    <name>Ctrl-A</name>
-    <desc>Toggle autopilot altitude lock.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apaltitudeexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-<!-- Autopilot is easily disconnected from a thumb switch on the yoke. -->
-
-   <key n="4">
-    <name>CTRL-D</name>
-    <desc>Disconnect autopilot</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apdiscexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-<!-- Seats -->
-
-   <key n="5">
-    <name>Ctrl-E</name>
-    <desc>Toggle engineer/captain view</desc>
-
-    <!-- engineer seat -->
-
-    <binding>
-     <condition>
-      <not>
-       <property>/sim/current-view/engineer-seat</property>
-      </not>
-     </condition>
-     <command>property-assign</command>
-     <property>/sim/current-view/view-number</property>
-     <value type="int">6</value>
-    </binding>
-
-    <!--captain seat -->
-
-    <binding>
-     <condition>
-      <property>/sim/current-view/engineer-seat</property>
-     </condition>
-     <command>property-assign</command>
-     <property>/sim/current-view/view-number</property>
-     <value type="int">0</value>
-    </binding>
-
-    <binding>
-     <command>property-toggle</command>
-     <property>/sim/current-view/engineer-seat</property>
-    </binding>
-
-    <binding>
-     <condition>
-      <not>
-       <property>/sim/current-view/overhead-seat</property>
-      </not>
-     </condition>
-     <command>property-toggle</command>
-     <property>/sim/current-view/captain-seat</property>
-    </binding>
-
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/overhead-seat</property>
-     <value type="bool">false</value>
-    </binding>
-   </key>
-
-<!-- Reheat -->
-
-   <key n="6">
-    <name>Ctrl-F</name>
-    <desc>Reheat</desc>
-    <binding n= "0">
-     <command>property-toggle</command>
-     <property>controls/engines/engine[0]/augmentation</property>
-    </binding>
-    <binding n= "1">
-     <command>property-toggle</command>
-     <property>controls/engines/engine[1]/augmentation</property>
-    </binding>
-    <binding n= "2">
-     <command>property-toggle</command>
-     <property>controls/engines/engine[2]/augmentation</property>
-    </binding>
-    <binding n= "3">
-     <command>property-toggle</command>
-     <property>controls/engines/engine[3]/augmentation</property>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-   <key n="7">
-    <name>Ctrl-G</name>
-    <desc>Toggle autopilot glide slope lock.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apglideexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-   <key n="8">
-    <name>Ctrl-H</name>
-    <desc>Toggle autopilot heading lock.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apheadingexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-   <key n="14">
-    <name>Ctrl-N</name>
-    <desc>Toggle autopilot nav1 lock.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apvorlocexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-<!-- Seats -->
-
-   <key n="15">
-    <name>Ctrl-O</name>
-    <desc>Toggle overhead view.</desc>
-
-    <!-- overhead seat -->
-
-    <binding>
-     <condition>
-      <not>
-       <property>/sim/current-view/overhead-seat</property>
-      </not>
-     </condition>
-     <command>property-assign</command>
-     <property>/sim/current-view/view-number</property>
-     <value type="int">7</value>
-    </binding>
-
-    <!--captain seat -->
-
-    <binding>
-     <condition>
-      <property>/sim/current-view/overhead-seat</property>
-     </condition>
-     <command>property-assign</command>
-     <property>/sim/current-view/view-number</property>
-     <value type="int">0</value>
-    </binding>
-
-    <binding>
-     <command>property-toggle</command>
-     <property>/sim/current-view/overhead-seat</property>
-    </binding>
-
-    <binding>
-     <condition>
-      <not>
-       <property>/sim/current-view/engineer-seat</property>
-      </not>
-     </condition>
-     <command>property-toggle</command>
-     <property>/sim/current-view/captain-seat</property>
-    </binding>
-
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/engineer-seat</property>
-     <value type="bool">false</value>
-    </binding>
-   </key>
-
-   <key n="16">
-    <name>Ctrl-P</name>
-    <desc>Toggle pitch hold.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.appitchexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-   <key n="19">
-    <name>Ctrl-S</name>
-    <desc>Toggle auto-throttle lock.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.atspeedexport();</script>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
-    </binding>
-   </key>
-
-<!-- views -->
-
-   <key n="22">
-    <name>Ctrl-V</name>
-    <desc>Select initial view (view 0).</desc>
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/view-number</property>
-     <value type="int">0</value>
-    </binding>
-
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/engineer-seat</property>
-     <value type="bool">false</value>
-    </binding>
-
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/overhead-seat</property>
-     <value type="bool">false</value>
-    </binding>
-
-    <binding>
-     <command>property-assign</command>
-     <property>/sim/current-view/captain-seat</property>
-     <value type="bool">true</value>
-    </binding>
-   </key>
-
-   <key n="86">
-    <name>V</name>
-    <desc>Scroll in reverse through views.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       if( getprop("/sim/current-view/engineer-seat") ) {
-           if( getprop("/sim/current-view/view-number") == 1 ) {
-               view.stepView(-1);
-               view.stepView(-1);
-               view.stepView(-1);
-           }
-           # default
-           else {
-               view.stepView(-1);
-           }
-       }
-       elsif( getprop("/sim/current-view/overhead-seat") ) {
-           if( getprop("/sim/current-view/view-number") == 1 ) {
-               view.stepView(-1);
-               view.stepView(-1);
-           }
-           elsif( getprop("/sim/current-view/view-number") == 7 ) {
-               view.stepView(-1);
-               view.stepView(-1);
-           }
-           # default
-           else {
-               view.stepView(-1);
-           }
-       }
-       else {
-           if( getprop("/sim/current-view/view-number") == 0 ) {
-               view.stepView(-1);
-               view.stepView(-1);
-               view.stepView(-1);
-           }
-           # default
-           else {
-               view.stepView(-1);
-           }
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="118">
-    <name>v</name>
-    <desc>Cycle view</desc>
-    <desc>Scroll through views.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       if( getprop("/sim/current-view/engineer-seat") ) {
-           if( getprop("/sim/current-view/view-number") == 6 ) {
-               view.stepView(1);
-               view.stepView(1);
-               view.stepView(1);
-           }
-           # default
-           else {
-               view.stepView(1);
-           }
-       }
-       elsif( getprop("/sim/current-view/overhead-seat") ) {
-           if( getprop("/sim/current-view/view-number") == 5 ) {
-               view.stepView(1);
-               view.stepView(1);
-           }
-           elsif( getprop("/sim/current-view/view-number") == 7 ) {
-               view.stepView(1);
-               view.stepView(1);
-           }
-           # default
-           else {
-               view.stepView(1);
-           }
-       }
-       else {
-           if( getprop("/sim/current-view/view-number") == 5 ) {
-               view.stepView(1);
-               view.stepView(1);
-               view.stepView(1);
-           }
-           # default
-           else {
-               view.stepView(1);
-           }
-       }
-     </script>
-    </binding>
-   </key>
-
-<!-- datum adjust (overrides default) -->
-
-   <key n="357">
-    <name>Up</name>
-    <desc>Increase elevator or autopilot altitude.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(1.0);
-       }
-       # default
-       else {
-           controls.incElevator(0.05, -100);
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="359">
-    <name>Down</name>
-    <desc>Decrease elevator or autopilot altitude.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(-1.0);
-       }
-       # default
-       else {
-           controls.incElevator(-0.05, 100);
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="360">
-    <name>PageUp</name>
-    <desc>Increase throttle or autopilot autothrottle.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       speedmode = getprop("/autopilot/locks/speed");
-       if( speedmode != nil and speedmode != "" ) {
-           globals.Concorde.datumatexport(1.0);
-       }
-       # default
-       else {
-           controls.incThrottle(0.01, 1.0);
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="361">
-    <name>PageDown</name>
-    <desc>Decrease throttle or autopilot autothrottle.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       speedmode = getprop("/autopilot/locks/speed");
-       if( speedmode != nil and speedmode != "" ) {
-           globals.Concorde.datumatexport(-1.0);
-       }
-       # default
-       else {
-           controls.incThrottle(-0.01, -1.0);
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="362">
-    <name>Home</name>
-    <desc>Increase elevator trim.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(0.1);
-       }
-       # default
-       else {
-           trim = getprop("/controls/flight/elevator-trim");
-           trim = trim + 0.001;
-           setprop("/controls/flight/elevator-trim",trim);
-       }
-     </script>
-    </binding>
-   </key>
-
-   <key n="363">
-    <name>End</name>
-    <desc>Decrease elevator trim.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(-0.1);
-       }
-       # default
-       else {
-           trim = getprop("/controls/flight/elevator-trim");
-           trim = trim - 0.001;
-           setprop("/controls/flight/elevator-trim",trim);
-       }
-     </script>
-    </binding>
-   </key>
-
+  <keyboard include="Nasal/Concorde-keyboard.xml">
   </keyboard>
  </input>
 
-
-<!-- avoids the crash on alias -->
+<!-- avoids the crash on alias (temporary) -->
 
  <position>
   <altitude-agl-ft type="double">0.0</altitude-agl-ft>
@@ -623,58 +142,30 @@
   <vertical-speed-fps type="double">0.0</vertical-speed-fps>
  </velocities>
 
-<!-- systems -->
+ <controls include="Systems/Concorde-init-controls.xml">
+ </controls>
 
- <systems>
-
-  <pressurization>
-   <serviceable type="bool" archive="y">false</serviceable>
-  </pressurization>
-
+ <systems include="Systems/Concorde-init-systems.xml">
  </systems>
 
-<!-- instruments -->
-
- <instrumentation>
-
-  <instantaneous-vertical-speed-indicator>
-   <serviceable type="bool" archive="y">false</serviceable>
-   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
-  </instantaneous-vertical-speed-indicator>
-
-  <cabine-altitude>
-   <serviceable type="bool" archive="y">false</serviceable>
-  </cabine-altitude>
-
-  <radar>
-   <range type="int" archive="y">40</range>
-   <minimized type="bool" archive="y">false</minimized>
-  </radar>
-
-  <radio-altimeter>
-   <serviceable type="bool" archive="y">false</serviceable>
-   <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
-  </radio-altimeter>
-
-<!-- specific DME -->
-
-  <dme>
-   <switch-position>1</switch-position>
-   <frequencies>
-    <source>/instrumentation/nav[0]/frequencies/selected-mhz</source>
-   </frequencies>
-  </dme>
+ <instrumentation include="Systems/Concorde-init-instrumentation.xml">
 
 
 <!-- ============= -->
 <!-- customization -->
 <!-- ============= -->
 
-<!-- left INS on -->
+<!-- INS 1 on -->
 
   <ins>
    <on type="bool" archive="y">true</on>
   </ins>
+
+<!-- takeoff monitor armed -->
+
+  <takeoff-monitor>
+   <armed type="bool" archive="y">true</armed>
+  </takeoff-monitor>
 
 <!-- decision altitude -->
 
@@ -682,86 +173,45 @@
    <decision-ft>211</decision-ft> <!-- offset : 211 = 200 ft -->
   </radio-altimeter>
 
+<!-- ADF 2 -->
+
+  <adf n="1">
+   <frequencies>
+    <selected-khz>352</selected-khz>
+   </frequencies>
+  </adf>
+
  </instrumentation>
 
 <!-- engines on -->
  
- <engines>
+ <engines include="Systems/Concorde-init-engines.xml">
   <engine n="0">
     <running>true</running>
+    <bug_pph>10000.0</bug_pph> <!-- takeoff monitor bug -->
   </engine>
   <engine n="1">
     <running>true</running>
+    <bug_pph>10000.0</bug_pph>
   </engine>
   <engine n="2">
     <running>true</running>
+    <bug_pph>10000.0</bug_pph>
   </engine>
   <engine n="3">
     <running>true</running>
+    <bug_pph>10000.0</bug_pph>
   </engine>
  </engines>
 
 <!-- autopilot -->
 
- <autopilot>
+ <autopilot include="Systems/Concorde-init-autopilot.xml">
   <settings>
    <heading-bug-deg>283</heading-bug-deg>
    <target-altitude-ft>10000</target-altitude-ft>
-   <target-speed-kt>250</target-speed-kt>
+   <dial-speed-kt>250</dial-speed-kt>
   </settings>
  </autopilot>
-   
- <consumables>
-  <fuel>
-   <!-- overrides JBSim, which only sees US gallons (6.6 pound = 1 US gal = 3.875 l) -->
-
-   <!-- For max take off weight (408000 lb / 93000 kg fuel), put in comment this section.
-        This default filling is max landing weight (245000 lb / 19000 kg fuel).
-   -->
-
-   <tank n="0">
-    <level-gal_us>334.0</level-gal_us>
-   </tank>
-   <tank n="1">
-    <level-gal_us>334.0</level-gal_us>
-   </tank>
-   <tank n="2">
-    <level-gal_us>334.0</level-gal_us>
-   </tank>
-   <tank n="3">
-    <level-gal_us>334.0</level-gal_us>
-   </tank>
-   <tank n="4">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="5">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="6">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="7">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="8">
-    <level-gal_us>2219.0</level-gal_us>
-   </tank>
-   <tank n="9">
-    <level-gal_us>0.0</level-gal_us>
-   </tank>
-   <tank n="10">
-    <level-gal_us>1336.0</level-gal_us>
-   </tank>
-   <tank n="11">
-    <level-gal_us>743.0</level-gal_us>
-   </tank>
-   <tank n="12">
-    <level-gal_us>743.0</level-gal_us>
-   </tank>
-
-  </fuel>
- </consumables>
 
 </PropertyList>
-
-

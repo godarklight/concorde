@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on Autothrottle :
+     - altitude acquired without autothrottle.
+     - glide or autoland without autothrottle.
+     - airspeed indicator out of order.
+     - no voltage.
+ -->
+
+<PropertyList>
+ <name>Alarm Autothrottle</name>
+ <w-base>52</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <and>
+       <not include="concorde-cond-voltage-bulb.xml"/>
+       <or include="concorde-cond-test-land.xml">
+        <and>
+         <not include="concorde-cond-flashing-light.xml"/>
+         <or>
+          <and>
+           <equals>
+            <property>/autopilot/locks/speed</property>
+            <value></value>
+           </equals>
+           <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>altitude-hold</value>
+           </equals>
+           <greater-than>
+            <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+            <property n="1">/instrumentation/altimeter[0]/target-min-ft</property>
+           </greater-than>
+           <less-than>
+            <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+            <property n="1">/instrumentation/altimeter[0]/target-max-ft</property>
+           </less-than>
+          </and>
+          <and>
+           <not-equals>
+            <property>/autopilot/locks/speed</property>
+            <value>speed-with-throttle</value>
+           </not-equals>
+           <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>gs1-hold</value>
+           </equals>
+          </and>
+          <and include="concorde-cond-land.xml">
+           <greater-than>
+            <property>/position/altitude-agl-ft</property>
+            <value>14</value> <!-- autoland stops below -->
+           </greater-than>
+           <not-equals>
+            <property>/autopilot/locks/altitude2</property>
+            <value>vertical-speed-with-throttle</value>
+           </not-equals>
+           <not-equals>
+            <property>/autopilot/locks/speed</property>
+            <value>speed-with-throttle</value>
+           </not-equals>
+          </and>
+          <and>
+           <not-equals>
+            <property>/autopilot/locks/speed</property>
+            <value></value>
+           </not-equals>
+           <not>
+            <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+           </not>
+          </and>
+         </or>
+        </and>
+        <not include="concorde-cond-voltage-autopilot.xml"/>
+       </or>
+      </and>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.325</x1>
+     <y1>0.0</y1>
+     <x2>0.425</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>60</w>
+     <h>52</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>60</w>
+     <h>52</h>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-28</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-at.rgb</path>
+     <x1>0.2</x1>
+     <y1>0.0</y1>
+     <x2>0.8</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>60</w>
+   <h>52</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-28</offset>
+    </transformation>
+   </transformations>
+  </layer>
+ </layers>
+
+</PropertyList>

@@ -18,10 +18,12 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <not-equals>
-      <property>/autopilot/locks/altitude</property>
-      <value>pitch-hold</value>
-     </not-equals>
+     <or include="concorde-cond-land.xml">
+      <not-equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>pitch-hold</value>
+      </not-equals>
+     </or>
     </condition>
 
     <layer>
@@ -112,6 +114,7 @@
 
   <action>
    <desc>Pitch hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

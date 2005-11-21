@@ -1,13 +1,18 @@
 <?xml version="1.0"?>
 
-<!-- Concorde ADF compass -->
+<!-- Concorde ADF Radio Magnetic Indicator -->
 
 <PropertyList>
 
- <name>ADF Gauge</name>
+ <name>ADF RMI</name>
 
  <w-base>128</w-base>
  <h-base>128</h-base>
+
+ <params>
+  <voltage>/systems/electrical/outputs/specific</voltage>
+ </params>
+
 
  <layers>
 
@@ -50,14 +55,53 @@
    <h>104</h>
   </layer>
 
-<!-- fix misc.rgb -->
+<!-- OFF FLAGS -->
 
   <layer>
    <name>OFF flag</name>
    <condition>
-    <not>
-     <property>/instrumentation/adf/in-range</property>
-    </not>
+    <less-than-equals>
+     <property alias="../../../../../params/voltage"/>
+     <value>20.0</value>
+    </less-than-equals>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
+   </texture>
+   <w>25</w>
+   <h>10</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>41</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>-45</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>OFF 1 flag</name>
+   <condition>
+    <or>
+     <not>
+      <property>/instrumentation/adf[0]/in-range</property>
+     </not>
+     <less-than>
+      <property>/systems/electrical/outputs/adf</property>
+      <value>20.0</value>
+     </less-than>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -81,67 +125,243 @@
   </layer>
 
   <layer>
-   <name>Needle</name>
+   <name>OFF 2 flag</name>
    <condition>
-    <property>/instrumentation/adf/in-range</property>
+    <or>
+     <not>
+      <property>/instrumentation/adf[1]/in-range</property>
+     </not>
+     <less-than>
+      <property>/systems/electrical/outputs/adf</property>
+      <value>20.0</value>
+     </less-than>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
-    <x1>0.8671875</x1>
-    <y1>0.25</y1>
-    <x2>0.921875</x2>
-    <y2>1.0</y2>
+    <x1>0.9375</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>0.546875</y2>
    </texture>
-   <w>9</w>
-   <h>64</h>
+   <w>16</w>
+   <h>10</h>
    <transformations>
     <transformation>
-     <type>rotation</type>
-     <property>/instrumentation/adf/indicated-bearing-deg</property>
-     <min>-360</min>
-     <max>360</max>
+     <type>x-shift</type>
+     <offset>15</offset>
     </transformation>
     <transformation>
-     <type>x-shift</type>
-     <offset>-1</offset>
-    </transformation> 
+     <type>y-shift</type>
+     <offset>-18</offset>
+    </transformation>
    </transformations>
   </layer>
 
+<!-- ADF 1 -->
+
   <layer>
-   <name>Needle out of range</name>
-   <condition>
-    <not>
-     <property>/instrumentation/adf/in-range</property>
-    </not>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
-    <x1>0.8671875</x1>
-    <y1>0.25</y1>
-    <x2>0.921875</x2>
-    <y2>1.0</y2>
-   </texture>
-   <w>9</w>
-   <h>64</h>
-   <transformations>
-    <transformation>
-     <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <offset>-90</offset> <!-- horizontal left -->
-    </transformation>
-    <transformation>
-     <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <min>0.0</min>
-     <max>360.0</max>
-     <scale>-1.0</scale>
-    </transformation>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-1</offset>
-    </transformation> 
-   </transformations>
+   <name>ADF 1</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Needle 1</name>
+    <condition>
+     <property>/instrumentation/adf[0]/in-range</property>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+     <x1>0.8671875</x1>
+     <y1>0.25</y1>
+     <x2>0.921875</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>9</w>
+    <h>64</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/instrumentation/adf[0]/indicated-bearing-deg</property>
+      <min>-360</min>
+      <max>360</max>
+     </transformation>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-1</offset>
+     </transformation> 
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Needle 1 out of range</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+     <x1>0.8671875</x1>
+     <y1>0.25</y1>
+     <x2>0.921875</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>9</w>
+    <h>64</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <offset>-90</offset> <!-- horizontal left -->
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <min>0.0</min>
+      <max>360.0</max>
+      <scale>-1.0</scale>
+     </transformation>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-1</offset>
+     </transformation> 
+    </transformations>
+   </layer>
+  </layer>
+
+<!-- ADF 2 -->
+
+  <layer>
+   <name>ADF 2</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Needle 2</name>
+    <condition>
+     <property>/instrumentation/adf[1]/in-range</property>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+     <x1>0.8671875</x1>
+     <y1>0.25</y1>
+     <x2>0.921875</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>9</w>
+    <h>64</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/instrumentation/adf[1]/indicated-bearing-deg</property>
+      <min>-360</min>
+      <max>360</max>
+     </transformation>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-1</offset>
+     </transformation> 
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Needle 2 out of range</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+     <x1>0.8671875</x1>
+     <y1>0.25</y1>
+     <x2>0.921875</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>6</w>
+    <h>64</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <offset>90</offset> <!-- horizontal right -->
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <min>0.0</min>
+      <max>360.0</max>
+      <scale>-1.0</scale>
+     </transformation>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-1</offset>
+     </transformation> 
+    </transformations>
+   </layer>
+  </layer>
+
+<!-- ADF 2 tip -->
+
+  <layer>
+   <name>ADF 2 tip</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Needle tip 2</name>
+    <condition>
+     <property>/instrumentation/adf[1]/in-range</property>
+    </condition>
+    <w>16</w>
+    <h>16</h>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+     <x1>0.8465625</x1>
+     <x2>0.948125</x2>
+     <y1>0.449375</y1>
+     <y2>0.5375</y2>
+    </texture>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/instrumentation/adf[1]/indicated-bearing-deg</property>
+      <min>-360</min>
+      <max>360</max>
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <offset>180</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-23</offset>
+     </transformation> 
+    </transformations>
+   </layer>
+ 
+   <layer>
+    <name>Needle tip 2 out of range</name>
+    <w>16</w>
+    <h>16</h>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+     <x1>0.8465625</x1>
+     <x2>0.948125</x2>
+     <y1>0.449375</y1>
+     <y2>0.5375</y2>
+    </texture>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <offset>90</offset> <!-- horizontal right -->
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <property>/orientation/heading-magnetic-deg</property>
+      <min>0.0</min>
+      <max>360.0</max>
+      <scale>-1.0</scale>
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <offset>180</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-23</offset>
+     </transformation> 
+    </transformations>
+   </layer>
   </layer>
  
   <layer>
@@ -162,23 +382,6 @@
     </transformation> 
    </transformations>
   </layer>
-
-  <layer>
-   <name>bezel</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/bezel.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>1.0</x2>
-    <y2>1.0</y2>
-   </texture>
-   <transformations>
-    <transformation>
-    <type>x-shift</type>
-    <offset>-1</offset>
-    </transformation>
-   </transformations>
-  </layer> 
 
   <layer>
    <name>glare shield</name>

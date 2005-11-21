@@ -5,7 +5,7 @@
  <h-base>100</h-base>
 
  <layers>
- <layer>
+  <layer>
    <name>background</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/flaps.rgb</path>
@@ -13,18 +13,21 @@
     <y1>0.25</y1>
     <x2>.99</x2>
     <y2>0.62</y2>
-  </texture>    
+   </texture>    
    <w>5</w>
-   <h>50</h>
-
- 
-  
-</layer> 
+   <h>130</h>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
+  </layer> 
 
   <layer>
    <name>Landing Gear</name>
    <type>text</type>
-   <point-size>7</point-size>
+   <point-size>5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -39,11 +42,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-15</offset>
+     <offset>-10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>68</offset>
+     <offset>108</offset>
     </transformation>
    </transformations>
   </layer>
@@ -51,7 +54,7 @@
   <layer>
    <name>Up</name>
    <type>text</type>
-   <point-size>7</point-size>
+   <point-size>5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -70,7 +73,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>45</offset>
+     <offset>85</offset>
     </transformation>
    </transformations>
   </layer>
@@ -84,9 +87,9 @@
     <y1>0.5</y1>
     <y2>1.0</y2>
    </texture>
-   <w>20</w>
-   <h>55</h>
- <transformations>
+   <w>15</w>
+   <h>41</h>
+   <transformations>
     <transformation>
      <type>x-shift</type>
      <property>/controls/gear/gear-down</property>
@@ -100,8 +103,8 @@
      <property>/controls/gear/gear-down</property>
      <min>0.0</min>
      <max>1.0</max>
-     <scale>-50.0</scale>
-     <offset>28</offset>
+     <scale>-120.0</scale>
+     <offset>50</offset>
     </transformation>
     <transformation>
     <type>rotation</type>
@@ -113,7 +116,7 @@
   <layer>
    <name>Neutral</name>
    <type>text</type>
-   <point-size>7</point-size>
+   <point-size>5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -128,11 +131,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>15</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-3</offset>
+     <offset>10</offset>
     </transformation>
    </transformations>
   </layer>
@@ -140,7 +139,7 @@
   <layer>
    <name>Down</name>
    <type>text</type>
-   <point-size>7</point-size>
+   <point-size>5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -155,11 +154,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-11</offset>
+     <offset>-8</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-70</offset>
+     <offset>-120</offset>
     </transformation>
    </transformations>
   </layer>
@@ -173,15 +172,17 @@
   <action>
    <name>extend</name>
    <condition>
-    <greater-than>
-     <property>/position/altitude-agl-ft</property>
-     <value>11.0</value>
-    </greater-than>
+    <and include="concorde-cond-gear-down.xml">
+     <less-than>
+      <property>/controls/gear/gear-down</property>
+      <value>1.0</value>
+     </less-than>
+    </and>
    </condition>
    <button>0</button>
-   <x>-16</x>
+   <x>-13</x>
    <y>-50</y>
-   <w>32</w>
+   <w>26</w>
    <h>96</h>
    <binding>
     <command>property-toggle</command>
@@ -191,5 +192,33 @@
    </binding>
   </action> 
 
-</actions>
+  <action>
+   <name>retract</name>
+   <condition>
+    <and include="concorde-cond-gear-up.xml">
+     <greater-than>
+      <property>/controls/gear/gear-down</property>
+      <value>0.0</value>
+     </greater-than>
+     <greater-than>
+      <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property>
+      <value>20.0</value>
+     </greater-than>
+    </and>
+   </condition>
+   <button>0</button>
+   <x>-13</x>
+   <y>-50</y>
+   <w>26</w>
+   <h>96</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/controls/gear/gear-down</property>
+    <min>1.0</min>
+    <max>0.0</max>    
+   </binding>
+  </action> 
+
+ </actions>
+
 </PropertyList>

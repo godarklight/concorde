@@ -46,6 +46,7 @@ properties' values.
    </texture>
    <transformations>
     <transformation>
+     <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
      <property>/orientation/roll-deg</property>
      <min>-360.0</min>
@@ -68,6 +69,7 @@ properties' values.
    <h>62</h>
    <transformations>
     <transformation>
+     <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
      <property>/orientation/roll-deg</property>
      <min>-360.0</min>
@@ -75,6 +77,7 @@ properties' values.
      <scale>-1</scale>
     </transformation>
     <transformation>
+     <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>y-shift</type>
      <property>/orientation/pitch-deg</property>
      <min>-20.0</min>
@@ -96,6 +99,7 @@ properties' values.
    </texture>
    <transformations>
     <transformation>
+     <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
      <property>/orientation/roll-deg</property>
      <min>-360.0</min>
@@ -141,7 +145,18 @@ properties' values.
   <layer>
    <name>VOR needle</name>
    <condition>
-    <property>/instrumentation/attitude-indicator/config/flight-director</property>
+    <and include="concorde-cond-voltage-horizon.xml">
+     <or>
+      <equals>
+       <property>/instrumentation/flight-director/fd[0]/on</property>
+       <value>on</value>
+      </equals>
+      <equals>
+       <property>/instrumentation/flight-director/fd[1]/on</property>
+       <value>on</value>
+      </equals>
+     </or>
+    </and>
    </condition>
    <w>5</w>
    <h>61</h>
@@ -180,9 +195,18 @@ properties' values.
   <layer>
    <name>GS needle left</name>
    <condition>
-    <and>
+    <and include="concorde-cond-voltage-horizon.xml">
      <property>/instrumentation/nav[0]/has-gs</property>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+     <or>
+      <equals>
+       <property>/instrumentation/flight-director/fd[0]/on</property>
+       <value>on</value>
+      </equals>
+      <equals>
+       <property>/instrumentation/flight-director/fd[1]/on</property>
+       <value>on</value>
+      </equals>
+     </or>
     </and>
    </condition>
    <w>10</w>
@@ -213,9 +237,18 @@ properties' values.
   <layer>
    <name>GS needle right</name>
    <condition>
-    <and>
+    <and include="concorde-cond-voltage-horizon.xml">
      <property>/instrumentation/nav[0]/has-gs</property>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
+     <or>
+      <equals>
+       <property>/instrumentation/flight-director/fd[0]/on</property>
+       <value>on</value>
+      </equals>
+      <equals>
+       <property>/instrumentation/flight-director/fd[1]/on</property>
+       <value>on</value>
+      </equals>
+     </or>
     </and>
    </condition>
    <w>10</w>
@@ -248,12 +281,24 @@ properties' values.
   <layer>
    <name>NAV OFF</name>
    <condition>
-    <and>
-     <not>
-      <property>/instrumentation/nav[0]/in-range</property>
-     </not>
-     <property>/instrumentation/attitude-indicator/config/flight-director</property>
-    </and>
+    <or>
+     <not include="concorde-cond-voltage-horizon.xml"/>
+     <and>
+      <not>
+       <property>/instrumentation/nav[0]/in-range</property>
+      </not>
+      <or>
+       <equals>
+        <property>/instrumentation/flight-director/fd[0]/on</property>
+        <value>on</value>
+       </equals>
+       <equals>
+        <property>/instrumentation/flight-director/fd[1]/on</property>
+        <value>on</value>
+       </equals>
+      </or>
+     </and>
+    </or>
    </condition>
    <w>26</w>
    <h>15</h>

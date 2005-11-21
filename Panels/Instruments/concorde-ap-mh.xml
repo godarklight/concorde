@@ -19,10 +19,20 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <not-equals>
-      <property>/autopilot/locks/speed</property>
-      <value>mach-with-throttle</value>
-     </not-equals>
+     <or>
+      <not-equals>
+       <property>/autopilot/locks/speed</property>
+       <value>mach-with-throttle</value>
+      </not-equals>
+      <equals>
+       <property>/autopilot/locks/speed2</property>
+       <value>maxclimb</value>
+      </equals>
+      <equals>
+       <property>/autopilot/locks/speed2</property>
+       <value>maxcruise</value>
+      </equals>
+     </or>
     </condition>
     <layer>
      <name>lamp off</name>
@@ -112,6 +122,7 @@
 
   <action>
    <desc>Mach hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

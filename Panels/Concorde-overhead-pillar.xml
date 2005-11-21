@@ -42,7 +42,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde Overhead Pillar</name>
  <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
  <w>1024</w>
- <h>508</h>
+ <h>512</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -55,7 +55,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
       <value>40</value>
@@ -66,10 +66,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      </greater-than>
     </and>
    </condition>
-   <x>892</x>
+   <x>872</x>
    <y>130</y>
-   <w>144</w>
-   <h>36</h>
+   <w>220</w>
+   <h>55</h>
   </instrument>
 
  </instruments>

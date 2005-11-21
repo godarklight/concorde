@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<!-- Fault on Hydraulics :
+
+     - low hydraulic pressure.
+     - low pump pressure (34 PSI not real).
+     - pump off load.
+-->
+
+<PropertyList>
+ <name>Fault on Hydraulics</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Fault light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-overhead.xml">
+       <property>/systems/hydraulic/serviceable</property>
+       <not include="concorde-cond-hyd-green.xml"/>
+       <not include="concorde-cond-hyd-yellow.xml"/>
+       <not include="concorde-cond-hyd-blue.xml"/>
+       <greater-than>
+        <property>/engines/engine[0]/oil-pressure-psi</property>
+        <value>34</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[1]/oil-pressure-psi</property>
+        <value>34</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[2]/oil-pressure-psi</property>
+        <value>34</value>
+       </greater-than>
+       <greater-than>
+        <property>/engines/engine[3]/oil-pressure-psi</property>
+        <value>34</value>
+       </greater-than>
+       <property>/controls/hydraulic/circuits/circuit[0]/onloada</property>
+       <property>/controls/hydraulic/circuits/circuit[0]/onloadb</property>
+       <property>/controls/hydraulic/circuits/circuit[1]/onloada</property>
+       <property>/controls/hydraulic/circuits/circuit[1]/onloadb</property>
+       <property>/controls/hydraulic/circuits/circuit[2]/onloada</property>
+       <property>/controls/hydraulic/circuits/circuit[2]/onloadb</property>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-hyd.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.17</y1>
+     <x2>1.0</x2>
+     <y2>0.83</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

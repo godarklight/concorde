@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!-- Vertical connection -->
+
+<PropertyList>
+ <name>Vertical Connection</name>
+ <w-base>25</w-base>
+ <h-base>25</h-base>
+
+ <params>
+  <connect-status>/controls/engines/engine[0]/master-alt</connect-status>
+ </params>
+
+
+ <layers>
+  <layer>
+   <name>Connection flag</name>
+   <type>switch</type>
+   <layer>
+    <name>on</name>
+    <condition>
+     <property alias="../../../../../params/connect-status"/>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-bar-vertical-bg.rgb</path>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+   </layer>
+   <layer>
+    <name>off</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-bar-horizontal-bg.rgb</path>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+   </layer>
+  </layer>
+ </layers>
+
+</PropertyList>

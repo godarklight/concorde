@@ -46,7 +46,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde Console Copilot</name>
  <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
  <w>1024</w>
- <h>508</h>
+ <h>512</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -57,21 +57,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>330</value>
+      <value>315</value>
      </less-than>
      <greater-than>
       <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
+      <value>240</value>
+     </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>0</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-60</value>
      </greater-than>
     </and>
    </condition>
-   <x>45</x>
-   <y>595</y>
-   <w>140</w>
-   <h>140</h>
+   <x>30</x>
+   <y>240</y>
+   <w>190</w>
+   <h>190</h>
   </instrument>
 
  </instruments>

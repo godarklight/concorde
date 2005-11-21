@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!-- intialize systems : avoid nil values for Nasal.
+
+-->
+
+<PropertyList>
+
+  <air-bleed>
+   <serviceable type="bool" archive="y">true</serviceable>
+  </air-bleed>
+
+<!-- Nasal -->
+
+  <electrical>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <loads>
+    <battery n="0">160.0</battery>   <!-- amps, no discharge -->
+    <battery n="1">160.0</battery>
+   </loads>
+  </electrical>
+
+  <fuel>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <pump>
+    <engine></engine>
+    <forward></forward>
+    <aft></aft>
+    <dump></dump>
+    <dump2></dump2>
+    <cross></cross>
+   </pump>
+   <tank-pressure-psi>0.0</tank-pressure-psi>
+  </fuel>
+
+  <hydraulic>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <circuits>
+    <circuit n="0">
+     <pressure-psi>0.0</pressure-psi>
+     <reservoir-gal_us>6.0</reservoir-gal_us>
+     <abbreviation>G</abbreviation>
+    </circuit>
+    <circuit n="1">
+     <pressure-psi>0.0</pressure-psi>
+     <reservoir-gal_us>8.0</reservoir-gal_us>
+     <abbreviation>Y</abbreviation>
+    </circuit>
+    <circuit n="2">
+     <pressure-psi>0.0</pressure-psi>
+     <reservoir-gal_us>3.0</reservoir-gal_us>
+     <abbreviation>B</abbreviation>
+    </circuit>
+   </circuits>
+   <rat>
+    <selector n="0">
+     <on type="bool">false</on>
+     <guard type="bool">true</guard>
+     <test></test>
+    </selector>
+    <selector n="1">
+     <on type="bool">false</on>
+     <guard type="bool">true</guard>
+     <test></test>
+    </selector>
+    <test></test>
+    <deploying></deploying>
+    <deployed></deployed>
+   </rat>
+  </hydraulic>
+
+  <pressurization>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <altitude-sea-ft>0.0</altitude-sea-ft>
+  </pressurization>
+
+  <tank-pressure>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <pressure-inhg>29.92</pressure-inhg>
+  </tank-pressure>
+
+</PropertyList>

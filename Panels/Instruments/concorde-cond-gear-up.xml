@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<!-- Condition for gear up :
+
+     - green hydraulics.
+-->
+
+<PropertyList>
+
+  <and include="concorde-cond-voltage-gear.xml">
+   <not include="concorde-cond-hyd-green.xml"/>
+  </and>
+
+</PropertyList>

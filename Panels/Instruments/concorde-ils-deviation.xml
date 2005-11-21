@@ -22,33 +22,25 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <and>
-      <not-equals>
-       <property>/instrumentation/test-landing/on</property>
-       <value>1.0</value>
-      </not-equals>
-      <or>
-       <not-equals>
-        <property>/instrumentation/generic/flashing-light</property>
-        <value>1.0</value>
-       </not-equals>
-       <and>
-        <not-equals>
-         <property>/autopilot/locks/vertical</property>
-         <value>autoland</value>
-        </not-equals>
-        <not-equals>
-         <property>/autopilot/locks/altitude</property>
-         <value>gs1-hold</value>
-        </not-equals>
-       </and>
-       <and>
-        <property>instrumentation/nav[0]/in-range</property>
-        <property>instrumentation/nav[0]/nav-loc</property>
-        <property>instrumentation/nav[0]/has-gs</property>
-       </and>
-      </or>
-     </and>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and>
+       <not include="concorde-cond-test-land.xml"/>
+       <or include="concorde-cond-flashing-light.xml">
+        <and>
+         <not include="concorde-cond-land.xml"/>
+         <not-equals>
+          <property>/autopilot/locks/altitude</property>
+          <value>gs1-hold</value>
+         </not-equals>
+        </and>
+        <and>
+         <property>instrumentation/nav[0]/in-range</property>
+         <property>instrumentation/nav[0]/nav-loc</property>
+         <property>instrumentation/nav[0]/has-gs</property>
+        </and>
+       </or>
+      </and>
+     </or>
     </condition>
 
     <layer>

@@ -1,8 +1,8 @@
-<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.02">
+<FDM_CONFIG NAME="Concorde" VERSION="1.65" RELEASE="1.03">
 <!--
   File:     Concorde.xml
   Author:   Aero-Matic v 0.71
-  Date:     16 october 2004
+  Date:     15 November 2005
 
   Inputs:
     name:          Concorde
@@ -27,45 +27,41 @@
 
 
   Summary : 
-  -------
+  =======
     - air intakes effect, which allows more drag at Mach 1.3-2.0.
     - full tanks at maximum takeoff load.
     - landing pitch at 10° (maximum landing load) and ground effect.
     - climb pitch at 10° (maximum landing load).
+    - climb Mach 0.95 to 1.7 in 10 minutes.
     - can reach Mach 2.0, below the VMO.
     - inside of center of gravity corridor.
     - London - New York : can land below max landing weight (aloft westerly at 39 kt).
 
 
   Known problems :
-  --------------
+  ==============
     - tail wheel can touch the runway on takeoff or autoland.
     - uses flaps as nose (temporary).
     - without an additional PID, above Mach 1, autopilot heading hold would lock with a right roll.
+    - integrated electrical system.
 
 
   Notation :
-  --------
+  ========
   => denotes a final choice based on certain real values.
 
 
   References :
-  ----------
+  ==========
     - http://www.airweb.faa.gov/Regulatory_and_Guidance_Library/rgMakeModel.nsf/MainFrame?OpenFrameSet
     (FAA certificate, A45eu - 9 january 1979, Concorde) :
 
     Vlo (landing gear operation)                 : 270 kt.
     Vle (landing gear extended)                  : 270 kt.
-    V visor down or operating                    : 325 kt.
-    V nose 5° or operating between UP and 5°     : 325 kt.
-    V nose DOWN or operating between 5° and DOWN : 270 kt (at altitudes below 20000 ft).
-    V landing lights (extension)                 : 270 kt.
     Vmc (minimum control speed with engine inoperative)
-    Vmcg (ground)                                : 116 kt.
-    Vmc (takeoff)                                : 132 kt.
     Vmcl (approach)                              : 150 kt.
-    V max for windscreen wiper operation         : 325 kt.
-    V max for jettison (fuel)                    : Mach 0.93.
+    Vmc (takeoff)                                : 132 kt.
+    Vmcg (ground)                                : 116 kt.
 
     Datum : the datum for center of gravity computation is a vertical reference plane located 8.333 feet (2.540 m)
     forward of Fuselage Station X.A.0. A reference rigging point "C" is provided on the airframe 83.172 feet (25.351 m)
@@ -77,7 +73,7 @@
     Fuel tank capacity (at density 6.68 lb / US Gallon) :
 
     Tank      Usable weight     Total weight     Arm (% MAC)
-    --------------------------------------------------------
+    ........................................................
     1              9348            9361             39.80
     2             10176           10207             76.10
     3             10176           10207             76.10
@@ -92,62 +88,65 @@
     10            26597           26618             30.50
     11            23192           23218            113.90
     Systems         827            1021             69.43
-    --------------------------------------------------------
+    ........................................................
     Totals       211200 lb       211797 lb          56.23
 
     - http://perso.wanadoo.fr/hsors/FS_Soft/FAQ-FS2K2-Decode_Forum.txt/
 
     Ron Freimuth (for MSFS) :
  
-TYPE OF AIRCRAFT - ROLL,Rx PITCH,Ry YAW,Rz 
-Single Low Wing          .248 .338 .393 
-Single High Wing(C182R)  .242 .397 .393 
-Light Twin               .373 .269 .461 
-Biz Jet, Light           .293 .312 .420 
-Biz Jet, Heavy           .370 .356 .503 
-Twin Turbo- Prop         .235 .363 .416 
-Jet Airliner 4 eng.      .322 .339 .464 
-Jet Airliner 3 aft eng   .249 .375 .452 
-Jet Airliner 2 eng wing  .246 .382 .456 
-Prop Airliner 4 eng      .322 .324 .456 
-Prop Airliner 2 eng      .308 .345 .497 
-Jet Fighter              .266 .346 .400 
-Prop Fighter 1 eng       .268 .360 .420 
-Prop Fighter 2 eng       .330 .299 .447
-Prop Bomber 2 eng        .270 .320 .410 
-Prop Bomber 4 eng        .316 .320 .376 
-Concorde Delta Wing      .255 .380 .390 (added, Ron Freimuth)
+    TYPE OF AIRCRAFT - ROLL,Rx PITCH,Ry YAW,Rz 
+    Single Low Wing          .248 .338 .393 
+    Single High Wing(C182R)  .242 .397 .393 
+    Light Twin               .373 .269 .461 
+    Biz Jet, Light           .293 .312 .420 
+    Biz Jet, Heavy           .370 .356 .503 
+    Twin Turbo- Prop         .235 .363 .416 
+    Jet Airliner 4 eng.      .322 .339 .464 
+    Jet Airliner 3 aft eng   .249 .375 .452 
+    Jet Airliner 2 eng wing  .246 .382 .456 
+    Prop Airliner 4 eng      .322 .324 .456 
+    Prop Airliner 2 eng      .308 .345 .497 
+    Jet Fighter              .266 .346 .400 
+    Prop Fighter 1 eng       .268 .360 .420 
+    Prop Fighter 2 eng       .330 .299 .447
+    Prop Bomber 2 eng        .270 .320 .410 
+    Prop Bomber 4 eng        .316 .320 .376 
+    Concorde Delta Wing      .255 .380 .390 (added, Ron Freimuth)
 
-Note: Delta Wing adds more to Pitch MoI due to Long Root Chord.
-Note: Yaw MoI ~ Pitch MoI + Roll MoI or a bit less.
+    Note: Delta Wing adds more to Pitch MoI due to Long Root Chord.
+    Note: Yaw MoI ~ Pitch MoI + Roll MoI or a bit less.
 
---- Estimate Aircraft Moments of Inertia - from Jan Roskam ---
+... Estimate Aircraft Moments of Inertia - from Jan Roskam ...
 
-Roll  Ixx = (W/g)*(Rx*b/2)^2 
-Pitch Iyy = (W/g)*(Ry*d/2)^2 
-Yaw   Izz = (W/g)*(Rz*e/2)^2 
-Roll-Yaw Ixz <= 0.02 Iz, often 0.0 (added, Ron Freimuth)
-g = 32.174 ft/s^2
-W = gross wt. lb
-b = span ft
-d = length ft
-e = (b+d)/2
+    Roll  Ixx = (W/g)*(Rx*b/2)^2 
+    Pitch Iyy = (W/g)*(Ry*d/2)^2 
+    Yaw   Izz = (W/g)*(Rz*e/2)^2 
+    Roll-Yaw Ixz <= 0.02 Iz, often 0.0 (added, Ron Freimuth)
+    g = 32.174 ft/s^2
+    W = gross wt. lb
+    b = span ft
+    d = length ft
+    e = (b+d)/2
 
-Max TO  - 408,000 lb
-No Fuel - 197,768 lb
-Length - 204.5 ft  (.38*102)^2 = 1502
-Span   -  84.25 ft (.253*42)^2 
-        = 113(Span+Length)/2 - 144.8 ft (.39*72.4)^2 = 797
-Width  -  9.5 ft
-Empty Mass - 197,768/32.174 = 6,142 slugs
-Max Mass   - 408,000/32.174 = 12,670 slugs
+    Max TO  - 408,000 lb
+    No Fuel - 197,768 lb
+    Length - 204.5 ft  (.38*102)^2 = 1502
+    Span   -  84.25 ft (.253*42)^2 
+              = 113(Span+Length)/2 - 144.8 ft (.39*72.4)^2 = 797
+    Width  -  9.5 ft
+    Empty Mass - 197,768/32.174 = 6,142 slugs
+    Max Mass   - 408,000/32.174 = 12,670 slugs
 
----- Empty 
+.... Empty 
 
-Pitch: 1502 * 6142 = 9,227,000, Max: 19,034,000 slug ft^2
-Roll:   113 * 6142 =   694,000, Max:  1,432,000
-Yaw:    797 * 6142 = 4,897,000, Max: 10,100,000
-Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
+    Pitch: 1502 * 6142 = 9,227,000, Max: 19,034,000 slug ft^2
+    Roll:   113 * 6142 =   694,000, Max:  1,432,000
+    Yaw:    797 * 6142 = 4,897,000, Max: 10,100,000
+    Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
+
+
+    The moments of inertia had been changed, as an attempt to solve the autopilot roll.
 
     - http://www.concordesst.com/ :
 
@@ -165,7 +164,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     TABLE A :
 
     Fuel tanks          tank       liters         kg (density 0.792)
-    --------------------------------------------------
+    ..................................................
     Engines supplies      1         5300         4198
                           2         5770         4570
                           3         5770         4570
@@ -179,13 +178,14 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Transfer & reserve    9        14010        11096
                           10       15080        11943
                           11       13150        10415
-    --------------------------------------------------
+    ..................................................
     Totals                        119280 l      94470 kg
+
+    Note that 1 US gal = 3.7854 liters.
 
     Maximum operating altitude : 60000 ft.
     Range : 4500 miles (3900 NM).
-    Speed : max operating Mach 2.04, average takeoff 250 mph (217 kt), average landing 185 mph (161 kt),
-            max fuel jettison Mach 0.93, max windscreenwiper operation 325 kt.
+    Speed : max operating Mach 2.04, average takeoff 250 mph (217 kt), average landing 185 mph (161 kt).
 
     AOA : min -5.5° (above Mach 1), max 16.5°.
     Vortex above the entire wing creates lift at low speed and high AOA.
@@ -268,7 +268,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
 
               CG (without          CG (with          Aerodynamic
     Mach     fuel transfer)     fuel transfer)     center location
-    --------------------------------------------------------------
+    ..............................................................
     0.5          53.5                53.5                55.0         
     0.75                             53.5                       
     0.9                              55.0                58.0         
@@ -284,7 +284,6 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     Runway : 11200 ft takeoff, 7300 ft landing.
     Max climb rate : 5000 ft/s.
     Range : 3550 nm supersonic, 2760 nm subsonic (Mach 0.95 FL300).
-    Maximum operating altitude : 60000 ft.
 
     Areas (sq ft) : wings (gross) 3856, elevons (total) 344.44, fin (excluding dorsal fin) 365, rudder 112.
 
@@ -313,31 +312,34 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     X, Y, Z, in inches
     -->
 
-    <!-- ORIGIN (0,0,0) is at NOSE -->
+    <!-- ORIGIN (0,0,0) is at NOSE.
 
-    <!-- Center of gravity :
-         - level at wing level : => -1/4 of max external fuselage height (130 in.).
+         Center of gravity :
+         - level at wing level : -1/4 of max external fuselage height (130 in.).
          - 51.7%, inside corridor of C0 (maximum takeoff load) => real C0 starts over front gear location (18.7 m).
 
          Aero refence point :
-         - level at wing level => -1/8 of max external fuselage height.
+         - level at wing level : -1/8 of max external fuselage height (130 in.).
          - back of center of gravity reduces autopilot roll (step back at supersonic cruise). It has been found that
          200 inches behind CG reduces AUTOPILOT ROLL.
-         => at Mach 2, real value is 62% of C0.
+         => real at Mach 2 is 62% of C0.
 
-         Eye point location : length from nose to cockpit, 1/4 of max external fuselage width (113 in.),
-                              1/4 of max fuselage height.
+         Eye point location : length from nose to cockpit (24 ft), 1/4 of max external fuselage width (113 in.),
+                              1/4 of max fuselage height (113 in.).
 
          Add ac_wingincidence : 1/20 of wing chord (C0).
 
+         Htailarm : distance from CG to horizontal tail tip, none (5 ft).
+         Vtailarm : distance from CG to vertical tail tip.
     -->
 
    AC_WINGAREA  3856.00                    <!-- ft2 -->
    AC_WINGSPAN  83.83                      <!-- ft -->
-   AC_CHORD     90.75                      <!-- ft2 -->               <!-- aeromatic 46.0 (C0) -->
-   <!-- AC_HTAILAREA 964.00 -->            <!-- ft -->
-   <!-- AC_HTAILARM  18.00 -->             <!-- ft -->
+   AC_CHORD     90.75                      <!-- ft -->                <!-- aeromatic 46.0 (C0) -->
+   AC_HTAILAREA 0.0                        <!-- ft2 -->               <!-- aeromatic 964.0 -->
+   AC_HTAILARM  5.0                        <!-- ft -->                <!-- aeromatic 18.0 -->
    AC_VTAILAREA 365.0                      <!-- ft2 -->               <!-- aeromatic 771.20 -->
+   AC_VTAILARM  21.68                      <!-- ft -->                <!-- added (turbulence) -->
    AC_WINGINCIDENCE 2.86                   <!-- deg -->               <!-- aeromatic none (0.0) -->
    AC_LV        91.05                      <!-- ? -->                 <!-- aeromatic 91.05 -->
    AC_IXX       1432000                    <!-- slug ft2 -->          <!-- aeromatic 3419278 -->
@@ -367,21 +369,26 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     <max steer angle>                Maximum steerable angle in degrees
     -->
 
-    <!-- parametrization :
-         - gear in length (2428 in.) : nose 2/7, wing 4/7, tail 6/7;
-         => real values for nose (18.7 m = 736.2 in.) and wing (18.7 m + 18.2 m = 1452.8 in.).
+    <!-- - gear in length (2428 in.) : tail 6/7;
+         => real nose (18.7 m = 736.2 in.), wing (18.7 m + 18.2 m = 1452.8 in.).
 
          - height at -5/4 of max fuselage height (130 in.).
 
          - tyre diameter of main gears, at 3/42 of the length between the gears (18.2 m) = 51.2 in.
+
+         - additional contact points, for crash detection when gear retracted.
     -->
  
-  AC_GEAR NOSE_LG    736.2  0.0 -162.5 122400.0 40800.0  0.5  0.8  0.02 STEERABLE NONE  60.0 RETRACT
-  AC_GEAR LEFT_FWD   1427.2 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED LEFT  0 RETRACT
-  AC_GEAR LEFT_REAR  1478.4 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED LEFT  0 RETRACT
-  AC_GEAR RIGHT_FWD  1427.2 152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED RIGHT 0 RETRACT
-  AC_GEAR RIGHT_REAR 1478.4 152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED RIGHT 0 RETRACT
-  AC_GEAR TAIL       2081.0 0.0 20.0 122400.0 40800.0  0.5  0.8  0.02 FIXED NONE 0 RETRACT
+  AC_GEAR NOSE_LG    736.2     0.0 -162.5 122400.0 40800.0  0.5  0.8  0.02 STEERABLE NONE 60.0 RETRACT
+  AC_GEAR LEFT_FWD   1427.2 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED     LEFT  0   RETRACT
+  AC_GEAR LEFT_REAR  1478.4 -152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED     LEFT  0   RETRACT
+  AC_GEAR RIGHT_FWD  1427.2  152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED     RIGHT 0   RETRACT
+  AC_GEAR RIGHT_REAR 1478.4  152.0 -162.5 408000.0 81600.0  0.5  0.8  0.02 FIXED     RIGHT 0   RETRACT
+  AC_GEAR TAIL       2081.0    0.0   20.0 122400.0 40800.0  0.5  0.8  0.02 FIXED     NONE  0   RETRACT
+  AC_GEAR NOSE_TIP   0.0       0.0    0.0 122400.0 40800.0  0.5  0.8  0.02 FIXED     NONE  0   FIXED
+  AC_GEAR LEFT_TIP   1825.2 -503.0    0.0 122400.0 40800.0  0.5  0.8  0.02 FIXED     NONE  0   FIXED
+  AC_GEAR RIGHT_TIP  1825.2  503.0    0.0 122400.0 40800.0  0.5  0.8  0.02 FIXED     NONE  0   FIXED
+  AC_GEAR TAIL_TIP   2427.6    0.0   50.0 122400.0 40800.0  0.5  0.8  0.02 FIXED     NONE  0   FIXED
  </UNDERCARRIAGE>
  <PROPULSION>
 
@@ -408,12 +415,11 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       AC_THRUSTER name x y z pitch yaw
     -->
 
-  <!-- parametrization :
-       - engine center at 5/7 of length (2428 in.), -2/5 of fuselage height (130 in.).
-       - half diameter at 1/5 of main gear track; border aligned with main gear track (304 in. / 2).
+  <!-- - engine center at 5/7 of length (2428 in.), -2/5 of fuselage height (130 in.).
+       - border aligned with main gear track (304 in. / 2).
        => real engine diameter is 1.65 m = (11 - 7.7) / 2.
 
-       - thruster center 3/4 of length, aligned with engines.
+       - thruster center 3/4 of length (2428 in.), aligned with engines.
   -->
   
   <AC_ENGINE FILE="Olympus593Mrk610">
@@ -480,8 +486,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     </AC_THRUSTER>
   </AC_ENGINE>
 
-  <!-- tank parametrization :
-       - length, gear position (length and track), and tank 5 radius;
+  <!-- - the parameters are gear track, and tank 5 radius;
        - to check against engine center.
 
        => real length is arm, % of MAC (see table above) : real MAC (C0 1089 in.) starts at 18.7 m (736.2 in.).
@@ -495,10 +500,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
   -->
 
   <AC_TANK TYPE="FUEL" NUMBER="0">
-    <!-- tank 1 : forward tank 5; center + radius = tank 5 border;
+    <!-- tank 1 : 1/2 radius of tank 5; align 3/4 of gear track.
 
-         39.80 % MAC;
-         1/2 radius of tank 5; align 3/4 of gear track.
+         => 39.80 % MAC;
     -->
 
     XLOC 1170 
@@ -509,11 +513,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  9255.01
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="1">
-    <!-- tank 2 : backward tank 6; center - radius = tank 6 border;
+    <!-- tank 2 : 1/2 radius of tank 5; align 1/2 of gear track; near engine center.
 
-         76.10 % MAC.
-         1/2 radius of tank 5; align 1/2 of gear track;
-         near engine center.
+         => 76.10 % MAC.
     -->
 
     XLOC 1565 
@@ -524,11 +526,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  10075.13
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="2">
-    <!-- tank 3 : backward tank 7; center - radius = tank 7 border;
+    <!-- tank 3 : 1/2 radius of tank 5; align 1/2 of gear track; near engine center.
 
-         76.10 % MAC.
-         1/2 radius of tank 5; align 1/2 of gear track;
-         near engine center.
+         => 76.10 % MAC.
     -->
 
     XLOC 1565
@@ -539,10 +539,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  10075.13
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="3">
-    <!-- tank 4 : forward tank 8; center + radius = tank 8 border;
+    <!-- tank 4 : 1/2 radius of tank 5; align 3/4 of gear track.
 
-         39.80 % MAC;
-         1/2 radius of tank 5; align 3/4 of gear track.
+         => 39.80 % MAC;
     -->
 
     XLOC 1170 
@@ -553,9 +552,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  9255.01
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="4">
-    <!-- tank 5 : align forward left gear; center + radius = gear position.
+    <!-- tank 5 : center + radius = gear position.
 
-         49.40 % MAC.
+         => 49.40 % MAC.
     -->
 
     <!-- 15873.28, if not balanced -->
@@ -568,11 +567,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  16099.26
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="5">
-    <!-- tank 6 : backward left gear; center - radius = gear position;
+    <!-- tank 6 : 3/2 radius of tank 5; align 1/2 of gear track; before engine center.
 
-         66.70 % MAC.
-         3/2 radius of tank 5; align 1/2 of gear track;
-         before engine center.
+         => 66.70 % MAC.
     -->
 
     <!-- 25544.96, if not balanced -->
@@ -585,11 +582,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26923.95
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="6">
-    <!-- tank 7 : align backward right gear; center - radius = gear position;
+    <!-- tank 7 : radius of tank 5; before engine center.
 
-         64.70 % MAC.
-         radius of tank 5;
-         before engine center.
+         => 64.70 % MAC.
     -->
 
     <!-- 16325.23, if not balanced -->
@@ -602,10 +597,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  16099.26
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="7">
-    <!-- tank 8 : forward right gear; center + radius = gear position;
+    <!-- tank 8 : 3/2 radius of tank 5; align 1/2 of gear track.
 
-         46.70 % MAC.
-         3/2 radius of tank 5; align 1/2 of gear track.
+         => 46.70 % MAC.
     -->
 
     <!-- 28302.95, if not balanced -->
@@ -618,10 +612,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26923.95
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="8">
-    <!-- tank 9 : forward tank 10; center + radius = tank 10 border;
+    <!-- tank 9 : 3/2 radius of tank 5; centred on plane axis.
 
-         16.90 % MAC.
-         3/2 radius of tank 5; centred on plane axis.
+         => 16.90 % MAC.
     -->
 
     XLOC 920 
@@ -632,10 +625,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  24462.49
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="9">
-    <!-- tank 10 : forward tanks 1 & 4; center + radius = tank 1 border;
+    <!-- tank 10 : 1/2 radius of tank 5; centered on plane axis.
 
-         30.50 % MAC.
-         1/2 radius of tank 5; centered on plane axis.
+         => 30.50 % MAC.
     -->
 
     XLOC 1068 
@@ -646,10 +638,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  26329.81
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="10">
-    <!-- tank 11 : in the rear; center at 5/6 of length;
+    <!-- tank 11 : 1/2 radius of tank 5; centered on plane axis.
 
-         113.90 % MAC.
-         1/2 radius of tank 5; centered on plane axis.
+         => 113.90 % MAC.
     -->
 
     XLOC 1977 
@@ -660,10 +651,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  19735.31
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="11">
-    <!-- tank 5A : left of tank 6; center = tank 6 border;
+    <!-- tank 5A : radius of tank 5; align 5/2 of gear track.
 
-         74.80 % MAC.
-         radius of tank 5; align 5/2 of gear track.
+         => 74.80 % MAC.
     -->
 
     XLOC 1551 
@@ -674,10 +664,9 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  4905.29
   </AC_TANK>
   <AC_TANK TYPE="FUEL" NUMBER="12">
-    <!-- tank 7A : right of tank 7; center = tank 7 border;
+    <!-- tank 7A : radius of tank 5; align 5/2 of gear track.
 
-         74.80 % MAC.
-         radius of tank 5; align 5/2 of gear track.
+         => 74.80 % MAC.
     -->
 
     XLOC 1551
@@ -688,6 +677,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
     CONTENTS  4905.29
   </AC_TANK>
  </PROPULSION>
+
  <FLIGHT_CONTROL NAME="Concorde">
    <COMPONENT NAME="Pitch Trim Sum" TYPE="SUMMER">
       INPUT   fcs/elevator-cmd-norm
@@ -695,12 +685,12 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Elevator Control" TYPE="AEROSURFACE_SCALE">
-      <!-- => change -0.35/0.30 to -0.39/0.39 rad (22.5 deg).
-      -->
+      <!-- => change -0.35/0.30 to -22.5/22.5 deg real. -->
 
       INPUT   fcs/pitch-trim-sum
-      MIN     -0.390
-      MAX      0.390
+      MIN     -22.5
+      MAX      22.5
+      GAIN    0.01745
       OUTPUT  fcs/elevator-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Roll Trim Sum" TYPE="SUMMER">
@@ -709,19 +699,21 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Left Aileron Control" TYPE="AEROSURFACE_SCALE">
-      <!-- => change 0.35 to 0.39 rad (22.5 deg) -->
+      <!-- => change 0.35 to 22.5 deg real. -->
 
       INPUT   fcs/roll-trim-sum
-      MIN    -0.39
-      MAX     0.39
+      MIN     -22.5
+      MAX      22.5
+      GAIN    0.01745
       OUTPUT  fcs/left-aileron-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Right Aileron Control" TYPE="AEROSURFACE_SCALE">
-      <!-- => change 0.35 to 0.39 rad (22.5 deg) -->
+      <!-- => change 0.35 to 22.5 deg real. -->
 
       INPUT  -fcs/roll-trim-sum
-      MIN    -0.39
-      MAX     0.39
+      MIN     -22.5
+      MAX      22.5
+      GAIN    0.01745
       OUTPUT  fcs/right-aileron-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Rudder Command Sum" TYPE="SUMMER">
@@ -761,11 +753,12 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
       CLIPTO  -1 1
    </COMPONENT>
    <COMPONENT NAME="Rudder Control" TYPE="AEROSURFACE_SCALE">
-      <!-- => change 0.35 to 0.51 rad (29 deg) -->
+      <!-- => change 0.35 to 29 deg real -->
 
       INPUT   fcs/rudder-sum
-      MIN     -0.51
-      MAX      0.51
+      MIN     -29.0
+      MAX      29.0
+      GAIN    0.01745
       OUTPUT  fcs/rudder-pos-rad
    </COMPONENT>
    <COMPONENT NAME="Flaps Control" TYPE="KINEMAT">
@@ -795,10 +788,1067 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
              1   1
      OUTPUT  fcs/speedbrake-pos-norm
    </COMPONENT>
+
+<!-- Concorde electrical system :
+
+     - each relight busbar needs AC to start its engine.
+     - all instruments are supposed to be AC (115 or 26 volts).
+     - all warning lights are supposed to be DC (26 volts).
+     - night lightning (reddish surrounding light) is DC.
+
+
+     Connection :
+     ==========
+     - AC Essential Bus 1-4 is connected to AC Main Bus 1-4, or all the buses in parallel.
+     - Transform Rectifier Unit 2-3 is connected to AC Main Bus 2-3, or all the buses in parallel.
+
+     Known problems :
+     ==============
+     - fuse between DC Main 1P and DC Main 2P is not implemented.
+     - GPB connected to BTB, even without SSB.
+     - /controls/engines/engine[0]/master-bat seems required by the electrical system.
+     - when no AC voltage, AC instruments are still visible at night (reddish), otherwise that also cuts the DC warning lights,
+     because of systems/electrical/outputs/instrument-lights.
+-->
+
+<!-- ========= -->
+<!-- suppliers -->
+<!-- ========= -->
+
+   <COMPONENT NAME="elec DC Battery A 5P" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/loads/battery[0]
+     GAIN 1
+     CLIPTO 0 26
+     OUTPUT  /systems/electrical/suppliers/battery[0]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec DC Battery B 6P" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/loads/battery[1]
+     GAIN 1
+     CLIPTO 0 26
+     OUTPUT  /systems/electrical/suppliers/battery[1]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup engine1" TYPE="PURE_GAIN">
+     INPUT /engines/engine[0]/fuel-flow_pph
+     GAIN 0.1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/engine[0]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup engine2" TYPE="PURE_GAIN">
+     INPUT /engines/engine[1]/fuel-flow_pph
+     GAIN 0.1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/engine[1]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup engine3" TYPE="PURE_GAIN">
+     INPUT /engines/engine[2]/fuel-flow_pph
+     GAIN 0.1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/engine[2]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup engine4" TYPE="PURE_GAIN">
+     INPUT /engines/engine[3]/fuel-flow_pph
+     GAIN 0.1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/engine[3]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup hydraulic green" TYPE="PURE_GAIN">
+     INPUT /systems/hydraulic/circuits/circuit[0]/pressure-psi
+     GAIN 1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/emergency[0]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec sup ground service" TYPE="PURE_GAIN">
+     INPUT /systems/electrical/suppliers/ground-service
+     GAIN 1
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/suppliers/external[0]
+   </COMPONENT>
+
+<!-- ======================== -->
+<!-- connect in power sources -->
+<!-- ======================== -->
+
+<!-- ground power disconnected -->
+
+   <COMPONENT NAME="elec out GPB" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/external[0]
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/ground
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-gpb
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con GPB SSB" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-gpb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/gpb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- CSD connected to engine -->
+
+   <COMPONENT NAME="elec con engine 1 CSD" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/engine[0]
+     GAIN 1
+     SCHEDULED_BY /engines/engine[0]/running
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-csd1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con engine 2 CSD" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/engine[1]
+     GAIN 1
+     SCHEDULED_BY /engines/engine[1]/running
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-csd2
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con engine 3 CSD" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/engine[2]
+     GAIN 1
+     SCHEDULED_BY /engines/engine[2]/running
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-csd3
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con engine 4 CSD" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/engine[3]
+     GAIN 1
+     SCHEDULED_BY /engines/engine[3]/running
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-csd4
+   </COMPONENT>
+
+<!-- generator connected to CSD -->
+
+   <COMPONENT NAME="elec con CSD 1 generator" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-csd1
+     GAIN 1
+     SCHEDULED_BY /controls/engines/engine[0]/master-alt
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-generator1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con CSD 2 generator" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-csd2
+     GAIN 1
+     SCHEDULED_BY /controls/engines/engine[1]/master-alt
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-generator2
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con CSD 3 generator" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-csd3
+     GAIN 1
+     SCHEDULED_BY /controls/engines/engine[2]/master-alt
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-generator3
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con CSD 4 generator" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-csd4
+     GAIN 1
+     SCHEDULED_BY /controls/engines/engine[3]/master-alt
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-generator4
+   </COMPONENT>
+
+<!-- GCB connects generator to Main bus -->
+
+   <COMPONENT NAME="elec con generator 1 AC Main 1X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-generator1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/generator1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB AC Main 1X" TYPE="SCHEDULED_GAIN">
+     INPUT /systems/electrical/outputs/probe/ac-btb-left
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con SSB AC Main 1X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-ssb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Main 1X" TYPE="SUMMER">
+     INPUT fcs/elec-con-generator-1-ac-main-1x
+     INPUT fcs/elec-con-btb-ac-main-1x
+     INPUT fcs/elec-con-ssb-ac-main-1x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-main1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con generator 2 AC Main 2X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-generator2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/generator2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB AC Main 2X" TYPE="SCHEDULED_GAIN">
+     INPUT /systems/electrical/outputs/probe/ac-btb-left
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con SSB AC Main 2X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-ssb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Main 2X" TYPE="SUMMER">
+     INPUT fcs/elec-con-generator-2-ac-main-2x
+     INPUT fcs/elec-con-btb-ac-main-2x
+     INPUT fcs/elec-con-ssb-ac-main-2x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-main2
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con generator 3 AC Main 3X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-generator3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/generator3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB AC Main 3X" TYPE="SCHEDULED_GAIN">
+     INPUT /systems/electrical/outputs/probe/ac-btb-right
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con SSB AC Main 3X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-ssb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Main 3X" TYPE="SUMMER">
+     INPUT fcs/elec-con-generator-3-ac-main-3x
+     INPUT fcs/elec-con-btb-ac-main-3x
+     INPUT fcs/elec-con-ssb-ac-main-3x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-main3
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con generator 4 AC Main 4X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-generator4
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/generator4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB AC Main 4X" TYPE="SCHEDULED_GAIN">
+     INPUT /systems/electrical/outputs/probe/ac-btb-right
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con SSB AC Main 4X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-ssb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Main 4X" TYPE="SUMMER">
+     INPUT fcs/elec-con-generator-4-ac-main-4x
+     INPUT fcs/elec-con-btb-ac-main-4x
+     INPUT fcs/elec-con-ssb-ac-main-4x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-main4
+   </COMPONENT>
+
+<!-- Emergency disabled -->
+
+   <COMPONENT NAME="elec con green generator 5" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/emergency[0]
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/arm
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-generator5
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con generator 5 AC emergency 16X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-generator5
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/generator
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-emergencya
+   </COMPONENT>
+
+<!-- Batteries connected to Essential -->
+
+<!-- master-bat is hard coded from FG ! -->
+
+   <COMPONENT NAME="elec con battery A 5P DC Essential 3P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/battery[0]
+     GAIN 1
+     SCHEDULED_BY /controls/engines/engine[0]/master-bat
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus DC Essential 3P" TYPE="SUMMER">
+     INPUT fcs/elec-con-battery-a-5p-dc-essential-3p
+     INPUT fcs/elec-con-ac-essential-5x-dc-essential-3p
+     INPUT fcs/elec-con-dc-main-1p-dc-essential-3p
+     CLIPTO 0 26
+     OUTPUT /systems/electrical/outputs/probe/dc-essentiala
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con battery B 6P DC Essential 4P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/suppliers/battery[1]
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/master-bat
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus DC Essential 4P" TYPE="SUMMER">
+     INPUT fcs/elec-con-battery-b-6p-dc-essential-4p
+     INPUT fcs/elec-con-ac-essential-8x-dc-essential-4p
+     INPUT fcs/elec-con-dc-main-2p-dc-essential-4p
+     CLIPTO 0 26
+     OUTPUT /systems/electrical/outputs/probe/dc-essentialb
+   </COMPONENT>
+
+<!-- ================ -->
+<!-- connect AC buses -->
+<!-- ================ -->
+
+<!-- BTB makes parallel 2 generators -->
+
+   <COMPONENT NAME="elec con AC Main 1X BTB" TYPE="SCHEDULED_GAIN">
+     INPUT fcs/elec-con-generator-1-ac-main-1x
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 2X BTB" TYPE="SCHEDULED_GAIN">
+     INPUT fcs/elec-con-generator-2-ac-main-2x
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB left" TYPE="SUMMER">
+     INPUT  fcs/elec-con-ac-main-1x-btb
+     INPUT  fcs/elec-con-ac-main-2x-btb
+     CLIPTO 0 115
+     OUTPUT /systems/electrical/outputs/probe/ac-btb-left
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 3X BTB" TYPE="SCHEDULED_GAIN">
+     INPUT fcs/elec-con-generator-3-ac-main-3x
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 4X BTB" TYPE="SCHEDULED_GAIN">
+     INPUT fcs/elec-con-generator-4-ac-main-4x
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/btb4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB right" TYPE="SUMMER">
+     INPUT  fcs/elec-con-ac-main-3x-btb
+     INPUT  fcs/elec-con-ac-main-4x-btb
+     CLIPTO 0 115
+     OUTPUT /systems/electrical/outputs/probe/ac-btb-right
+   </COMPONENT>
+
+<!-- SSB makes parallel 4 generators -->
+
+   <COMPONENT NAME="elec con BTB left SSB" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-btb-left
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/ssb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con BTB right SSB" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-btb-right
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/ssb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- GPB only if SSB ? -->
+
+   <COMPONENT NAME="elec con SSB" TYPE="SUMMER">
+     INPUT  fcs/elec-con-btb-left-ssb
+     INPUT  fcs/elec-con-btb-right-ssb
+     INPUT  fcs/elec-con-gpb-ssb
+     CLIPTO 0 115
+     OUTPUT /systems/electrical/outputs/probe/ac-ssb
+   </COMPONENT>
+
+<!-- Essential connected to Main -->
+
+   <COMPONENT NAME="elec con AC Main 1X AC Essential 5X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus emergency 5X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-emergency-16x-ac-essential-5x
+     INPUT fcs/elec-con-ac-main-1x-ac-essential-5x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-essential1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 2X AC Essential 6X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus emergency 6X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-emergency-16x-ac-essential-6x
+     INPUT fcs/elec-con-ac-main-2x-ac-essential-6x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-essential2
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 3X AC Essential 7X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus emergency 7X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-emergency-17x-ac-essential-7x
+     INPUT fcs/elec-con-ac-main-3x-ac-essential-7x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-essential3
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 4X AC Essential 8X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main4
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus emergency 8X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-emergency-17x-ac-essential-8x
+     INPUT fcs/elec-con-ac-main-4x-ac-essential-8x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-essential4
+   </COMPONENT>
+
+<!-- Avionics to Main, except load shed -->
+
+   <COMPONENT NAME="elec con AC Main 2X AC Avionics 10X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential2
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/avionicsa
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus Avionics 10X" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/avionicsa
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/autopilot1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 3X AC Avionics 11X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential3
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/avionicsb
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus Avionics 11X" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/avionicsb
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/autopilot2
+   </COMPONENT>
+
+<!-- 26 volts Main to Essential (via transformer), except load shed -->
+
+   <COMPONENT NAME="elec con AC Essential 6X AC 26 V Main 12X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential2
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/main-26a
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Essential 7X AC 26 V Main 13X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/essential3
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/main-26b
+   </COMPONENT>
+
+<!-- Emergency disconnected -->
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Essential 5X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/essential1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Essential 6X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/essential2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 17X AC Essential 7X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencyb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/essential3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 17X AC Essential 8X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencyb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/essential4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- Auto Shed Breaker closed -->
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Emergency 17X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/asb
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/probe/ac-emergencyb
+   </COMPONENT>
+
+<!-- Relight connected to Main -->
+
+   <COMPONENT NAME="elec con AC Main 1X AC Relight 24X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/relight1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Relight 24X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-1x-ac-relight-24x
+     INPUT fcs/elec-con-ac-emergency-16x-ac-relight-24x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-relight1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 2X AC Relight 25X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/relight2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Relight 25X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-2x-ac-relight-25x
+     INPUT fcs/elec-con-ac-emergency-16x-ac-relight-25x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-relight2
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 3X AC Relight 26X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/relight3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Relight 26X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-3x-ac-relight-26x
+     INPUT fcs/elec-con-ac-emergency-16x-ac-relight-26x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-relight3
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 4X AC Relight 27X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main4
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/relight4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Relight 27X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-4x-ac-relight-27x
+     INPUT fcs/elec-con-ac-emergency-16x-ac-relight-27x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-relight4
+   </COMPONENT>
+
+<!-- Relight disconnected from Emergency -->
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Relight 24X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/relight1
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Relight 25X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/relight2
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Relight 26X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/relight3
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Emergency 16X AC Relight 27X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-emergencya
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/relight4
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- Standby connected to Essential -->
+
+   <COMPONENT NAME="elec con AC Essential 5X AC Standby 32X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/standby
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Standby 32X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-essential-5x-ac-standby-32x
+     INPUT fcs/elec-con-dc-essential-3p-ac-standby-32x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-standbya
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out standby radio alt" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-standbya
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/standby-radio-alt
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Essential 5X AC Standby 33X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/standby
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus AC Standby 33X" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-essential-5x-ac-standby-33x
+     INPUT fcs/elec-con-dc-essential-3p-ac-standby-33x
+     CLIPTO 0 115
+     OUTPUT  /systems/electrical/outputs/probe/ac-standbyb
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out standby altimeter" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-standbyb
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/standby-alt
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out standby asi" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-standbyb
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/standby-asi
+   </COMPONENT>
+
+<!-- Standby disconnected from DC (via inverter), until RAT is deployed -->
+
+   <COMPONENT NAME="elec con DC Essential 3P AC Standby 32X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-essentiala
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/standby
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con DC Essential 3P AC Standby 33X" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-essentiala
+     GAIN 1
+     SCHEDULED_BY /controls/electric/ac/emergency/standby
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- ================ -->
+<!-- connect DC buses -->
+<!-- ================ -->
+
+<!-- DC to AC, via TRU -->
+
+   <COMPONENT NAME="elec con AC Essential 5X DC Essential 3P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential1
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/essentiala
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 2X DC Main 1P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main2
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/maina
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus DC Main 1P" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-2x-dc-main-1p
+     INPUT fcs/elec-con-dc-main-2p-dc-main-1p
+     CLIPTO 0 26
+     OUTPUT  /systems/electrical/outputs/probe/dc-maina
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Main 3X DC Main 2P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-main3
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/mainb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus DC Main 2P" TYPE="SUMMER">
+     INPUT fcs/elec-con-ac-main-3x-dc-main-2p
+     INPUT fcs/elec-con-dc-main-1p-dc-main-2p
+     CLIPTO 0 26
+     OUTPUT  /systems/electrical/outputs/probe/dc-mainb
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con AC Essential 8X DC Essential 4P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-essential4
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/essentialb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- the 2 Main connected by fuses -->
+
+<!-- ?
+   <COMPONENT NAME="elec con DC Main 1P DC Main 2P" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-maina
+     GAIN 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con DC Main 2P DC Main 1P" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-mainb
+     GAIN 1
+   </COMPONENT>
+-->
+
+<!-- Essential / Main Split -->
+
+   <COMPONENT NAME="elec con DC Main 1P DC Essential 3P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-maina
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/emsa
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+   <COMPONENT NAME="elec con DC Main 2P DC Essential 4P" TYPE="SCHEDULED_GAIN">
+     INPUT  /systems/electrical/outputs/probe/dc-mainb
+     GAIN 1
+     SCHEDULED_BY /controls/electric/dc/emsb
+     ROWS 2
+         0 0
+         1 1
+   </COMPONENT>
+
+<!-- ============================================ -->
+<!-- finally feeds the instruments and the lights -->
+<!-- ============================================ -->
+
+<!-- required by flightgear -->
+
+   <COMPONENT NAME="elec bus instrument" TYPE="SUMMER">
+     INPUT /systems/electrical/outputs/probe/ac-essential1
+     INPUT /systems/electrical/outputs/probe/ac-essential2
+     INPUT /systems/electrical/outputs/probe/ac-essential3
+     INPUT /systems/electrical/outputs/probe/ac-essential4
+     CLIPTO 0 115
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out bus" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/bus
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out adf" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/adf
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out audio panel 0" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/audio-panel[0]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out audio panel 1" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/audio-panel[1]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out autopilot" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/autopilot
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out avionics fan" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/avionics-fan
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out DME" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/dme
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out GPS mfd" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/gps-mfd
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out GPS" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/gps
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out HSI" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/hsi
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out nav 0" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/nav[0]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out nav 1" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/nav[1]
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out transponder" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/transponder
+   </COMPONENT>
+
+<!-- specific to Concorde -->
+
+   <COMPONENT NAME="elec out specific" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/specific
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus light" TYPE="SUMMER">
+     INPUT /systems/electrical/outputs/probe/dc-maina
+     INPUT /systems/electrical/outputs/probe/dc-mainb
+     INPUT /systems/electrical/outputs/probe/dc-essentiala
+     INPUT /systems/electrical/outputs/probe/dc-essentialb
+     CLIPTO 0 26
+   </COMPONENT>
+
+   <COMPONENT NAME="elec out bulb" TYPE="PURE_GAIN">
+     INPUT  fcs/elec-bus-light
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/bulb
+   </COMPONENT>
+
+   <COMPONENT NAME="elec bus standby" TYPE="PURE_GAIN">
+     INPUT  /systems/electrical/outputs/probe/ac-standbya
+     GAIN 1
+     OUTPUT  /systems/electrical/outputs/standby
+   </COMPONENT>
+
+<!-- =============== -->
+<!-- connect outputs -->
+<!-- =============== -->
+
+<!-- connect master bus outputs -->
+
+   <COMPONENT NAME="elec out Instrument Lights Power" TYPE="SCHEDULED_GAIN">
+     INPUT  fcs/elec-bus-instrument
+     GAIN 1
+     SCHEDULED_BY /controls/circuit-breakers/instrument-lights
+     ROWS 2
+         0 0
+         1 1
+     OUTPUT  /systems/electrical/outputs/instrument-lights
+   </COMPONENT>
+
+<!-- end electrical -->
+
  </FLIGHT_CONTROL>
+
  <AERODYNAMICS>
 
-  <!-- added : => real -5.5°, 16.5° -->
+  <!-- added : => real -5.5 to 16.5 deg -->
   AC_ALPHALIMITS -0.096 0.29
 
   <AXIS NAME="LIFT">
@@ -889,6 +1939,7 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
        <!-- add mach column :
             - respect the thrust X 2.7 by air intakes.
             - supersonic decreases drag.
+            - climb Mach 0.95 to 1.7 in 10 minutes.
        -->
 
       Induced_drag
@@ -897,12 +1948,13 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
        aero/qbar-psf|metrics/Sw-sqft|aero/cl-squared-norm
        0.0       0.042
        1.1       0.042
-       1.4       0.032
+       1.15      0.032
     </COEFFICIENT>
     <COEFFICIENT NAME="CDmach" TYPE="VECTOR">
        <!-- add Mach 2.0 :
             - respect the thrust X 2.7 by air intakes.
             - adjust consumption during supersonic cruise.
+            - climb Mach 0.95 to 1.7 in 10 minutes.
        -->
 
        Drag_due_to_mach
@@ -912,8 +1964,8 @@ Pitch is about 9,300,000, Yaw is 4,900,000, Roll is 696,000.
        0.0       0.000
        0.79      0.000
        1.1       0.023
-       1.8       0.015
-       2.0       0.007
+       1.15      0.014
+       1.8       0.007
     </COEFFICIENT>
     <COEFFICIENT NAME="CDflap" TYPE="VALUE">
        <!-- nose drag (temporary) -->

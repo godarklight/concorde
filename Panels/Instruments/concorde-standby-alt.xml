@@ -68,7 +68,7 @@ properties' values.
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/instrumentation/altimeter/setting-inhg</property>
+     <property>/instrumentation/altimeter[1]/setting-inhg</property>
      <scale>-152.37</scale>  <!-- degrees rotation per inHG -->
     </transformation>
    </transformations>
@@ -99,7 +99,7 @@ properties' values.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/altimeter/setting-inhg</property>
+     <property>/instrumentation/altimeter[1]/setting-inhg</property>
      <format>%2.2f</format>
     </chunk>
    </chunks>
@@ -117,6 +117,15 @@ properties' values.
 
   <layer>
    <name>ftx1000 - digital</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property>/systems/electrical/outputs/standby-alt</property>
+      <value>20</value>
+     </greater-than>
+     <property>/instrumentation/altimeter[1]/serviceable</property>
+    </and>
+   </condition>
    <type>text</type>
    <font>led</font>
    <point-size>6</point-size>
@@ -128,7 +137,7 @@ properties' values.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+     <property>/instrumentation/altimeter[1]/indicated-altitude-ft</property>
      <scale>0.001</scale>
      <truncate>true</truncate>
      <format>%4.0f</format>
@@ -147,7 +156,7 @@ properties' values.
   </layer>
 
   <layer>
-   <name>altimter inhg</name>
+   <name>altimeter inhg</name>
    <type>text</type>
    <font>led</font>
    <point-size>5</point-size>
@@ -159,7 +168,7 @@ properties' values.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/altimeter/setting-inhg</property>
+     <property>/instrumentation/altimeter[1]/setting-inhg</property>
      <format>%2.2f</format>
     </chunk>
    </chunks>
@@ -189,7 +198,13 @@ properties' values.
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+     <condition>
+      <greater-than>
+       <property>/systems/electrical/outputs/standby-alt</property>
+       <value>20</value>
+      </greater-than>
+     </condition>
+     <property>/instrumentation/altimeter[1]/indicated-altitude-ft</property>
      <max>100000.0</max>
      <scale>0.36</scale>
     </transformation>
@@ -276,7 +291,7 @@ properties' values.
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter/setting-inhg</property>
+    <property>/instrumentation/altimeter[1]/setting-inhg</property>
     <step>-0.01</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -293,7 +308,7 @@ properties' values.
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter/setting-inhg</property>
+    <property>/instrumentation/altimeter[1]/setting-inhg</property>
     <step>-0.1</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -310,7 +325,7 @@ properties' values.
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter/setting-inhg</property>
+    <property>/instrumentation/altimeter[1]/setting-inhg</property>
     <step>0.01</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -327,7 +342,7 @@ properties' values.
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter/setting-inhg</property>
+    <property>/instrumentation/altimeter[1]/setting-inhg</property>
     <step>0.1</step>
     <min>26.0</min>
     <max>33.0</max>

@@ -1,12 +1,19 @@
 <?xml version="1.0"?>
 
-<!-- Concorde autopilot
+<!-- Concorde autopilot :
 
      Speed with pitch and Mach with pitch are considered autopilot modes (datum).
+
+
+     CAUTION : initial tuning of autopilot has been done with /vertical/vertical-speed-fps;
+     to swap, see Concorde-init-instrumentation.xml.
+
 
      Known problems:
      - roll on heading hold above Mach 1.0 (first PID only) : might be the FDM (?).
      Solved by a rudder trim, which unlocks the roll at Mach speeds.
+     - increasing sensitivity reduces waddling at Mach 2 : 1 subsonic PID and
+     1 supersonic PID.
 -->
 
 <!-- Each component is evaluated in the order specified.  You can make up -->
@@ -19,6 +26,13 @@
   <!-- =============================================================== -->
   <!-- Prediction filters                                              -->
   <!-- =============================================================== -->
+
+  <predict-simple>
+     <input>/velocities/mach</input>
+     <output>/autopilot/internal/lookahead-5-sec-mach</output>
+     <seconds>5.0</seconds>
+     <filter-gain>0.0</filter-gain>
+  </predict-simple>
 
   <predict-simple>
      <input>/autopilot/internal/nav1-track-error-deg</input>
@@ -42,7 +56,7 @@
       <value>wing-leveler</value>
     </enable>
     <input>
-      <prop>/instrumentation/turn-indicator/indicated-turn-rate</prop>
+      <prop>/orientation/roll-deg</prop>
     </input>
     <reference>
       <value>0.0</value>
@@ -51,7 +65,7 @@
       <prop>/controls/flight/aileron</prop>
     </output>
     <config>
-      <Kp>0.5</Kp>        <!-- proportional gain -->
+      <Kp>0.1</Kp>        <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -73,8 +87,8 @@
     <name>Heading Bug Hold (FDM mag heading based) Stage 1</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/heading</prop>
-      <value>dg-heading-hold</value>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>dg-heading-hold-sub</value>
     </enable>
     <input>
       <prop>/autopilot/internal/fdm-heading-bug-error-deg</prop>
@@ -87,6 +101,37 @@
     </output>
     <config>
       <Kp>-1.0</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>     <!-- input value weighing factor -->
+      <alpha>0.1</alpha>   <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>   <!-- input value weighing factor for -->
+                           <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Td>0.00001</Td>     <!-- derivator time -->
+      <u_min>-30.0</u_min> <!-- minimum output clamp -->
+      <u_max>30.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #1 sets target roll based on diff between current heading -->
+  <!-- and heading bug (supersonic). -->
+  <pid-controller>
+    <name>Heading Bug Hold (FDM mag heading based) Stage 1 (supersonic)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>dg-heading-hold-super</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/fdm-heading-bug-error-deg</prop>
+    </input>
+    <reference>
+      <value>0.0</value>
+    </reference>
+    <output>
+      <prop>/autopilot/internal/target-roll-deg</prop>
+    </output>
+    <config>
+      <Kp>-3.0</Kp>        <!-- proportional gain -->
       <beta>1.0</beta>     <!-- input value weighing factor -->
       <alpha>0.1</alpha>   <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>   <!-- input value weighing factor for -->
@@ -133,8 +178,8 @@
     <name>Heading Bug Hold (DG based) Stage 3</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/heading</prop>
-      <value>dg-heading-hold</value>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>dg-heading-hold-sub</value>
     </enable>
     <input>
       <prop>/orientation/roll-deg</prop>
@@ -146,7 +191,37 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>0.4</Kp>        <!-- proportional gain (0.1) -->
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-0.0025</u_min> <!-- minimum output clamp -->
+      <u_max>0.0025</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #3 drives the rudder to unlock roll at Mach speeds (supersonic). -->
+  <pid-controller>
+    <name>Heading Bug Hold (DG based) Stage 3 (supersonic)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>dg-heading-hold-super</value>
+    </enable>
+    <input>
+      <prop>/orientation/roll-deg</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/internal/target-roll-deg</prop>
+    </reference>
+    <output>
+      <prop>/controls/flight/rudder</prop>
+    </output>
+    <config>
+      <Kp>0.4</Kp>        <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -168,8 +243,8 @@
     <name>True Heading Hold (DG based) Stage 1</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/heading</prop>
-      <value>true-heading-hold</value>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>true-heading-hold-sub</value>
     </enable>
     <input>
       <prop>/autopilot/internal/true-heading-error-deg</prop>
@@ -188,10 +263,42 @@
                            <!-- unfiltered derivative error -->
       <Ti>10.0</Ti>        <!-- integrator time -->
       <Td>0.00001</Td>     <!-- derivator time -->
+      <u_min>-30.0</u_min> <!-- minimum output clamp -->
+      <u_max>30.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #1 sets target roll based on diff between current heading -->
+  <!-- and target heading (supersonic). -->
+  <pid-controller>
+    <name>True Heading Hold (DG based) Stage 1 (supersonic)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>true-heading-hold-super</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/true-heading-error-deg</prop>
+    </input>
+    <target>
+      <prop>0.0</prop>
+    </target>
+    <output>
+      <prop>/autopilot/internal/target-roll-deg</prop>
+    </output>
+    <config>
+      <Kp>-3.0</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>     <!-- input value weighing factor -->
+      <alpha>0.1</alpha>   <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>   <!-- input value weighing factor for -->
+                           <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Td>0.00001</Td>     <!-- derivator time -->
       <u_min>-20.0</u_min> <!-- minimum output clamp -->
       <u_max>20.0</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
+
 
   <!-- Stage #2 drives the ailerons to achieve the desired roll deg. -->
   <pid-controller>
@@ -228,8 +335,8 @@
     <name>True Heading Hold (DG based) Stage 3</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/heading</prop>
-      <value>true-heading-hold</value>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>true-heading-hold-sub</value>
     </enable>
     <input>
       <prop>/orientation/roll-deg</prop>
@@ -241,7 +348,37 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>0.4</Kp>        <!-- proportional gain (0.1) -->
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-0.0025</u_min> <!-- minimum output clamp -->
+      <u_max>0.0025</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #3 drives the rudder to unlock roll at Mach speeds (supersonic). -->
+  <pid-controller>
+    <name>True Heading Hold (DG based) Stage 3 (supersonic)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/heading</prop>
+      <value>true-heading-hold-super</value>
+    </enable>
+    <input>
+      <prop>/orientation/roll-deg</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/internal/target-roll-deg</prop>
+    </reference>
+    <output>
+      <prop>/controls/flight/rudder</prop>
+    </output>
+    <config>
+      <Kp>0.4</Kp>        <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -385,38 +522,6 @@
     </config>
   </pid-controller>
 
-  <!-- ........................... -->
-  <!-- Simple angle of attack hold --> 
-  <!-- ........................... -->
-  <pid-controller>
-    <name>AOA hold</name>
-    <debug>false</debug>
-    <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>aoa-hold</value>
-    </enable>
-    <input>
-      <prop>/orientation/alpha-deg</prop>
-    </input>
-    <reference>
-      <prop>/autopilot/settings/target-aoa-deg</prop>
-    </reference>
-    <output>
-      <prop>/controls/flight/elevator-trim</prop>
-    </output>
-    <config>
-      <Kp>-0.05</Kp>      <!-- proportional gain -->
-      <beta>1.0</beta>    <!-- input value weighing factor -->
-      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
-      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
-                          <!-- unfiltered derivative error -->
-      <Ti>0.5</Ti>        <!-- integrator time -->
-      <Td>0.00001</Td>    <!-- derivator time -->
-      <u_min>-1.0</u_min> <!-- minimum output clamp -->
-      <u_max>1.0</u_max>  <!-- maximum output clamp -->
-    </config>
-  </pid-controller>
-
   <!-- ........................................... -->
   <!-- Altitude hold.  2 stage cascade controller. -->
   <!-- ........................................... -->
@@ -456,72 +561,7 @@
       <value>altitude-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
-    </input>
-    <reference>
-      <prop>/autopilot/internal/target-climb-rate-fps</prop>
-    </reference>
-    <output>
-      <prop>/controls/flight/elevator-trim</prop>
-    </output>
-    <config>
-      <Kp>-0.01</Kp>      <!-- proportional gain -->
-      <beta>1.0</beta>    <!-- input value weighing factor -->
-      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
-      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
-                          <!-- unfiltered derivative error -->
-      <Ti>10.0</Ti>       <!-- integrator time -->
-      <Td>0.00001</Td>    <!-- derivator time -->
-      <u_min>-1.0</u_min> <!-- minimum output clamp -->
-      <u_max>1.0</u_max>  <!-- maximum output clamp -->
-    </config>
-  </pid-controller>
-
-  <!-- ...................................... -->
-  <!-- AGL hold.  2 stage cascade controller. -->
-  <!-- ...................................... -->
-
-  <!-- Stage #1 sets target rate of climb based on diff between current agl -->
-  <!-- and target agl. -->
-  <pid-controller>
-    <name>AGL Hold (Altimeter based) Stage 1</name>
-    <debug>false</debug>
-    <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>agl-hold</value>
-    </enable>
-    <input>
-      <prop>/position/altitude-agl-ft</prop>
-    </input>
-    <reference>
-      <prop>/autopilot/settings/target-agl-ft</prop>
-    </reference>
-    <output>
-      <prop>/autopilot/internal/target-climb-rate-fps</prop>
-    </output>
-    <config>
-      <Kp>1.0</Kp>        <!-- proportional gain -->
-      <beta>1.0</beta>    <!-- input value weighing factor -->
-      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
-      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
-                          <!-- unfiltered derivative error -->
-      <Ti>25.0</Ti>    <!-- integrator time -->
-      <Td>0.000000001</Td>    <!-- derivator time -->
-      <u_min>-16.67</u_min> <!-- minimum output clamp -->
-      <u_max>8.33</u_max> <!-- maximum output clamp -->
-    </config>
-  </pid-controller>
-
-  <!-- Stage #2 drives the elevator-trim to achieve the desired climb rate. -->
-  <pid-controller>
-    <name>Altitude Hold (Altimeter based) Stage 2</name>
-    <debug>false</debug>
-    <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>agl-hold</value>
-    </enable>
-    <input>
-      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/internal/target-climb-rate-fps</prop>
@@ -555,7 +595,7 @@
       <value>gs1-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
@@ -583,11 +623,11 @@
     <name>Vertical Speed Hold</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>vertical-speed-hold</value>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>vertical-speed-hold-sub</value>
     </enable>
     <input>
-      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -597,7 +637,39 @@
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.02</Kp>      <!-- proportional gain (0.01) -->
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- supersonic -->
+
+  <pid-controller>
+    <name>Vertical Speed Hold (supersonic)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>vertical-speed-hold-super</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
+    </reference>
+    <output>
+      <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-0.02</Kp>      <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -620,7 +692,7 @@
       <value>vertical-speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/instantaneous-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>

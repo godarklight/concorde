@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Indicated Air Speed with Pitch -->
+<!-- Indicated Air Speed with Pitch :
+
+     - if no voltage, doesn't tell what virtual copilot is doing.
+-->
 
 <PropertyList>
  <name>Indicated Air Speed with Pitch</name>
@@ -18,10 +21,13 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <not-equals>
-      <property>/autopilot/locks/altitude</property>
-      <value>speed-with-pitch</value>
-     </not-equals>
+     <or>
+      <not-equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>speed-with-pitch</value>
+      </not-equals>
+      <not include="concorde-cond-voltage-autopilot.xml"/>
+     </or>
     </condition>
 
     <layer>
@@ -113,6 +119,7 @@
 
   <action>
    <desc>IAS with Pitch</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

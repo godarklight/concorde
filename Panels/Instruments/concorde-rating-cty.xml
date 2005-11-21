@@ -22,14 +22,9 @@ Flightgear doesn't have support for engine rating.
  
    <layer>
     <name>off</name>
-    <type>group</type>
     <condition>
-     <or>
-      <not>
-       <property>/instrumentation/generic/flashing-light</property>
-      </not>
-      <not include="concorde-cond-takeoff.xml">
-      </not>
+     <or include="concorde-cond-flashing-light.xml">
+      <not include="concorde-cond-takeoff.xml"/>
       <and>
        <not>
         <property>/controls/engines/engine[0]/augmentation</property>
@@ -44,63 +39,44 @@ Flightgear doesn't have support for engine rating.
         <property>/controls/engines/engine[3]/augmentation</property>
        </not>
       </and>
+      <or include="concorde-cond-voltage-bulb.xml"/>
      </or>
     </condition>
-
-    <layer>
-     <name>lamp off</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.0</x1>
-      <y1>0.0</y1>
-      <x2>0.25</x2>
-      <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
-    <layer>
-     <name>background</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
-      <x1>0.7</x1>
-      <y1>0.8</y1>
-      <x2>1.0</x2>
-      <y2>0.9</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
    </layer>
-
    <layer>
     <name>on</name>
-    <type>group</type>
-    <layer>
-     <name>on</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.37</x1>
-      <y1>0.0</y1>
-      <x2>0.38</x2>
-      <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
-    <layer>
-     <name>background lighted</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
-      <x1>0.7</x1>
-      <y1>0.8</y1>
-      <x2>1.0</x2>
-      <y2>0.9</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
-    </layer>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.37</x1>
+     <y1>0.0</y1>
+     <x2>0.38</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
    </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+    <x1>0.7</x1>
+    <y1>0.8</y1>
+    <x2>1.0</x2>
+    <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
   </layer>
 
   <layer>

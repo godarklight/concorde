@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Mach with Pitch Hold -->
+<!-- Mach with Pitch Hold :
+
+     - if no voltage, doesn't tell what virtual copilot is doing.
+-->
 
 <PropertyList>
  <name>Mach with Pitch Hold</name>
@@ -19,10 +22,13 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <not-equals>
-      <property>/autopilot/locks/altitude</property>
-      <value>mach-with-pitch</value>
-     </not-equals>
+     <or>
+      <not-equals>
+       <property>/autopilot/locks/altitude</property>
+       <value>mach-with-pitch</value>
+      </not-equals>
+      <not include="concorde-cond-voltage-autopilot.xml"/>
+     </or>
     </condition>
 
     <layer>
@@ -113,6 +119,7 @@
 
   <action>
    <desc>Mach with Pitch hold</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

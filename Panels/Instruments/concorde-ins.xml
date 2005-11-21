@@ -122,7 +122,9 @@ The LED is real (with probably different display).
   <name>INS</name>
   <type>group</type>
   <condition>
-   <property alias="../../../../params/on-ctrl"/>
+   <and include="concorde-cond-voltage-inst.xml">
+    <property alias="../../../../../params/on-ctrl"/>
+   </and>
   </condition>
 
 <!-- POSITION -->

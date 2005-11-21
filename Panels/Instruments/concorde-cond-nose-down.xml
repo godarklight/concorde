@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!-- Condition for nose/visor down :
+
+     - green hydraulics.
+     - yellow hydraulics.
+-->
+
+<PropertyList>
+
+  <and include="concorde-cond-voltage-nose.xml">
+   <or>
+    <not include="concorde-cond-hyd-green.xml"/>
+    <not include="concorde-cond-hyd-yellow.xml"/>
+   </or>
+  </and>
+
+</PropertyList>

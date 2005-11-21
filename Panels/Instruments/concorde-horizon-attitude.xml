@@ -23,16 +23,19 @@
     <layer>
      <name>off</name>
      <condition>
-      <and>
-       <less-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>16.5</value>
-       </less-than-equals>
-       <greater-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>-5.5</value>
-       </greater-than-equals>
-      </and>
+      <or>
+       <not include="concorde-cond-voltage-horizon.xml"/>
+       <and>
+        <less-than-equals>
+         <property>/orientation/pitch-deg</property>
+         <value>16.5</value>
+        </less-than-equals>
+        <greater-than-equals>
+         <property>/orientation/pitch-deg</property>
+         <value>-5.5</value>
+        </greater-than-equals>
+       </and>
+      </or>
      </condition>
      <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -61,7 +64,7 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-fault.rgb</path>
      <x1>0.7</x1>
      <y1>0.8</y1>
      <x2>1.0</x2>

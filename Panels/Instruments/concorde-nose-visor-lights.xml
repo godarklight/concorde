@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
-<!--
+<!-- Nose visor lights :
+
+     - the on spot is enough large, to make visible the green light at night (weak red component).
 -->
 
 <PropertyList>
@@ -13,42 +15,46 @@
 
  <layer>
   <name>transit light</name>
-   <type>switch</type>
+  <type>switch</type>
+
   <layer>
    <name>Off</name>
    <condition>
-    <and>
-     <or>
-      <equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.0</value>
-      </equals>
-      <greater-than>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.31</value>
-      </greater-than>
-     </or>
-     <or>
-      <less-than-equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>0.34</value>
-      </less-than-equals>
-      <and>
+    <or>
+     <not include="concorde-cond-voltage-nose.xml"/>
+     <and>
+      <or>
+       <equals>
+        <property>/surface-positions/flap-pos-norm</property>
+        <property n="1">/controls/nose-visor/visor/up</property>
+       </equals>
        <greater-than>
         <property>/surface-positions/flap-pos-norm</property>
-        <value>0.65</value>
+        <property n="1">/controls/nose-visor/visor/down-min</property>
        </greater-than>
-       <less-than>
+      </or>
+      <or>
+       <less-than-equals>
         <property>/surface-positions/flap-pos-norm</property>
-        <value>0.69</value>
-       </less-than>
-      </and>
-      <equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <value>1.0</value>
-      </equals>
-     </or>
-    </and>
+        <property n="1">/controls/nose-visor/nose/up-min</property>
+       </less-than-equals>
+       <and>
+        <greater-than>
+         <property>/surface-positions/flap-pos-norm</property>
+         <property n="1">/controls/nose-visor/nose/deg5-min</property>
+        </greater-than>
+        <less-than>
+         <property>/surface-positions/flap-pos-norm</property>
+         <property n="1">/controls/nose-visor/nose/deg5-max</property>
+        </less-than>
+       </and>
+       <equals>
+        <property>/surface-positions/flap-pos-norm</property>
+        <property n="1">/controls/nose-visor/nose/down</property>
+       </equals>
+      </or>
+     </and>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -78,10 +84,10 @@
    <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <x1>0.36</x1>
+    <y1>0.03</y1>
+    <x2>0.39</x2>
+    <y2>0.065</y2>
    </texture>
    <w>30</w>
    <h>30</h>
@@ -123,18 +129,20 @@
 
  <layer>
   <name>5 deg light</name>
-   <type>switch</type>
+  <type>switch</type>
+
   <layer>
    <name>Off</name>
    <condition>
     <or>
+     <not include="concorde-cond-voltage-nose.xml"/>
      <less-than-equals>
       <property>/surface-positions/flap-pos-norm</property>
-      <value>0.65</value>
+      <property n="1">/controls/nose-visor/nose/deg5-min</property>
      </less-than-equals>
      <greater-than-equals>
       <property>/surface-positions/flap-pos-norm</property>
-      <value>1.0</value>
+      <property n="1">/controls/nose-visor/nose/down</property>
      </greater-than-equals>
     </or>
    </condition>
@@ -166,10 +174,10 @@
    <name>On</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <x1>0.36</x1>
+    <y1>0.03</y1>
+    <x2>0.39</x2>
+    <y2>0.065</y2>
    </texture>
    <w>30</w>
    <h>30</h>
@@ -193,7 +201,11 @@
   <layer>
    <name>background 5 deg</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-nose-5-deg.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.95</x2>
+    <y2>1.0</y2>
    </texture>
    <w>30</w>
    <h>30</h>
@@ -209,50 +221,26 @@
    </transformations>
   </layer>
 
-  <layer>
-   <name>Title 5 deg</name>
-   <type>text</type>
-   <point-size>15</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>5</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>25</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
  <layer>
   <name>down light</name>
-   <type>switch</type>
+  <type>switch</type>
+
   <layer>
    <name>On</name>
    <condition>
-    <equals>
-     <property>/surface-positions/flap-pos-norm</property>
-     <value>1.0</value>
-    </equals>
+    <and include="concorde-cond-voltage-nose.xml">
+     <equals>
+      <property>/surface-positions/flap-pos-norm</property>
+      <property n="1">/controls/nose-visor/nose/down</property>
+     </equals>
+    </and>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.34</x1>
-    <y1>0.0</y1>
-    <x2>0.41</x2>
-    <y2>0.095</y2>
+    <x1>0.36</x1>
+    <y1>0.03</y1>
+    <x2>0.39</x2>
+    <y2>0.065</y2>
    </texture>
    <w>30</w>
    <h>30</h>
@@ -302,7 +290,11 @@
   <layer>
    <name>background down</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-nose-down.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
    </texture>
    <w>30</w>
    <h>30</h>
@@ -314,60 +306,6 @@
     <transformation>
      <type>y-shift</type>
      <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title down</name>
-   <type>text</type>
-   <point-size>15</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>V</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-7</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title arrow</name>
-   <type>text</type>
-   <point-size>15</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>I</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-1</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-3</offset>
     </transformation>
    </transformations>
   </layer>

@@ -11,12 +11,12 @@
     <value>altitude-hold</value>
    </equals>
    <greater-than>
-    <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter/target-min-ft</property>
+    <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+    <property n="1">/instrumentation/altimeter[0]/target-min-ft</property>
    </greater-than>
    <less-than>
-    <property>/instrumentation/altimeter/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter/target-max-ft</property>
+    <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+    <property n="1">/instrumentation/altimeter[0]/target-max-ft</property>
    </less-than>
   </and>
 

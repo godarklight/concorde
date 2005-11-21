@@ -23,6 +23,7 @@
        <property>/autopilot/locks/altitude</property>
        <value>gs1-hold</value>
       </equals>
+      <not include="concorde-cond-land.xml"/>
      </and>
     </condition>
 
@@ -114,6 +115,7 @@
 
   <action>
    <desc>Glide slope mode</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>

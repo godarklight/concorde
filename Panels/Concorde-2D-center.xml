@@ -46,8 +46,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <name>Concorde 2D Panel</name>
  <background>Aircraft/Concorde/Panels/Textures/concorde-panel-bg.rgb</background>
- <w>1424</w>
- <h>508</h>
+ <w>1140</w>
+ <h>770</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -57,7 +57,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-kg.xml">
    <name>Fuel weight display</name>
-   <x>391</x>
+   <x>301</x>
    <y>480</y>
    <w>40</w>
    <h>10</h>
@@ -69,9 +69,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 1 indicator</name>
    <params>
     <running-select>/engines/engine[0]/running</running-select>
+    <bucket-select>/engines/engine[0]/bucket-deg</bucket-select>
     <reverser-select>/engines/engine[0]/reversed</reverser-select>
+    <fuel-select>/engines/engine[0]/fuel-flow_pph</fuel-select>
+    <bug-select>/engines/engine[0]/bug_pph</bug-select>
    </params>
-   <x>115</x>
+   <x>29</x>
    <y>455</y>
    <w>90</w>
    <h>20</h>
@@ -81,9 +84,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 2 indicator</name>
    <params>
     <running-select>/engines/engine[1]/running</running-select>
+    <bucket-select>/engines/engine[1]/bucket-deg</bucket-select>
     <reverser-select>/engines/engine[1]/reversed</reverser-select>
+    <fuel-select>/engines/engine[1]/fuel-flow_pph</fuel-select>
+    <bug-select>/engines/engine[1]/bug_pph</bug-select>
    </params>
-   <x>217</x>
+   <x>131</x>
    <y>455</y>
    <w>90</w>
    <h>20</h>
@@ -93,9 +99,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 3 indicator</name>
    <params>
     <running-select>/engines/engine[2]/running</running-select>
+    <bucket-select>/engines/engine[2]/bucket-deg</bucket-select>
     <reverser-select>/engines/engine[2]/reversed</reverser-select>
+    <fuel-select>/engines/engine[2]/fuel-flow_pph</fuel-select>
+    <bug-select>/engines/engine[2]/bug_pph</bug-select>
    </params>
-   <x>319</x>
+   <x>233</x>
    <y>455</y>
    <w>90</w>
    <h>20</h>
@@ -105,9 +114,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 4 indicator</name>
    <params>
     <running-select>/engines/engine[3]/running</running-select>
+    <bucket-select>/engines/engine[3]/bucket-deg</bucket-select>
     <reverser-select>/engines/engine[3]/reversed</reverser-select>
+    <fuel-select>/engines/engine[3]/fuel-flow_pph</fuel-select>
+    <bug-select>/engines/engine[3]/bug_pph</bug-select>
    </params>
-   <x>421</x>
+   <x>335</x>
    <y>455</y>
    <w>90</w>
    <h>20</h>
@@ -120,7 +132,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n2-select>/engines/engine[0]/n2</n2-select>
    </params>
-   <x>144</x>
+   <x>54</x>
    <y>382</y>
    <w>100</w>
    <h>100</h>
@@ -131,7 +143,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n2-select>/engines/engine[1]/n2</n2-select>
    </params>
-   <x>246</x>
+   <x>156</x>
    <y>382</y>
    <w>100</w>
    <h>100</h>
@@ -142,7 +154,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n2-select>/engines/engine[2]/n2</n2-select>
    </params>
-   <x>348</x>
+   <x>258</x>
    <y>382</y>
    <w>100</w>
    <h>100</h>
@@ -153,7 +165,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n2-select>/engines/engine[3]/n2</n2-select>
    </params>
-   <x>450</x>
+   <x>360</x>
    <y>382</y>
    <w>100</w>
    <h>100</h>
@@ -166,7 +178,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n1-select>/engines/engine[0]/n1</n1-select>
    </params>
-   <x>144</x>
+   <x>54</x>
    <y>274</y>
    <w>100</w>
    <h>100</h>
@@ -177,7 +189,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n1-select>/engines/engine[1]/n1</n1-select>
    </params>
-   <x>246</x>
+   <x>156</x>
    <y>274</y>
    <w>100</w>
    <h>100</h>
@@ -188,7 +200,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n1-select>/engines/engine[2]/n1</n1-select>
    </params>
-   <x>348</x>
+   <x>258</x>
    <y>274</y>
    <w>100</w>
    <h>100</h>
@@ -199,7 +211,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n1-select>/engines/engine[3]/n1</n1-select>
    </params>
-   <x>450</x>
+   <x>360</x>
    <y>274</y>
    <w>100</w>
    <h>100</h>
@@ -211,8 +223,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 1 fuel flow</name>
    <params>
     <ff-select>/engines/engine[0]/fuel-flow_pph</ff-select>
+    <bug-select>/engines/engine[0]/bug_pph</bug-select>
    </params>
-   <x>144</x>
+   <x>77</x>
    <y>166</y>
    <w>100</w>
    <h>100</h>
@@ -222,8 +235,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 2 fuel flow</name>
    <params>
     <ff-select>/engines/engine[1]/fuel-flow_pph</ff-select>
+    <bug-select>/engines/engine[1]/bug_pph</bug-select>
    </params>
-   <x>246</x>
+   <x>179</x>
    <y>166</y>
    <w>100</w>
    <h>100</h>
@@ -233,8 +247,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 3 fuel flow</name>
    <params>
     <ff-select>/engines/engine[2]/fuel-flow_pph</ff-select>
+    <bug-select>/engines/engine[2]/bug_pph</bug-select>
    </params>
-   <x>348</x>
+   <x>281</x>
    <y>166</y>
    <w>100</w>
    <h>100</h>
@@ -244,8 +259,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 4 fuel flow</name>
    <params>
     <ff-select>/engines/engine[3]/fuel-flow_pph</ff-select>
+    <bug-select>/engines/engine[3]/bug_pph</bug-select>
    </params>
-   <x>450</x>
+   <x>383</x>
    <y>166</y>
    <w>100</w>
    <h>100</h>
@@ -259,7 +275,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <nozzle-select>engines/engine[0]/nozzle-pos-norm</nozzle-select>
     <reheat-select>/controls/engines/engine[0]/augmentation</reheat-select>
    </params>
-   <x>144</x>
+   <x>54</x>
    <y>58</y>
    <w>100</w>
    <h>100</h>
@@ -271,7 +287,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <nozzle-select>engines/engine[1]/nozzle-pos-norm</nozzle-select>
     <reheat-select>/controls/engines/engine[1]/augmentation</reheat-select>
    </params>
-   <x>246</x>
+   <x>156</x>
    <y>58</y>
    <w>100</w>
    <h>100</h>
@@ -283,7 +299,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <nozzle-select>engines/engine[2]/nozzle-pos-norm</nozzle-select>
     <reheat-select>/controls/engines/engine[2]/augmentation</reheat-select>
    </params>
-   <x>348</x>
+   <x>258</x>
    <y>58</y>
    <w>100</w>
    <h>100</h>
@@ -295,7 +311,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <nozzle-select>engines/engine[3]/nozzle-pos-norm</nozzle-select>
     <reheat-select>/controls/engines/engine[3]/augmentation</reheat-select>
    </params>
-   <x>450</x>
+   <x>360</x>
    <y>58</y>
    <w>100</w>
    <h>100</h>
@@ -305,7 +321,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-nose-visor.xml">
    <name>Nose/visor selector</name>
-   <x>580</x>
+   <x>500</x>
    <y>445</y>
    <w>40</w>
    <h>80</h>
@@ -313,7 +329,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-nose-visor-lights.xml">
    <name>Nose/visor selector</name>
-   <x>630</x>
+   <x>550</x>
    <y>415</y>
    <w>30</w>
    <h>80</h>
@@ -321,7 +337,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-visor-status.xml">
    <name>Visor status</name>
-   <x>650</x>
+   <x>570</x>
    <y>472</y>
    <w>30</w>
    <h>10</h>
@@ -329,7 +345,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-nose-status.xml">
    <name>Nose status</name>
-   <x>650</x>
+   <x>570</x>
    <y>395</y>
    <w>30</w>
    <h>10</h>
@@ -337,32 +353,16 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-gear-lights.xml">
    <name>Gear lights</name>
-   <x>640</x>
+   <x>560</x>
    <y>280</y>
    <w>110</w>
    <h>110</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-aoa.xml">
-   <name>AoA display</name>
-   <x>540</x>
-   <y>255</y>
-   <w>10</w>
-   <h>40</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-accl.xml">
-   <name>Acceleration display</name>
-   <x>540</x>
-   <y>175</y>
-   <w>10</w>
-   <h>40</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-gear.xml">
    <name>Landing Gear selector</name>
-   <x>560</x>
-   <y>120</y>
+   <x>450</x>
+   <y>135</y>
    <w>80</w>
    <h>80</h>
   </instrument>
@@ -371,8 +371,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-temperature.xml">
    <name>OAT/TMO temperatures</name>
-   <x>835</x>
-   <y>450</y>
+   <x>780</x>
+   <y>705</y>
    <w>65</w>
    <h>20</h>
   </instrument>
@@ -380,7 +380,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/controls.xml">
    <name>Control Position Indicators</name>
    <x>730</x>
-   <y>60</y>
+   <y>515</y>
    <w>90</w>
    <h>90</h>
   </instrument>
@@ -391,7 +391,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-throttle-select>/controls/engines/engine[0]/throttle</engine-throttle-select>
    </params>
    <x>810</x>
-   <y>85</y>
+   <y>540</y>
    <w>20</w>
    <h>80</h>
   </instrument>
@@ -402,7 +402,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-throttle-select>/controls/engines/engine[1]/throttle</engine-throttle-select>
    </params>
    <x>840</x>
-   <y>85</y>
+   <y>540</y>
    <w>20</w>
    <h>80</h>
   </instrument>
@@ -413,7 +413,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-throttle-select>/controls/engines/engine[2]/throttle</engine-throttle-select>
    </params>
    <x>870</x>
-   <y>85</y>
+   <y>540</y>
    <w>20</w>
    <h>80</h>
   </instrument>
@@ -424,7 +424,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-throttle-select>/controls/engines/engine[3]/throttle</engine-throttle-select>
    </params>
    <x>900</x>
-   <y>85</y>
+   <y>540</y>
    <w>20</w>
    <h>80</h>
   </instrument>
@@ -435,7 +435,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-reheat-select>/controls/engines/engine[0]/augmentation</engine-reheat-select>
    </params>
    <x>810</x>
-   <y>30</y>
+   <y>485</y>
    <w>28</w>
    <h>38</h>
   </instrument>
@@ -446,7 +446,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-reheat-select>/controls/engines/engine[1]/augmentation</engine-reheat-select>
    </params>
    <x>840</x>
-   <y>30</y>
+   <y>485</y>
    <w>28</w>
    <h>38</h>
   </instrument>
@@ -457,7 +457,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-reheat-select>/controls/engines/engine[2]/augmentation</engine-reheat-select>
    </params>
    <x>870</x>
-   <y>30</y>
+   <y>485</y>
    <w>28</w>
    <h>38</h>
   </instrument>
@@ -468,7 +468,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <engine-reheat-select>/controls/engines/engine[3]/augmentation</engine-reheat-select>
    </params>
    <x>900</x>
-   <y>30</y>
+   <y>485</y>
    <w>28</w>
    <h>38</h>
   </instrument>
@@ -476,7 +476,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/brakes.xml">
    <name>Brake Indicator Light</name>
    <x>970</x>
-   <y>40</y>
+   <y>495</y>
    <w>50</w>
    <h>27</h>
   </instrument>
@@ -486,7 +486,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/navcom-kx155.xml">
    <name>NavCom 1 Radio</name>
    <x>880</x>
-   <y>341</y>
+   <y>231</y>
   </instrument>
 
   <instrument include="../../Instruments/navcom-kx155.xml">
@@ -500,31 +500,35 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <nav-morse-ident-toggle-prop>/instrumentation/nav[1]/ident</nav-morse-ident-toggle-prop>
    </params>
    <x>880</x>
-   <y>255</y>
+   <y>145</y>
   </instrument>
 
   <instrument include="../../Instruments/adf-radio.xml">
    <name>ADF Radio</name>
+   <params>
+    <adf-freq-selected-prop>/instrumentation/adf[0]/frequencies/selected-khz</adf-freq-selected-prop>
+    <adf-freq-standby-prop>/instrumentation/adf[1]/frequencies/selected-khz</adf-freq-standby-prop>
+    <adf-morse-id-volume-prop>/instrumentation/adf[0]/volume-norm</adf-morse-id-volume-prop>
+    <adf-morse-ident-toggle-prop>/instrumentation/adf[0]/ident-audible</adf-morse-ident-toggle-prop>
+   </params>
    <x>880</x>
-   <y>181</y>
+   <y>71</y>
   </instrument>
 
 <!-- ENGINEER -->
 
   <instrument include="Instruments/concorde-cg-max-to.xml">
    <name>Max Performance TO</name>
-   <x>970</x>
-   <y>460</y>
+   <x>380</x>
+   <y>675</y>
    <w>45</w>
    <h>45</h>
   </instrument>
 
-<!-- OVERHEAD -->
-
   <instrument include="Instruments/concorde-cg-weight-105t.xml">
    <name>Weight selector</name>
-   <x>37</x>
-   <y>290</y>
+   <x>530</x>
+   <y>680</y>
    <w>65</w>
    <h>24</h>
   </instrument>
@@ -537,9 +541,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[0]/engine-num</eng-num>
     <cutoff>/engines/engine[0]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
    </params>
-   <x>22</x>
-   <y>200</y>
+   <x>122</x>
+   <y>610</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -547,11 +552,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 1 starter</name>
    <params>
-    <starter>/engines/engine[0]/starter</starter>
     <control-starter>/controls/engines/engine[0]/starter</control-starter>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
    </params>
-   <x>52</x>
-   <y>200</y>
+   <x>122</x>
+   <y>563</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -562,9 +567,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[1]/engine-num</eng-num>
     <cutoff>/engines/engine[1]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
    </params>
-   <x>22</x>
-   <y>160</y>
+   <x>160</x>
+   <y>610</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -572,11 +578,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 2 starter</name>
    <params>
-    <starter>/engines/engine[1]/starter</starter>
     <control-starter>/controls/engines/engine[1]/starter</control-starter>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
    </params>
-   <x>52</x>
-   <y>160</y>
+   <x>160</x>
+   <y>563</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -587,9 +593,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[2]/engine-num</eng-num>
     <cutoff>/engines/engine[2]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
    </params>
-   <x>22</x>
-   <y>120</y>
+   <x>198</x>
+   <y>610</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -597,11 +604,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 3 starter</name>
    <params>
-    <starter>/engines/engine[2]/starter</starter>
     <control-starter>/controls/engines/engine[2]/starter</control-starter>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
    </params>
-   <x>52</x>
-   <y>120</y>
+   <x>198</x>
+   <y>563</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -612,9 +619,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[3]/engine-num</eng-num>
     <cutoff>/engines/engine[3]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
    </params>
-   <x>22</x>
-   <y>80</y>
+   <x>236</x>
+   <y>610</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -622,11 +630,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-engine-starter.xml">
    <name>Engine 4 starter</name>
    <params>
-    <starter>/engines/engine[3]/starter</starter>
     <control-starter>/controls/engines/engine[3]/starter</control-starter>
+    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
    </params>
-   <x>52</x>
-   <y>80</y>
+   <x>236</x>
+   <y>563</y>
    <w>28</w>
    <h>28</h>
   </instrument>

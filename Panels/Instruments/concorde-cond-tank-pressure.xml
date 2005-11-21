@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on tank pressure :
+
+     - differential pressure below -2 PSI.
+-->
+
+<PropertyList>
+
+  <greater-than>
+   <property>/instrumentation/tank-pressure/differential-psi</property>
+   <value>-2.0</value>
+  </greater-than>
+
+</PropertyList>

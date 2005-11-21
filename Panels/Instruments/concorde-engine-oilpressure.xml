@@ -1,3 +1,6 @@
+<!-- Engine oil pressure.
+-->
+
 <PropertyList>
  <name>Oil Pressure, psi, Engine[0]</name>
  <w-base>128</w-base>
@@ -36,6 +39,7 @@
    <transformations>
     <transformation>
      <type>rotation</type>
+     <condition include="concorde-cond-voltage-inst.xml"/>
      <property alias="../../../../../params/oil-select"/>
       <scale>3.6</scale>
       <offset>0</offset>
@@ -79,17 +83,20 @@
     <layer>
     <name>off</name>
     <condition>
-     <greater-than>
-      <property alias="../../../../../../params/oil-select"/>
-      <value>15</value>
-     </greater-than>
+     <or>
+      <greater-than>
+       <property alias="../../../../../../../params/oil-select"/>
+       <value>15</value>
+      </greater-than>
+      <not include="concorde-cond-voltage-inst.xml"/>
+     </or>
     </condition>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.75</y1>
+     <x2>0.5</x2>
+     <y2>1.0</y2>
     </texture>
     <w>17</w>
     <h>17</h>
@@ -97,11 +104,11 @@
    <layer>
     <name>on</name>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.31</x1>
-     <y1>0.0</y1>
-     <x2>0.44</x2>
-     <y2>0.095</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+     <x1>0.5</x1>
+     <y1>0.75</y1>
+     <x2>0.75</x2>
+     <y2>1.0</y2>
     </texture>
     <w>17</w>
     <h>17</h>
@@ -121,11 +128,11 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-alarm.rgb</path>
-     <x1>0.7</x1>
-     <y1>0.8</y1>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-led.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
      <x2>1.0</x2>
-     <y2>0.9</y2>
+     <y2>1.0</y2>
    </texture>
    <w>17</w>
    <h>17</h>

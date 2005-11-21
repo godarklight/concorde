@@ -19,10 +19,23 @@
     <type>group</type>
     <condition>
      <and include="concorde-cond-vorloc.xml">
-      <equals>
-       <property>/autopilot/locks/heading</property>
-       <value>nav1-hold</value>
-      </equals>
+      <or>
+       <equals>
+        <property>/autopilot/locks/horizontal</property>
+        <value>vor</value>
+       </equals>
+       <and>
+        <equals>
+         <property>/autopilot/locks/heading</property>
+         <value>nav1-hold</value>
+        </equals>
+        <equals>
+         <property>/autopilot/locks/altitude</property>
+         <value>gs1-hold</value>
+        </equals>
+       </and>
+      </or>
+      <not include="concorde-cond-land.xml"/>
      </and>
     </condition>
 
@@ -114,6 +127,7 @@
 
   <action>
    <desc>VOR lock</desc>
+   <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
    <x>-53</x>
    <y>-13</y>

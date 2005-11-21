@@ -24,8 +24,8 @@ Emulation : in reality, the engineer switches the rating.
     <type>group</type>
     <condition>
      <or include="concorde-cond-takeoff.xml">
-      <not include="concorde-cond-cruise.xml">
-      </not>
+      <not include="concorde-cond-cruise.xml"/>
+      <or include="concorde-cond-voltage-bulb.xml"/>
      </or>
     </condition>
 

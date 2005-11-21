@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<!--
+-->
+
+<PropertyList>
+
+ <name>Speed up display</name>
+ <w-base>10</w-base>
+ <h-base>40</h-base>
+
+ <layers>
+
+  <layer>
+   <name>speed up display</name>
+   <type>group</type>
+   <condition>
+    <greater-than>
+     <property>/sim/speed-up</property>
+     <value>1.0</value>
+    </greater-than>
+   </condition>
+
+   <layer>
+    <name>speed up</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.0</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/sim/speed-up</property>
+      <format>%2.0f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-20</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>title</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.0</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>T</text>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>35</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>0</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+  </layer>
+
+  <layer>
+   <name>virtual copilot</name>
+   <condition>
+    <property>/autopilot/internal/state/virtual-copilot</property>
+   </condition>
+   <type>text</type>
+   <point-size>20</point-size>
+   <color>
+    <red>1.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>copilot</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>45</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

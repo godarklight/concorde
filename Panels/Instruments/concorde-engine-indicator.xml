@@ -2,9 +2,9 @@
 
 <!-- Engine indicator lights :
 
-- configuration doesn't exist in Flightgear.
-- reverser is not implemented by JBSim.
-
+     - secondary nozzle buckets within limits, and fuel flow above bug.
+     - configuration doesn't exist in Flightgear.
+     - reverser is not implemented by JBSim.
 -->
 
 <PropertyList>
@@ -15,8 +15,10 @@
 
  <params>
   <running-select>/engines/engine[0]/running</running-select>
-  <configuration-select>/engines/engine[0]/configuration</configuration-select>
+  <bucket-select>/engines/engine[0]/bucket-deg</bucket-select>
   <reverser-select>/engines/engine[0]/reversed</reverser-select>
+  <fuel-select>/engines/engine[0]/fuel-flow_pph</fuel-select>
+  <bug-select>/engines/engine[0]/bug_pph</bug-select>
  </params>
 
  <layers>
@@ -26,72 +28,64 @@
  <layer>
   <name>go light</name>
    <type>switch</type>
-  <layer>
-   <name>On</name>
-   <condition>
-    <property alias="../../../../../params/running-select"/>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.33</x1>
-    <y1>0.0</y1>
-    <x2>0.42</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+
+   <layer>
+    <name>Off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and>
+       <or include="concorde-cond-test-center.xml"/> <!-- bug -->
+       <or>
+        <not>
+         <property alias="../../../../../../../../../params/running-select"/>
+        </not>
+        <greater-than>
+         <property alias="../../../../../../../../../params/bucket-select"/>
+         <value>21.0</value>
+        </greater-than>
+        <less-than>
+         <property alias="../../../../../../../../../params/fuel-select"/>
+         <property n="1" alias="../../../../../../../../../params/bug-select"/>
+        </less-than>
+        <not>
+         <property>/instrumentation/takeoff-monitor/armed</property>
+        </not>
+       </or>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+   </layer>
+
+   <layer>
+    <name>On</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.33</x1>
+     <y1>0.0</y1>
+     <x2>0.42</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+   </layer>
   </layer>
-  <layer>
-   <name>Off</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
- </layer>
 
   <layer>
    <name>background go</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
    </texture>
-    <w>30</w>
-    <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+    <w>25</w>
+    <h>19</h>
   </layer>
 
 <!-- CONFIGURATION -->
@@ -99,12 +93,13 @@
  <layer>
   <name>configuration light</name>
   <type>switch</type>
+
   <layer>
    <name>Off</name>
    <condition>
-    <not>
-     <property alias="../../../../../../params/configuration-select"/>
-    </not>
+    <or include="concorde-cond-voltage-bulb.xml">
+     <or include="concorde-cond-test-center.xml"/>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -113,19 +108,10 @@
     <x2>0.25</x2>
     <y2>0.095</y2>
    </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>30</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+   <w>25</w>
+   <h>19</h>
   </layer>
+
   <layer>
    <name>On</name>
    <texture>
@@ -135,63 +121,32 @@
     <x2>0.42</x2>
     <y2>0.095</y2>
    </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>30</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+   <w>25</w>
+   <h>19</h>
   </layer>
+  <transformations>
+   <transformation>
+    <type>x-shift</type>
+    <offset>25</offset>
+   </transformation>
+  </transformations>
  </layer>
 
   <layer>
    <name>background configuration</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-con.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.1</y1>
+    <x2>1.0</x2>
+    <y2>0.9</y2>
    </texture>
-    <w>30</w>
-    <h>20</h>
+    <w>25</w>
+    <h>19</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>30</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title configuration</name>
-   <type>text</type>
-   <point-size>11</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>CON</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>17</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-4</offset>
+     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -201,12 +156,18 @@
  <layer>
   <name>reverser light</name>
   <type>switch</type>
+
   <layer>
    <name>Off</name>
    <condition>
-    <not>
-     <property alias="../../../../../../params/reverser-select"/>
-    </not>
+    <or include="concorde-cond-voltage-bulb.xml">
+     <and>
+      <or include="concorde-cond-test-center.xml"/> <!-- bug -->
+      <not>
+       <property alias="../../../../../../../../params/reverser-select"/>
+      </not>
+     </and>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -215,19 +176,10 @@
     <x2>0.25</x2>
     <y2>0.095</y2>
    </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>60</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+   <w>25</w>
+   <h>19</h>
   </layer>
+
   <layer>
    <name>On</name>
    <texture>
@@ -237,63 +189,32 @@
     <x2>0.42</x2>
     <y2>0.095</y2>
    </texture>
-   <w>30</w>
-   <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>60</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+   <w>25</w>
+   <h>19</h>
   </layer>
+  <transformations>
+   <transformation>
+    <type>x-shift</type>
+    <offset>50</offset>
+   </transformation>
+  </transformations>
  </layer>
 
   <layer>
    <name>background reverser</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-indicator.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-rev.gb</path>
+    <x1>0.0</x1>
+    <y1>0.1</y1>
+    <x2>1.0</x2>
+    <y2>0.9</y2>
    </texture>
-    <w>30</w>
-    <h>20</h>
+    <w>25</w>
+    <h>19</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>60</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title reverser</name>
-   <type>text</type>
-   <point-size>11</point-size>
-   <color>
-    <red>0.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>REV</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>47</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-4</offset>
+     <offset>50</offset>
     </transformation>
    </transformations>
   </layer>

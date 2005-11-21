@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+
+<!-- Nose/visor warning -->
+
+<PropertyList>
+ <name>Nose/Visor warning</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Warning light</name>
+   <type>switch</type>
+    <layer>
+     <name>on</name>
+     <condition>
+      <greater-than>
+       <property>controls/flight/flaps</property>
+       <property n="1">controls/nose-visor/visor/up</property>
+      </greater-than>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>off</name>
+     <condition>
+      <equals>
+       <property>controls/flight/flaps</property>
+       <property n="1">controls/nose-visor/visor/up</property>
+      </equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+  <layer>
+   <name>Visor Up</name>
+   <condition>
+    <equals>
+     <property>controls/flight/flaps</property>
+     <property n="1">controls/nose-visor/visor/up</property>
+    </equals>
+   </condition>
+   <type>text</type>
+   <point-size>29</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>V UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-39</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Visor Down</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property>controls/flight/flaps</property>
+      <property n="1">controls/nose-visor/visor/up</property>
+     </greater-than>
+     <less-than>
+      <property>controls/flight/flaps</property>
+      <property n="1">controls/nose-visor/visor/down-max</property>
+     </less-than>
+    </and>
+   </condition>
+   <type>text</type>
+   <point-size>29</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>V DN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Nose 5 deg</name>
+   <condition>
+    <and>
+     <greater-than>
+      <property>controls/flight/flaps</property>
+      <property n="1">controls/nose-visor/nose/up-min</property>
+     </greater-than>
+     <less-than>
+      <property>controls/flight/flaps</property>
+      <property n="1">controls/nose-visor/nose/down</property>
+     </less-than>
+    </and>
+   </condition>
+   <type>text</type>
+   <point-size>29</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>N  5</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-32</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Nose down</name>
+   <condition>
+    <equals>
+     <property>controls/flight/flaps</property>
+     <property n="1">controls/nose-visor/nose/down</property>
+    </equals>
+   </condition>
+   <type>text</type>
+   <point-size>29</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>N DN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-39</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on Engine :
+
+     - oil pressure below 15 PSI.
+-->
+
+<PropertyList>
+ <name>Alarm Engine</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+ <params>
+  <eng-num>/engines/engine[0]/engine-num</eng-num>
+  <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
+ </params>
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-overhead.xml">
+       <greater-than>
+        <property alias="../../../../../../../../params/oil-select"/>
+        <value>15.0</value>
+       </greater-than>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>Background</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Engine 1</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/eng-num"/>
+      <value>1</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-eng1.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+
+   <layer>
+    <name>Engine 2</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/eng-num"/>
+      <value>2</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-eng2.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+
+   <layer>
+    <name>Engine 3</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/eng-num"/>
+      <value>3</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-eng3.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+
+   <layer>
+    <name>Engine 4</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-eng4.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.25</y1>
+     <x2>1.0</x2>
+     <y2>0.75</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+ </layers>
+
+</PropertyList>

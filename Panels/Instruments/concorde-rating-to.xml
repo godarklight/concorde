@@ -22,7 +22,10 @@ Emulation : in reality, the engineer switches the rating.
    <layer>
     <name>on</name>
     <type>group</type>
-    <condition include="concorde-cond-takeoff.xml">
+    <condition>
+     <and include="concorde-cond-takeoff.xml">
+      <not include="concorde-cond-voltage-bulb.xml"/>
+     </and>
     </condition>
 
     <layer>

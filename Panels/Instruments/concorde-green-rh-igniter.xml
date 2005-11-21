@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<!-- RH igniter :
+
+     - engine ignition.
+-->
+
+<PropertyList>
+ <name>RH Igniter</name>
+ <w-base>26</w-base>
+ <h-base>104</h-base>
+
+
+ <layers>
+
+<!-- translucent lens -->  
+  <layer>
+   <name>Operation light</name>
+   <type>switch</type>
+
+   <layer>
+    <name>lamp off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-eng-forward.xml">
+       <or>
+        <property>/engines/engine[0]/cutoff</property>
+        <not>
+         <property>/engines/engine[0]/starter</property>
+        </not>
+       </or>
+       <or>
+        <property>/engines/engine[1]/cutoff</property>
+        <not>
+         <property>/engines/engine[1]/starter</property>
+        </not>
+       </or>
+       <or>
+        <property>/engines/engine[2]/cutoff</property>
+        <not>
+         <property>/engines/engine[2]/starter</property>
+        </not>
+       </or>
+       <or>
+        <property>/engines/engine[3]/cutoff</property>
+        <not>
+         <property>/engines/engine[3]/starter</property>
+        </not>
+       </or>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>20</w>
+    <h>104</h>
+   </layer>
+   <layer>
+    <name>lamp on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>20</w>
+    <h>104</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background on</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-rh-ign.rgb</path>
+    <x1>0.2</x1>
+    <y1>0.0</y1>
+    <x2>0.8</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>20</w>
+   <h>104</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

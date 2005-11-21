@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+
+<!-- Concorde instrumentation :
+
+     - 2 DME (always visible) to bypass the limitation of switching frequencies.
+     - 1 instrument for both Captain and Copilot.
+-->
+
+
+<!--
+**********************************************************************
+This file selects the instrumentation modules that should be available.
+
+You can have several instances of the same instrument type.
+The value inside the name tag becomes the node in the property tree.
+If two instruments have the same name you must use the number tag
+to separate them. They become name[number] in the property tree.
+Some instruments have additional configuration tags like static-port
+and pitot-port. The static- and pitot-ports (and any other system that
+an instrument depend on) have to be configured in the systems
+configuration file: generic-systems.xml
+
+The values in this file are the default values. If any configuration
+tags are omitted in an aircraft specific version of this configuration
+file, these values will be used (they are hardcoded).
+
+**********************************************************************
+-->
+
+<PropertyList>
+
+<!-- 2 ADF needles -->
+
+  <adf>
+    <name>adf</name>
+    <number>0</number>
+  </adf>
+
+  <adf>
+    <name>adf</name>
+    <number>1</number>
+  </adf>
+
+  <airspeed-indicator>
+    <name>airspeed-indicator</name>
+    <number>0</number>
+    <pitot-port>/systems/pitot</pitot-port>
+    <static-port>/systems/static</static-port>
+  </airspeed-indicator>
+
+<!-- standby -->
+
+  <airspeed-indicator>
+    <name>airspeed-indicator</name>
+    <number>1</number>
+    <pitot-port>/systems/pitot</pitot-port>
+    <static-port>/systems/static</static-port>
+  </airspeed-indicator>
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>0</number>
+    <static-port>/systems/static</static-port>
+  </altimeter>
+
+<!-- standby -->
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>1</number>
+    <static-port>/systems/static</static-port>
+  </altimeter>
+
+  <attitude-indicator>
+    <name>attitude-indicator</name>
+    <number>0</number>
+    <vacuum-system>/systems/vacuum</vacuum-system>
+  </attitude-indicator>
+
+<!-- standby -->
+
+  <attitude-indicator>
+    <name>attitude-indicator</name>
+    <number>1</number>
+    <vacuum-system>/systems/vacuum</vacuum-system>
+  </attitude-indicator>
+
+  <clock>
+    <name>clock</name>
+    <number>0</number>
+  </clock>
+
+<!-- 2 DME frequencies -->
+
+  <dme>
+    <name>dme</name>
+    <number>0</number>
+  </dme>
+
+  <dme>
+    <name>dme</name>
+    <number>1</number>
+  </dme>
+
+<!--
+  <encoder>
+    <name>encoder</name>
+    <number>0</number>
+    <static-port>/systems/static</static-port>
+  </encoder>
+-->
+
+  <marker-beacon>
+    <name>marker-beacon</name>
+    <number>0</number>
+  </marker-beacon>
+
+  <heading-indicator>
+    <name>heading-indicator</name>
+    <number>0</number>
+    <vacuum-system>/systems/vacuum</vacuum-system>
+  </heading-indicator>
+
+<!--
+  <KT-70>
+    <name>kt-70</name>
+    <number>0</number>
+  </KT-70>
+-->
+
+  <magnetic-compass>
+    <name>magnetic-compass</name>
+    <number>0</number>
+  </magnetic-compass>
+
+<!-- 2 VOR needles -->
+
+  <nav-radio>
+    <name>nav</name>
+    <number>0</number>
+  </nav-radio>
+
+  <nav-radio>
+    <name>nav</name>
+    <number>1</number>
+  </nav-radio>
+
+  <slip-skid-ball>
+    <name>slip-skid-ball</name>
+    <number>0</number>
+  </slip-skid-ball>
+
+<!--
+  <transponder>
+    <name>transponder</name>
+    <number>0</number>
+    <encoder>/instrumentation/encoder</encoder>
+  </transponder>
+-->
+
+  <turn-indicator>
+    <name>turn-indicator</name>
+    <number>0</number>
+  </turn-indicator>
+
+  <inst-vertical-speed-indicator>
+    <name>inst-vertical-speed-indicator</name>
+    <number>0</number>
+  </inst-vertical-speed-indicator>
+
+<!-- required by autopilot -->
+
+  <gps>
+    <name>gps</name>
+    <number>0</number>
+  </gps>
+
+</PropertyList>

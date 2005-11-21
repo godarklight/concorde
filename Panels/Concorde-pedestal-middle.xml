@@ -44,7 +44,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <name>Concorde Pedestal Middle</name>
  <background>Aircraft/Concorde/Panels/Textures/transparent-bg.rgb</background>
  <w>1024</w>
- <h>508</h>
+ <h>512</h>
  <y-offset>0</y-offset>
  <view-height>500</view-height>
 
@@ -57,10 +57,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-35</value>
+      <value>-40</value>
      </less-than>
     </and>
    </condition>
@@ -75,21 +75,17 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
       <value>-35</value>
      </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-90</value>
-     </greater-than>
     </and>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[0]/throttle</engine-throttle-select>
    </params>
-   <x>230</x>
+   <x>260</x>
    <y>200</y>
    <w>30</w>
    <h>120</h>
@@ -100,21 +96,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-30</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>350</value>
      </less-than>
      <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-85</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>185</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-35</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[1]/throttle</engine-throttle-select>
    </params>
-   <x>290</x>
+   <x>320</x>
    <y>200</y>
    <w>30</w>
    <h>120</h>
@@ -125,21 +125,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>340</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>200</value>
+     </greater-than>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
       <value>-30</value>
      </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-85</value>
-     </greater-than>
     </and>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[2]/throttle</engine-throttle-select>
    </params>
-   <x>350</x>
+   <x>380</x>
    <y>200</y>
    <w>30</w>
    <h>120</h>
@@ -150,21 +154,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-25</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
      </less-than>
      <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-80</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>205</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-30</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[3]/throttle</engine-throttle-select>
    </params>
-   <x>410</x>
+   <x>440</x>
    <y>200</y>
    <w>30</w>
    <h>120</h>
@@ -175,21 +183,17 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
       <value>-35</value>
      </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-90</value>
-     </greater-than>
     </and>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[0]/augmentation</engine-reheat-select>
    </params>
-   <x>230</x>
+   <x>260</x>
    <y>90</y>
    <w>52</w>
    <h>68</h>
@@ -200,21 +204,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-30</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>340</value>
      </less-than>
      <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-85</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>175</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-35</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[1]/augmentation</engine-reheat-select>
    </params>
-   <x>290</x>
+   <x>320</x>
    <y>90</y>
    <w>52</w>
    <h>68</h>
@@ -225,21 +233,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>190</value>
+     </greater-than>
      <less-than>
       <property>/sim/current-view/goal-pitch-offset-deg</property>
       <value>-30</value>
      </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-85</value>
-     </greater-than>
     </and>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[2]/augmentation</engine-reheat-select>
    </params>
-   <x>350</x>
+   <x>380</x>
    <y>90</y>
    <w>52</w>
    <h>68</h>
@@ -250,21 +262,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-25</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>320</value>
      </less-than>
      <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-80</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>200</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-30</value>
+     </less-than>
     </and>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[3]/augmentation</engine-reheat-select>
    </params>
-   <x>410</x>
+   <x>440</x>
    <y>90</y>
    <w>52</w>
    <h>68</h>
@@ -275,18 +291,22 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <condition>
     <and>
      <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/captain-seat</property>
+     <property>/sim/current-view/seat/captain</property>
      <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-20</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>325</value>
      </less-than>
      <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-75</value>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>215</value>
      </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>-25</value>
+     </less-than>
     </and>
    </condition>
-   <x>520</x>
+   <x>560</x>
    <y>200</y>
    <w>83</w>
    <h>42</h>
