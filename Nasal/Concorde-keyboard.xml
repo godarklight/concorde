@@ -739,7 +739,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-nose-up.xml"/>
      <command>nasal</command>
-     <script>controls.stepFlaps(-1)</script>
+     <script>controls.flapsDown(-1)</script>
     </binding>
    </key>
 
@@ -749,7 +749,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-nose-down.xml"/>
      <command>nasal</command>
-     <script>controls.stepFlaps(1)</script>
+     <script>controls.flapsDown(1)</script>
     </binding>
    </key>
 
