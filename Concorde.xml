@@ -5,10 +5,10 @@
  xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
 
     <fileheader>
-        <author> Anon Y. Mous </author>
-        <filecreationdate> 11-15-2005 </filecreationdate>
-        <version> 0.8 </version>
-        <description>Models an Aerospatiale/British Aerospace Concorde.</description>
+        <author> </author>
+        <filecreationdate> 25 March 2006 </filecreationdate>
+        <version> 1.04 </version>
+        <description>Aerospatiale/British Aerospace Concorde.</description>
         <documentation>
           Model design data follows.
           ------------------------
@@ -807,7 +807,7 @@
             <contents unit="LBS"> 4905.2900 </contents>
         </tank>
     </propulsion>
-    <flight_control name="FCS: Concorde">
+    <flight_control name="Concorde">
      <channel name="Pitch">
 
         <summer name="Pitch Trim Sum">
@@ -827,6 +827,14 @@
                 <max>22.5000</max>
             </range>
             <output>fcs/elevator-pos-rad</output>
+        </aerosurface_scale>
+        <aerosurface_scale name="Elevator Position Normalizer">
+            <input>fcs/pitch-trim-sum</input>
+            <range>
+                <min>-1</min>
+                <max>1</max>
+            </range>
+            <output>fcs/elevator-pos-norm</output>
         </aerosurface_scale>
 
      </channel>
@@ -850,6 +858,14 @@
             </range>
             <output>fcs/left-aileron-pos-rad</output>
         </aerosurface_scale>
+        <aerosurface_scale name="Left Aileron Position Normalizer">
+            <input>fcs/roll-trim-sum</input>
+            <range>
+                <min>-1</min>
+                <max>1</max>
+            </range>
+            <output>fcs/left-aileron-pos-norm</output>
+        </aerosurface_scale>
 
         <aerosurface_scale name="Right Aileron Control">
             <input>-fcs/roll-trim-sum</input>
@@ -859,6 +875,14 @@
                 <max>22.5000</max>
             </range>
             <output>fcs/right-aileron-pos-rad</output>
+        </aerosurface_scale>
+        <aerosurface_scale name="Right Aileron Position Normalizer">
+            <input>fcs/roll-trim-sum</input>
+            <range>
+                <min>-1</min>
+                <max>1</max>
+            </range>
+            <output>fcs/right-aileron-pos-norm</output>
         </aerosurface_scale>
 
      </channel>
@@ -933,6 +957,14 @@
             </range>
             <output>fcs/rudder-pos-rad</output>
         </aerosurface_scale>
+        <aerosurface_scale name="Rudder Position Normalizer">
+            <input>fcs/rudder-sum</input>
+            <range>
+                <min>-1</min>
+                <max>1</max>
+            </range>
+            <output>fcs/rudder-pos-norm</output>
+        </aerosurface_scale>
 
      </channel>
      <channel name="Aeromechanical">
@@ -959,6 +991,18 @@
             </traverse>
             <output>fcs/flap-pos-deg</output>
         </kinematic>
+        <aerosurface_scale name="Flap Position Normalizer">
+          <input>fcs/flap-pos-deg</input>
+          <domain>
+            <min>0</min>
+            <max>12.5</max>
+          </domain>
+          <range>
+            <min>0</min>
+            <max>1</max>
+          </range>
+          <output>fcs/flap-pos-norm</output>
+        </aerosurface_scale>
 
         <kinematic name="Gear Control">
             <input>gear/gear-cmd-norm</input>

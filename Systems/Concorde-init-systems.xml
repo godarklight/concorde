@@ -18,6 +18,39 @@
     <battery n="0">160.0</battery>   <!-- amps, no discharge -->
     <battery n="1">160.0</battery>
    </loads>
+
+<!-- avoids abort by JSBSIM 2.0 -->
+   <outputs>
+    <audio-panel type="double" n="0">0.0</audio-panel>
+    <audio-panel type="double" n="1">0.0</audio-panel>
+    <autopilot type="double">0.0</autopilot>
+    <avionicsa type="double">0.0</avionicsa>
+    <avionicsb type="double">0.0</avionicsb>
+    <avionics-fan type="double">0.0</avionics-fan>
+    <bus type="double">0.0</bus>
+    <gps type="double">0.0</gps>
+    <gps-mfd type="double">0.0</gps-mfd>
+    <instrument-lights type="double">0.0</instrument-lights>
+    <nav type="double" n="0">0.0</nav>
+    <nav type="double" n="1">0.0</nav>
+    <probe>
+     <ac-csd1 type="double">0.0</ac-csd1>
+     <ac-csd2 type="double">0.0</ac-csd2>
+     <ac-csd3 type="double">0.0</ac-csd3>
+     <ac-csd4 type="double">0.0</ac-csd4>
+     <ac-standbya type="double">0.0</ac-standbya>
+     <ac-standbyb type="double">0.0</ac-standbyb>
+    </probe>
+    <transponder type="double">0.0</transponder>
+   </outputs>
+   <suppliers>
+    <emergency type="double">0.0</emergency>
+    <engine type="double" n="0">0.0</engine>
+    <engine type="double" n="1">0.0</engine>
+    <engine type="double" n="2">0.0</engine>
+    <engine type="double" n="3">0.0</engine>
+    <external type="double">0.0</external>
+   </suppliers>
   </electrical>
 
   <fuel>
