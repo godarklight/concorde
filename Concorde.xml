@@ -1,18 +1,63 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="http://jsbsim.sourceforge.net/JSBSim.xsl" type="text/xsl"?>
-<fdm_config name="Aerospatiale/BAC Concorde" version="2.0" release="BETA"
+<fdm_config name="Aerospatiale/BAC Concorde" version="2.0" release="PRODUCTION"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
 
     <fileheader>
         <author> </author>
-        <filecreationdate> 25 March 2006 </filecreationdate>
-        <version> 1.04 </version>
-        <description>Aerospatiale/British Aerospace Concorde.</description>
-        <documentation>
-          Model design data follows.
-          ------------------------
+        <filecreationdate> 1st April 2006 </filecreationdate>
+        <version> 1.05 </version>
+        <description>Aerospatiale/British Aerospace Concorde</description>
 
+        <note>Air intake effect included, which allows more drag at Mach 1.3-2.0.</note>
+        <note>Full tanks at maximum takeoff load.</note>
+        <note>Landing pitch is 10deg. (maximum landing load) and ground effect.</note>
+        <note>Climb pitch at 10deg (maximum landing load).</note>
+        <note>Climb Mach 0.95 to 1.7 in 10 minutes.</note>
+        <note>Can reach Mach 2.0, below the VMO.</note>
+        <note>Inside of center of gravity corridor.</note>
+        <note>London - New York : can land below max landing weight (aloft westerly at 39 kt).</note>
+
+        <limitation>Tail wheel can touch the runway on takeoff or autoland.</limitation>
+        <limitation>Model uses flaps as nose.</limitation>
+        <limitation>Without an additional PID, above Mach 1, autopilot heading hold would lock with a right roll.</limitation>
+        <limitation>Electrical system model is integrated in flight control section.</limitation>
+
+<!--
+  File:     Concorde.xml
+  Author:   Aero-Matic v 0.71
+
+  Inputs:
+    name:          Concorde
+    type:          four-engine transonic transport
+    max weight:    408000 lb
+    wing span:     83.83 ft
+    length:        202.33 ft
+    wing area:     3856 sq-ft
+    gear type:     tricycle
+    retractable?:  yes
+    # engines:     4
+    engine type:   turbine
+    engine layout: wings
+    yaw damper?    yes
+  Outputs:
+    wing loading:  105.81 lb/sq-ft
+    CL-alpha:      4.4 per radian
+    CL-0:          0.2
+    CL-max:        1.2
+    CD-0:          0.017
+    K:             0.042
+-->
+
+        <note>notation : "=>" denotes a final choice based on certain real values.</note>
+
+        <reference
+          refID="FAA certificate, A45eu"
+          author="FAA"
+          title="http://www.airweb.faa.gov/Regulatory_and_Guidance_Library/rgMakeModel.nsf/MainFrame?OpenFrameSet"
+          date="9 January 1979"/>
+        <documentation>
           Vlo (landing gear operation)                 : 270 kt.
           Vle (landing gear extended)                  : 270 kt.
           Vmc (minimum control speed with engine inoperative)
@@ -48,7 +93,8 @@
           Systems         827            1021             69.43
           ........................................................
           Totals       211200 lb       211797 lb          56.23
-
+        </documentation>
+        <documentation>
           - http://perso.wanadoo.fr/hsors/FS_Soft/FAQ-FS2K2-Decode_Forum.txt/
 
           Ron Freimuth (for MSFS) :
@@ -105,7 +151,8 @@
 
 
           The moments of inertia had been changed, as an attempt to solve the autopilot roll.
-
+        </documentation>
+        <documentation>
           - http://www.concordesst.com/ :
 
           Length : overall 202'4", nose to cockpit 24'.
@@ -175,7 +222,8 @@
           Mas oil pressure : continued operation 5 PSI, takeoff 10 PSI.
           Max fuel temperature : startup -40degC, advance above idle -40degC,
                                  continued operation 50degC.
-
+        </documentation>
+        <documentation>
           - http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 :
 
           Mass gross weight : takeoff lasts 45 s, V1 165 kt, VR 195 kt, V2 220.
@@ -195,7 +243,8 @@
           At Mach 2.04, fuel flow is 45200 lb/h.
           Heathrow to Kennedy : 3h50.
           VREF is 162 kt at 275000 lb.
-
+        </documentation>
+        <documentation>
           - http://www.concorde-jet.com/ :
 
           Nose : Odeg visor up supersonic, 0deg visor down subsonic,
@@ -205,7 +254,8 @@
           Subsonic cruise : Mach 0.93.
           Fuel : capacity 95680 kg, 20500 kg/h, 10000 at arrival.
           Aero reference point steps back of 2 m at Mach 2.
-
+        </documentation>
+        <documentation>
           - http://www.club-concorde.org/ :
 
           Min runway : takeoff 3600 m, landing : 2200 m..
@@ -213,10 +263,13 @@
           Max climbing rate : 1525 m/minute.
           Takeoff speed : 214 kt.
           Landing speed : 130 kt, max 162 kt.
-
-          - http://www.bea-fr.org/docspa/2000/f-sc000725/htm/f-sc000725.html/
-            (incident report, july 2000) :
-
+        </documentation>
+        <reference
+          refID="incident report"
+          author="BEA"
+          title="http://www.bea-fr.org/docspa/2000/f-sc000725/htm/f-sc000725.html/"
+          date="july 2000"/>
+        <documentation>
           Droop nose : 0.53 m.
           Front gear from nose (without droop nose) : 18.7 m.
           Main gear from front gear : 18.2 m.
@@ -226,7 +279,13 @@
 
           TABLE A corresponds to an effective filling at 95% of tanks (94% for tank 5).
           It is possible to surpass fuel gauges with 1660 additional liters.
-
+        </documentation>
+        <reference
+          refID="AIAA Professional studies series"
+          author="Jean Rech and Clive S. Leyman"
+          title="A Case Study by Aerospatiale and British Aerospace on the Concorde"
+          date=""/>
+        <documentation>
           - http://www.aoe.vt.edu/~mason/Mason_f/ConfigAeroSupersonicNotes.pdf/ (Willian H. Mason) :
 
           From "Jean Rech and Clive S. Leyman, A Case Study by Aerospatiale and
@@ -244,7 +303,8 @@
           2.0          53.5                58.5                62.0
 
           (all positions in % of aerodynamic chord C0, 90.748 feet).
-
+        </documentation>
+        <documentation>
           - http://www.titanic.com/story/159/Concorde/ :
 
           Runway : 11200 ft takeoff, 7300 ft landing.
@@ -253,7 +313,8 @@
 
           Areas (sq ft) : wings (gross) 3856, elevons (total) 344.44, fin
                           (excluding dorsal fin) 365, rudder 112.
-
+        </documentation>
+        <documentation>
           - http://www.dft.gov.uk/stellent/groups/dft_avsafety/documents/page/dft_avsafety_029047.hcsp/
             (incident report, 13 june 2003) :
 
@@ -270,29 +331,11 @@
           maintained in a near full condition.
         </documentation>
 
-        <note>Air intake effect included, which allows more drag at Mach 1.3-2.0.</note>
-        <note>Full tanks at maximum takeoff load.</note>
-        <note>Landing pitch is 10deg. (maximum landing load) and ground effect.</note>
-        <note>Climb pitch at 10deg (maximum landing load).</note>
-        <note>Climb Mach 0.95 to 1.7 in 10 minutes.</note>
-        <note>Can reach Mach 2.0, below the VMO.</note>
-        <note>Inside of center of gravity corridor.</note>
-        <note>London - New York : can land below max landing weight (aloft westerly at 39 kt).</note>
-        <limitation>Tail wheel can touch the runway on takeoff or autoland.</limitation>
-        <limitation>Model uses flaps as nose (temporary).</limitation>
-        <limitation>Without an additional PID, above Mach 1, autopilot heading hold would lock with a right roll.</limitation>
-        <limitation>Electrical system model is integrated in flight control section.</limitation>
-        <reference
-          refID="FAA certificate, A45eu"
-          author="FAA"
-          title="http://www.airweb.faa.gov/Regulatory_and_Guidance_Library/rgMakeModel.nsf/MainFrame?OpenFrameSet"
-          date="January 1979"/>
-
 
     </fileheader>
 
     <metrics>
-          <documentation>
+        <documentation>
              Pilot's eyepoint location, in aircraft's own coord system, FROM cg.
              X, Y, Z, in inches
 
@@ -319,17 +362,19 @@
 
         <wingarea unit="FT2"> 3856.0000 </wingarea>
         <wingspan unit="FT"> 83.8300 </wingspan>
-        <chord unit="FT"> 90.7500 </chord>
-        <htailarea unit="FT2"> 0.0000 </htailarea>
-        <htailarm unit="FT"> 5.0000 </htailarm>
-        <vtailarea unit="FT2"> 365.0000 </vtailarea>
-        <vtailarm unit="FT"> 21.6800 </vtailarm>
-        <location name="AERORP" unit="IN">
+        <chord unit="FT"> 90.7500 </chord>                                               <!-- aeromatic 46.0 (C0) -->
+        <htailarea unit="FT2"> 0.0000 </htailarea>                                       <!-- aeromatic 964.0 -->
+        <htailarm unit="FT"> 5.0000 </htailarm>                                          <!-- aeromatic 18.0 -->
+        <vtailarea unit="FT2"> 365.0000 </vtailarea>                                     <!-- aeromatic 771.20 -->
+        <vtailarm unit="FT"> 21.6800 </vtailarm>                                         <!-- added (turbulence) -->
+        <wing_incidence unit="DEG"> 2.86 </wing_incidence>                               <!-- aeromatic none (0.0) -->
+        <!-- AC_LV        91.05                                      unit ? -->
+        <location name="AERORP" unit="IN">                                               <!-- aeromatic 1335.4, 0.0, 0.0 -->
             <x> 1410.4000 </x>
             <y> 0.0000 </y>
             <z> -16.2500 </z>
         </location>
-        <location name="EYEPOINT" unit="IN">
+        <location name="EYEPOINT" unit="IN">                                             <!-- aeromatic 170.0, -32.0, 80.0 -->
             <x> 288.0000 </x>
             <y> -28.2500 </y>
             <z> 32.5000 </z>
@@ -347,14 +392,14 @@
              system. X, Y, Z, in inches; X is positive out the tail, Y positive out the
              right wing.
         </documentation>
-        <ixx unit="SLUG*FT2"> 1432000.0000 </ixx>
-        <iyy unit="SLUG*FT2"> 19034000.0000 </iyy>
-        <izz unit="SLUG*FT2"> 10100000.0000 </izz>
+        <ixx unit="SLUG*FT2"> 1432000.0000 </ixx>                                        <!-- aeromatic 3419278 -->
+        <iyy unit="SLUG*FT2"> 19034000.0000 </iyy>                                       <!-- aeromatic 22486091 -->
+        <izz unit="SLUG*FT2"> 10100000.0000 </izz>                                       <!-- aeromatic 21487661 -->
         <ixy unit="SLUG*FT2"> 0.0000 </ixy>
         <ixz unit="SLUG*FT2"> 0.0000 </ixz>
         <iyz unit="SLUG*FT2"> 0.0000 </iyz>
-        <emptywt unit="LBS"> 203000.0000 </emptywt>
-        <location name="CG" unit="IN">
+        <emptywt unit="LBS"> 203000.0000 </emptywt>                                      <!-- aeromatic 244800 -->
+        <location name="CG" unit="IN">                                                   <!-- aeromatic 1335.4, 0.0, -60.7 -->
             <x> 1299.4000 </x>
             <y> 0.0000 </y>
             <z> -32.5000 </z>
@@ -520,7 +565,7 @@
             <location unit="IN">
                 <x> 1734.0000 </x>
                 <y> -249.4000 </y>
-                <z> -52.0000 </z>
+                <z> -52.0000 </z>                                                      <!-- aeromatic -40 -->
             </location>
             <orient unit="DEG">
                 <roll> 0.0 </roll>
@@ -641,8 +686,9 @@
             <location unit="IN">
                 <x> 1170.0000 </x>
                 <y> -114.0000 </y>
-                <z> 0.0000 </z>
+                <z>  -12.0000 </z>                                                    <!-- aeromatic -12 -->
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 9255.0100 </capacity>
             <contents unit="LBS"> 9255.0100 </contents>
         </tank>
@@ -656,6 +702,7 @@
                 <y> -76.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 10075.1300 </capacity>
             <contents unit="LBS"> 10075.1300 </contents>
         </tank>
@@ -669,6 +716,7 @@
                 <y> 76.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 10075.1300 </capacity>
             <contents unit="LBS"> 10075.1300 </contents>
         </tank>
@@ -682,6 +730,7 @@
                 <y> 114.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 9255.0100 </capacity>
             <contents unit="LBS"> 9255.0100 </contents>
         </tank>
@@ -696,6 +745,7 @@
                 <y> -152.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 100 </radius>
             <capacity unit="LBS"> 16099.2600 </capacity>
             <contents unit="LBS"> 16099.2600 </contents>
         </tank>
@@ -710,6 +760,7 @@
                 <y> -76.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 150 </radius>
             <capacity unit="LBS"> 26923.9500 </capacity>
             <contents unit="LBS"> 26923.9500 </contents>
         </tank>
@@ -724,6 +775,7 @@
                 <y> 152.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 100 </radius>
             <capacity unit="LBS"> 16099.2600 </capacity>
             <contents unit="LBS"> 16099.2600 </contents>
         </tank>
@@ -738,6 +790,7 @@
                 <y> 76.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 150 </radius>
             <capacity unit="LBS"> 26923.9500 </capacity>
             <contents unit="LBS"> 26923.9500 </contents>
         </tank>
@@ -751,6 +804,7 @@
                 <y> 0.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 150 </radius>
             <capacity unit="LBS"> 24462.4900 </capacity>
             <contents unit="LBS"> 24462.4900 </contents>
         </tank>
@@ -764,6 +818,7 @@
                 <y> 0.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 26329.8100 </capacity>
             <contents unit="LBS"> 26329.8100 </contents>
         </tank>
@@ -777,6 +832,7 @@
                 <y> 0.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 22961.1400 </capacity>
             <contents unit="LBS"> 19735.3100 </contents>
         </tank>
@@ -790,6 +846,7 @@
                 <y> -380.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 100 </radius>
             <capacity unit="LBS"> 4905.2900 </capacity>
             <contents unit="LBS"> 4905.2900 </contents>
         </tank>
@@ -803,6 +860,7 @@
                 <y> 380.0000 </y>
                 <z> -12.0000 </z>
             </location>
+            <radius unit="IN"> 100 </radius>
             <capacity unit="LBS"> 4905.2900 </capacity>
             <contents unit="LBS"> 4905.2900 </contents>
         </tank>
@@ -823,6 +881,9 @@
             <input>fcs/pitch-trim-sum</input>
             <gain>0.0175</gain>
             <range>
+                <documentation>
+                  => change -0.35/0.30 to -22.5/22.5 deg real.
+                </documentation>
                 <min>-22.5000</min>
                 <max>22.5000</max>
             </range>
@@ -853,6 +914,9 @@
             <input>fcs/roll-trim-sum</input>
             <gain>0.0175</gain>
             <range>
+                <documentation>
+                   => change 0.35 to 22.5 deg real.
+                </documentation>
                 <min>-22.5000</min>
                 <max>22.5000</max>
             </range>
@@ -871,6 +935,9 @@
             <input>-fcs/roll-trim-sum</input>
             <gain>0.0175</gain>
             <range>
+                <documentation>
+                   => change 0.35 to 22.5 deg real.
+                </documentation>
                 <min>-22.5000</min>
                 <max>22.5000</max>
             </range>
@@ -952,6 +1019,9 @@
             <input>fcs/rudder-sum</input>
             <gain>0.0175</gain>
             <range>
+                <documentation>
+                  => change 0.35 to 29 deg real.
+                </documentation>
                 <min>-29.0000</min>
                 <max>29.0000</max>
             </range>
@@ -972,6 +1042,9 @@
         <kinematic name="Flaps Control">
             <input>fcs/flap-cmd-norm</input>
             <traverse>
+                <documentation>
+                  changed 30 deg / 3 positions : use flaps as nose.
+                </documentation>
                 <setting>
                     <position>0.0000</position>
                     <time>0.0000</time>
@@ -1007,6 +1080,9 @@
         <kinematic name="Gear Control">
             <input>gear/gear-cmd-norm</input>
             <traverse>
+                <documentation>
+                   changed 5 s => up in 12 s.
+                </documentation>
                 <setting>
                     <position>0.0000</position>
                     <time>0.0000</time>
@@ -2266,6 +2342,19 @@
 
     <aerodynamics>
 
+        <alphalimits>
+            <documentation>
+              added : => real -5.5 to 16.5 deg.
+            </documentation>
+            <min unit="DEG">-5.5</min>
+            <max unit="DEG">16.5</max>
+        </alphalimits>
+
+        <documentation>
+         Created :
+         - additional lift on takeoff, otherwise tail touches the ground.
+         - downwash of the air between the wing and the ground creates a cushion, making the landing smooth.
+        </documentation>
         <function name="aero/function/kCLge">
             <description>Change_in_lift_due_to_ground_effect</description>
             <product>
@@ -2283,6 +2372,12 @@
         </function>
 
         <axis name="DRAG">
+            <documentation>
+               add mach column :
+               - supersonic decreases drag (in front of the wave);
+               - increase (x1.5) climb drag to get 10 pitch;
+               - increase (x1.5) landing drag to get 10 pitch and VREF 162 kt.
+            </documentation>
             <function name="aero/coefficient/CD0">
                 <description>Drag_at_zero_lift</description>
                 <product>
@@ -2302,6 +2397,12 @@
                       </table>
                 </product>
             </function>
+            <documentation>
+               add mach column :
+               - respect the thrust X 2.7 by air intakes.
+               - supersonic decreases drag.
+               - climb Mach 0.95 to 1.7 in 10 minutes.
+            </documentation>
             <function name="aero/coefficient/CDi">
                 <description>Induced_drag</description>
                 <product>
@@ -2318,6 +2419,12 @@
                       </table>
                 </product>
             </function>
+            <documentation>
+              add Mach 2.0 :
+              - respect the thrust X 2.7 by air intakes.
+              - adjust consumption during supersonic cruise.
+              - climb Mach 0.95 to 1.7 in 10 minutes.
+            </documentation>
             <function name="aero/coefficient/CDmach">
                 <description>Drag_due_to_mach</description>
                 <product>
@@ -2335,6 +2442,9 @@
                       </table>
                 </product>
             </function>
+            <documentation>
+              nose drag.
+            </documentation>
             <function name="aero/coefficient/CDflap">
                 <description>Drag_due_to_flaps</description>
                 <product>
@@ -2403,6 +2513,12 @@
         </axis>
 
         <axis name="LIFT">
+            <documentation>
+             add mach column (0.0 and 0.6) :
+             - decrease (0 and x1/3 at 0 radian) landing lift to get 10 pitch;
+             - decrease climb lift to get 10 pitch;
+             - at low speed, lift is better (x0.75) at high AOA, because of vortex over the wing.
+            </documentation>
             <function name="aero/coefficient/CLalpha">
                 <description>Lift_due_to_alpha</description>
                 <product>
@@ -2422,6 +2538,9 @@
                       </table>
                 </product>
             </function>
+            <documentation>
+              changed 1.5 to 0.0 : used flaps as nose.
+            </documentation>
             <function name="aero/coefficient/dCLflap">
                 <description>Delta_Lift_due_to_flaps</description>
                 <product>
