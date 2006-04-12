@@ -24,26 +24,26 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-overhead.xml">
+      <and include="concorde-cond-test-mws.xml">
        <property>controls/engines/engine[0]/master-alt</property>
        <property>controls/engines/engine[1]/master-alt</property>
        <property>controls/engines/engine[2]/master-alt</property>
        <property>controls/engines/engine[3]/master-alt</property>
        <greater-than>
-        <property>/engines/engine[0]/oil-pressure-psi</property>
-        <value>15</value>
+        <property>/engines/engine[0]/csd-oil-psi</property>
+        <value>30</value>
        </greater-than>
        <greater-than>
-        <property>/engines/engine[1]/oil-pressure-psi</property>
-        <value>15</value>
+        <property>/engines/engine[1]/csd-oil-psi</property>
+        <value>30</value>
        </greater-than>
        <greater-than>
-        <property>/engines/engine[2]/oil-pressure-psi</property>
-        <value>15</value>
+        <property>/engines/engine[2]/csd-oil-psi</property>
+        <value>30</value>
        </greater-than>
        <greater-than>
-        <property>/engines/engine[3]/oil-pressure-psi</property>
-        <value>15</value>
+        <property>/engines/engine[3]/csd-oil-psi</property>
+        <value>30</value>
        </greater-than>
        <greater-than>
         <property>/systems/electrical/outputs/probe/ac-main1</property>

@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!--
+<!-- Cnocorde center of gravity :
+
+     - red outside the normal limits.
+     - red flashes outside the extreme limits.
 -->
 
 <PropertyList>
@@ -59,9 +62,37 @@
      <offset>50</offset> <!-- centered at 50.0 -->
     </transformation>
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property>/instrumentation/cg/serviceable</property>
+       <greater-than>
+        <property>instrumentation/cg/min-percent</property>
+        <value>0.0</value>
+       </greater-than>
+      </and>
+     </condition>
      <type>x-shift</type>
      <property>instrumentation/cg/min-percent</property>
+     <min>50.0</min>
+     <max>60.5</max>
+     <scale>1.0</scale>
+     <interpolation>
+      <entry><ind>50.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>60.5</ind><dep>-74.0</dep></entry>
+      </interpolation>
+    </transformation>
+    <transformation>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property>/instrumentation/cg/serviceable</property>
+       <equals>
+        <property>instrumentation/cg/min-percent</property>
+        <value>0.0</value>
+       </equals>
+      </and>
+     </condition>
+     <type>x-shift</type>
+     <property>instrumentation/cg/min-extreme-percent</property>
      <min>50.0</min>
      <max>60.5</max>
      <scale>1.0</scale>
@@ -98,7 +129,11 @@
      <offset>-10</offset> <!-- centered at 55.5 -->
     </transformation>
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property>/instrumentation/cg/serviceable</property>
+      </and>
+     </condition>
      <type>x-shift</type>
      <property>instrumentation/cg/percent</property>
      <min>50.0</min>
@@ -138,7 +173,11 @@
      <offset>-28</offset> <!-- centered at 61.0 -->
     </transformation>
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property>/instrumentation/cg/serviceable</property>
+      </and>
+     </condition>
      <type>x-shift</type>
      <property>instrumentation/cg/max-percent</property>
      <min>50.5</min>
@@ -155,7 +194,12 @@
   <layer>
    <name>OFF flag</name>
    <condition>
-    <not include="concorde-cond-voltage-inst.xml"/>
+    <or>
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not>
+      <property>/instrumentation/cg/serviceable</property>
+     </not>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -192,9 +236,10 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-cg.xml">
-      <or include="concorde-cond-flashing-light.xml">
-       <not include="concorde-cond-voltage-inst.xml"/>
-      </or>
+      <not include="concorde-cond-voltage-inst.xml"/>
+      <not>
+       <property>/instrumentation/cg/serviceable</property>
+      </not>
      </or>
     </condition>
     <texture>

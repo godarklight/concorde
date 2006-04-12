@@ -5,11 +5,12 @@
 <PropertyList>
 
  <name>BTB selector</name>
- <w-base>52</w-base>
- <h-base>52</h-base>
+ <w-base>102</w-base>
+ <h-base>102</h-base>
 
  <params>
   <btb-switch>/controls/electric/ac/btb1</btb-switch>
+  <btb-guard>/controls/electric/ac/btb-guard1</btb-guard>
  </params>
 
 
@@ -19,30 +20,10 @@
    <name>BTB selector</name>
    <type>switch</type>
    <layer>
-    <condition>
-     <not>
-      <property alias="../../../../../../params/btb-switch"/>
-     </not>
-    </condition>
-    <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>0</offset>
-     </transformation>
-    </transformations>
-   </layer>
-   <layer>
     <name>on</name>
+    <condition>
+     <property alias="../../../../../params/btb-switch"/>
+    </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
      <x1>0.0</x1>
@@ -53,16 +34,88 @@
     <w>40</w>
     <h>42</h>
     <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>0</offset>
-     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-1</offset>
+     <offset>-1.5</offset>
     </transformation>
     </transformations>
    </layer>
+   <layer>
+    <name>off</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.31</y2>
+    </texture>
+    <w>40</w>
+    <h>47</h>
+    <transformations>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-2.75</offset>
+     </transformation>
+    </transformations>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-34</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>guard</name>
+   <type>switch</type>
+
+   <layer>
+    <name>guard on</name>
+    <condition>
+     <property alias="../../../../../params/btb-guard"/>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-guard.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>80</w>
+    <h>80</h>
+    <transformations>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-5</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>guard off</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-guard.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>0.25</y2>
+    </texture>
+    <w>80</w>
+    <h>30</h>
+    <transformations>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-30</offset>
+     </transformation>
+    </transformations>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-35</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -83,7 +136,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>20</offset>
+     <offset>-14</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -110,7 +163,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>28</offset>
+     <offset>-6</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -137,7 +190,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>27</offset>
+     <offset>-7</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -152,14 +205,41 @@
 
   <action>
    <name>Toggle BTB</name>
+   <condition>
+    <and>
+     <not>
+      <property alias="../../../../../../params/btb-guard"/>
+     </not>
+    </and>
+   </condition>
    <button>0</button>
-   <x>-21</x>
+   <x>-55</x>
    <y>-21</y>
    <w>42</w>
    <h>42</h>
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/btb-switch"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>Toggle guard</name>
+   <condition>
+    <property alias="../../../../params/btb-switch"/>
+   </condition>
+   <button>0</button>
+   <x>-5</x>
+   <y>-21</y>
+   <w>42</w>
+   <h>42</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/btb-guard"/>
    </binding>
    <binding>
     <command>property-toggle</command>

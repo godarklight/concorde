@@ -20,7 +20,7 @@
     <condition>
      <and include="concorde-cond-glideslope.xml">
       <equals>
-       <property>/autopilot/locks/altitude</property>
+       <property>/controls/autoflight/altitude</property>
        <value>gs1-hold</value>
       </equals>
       <not include="concorde-cond-land.xml"/>
@@ -123,7 +123,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apglideexport();</script>
+    <script>globals.Concorde.autopilotsystem.apglideexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

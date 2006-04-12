@@ -12,11 +12,11 @@
    </equals>
    <greater-than>
     <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter[0]/target-min-ft</property>
+    <property n="1">/systems/autopilot/altimeter/target-min-ft</property>
    </greater-than>
    <less-than>
     <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-    <property n="1">/instrumentation/altimeter[0]/target-max-ft</property>
+    <property n="1">/systems/autopilot/altimeter/target-max-ft</property>
    </less-than>
   </and>
 

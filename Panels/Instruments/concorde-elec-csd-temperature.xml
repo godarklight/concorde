@@ -1,6 +1,4 @@
-<!-- CSD oil temperature :
-
-     - the value is not real.
+<!-- CSD oil temperature.
 -->
 
 <PropertyList>
@@ -10,7 +8,8 @@
  <h-base>128</h-base>
 
  <params>
-  <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
+  <inlet-select>/engines/engine[0]/csd-inlet-degc</inlet-select>
+  <diff-select>/engines/engine[0]/csd-diff-degc</diff-select>
  </params>
 
  <layers>
@@ -47,9 +46,11 @@
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-inst.xml"/>
-     <property alias="../../../../../params/oil-select"/>
-      <scale>1.8</scale>
-      <offset>0</offset>
+     <property alias="../../../../../params/inlet-select"/>
+     <scale>0.72</scale>
+     <offset>0</offset>
+     <min>0</min>
+     <max>250</max>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -77,9 +78,11 @@
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-inst.xml"/>
-     <property alias="../../../../../params/oil-select"/>
-      <scale>-1.4</scale>
-      <offset>0</offset>
+     <property alias="../../../../../params/diff-select"/>
+     <scale>-3.6</scale>
+     <offset>0</offset>
+     <min>0</min>
+     <max>50</max>
     </transformation>
     <transformation>
      <type>y-shift</type>

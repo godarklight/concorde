@@ -2,8 +2,8 @@
 
 <!-- Initialize instrumentation  :
 
-
-     - Nasal instruments are also serviceable.
+     - avoids nasal nil values or non-member error.
+     - nasal instruments are also serviceable.
 
 
      - IMPORTANT : by default, Concorde comes with the C++ IVSI.
@@ -25,44 +25,150 @@
 
 <PropertyList>
 
-<!-- NASAL -->
+  <adf n="1">                                                                   <!-- specific ADF -->
+   <mode>adf</mode>
+   <serviceable type="bool">true</serviceable>
+  </adf>
 
-  <cabine-altitude>
+  <airspeed-indicator>
+   <vmo-kt type="double">999.0</vmo-kt>
+   <overspeed-kt type="double">999.0</overspeed-kt>
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+   </slave>
+  </airspeed-indicator>
+
+  <airspeed-standby>
+   <serviceable type="bool">true</serviceable>
+  </airspeed-standby>
+
+  <altimeter-standby>
+   <serviceable type="bool">true</serviceable>
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter-standby>
+
+  <attitude-indicator>
+   <indicated-pitch-deg alias="/orientation/pitch-deg"/>
+   <indicated-roll-deg alias="/orientation/roll-deg"/>
+   <serviceable type="bool">true</serviceable>
+  </attitude-indicator>
+
+  <attitude-standby>
+   <indicated-pitch-deg alias="/orientation/pitch-deg"/>
+   <indicated-roll-deg alias="/orientation/roll-deg"/>
+   <serviceable type="bool">true</serviceable>
+  </attitude-standby>
+
+  <cabin-altitude>
    <serviceable type="bool" archive="y">true</serviceable>
-   <cabine-inhg>29.92</cabine-inhg>
+<!--
+   <cabin-inhg>29.92</cabin-inhg>
    <indicated-altitude-ft>0.0</indicated-altitude-ft>
-  </cabine-altitude>
+-->
+   <setting-inhg>29.92</setting-inhg>
+  </cabin-altitude>
+
+  <cabin-rate-climb>
+   <serviceable type="bool" archive="y">true</serviceable>
+  </cabin-rate-climb>
+
+  <cg>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <slave>
+    <mach>/instrumentation/mach-indicator</mach>
+   </slave>
+  </cg>
 
   <differential-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
-   <differential-inhg>0.0</differential-inhg>
+   <differential-psi>0.0</differential-psi>
+   <static-port>/systems/static</static-port>                                   <!-- measures outside pressure -->
   </differential-pressure>
 
-  <flight-director>
-   <fd>
-    <on></on>
-   </fd>
-   <fd n="1">
-    <on></on>
-   </fd>
-   <state></state>
-  </flight-director>
+  <dme>                                                                         <!-- specific DME -->
+   <frequencies>
+    <source>/instrumentation/nav[0]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+  <dme n="1">
+   <serviceable type="bool">true</serviceable>
+   <frequencies>
+    <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
+   </frequencies>
+  </dme>
+
+  <fuel>
+   <serviceable type="bool" archive="y">true</serviceable>
+  </fuel>
+
+  <hsi>
+   <serviceable type="bool" archive="y">true</serviceable>
+  </hsi>
+
+  <ins n="0">
+   <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+   <selector type="int">0</selector>
+   <wind-speed-kt alias="/environment/wind-speed-kt"/>
+   <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
+  </ins>
+
+  <ins n="1">
+   <selector type="int">0</selector>
+  </ins>
+
+  <ins n="2">
+   <selector type="int">0</selector>
+  </ins>
+
+  <inst-vertical-speed-indicator>
+   <serviceable type="bool" archive="y">true</serviceable>
+<!--
+   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
+-->
+  </inst-vertical-speed-indicator>
+
+  <mach-indicator>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <indicated-mach alias="/velocities/mach"/>
+   <mmo-mach type="double">999.0</mmo-mach>
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <cg>/instrumentation/cg[0]</cg>
+   </slave>
+  </mach-indicator>
+
+  <radar>                                                                       <!-- TCAS 1) required by AI -->
+   <range type="int" archive="y">40</range>
+  </radar>
+
+  <radio-altimeter>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
+  </radio-altimeter>
 
   <tank-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
    <differential-psi>0.0</differential-psi>
+   <falling type="bool" >false</falling>
+   <raising type="bool" >false</raising>
+   <static-port>/systems/static</static-port>                                   <!-- measures outside pressure -->
   </tank-pressure>
 
-<!-- TCAS -->
+  <tas-indicator>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <indicated-speed-fps alias="/fdm/jsbsim/velocities/vt-fps"/>
+  </tas-indicator>
 
-<!-- 1) initialize the number of visible traffics -->
-
-  <tcas>
+  <tcas>                                                                        <!-- TCAS 2) number of visible traffics -->
    <serviceable type="bool">true</serviceable>
-   <range type="int" archive="y">45</range>
+   <range type="int" archive="y">45</range>                                     <!-- maximum range -->
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+   </slave>
    <traffics>
     <traffic n="0">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm>9999.0</distance-nm>                                          <!-- no traffic -->
     </traffic>
     <traffic n="1">
      <distance-nm>9999.0</distance-nm>
@@ -91,81 +197,13 @@
    </traffics>
   </tcas>
 
-<!-- 2) required by AI -->
-
-  <radar>
-   <range type="int" archive="y">40</range>
-  </radar>
-
-
-<!-- EMULATED -->
-
-  <inst-vertical-speed-indicator>
+  <temperature>
    <serviceable type="bool" archive="y">true</serviceable>
-<!--
-   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
--->
-  </inst-vertical-speed-indicator>
-
-  <radio-altimeter>
-   <serviceable type="bool" archive="y">true</serviceable>
-   <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
-  </radio-altimeter>
-
-
-<!-- DEFAULT -->
-
-<!-- specific ADF -->
-
-  <adf n="1">
-   <mode>adf</mode>
-   <serviceable type="bool">true</serviceable>
-  </adf>
-
-<!-- specific DME -->
-
-  <dme>
-   <frequencies>
-    <source>/instrumentation/nav[0]/frequencies/selected-mhz</source>
-   </frequencies>
-  </dme>
-
-  <dme n="1">
-   <serviceable type="bool">true</serviceable>
-   <frequencies>
-    <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
-   </frequencies>
-  </dme>
-
-<!-- standby -->
-
-  <airspeed-indicator n="1">
-   <serviceable type="bool">true</serviceable>
-  </airspeed-indicator>
-
-  <altimeter n="1">
-   <serviceable type="bool">true</serviceable>
-   <setting-inhg>29.92</setting-inhg>
-  </altimeter>
-
-  <attitude-indicator n="1">
-   <serviceable type="bool">true</serviceable>
-  </attitude-indicator>
-
-<!-- emergency relight selector -->
-
-  <emergency-relight>
-   <selector type="double">0.0</selector> <!-- off -->
-  </emergency-relight>
-
-<!-- voltmeters -->
-
-  <ac-voltmeter>
-   <selector type="double">0.0</selector> <!-- vertical -->
-  </ac-voltmeter>
-
-  <dc-voltmeter>
-   <selector type="double">0.0</selector> <!-- vertical -->
-  </dc-voltmeter>
+   <indicated-tmo-degc alias="/fdm/jsbsim/velocities/tat-c"/>
+   <indicated-static-degc alias="/environment/temperature-degc"/>
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+   </slave>
+  </temperature>
 
 </PropertyList>

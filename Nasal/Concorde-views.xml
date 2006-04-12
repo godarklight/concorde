@@ -4,11 +4,6 @@
 
      - /sim/number-views.
      - /sim/view n="xxx".
-
-
-     Warning : changing height shifts the 2D instruments !
-
-     Known problem : when no voltage, one cannot disable flaps, if activated from joystick.
 -->
 
 <PropertyList>
@@ -46,6 +41,7 @@
     <overhead type="bool">false</overhead>
     <copilot type="bool">false</copilot>
     <steward type="bool">false</steward>
+    <all type="bool">false</all>
    </seat>
   </current-view>
 
@@ -73,7 +69,7 @@
       <!-- x/y/z == right/up/back -->
       <x-offset-m archive="y">0.0</x-offset-m> <!-- behind the pedestal -->
       <y-offset-m archive="y">2.40</y-offset-m> <!-- head at the bottom of the (tilted) top rack --> 
-      <z-offset-m archive="y">-23.34</z-offset-m> <!--in the middle of the horitontal table --> 
+      <z-offset-m archive="y">-22.98</z-offset-m> <!--in the middle of the horizontal table --> 
       <pitch-offset-deg archive="y">-23.0</pitch-offset-deg> <!-- look at the fuel instruments -->
       <heading-offset-deg type="double">270</heading-offset-deg> <!-- parallel to the panel -->
     </config>
@@ -127,7 +123,7 @@
       <right-direction-deg type="double">270</right-direction-deg>
       <front-right-direction-deg type="double">315</front-right-direction-deg>
       <!-- x/y/z == right/up/back -->
-      <x-offset-m archive="y">0.403</x-offset-m>
+      <x-offset-m archive="y">0.452</x-offset-m>   <!-- symmetry with captain -->
       <y-offset-m archive="y">2.45</y-offset-m>
       <z-offset-m archive="y">-24.5</z-offset-m>
       <pitch-offset-deg archive="y">-5.0</pitch-offset-deg> <!-- look the horizon -->

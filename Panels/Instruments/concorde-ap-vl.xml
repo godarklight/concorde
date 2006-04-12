@@ -21,19 +21,13 @@
      <and include="concorde-cond-vorloc.xml">
       <or>
        <equals>
-        <property>/autopilot/locks/horizontal</property>
+        <property>/controls/autoflight/horizontal</property>
         <value>vor</value>
        </equals>
-       <and>
-        <equals>
-         <property>/autopilot/locks/heading</property>
-         <value>nav1-hold</value>
-        </equals>
-        <equals>
-         <property>/autopilot/locks/altitude</property>
-         <value>gs1-hold</value>
-        </equals>
-       </and>
+       <equals>
+        <property>/controls/autoflight/heading</property>
+        <value>nav1-hold</value>
+       </equals>
       </or>
       <not include="concorde-cond-land.xml"/>
      </and>
@@ -135,7 +129,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apvorlocexport();</script>
+    <script>globals.Concorde.autopilotsystem.apvorlocexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

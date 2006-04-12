@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- Condition for gear down :
+<!-- Condition (on) for gear down :
 
      - green hydraulics.
      - yellow hydraulics.
+     - not neutral.
 -->
 
 <PropertyList>
@@ -13,6 +14,12 @@
     <not include="concorde-cond-hyd-green.xml"/>
     <not include="concorde-cond-hyd-yellow.xml"/>
    </or>
+   <not>
+    <property>/controls/gear/neutral</property>
+   </not>
+   <not>
+    <property>/controls/gear/gear-down</property>
+   </not>
   </and>
 
 </PropertyList>

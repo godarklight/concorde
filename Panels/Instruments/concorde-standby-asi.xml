@@ -61,7 +61,7 @@ properties' values.
       <property>/velocities/mach</property>
       <value>0.45</value>
      </greater-than-equals>
-     <property>/instrumentation/airspeed-indicator[1]/serviceable</property>
+     <property>/instrumentation/airspeed-standby/serviceable</property>
     </and>
    </condition>
    <type>text</type>
@@ -112,10 +112,10 @@ properties' values.
         <property>/systems/electrical/outputs/standby-asi</property>
         <value>20</value>
        </greater-than>
-       <property>/instrumentation/airspeed-indicator[1]/serviceable</property>
+       <property>/instrumentation/airspeed-standby/serviceable</property>
       </and>
      </condition>
-     <property>/instrumentation/airspeed-indicator[1]/indicated-speed-kt</property>
+     <property>/instrumentation/airspeed-standby/indicated-speed-kt</property>
      <min>50.0</min>
      <max>590.0</max>
      <scale>1.0</scale>
@@ -148,7 +148,7 @@ properties' values.
         <property>/systems/electrical/outputs/standby-asi</property>
         <value>20</value>
        </greater-than>
-      <property>/instrumentation/airspeed-indicator[1]/serviceable</property>
+      <property>/instrumentation/airspeed-standby/serviceable</property>
      </and>
     </condition>
     <texture>
@@ -163,7 +163,7 @@ properties' values.
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/airspeed-indicator[1]/vmo-kt</property>
+      <property>/instrumentation/airspeed-standby/vmo-kt</property>
       <min>50.0</min>
       <max>590.0</max>
       <scale>1.0</scale>

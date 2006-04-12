@@ -21,15 +21,15 @@
     <condition>
      <or>
       <not-equals>
-       <property>/autopilot/locks/speed</property>
+       <property>/controls/autoflight/speed</property>
        <value>mach-with-throttle</value>
       </not-equals>
       <equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value>maxclimb</value>
       </equals>
       <equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value>maxcruise</value>
       </equals>
      </or>
@@ -130,7 +130,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.atmachexport();</script>
+    <script>globals.Concorde.autothrottlesystem.atmachexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

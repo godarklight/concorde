@@ -22,7 +22,7 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-overhead.xml">
+      <and include="concorde-cond-test-mws.xml">
        <property>/systems/hydraulic/serviceable</property>
        <not include="concorde-cond-hyd-green.xml"/>
        <not include="concorde-cond-hyd-yellow.xml"/>

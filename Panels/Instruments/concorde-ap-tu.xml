@@ -20,7 +20,7 @@
     <type>group</type>
     <condition>
      <not-equals>
-      <property>/autopilot/locks/vertical</property>
+      <property>/controls/autoflight/vertical</property>
       <value>turbulence</value>
      </not-equals>
     </condition>
@@ -121,7 +121,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apturbulenceexport();</script>
+    <script>globals.Concorde.autopilotsystem.apturbulenceexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

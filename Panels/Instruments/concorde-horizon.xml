@@ -2,6 +2,7 @@
 
 <!-- Concorde artificial horizon
 
+
 Adapted from Martin Dressler dr@musicabona.cz
 Artificial horizon from C172RG small version
 GPL
@@ -48,7 +49,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -71,7 +72,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -79,7 +80,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>y-shift</type>
-     <property>/orientation/pitch-deg</property>
+     <property>/instrumentation/attitude-indicator/indicated-pitch-deg</property>
      <min>-20.0</min>
      <max>20.0</max>
      <scale>-1.075</scale>
@@ -101,7 +102,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -147,14 +148,8 @@ properties' values.
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
      <or>
-      <equals>
-       <property>/instrumentation/flight-director/fd[0]/on</property>
-       <value>on</value>
-      </equals>
-      <equals>
-       <property>/instrumentation/flight-director/fd[1]/on</property>
-       <value>on</value>
-      </equals>
+      <property>/controls/autoflight/flight-director[0]/engage</property>
+      <property>/controls/autoflight/flight-director[1]/engage</property>
      </or>
     </and>
    </condition>
@@ -198,14 +193,8 @@ properties' values.
     <and include="concorde-cond-voltage-horizon.xml">
      <property>/instrumentation/nav[0]/has-gs</property>
      <or>
-      <equals>
-       <property>/instrumentation/flight-director/fd[0]/on</property>
-       <value>on</value>
-      </equals>
-      <equals>
-       <property>/instrumentation/flight-director/fd[1]/on</property>
-       <value>on</value>
-      </equals>
+      <property>/controls/autoflight/flight-director[0]/engage</property>
+      <property>/controls/autoflight/flight-director[1]/engage</property>
      </or>
     </and>
    </condition>
@@ -240,14 +229,8 @@ properties' values.
     <and include="concorde-cond-voltage-horizon.xml">
      <property>/instrumentation/nav[0]/has-gs</property>
      <or>
-      <equals>
-       <property>/instrumentation/flight-director/fd[0]/on</property>
-       <value>on</value>
-      </equals>
-      <equals>
-       <property>/instrumentation/flight-director/fd[1]/on</property>
-       <value>on</value>
-      </equals>
+      <property>/controls/autoflight/flight-director[0]/engage</property>
+      <property>/controls/autoflight/flight-director[1]/engage</property>
      </or>
     </and>
    </condition>
@@ -288,14 +271,8 @@ properties' values.
        <property>/instrumentation/nav[0]/in-range</property>
       </not>
       <or>
-       <equals>
-        <property>/instrumentation/flight-director/fd[0]/on</property>
-        <value>on</value>
-       </equals>
-       <equals>
-        <property>/instrumentation/flight-director/fd[1]/on</property>
-        <value>on</value>
-       </equals>
+       <property>/controls/autoflight/flight-director[0]/engage</property>
+       <property>/controls/autoflight/flight-director[1]/engage</property>
       </or>
      </and>
     </or>

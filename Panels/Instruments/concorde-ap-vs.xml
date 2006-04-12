@@ -19,18 +19,10 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <or include="concorde-cond-land.xml">
-      <and>
-       <not-equals>
-        <property>/autopilot/locks/altitude</property>
-        <value>vertical-speed-hold</value>
-       </not-equals>
-       <not-equals>
-        <property>/autopilot/locks/altitude2</property>
-        <value>vertical-speed-with-throttle</value>
-       </not-equals>
-      </and>
-     </or>
+     <not-equals>
+      <property>/controls/autoflight/altitude</property>
+      <value>vertical-speed-hold</value>
+     </not-equals>
     </condition>
 
     <layer>
@@ -129,7 +121,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apverticalexport();</script>
+    <script>globals.Concorde.autopilotsystem.apverticalexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

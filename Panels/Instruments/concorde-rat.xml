@@ -8,6 +8,13 @@
  <w-base>102</w-base>
  <h-base>102</h-base>
 
+ <params>
+  <rat-on>/systems/hydraulic/rat/selector[0]/on</rat-on>
+  <rat-test>/systems/hydraulic/rat/selector[0]/test</rat-test>
+  <rat-guard>/systems/hydraulic/rat/selector[0]/guard</rat-guard>
+  <rat-num>/systems/hydraulic/rat/selector[0]/num</rat-num>
+ </params>
+
 
  <layers>
 
@@ -18,7 +25,7 @@
    <layer>
     <name>on</name>
     <condition>
-     <property>/systems/hydraulic/rat/selector[0]/on</property>
+     <property alias="../../../../../params/rat-on"/>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
@@ -41,7 +48,7 @@
     <name>3rd state</name>
     <condition>
      <equals>
-      <property>/systems/hydraulic/rat/selector[0]/test</property>
+      <property alias="../../../../../params/rat-test"/>
       <value>on</value>
      </equals>
     </condition>
@@ -93,7 +100,7 @@
    <layer>
     <name>guard on</name>
     <condition>
-     <property>/systems/hydraulic/rat/selector[0]/guard</property>
+     <property alias="../../../../../params/rat-guard"/>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-guard-bg.rgb</path>
@@ -158,7 +165,23 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>1</value>
+       </equals>
+     </condition>
      <offset>-30</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>2</value>
+       </equals>
+     </condition>
+     <offset>50</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -185,7 +208,23 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>1</value>
+       </equals>
+     </condition>
      <offset>-33</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>2</value>
+       </equals>
+     </condition>
+     <offset>47</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -212,7 +251,23 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>1</value>
+       </equals>
+     </condition>
      <offset>-35</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>2</value>
+       </equals>
+     </condition>
+     <offset>45</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -232,14 +287,31 @@
    </color>
    <chunks>
     <chunk>
-     <type>literal</type>
-     <text>1</text>
+     <type>number-value</type>
+     <property alias="../../../../../params/rat-num"/>
+     <format>%1.f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>1</value>
+       </equals>
+     </condition>
      <offset>-25</offset>
+    </transformation>
+    <transformation>
+     <type>x-shift</type>
+     <condition>
+       <equals>
+        <property alias="../../../../../../../params/rat-num"/>
+        <value>2</value>
+       </equals>
+     </condition>
+     <offset>55</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -257,10 +329,10 @@
    <condition>
     <and>
      <not>
-      <property>/systems/hydraulic/rat/selector[0]/on</property>
+      <property alias="../../../../../../params/rat-on"/>
      </not>
      <not>
-      <property>/systems/hydraulic/rat/selector[0]/guard</property>
+      <property alias="../../../../../../params/rat-guard"/>
      </not>
     </and>
    </condition>
@@ -271,7 +343,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/systems/hydraulic/rat/selector[0]/on</property>
+    <property alias="../../../../params/rat-on"/>
    </binding>
    <binding>
     <command>property-assign</command>
@@ -280,7 +352,7 @@
    </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.ratdeployexport();</script>
+    <script>globals.Concorde.RATinstrument.deployexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -293,13 +365,13 @@
    <condition>
     <and>
      <not>
-      <property>/systems/hydraulic/rat/selector[0]/on</property>
+      <property alias="../../../../../../params/rat-on"/>
      </not>
      <not-equals>
       <property>/systems/hydraulic/rat/test</property>
       <value>on</value>
      </not-equals>
-     <property>/systems/hydraulic/rat/selector[0]/guard</property>
+     <property alias="../../../../../params/rat-guard"/>
     </and>
    </condition>
    <button>0</button>
@@ -309,12 +381,12 @@
    <h>42</h>
    <binding>
     <command>property-assign</command>
-    <property>/systems/hydraulic/rat/selector[0]/test</property>
+    <property alias="../../../../params/rat-test"/>
     <value>on</value>
    </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.rattestexport();</script>
+    <script>globals.Concorde.RATinstrument.testexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -326,7 +398,7 @@
    <name>Toggle guard</name>
    <condition>
     <not>
-     <property>/systems/hydraulic/rat/selector[0]/on</property>
+     <property alias="../../../../../params/rat-on"/>
     </not>
    </condition>
    <button>0</button>
@@ -336,6 +408,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
+    <property alias="../../../../params/rat-guard"/>
     <property>/systems/hydraulic/rat/selector[0]/guard</property>
    </binding>
    <binding>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- Engine HP valve (cutoff).
+-->
+
+<PropertyList>
+ <name>HP valve</name>
+ <w-base>28</w-base>
+ <h-base>28</h-base>
+
+ <params>
+  <cutoff>/engines/engine[0]/cutoff</cutoff>
+ </params>
+
+
+ <layers>
+
+  <layer>
+   <name>door</name>
+   <type>switch</type>
+
+   <layer>
+    <name>open</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/cutoff"/>
+     </not>
+    </condition>
+    <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-open.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
+
+   <layer>
+    <name>shut</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-shut.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
+  </layer>
+
+ </layers>
+
+</PropertyList>

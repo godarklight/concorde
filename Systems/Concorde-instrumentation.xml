@@ -4,6 +4,8 @@
 
      - 2 DME (always visible) to bypass the limitation of switching frequencies.
      - 1 instrument for both Captain and Copilot.
+     - the cabin altitude is a specific altimeter.
+     - the cabin rate of climb is a specific vertical speed indicator.
 -->
 
 
@@ -29,14 +31,12 @@ file, these values will be used (they are hardcoded).
 
 <PropertyList>
 
-<!-- 2 ADF needles -->
-
-  <adf>
+  <adf>                                                                      <!-- 1st needle -->
     <name>adf</name>
     <number>0</number>
   </adf>
 
-  <adf>
+  <adf>                                                                      <!-- 2nd needle -->
     <name>adf</name>
     <number>1</number>
   </adf>
@@ -48,11 +48,9 @@ file, these values will be used (they are hardcoded).
     <static-port>/systems/static</static-port>
   </airspeed-indicator>
 
-<!-- standby -->
-
-  <airspeed-indicator>
-    <name>airspeed-indicator</name>
-    <number>1</number>
+  <airspeed-indicator>                                                       <!-- standby -->
+    <name>airspeed-standby</name>
+    <number>0</number>
     <pitot-port>/systems/pitot</pitot-port>
     <static-port>/systems/static</static-port>
   </airspeed-indicator>
@@ -63,41 +61,29 @@ file, these values will be used (they are hardcoded).
     <static-port>/systems/static</static-port>
   </altimeter>
 
-<!-- standby -->
-
-  <altimeter>
-    <name>altimeter</name>
-    <number>1</number>
+  <altimeter>                                                                <!-- standby -->
+    <name>altimeter-standby</name>
+    <number>0</number>
     <static-port>/systems/static</static-port>
   </altimeter>
 
-  <attitude-indicator>
-    <name>attitude-indicator</name>
+  <altimeter>                                                                <!-- vented to cabin pressure -->
+    <name>cabin-altitude</name>
     <number>0</number>
-    <vacuum-system>/systems/vacuum</vacuum-system>
-  </attitude-indicator>
-
-<!-- standby -->
-
-  <attitude-indicator>
-    <name>attitude-indicator</name>
-    <number>1</number>
-    <vacuum-system>/systems/vacuum</vacuum-system>
-  </attitude-indicator>
+    <static-port>/systems/pressurization</static-port>
+  </altimeter>
 
   <clock>
     <name>clock</name>
     <number>0</number>
   </clock>
 
-<!-- 2 DME frequencies -->
-
-  <dme>
+  <dme>                                                                      <!-- 1st distance -->
     <name>dme</name>
     <number>0</number>
   </dme>
 
-  <dme>
+  <dme>                                                                      <!-- 2nd distance -->
     <name>dme</name>
     <number>1</number>
   </dme>
@@ -110,16 +96,22 @@ file, these values will be used (they are hardcoded).
   </encoder>
 -->
 
-  <marker-beacon>
-    <name>marker-beacon</name>
-    <number>0</number>
-  </marker-beacon>
 
-  <heading-indicator>
+  <gps>                                                                      <!-- required by autopilot -->
+    <name>gps</name>
+    <number>0</number>
+  </gps>
+
+  <heading-indicator>                                                        <!-- required by autopilot ? -->
     <name>heading-indicator</name>
     <number>0</number>
     <vacuum-system>/systems/vacuum</vacuum-system>
   </heading-indicator>
+
+  <inst-vertical-speed-indicator>
+    <name>inst-vertical-speed-indicator</name>
+    <number>0</number>
+  </inst-vertical-speed-indicator>
 
 <!--
   <KT-70>
@@ -133,14 +125,17 @@ file, these values will be used (they are hardcoded).
     <number>0</number>
   </magnetic-compass>
 
-<!-- 2 VOR needles -->
+  <marker-beacon>
+    <name>marker-beacon</name>
+    <number>0</number>
+  </marker-beacon>
 
-  <nav-radio>
+  <nav-radio>                                                                <!-- 1st needle -->
     <name>nav</name>
     <number>0</number>
   </nav-radio>
 
-  <nav-radio>
+  <nav-radio>                                                                <!-- 2nd needle -->
     <name>nav</name>
     <number>1</number>
   </nav-radio>
@@ -163,16 +158,10 @@ file, these values will be used (they are hardcoded).
     <number>0</number>
   </turn-indicator>
 
-  <inst-vertical-speed-indicator>
-    <name>inst-vertical-speed-indicator</name>
+  <vertical-speed-indicator>                                                 <!-- vented to cabin pressure -->
+    <name>cabin-rate-climb</name>
     <number>0</number>
-  </inst-vertical-speed-indicator>
-
-<!-- required by autopilot -->
-
-  <gps>
-    <name>gps</name>
-    <number>0</number>
-  </gps>
+    <static-port>/systems/pressurization</static-port>
+  </vertical-speed-indicator>
 
 </PropertyList>

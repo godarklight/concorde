@@ -21,14 +21,8 @@
        <or include="concorde-cond-test-land.xml">
         <and>
          <or include="concorde-cond-land.xml"/> <!-- because of BUG ? -->
-         <equals>
-          <property>/autopilot/locks/channel/ap[0]/on</property>
-          <value>on</value>
-         </equals>
-         <equals>
-          <property>/autopilot/locks/channel/ap[1]/on</property>
-          <value>on</value>
-         </equals>
+         <property>/controls/autoflight/autopilot[0]/engage</property>
+         <property>/controls/autoflight/autopilot[1]/engage</property>
         </and>
        </or>
       </and>

@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Max operating altitude is 60000 ft -->
+<!-- - max operating altitude is 60000 ft.
+    - the altitude dial is dissociated from its autopilot target;
+    as altitude hold is pressed, the current altitude is supposed not echoed on the dial.
+-->
 
 <PropertyList>
 
@@ -9,8 +12,9 @@
  <h-base>40</h-base>
 
  <params>
-  <tcr-disp>/autopilot/settings/target-altitude-ft</tcr-disp>
-  <tcr-ctrl>/autopilot/settings/target-altitude-ft</tcr-ctrl>
+  <tcr-disp>/controls/autoflight/altitude-select</tcr-disp>
+  <tcr-ctrl>/controls/autoflight/altitude-select</tcr-ctrl>
+  <alt-auto>/autopilot/settings/target-altitude-ft</alt-auto>
  </params>
 
  <layers>
@@ -217,6 +221,17 @@
     <max>60000</max>
     <wrap>0</wrap>
    </binding>
+   <binding>
+    <condition>
+     <equals>
+      <property>/controls/autoflight/vertical</property>
+      <value>altitude-acquire</value>
+     </equals>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/alt-auto"/>
+    <property n="1" alias="../../../../params/tcr-ctrl"/>
+   </binding>
   </action>
 
   <action>
@@ -233,6 +248,17 @@
     <min>0</min>
     <max>60000</max>
     <wrap>0</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <equals>
+      <property>/controls/autoflight/vertical</property>
+      <value>altitude-acquire</value>
+     </equals>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/alt-auto"/>
+    <property n="1" alias="../../../../params/tcr-ctrl"/>
    </binding>
   </action>
 
@@ -251,6 +277,17 @@
     <max>60000</max>
     <wrap>0</wrap>
    </binding>
+   <binding>
+    <condition>
+     <equals>
+      <property>/controls/autoflight/vertical</property>
+      <value>altitude-acquire</value>
+     </equals>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/alt-auto"/>
+    <property n="1" alias="../../../../params/tcr-ctrl"/>
+   </binding>
   </action>
 
   <action>
@@ -267,6 +304,17 @@
     <min>0</min>
     <max>60000</max>
     <wrap>0</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <equals>
+      <property>/controls/autoflight/vertical</property>
+      <value>altitude-acquire</value>
+     </equals>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/alt-auto"/>
+    <property n="1" alias="../../../../params/tcr-ctrl"/>
    </binding>
   </action>
 

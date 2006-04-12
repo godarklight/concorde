@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Max Climb Mode -->
+<!-- Max Climb Mode :
+
+     - on after max cruise engagement.
+-->
 
 <PropertyList>
  <name>Max Climb Mode</name>
@@ -21,11 +24,11 @@
     <condition>
      <and>
       <not-equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value>maxclimb</value>
       </not-equals>
       <not-equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value>maxcruise</value>
       </not-equals>
      </and>
@@ -127,7 +130,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apmaxclimbexport();</script>
+    <script>globals.Concorde.autopilotsystem.apmaxclimbexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

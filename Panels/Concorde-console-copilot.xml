@@ -55,26 +55,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="../../Instruments/wxradar.xml">
    <name>Weather Radar</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/captain</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>315</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>240</value>
-     </greater-than>
-     <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-60</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>315</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>240</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-60</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <x>30</x>
    <y>240</y>

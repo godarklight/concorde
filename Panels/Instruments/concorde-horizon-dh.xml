@@ -18,6 +18,12 @@
     <condition>
      <or>
       <not include="concorde-cond-voltage-horizon.xml"/>
+      <not>
+       <property>/systems/gpws/serviceable</property>
+      </not>
+      <not>
+       <property>/systems/gpws/decision-height</property>
+      </not>
       <greater-than-equals>
        <property>/position/altitude-agl-ft</property>
        <property n="1">/instrumentation/radio-altimeter/decision-ft</property>

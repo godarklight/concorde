@@ -25,7 +25,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not>
-      <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+      <property>/instrumentation/mach-indicator[0]/serviceable</property>
      </not>
     </or>
    </condition>
@@ -64,7 +64,7 @@
     <name>needle</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+      <property>/instrumentation/mach-indicator[0]/serviceable</property>
      </and>
     </condition>
     <texture>
@@ -79,7 +79,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/velocities/mach</property>
+      <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
       <min>0.20</min>
       <max>2.4</max>
       <scale>1.0</scale>
@@ -126,10 +126,10 @@
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <greater-than-equals>
-      <property>/velocities/mach</property>
+      <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
       <value>0.45</value>
      </greater-than-equals>
-     <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+     <property>/instrumentation/mach-indicator[0]/serviceable</property>
     </and>
    </condition>
    <type>text</type>
@@ -143,7 +143,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/velocities/mach</property>
+     <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
      <format>%1.2f</format>
     </chunk>
    </chunks>
@@ -177,7 +177,7 @@
      <type>rotation</type>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+       <property>/instrumentation/mach-indicator[0]/serviceable</property>
       </and>
      </condition>
      <property>/instrumentation/mach-indicator/mmo-mach</property>
@@ -208,7 +208,7 @@
     <name>Mach Min display</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+      <property>/instrumentation/mach-indicator[0]/serviceable</property>
      </and>
     </condition>
     <texture>
@@ -291,7 +291,7 @@
     <name>Mach Max display</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+      <property>/instrumentation/mach-indicator[0]/serviceable</property>
      </and>
     </condition>
     <texture>

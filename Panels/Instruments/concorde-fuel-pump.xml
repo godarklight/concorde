@@ -16,6 +16,25 @@
  <layers>
 
   <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-fuel-pump.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>75</w>
+   <h>75</h>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>3</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
    <name>Fuel pump</name>
    <type>switch</type>
    <layer>
@@ -51,60 +70,6 @@
     <w>40</w>
     <h>47</h>
    </layer>
-  </layer>
-
-  <layer>
-   <name>Title on</name>
-   <type>text</type>
-   <point-size>10</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>ON</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-7</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>29</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title off</name>
-   <type>text</type>
-   <point-size>10</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>OFF</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-11</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-30</offset>
-    </transformation>
-   </transformations>
   </layer>
 
  </layers>

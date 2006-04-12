@@ -2,7 +2,8 @@
 
 <!-- Concorde HSI :
 
-     - when no more voltage DME is off, but not the autopilot.
+     - when no more voltage DME is off, which means that one doesn't need to slave needles to voltage.
+     - but when no more voltage, autopilot is not off : true heading is still correct, if way point.
 
 
 Texture hsi4.rgb seems useless.
@@ -16,22 +17,6 @@ Adapted from Martin Dressler dr@musicabona.cz
  <w-base>512</w-base>
  <h-base>512</h-base>
  
- <params>
-  <ins-source>/instrumentation/hsi/ins-source</ins-source>
-  <gs-needle>/instrumentation/nav[0]/gs-needle-deflection</gs-needle>
-  <vor-needle>/instrumentation/nav[0]/heading-needle-deflection</vor-needle>
-  <waypoint-needle>/autopilot/internal/true-heading-error-deg</waypoint-needle>
-  <radial-selected-deg>/instrumentation/nav[0]/radials/selected-deg</radial-selected-deg>
-  <true-selected-deg>/autopilot/settings/true-heading-deg</true-selected-deg>
-  <to-flag>/instrumentation/nav[0]/to-flag</to-flag>
-  <from-flag>/instrumentation/nav[0]/from-flag</from-flag>
-  <vor-in-range>/instrumentation/nav[0]/in-range</vor-in-range>
-  <has-gs>/instrumentation/nav[0]/has-gs</has-gs>
-  <heading-deg>/orientation/heading-magnetic-deg</heading-deg>
-  <true-deg>/orientation/heading-deg</true-deg>
-  <autopilot-heading-deg>/autopilot/settings/heading-bug-deg</autopilot-heading-deg>
-  <autopilot-true-deg>/autopilot/settings/true-heading-deg</autopilot-true-deg>
- </params>
  
  <layers>
  
@@ -66,40 +51,52 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-selected-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
    </transformations>
@@ -109,10 +106,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>VOR TO</name>
    <condition>
     <and>
-     <property alias="../../../../../params/to-flag"/>
+     <property>/instrumentation/nav[0]/to-flag</property>
      <not>
-      <property alias="../../../../../../params/ins-source"/>
+      <property>/instrumentation/hsi/ins-source</property>
      </not>
+     <property>/instrumentation/hsi/serviceable</property>
     </and>
    </condition>
    <w>48</w>
@@ -131,13 +129,13 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -151,10 +149,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>VOR FROM</name>
    <condition>
     <and>
-     <property alias="../../../../../params/from-flag"/>
+     <property>/instrumentation/nav[0]/from-flag</property>
      <not>
-      <property alias="../../../../../../params/ins-source"/>
+      <property>/instrumentation/hsi/ins-source</property>
      </not>
+     <property>/instrumentation/hsi/serviceable</property>
     </and>
    </condition>
    <w>48</w>
@@ -173,13 +172,13 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -192,7 +191,6 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
    </transformations>
   </layer>
-
 
   <layer>
    <name>VOR markings</name>
@@ -212,45 +210,56 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-selected-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
    </transformations>
   </layer>
-
 
   <layer>
    <name>Compas rose shadow</name>
@@ -293,20 +302,26 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
    </transformations>
@@ -330,38 +345,50 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/autopilot-heading-deg"/>
+     <property>/controls/autoflight/heading-select</property>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/autopilot-true-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -389,50 +416,65 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-selected-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>x-shift</type>
-     <property alias="../../../../../params/vor-needle"/>
+     <property>/instrumentation/nav[0]/heading-needle-deflection</property>
      <min>-12.0</min>
      <max>12.0</max>
      <scale>-7.6</scale>
@@ -440,11 +482,12 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-hsi.xml">
-       <property alias="../../../../../../../params/ins-source"/>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
       </and>
      </condition>
      <type>x-shift</type>
-     <property alias="../../../../../params/waypoint-needle"/>
+     <property>/autopilot/internal/true-heading-error-deg</property>
      <min>-12.0</min>
      <max>12.0</max>
      <scale>-7.6</scale>
@@ -474,40 +517,52 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-selected-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -535,40 +590,52 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/radial-selected-deg"/>
+     <property>/instrumentation/nav[0]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-selected-deg"/>
+     <property>/autopilot/settings/true-heading-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
-      <not>
-       <property alias="../../../../../../../params/ins-source"/>
-      </not>
+      <and>
+       <not>
+        <property>/instrumentation/hsi/ins-source</property>
+       </not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/heading-deg"/>
+     <property>/orientation/heading-magnetic-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/ins-source"/>
+      <and>
+       <property>/instrumentation/hsi/ins-source</property>
+       <property>/instrumentation/hsi/serviceable</property>
+      </and>
      </condition>
      <type>rotation</type>
-     <property alias="../../../../../params/true-deg"/>
+     <property>/orientation/heading-deg</property>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -601,10 +668,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>GS needle right</name>
    <condition>
     <and>
-     <property alias="../../../../../params/has-gs"/>
+     <property>/instrumentation/nav[0]/has-gs</property>
      <not>
-      <property alias="../../../../../../params/ins-source"/>
+      <property>/instrumentation/hsi/ins-source</property>
      </not>
+     <property>/instrumentation/hsi/serviceable</property>
     </and>
    </condition>
    <w>40</w>
@@ -623,7 +691,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property alias="../../../../../params/gs-needle"/>
+     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>8.35</scale>
@@ -636,10 +704,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>GS needle left</name>
    <condition>
     <and>
-     <property alias="../../../../../params/has-gs"/>
+     <property>/instrumentation/nav[0]/has-gs</property>
      <not>
-      <property alias="../../../../../../params/ins-source"/>
+      <property>/instrumentation/hsi/ins-source</property>
      </not>
+     <property>/instrumentation/hsi/serviceable</property>
     </and>
    </condition>
    <w>40</w>
@@ -658,7 +727,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property alias="../../../../../params/gs-needle"/>
+     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>8.35</scale>
@@ -672,11 +741,16 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>NAV OFF</name>
    <condition>
     <and>
+     <or>
+      <not>
+       <property>/instrumentation/nav[0]/in-range</property>
+      </not>
+      <not>
+       <property>/instrumentation/hsi/serviceable</property>
+      </not>
+     </or>
      <not>
-      <property alias="../../../../../../params/vor-in-range"/>
-     </not>
-     <not>
-      <property alias="../../../../../../params/ins-source"/>
+      <property>/instrumentation/hsi/ins-source</property>
      </not>
     </and>
    </condition>
@@ -706,36 +780,6 @@ Adapted from Martin Dressler dr@musicabona.cz
   </layer>
 
   <layer>
-   <name>HDG OFF</name>
-   <condition>
-    <not include="concorde-cond-voltage-hsi.xml"/>
-   </condition>
-   <w>104</w>
-   <h>60</h>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
-    <x1>0.796875</x1>
-    <x2>1.0</x2>
-    <y1>0.8828125</y1>
-    <y2>1.0</y2>
-   </texture>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>142</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>121</offset>
-    </transformation>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-71</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
    <name>Foreground</name>
    <w>512</w>
    <h>512</h>
@@ -747,7 +791,396 @@ Adapted from Martin Dressler dr@musicabona.cz
     <y2>1.0</y2>
    </texture>
   </layer>
+
+<!-- REFERENCE -->
+
+  <layer>
+   <name>Title</name>
+   <type>switch</type>
+
+   <layer>
+    <name>Title magnetic</name>
+    <condition>
+     <not>
+      <property>/instrumentation/hsi/ins-source</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>34</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>MAG</text>
+     </chunk>
+     </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-40</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>Title true</name>
+    <type>text</type>
+    <point-size>34</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>TRUE</text>
+     </chunk>
+     </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-50</offset>
+     </transformation>
+    </transformations>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>252</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>HDG OFF</name>
+   <condition>
+    <or>
+     <not include="concorde-cond-voltage-hsi.xml"/>
+     <not>
+      <property>/instrumentation/hsi/serviceable</property>
+     </not>
+    </or>
+   </condition>
+   <w>139</w>
+   <h>80</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.796875</x1>
+    <x2>1.0</x2>
+    <y1>0.8828125</y1>
+    <y2>1.0</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>233</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- MILES -->
+
+<!-- translucent lens (partially used) -->  
+  <layer>
+   <name>darken background</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <condition>
+      <not-equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value>NOT-USED</value>
+      </not-equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>162</w>
+     <h>61</h>
+    </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>162</w>
+     <h>61</h>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-174</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>293</offset>
+     </transformation>
+    </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>162</w>
+   <h>61</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-174</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>293</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title miles</name>
+   <type>text</type>
+   <point-size>27</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>MILES</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-217</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>330</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+    <name>INS</name>
+    <type>switch</type>
+    <condition>
+     <and include="concorde-cond-voltage-hsi.xml">
+      <not-equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value></value>
+      </not-equals>
+      <property>/instrumentation/hsi/serviceable</property>
+     </and>
+    </condition>
+
+    <layer>
+     <name>INS distance</name>
+     <condition>
+      <less-than-equals>
+       <property>/autopilot/route-manager/wp/dist</property>
+       <value type="double">9999.0</value>
+      </less-than-equals>
+     </condition>
+     <type>text</type>
+     <font>led</font>
+     <point-size>22</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/autopilot/route-manager/wp/dist</property>
+       <format>%4.0f</format>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>INS overflow</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>22</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>9999</text>
+      </chunk>
+     </chunks>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-234</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>270</offset>
+     </transformation>
+    </transformations>
+  </layer>
  
+<!-- GROUND SPEED -->
+
+<!-- translucent lens (partially used) -->  
+  <layer>
+   <name>darken background</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <condition>
+      <not-equals>
+       <property>/autopilot/route-manager/wp/id</property>
+       <value>NOT-USED</value>
+      </not-equals>
+     </condition>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>162</w>
+     <h>61</h>
+    </layer>
+    <layer>
+     <name>on</name>
+     <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.0</y1>
+     <x2>0.5</x2>
+     <y2>0.095</y2>
+     </texture>
+     <w>162</w>
+     <h>61</h>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>174</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>293</offset>
+     </transformation>
+    </transformations>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+     <x1>0.7</x1>
+     <y1>0.8</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+   </texture>
+   <w>162</w>
+   <h>61</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>174</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>293</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title ground speed</name>
+   <type>text</type>
+   <point-size>27</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>GND SPD</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>105</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>330</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Ground speed</name>
+   <condition>
+    <and include="concorde-cond-voltage-hsi.xml">
+     <property>/instrumentation/hsi/serviceable</property>
+    </and>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>22</point-size>
+   <color>
+    <red>0.85</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/ins[0]/ground-speed-fps</property>
+     <format>%4.0f</format>
+     <scale>0.592484</scale>        <!-- kt -->
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>117</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>270</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  </layers>
 
 </PropertyList>

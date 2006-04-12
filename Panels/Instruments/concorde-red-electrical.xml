@@ -23,7 +23,7 @@
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-voltage-dc-main.xml">
-       <or include="concorde-cond-test-overhead.xml"/>
+       <or include="concorde-cond-test-mws.xml"/>
        <property>systems/electrical/serviceable</property>
        <greater-than>
         <property>/systems/electrical/outputs/probe/dc-essentiala</property>

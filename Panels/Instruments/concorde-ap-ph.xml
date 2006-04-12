@@ -20,7 +20,7 @@
     <condition>
      <or include="concorde-cond-land.xml">
       <not-equals>
-       <property>/autopilot/locks/altitude</property>
+       <property>/controls/autoflight/altitude</property>
        <value>pitch-hold</value>
       </not-equals>
      </or>
@@ -122,7 +122,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.appitchexport();</script>
+    <script>globals.Concorde.autopilotsystem.appitchexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

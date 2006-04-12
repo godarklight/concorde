@@ -23,7 +23,25 @@ Emulation : in reality, the engineer switches the rating.
     <name>on</name>
     <type>group</type>
     <condition>
-     <and include="concorde-cond-takeoff.xml">
+     <and>
+      <or>
+       <equals>
+        <property>/controls/engines/engine[0]/rating</property>
+        <value>takeoff</value>
+       </equals>
+       <equals>
+        <property>/controls/engines/engine[1]/rating</property>
+        <value>takeoff</value>
+       </equals>
+       <equals>
+        <property>/controls/engines/engine[2]/rating</property>
+        <value>takeoff</value>
+       </equals>
+       <equals>
+        <property>/controls/engines/engine[3]/rating</property>
+        <value>takeoff</value>
+       </equals>
+      </or>
       <not include="concorde-cond-voltage-bulb.xml"/>
      </and>
     </condition>

@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Concorde default sound
-
-
-   The number of sound is limited, because low hardware gets OpenAL errors in SGSoundSample::SGSoundSample() :
-   AL_INVALID_VALUE error on alGenSources (Device->MaxNoOfSources reached ?).
-
+<!-- Concorde default sound :
 
    Sounds are adjusted to the level of ATIS voice.
 
@@ -33,6 +28,14 @@
    Positions of engines :
    - 4 and 6 m in width.
    - 40 m in length, from nose.
+
+
+   Known problems :
+   ==============
+   - the number of sound is limited, because low hardware gets OpenAL errors in SGSoundSample::SGSoundSample() :
+   AL_INVALID_VALUE error on alGenSources (Device->MaxNoOfSources reached ?).
+   - "once" sound must be both internal/external, otherwise triggers once the view flag toggles.
+   - cannot lookup 0.34 by /controls/nose-visor/nose/up-min.
 
 -->
  
@@ -83,8 +86,6 @@
     <factor>0.09</factor>
     <offset>0.0</offset>
    </volume>    
-   <reference-dist>500.0</reference-dist>
-   <max-dist>8000.0</max-dist>
   </engine>
 
   <engine>
@@ -100,26 +101,36 @@
       <property>/engines/engine[2]/running</property>     
       <property>/engines/engine[3]/running</property>     
      </or>
-     <or>
-      <property>/sim/current-view/internal</property>
-      <and>
-       <not>
-        <property>/sim/current-view/internal</property>
-       </not>
-       <less-than>
-        <property>/velocities/mach</property>
-        <value>0.55</value>     
-       </less-than>
-       <not>
-        <or>
-         <property>/engines/engine[0]/augmentation</property>
-         <property>/engines/engine[1]/augmentation</property>
-         <property>/engines/engine[2]/augmentation</property>
-         <property>/engines/engine[3]/augmentation</property>
-        </or>
-       </not>     
-      </and>
-     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </less-than>
+     <not>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </not>     
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -170,8 +181,6 @@
     <factor>0.20</factor>
     <offset>0.10</offset>
    </pitch>   
-   <reference-dist>500.0</reference-dist>
-   <max-dist>8000.0</max-dist>
   </engine>
 
   <wind>
@@ -183,7 +192,7 @@
      <property>/sim/current-view/internal</property>
      <greater-than>
       <property>/surface-positions/flap-pos-norm</property> <!-- until noose is streamlined (0.34 = visor down) -->
-      <value>0.34</value>     
+      <value>0.34</value>
      </greater-than>
      <greater-than>
       <property>/velocities/airspeed-kt</property>
@@ -209,8 +218,6 @@
     <factor>0.01</factor>
     <offset>1.25</offset>
    </pitch>
-   <reference-dist>500.0</reference-dist>
-   <max-dist>8000.0</max-dist>
   </wind>
 
 <!-- engine external -->
@@ -273,6 +280,69 @@
   </engine>
 
   <engine>
+   <name>reverser external</name>
+   <path>Sounds/wind.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <or>
+      <greater-than-equals>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+     </or>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.1</factor>
+    <offset>0.0</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.1</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.1</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.1</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </engine>
+
+  <engine>
    <name>whine external</name>
    <path>Sounds/whine.wav</path>
    <mode>looped</mode>
@@ -287,26 +357,36 @@
       <property>/engines/engine[2]/running</property>     
       <property>/engines/engine[3]/running</property>     
      </or>
-     <or>
-      <property>/sim/current-view/internal</property>
-      <and>
-       <not>
-        <property>/sim/current-view/internal</property>
-       </not>
-       <less-than>
-        <property>/velocities/mach</property>
-        <value>0.55</value>     
-       </less-than>
-       <not>
-        <or>
-         <property>/engines/engine[0]/augmentation</property>
-         <property>/engines/engine[1]/augmentation</property>
-         <property>/engines/engine[2]/augmentation</property>
-         <property>/engines/engine[3]/augmentation</property>
-        </or>
-       </not>     
-      </and>
-     </or>
+     <less-than>
+      <property>/velocities/mach</property>
+      <value>0.55</value>     
+     </less-than>
+     <not>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </not>     
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -425,10 +505,6 @@
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[0]/cranking</property>
@@ -463,7 +539,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>0.0</x>
@@ -482,10 +557,6 @@
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[0]/cutoff</property>
@@ -516,7 +587,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>0.0</x>
@@ -550,8 +620,8 @@
       <property>/gear/gear[4]/wow</property>
      </or>
      <greater-than> <!-- only rumble on taxi -->
-      <property>/instrumentation/tas-indicator/indicated-tas-kt</property> <!-- more accurate -->
-      <value>10</value>     
+      <property>/instrumentation/ins[0]/ground-speed-fps</property> <!-- more accurate -->
+      <value>17</value>      <!-- 10 kt -->
      </greater-than>
     </and>
    </condition>
@@ -600,8 +670,6 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
   </gear>
 
   <squeal>
@@ -663,8 +731,6 @@
     <property>/velocities/airspeed-kt</property>
     <min>30.0</min>
    </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
   </stall>
  
   <overspeed>
@@ -680,9 +746,36 @@
     <max>0.4</max>
     <min>0.1</min>
    </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
   </overspeed>
+ 
+  <terrain>
+   <name>pull up</name>
+   <mode>looped</mode>
+   <path>Sounds/mk-viii/pull-up.wav</path>
+   <condition>
+    <and include="../Panels/Instruments/concorde-cond-terrain.xml">
+     <property>/sim/current-view/internal</property>
+    </and>
+   </condition>
+   <volume>
+    <max>0.4</max>
+    <min>0.1</min>
+   </volume>
+  </terrain>
+
+  <door>
+   <name>Door</name>
+   <path>Sounds/door_close.wav</path>
+   <condition>
+    <equals>
+     <property>/controls/doors/flight-deck/position-norm</property>
+     <value>0.0</value>
+    </equals>
+   </condition>
+   <volume>
+    <factor>0.2</factor>
+   </volume>
+  </door>
 
 <!-- cannot disable click in external views, otherwise heard when ctrl-V -->
 

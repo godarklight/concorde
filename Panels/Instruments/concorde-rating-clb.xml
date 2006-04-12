@@ -23,10 +23,26 @@ Emulation : in reality, the engineer switches the rating.
     <name>off</name>
     <type>group</type>
     <condition>
-     <or include="concorde-cond-cruise.xml">
-      <or include="concorde-cond-takeoff.xml">
-       <or include="concorde-cond-voltage-bulb.xml"/>
-      </or>
+     <or>
+      <and>
+       <not-equals>
+        <property>/controls/engines/engine[0]/rating</property>
+        <value>climb</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[1]/rating</property>
+        <value>climb</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[2]/rating</property>
+        <value>climb</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[3]/rating</property>
+        <value>climb</value>
+       </not-equals>
+      </and>
+      <or include="concorde-cond-voltage-bulb.xml"/>
      </or>
     </condition>
 

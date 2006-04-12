@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- engine cutoff :
+<!-- Simplified engine start for 2D panel :
 
-     - requires relight voltage to work.
+     - no requirement on voltage or air bleed.
 -->
 
 
@@ -15,7 +15,7 @@
   <eng-num>/engines/engine[0]/engine-num</eng-num>
   <cutoff>/engines/engine[0]/cutoff</cutoff>
   <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-  <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
+  <control-starter>/controls/engines/engine[0]/starter</control-starter>
  </params>
 
 
@@ -99,12 +99,36 @@
  
  <actions>
   <action>
-   <desc>Engine cutoff</desc>
+   <desc>Open valve</desc>
    <condition>
-    <greater-than>
-     <property alias="../../../../../params/engine-relight"/>
-     <value>110.0</value>
-    </greater-than>
+    <property alias="../../../../params/cutoff"/>
+   </condition>
+   <button>0</button>
+   <x>-12</x>
+   <y>-13</y>
+   <w>26</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/control-starter"/>
+     <value>true</value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.enginesystem.cutoffexport();</script>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+ 
+  <action>
+   <desc>Shut valve</desc>
+   <condition>
+    <not>
+     <property alias="../../../../../params/cutoff"/>
+    </not>
    </condition>
    <button>0</button>
    <x>-12</x>

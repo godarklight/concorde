@@ -4,6 +4,7 @@
 
      - flashes if missing ILS.
      - the bars are not implemented.
+     - flashes on test.
 -->
 
 <PropertyList>
@@ -24,7 +25,10 @@
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
-       <not include="concorde-cond-test-land.xml"/>
+       <or>
+        <or include="concorde-cond-flashing-light.xml"/>    <!-- bug -->
+        <not include="concorde-cond-test-land.xml"/>
+       </or>
        <or include="concorde-cond-flashing-light.xml">
         <and>
          <not include="concorde-cond-land.xml"/>

@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Concorde Inertial Navigation System
-
-The LED is real (with probably different display).
+<!-- Concorde Inertial Navigation System :
 
 -->
 
@@ -114,6 +112,29 @@ The LED is real (with probably different display).
    </transformations>
   </layer>
 
+  <layer>
+   <name>background selector</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-ins.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>140</w>
+   <h>140</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>15</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-30</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
 <!-- ========= -->
 <!-- == INS == -->
 <!-- ========= -->
@@ -127,22 +148,207 @@ The LED is real (with probably different display).
    </and>
   </condition>
 
+<!-- TRACK / GROUND SPEED -->
+
+  <layer>
+   <name>Track / ground speed</name>
+   <type>group</type>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/selector-ctrl"/>
+     <value>-3</value>
+    </equals>
+   </condition>
+
+   <layer>
+    <name>Present track</name>
+    <type>switch</type>
+    <condition>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value type="string"></value>
+     </not-equals>
+    </condition>
+
+    <layer>
+     <name>present track</name>
+     <condition>
+      <greater-than>
+       <property>/instrumentation/ins[0]/ground-speed-fps</property>
+       <value>126.59</value>        <!-- 75 kt -->
+      </greater-than>
+     </condition>
+     <type>text</type>
+     <font>led</font>
+     <point-size>9</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <format>%5.2f</format>
+       <property>/autopilot/settings/true-heading-deg</property>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>true heading</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>9</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <format>%5.2f</format>
+       <property>/orientation/heading-deg</property>
+      </chunk>
+     </chunks>
+    </layer>
+   </layer>
+
+<!-- Ground speed -->
+
+   <layer>
+    <name>Ground speed</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/ins[0]/ground-speed-fps</property>
+      <format>%6.2f</format>
+      <scale>0.592484</scale>        <!-- kt -->
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>105</offset>
+     </transformation>
+    </transformations>
+   </layer>
+  </layer> <!-- group -->
+
+<!-- HEADING / DRIFT ANGLE -->
+
+  <layer>
+   <name>Track / ground speed</name>
+   <type>group</type>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/selector-ctrl"/>
+     <value>-2</value>
+    </equals>
+   </condition>
+
+   <layer>
+    <name>True heading</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <format>%5.2f</format>
+      <property>/orientation/heading-deg</property>
+     </chunk>
+    </chunks>
+   </layer>
+  </layer> <!-- group -->
+
+<!-- CROSS TRACK DISTANCE / TRACK ERROR -->
+
+  <layer>
+   <name>Cross track distance / track error</name>
+   <type>group</type>
+   <condition>
+    <and>
+     <equals>
+      <property alias="../../../../../../../params/selector-ctrl"/>
+      <value>-1</value>
+     </equals>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value type="string"></value>
+     </not-equals>
+    </and>
+   </condition>
+
+   <layer>
+    <name>cross track distance</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/ins/leg-course-error-nm</property>
+      <format>%5.2f</format>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>track error</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/ins/leg-course-deviation-deg</property>
+      <format>%5.2f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>105</offset>
+     </transformation>
+    </transformations>
+   </layer>
+  </layer> <!-- group -->
+
 <!-- POSITION -->
 
   <layer>
    <name>Position</name>
    <type>group</type>
    <condition>
-    <or>
-     <less-than>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
-     </less-than>
-     <greater-than>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">3</value>
-     </greater-than>
-    </or>
+    <equals>
+     <property alias="../../../../../../params/selector-ctrl"/>
+     <value>0</value>
+    </equals>
    </condition>
 
    <layer>
@@ -262,8 +468,7 @@ The LED is real (with probably different display).
       </greater-than>
      </condition>
      <type>text</type>
-     <font>led</font>
-     <point-size>6</point-size>
+     <point-size>16</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -278,15 +483,14 @@ The LED is real (with probably different display).
      <transformations>
       <transformation>
        <type>y-shift</type>
-       <offset>12</offset>
+       <offset>13</offset>
       </transformation>
      </transformations>
     </layer>
     <layer>
      <name>South</name>
      <type>text</type>
-     <font>led</font>
-     <point-size>6</point-size>
+     <point-size>16</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -301,7 +505,7 @@ The LED is real (with probably different display).
      <transformations>
       <transformation>
        <type>y-shift</type>
-       <offset>-6</offset>
+       <offset>-5</offset>
       </transformation>
      </transformations>
     </layer>
@@ -326,8 +530,7 @@ The LED is real (with probably different display).
       </greater-than>
      </condition>
      <type>text</type>
-     <font>led</font>
-     <point-size>6</point-size>
+     <point-size>16</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -355,8 +558,7 @@ The LED is real (with probably different display).
     <layer>
      <name>West</name>
      <type>text</type>
-     <font>led</font>
-     <point-size>6</point-size>
+     <point-size>16</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -365,7 +567,7 @@ The LED is real (with probably different display).
      <chunks>
       <chunk>
        <type>literal</type>
-       <text>U</text> <!-- police displays nothing for W -->
+       <text>W</text>
       </chunk>
      </chunks>
      <transformations>
@@ -388,7 +590,7 @@ The LED is real (with probably different display).
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>0</offset>
+      <offset>1</offset>
      </transformation>
     </transformations>
    </layer> <!-- switch -->
@@ -408,7 +610,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </equals>
      <not-equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -424,8 +626,7 @@ The LED is real (with probably different display).
    <layer>
     <name>Ident</name>
     <type>text</type>
-    <font>led</font>
-    <point-size>9</point-size>
+    <point-size>21</point-size>
     <color>
      <red>0.0</red>
      <green>0.85</green>
@@ -480,7 +681,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </equals>
      <not-equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -576,11 +777,11 @@ The LED is real (with probably different display).
     <and>
      <greater-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </greater-than-equals>
      <less-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </less-than-equals>
      <not-equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -643,7 +844,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -655,8 +856,7 @@ The LED is real (with probably different display).
    <layer>
     <name>Ident 2</name>
     <type>text</type>
-    <font>led</font>
-    <point-size>9</point-size>
+    <point-size>21</point-size>
     <color>
      <red>0.0</red>
      <green>0.85</green>
@@ -711,7 +911,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -803,11 +1003,11 @@ The LED is real (with probably different display).
     <and>
      <greater-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </greater-than-equals>
      <less-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </less-than-equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -866,7 +1066,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -878,8 +1078,7 @@ The LED is real (with probably different display).
    <layer>
     <name>Ident 3</name>
     <type>text</type>
-    <font>led</font>
-    <point-size>9</point-size>
+    <point-size>21</point-size>
     <color>
      <red>0.0</red>
      <green>0.85</green>
@@ -934,7 +1133,7 @@ The LED is real (with probably different display).
      </not-equals>
      <equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -1026,11 +1225,11 @@ The LED is real (with probably different display).
     <and>
      <greater-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">1</value>
+      <value>1</value>
      </greater-than-equals>
      <less-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
-      <value type="double">2</value>
+      <value>2</value>
      </less-than-equals>
      <equals>
       <property alias="../../../../../../../params/wpt-ctrl"/>
@@ -1084,7 +1283,7 @@ The LED is real (with probably different display).
    <condition>
     <equals>
      <property alias="../../../../../../params/selector-ctrl"/>
-     <value type="double">3</value>
+     <value>3</value>
     </equals>
    </condition>
 
@@ -1107,7 +1306,7 @@ The LED is real (with probably different display).
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/environment/wind-from-heading-deg</property>
+      <property>/instrumentation/ins[0]/wind-from-heading-deg</property>
       <format>%03.0f</format>
      </chunk>
     </chunks>
@@ -1115,50 +1314,27 @@ The LED is real (with probably different display).
 
    <layer>
     <name>Wind speed</name>
-    <type>switch</type>
-
-    <layer>
-     <name>With INS</name>
-     <condition>
-      <greater-than>
-       <property>/position/altitude-agl-ft</property> <!-- works only with flight -->
-       <value type="double">20</value>
-      </greater-than>
-     </condition>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/environment/wind-speed-kt</property>
-       <format>%3.0f</format>
-      </chunk>
-     </chunks>
-    </layer>
-    <layer>
-     <name>Ground</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>GND</text>
-      </chunk>
-     </chunks>
-    </layer>
-
+    <condition>
+     <greater-than>
+      <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property> <!-- works only with flight -->
+      <value type="double">20</value>
+     </greater-than>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/ins[0]/wind-speed-kt</property>
+      <format>%3.0f</format>
+     </chunk>
+    </chunks>
     <transformations>
      <transformation>
       <type>x-shift</type>
@@ -1167,6 +1343,44 @@ The LED is real (with probably different display).
     </transformations>
    </layer> <!-- switch -->
 
+  </layer> <!-- group -->
+
+<!-- DESIRED TRACK / STATUS -->
+
+  <layer>
+   <name>Desired track / status</name>
+   <type>group</type>
+   <condition>
+    <equals>
+     <property alias="../../../../../../params/selector-ctrl"/>
+     <value>4</value>
+    </equals>
+   </condition>
+
+   <layer>
+    <name>desired track</name>
+    <condition>
+     <not-equals>
+      <property>/autopilot/route-manager/wp[0]/id</property>
+      <value type="string"></value>
+     </not-equals>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>9</point-size>
+    <color>
+     <red>0.0</red>
+     <green>0.85</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/ins/leg-true-course-deg</property>
+      <format>%5.2f</format>
+     </chunk>
+    </chunks>
+   </layer>
   </layer> <!-- group -->
 
 <!-- END INS -->
@@ -1186,114 +1400,6 @@ The LED is real (with probably different display).
 <!-- SELECTOR -->
 
   <layer>
-   <name>Title position</name>
-   <type>text</type>
-   <point-size>12</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>POS</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-60</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-20</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title waypoint</name>
-   <type>text</type>
-   <point-size>12</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>WAY PT</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-60</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title distance/time</name>
-   <type>text</type>
-   <point-size>12</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>DST/TIME</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>10</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Title wind</name>
-   <type>text</type>
-   <point-size>12</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>WIND</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>38</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-20</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
    <name>knob rotation</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
@@ -1302,8 +1408,8 @@ The LED is real (with probably different display).
     <y1>0.05859375</y1>
     <y2>0.1484375</y2>
    </texture>
-   <w>16</w>
-   <h>20</h>
+   <w>32</w>
+   <h>40</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -1316,10 +1422,10 @@ The LED is real (with probably different display).
     <transformation>
      <type>rotation</type>
      <property alias="../../../../../params/selector-ctrl"/>
-     <min>0</min>
-     <max>3</max>
-     <scale>60</scale>
-     <offset>-90</offset>
+     <min>-3</min>
+     <max>4</max>
+     <scale>36</scale>
+     <offset>-36</offset>
     </transformation>
     <transformation>
     <type>y-shift</type>
@@ -1343,8 +1449,8 @@ The LED is real (with probably different display).
     <command>property-adjust</command>
     <property alias="../../../../params/selector-ctrl"/>
     <step>-1</step>
-    <min>0</min>
-    <max>3</max>
+    <min>-3</min>
+    <max>4</max>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -1364,8 +1470,8 @@ The LED is real (with probably different display).
     <command>property-adjust</command>
     <property alias="../../../../params/selector-ctrl"/>
     <step>1</step>
-    <min>0</min>
-    <max>3</max>
+    <min>-3</min>
+    <max>4</max>
     <wrap>0</wrap>
    </binding>
    <binding>

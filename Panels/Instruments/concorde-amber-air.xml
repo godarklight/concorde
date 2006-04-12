@@ -2,8 +2,8 @@
 
 <!-- Alarm on Air bleed :
 
-     - loss of 4 engines in flight : affects pressurization.
-     - no air by ground service : in flight the starter probably gets air pressure by speed.
+     - above 85 PSI.
+     - IMPORTANT : no air bleed pressure at all (on the 4 conditioning groups) doesn't cause a warning.
 -->
 
 <PropertyList>
@@ -21,11 +21,23 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-overhead.xml">
-       <greater-than-equals>
-        <property>/systems/air-bleed/pressure-psi</property>
-        <value>35.0</value>
-       </greater-than-equals>
+      <and include="concorde-cond-test-mws.xml">
+       <less-than>
+        <property>/systems/air-bleed/engine[0]/cross-psi</property>
+        <value>85.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/air-bleed/engine[1]/cross-psi</property>
+        <value>85.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/air-bleed/engine[2]/cross-psi</property>
+        <value>85.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/air-bleed/engine[3]/cross-psi</property>
+        <value>85.0</value>
+       </less-than>
        <property>/systems/air-bleed/serviceable</property>
       </and>
      </or>

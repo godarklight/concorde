@@ -1,4 +1,8 @@
-<!-- Fuel tank 12000 kg. -->
+<!-- Fuel tank 12000 kg :
+
+     - tanks 6 and 8.
+     - tanks 9 to 11.
+-->
 
 
 <PropertyList>
@@ -27,11 +31,12 @@
   </layer>
 
   <layer>
-   <name>Number</name>
+   <name>number</name>
    <type>switch</type>
 
    <layer>
     <name>Number 6, 8</name>
+    <type>switch</type>
     <condition>
      <or>
       <equals>
@@ -44,120 +49,134 @@
       </equals>
      </or>
     </condition>
-    <type>text</type>
-    <point-size>19</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-       <property alias="../../../../../../params/tank-num"/>
-     </chunk>
-    </chunks>
+
+    <layer>
+     <name>6</name>
+     <condition>
+      <equals>
+       <property alias="../../../../../../../params/tank-num"/>
+       <value>6</value>
+      </equals>
+     </condition>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-6.rgb</path>
+      <x1>0</x1>
+      <y1>0</y1>
+      <x2>1</x2>
+      <y2>1</y2>
+     </texture>
+     <w>25</w>
+     <h>25</h>
+    </layer>
+ 
+    <layer>
+     <name>8</name>
+     <condition>
+      <equals>
+       <property alias="../../../../../../../params/tank-num"/>
+       <value>8</value>
+      </equals>
+     </condition>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-8.rgb</path>
+      <x1>0</x1>
+      <y1>0</y1>
+      <x2>1</x2>
+      <y2>1</y2>
+     </texture>
+     <w>25</w>
+     <h>25</h>
+    </layer>
+
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-85</offset>
+      <offset>-81</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>-40</offset>
+      <offset>-34</offset>
      </transformation>
     </transformations>
    </layer>
 
    <layer>
-    <name>Number 10</name>
+    <name>10</name>
     <condition>
      <equals>
       <property alias="../../../../../../params/tank-num"/>
       <value>10</value>
      </equals>
     </condition>
-    <type>text</type>
-    <point-size>19</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-       <property alias="../../../../../../params/tank-num"/>
-     </chunk>
-    </chunks>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-10.rgb</path>
+     <x1>0</x1>
+     <y1>0</y1>
+     <x2>1</x2>
+     <y2>1</y2>
+    </texture>
+    <w>25</w>
+    <h>25</h>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-95</offset>
+      <offset>-83</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>20</offset>
+      <offset>26</offset>
      </transformation>
     </transformations>
    </layer>
 
    <layer>
-    <name>Number 11</name>
+    <name>11</name>
     <condition>
      <equals>
       <property alias="../../../../../../params/tank-num"/>
       <value>11</value>
      </equals>
     </condition>
-    <type>text</type>
-    <point-size>19</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-       <property alias="../../../../../../params/tank-num"/>
-     </chunk>
-    </chunks>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-11.rgb</path>
+     <x1>0</x1>
+     <y1>0</y1>
+     <x2>1</x2>
+     <y2>1</y2>
+    </texture>
+    <w>25</w>
+    <h>25</h>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-64</offset>
+      <offset>-53</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>60</offset>
+      <offset>66</offset>
      </transformation>
     </transformations>
    </layer>
 
    <layer>
-    <name>Number default</name>
-    <type>text</type>
-    <point-size>19</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property alias="../../../../../../params/tank-num"/>
-     </chunk>
-     </chunks>
+    <name>9</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-9.rgb</path>
+     <x1>0</x1>
+     <y1>0</y1>
+     <x2>1</x2>
+     <y2>1</y2>
+    </texture>
+    <w>25</w>
+    <h>25</h>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-95</offset>
+      <offset>-91</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>-10</offset>
+      <offset>-4</offset>
      </transformation>
     </transformations>
    </layer>

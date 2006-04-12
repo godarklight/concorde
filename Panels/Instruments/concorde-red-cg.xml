@@ -17,8 +17,9 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-cg.xml">
-       <or include="concorde-cond-test-overhead.xml"/>
+      <and>
+       <or include="concorde-cond-cg.xml"/>    <!-- bug -->
+       <or include="concorde-cond-test-mws.xml"/>
        <or include="concorde-cond-test-captain.xml"/>
       </and>
      </or>

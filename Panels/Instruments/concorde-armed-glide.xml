@@ -21,7 +21,7 @@
     <condition>
      <or include="concorde-cond-glideslope.xml">
       <not-equals>
-       <property>/autopilot/locks/altitude</property>
+       <property>/controls/autoflight/altitude</property>
        <value>gs1-hold</value>
       </not-equals>
      </or>

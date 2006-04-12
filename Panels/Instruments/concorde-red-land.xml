@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 
 <!-- Alarm on Autoland :
+
      - excessive ILS deviation below 200 ft for LOC.
      - excessive ILS deviation between 200 and 100 ft for GLIDE.
      - ILS failure below 200 ft for LOC.
      - ILS failure between 200 and 75 ft for GLIDE.
      - missing autothrottle below 600 ft.
+     - flashes on test.
+
+     Cannot move to nasal, because response time must be instantaneous.
 -->
 
 <PropertyList>
@@ -24,16 +28,13 @@
      <condition>
       <and>
        <not include="concorde-cond-voltage-bulb.xml"/>
-       <or include="concorde-cond-test-land.xml">
+       <or>
+        <and include="concorde-cond-test-land.xml">
+         <not include="concorde-cond-flashing-light.xml"/>
+        </and>
         <and>
-         <equals>
-          <property>/instrumentation/generic/flashing-light</property>
-          <value>1.0</value>
-         </equals>
-         <equals>
-          <property>autopilot/locks/vertical</property>
-          <value>autoland</value>
-         </equals>
+         <not include="concorde-cond-flashing-light.xml"/>
+         <or include="concorde-cond-land.xml"/>
          <or>
           <and>
            <greater-than>
@@ -58,7 +59,7 @@
           <and>
            <greater-than>
             <property>position/altitude-agl-ft</property>
-            <value>175.0</value> <!-- because of vertical-speed-with-throttle (should be 100 ft) -->
+            <value>100.0</value>
            </greater-than>
            <less-than>
             <property>position/altitude-agl-ft</property>
@@ -67,11 +68,11 @@
            <or>
             <less-than>
              <property>instrumentation/nav[0]/gs-needle-deflection</property>
-             <value>-0.5</value>
+             <value>-0.8</value>
             </less-than>
             <greater-than>
              <property>instrumentation/nav[0]/gs-needle-deflection</property>
-             <value>0.5</value>
+             <value>0.8</value> <!-- was 0.5 without pitch hold -->
              </greater-than>
            </or>
           </and>
@@ -115,16 +116,10 @@
             <property>position/altitude-agl-ft</property>
             <value>600.0</value>
            </less-than>
-           <and>
-            <not-equals>
-             <property>autopilot/locks/speed</property>
-             <value>speed-with-throttle</value>
-            </not-equals>
-            <not-equals>
-             <property>autopilot/locks/altitude2</property>
-             <value>vertical-speed-with-throttle</value>
-            </not-equals>
-           </and>
+           <equals>
+            <property>controls/autoflight/speed</property>
+            <value></value>
+           </equals>
           </and>
          </or>
         </and>

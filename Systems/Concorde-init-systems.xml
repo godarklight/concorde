@@ -1,99 +1,162 @@
 <?xml version="1.0"?>
 
-<!-- intialize systems : avoid nil values for Nasal.
+<!-- intialize systems :
 
+     - avoid nil values for Nasal.
+     - avoid string numbers (comparison doesn't work in XML instrument) for Nasal.
+
+
+     Known problems :
+     ==============
+     - electrical system has a Nasal stack overflow, when above <iterations-forced>4</iterations-forced>
+     (not necessary).
 -->
 
 <PropertyList>
 
   <air-bleed>
    <serviceable type="bool" archive="y">true</serviceable>
+   <ground-supply type="bool">false</ground-supply>                                    <!-- door closed -->
+   <ground-service-psi type="double">0.0</ground-service-psi>
+   <engine n="0">
+    <jet-pump type="bool">true</jet-pump>
+    <ram-air type="bool">true</ram-air>
+    <fuel-valve type="bool">true</fuel-valve>
+    <bleed-psi type="double">0.0</bleed-psi>
+    <conditioning-psi type="double">0.0</conditioning-psi>
+   </engine>
+   <engine n="1">
+    <jet-pump type="bool">true</jet-pump>
+    <ram-air type="bool">true</ram-air>
+    <fuel-valve type="bool">true</fuel-valve>
+    <bleed-psi type="double">0.0</bleed-psi>
+    <conditioning-psi type="double">0.0</conditioning-psi>
+   </engine>
+   <engine n="2">
+    <jet-pump type="bool">true</jet-pump>
+    <ram-air type="bool">true</ram-air>
+    <fuel-valve type="bool">true</fuel-valve>
+    <bleed-psi type="double">0.0</bleed-psi>
+    <conditioning-psi type="double">0.0</conditioning-psi>
+   </engine>
+   <engine n="3">
+    <jet-pump type="bool">true</jet-pump>
+    <ram-air type="bool">true</ram-air>
+    <fuel-valve type="bool">true</fuel-valve>
+    <bleed-psi type="double">0.0</bleed-psi>
+    <conditioning-psi type="double">0.0</conditioning-psi>
+   </engine>
   </air-bleed>
 
-<!-- Nasal -->
+  <autopilot>
+   <airspeed>
+    <light-min-kt type="double">999.0</light-min-kt>
+    <light-max-kt type="double">999.0</light-max-kt>
+   </airspeed>
+
+   <altimeter>
+    <light-min-ft type="double">999.0</light-min-ft>
+    <light-max-ft type="double">999.0</light-max-ft>
+    <target-min-ft type="double">999.0</target-min-ft>
+    <target-max-ft type="double">999.0</target-max-ft>
+   </altimeter>
+
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <dme>/instrumentation/dme[0]</dme>
+    <ins>/instrumentation/ins[0]</ins>
+    <ivsi>/instrumentation/inst-vertical-speed-indicator[0]</ivsi>
+    <mach>/instrumentation/mach-indicator[0]</mach>
+    <nav>/instrumentation/nav[0]</nav>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    <weight>/instrumentation/fuel[0]</weight>
+   </slave>
+
+   <state>
+    <vor-engage type="bool">false</vor-engage>
+    <virtual-copilot type="bool">false</virtual-copilot>
+    <virtual-autopilot type="bool">false</virtual-autopilot>
+   </state>
+  </autopilot>
 
   <electrical>
    <serviceable type="bool" archive="y">true</serviceable>
-   <loads>
-    <battery n="0">160.0</battery>   <!-- amps, no discharge -->
-    <battery n="1">160.0</battery>
-   </loads>
-
-<!-- avoids abort by JSBSIM 2.0 -->
-   <outputs>
-    <audio-panel type="double" n="0">0.0</audio-panel>
-    <audio-panel type="double" n="1">0.0</audio-panel>
-    <autopilot type="double">0.0</autopilot>
-    <avionicsa type="double">0.0</avionicsa>
-    <avionicsb type="double">0.0</avionicsb>
-    <avionics-fan type="double">0.0</avionics-fan>
-    <bus type="double">0.0</bus>
-    <gps type="double">0.0</gps>
-    <gps-mfd type="double">0.0</gps-mfd>
-    <instrument-lights type="double">0.0</instrument-lights>
-    <nav type="double" n="0">0.0</nav>
-    <nav type="double" n="1">0.0</nav>
-    <probe>
-     <ac-csd1 type="double">0.0</ac-csd1>
-     <ac-csd2 type="double">0.0</ac-csd2>
-     <ac-csd3 type="double">0.0</ac-csd3>
-     <ac-csd4 type="double">0.0</ac-csd4>
-     <ac-standbya type="double">0.0</ac-standbya>
-     <ac-standbyb type="double">0.0</ac-standbyb>
-    </probe>
-    <transponder type="double">0.0</transponder>
-   </outputs>
+   <internal>
+    <config include="Concorde-electrical.xml"/>
+    <iterations type="int">0</iterations>
+    <iterations-forced type="int">2</iterations-forced>                                <!-- for correct parallel voltages -->
+   </internal>
    <suppliers>
+    <battery n="0" type="double">0.0</battery>                                         <!-- avoids string number -->
+    <battery n="1" type="double">0.0</battery>
+    <battery-amps n="0" type="double">0.0</battery-amps>
+    <battery-amps n="1" type="double">0.0</battery-amps>
     <emergency type="double">0.0</emergency>
-    <engine type="double" n="0">0.0</engine>
-    <engine type="double" n="1">0.0</engine>
-    <engine type="double" n="2">0.0</engine>
-    <engine type="double" n="3">0.0</engine>
     <external type="double">0.0</external>
+    <ground-service type="double">0.0</ground-service>
    </suppliers>
   </electrical>
 
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
    <pump>
-    <engine></engine>
+    <engine></engine>                                                                  <!-- no pumping -->
     <forward></forward>
     <aft></aft>
     <dump></dump>
     <dump2></dump2>
     <cross></cross>
    </pump>
-   <tank-pressure-psi>0.0</tank-pressure-psi>
   </fuel>
+
+  <gpws>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <decision-height type="bool">true</decision-height>                                 <!-- enable warning light -->
+   <slave>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+   </slave>
+  </gpws>
 
   <hydraulic>
    <serviceable type="bool" archive="y">true</serviceable>
    <circuits>
     <circuit n="0">
      <pressure-psi>0.0</pressure-psi>
-     <reservoir-gal_us>6.0</reservoir-gal_us>
+     <content-gal_us>6.0</content-gal_us>                                              <!-- content -->
+     <reservoir-gal_us>6.0</reservoir-gal_us>                                          <!-- level -->
      <abbreviation>G</abbreviation>
     </circuit>
     <circuit n="1">
      <pressure-psi>0.0</pressure-psi>
+     <content-gal_us>8.0</content-gal_us>
      <reservoir-gal_us>8.0</reservoir-gal_us>
      <abbreviation>Y</abbreviation>
     </circuit>
     <circuit n="2">
      <pressure-psi>0.0</pressure-psi>
-     <reservoir-gal_us>3.0</reservoir-gal_us>
+     <content-gal_us>4.0</content-gal_us>
+     <reservoir-gal_us>4.0</reservoir-gal_us>
      <abbreviation>B</abbreviation>
     </circuit>
    </circuits>
+   <brakes>
+    <left-psi>0.0</left-psi>
+    <right-psi>0.0</right-psi>
+    <emerg-left-psi>0.0</emerg-left-psi>
+    <emerg-right-psi>0.0</emerg-right-psi>
+   </brakes>
    <rat>
     <selector n="0">
      <on type="bool">false</on>
-     <guard type="bool">true</guard>
+     <guard type="bool">true</guard>                                                   <!-- not deployed -->
+     <num type="int">1</num>
      <test></test>
     </selector>
     <selector n="1">
      <on type="bool">false</on>
      <guard type="bool">true</guard>
+     <num type="int">2</num>
      <test></test>
     </selector>
     <test></test>
@@ -102,14 +165,32 @@
    </rat>
   </hydraulic>
 
+  <lighting>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <slave>
+    <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+   </slave>
+  </lighting>
+
   <pressurization>
    <serviceable type="bool" archive="y">true</serviceable>
-   <altitude-sea-ft>0.0</altitude-sea-ft>
+   <altitude-sea-ft>0.0</altitude-sea-ft>                                              <!-- sea level ISA -->
+   <atmosphere-inhg>29.92</atmosphere-inhg>
+   <outflow-inhg>0.0</outflow-inhg>
+   <pressure-inhg>29.92</pressure-inhg>
+   <target-inhg>29.92</target-inhg>
+   <slave>
+    <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+   </slave>
+   <static-port>/systems/static</static-port>                                          <!-- measures outside pressure -->
   </pressurization>
 
-  <tank-pressure>
+  <tank>
    <serviceable type="bool" archive="y">true</serviceable>
-   <pressure-inhg>29.92</pressure-inhg>
-  </tank-pressure>
+   <pressure-inhg>29.92</pressure-inhg>                                                <!-- sea level ISA -->
+   <static-port>/systems/static</static-port>                                          <!-- measures outside pressure -->
+  </tank>
 
 </PropertyList>

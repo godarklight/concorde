@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!--
+<!-- Message for speed-up, virtual copilot and pause.
 -->
 
 <PropertyList>
@@ -12,49 +12,16 @@
  <layers>
 
   <layer>
-   <name>speed up display</name>
-   <type>group</type>
-   <condition>
-    <greater-than>
-     <property>/sim/speed-up</property>
-     <value>1.0</value>
-    </greater-than>
-   </condition>
+   <name>time</name>
+   <type>switch</type>
 
    <layer>
-    <name>speed up</name>
+    <name>pause</name>
+    <condition>
+     <property>/sim/freeze/master</property>
+    </condition>
     <type>text</type>
-    <font>led</font>
-    <point-size>7</point-size>
-    <color>
-     <red>1.0</red>
-     <green>0.0</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>number-value</type>
-      <property>/sim/speed-up</property>
-      <format>%2.0f</format>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>-20</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>0</offset>
-     </transformation>
-    </transformations>
-   </layer>
-
-   <layer>
-    <name>title</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>7</point-size>
+    <point-size>20</point-size>
     <color>
      <red>1.0</red>
      <green>0.0</green>
@@ -63,19 +30,83 @@
     <chunks>
      <chunk>
       <type>literal</type>
-      <text>T</text>
+      <text>pause</text>
      </chunk>
     </chunks>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>35</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>0</offset>
+      <offset>-10</offset>
      </transformation>
     </transformations>
+   </layer>
+
+   <layer>
+    <name>speed up</name>
+    <type>group</type>
+    <condition>
+     <greater-than>
+      <property>/sim/speed-up</property>
+      <value>1.0</value>
+     </greater-than>
+    </condition>
+
+    <layer>
+     <name>acceleration</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>number-value</type>
+       <property>/sim/speed-up</property>
+       <format>%2.0f</format>
+       </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>-20</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
+ 
+    <layer>
+     <name>title</name>
+     <type>text</type>
+     <font>led</font>
+     <point-size>7</point-size>
+     <color>
+      <red>1.0</red>
+      <green>0.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>T</text>
+      </chunk>
+     </chunks>
+     <transformations>
+      <transformation>
+       <type>x-shift</type>
+       <offset>35</offset>
+      </transformation>
+      <transformation>
+       <type>y-shift</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
    </layer>
 
   </layer>
@@ -83,7 +114,7 @@
   <layer>
    <name>virtual copilot</name>
    <condition>
-    <property>/autopilot/internal/state/virtual-copilot</property>
+    <property>/systems/autopilot/state/virtual-copilot</property>
    </condition>
    <type>text</type>
    <point-size>20</point-size>
@@ -101,11 +132,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>45</offset>
+     <offset>-10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>0</offset>
+     <offset>-25</offset>
     </transformation>
    </transformations>
   </layer>

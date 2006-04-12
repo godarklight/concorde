@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<!-- Engineer deck -->
+
+<PropertyList>
+ <name>Engineer deck</name>
+ <w-base>30</w-base>
+ <h-base>30</h-base>
+
+
+ <actions>
+  <action>
+   <desc>Toggle deck</desc>
+   <button>0</button>
+   <x>0</x>
+   <y>0</y>
+   <w>15</w>
+   <h>15</h>
+   <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.doorinstrument.engineerdeckexport();</script>
+   </binding>
+   <binding>
+     <command>property-toggle</command>
+     <property>/controls/doors/engineer-deck/out</property>
+   </binding>
+  </action>
+ </actions>
+
+</PropertyList>

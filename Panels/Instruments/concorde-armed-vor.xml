@@ -19,11 +19,18 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <or include="concorde-cond-vorloc.xml">
-      <not-equals>
-       <property>/autopilot/locks/heading</property>
-       <value>nav1-hold</value>
-      </not-equals>
+     <or>
+      <or include="concorde-cond-vorloc.xml"/>   <!-- avoids bug -->
+      <and>
+       <not-equals>
+        <property>/controls/autoflight/horizontal</property>
+        <value>vor</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/autoflight/heading</property>
+        <value>nav1-hold</value>
+       </not-equals>
+      </and>
      </or>
     </condition>
 

@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- Alarm on air bleed over pressure.
+<!-- Alarm on air bleed over pressure :
+
+     - above 85 PSI.
 -->
 
 <PropertyList>
@@ -8,6 +10,9 @@
  <w-base>104</w-base>
  <h-base>26</h-base>
 
+ <params>
+  <pressure-psi>/systems/air-bleed/engine[0]/cross-psi</pressure-psi>
+ </params>
 
  <layers>
 <!-- translucent lens -->  
@@ -18,7 +23,13 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <or include="concorde-cond-test-eng-center.xml"/>
+      <and>
+       <or include="concorde-cond-test-eng-center.xml"/>
+       <less-than>
+        <property alias="../../../../../../../../params/pressure-psi"/>
+        <value>85.0</value>
+       </less-than>
+      </and>
      </or>
     </condition>
     <texture>

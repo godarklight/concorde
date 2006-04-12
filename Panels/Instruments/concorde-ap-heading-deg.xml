@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 
-<!-- -->
+<!-- - the magnetic heading dial is dissociated from its autopilot bug;
+     as heading hold is pressed, the current heading is supposed not echoed on the dial.
+
+     Known problem :
+     =============
+     - as the true heading dial is not dissociated from its autopilot bug, one cannot dial a true heading,
+     if there are waypoints. Because autopilot PID cannot work without the computed heading error, adjusted around zero.
+-->
 
 <PropertyList>
 
@@ -9,7 +16,8 @@
  <h-base>110</h-base>
 
  <params>
-  <hdg-ctrl>/autopilot/settings/heading-bug-deg</hdg-ctrl>
+  <hdg-auto>/autopilot/settings/heading-bug-deg</hdg-auto>
+  <hdg-ctrl>/controls/autoflight/heading-select</hdg-ctrl>
   <true-hdg-ctrl>/autopilot/settings/true-heading-deg</true-hdg-ctrl>
  </params>
 
@@ -143,59 +151,52 @@
   </layer>
 
   <layer>
-   <name>magnetic heading display</name>
-   <condition>
-    <not>
-     <property>/autopilot/settings/track-push</property>
-    </not>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7.5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property alias="../../../../../params/hdg-ctrl"/>
-     <format>%03.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>32</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-9</offset>
-    </transformation>
-   </transformations>
-  </layer>
+   <name>heading display</name>
+   <type>switch</type>
 
-  <layer>
-   <name>true heading display</name>
-   <condition>
-    <property>/autopilot/settings/track-push</property>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>7.5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property alias="../../../../../params/true-hdg-ctrl"/>
-     <format>%03.0f</format>
-    </chunk>
-   </chunks>
+   <layer>
+    <name>magnetic heading display</name>
+    <condition>
+     <not>
+      <property>/controls/autoflight/track-push</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <font>led</font>
+    <point-size>7.5</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property alias="../../../../../../params/hdg-ctrl"/>
+      <format>%03.0f</format>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>true heading display</name>
+    <type>text</type>
+    <font>led</font>
+    <point-size>7.5</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property alias="../../../../../../params/true-hdg-ctrl"/>
+      <format>%03.0f</format>
+     </chunk>
+    </chunks>
+   </layer>
+
    <transformations>
     <transformation>
      <type>x-shift</type>
@@ -214,7 +215,7 @@
    <name>knob left</name>
    <condition>
     <not>
-     <property>/autopilot/settings/track-push</property>
+     <property>/controls/autoflight/track-push</property>
     </not>
    </condition>
    <texture>
@@ -249,7 +250,7 @@
   <layer>
    <name>knob right</name>
    <condition>
-    <property>/autopilot/settings/track-push</property>
+    <property>/controls/autoflight/track-push</property>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
@@ -338,109 +339,17 @@
 
  <actions>
 
-<!-- magnetic heading -->
-
   <action>
    <name>Plus 10</name>
-   <condition>
-    <not>
-     <property>/autopilot/settings/track-push</property>
-    </not>
-   </condition>
    <button>0</button>
    <x>1</x>
    <y>-1</y>
    <w>14</w>
    <h>23</h>
    <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/hdg-ctrl"/>
-    <step>10</step>
-    <min>0</min>
-    <max>360</max>
-    <wrap>1</wrap>
-   </binding>
-  </action>
-
-  <action>
-   <name>Minus 10</name>
-   <condition>
-    <not>
-     <property>/autopilot/settings/track-push</property>
-    </not>
-   </condition>
-   <button>0</button>
-   <x>1</x>
-   <y>-23</y>
-   <w>14</w>
-   <h>23</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/hdg-ctrl"/>
-    <step>-10</step>
-    <min>0</min>
-    <max>360</max>
-    <wrap>1</wrap>
-   </binding>
-  </action>
-
-  <action>
-   <name>Plus 1</name>
-   <condition>
-    <not>
-     <property>/autopilot/settings/track-push</property>
-    </not>
-   </condition>
-   <button>0</button>
-   <x>14</x>
-   <y>-1</y>
-   <w>14</w>
-   <h>23</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/hdg-ctrl"/>
-    <step>1</step>
-    <min>0</min>
-    <max>360</max>
-    <wrap>1</wrap>
-   </binding>
-  </action>
-
-  <action>
-   <name>Minus 1</name>
-   <condition>
-    <not>
-     <property>/autopilot/settings/track-push</property>
-    </not>
-   </condition>
-   <button>0</button>
-   <x>14</x>
-   <y>-23</y>
-   <w>14</w>
-   <h>23</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/hdg-ctrl"/>
-    <step>-1</step>
-    <min>0</min>
-    <max>360</max>
-    <wrap>1</wrap>
-   </binding>
-  </action>
-
-<!-- true heading -->
-
-  <action>
-   <name>Plus 10</name>
-   <condition>
-    <property>/autopilot/settings/track-push</property>
-   </condition>
-   <button>0</button>
-   <x>1</x>
-   <y>-1</y>
-   <w>14</w>
-   <h>23</h>
-   <binding>
+    <condition>
+     <property>/controls/autoflight/track-push</property>
+    </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
     <step>10</step>
@@ -448,19 +357,49 @@
     <max>360</max>
     <wrap>1</wrap>
    </binding>
+   <binding>
+    <condition>
+     <not>
+      <property>/controls/autoflight/track-push</property>
+     </not>
+    </condition>
+    <command>property-adjust</command>
+    <property alias="../../../../params/hdg-ctrl"/>
+    <step>10</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <and>
+      <equals>
+       <property>/controls/autoflight/heading</property>
+       <value>dg-heading-hold</value>
+      </equals>
+      <equals>
+       <property>/controls/autoflight/horizontal</property>
+       <value>track-heading</value>
+      </equals>
+     </and>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/hdg-auto"/>
+    <property n="1" alias="../../../../params/hdg-ctrl"/>
+   </binding>
   </action>
 
   <action>
    <name>Minus 10</name>
-   <condition>
-    <property>/autopilot/settings/track-push</property>
-   </condition>
    <button>0</button>
    <x>1</x>
    <y>-23</y>
    <w>14</w>
    <h>23</h>
    <binding>
+    <condition>
+     <property>/controls/autoflight/track-push</property>
+    </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
     <step>-10</step>
@@ -468,19 +407,49 @@
     <max>360</max>
     <wrap>1</wrap>
    </binding>
+   <binding>
+    <condition>
+     <not>
+      <property>/controls/autoflight/track-push</property>
+     </not>
+    </condition>
+    <command>property-adjust</command>
+    <property alias="../../../../params/hdg-ctrl"/>
+    <step>-10</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <and>
+      <equals>
+       <property>/controls/autoflight/heading</property>
+       <value>dg-heading-hold</value>
+      </equals>
+      <equals>
+       <property>/controls/autoflight/horizontal</property>
+       <value>track-heading</value>
+      </equals>
+     </and>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/hdg-auto"/>
+    <property n="1" alias="../../../../params/hdg-ctrl"/>
+   </binding>
   </action>
 
   <action>
    <name>Plus 1</name>
-   <condition>
-    <property>/autopilot/settings/track-push</property>
-   </condition>
    <button>0</button>
    <x>14</x>
    <y>-1</y>
    <w>14</w>
    <h>23</h>
    <binding>
+    <condition>
+     <property>/controls/autoflight/track-push</property>
+    </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
     <step>1</step>
@@ -488,25 +457,85 @@
     <max>360</max>
     <wrap>1</wrap>
    </binding>
+   <binding>
+    <condition>
+     <not>
+      <property>/controls/autoflight/track-push</property>
+     </not>
+    </condition>
+    <command>property-adjust</command>
+    <property alias="../../../../params/hdg-ctrl"/>
+    <step>1</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <and>
+      <equals>
+       <property>/controls/autoflight/heading</property>
+       <value>dg-heading-hold</value>
+      </equals>
+      <equals>
+       <property>/controls/autoflight/horizontal</property>
+       <value>track-heading</value>
+      </equals>
+     </and>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/hdg-auto"/>
+    <property n="1" alias="../../../../params/hdg-ctrl"/>
+   </binding>
   </action>
 
   <action>
    <name>Minus 1</name>
-   <condition>
-    <property>/autopilot/settings/track-push</property>
-   </condition>
    <button>0</button>
    <x>14</x>
    <y>-23</y>
    <w>14</w>
    <h>23</h>
    <binding>
+    <condition>
+     <property>/controls/autoflight/track-push</property>
+    </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
     <step>-1</step>
     <min>0</min>
     <max>360</max>
     <wrap>1</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <not>
+      <property>/controls/autoflight/track-push</property>
+     </not>
+    </condition>
+    <command>property-adjust</command>
+    <property alias="../../../../params/hdg-ctrl"/>
+    <step>-1</step>
+    <min>0</min>
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding>
+   <binding>
+    <condition>
+     <and>
+      <equals>
+       <property>/controls/autoflight/heading</property>
+       <value>dg-heading-hold</value>
+      </equals>
+      <equals>
+       <property>/controls/autoflight/horizontal</property>
+       <value>track-heading</value>
+      </equals>
+     </and>
+    </condition>
+    <command>property-assign</command>
+    <property alias="../../../../params/hdg-auto"/>
+    <property n="1" alias="../../../../params/hdg-ctrl"/>
    </binding>
   </action>
 
@@ -521,7 +550,7 @@
    <h>25</h>
    <binding>
     <command>property-toggle</command>
-    <property>/autopilot/settings/track-push</property>
+    <property>/controls/autoflight/track-push</property>
    </binding>
   </action>
 

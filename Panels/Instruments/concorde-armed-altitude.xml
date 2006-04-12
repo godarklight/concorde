@@ -19,11 +19,15 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <or include="concorde-cond-altitude.xml">
+     <or>
       <not-equals>
-       <property>/autopilot/locks/altitude</property>
-       <value>altitude-hold</value>
+       <property>/controls/autoflight/vertical</property>
+       <value>altitude-acquire</value>
       </not-equals>
+      <equals>
+       <property>/controls/autoflight/altitude</property>
+       <value>altitude-hold</value>
+      </equals>
      </or>
     </condition>
 

@@ -22,7 +22,7 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-overhead.xml">
+      <and include="concorde-cond-test-mws.xml">
        <greater-than>
         <property>/consumables/fuel/tank[0]/level-lb</property>
         <property n="1">/consumables/fuel/tank[0]/low-level-lb</property>

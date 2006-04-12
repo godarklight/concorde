@@ -282,11 +282,11 @@ properties' values.
        <and>
         <greater-than-equals>
          <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-         <property n="1">/instrumentation/airspeed-indicator[0]/light-min-kt</property>
+         <property n="1">/systems/autopilot/airspeed/light-min-kt</property>
         </greater-than-equals>
         <less-than-equals>
          <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-         <property n="1">/instrumentation/airspeed-indicator[0]/light-max-kt</property>
+         <property n="1">/systems/autopilot/airspeed/light-max-kt</property>
         </less-than-equals>
        </and>
        <not include="concorde-cond-voltage-inst.xml"/>

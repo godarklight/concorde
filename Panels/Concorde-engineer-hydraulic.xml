@@ -50,24 +50,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hydraulic.xml">
    <name>Hydraulic management</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>120</x>
+   <x>130</x>
    <y>395</y>
    <w>30</w>
    <h>30</h>
@@ -76,24 +79,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-green.xml">
    <name>Green</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>75</x>
+   <x>65</x>
    <y>380</y>
    <w>30</w>
    <h>30</h>
@@ -102,24 +108,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-yellow.xml">
    <name>Yellow</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>185</x>
+   <x>195</x>
    <y>380</y>
    <w>30</w>
    <h>30</h>
@@ -128,24 +137,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-blue.xml">
    <name>Blue</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>245</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>245</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>305</x>
+   <x>335</x>
    <y>380</y>
    <w>30</w>
    <h>30</h>
@@ -156,24 +168,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-yellow-hyd-low-pressure.xml">
    <name>Low pressure green reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>70</x>
+   <x>60</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -182,24 +197,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-o-heat.xml">
    <name>Overheat green reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>90</x>
+   <x>80</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -208,24 +226,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-level.xml">
    <name>Low level green reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>110</x>
+   <x>100</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -234,24 +255,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-yellow-hyd-low-pressure.xml">
    <name>Low pressure yellow reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>180</x>
+   <x>190</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -260,24 +284,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-o-heat.xml">
    <name>Overheat yellow reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>200</x>
+   <x>210</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -286,24 +313,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-level.xml">
    <name>Low level yellow reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>220</x>
+   <x>230</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -312,24 +342,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-yellow-hyd-low-pressure.xml">
    <name>Low pressure blue reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>295</x>
+   <x>325</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -338,24 +371,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-o-heat.xml">
    <name>Overheat blue reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>175</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>175</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>315</x>
+   <x>345</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -364,24 +400,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-level.xml">
    <name>Low level blue reservoir</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>335</x>
+   <x>365</x>
    <y>360</y>
    <w>30</w>
    <h>15</h>
@@ -392,24 +431,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-reservoir6.xml">
    <name>Green reservoir content</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>90</x>
+   <x>80</x>
    <y>320</y>
    <w>45</w>
    <h>45</h>
@@ -418,24 +460,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-reservoir8.xml">
    <name>Yellow reservoir content</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>200</x>
+   <x>210</x>
    <y>320</y>
    <w>45</w>
    <h>45</h>
@@ -444,24 +489,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-reservoir4.xml">
    <name>Blue reservoir content</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>315</x>
+   <x>345</x>
    <y>320</y>
    <w>45</w>
    <h>45</h>
@@ -472,28 +520,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve green engine 1</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>200</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
     <shut-pump>/controls/hydraulic/circuits/circuit[0]/shuta</shut-pump>
    </params>
-   <x>60</x>
+   <x>50</x>
    <y>285</y>
    <w>15</w>
    <h>15</h>
@@ -502,24 +553,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-valves.xml">
    <name>Shut off valves</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>200</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>74</x>
+   <x>69</x>
    <y>283</y>
    <w>20</w>
    <h>20</h>
@@ -528,22 +582,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve green engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
@@ -558,22 +615,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve yellow engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
@@ -588,28 +648,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve yellow engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
     <shut-pump>/controls/hydraulic/circuits/circuit[1]/shutb</shut-pump>
    </params>
-   <x>235</x>
+   <x>255</x>
    <y>285</y>
    <w>15</w>
    <h>15</h>
@@ -618,28 +681,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve blue engine 3</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
     <shut-pump>/controls/hydraulic/circuits/circuit[2]/shuta</shut-pump>
    </params>
-   <x>290</x>
+   <x>310</x>
    <y>285</y>
    <w>15</w>
    <h>15</h>
@@ -648,24 +714,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-valves.xml">
    <name>Shut off valves</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>304</x>
+   <x>329</x>
    <y>283</y>
    <w>20</w>
    <h>20</h>
@@ -674,28 +743,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-shutoff-valve.xml">
    <name>Shut off valve blue engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
     <shut-pump>/controls/hydraulic/circuits/circuit[2]/shutb</shut-pump>
    </params>
-   <x>340</x>
+   <x>370</x>
    <y>285</y>
    <w>15</w>
    <h>15</h>
@@ -706,28 +778,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status green engine 1</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>200</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloada</onload-pump>
     <shut-pump>/controls/hydraulic/circuits/circuit[0]/shuta</shut-pump>
    </params>
-   <x>60</x>
+   <x>50</x>
    <y>265</y>
    <w>15</w>
    <h>15</h>
@@ -736,24 +811,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-pumps.xml">
    <name>Pumps</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>76</x>
+   <x>71</x>
    <y>263</y>
    <w>20</w>
    <h>20</h>
@@ -762,22 +840,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status green engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloadb</onload-pump>
@@ -792,22 +873,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status yellow engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[1]/onloada</onload-pump>
@@ -822,28 +906,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status yellow engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[1]/onloadb</onload-pump>
     <shut-pump>/controls/hydraulic/circuits/circuit[1]/shutb</shut-pump>
    </params>
-   <x>235</x>
+   <x>255</x>
    <y>265</y>
    <w>15</w>
    <h>15</h>
@@ -852,28 +939,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status blue engine 3</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloada</onload-pump>
     <shut-pump>/controls/hydraulic/circuits/circuit[2]/shuta</shut-pump>
    </params>
-   <x>290</x>
+   <x>310</x>
    <y>265</y>
    <w>15</w>
    <h>15</h>
@@ -882,24 +972,27 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-title-hyd-pumps.xml">
    <name>Pumps</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
-   <x>306</x>
+   <x>331</x>
    <y>263</y>
    <w>20</w>
    <h>20</h>
@@ -908,28 +1001,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump-status.xml">
    <name>Pump status blue engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>180</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloadb</onload-pump>
     <shut-pump>/controls/hydraulic/circuits/circuit[2]/shutb</shut-pump>
    </params>
-   <x>340</x>
+   <x>370</x>
    <y>265</y>
    <w>15</w>
    <h>15</h>
@@ -940,22 +1036,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump.xml">
    <name>Engine 1 selector green</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>200</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-5</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloada</onload-pump>
@@ -963,7 +1062,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <guard-pump>/controls/hydraulic/circuits/circuit[0]/guarda</guard-pump>
     <engine-num>/engines/engine[0]/engine-num</engine-num>
    </params>
-   <x>50</x>
+   <x>40</x>
    <y>240</y>
    <w>50</w>
    <h>50</h>
@@ -972,22 +1071,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump.xml">
    <name>Engine 2 selector green</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloadb</onload-pump>
@@ -1004,22 +1106,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-yellow-pump.xml">
    <name>Engine 2 selector yellow</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[1]/onloada</onload-pump>
@@ -1036,22 +1141,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-yellow-pump.xml">
    <name>Engine 4 selector yellow</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[1]/onloadb</onload-pump>
@@ -1059,7 +1167,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <guard-pump>/controls/hydraulic/circuits/circuit[1]/guardb</guard-pump>
     <engine-num>/engines/engine[3]/engine-num</engine-num>
    </params>
-   <x>225</x>
+   <x>245</x>
    <y>240</y>
    <w>50</w>
    <h>50</h>
@@ -1068,22 +1176,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump.xml">
    <name>Engine 3 selector blue</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloada</onload-pump>
@@ -1091,7 +1202,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <guard-pump>/controls/hydraulic/circuits/circuit[2]/guarda</guard-pump>
     <engine-num>/engines/engine[2]/engine-num</engine-num>
    </params>
-   <x>280</x>
+   <x>300</x>
    <y>240</y>
    <w>50</w>
    <h>50</h>
@@ -1100,22 +1211,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pump.xml">
    <name>Engine 4 selector blue</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloadb</onload-pump>
@@ -1123,7 +1237,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <guard-pump>/controls/hydraulic/circuits/circuit[2]/guardb</guard-pump>
     <engine-num>/engines/engine[3]/engine-num</engine-num>
    </params>
-   <x>330</x>
+   <x>360</x>
    <y>240</y>
    <w>50</w>
    <h>50</h>
@@ -1134,28 +1248,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on green pump engine 1</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>200</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
     <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloada</onload-pump>
    </params>
-   <x>60</x>
+   <x>50</x>
    <y>210</y>
    <w>30</w>
    <h>15</h>
@@ -1164,22 +1281,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on green pump engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>265</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[1]/oil-pressure-psi</oil-select>
@@ -1194,22 +1314,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on yellow pump engine 2</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[1]/oil-pressure-psi</oil-select>
@@ -1224,28 +1347,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on yellow pump engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-10</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[3]/oil-pressure-psi</oil-select>
     <onload-pump>/controls/hydraulic/circuits/circuit[1]/onloadb</onload-pump>
    </params>
-   <x>235</x>
+   <x>255</x>
    <y>210</y>
    <w>30</w>
    <h>15</h>
@@ -1254,28 +1380,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on blue pump engine 3</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-15</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[2]/oil-pressure-psi</oil-select>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloada</onload-pump>
    </params>
-   <x>290</x>
+   <x>310</x>
    <y>210</y>
    <w>30</w>
    <h>15</h>
@@ -1284,28 +1413,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-amber-hyd-low-pressure.xml">
    <name>Fault on blue pump engine 4</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>250</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-15</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>250</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <oil-select>/engines/engine[3]/oil-pressure-psi</oil-select>
     <onload-pump>/controls/hydraulic/circuits/circuit[2]/onloadb</onload-pump>
    </params>
-   <x>340</x>
+   <x>370</x>
    <y>210</y>
    <w>30</w>
    <h>15</h>
@@ -1316,22 +1448,25 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pressure.xml">
    <name>Hydraulic pressure green</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>270</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>195</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-15</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
@@ -1346,28 +1481,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pressure.xml">
    <name>Hydraulic pressure yellow</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>260</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>190</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-15</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>260</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <pressure-psi>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi>
     <circuit-abbreviation>/systems/hydraulic/circuits/circuit[1]/abbreviation</circuit-abbreviation>
    </params>
-   <x>200</x>
+   <x>220</x>
    <y>155</y>
    <w>60</w>
    <h>60</h>
@@ -1376,28 +1514,31 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-hyd-pressure.xml">
    <name>Hydraulic pressure blue</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/engineer</property>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>255</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>185</value>
-     </greater-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-15</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
     <circuit-abbreviation>/systems/hydraulic/circuits/circuit[2]/abbreviation</circuit-abbreviation>
    </params>
-   <x>310</x>
+   <x>340</x>
    <y>155</y>
    <w>60</w>
    <h>60</h>

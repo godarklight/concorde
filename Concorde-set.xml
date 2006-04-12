@@ -5,18 +5,26 @@
 
 <!-- Version           CVS date                   Milestone
      ==========================================================================================
+                       October 2003               3D aircraft.
      1.0               July 2004                  FDM, 2D panel.
      1.1               September 2004
      1.2               October 2004               3D cockpit.
      2.0               January 2005               First version with flight manual.
                                                   Nose visible from cockpit.
                                                   Engineer and overhead views.
+                                                  Optimization of instruments.
                                                   Instruments dynamic with the view angle.
-     2.1               not yet known              Electrical system, hydraulics, fuel pumps.
+     2.1               November 2005              Electrical system (JSBSim), hydraulics,
+                                                  fuel pumps.
                                                   Text in alarm textures.
                                                   First instrument textures.
                                                   Transparent windows.
                                                   Copilot and steward views.
+     2.2               not yet known              Air bleed, electrical system (Nasal).
+                                                  Autoland has a gradual pitch below 500 ft.
+                                                  Panels aligned (no more vibrations).
+                                                  Cockpit textures, with (pseudo) lighting.
+                                                  External lights.
      ==========================================================================================
 -->
 
@@ -26,7 +34,7 @@
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.1</aircraft-version>
+  <aircraft-version>2.2</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
@@ -40,12 +48,6 @@
    <autopilot>
     <path>Aircraft/Concorde/Systems/Concorde-autopilot.xml</path>
    </autopilot>
-   <electrical>
-    <path>Aircraft/Concorde/Systems/Concorde-electrical.xml</path>
-   </electrical>
-   <fuel>
-    <path>Aircraft/Concorde/Systems/Concorde-fuel.xml</path>
-   </fuel>
   </systems> 
 
   <instrumentation>
@@ -94,35 +96,20 @@
  </sim>
 
  <consumables>
-  <fuel include="Systems/Concorde-init-fuel.xml"/>
+  <fuel include="Systems/Concorde-init-fuel.xml"/>                  <!-- required by nasal -->
  </consumables>
 
  <nasal>
-  <Concorde-constant>
-   <file>Aircraft/Concorde/Nasal/Concorde-constants.nas</file>
-   <module>Concorde</module>
-  </Concorde-constant>
-  <Concorde-pressurization>
-   <file>Aircraft/Concorde/Nasal/Concorde-pressure.nas</file>
-   <module>Concorde</module>
-  </Concorde-pressurization>
-  <Concorde-hydraulic>
-   <file>Aircraft/Concorde/Nasal/Concorde-hydraulic.nas</file>
-   <module>Concorde</module>
-  </Concorde-hydraulic>
-  <Concorde-autopilot>
-   <file>Aircraft/Concorde/Nasal/Concorde-autopilot.nas</file>
-   <module>Concorde</module>
-  </Concorde-autopilot>
-  <Concorde-fuel>
-   <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
-   <module>Concorde</module>
-  </Concorde-fuel>
-  <Concorde-instrument>
-   <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
-   <module>Concorde</module>
-  </Concorde-instrument>
   <Concorde>
+   <file>Aircraft/Concorde/Nasal/Concorde-override.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-constants.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-electric.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-pressure.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-hydraulic.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-autopilot.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-engine.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-jbsim.nas</file>
   </Concorde>
  </nasal>
@@ -132,8 +119,9 @@
   </keyboard>
  </input>
 
-<!-- avoids the crash on alias (temporary) -->
+<!-- avoids the crash on alias -->
 
+<!--
  <position>
   <altitude-agl-ft type="double">0.0</altitude-agl-ft>
  </position>
@@ -141,19 +129,64 @@
  <velocities>
   <vertical-speed-fps type="double">0.0</vertical-speed-fps>
  </velocities>
+-->
+
+
+<!-- ============= -->
+<!-- customization -->
+<!-- ============= -->
+
+<!-- autopilot -->
+
+ <autopilot include="Systems/Concorde-init-autopilot.xml">
+  <settings>
+   <true-heading-deg>0</true-heading-deg>
+  </settings>
+ </autopilot>
 
  <controls include="Systems/Concorde-init-controls.xml">
+  <autoflight>
+   <altitude-select>10000</altitude-select>
+   <heading-select>283</heading-select>                                     <!-- magnetic -->
+   <speed-select>250</speed-select>
+  </autoflight>
+
+<!-- external lights -->
+
+  <lighting>
+   <external>
+    <landing-taxi n="0">
+     <on type="bool">false</on>
+     <extend type="bool">false</extend>
+    </landing-taxi>
+    <landing-taxi n="1">
+     <on type="bool">false</on>
+     <extend type="bool">false</extend>
+    </landing-taxi>
+    <main-landing n="0">
+     <on type="bool">false</on>
+     <extend type="bool">false</extend>
+    </main-landing>
+    <main-landing n="1">
+     <on type="bool">false</on>
+     <extend type="bool">false</extend>
+    </main-landing>
+    <taxi-turn n="0">
+     <on type="bool">false</on>
+    </taxi-turn>
+    <taxi-turn n="1">
+     <on type="bool">false</on>
+    </taxi-turn>
+   </external>
+   <nav-lights type="bool">true</nav-lights>
+   <strobe type="bool">true</strobe>
+  </lighting>
  </controls>
 
  <systems include="Systems/Concorde-init-systems.xml">
  </systems>
 
  <instrumentation include="Systems/Concorde-init-instrumentation.xml">
-
-
-<!-- ============= -->
-<!-- customization -->
-<!-- ============= -->
 
 <!-- INS 1 on -->
 
@@ -170,14 +203,14 @@
 <!-- decision altitude -->
 
   <radio-altimeter n="0">
-   <decision-ft>211</decision-ft> <!-- offset : 211 = 200 ft -->
+   <dial-decision-ft>200</dial-decision-ft>
   </radio-altimeter>
 
-<!-- ADF 2 -->
+<!-- ADF 2 (not available by GUI dialog) -->
 
   <adf n="1">
    <frequencies>
-    <selected-khz>352</selected-khz>
+    <selected-khz>352</selected-khz>                          <!-- Woodley near EGLL -->
    </frequencies>
   </adf>
 
@@ -188,7 +221,7 @@
  <engines include="Systems/Concorde-init-engines.xml">
   <engine n="0">
     <running>true</running>
-    <bug_pph>10000.0</bug_pph> <!-- takeoff monitor bug -->
+    <bug_pph>10000.0</bug_pph>                                <!-- takeoff monitor bug -->
   </engine>
   <engine n="1">
     <running>true</running>
@@ -203,15 +236,5 @@
     <bug_pph>10000.0</bug_pph>
   </engine>
  </engines>
-
-<!-- autopilot -->
-
- <autopilot include="Systems/Concorde-init-autopilot.xml">
-  <settings>
-   <heading-bug-deg>283</heading-bug-deg>
-   <target-altitude-ft>10000</target-altitude-ft>
-   <dial-speed-kt>250</dial-speed-kt>
-  </settings>
- </autopilot>
 
 </PropertyList>

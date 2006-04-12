@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 
-<!-- Flashing light.
+<!-- Flashing light :
+
+     light off.
 -->
 
 <PropertyList>
 
-   <not-equals>
-    <property>/instrumentation/generic/flashing-light</property>
-    <value>on</value>
-   </not-equals>
+   <not>
+    <property>/instrumentation/generic/state</property>
+   </not>
 
 </PropertyList>

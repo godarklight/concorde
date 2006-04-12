@@ -23,10 +23,10 @@
     <condition>
      <and>
       <not>
-       <property>/instrumentation/test-center/low</property>
+       <property>/controls/lighting/crew/center/low</property>
       </not>
       <not>
-       <property>/instrumentation/test-center/test</property>
+       <property>/controls/lighting/crew/center/test</property>
       </not>
      </and>
     </condition>
@@ -50,7 +50,7 @@
    <layer>
     <name>off</name>
     <condition>
-     <property>/instrumentation/test-center/test</property>
+     <property>/controls/lighting/crew/center/test</property>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
@@ -215,7 +215,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/instrumentation/test-center/test</property>
+    <property>/controls/lighting/crew/center/test</property>
    </binding>
    <binding>
     <command>property-toggle</command>

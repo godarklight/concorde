@@ -2,7 +2,7 @@
 
 <!-- Alarm on Intake :
 
-     - presently for alignment.
+     - loss of hydraulics.
 -->
 
 <PropertyList>
@@ -12,6 +12,8 @@
 
  <params>
   <eng-num>/engines/engine[0]/engine-num</eng-num>
+  <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
+  <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
  </params>
 
  <layers>
@@ -23,7 +25,18 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <or include="concorde-cond-test-overhead.xml"/>
+      <and include="concorde-cond-test-mws.xml">
+       <or>
+        <greater-than>
+         <property alias="../../../../../../../../../params/pressure-psi"/>
+         <value>3400.0</value>
+        </greater-than>
+        <greater-than>
+         <property alias="../../../../../../../../../params/pressure-psi2"/>
+         <value>3400.0</value>
+        </greater-than>
+       </or>
+      </and>
      </or>
     </condition>
     <texture>

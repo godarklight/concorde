@@ -30,13 +30,27 @@
       <desc>speed-up</desc>
     </key>
     <key>
+      <name>d</name>
+      <desc>air ground supply (door)</desc>
+    </key>
+    <key>
+      <name>f</name>
+      <desc>full cockpit</desc>
+    </key>
+    <key>
       <name>q</name>
-      <desc>reset speed-up</desc>
+      <desc>quit speed-up</desc>
     </key>
     <key>
       <name>s</name>
-      <desc>swap 2D panels</desc>
+      <desc>swaps 2D panel</desc>
     </key>
+<!--
+    <key>
+      <name>Ctrl-B</name>
+      <desc>reverse thrust</desc>
+    </key>
+-->
     <key>
       <name>Ctrl-D</name>
       <desc>disconnect autopilot</desc>
@@ -47,7 +61,7 @@
      </key>
      <key>
        <name>Ctrl-F</name>
-       <desc>reheat</desc>
+       <desc>reheat (afterburner)</desc>
      </key>
      <key>
        <name>Ctrl-J</name>
@@ -58,12 +72,12 @@
        <desc>steward view</desc>
      </key>
      <key>
-       <name>Ctrl-L</name>
-       <desc>virtual copilot (4 engines flame out)</desc>
-     </key>
-     <key>
        <name>Ctrl-O</name>
        <desc>overhead view</desc>
+     </key>
+     <key>
+       <name>Ctrl-Z</name>
+       <desc>virtual copilot (4 engines flame out)</desc>
      </key>
 
 <!-- FDM ops -->
@@ -80,7 +94,7 @@
             air intakes starts closing at Mach 1.3;
             stop afterburner at Mach 1.7.
  Supersonic cruise :
-            Mach 2.0 at FL500, then 50-60 ft/s.
+            Mach 2.0 at FL500, then 50-60 ft/min.
  Supersonic descent :
             at 250 NM decelerate at 350 kt,
             before starting the descent until Mach 0.95 FL380 (empty load).

@@ -501,28 +501,24 @@
 <!-- UNIT -->
 
   <layer>
-   <name>Unit small</name>
-   <type>text</type>
-   <point-size>4</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>FT/MINx1000</text>
-    </chunk>
-   </chunks>
+   <name>Unit</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi-bg.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.375</y1>
+    <x2>1.0</x2>
+    <y2>0.625</y2>
+   </texture>
+    <w>36</w>
+    <h>9</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>1</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-50</offset>
+     <offset>-48</offset>
     </transformation>
    </transformations>
   </layer>

@@ -52,30 +52,62 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
+  <instrument include="Instruments/concorde-light-captain-flood.xml">
+   <name>Captain and center flood light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>55</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>160</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>65</x>
+   <y>220</y>
+   <w>72</w>
+   <h>32</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-test-captain.xml">
    <name>Test captain lights</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/captain</property>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>70</value>
-     </greater-than>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>160</value>
-     </less-than>
-     <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-20</value>
-     </less-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>70</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>165</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <x>90</x>
    <y>40</y>
-   <w>50</w>
-   <h>50</h>
+   <w>60</w>
+   <h>60</h>
   </instrument>
 
  </instruments>

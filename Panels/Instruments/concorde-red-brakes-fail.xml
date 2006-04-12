@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Alarm on Brakes :
+<!-- Alarm on normal Brakes :
 
-     - no green and yellow hydraulics.
-     - when brakes depressed (TO DO flightgear).
-     - when not parking brakes (TO DO flightgear).
+     - low green pressure.
+     - when brakes depressed.
 -->
 
 <PropertyList>
@@ -24,8 +23,10 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-test-center.xml">
        <or>
-        <not include="concorde-cond-hyd-green.xml"/>
-        <not include="concorde-cond-hyd-yellow.xml"/>
+        <greater-than>
+         <property>/systems/hydraulic/brakes/green-accu-psi</property>
+         <value>400.0</value>
+        </greater-than>
         <and>
          <equals>
           <property>/controls/gear/brake-left</property>
@@ -36,10 +37,6 @@
           <value>0.0</value>
          </equals>
         </and>
-        <greater-than>
-         <property>/controls/gear/brake-parking</property>
-         <value>0.0</value>
-        </greater-than>
        </or>
       </and>
      </or>

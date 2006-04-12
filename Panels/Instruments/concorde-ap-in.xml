@@ -19,7 +19,7 @@
     <type>group</type>
     <condition>
      <not-equals>
-      <property>/autopilot/locks/horizontal</property>
+      <property>/controls/autoflight/horizontal</property>
       <value>ins</value>
      </not-equals>
     </condition>
@@ -120,7 +120,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apinsexport();</script>
+    <script>globals.Concorde.autopilotsystem.apinsexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

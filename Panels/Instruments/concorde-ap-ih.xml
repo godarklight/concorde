@@ -20,11 +20,11 @@
     <condition>
      <and>
       <equals>
-       <property>/autopilot/locks/speed</property>
+       <property>/controls/autoflight/speed</property>
        <value>speed-with-throttle</value>
       </equals>
       <equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value></value>
       </equals>
       <not include="concorde-cond-land.xml"/>
@@ -127,7 +127,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.atspeedholdexport();</script>
+    <script>globals.Concorde.autothrottlesystem.atspeedholdexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

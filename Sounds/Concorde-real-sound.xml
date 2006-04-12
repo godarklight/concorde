@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- Concorde original sounds from Ryuji Ozawa.
+<!-- Concorde original sounds from Ryuji Ozawa and Andrew Wilson (reverse).
 
-   Available at http://wwww.flightsim.com, as consnd98.zip (FS98 sound).
+   Available at http://wwww.flightsim.com, as consnd98.zip (FS98 sound, 3.9 MB) and conrt.zip (reverse, 100 KB).
 
    Since this file is not GPL, you must download and install yourself the sounds (without renaming) :
    - con1 (internal idle).
@@ -10,9 +10,15 @@
    - con3 (internal cruise).
    - con5 (external nozzle).
    - con7 (external reheat).
+   - rumblex (reverse).
 
 
    See also comments in Concorde-sound.xml (level of common sounds is identical).
+
+
+   TO DO :
+   =====
+   - one cannot include sounds in a common file.
 
 
    References :
@@ -20,7 +26,7 @@
 
    - http://www.flightlevel350.net/ :
 
-   Concorde is noisy outside, even at taxi : video of takeoff by Graham Brown at EGGP.
+   Concorde is noisy outside, even at taxi : video of takeoff and landing, by Graham Brown at EGGP.
 
 -->
  
@@ -108,6 +114,24 @@
       <property>/engines/engine[2]/augmentation</property>
       <property>/engines/engine[3]/augmentation</property>
      </or>
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -153,6 +177,24 @@
       <property>/velocities/mach</property>
       <value>0.55</value>     
      </greater-than-equals>
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -247,6 +289,24 @@
        <property>/engines/engine[3]/augmentation</property>
       </or>
      </not>     
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -277,6 +337,69 @@
    <max-dist>8000.0</max-dist>
   </engine>
 
+  <reverse>
+   <name>external reverse</name>
+   <path>Aircraft/Concorde/Sounds/rumblex.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <or>
+      <greater-than-equals>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+      <greater-than-equals>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </greater-than-equals>
+     </or>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.004</factor>
+    <offset>0.035</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.004</factor>
+    <offset>0.035</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.004</factor>
+    <offset>0.035</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>sqrt</type>
+    <factor>0.004</factor>
+    <offset>0.035</offset>
+   </volume>    
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </reverse>
+
   <engine>
    <name>external takeoff</name>
    <path>Aircraft/Concorde/Sounds/con7.wav</path>
@@ -304,6 +427,24 @@
        <property>/engines/engine[3]/augmentation</property>
       </or>
      </or>
+     <and>
+      <less-than>
+       <property>/engines/engine[0]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[1]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[2]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+      <less-than>
+       <property>/engines/engine[3]/bucket-deg</property>
+       <value>40</value>
+      </less-than>
+     </and>     
     </and>
    </condition>
    <volume>
@@ -341,10 +482,6 @@
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[0]/cranking</property>
@@ -363,7 +500,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>-5.0</x>
@@ -382,10 +518,6 @@
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[2]/cranking</property>
@@ -404,7 +536,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>5.0</x>
@@ -425,10 +556,6 @@
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[0]/cutoff</property>
@@ -445,7 +572,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>-5.0</x>
@@ -464,10 +590,6 @@
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
      <or>
       <and>
        <property>/engines/engine[2]/cutoff</property>
@@ -484,7 +606,6 @@
        </greater-than>
       </and>
      </or>
-    </and>
    </condition>
    <position>
     <x>5.0</x>
@@ -519,8 +640,8 @@
       <property>/gear/gear[4]/wow</property>
      </or>
      <greater-than> <!-- only rumble on taxi -->
-      <property>/instrumentation/tas-indicator/indicated-tas-kt</property> <!-- more accurate -->
-      <value>10</value>     
+      <property>/instrumentation/ins[0]/ground-speed-fps</property> <!-- more accurate -->
+      <value>17</value>       <!-- 10 kt --> 
      </greater-than>
     </and>
    </condition>
@@ -632,8 +753,6 @@
     <property>/velocities/airspeed-kt</property>
     <min>30.0</min>
    </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
   </stall>
  
   <overspeed>
@@ -649,9 +768,36 @@
     <max>0.4</max>
     <min>0.1</min>
    </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
   </overspeed>
+ 
+  <terrain>
+   <name>pull up</name>
+   <mode>looped</mode>
+   <path>Sounds/mk-viii/pull-up.wav</path>
+   <condition>
+    <and include="../Panels/Instruments/concorde-cond-terrain.xml">
+     <property>/sim/current-view/internal</property>
+    </and>
+   </condition>
+   <volume>
+    <max>0.4</max>
+    <min>0.1</min>
+   </volume>
+  </terrain>
+
+  <door>
+   <name>Door</name>
+   <path>Sounds/door_close.wav</path>
+   <condition>
+    <equals>
+     <property>/controls/doors/flight-deck/position-norm</property>
+     <value>0.0</value>
+    </equals>
+   </condition>
+   <volume>
+    <factor>0.2</factor>
+   </volume>
+  </door>
 
 <!-- cannot disable click in external views, otherwise heard when ctrl-V -->
 

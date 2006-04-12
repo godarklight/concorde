@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<!-- Alarm on Intake :
+
+     - loss of hydraulics.
+-->
+
+<PropertyList>
+ <name>Alarm Intake</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+ <params>
+  <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
+  <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
+ </params>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+   <layer>
+    <name>off</name>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and include="concorde-cond-test-eng-forward.xml">
+       <or>
+        <greater-than>
+         <property alias="../../../../../../../../../params/pressure-psi"/>
+         <value>3400.0</value>
+        </greater-than>
+        <greater-than>
+         <property alias="../../../../../../../../../params/pressure-psi2"/>
+         <value>3400.0</value>
+        </greater-than>
+       </or>
+      </and>
+     </or>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
+     <x1>0.35</x1>
+     <y1>0.0</y1>
+     <x2>0.4</x2>
+     <y2>0.095</y2>
+    </texture>
+    <w>104</w>
+    <h>26</h>
+   </layer>
+  </layer>
+
+  <layer>
+   <name>background</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-intake.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.2</y1>
+    <x2>1.0</x2>
+    <y2>0.8</y2>
+   </texture>
+   <w>104</w>
+   <h>26</h>
+  </layer>
+
+ </layers>
+
+</PropertyList>

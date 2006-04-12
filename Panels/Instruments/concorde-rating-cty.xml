@@ -24,20 +24,23 @@ Flightgear doesn't have support for engine rating.
     <name>off</name>
     <condition>
      <or include="concorde-cond-flashing-light.xml">
-      <not include="concorde-cond-takeoff.xml"/>
       <and>
-       <not>
-        <property>/controls/engines/engine[0]/augmentation</property>
-       </not>
-       <not>
-        <property>/controls/engines/engine[1]/augmentation</property>
-       </not>
-       <not>
-        <property>/controls/engines/engine[2]/augmentation</property>
-       </not>
-       <not>
-        <property>/controls/engines/engine[3]/augmentation</property>
-       </not>
+       <not-equals>
+        <property>/controls/engines/engine[0]/rating</property>
+        <value>contingency</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[1]/rating</property>
+        <value>contingency</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[2]/rating</property>
+        <value>contingency</value>
+       </not-equals>
+       <not-equals>
+        <property>/controls/engines/engine[3]/rating</property>
+        <value>contingency</value>
+       </not-equals>
       </and>
       <or include="concorde-cond-voltage-bulb.xml"/>
      </or>

@@ -10,9 +10,7 @@
  <h-base>128</h-base>
 
  <params>
-  <n1-select>/engines/engine[0]/n1</n1-select>
-  <running-status>/engines/engine[0]/running</running-status>
-  <bleed-valve>/controls/pneumatic/engine[0]/bleed-valve</bleed-valve>
+  <pressure-psi>/systems/air-bleed/engine[0]/cross-psi</pressure-psi>
  </params>
 
  <layers>
@@ -45,15 +43,11 @@
     <transformation>
      <type>rotation</type>
      <condition>
-      <and include="concorde-cond-voltage-inst.xml">
-       <property alias="../../../../../../../params/running-status"/>
-       <property alias="../../../../../../../params/bleed-valve"/>
-      </and>
+      <or include="concorde-cond-voltage-inst.xml"/>
      </condition>
-     <property alias="../../../../../params/n1-select"/>
+     <property alias="../../../../../params/pressure-psi"/>
      <scale>3.6</scale>
      <offset>0</offset>
-     <max>65.0</max> <!-- normal pressure (PSI) -->
     </transformation>
     <transformation>
      <type>y-shift</type>

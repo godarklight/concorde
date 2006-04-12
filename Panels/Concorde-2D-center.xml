@@ -57,7 +57,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-kg.xml">
    <name>Fuel weight display</name>
-   <x>301</x>
+   <x>310</x>
    <y>480</y>
    <w>40</w>
    <h>10</h>
@@ -70,9 +70,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <running-select>/engines/engine[0]/running</running-select>
     <bucket-select>/engines/engine[0]/bucket-deg</bucket-select>
-    <reverser-select>/engines/engine[0]/reversed</reverser-select>
     <fuel-select>/engines/engine[0]/fuel-flow_pph</fuel-select>
     <bug-select>/engines/engine[0]/bug_pph</bug-select>
+    <configuration-select>/engines/engine[0]/configuration</configuration-select>
    </params>
    <x>29</x>
    <y>455</y>
@@ -85,9 +85,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <running-select>/engines/engine[1]/running</running-select>
     <bucket-select>/engines/engine[1]/bucket-deg</bucket-select>
-    <reverser-select>/engines/engine[1]/reversed</reverser-select>
     <fuel-select>/engines/engine[1]/fuel-flow_pph</fuel-select>
     <bug-select>/engines/engine[1]/bug_pph</bug-select>
+    <configuration-select>/engines/engine[1]/configuration</configuration-select>
    </params>
    <x>131</x>
    <y>455</y>
@@ -100,9 +100,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <running-select>/engines/engine[2]/running</running-select>
     <bucket-select>/engines/engine[2]/bucket-deg</bucket-select>
-    <reverser-select>/engines/engine[2]/reversed</reverser-select>
     <fuel-select>/engines/engine[2]/fuel-flow_pph</fuel-select>
     <bug-select>/engines/engine[2]/bug_pph</bug-select>
+    <configuration-select>/engines/engine[2]/configuration</configuration-select>
    </params>
    <x>233</x>
    <y>455</y>
@@ -115,9 +115,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <running-select>/engines/engine[3]/running</running-select>
     <bucket-select>/engines/engine[3]/bucket-deg</bucket-select>
-    <reverser-select>/engines/engine[3]/reversed</reverser-select>
     <fuel-select>/engines/engine[3]/fuel-flow_pph</fuel-select>
     <bug-select>/engines/engine[3]/bug_pph</bug-select>
+    <configuration-select>/engines/engine[3]/configuration</configuration-select>
    </params>
    <x>335</x>
    <y>455</y>
@@ -520,20 +520,28 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-cg-max-to.xml">
    <name>Max Performance TO</name>
    <x>380</x>
-   <y>675</y>
+   <y>600</y>
    <w>45</w>
    <h>45</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-cg-weight-105t.xml">
-   <name>Weight selector</name>
-   <x>530</x>
-   <y>680</y>
-   <w>65</w>
-   <h>24</h>
+  <instrument include="Instruments/concorde-engine-4-to-limiter.xml">
+   <name>Engine 4 TO limiter</name>
+   <x>550</x>
+   <y>600</y>
+   <w>45</w>
+   <h>45</h>
   </instrument>
 
 <!-- Engine cutoff -->
+
+  <instrument include="Instruments/concorde-title-engine-hp-valve.xml">
+   <name>HP valve</name>
+   <x>144</x>
+   <y>700</y>
+   <w>35</w>
+   <h>35</h>
+  </instrument>
 
   <instrument include="Instruments/concorde-engine-cutoff.xml">
    <name>Engine 1 cutoff</name>
@@ -541,22 +549,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[0]/engine-num</eng-num>
     <cutoff>/engines/engine[0]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
-   </params>
-   <x>122</x>
-   <y>610</y>
-   <w>28</w>
-   <h>28</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-starter.xml">
-   <name>Engine 1 starter</name>
-   <params>
     <control-starter>/controls/engines/engine[0]/starter</control-starter>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
    </params>
    <x>122</x>
-   <y>563</y>
+   <y>665</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -567,22 +563,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[1]/engine-num</eng-num>
     <cutoff>/engines/engine[1]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
-   </params>
-   <x>160</x>
-   <y>610</y>
-   <w>28</w>
-   <h>28</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-starter.xml">
-   <name>Engine 2 starter</name>
-   <params>
     <control-starter>/controls/engines/engine[1]/starter</control-starter>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
    </params>
    <x>160</x>
-   <y>563</y>
+   <y>665</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -593,22 +577,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[2]/engine-num</eng-num>
     <cutoff>/engines/engine[2]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
-   </params>
-   <x>198</x>
-   <y>610</y>
-   <w>28</w>
-   <h>28</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-starter.xml">
-   <name>Engine 3 starter</name>
-   <params>
     <control-starter>/controls/engines/engine[2]/starter</control-starter>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
    </params>
    <x>198</x>
-   <y>563</y>
+   <y>665</y>
    <w>28</w>
    <h>28</h>
   </instrument>
@@ -619,22 +591,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <eng-num>/engines/engine[3]/engine-num</eng-num>
     <cutoff>/engines/engine[3]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
-   </params>
-   <x>236</x>
-   <y>610</y>
-   <w>28</w>
-   <h>28</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-engine-starter.xml">
-   <name>Engine 4 starter</name>
-   <params>
     <control-starter>/controls/engines/engine[3]/starter</control-starter>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
    </params>
    <x>236</x>
-   <y>563</y>
+   <y>665</y>
    <w>28</w>
    <h>28</h>
   </instrument>

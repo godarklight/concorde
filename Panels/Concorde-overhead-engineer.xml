@@ -47,88 +47,518 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
-<!-- ENGINEER -->
+<!-- DOORS -->
+
+  <instrument include="Instruments/concorde-door-flight-deck.xml">
+   <name>Flight deck door</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>240</x>
+   <y>420</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+<!-- LIGHTS -->
+
+  <instrument include="Instruments/concorde-title-lights.xml">
+   <name>Lights</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>50</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>480</x>
+   <y>475</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-roof-fluo.xml">
+   <name>Roof fluorescent light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>35</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>420</x>
+   <y>420</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-collision.xml">
+   <name>Anti-collision lights</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>35</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>495</x>
+   <y>420</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-navigation.xml">
+   <name>Navigation lights</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>35</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>532.5</x>
+   <y>420</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-test-overhead.xml">
+   <name>Test of overhead warning lights</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>35</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>585</x>
+   <y>421</y>
+   <w>50</w>
+   <h>50</h>
+  </instrument>
+
+<!-- LIGHTING LEFT -->
+
+  <instrument include="Instruments/concorde-title-lighting.xml">
+   <name>Lighting left</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>20</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>305</x>
+   <y>320</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-glareshield.xml">
+   <name>Glareshield lighting</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>310</x>
+   <y>300</y>
+   <w>45</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-center.xml">
+   <name>Center console lighting</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>20</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>380</x>
+   <y>300</y>
+   <w>45</w>
+   <h>20</h>
+  </instrument>
+
+<!-- LIGHTING RIGHT -->
+
+  <instrument include="Instruments/concorde-title-lighting.xml">
+   <name>Lighting right</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>670</x>
+   <y>330</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-center-dash.xml">
+   <name>Center lighting</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>20</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>600</x>
+   <y>300</y>
+   <w>45</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-center-flood.xml">
+   <name>Center flood lighting</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>690</x>
+   <y>300</y>
+   <w>45</w>
+   <h>20</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-roof.xml">
+   <name>Roof lighting</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>15</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>750</x>
+   <y>300</y>
+   <w>45</w>
+   <h>20</h>
+  </instrument>
+
+<!-- HP VALVE -->
+
+  <instrument include="Instruments/concorde-title-engine-hp-valve.xml">
+   <name>HP valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>475</x>
+   <y>90</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-hp-valve.xml">
+   <name>Engine 1 HP valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <cutoff>/engines/engine[0]/cutoff</cutoff>
+   </params>
+   <x>435</x>
+   <y>70</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-hp-valve.xml">
+   <name>Engine 2 HP valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <cutoff>/engines/engine[1]/cutoff</cutoff>
+   </params>
+   <x>481</x>
+   <y>70</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-hp-valve.xml">
+   <name>Engine 3 HP valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <cutoff>/engines/engine[2]/cutoff</cutoff>
+   </params>
+   <x>527</x>
+   <y>70</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-hp-valve.xml">
+   <name>Engine 4 HP valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <cutoff>/engines/engine[3]/cutoff</cutoff>
+   </params>
+   <x>573</x>
+   <y>70</y>
+   <w>30</w>
+   <h>30</h>
+  </instrument>
 
 <!-- Engine cutoff -->
 
-  <instrument include="Instruments/concorde-engine-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
    <name>Engine 1 cutoff</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/overhead</property>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <eng-num>/engines/engine[0]/engine-num</eng-num>
     <cutoff>/engines/engine[0]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
+    <relight>/engines/engine[0]/relight</relight>
+    <starter>/engines/engine[0]/starter</starter>
    </params>
-   <x>42</x>
-   <y>400</y>
-   <w>28</w>
-   <h>28</h>
+   <x>435</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
    <name>Engine 2 cutoff</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/overhead</property>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <eng-num>/engines/engine[1]/engine-num</eng-num>
     <cutoff>/engines/engine[1]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight2</engine-relight>
+    <relight>/engines/engine[1]/relight</relight>
+    <starter>/engines/engine[1]/starter</starter>
    </params>
-   <x>82</x>
-   <y>400</y>
-   <w>28</w>
-   <h>28</h>
+   <x>481</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
    <name>Engine 3 cutoff</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/overhead</property>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <eng-num>/engines/engine[2]/engine-num</eng-num>
     <cutoff>/engines/engine[2]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight3</engine-relight>
+    <relight>/engines/engine[2]/relight</relight>
+    <starter>/engines/engine[2]/starter</starter>
    </params>
-   <x>122</x>
-   <y>400</y>
-   <w>28</w>
-   <h>28</h>
+   <x>527</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-engine-cutoff.xml">
+  <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
    <name>Engine 4 cutoff</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/overhead</property>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <params>
     <eng-num>/engines/engine[3]/engine-num</eng-num>
     <cutoff>/engines/engine[3]/cutoff</cutoff>
     <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
-    <engine-relight>/systems/electrical/outputs/probe/ac-relight4</engine-relight>
+    <relight>/engines/engine[3]/relight</relight>
+    <starter>/engines/engine[3]/starter</starter>
    </params>
-   <x>162</x>
-   <y>400</y>
-   <w>28</w>
-   <h>28</h>
+   <x>573</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
   </instrument>
 
  </instruments>

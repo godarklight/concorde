@@ -2,7 +2,7 @@
 
 <!-- Fault on Brakes :
 
-     - not on normal position
+     - not on normal position : parking or emergency.
 -->
 
 <PropertyList>
@@ -20,11 +20,15 @@
     <name>off</name>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-center.xml">
+      <and>
+       <or include="concorde-cond-test-center.xml"/>      <!-- bug -->
        <equals>
         <property>/controls/gear/brake-parking</property>
         <value>0.0</value>
        </equals>
+       <not>
+        <property>/controls/gear/brake-emergency</property>
+       </not>
       </and>
      </or>
     </condition>

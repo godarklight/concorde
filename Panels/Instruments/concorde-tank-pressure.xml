@@ -2,6 +2,7 @@
 
      - 0 PSI on ground.
      - until 1.5 PSI at high altitude.
+     - supposed to be not electrical (no voltage).
 -->
 
 
@@ -29,12 +30,9 @@
   <layer>
    <name>OFF flag</name>
    <condition>
-    <or>
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property>/instrumentation/tank-pressure/serviceable</property>
-     </not>
-    </or>
+    <not>
+     <property>/instrumentation/tank-pressure/serviceable</property>
+    </not>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -76,9 +74,7 @@
     <transformation>
      <type>rotation</type>
       <condition>
-       <and include="concorde-cond-voltage-inst.xml">
-        <property>/instrumentation/tank-pressure/serviceable</property>
-       </and>
+       <property>/instrumentation/tank-pressure/serviceable</property>
       </condition>
       <property>/instrumentation/tank-pressure/differential-psi</property>
       <min>-3.0</min>

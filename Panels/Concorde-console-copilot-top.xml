@@ -51,35 +51,70 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <view-height>500</view-height>
 
  <instruments>
+  <instrument include="Instruments/concorde-light-copilot-flood.xml">
+   <name>Copilot flood light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>230</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>300</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-45</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
+   </condition>
+   <x>65</x>
+   <y>220</y>
+   <w>72</w>
+   <h>32</h>
+  </instrument>
 
   <instrument include="Instruments/concorde-test-copilot.xml">
    <name>Test copilot lights</name>
    <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/sim/current-view/seat/captain</property>
-     <greater-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>230</value>
-     </greater-than>
-     <less-than>
-      <property>/sim/current-view/goal-heading-offset-deg</property>
-      <value>295</value>
-     </less-than>
-     <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-45</value>
-     </greater-than>
-    </and>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/current-view/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>225</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>295</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-45</value>
+      </greater-than>
+     </and>
+     <property>/sim/current-view/seat/all</property>
+    </or>
    </condition>
    <x>90</x>
    <y>40</y>
-   <w>50</w>
-   <h>50</h>
+   <w>60</w>
+   <h>60</h>
   </instrument>
 
  </instruments>

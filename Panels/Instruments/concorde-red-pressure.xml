@@ -23,7 +23,7 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-pressure-under.xml">
        <or include="concorde-cond-pressure-over.xml"/>
-       <or include="concorde-cond-test-overhead.xml"/>
+       <or include="concorde-cond-test-mws.xml"/>
        <property>/systems/pressurization/serviceable</property>
       </and>
      </or>

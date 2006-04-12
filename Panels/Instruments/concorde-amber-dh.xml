@@ -17,12 +17,20 @@
      <name>off</name>
      <condition>
       <or include="concorde-cond-voltage-bulb.xml">
+       <not>
+        <property>/systems/gpws/serviceable</property>
+       </not>
        <and>
         <not include="concorde-cond-test-land.xml"/>
-        <greater-than-equals>
-         <property>/position/altitude-agl-ft</property>
-         <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
-        </greater-than-equals>
+        <or>
+         <not>
+          <property>/systems/gpws/decision-height</property>
+         </not>
+         <greater-than-equals>
+          <property>/position/altitude-agl-ft</property>
+          <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
+         </greater-than-equals>
+        </or>
        </and>
       </or>
      </condition>

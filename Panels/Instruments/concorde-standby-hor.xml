@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
-<!-- Concorde standby artificial horizon
+<!-- Concorde standby artificial horizon.
+
 
 Adapted from Martin Dressler dr@musicabona.cz
 Artificial horizon from C172RG small version
@@ -48,7 +49,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -71,7 +72,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -79,7 +80,7 @@ properties' values.
     <transformation>
      <type>y-shift</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/orientation/pitch-deg</property>
+     <property>/instrumentation/attitude-standby/indicated-pitch-deg</property>
      <min>-20.0</min>
      <max>20.0</max>
      <scale>-1.075</scale>
@@ -101,7 +102,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/orientation/roll-deg</property>
+     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -123,7 +124,7 @@ properties' values.
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+     <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
      <offset>-17</offset>
     </transformation>
    </transformations>
@@ -178,7 +179,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
    <step>-0.5</step>
    <min>-5</min>
    <max>5</max>
@@ -195,7 +196,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
    <step>-5</step>
    <min>-5</min>
    <max>5</max>
@@ -212,7 +213,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
    <step>0.5</step>
    <min>-5</min>
    <max>5</max>
@@ -229,7 +230,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
    <step>5</step>
    <min>-5</min>
    <max>5</max>

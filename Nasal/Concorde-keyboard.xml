@@ -7,8 +7,11 @@
      - eventually "Ctrl-V".
 
 
-     For simplification, trims (elevator, autopilot and autothrottle) works without voltage; which could be wrong if
+     Known problems :
+     ==============
+     - for simplification, trims (elevator, autopilot and autothrottle) works without voltage; which could be wrong if
      electrical commands.
+     - when no voltage, one cannot disable flaps, if activated from joystick.
 -->
 
 
@@ -20,11 +23,32 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.apaltitudeexport();</script>
+     <script>globals.Concorde.autopilotsystem.aptogglealtitudeexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
      <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+
+   <key n="2">
+    <name>Ctrl-B</name>
+    <desc>reverse thrust</desc>
+    <binding>
+     <command>property-toggle</command>
+     <property>/controls/engines/engine[0]/reverser</property>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/controls/engines/engine[1]/reverser</property>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/controls/engines/engine[2]/reverser</property>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/controls/engines/engine[3]/reverser</property>
     </binding>
    </key>
 
@@ -35,7 +59,7 @@
     <desc>Disconnect autopilot</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.apdiscexport();</script>
+     <script>globals.Concorde.autopilotsystem.apdiscexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -148,7 +172,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.apglideexport();</script>
+     <script>globals.Concorde.autopilotsystem.aptoggleglideexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -162,7 +186,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.apheadingexport();</script>
+     <script>globals.Concorde.autopilotsystem.aptoggleheadingexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -314,22 +338,13 @@
     </binding>
    </key>
 
-   <key n="12">
-    <name>Ctrl-L</name>
-    <desc>Virtual copilot</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.apcopilotexport();</script>
-    </binding>
-   </key>
-
    <key n="14">
     <name>Ctrl-N</name>
     <desc>Toggle autopilot nav1 lock.</desc>
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.apvorlocexport();</script>
+     <script>globals.Concorde.autopilotsystem.aptogglenav1export();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -415,7 +430,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.appitchexport();</script>
+     <script>globals.Concorde.autopilotsystem.aptogglepitchexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -429,7 +444,7 @@
     <binding>
      <condition include="../Panels/Instruments/concorde-cond-voltage-autopilot.xml"/>
      <command>nasal</command>
-     <script>globals.Concorde.atspeedexport();</script>
+     <script>globals.Concorde.autothrottlesystem.attogglespeedexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -476,6 +491,25 @@
      <command>property-assign</command>
      <property>/sim/current-view/seat/captain</property>
      <value type="bool">true</value>
+    </binding>
+   </key>
+
+   <key n="26">
+    <name>Ctrl-Z</name>
+    <desc>Virtual copilot</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.autopilotsystem.apcopilotexport();</script>
+    </binding>
+   </key>
+
+   <key n="71">
+    <name>G</name>
+    <desc>Gear down.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-gear-down.xml"/>
+     <command>nasal</command>
+     <script>controls.gearToggle()</script>
     </binding>
    </key>
 
@@ -526,6 +560,86 @@
        # default
        view.stepView(-1);
      </script>
+    </binding>
+   </key>
+
+   <key n="91">
+    <name>[</name>
+    <desc>Decrease flaps/nose.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-nose-up.xml"/>
+     <command>nasal</command>
+     <script>controls.flapsDown(-1)</script>
+    </binding>
+   </key>
+
+   <key n="93">
+    <name>]</name>
+    <desc>Increase flaps/nose.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-nose-down.xml"/>
+     <command>nasal</command>
+     <script>controls.flapsDown(1)</script>
+    </binding>
+   </key>
+
+   <key n="100">
+    <name>d</name>
+    <desc>air ground supply (door)</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.airbleedsystem.groundserviceexport();</script>
+    </binding>
+   </key>
+
+<!--
+    /sim/current-view/x(yz)-offset-m to watch instruments grazing their panel surface :
+    - pilot (y,z) = ( 2.2, -25,01 ), autopilot (x,y,z) = ( -0.3, 2.3, -24.98 ).
+    - overhead (y,z) = ( 2.6, -24.65 ), overhead aft ( -0.41, 2.7, -24.4 ).
+    - console (y) = ( 1.815 ), console top (y) = ( 1.9 ).
+    - pedestal (y) = ( 1.78 ).
+    - pressure (x,y,z) = ( 0.42, 2.45, -23.8 ).
+    - intake (x,y,z), ( 0.45, 2.1, -23.8 ), engine (x,y,z) = ( 0.5, 1.8, -23.8 ).
+    - lighting (x,y,z) = ( 0.50, 1.8, -24.1 ).
+    - air (x,y) = ( 0.35, 2.6 ).
+    - fuel (x) = ( 0.53 ), fuel top (x) = ( 0.43 ).
+    - hydraulics (x,y,z) = ( 0.34, 2.65, -23.0 ).
+    - electrical (x,z) = ( 0.535,-23.0 ), electrical top ( 0.43, 2.45, -23.0 ).
+    - steward (z) = ( -19.3 ).
+-->
+<!--
+   <key n="101">
+    <name>e</name>
+    <desc>debug panel plan</desc>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/y-offset-m</property>
+     <value>2.7</value>
+    </binding>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/current-view/z-offset-m</property>
+     <value>-24.4</value>
+    </binding>
+   </key>
+-->
+
+   <key n="102">
+    <name>f</name>
+    <desc>full cockpit</desc>
+    <binding>
+     <command>property-toggle</command>
+     <property>/sim/current-view/seat/all</property>
+    </binding>
+   </key>
+
+   <key n="103">
+    <name>g</name>
+    <desc>Gear Up.</desc>
+    <binding>
+     <condition include="../Panels/Instruments/concorde-cond-gear-up.xml"/>
+     <command>nasal</command>
+     <script>controls.gearToggle()</script>
     </binding>
    </key>
 
@@ -596,12 +710,7 @@
     <binding>
      <command>nasal</command>
      <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(1.0);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autopilotsystem.datumapexport(1.0) ) {
            controls.incElevator(0.05, -100);
        }
      </script>
@@ -615,12 +724,7 @@
     <binding>
      <command>nasal</command>
      <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(-1.0);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autopilotsystem.datumapexport(-1.0) ) {
            controls.incElevator(-0.05, 100);
        }
      </script>
@@ -634,12 +738,7 @@
     <binding>
      <command>nasal</command>
      <script>
-       speedmode = getprop("/autopilot/locks/speed");
-       if( speedmode != nil and speedmode != "" ) {
-           globals.Concorde.datumatexport(1.0);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autothrottlesystem.datumatexport(1.0) ) {
            controls.incThrottle(0.01, 1.0);
        }
      </script>
@@ -653,12 +752,7 @@
     <binding>
      <command>nasal</command>
      <script>
-       speedmode = getprop("/autopilot/locks/speed");
-       if( speedmode != nil and speedmode != "" ) {
-           globals.Concorde.datumatexport(-1.0);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autothrottlesystem.datumatexport(-1.0) ) {
            controls.incThrottle(-0.01, -1.0);
        }
      </script>
@@ -672,12 +766,8 @@
     <binding>
      <command>nasal</command>
      <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(0.1);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autopilotsystem.datumapexport(0.1) ) {
+           # default
            trim = getprop("/controls/flight/elevator-trim");
            trim = trim + 0.001;
            setprop("/controls/flight/elevator-trim",trim);
@@ -693,63 +783,13 @@
     <binding>
      <command>nasal</command>
      <script>
-       altitudemode = getprop("/autopilot/locks/altitude");
-       if( altitudemode != nil and altitudemode != "" ) {
-           globals.Concorde.datumapexport(-0.1);
-       }
-       # default
-       else {
+       if( !globals.Concorde.autopilotsystem.datumapexport(-0.1) ) {
+           # default
            trim = getprop("/controls/flight/elevator-trim");
            trim = trim - 0.001;
            setprop("/controls/flight/elevator-trim",trim);
        }
      </script>
-    </binding>
-   </key>
-
-<!-- gear -->
-
-   <key n="71">
-    <name>G</name>
-    <desc>Gear down.</desc>
-    <binding>
-     <condition include="../Panels/Instruments/concorde-cond-gear-down.xml"/>
-     <command>property-assign</command>
-     <property>/controls/gear/gear-down</property>
-     <value type="double">1.0</value>
-    </binding>
-   </key>
-
-   <key n="103">
-    <name>g</name>
-    <desc>Gear Up.</desc>
-    <binding>
-     <condition include="../Panels/Instruments/concorde-cond-gear-up.xml"/>
-     <command>property-assign</command>
-     <property>/controls/gear/gear-down</property>
-     <value type="double">0.0</value>
-    </binding>
-   </key>
-
-<!-- flaps (nose) -->
-
-   <key n="91">
-    <name>[</name>
-    <desc>Decrease flaps.</desc>
-    <binding>
-     <condition include="../Panels/Instruments/concorde-cond-nose-up.xml"/>
-     <command>nasal</command>
-     <script>controls.flapsDown(-1)</script>
-    </binding>
-   </key>
-
-   <key n="93">
-    <name>]</name>
-    <desc>Increase flaps.</desc>
-    <binding>
-     <condition include="../Panels/Instruments/concorde-cond-nose-down.xml"/>
-     <command>nasal</command>
-     <script>controls.flapsDown(1)</script>
     </binding>
    </key>
 

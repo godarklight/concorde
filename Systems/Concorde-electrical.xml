@@ -13,11 +13,15 @@
 
      Known problems :
      ==============
-     - for buses in parallel, impossible to connect bus A to bus B AND bus B to bus A (hangs at execution !) :
-     create a double Parallel bus, and use it as secondary input, if feed from the parallel bus.
-     - /controls/engines/engine[0]/master-bat seems required by the electrical system.
+     - /controls/engines/engine[0]/master-bat seems (?) required by FG.
      - when no AC voltage, AC instruments are still visible at night (reddish), otherwise that also cuts the DC warning lights,
      because of systems/electrical/outputs/instrument-lights.
+
+     Format :
+     ======
+     - the same than the old C++ electrical system.
+     - the <initial-state>off</initial-state> of connector is not used.
+     - voltages in parallel (= double connectors) are possible.
 -->
 
 <PropertyList>
@@ -102,6 +106,11 @@
   <!-- ======== -->
 
   <bus>
+    <name>Ground Power</name>
+    <prop>/systems/electrical/outputs/probe/ac-ground</prop>
+  </bus>
+
+  <bus>
     <name>Ground Power Breaker</name>
     <prop>/systems/electrical/outputs/probe/ac-gpb</prop>
   </bus>
@@ -166,28 +175,6 @@
     <prop>/systems/electrical/outputs/probe/ac-main4</prop>
   </bus>
 
-  <!-- not real : AC Main yX = AC Main Parallel y -->
-
-  <bus>
-    <name>AC Main Parallel 1</name>
-    <prop>/systems/electrical/outputs/probe/ac-parallel1</prop>
-  </bus>
-
-  <bus>
-    <name>AC Main Parallel 2</name>
-    <prop>/systems/electrical/outputs/probe/ac-parallel2</prop>
-  </bus>
-
-  <bus>
-    <name>AC Main Parallel 3</name>
-    <prop>/systems/electrical/outputs/probe/ac-parallel3</prop>
-  </bus>
-
-  <bus>
-    <name>AC Main Parallel 4</name>
-    <prop>/systems/electrical/outputs/probe/ac-parallel4</prop>
-  </bus>
-
   <bus>
     <name>Bus Tie Breaker left</name>
     <prop>/systems/electrical/outputs/probe/btb-left</prop>
@@ -196,18 +183,6 @@
   <bus>
     <name>Bus Tie Breaker right</name>
     <prop>/systems/electrical/outputs/probe/btb-right</prop>
-  </bus>
-
-  <!-- not real : Bus Tie Breaker z = BTB Parallel z  -->
-
-  <bus>
-    <name>BTB Parallel left</name>
-    <prop>/systems/electrical/outputs/probe/btb-parallel-left</prop>
-  </bus>
-
-  <bus>
-    <name>BTB Parallel right</name>
-    <prop>/systems/electrical/outputs/probe/btb-parallel-right</prop>
   </bus>
 
   <bus>
@@ -321,18 +296,6 @@
     <prop>/systems/electrical/outputs/probe/dc-mainb</prop>
   </bus>
 
-  <!-- not real : DC Main xP = DC Main Parallel y -->
-
-  <bus>
-    <name>DC Main Parallel A</name>
-    <prop>/systems/electrical/outputs/probe/dc-parallea</prop>
-  </bus>
-
-  <bus>
-    <name>DC Main Parallel B</name>
-    <prop>/systems/electrical/outputs/probe/dc-paralleb</prop>
-  </bus>
-
   <bus>
     <name>DC Essential 3P</name>
     <prop>/systems/electrical/outputs/probe/dc-essentiala</prop>
@@ -366,8 +329,11 @@
     <prop>/systems/electrical/outputs/gps-mfd</prop>
     <prop>/systems/electrical/outputs/gps</prop>
     <prop>/systems/electrical/outputs/hsi</prop>
+    <prop>/systems/electrical/outputs/landing-light</prop>
     <prop>/systems/electrical/outputs/nav[0]</prop>
     <prop>/systems/electrical/outputs/nav[1]</prop>
+    <prop>/systems/electrical/outputs/strobe-lights</prop>
+    <prop>/systems/electrical/outputs/taxi-lights</prop>
     <prop>/systems/electrical/outputs/transponder</prop>
 
     <!-- specific to Concorde -->
@@ -466,20 +432,23 @@
 
   <connector>
     <input>Ground Service</input>
-    <output>Ground Power Breaker</output>
+    <output>Ground Power</output>
     <switch>
       <prop>/controls/electric/ac/ground</prop>
-      <initial-state>off</initial-state>
+    </switch>
+  </connector>
+
+  <connector>
+    <input>Ground Power</input>
+    <output>Ground Power Breaker</output>
+    <switch>
+      <prop>/controls/electric/ac/gpb</prop>
     </switch>
   </connector>
 
   <connector>
     <input>Ground Power Breaker</input>
     <output>Split System Breaker</output>
-    <switch>
-      <prop>/controls/electric/ac/gpb</prop>
-      <initial-state>off</initial-state>
-    </switch>
   </connector>
 
   <!-- CSD connected to engine --> 
@@ -488,7 +457,7 @@
     <input>Engine 1</input>
     <output>Constant Speed Drive 1</output>
     <switch>
-      <prop>/engines/engine[0]/running</prop>
+      <prop>/controls/engines/engine[0]/csd</prop>
     </switch>
   </connector>
 
@@ -496,7 +465,7 @@
     <input>Engine 2</input>
     <output>Constant Speed Drive 2</output>
     <switch>
-      <prop>/engines/engine[1]/running</prop>
+      <prop>/controls/engines/engine[1]/csd</prop>
     </switch>
   </connector>
 
@@ -504,7 +473,7 @@
     <input>Engine 3</input>
     <output>Constant Speed Drive 3</output>
     <switch>
-      <prop>/engines/engine[2]/running</prop>
+      <prop>/controls/engines/engine[2]/csd</prop>
     </switch>
   </connector>
 
@@ -512,7 +481,7 @@
     <input>Engine 4</input>
     <output>Constant Speed Drive 4</output>
     <switch>
-      <prop>/engines/engine[3]/running</prop>
+      <prop>/controls/engines/engine[3]/csd</prop>
     </switch>
   </connector>
 
@@ -599,7 +568,6 @@
     <output>AC Emergency 16X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/generator</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -637,15 +605,7 @@
 
   <connector>
     <input>Bus Tie Breaker left</input>
-    <output>AC Main Parallel 1</output>
-    <switch>
-      <prop>/controls/electric/ac/btb1</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>BTB Parallel left</input>
-    <output>AC Main Parallel 1</output>
+    <output>AC Main 1X</output>
     <switch>
       <prop>/controls/electric/ac/btb1</prop>
     </switch>
@@ -661,15 +621,7 @@
 
   <connector>
     <input>Bus Tie Breaker left</input>
-    <output>AC Main Parallel 2</output>
-    <switch>
-      <prop>/controls/electric/ac/btb2</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>BTB Parallel left</input>
-    <output>AC Main Parallel 2</output>
+    <output>AC Main 2X</output>
     <switch>
       <prop>/controls/electric/ac/btb2</prop>
     </switch>
@@ -685,15 +637,7 @@
 
   <connector>
     <input>Bus Tie Breaker right</input>
-    <output>AC Main Parallel 3</output>
-    <switch>
-      <prop>/controls/electric/ac/btb3</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>BTB Parallel right</input>
-    <output>AC Main Parallel 3</output>
+    <output>AC Main 3X</output>
     <switch>
       <prop>/controls/electric/ac/btb3</prop>
     </switch>
@@ -709,15 +653,7 @@
 
   <connector>
     <input>Bus Tie Breaker right</input>
-    <output>AC Main Parallel 4</output>
-    <switch>
-      <prop>/controls/electric/ac/btb4</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>BTB Parallel right</input>
-    <output>AC Main Parallel 4</output>
+    <output>AC Main 4X</output>
     <switch>
       <prop>/controls/electric/ac/btb4</prop>
     </switch>
@@ -735,7 +671,7 @@
 
   <connector>
     <input>Split System Breaker</input>
-    <output>BTB Parallel left</output>
+    <output>Bus Tie Breaker left</output>
     <switch>
       <prop>/controls/electric/ac/ssb</prop>
     </switch>
@@ -751,7 +687,7 @@
 
   <connector>
     <input>Split System Breaker</input>
-    <output>BTB Parallel right</output>
+    <output>Bus Tie Breaker right</output>
     <switch>
       <prop>/controls/electric/ac/ssb</prop>
     </switch>
@@ -768,23 +704,7 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 1</input>
-    <output>AC Essential 5X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential1</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 2X</input>
-    <output>AC Essential 6X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential2</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 2</input>
     <output>AC Essential 6X</output>
     <switch>
       <prop>/controls/electric/ac/essential2</prop>
@@ -800,23 +720,7 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 3</input>
-    <output>AC Essential 7X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential3</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 4X</input>
-    <output>AC Essential 8X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential4</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 4</input>
     <output>AC Essential 8X</output>
     <switch>
       <prop>/controls/electric/ac/essential4</prop>
@@ -834,23 +738,7 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 2</input>
-    <output>AC Avionics 10X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential2</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 3X</input>
-    <output>AC Avionics 11X</output>
-    <switch>
-      <prop>/controls/electric/ac/essential3</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 3</input>
     <output>AC Avionics 11X</output>
     <switch>
       <prop>/controls/electric/ac/essential3</prop>
@@ -882,7 +770,6 @@
     <output>AC Essential 5X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/essential1</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -891,7 +778,6 @@
     <output>AC Essential 6X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/essential2</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -900,7 +786,6 @@
     <output>AC Essential 7X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/essential3</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -909,7 +794,6 @@
     <output>AC Essential 8X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/essential4</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -934,23 +818,7 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 1</input>
-    <output>AC Relight 24X</output>
-    <switch>
-      <prop>/controls/electric/ac/relight1</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 2X</input>
-    <output>AC Relight 25X</output>
-    <switch>
-      <prop>/controls/electric/ac/relight2</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 2</input>
     <output>AC Relight 25X</output>
     <switch>
       <prop>/controls/electric/ac/relight2</prop>
@@ -966,23 +834,7 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 3</input>
-    <output>AC Relight 26X</output>
-    <switch>
-      <prop>/controls/electric/ac/relight3</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 4X</input>
-    <output>AC Relight 27X</output>
-    <switch>
-      <prop>/controls/electric/ac/relight4</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 4</input>
     <output>AC Relight 27X</output>
     <switch>
       <prop>/controls/electric/ac/relight4</prop>
@@ -996,7 +848,6 @@
     <output>AC Relight 24X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/relight1</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1005,7 +856,6 @@
     <output>AC Relight 25X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/relight2</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1014,7 +864,6 @@
     <output>AC Relight 26X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/relight3</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1023,7 +872,6 @@
     <output>AC Relight 27X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/relight4</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1052,7 +900,6 @@
     <output>AC Standby 32X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/standby</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1061,7 +908,6 @@
     <output>AC Standby 33X</output>
     <switch>
       <prop>/controls/electric/ac/emergency/standby</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1088,56 +934,8 @@
   </connector>
 
   <connector>
-    <input>AC Main Parallel 2</input>
-    <output>DC Main 1P</output>
-    <switch>
-      <prop>/controls/electric/dc/maina</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main 2X</input>
-    <output>DC Main Parallel A</output>
-    <switch>
-      <prop>/controls/electric/dc/maina</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 2</input>
-    <output>DC Main Parallel A</output>
-    <switch>
-      <prop>/controls/electric/dc/maina</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>AC Main 3X</input>
     <output>DC Main 2P</output>
-    <switch>
-      <prop>/controls/electric/dc/mainb</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 3</input>
-    <output>DC Main 2P</output>
-    <switch>
-      <prop>/controls/electric/dc/mainb</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main 3X</input>
-    <output>DC Main Parallel B</output>
-    <switch>
-      <prop>/controls/electric/dc/mainb</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>AC Main Parallel 3</input>
-    <output>DC Main Parallel B</output>
     <switch>
       <prop>/controls/electric/dc/mainb</prop>
     </switch>
@@ -1155,12 +953,12 @@
 
   <connector>
     <input>DC Main 1P</input>
-    <output>DC Main Parallel B</output>
+    <output>DC Main 2P</output>
   </connector>
 
   <connector>
     <input>DC Main 2P</input>
-    <output>DC Main Parallel A</output>
+    <output>DC Main 1P</output>
   </connector>
 
   <!-- Essential / Main Split -->
@@ -1174,23 +972,7 @@
   </connector>
 
   <connector>
-    <input>DC Main Parallel A</input>
-    <output>DC Essential 3P</output>
-    <switch>
-      <prop>/controls/electric/dc/emsa</prop>
-    </switch>
-  </connector>
-
-  <connector>
     <input>DC Main 2P</input>
-    <output>DC Essential 4P</output>
-    <switch>
-      <prop>/controls/electric/dc/emsb</prop>
-    </switch>
-  </connector>
-
-  <connector>
-    <input>DC Main Parallel B</input>
     <output>DC Essential 4P</output>
     <switch>
       <prop>/controls/electric/dc/emsb</prop>
@@ -1257,7 +1039,6 @@
     <output>Starter 1 Power</output>
     <switch>
       <prop>/controls/engines/engine[0]/starter</prop>
-      <initial-state>off</initial-state>
     </switch>
   </connector>
 
@@ -1331,7 +1112,7 @@
     <input>Light bus</input>
     <output>Instrument Lights Power</output>
     <switch>
-      <prop>/controls/circuit-breakers/instrument-lights</prop>
+      <prop>/controls/lighting/instrument-lights</prop>
     </switch>
   </connector>
 

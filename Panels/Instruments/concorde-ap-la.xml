@@ -20,7 +20,7 @@
     <type>group</type>
     <condition>
      <equals>
-      <property>/autopilot/locks/vertical</property>
+      <property>/controls/autoflight/vertical</property>
       <value>autoland</value>
      </equals>
     </condition>
@@ -121,7 +121,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.aplandexport();</script>
+    <script>globals.Concorde.autopilotsystem.aplandexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

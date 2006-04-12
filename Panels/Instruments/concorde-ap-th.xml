@@ -22,24 +22,24 @@
      <or>
       <and>
        <not-equals>
-        <property>/autopilot/locks/heading</property>
+        <property>/controls/autoflight/heading</property>
         <value>dg-heading-hold</value>
        </not-equals>
        <not-equals>
-        <property>/autopilot/locks/heading</property>
+        <property>/controls/autoflight/heading</property>
         <value>true-heading-hold</value>
        </not-equals>
       </and>
       <equals>
-       <property>/autopilot/locks/horizontal</property>
+       <property>/controls/autoflight/horizontal</property>
        <value>magnetic</value>
       </equals>
       <equals>
-       <property>/autopilot/locks/horizontal</property>
+       <property>/controls/autoflight/horizontal</property>
        <value>ins</value>
       </equals>
       <equals>
-       <property>/autopilot/locks/horizontal</property>
+       <property>/controls/autoflight/horizontal</property>
        <value>vor</value>
       </equals>
      </or>
@@ -142,7 +142,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apheadingexport();</script>
+    <script>globals.Concorde.autopilotsystem.apheadingexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

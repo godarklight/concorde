@@ -21,11 +21,13 @@
     <condition>
      <or>
       <not-equals>
-       <property>/autopilot/locks/altitude</property>
+       <property>/controls/autoflight/vertical</property>
+       <value>altitude-acquire</value>
+      </not-equals>
+      <not-equals>
+       <property>/controls/autoflight/altitude</property>
        <value>altitude-hold</value>
       </not-equals>
-      <not include="concorde-cond-altitude.xml">
-      </not>
      </or>
     </condition>
 
@@ -125,7 +127,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apaltitudeexport();</script>
+    <script>globals.Concorde.autopilotsystem.apaltitudeexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

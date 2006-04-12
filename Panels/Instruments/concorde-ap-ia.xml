@@ -20,11 +20,11 @@
     <condition>
      <and>
       <equals>
-       <property>/autopilot/locks/speed</property>
+       <property>/controls/autoflight/speed</property>
        <value>speed-with-throttle</value>
       </equals>
       <equals>
-       <property>/autopilot/locks/speed2</property>
+       <property>/controls/autoflight/speed2</property>
        <value>speed-acquire</value>
       </equals>
      </and>
@@ -126,7 +126,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.atspeedexport();</script>
+    <script>globals.Concorde.autothrottlesystem.atspeedexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

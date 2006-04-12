@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 
 <!-- Alarm on Autothrottle :
+
      - altitude acquired without autothrottle.
      - glide or autoland without autothrottle.
      - airspeed indicator out of order.
      - no voltage.
+     - flashes on test.
  -->
 
 <PropertyList>
@@ -23,60 +25,48 @@
      <condition>
       <and>
        <not include="concorde-cond-voltage-bulb.xml"/>
-       <or include="concorde-cond-test-land.xml">
+       <or>
+        <and include="concorde-cond-test-land.xml">
+         <not include="concorde-cond-flashing-light.xml"/>
+        </and>
         <and>
          <not include="concorde-cond-flashing-light.xml"/>
          <or>
-          <and>
+          <and include="concorde-cond-altitude.xml">
            <equals>
             <property>/autopilot/locks/speed</property>
             <value></value>
            </equals>
-           <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>altitude-hold</value>
-           </equals>
-           <greater-than>
-            <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-            <property n="1">/instrumentation/altimeter[0]/target-min-ft</property>
-           </greater-than>
-           <less-than>
-            <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-            <property n="1">/instrumentation/altimeter[0]/target-max-ft</property>
-           </less-than>
           </and>
           <and>
-           <not-equals>
-            <property>/autopilot/locks/speed</property>
-            <value>speed-with-throttle</value>
-           </not-equals>
            <equals>
             <property>/autopilot/locks/altitude</property>
             <value>gs1-hold</value>
            </equals>
+           <equals>
+            <property>/autopilot/locks/speed</property>
+            <value></value>
+           </equals>
           </and>
-          <and include="concorde-cond-land.xml">
+          <and>
+           <or include="concorde-cond-land.xml"/>       <!-- bug -->
            <greater-than>
             <property>/position/altitude-agl-ft</property>
             <value>14</value> <!-- autoland stops below -->
            </greater-than>
-           <not-equals>
-            <property>/autopilot/locks/altitude2</property>
-            <value>vertical-speed-with-throttle</value>
-           </not-equals>
-           <not-equals>
-            <property>/autopilot/locks/speed</property>
-            <value>speed-with-throttle</value>
-           </not-equals>
+           <equals>
+            <property>/controls/autoflight/speed</property>
+            <value></value>
+           </equals>
           </and>
           <and>
+           <not>
+            <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+           </not>
            <not-equals>
             <property>/autopilot/locks/speed</property>
             <value></value>
            </not-equals>
-           <not>
-            <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
-           </not>
           </and>
          </or>
         </and>

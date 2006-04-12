@@ -24,7 +24,7 @@
     <condition>
      <or>
       <not-equals>
-       <property>/autopilot/locks/altitude</property>
+       <property>/controls/autoflight/altitude</property>
        <value>mach-with-pitch</value>
       </not-equals>
       <not include="concorde-cond-voltage-autopilot.xml"/>
@@ -127,7 +127,7 @@
    <h>26</h>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.apmachpitchexport();</script>
+    <script>globals.Concorde.autopilotsystem.apmachpitchexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

@@ -2,7 +2,7 @@
 
 <!-- LH igniter :
 
-     - engine ignition.
+     - engine ignition, by starter or relight.
 -->
 
 <PropertyList>
@@ -25,27 +25,47 @@
       <and include="concorde-cond-test-eng-forward.xml">
        <or>
         <property>/engines/engine[0]/cutoff</property>
-        <not>
-         <property>/engines/engine[0]/starter</property>
-        </not>
+        <and>
+         <not>
+          <property>/engines/engine[0]/starter</property>
+         </not>
+         <not>
+          <property>/engines/engine[0]/relight</property>
+         </not>
+        </and>
        </or>
        <or>
         <property>/engines/engine[1]/cutoff</property>
-        <not>
-         <property>/engines/engine[1]/starter</property>
-        </not>
+        <and>
+         <not>
+          <property>/engines/engine[1]/starter</property>
+         </not>
+         <not>
+          <property>/engines/engine[1]/relight</property>
+         </not>
+        </and>
        </or>
        <or>
         <property>/engines/engine[2]/cutoff</property>
-        <not>
-         <property>/engines/engine[2]/starter</property>
-        </not>
+        <and>
+         <not>
+          <property>/engines/engine[2]/starter</property>
+         </not>
+         <not>
+          <property>/engines/engine[2]/relight</property>
+         </not>
+        </and>
        </or>
        <or>
         <property>/engines/engine[3]/cutoff</property>
-        <not>
-         <property>/engines/engine[3]/starter</property>
-        </not>
+        <and>
+         <not>
+          <property>/engines/engine[3]/starter</property>
+         </not>
+         <not>
+          <property>/engines/engine[3]/relight</property>
+         </not>
+        </and>
        </or>
       </and>
      </or>

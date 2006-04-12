@@ -1,76 +1,85 @@
-# Like the real Concorde : see http://www.concordesst.com.
-
 # EXPORT : functions ending by export are called from xml
 # CRON : functions ending by cron are called from timer
 # SCHEDULE : functions ending by schedule are called from cron
 
 # current nasal version doesn't accept :
-# - more than multiplication on 1 line.
-# - variable with hyphen or underscore.
-# - boolean (can only test IF TRUE); replaced by strings.
-# - object oriented classes.
+# - too many operations on 1 line.
+# - variable with hyphen.
+
 
 
 # ==============
 # INITIALIZATION
 # ==============
 
-# fuel configuration
-presetfuel = func {
-   # default is 0
-   fuel = getprop("/sim/presets/fuel");
-   if( fuel == nil ) {
-       fuel = 0;
-   }
-   fillings = props.globals.getNode("/sim/presets/tanks").getChildren("filling");
-   if( fuel < 0 or fuel >= size(fillings) ) {
-       fuel = 0;
-   } 
-   presets = fillings[fuel].getChildren("tank");
-   tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
-   for( i=0; i < size(presets); i=i+1 ) {
-        child = presets[i].getChild("level-gal_us");
-        if( child != nil ) {
-            level = child.getValue();
-            tanks[i].getChild("level-gal_us").setValue(level);
-        }
-   } 
+# the possible relations :
+# - pumpsystem : Pump.new(),                              inside another system / instrument, to synchronize the objects.
+# - me.electricalsystem = electrical;                     local pointer to the global object, to call its nasal code.
+# - <slave>/instrumentation/altimeter[0]</slave>          tag in the instrumentation / system initialization, to read the properties.
+# - <static-port>/systems/static</static-port>            tag in the instrumentation file, to customize a C++ instrument.
+# - /position/altitude-agl-ft, /velocities/mach.          no relation to an instrument / system failure, use NoInstrument.
+setrelations = func {
+   autopilotsystem.set_relation( autothrottlesystem, electricalsystem );
+   fuelsystem.set_relation( electricalsystem );
+   hydraulicsystem.set_relation( electricalsystem );
+   pressuresystem.set_relation( airbleedsystem, electricalsystem );
+   tanksystem.set_relation( airbleedsystem, electricalsystem );
+   enginesystem.set_relation( autopilotsystem );
+   lightingsystem.set_relation( electricalsystem );
+
+   INSinstrument.set_relation( electricalsystem );
+   TMOinstrument.set_relation( electricalsystem );
+   TCASinstrument.set_relation( electricalsystem );
+}
+
+synchronize1sec = func {
+   electricalsystem.set_rate( fuelsystem.PUMPSEC );
+   hydraulicsystem.set_rate( fuelsystem.PUMPSEC );
+   airbleedsystem.set_rate( fuelsystem.PUMPSEC );
+   enginesystem.set_rate( fuelsystem.PUMPSEC );
 }
 
 # 1 seconds cron
 sec1cron = func {
-#   feedengineschedulecpp();
-   feedengineschedule();
-   hydraulicschedule();
+   electricalsystem.schedule();
+   fuelsystem.schedule();
+   hydraulicsystem.schedule();
+   airbleedsystem.schedule();
+   enginesystem.schedule();
+   lightingsystem.schedule();
 
    # schedule the next call
-   settimer(sec1cron,PUMPSEC);
+   settimer(sec1cron,fuelsystem.PUMPSEC);
 }
 
 # 3 seconds cron
 sec3cron = func {
-   tasschedule();
-   autopilotschedule();
-   tcasschedule();
+   autopilotsystem.schedule();
+   TCASinstrument.schedule();
+   INSinstrument.schedule();
 
    # schedule the next call
-   settimer(sec3cron,AUTOPILOTSEC);
+   settimer(sec3cron,autopilotsystem.AUTOPILOTSEC);
 }
 
 # 5 seconds cron
 sec5cron = func {
-   vmoktschedule();
-   inslightschedule();
-   airbleedschedule();
+   CGinstrument.schedule();
+   IASinstrument.schedule();
+   machinstrument.schedule();
+   autothrottlesystem.schedule();
+   pressuresystem.schedule();
+   enginesystem.slowschedule();
 
    # schedule the next call
-   settimer(sec5cron,PRESSURIZESEC);
+   settimer(sec5cron,pressuresystem.PRESSURIZESEC);
 }
 
 # 15 seconds cron
 sec15cron = func {
-   tmodegcschedule();
-   insfuelschedule();
+   TMOinstrument.schedule();
+   INSinstrument.slowschedule();
+   GPWSsystem.schedule();
 
    # schedule the next call
    settimer(sec15cron,15);
@@ -78,17 +87,16 @@ sec15cron = func {
 
 # 30 seconds cron
 sec30cron = func {
-   bucketdegschedule();
-   tankpressureschedule();
+   tanksystem.schedule();
 
    # schedule the next call
-   settimer(sec30cron,30);
+   settimer(sec30cron,tanksystem.TANKSEC);
 }
 
 # 60 seconds cron
 sec60cron = func {
-   # delay to call ground power
-   groundserviceschedule();
+   electricalsystem.slowschedule();
+   airbleedsystem.slowschedule();
 
    # schedule the next call
    settimer(sec60cron,60);
@@ -96,15 +104,10 @@ sec60cron = func {
 
 # general initialization
 init = func {
-   initfuel();
-   presetfuel();
-   initautopilot();
+   setrelations();
+   synchronize1sec();
 
    # schedule the 1st call
-#   if( getprop("/instrumentation/inst-vertical-speed-indicator/nasal") ) {
-#       settimer(calcverticalfpscron,0);
-#   }
-   settimer(flashinglightcron,0);
    settimer(sec1cron,0);
    settimer(sec3cron,0);
    settimer(sec5cron,0);
@@ -112,5 +115,32 @@ init = func {
    settimer(sec30cron,0);
    settimer(sec60cron,0);
 }
+
+# objects must be here, otherwise local to init()
+constant = Concorde.Constant.new();
+constantaero = Concorde.ConstantAero.new();
+electricalsystem = Concorde.Electrical.new();
+hydraulicsystem = Concorde.Hydraulic.new();
+airbleedsystem = Concorde.Airbleed.new();
+pressuresystem = Concorde.Pressurization.new();
+fuelsystem = Concorde.Fuel.new();
+tanksystem = Concorde.Tank.new();
+autopilotsystem = Concorde.Autopilot.new();
+autothrottlesystem = Concorde.Autothrottle.new();
+GPWSsystem = Concorde.Gpws.new();
+enginesystem = Concorde.Engine.new();
+lightingsystem = Concorde.Lighting.new();
+
+CGinstrument = Concorde.CenterGravity.new();
+IASinstrument = Concorde.Airspeed.new();
+machinstrument = Concorde.Machmeter.new();
+TMOinstrument = Concorde.Temperature.new();
+INSinstrument = Concorde.Inertial.new();
+TCASinstrument = Concorde.Traffic.new();
+markerinstrument = Concorde.Markerbeacon.new();
+RATinstrument = Concorde.Rat.new();
+doorinstrument = Concorde.Doors.new();
+genericinstrument = Concorde.Generic.new();
+noinstrument = Concorde.NoInstrument.new();
 
 init();

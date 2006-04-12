@@ -1,34 +1,20 @@
 <?xml version="1.0"?>
 
-<!-- Autopilot and autothrottle channels -->
+<!-- - document the real time behaviour.
+
+     - see /sytems/autopilot for the "slow" properties.
+-->
 
 
 <PropertyList>
 
-<!-- Nasal -->
+  <!-- 1 PID for subsonic, 1 PID for supersonic -->
 
   <locks>
-   <channel>
-    <ap>
-     <on></on>
-    </ap>
-    <ap n="1">
-     <on></on>
-    </ap>
-    <at>
-     <on></on>
-    </at>
-    <at n="1">
-     <on></on>
-    </at>
-   </channel>
+   <sonic>
+    <altitude></altitude>
+    <heading></heading>
+   </sonic>
   </locks>
-
-  <internal>
-   <state>
-    <virtual-copilot type="bool">false</virtual-copilot>
-    <virtual-autopilot type="bool">false</virtual-autopilot>
-   </state>
-  </internal>
 
 </PropertyList>

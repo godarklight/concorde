@@ -4,7 +4,7 @@
 
      - FDM.
      - pitch above 16.5 deg. 
-     - AFT M/CG warning.
+     - extreme AFT M/CG warning.
      - Vc less than Vla minus 20 kt.
      - enough voltage.
 -->
@@ -26,7 +26,7 @@
    </greater-than>
    <greater-than>
     <property>instrumentation/cg/percent</property>
-    <property n="1">instrumentation/cg/max-percent</property>
+    <property n="1">instrumentation/cg/max-extreme-percent</property>
    </greater-than>
    <and>
     <greater-than-equals>
