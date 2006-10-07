@@ -627,7 +627,7 @@
    <object-name>Above1000</object-name>                         <!-- group avoids side effects -->
    <condition>
     <not>
-     <property>/sim/current-view/internal</property>
+     <property>sim/current-view/internal</property>
     </not>
    </condition>
   </animation>
@@ -641,10 +641,10 @@
    <condition>
     <or>
      <not>
-      <property>/sim/current-view/internal</property>
+      <property>sim/current-view/internal</property>
      </not>
      <less-than>
-      <property>/surface-positions/flap-pos-norm</property>
+      <property>surface-positions/flap-pos-norm</property>
       <value>1.0</value> <!-- not visible when down -->
      </less-than>
     </or>
@@ -660,7 +660,7 @@
   <animation>
   <type>rotate</type>
   <object-name>Nose</object-name>
-  <property>/surface-positions/flap-pos-norm</property>
+  <property>surface-positions/flap-pos-norm</property>
   <interpolation> <!-- real angles -->
     <entry>
      <ind>0.0</ind>
@@ -698,7 +698,7 @@
   <animation>
   <type>translate</type>
   <object-name>Screen</object-name>
-  <property>/surface-positions/flap-pos-norm</property>
+  <property>surface-positions/flap-pos-norm</property>
   <interpolation>
     <entry>
      <ind>0.0</ind>
@@ -743,7 +743,7 @@
   <animation>
   <type>translate</type>
   <object-name>Screen</object-name>
-  <property>/surface-positions/flap-pos-norm</property>
+  <property>surface-positions/flap-pos-norm</property>
   <interpolation>
     <entry>
      <ind>0.0</ind>
@@ -770,7 +770,7 @@
   <animation>
   <type>rotate</type>
   <object-name>Screen</object-name>
-  <property>/surface-positions/flap-pos-norm</property>
+  <property>surface-positions/flap-pos-norm</property>
   <interpolation>
     <entry>
      <ind>0.0</ind>
@@ -815,7 +815,7 @@
   <object-name>Fstrut</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[0]/position-norm</property>
+    <property>gear/gear[0]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -826,7 +826,7 @@
   <object-name>Fram</object-name> <!-- visible through door -->
   <condition>
    <greater-than>
-    <property>/gear/gear[0]/position-norm</property>
+    <property>gear/gear[0]/position-norm</property>
     <value>0.17</value> <!-- go through the closing doors -->
    </greater-than>
   </condition>
@@ -873,11 +873,11 @@
   <object-name>Nose2Gear</object-name>
   <condition>
    <less-than>
-    <property>/position/altitude-agl-ft</property>
+    <property>position/altitude-agl-ft</property>
     <value>50.0</value>
    </less-than>
   </condition>
-  <property>/gear/gear[0]/steering-norm</property>
+  <property>gear/gear[0]/steering-norm</property>
   <factor>-60</factor> <!-- real steering is 60 deg -->
   <center>
    <x-m>-12.0</x-m>
@@ -897,13 +897,13 @@
   <condition>
    <and>
     <less-than>
-     <property>/position/altitude-agl-ft</property> <!-- possible bug of wow -->
+     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
      <value>50.0</value>
     </less-than>
-    <property>/gear/gear[0]/wow</property> <!-- ground contact -->
+    <property>gear/gear[0]/wow</property> <!-- ground contact -->
    </and>
   </condition>
-  <property>/velocities/uBody-fps</property>
+  <property>velocities/uBody-fps</property>
   <factor>-2.0</factor>
   <center>
    <x-m>-12.11</x-m>
@@ -924,11 +924,11 @@
   <condition>
    <and>
     <greater-than>
-     <property>/gear/gear[0]/position-norm</property>
+     <property>gear/gear[0]/position-norm</property>
      <value>0.0</value>
     </greater-than>
     <less-than>
-     <property>/gear/gear[0]/position-norm</property>
+     <property>gear/gear[0]/position-norm</property>
      <value>1.0</value>
     </less-than>
    </and>
@@ -941,7 +941,7 @@
   <object-name>OFRsmalldoor</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[0]/position-norm</property>
+    <property>gear/gear[0]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1088,7 +1088,7 @@
   <object-name>OFlegdoor</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[0]/position-norm</property>
+    <property>gear/gear[0]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1134,11 +1134,11 @@
   <condition>
    <or>
     <equals>
-     <property>/gear/gear[0]/position-norm</property>
+     <property>gear/gear[0]/position-norm</property>
      <value>1.0</value>
     </equals>
     <equals>
-     <property>/gear/gear[0]/position-norm</property>
+     <property>gear/gear[0]/position-norm</property>
      <value>0.0</value>
     </equals>
    </or>
@@ -1150,7 +1150,7 @@
   <object-name>Fsucdclosed</object-name>
   <condition>
    <equals>
-    <property>/gear/gear[0]/position-norm</property>
+    <property>gear/gear[0]/position-norm</property>
     <value>0.0</value>
    </equals>
   </condition>
@@ -1171,7 +1171,7 @@
   <object-name>Right4Gear</object-name> <!-- spare frame rate -->
   <condition>
    <greater-than>
-    <property>/gear/gear[3]/position-norm</property>
+    <property>gear/gear[3]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1217,7 +1217,7 @@
   <object-name>Rmainram</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[3]/position-norm</property>
+    <property>gear/gear[3]/position-norm</property>
     <value>0.76</value> <!-- visible through wing -->
    </greater-than>
   </condition>
@@ -1229,13 +1229,13 @@
   <condition>
    <and>
     <less-than>
-     <property>/position/altitude-agl-ft</property> <!-- possible bug of wow -->
+     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
      <value>50.0</value>
     </less-than>
-    <property>/gear/gear[3]/wow</property> <!-- ground contact -->
+    <property>gear/gear[3]/wow</property> <!-- ground contact -->
    </and>
   </condition>
-  <property>/velocities/uBody-fps</property>
+  <property>velocities/uBody-fps</property>
   <factor>-2.0</factor>
   <center>
    <x-m>4.461</x-m>
@@ -1255,13 +1255,13 @@
   <condition>
    <and>
     <less-than>
-     <property>/position/altitude-agl-ft</property> <!-- possible bug of wow -->
+     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
      <value>50.0</value>
     </less-than>
-    <property>/gear/gear[2]/wow</property> <!-- ground contact -->
+    <property>gear/gear[2]/wow</property> <!-- ground contact -->
    </and>
   </condition>
-  <property>/velocities/uBody-fps</property>
+  <property>velocities/uBody-fps</property>
   <factor>-2.0</factor>
   <center>
    <x-m>6.214</x-m>
@@ -1314,7 +1314,7 @@
   <object-name>OROmaindoor</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[3]/position-norm</property>
+    <property>gear/gear[3]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1325,7 +1325,7 @@
   <object-name>ROdoorclosed</object-name>
   <condition>
    <equals>
-    <property>/gear/gear[3]/position-norm</property>
+    <property>gear/gear[3]/position-norm</property>
     <value>0.0</value>
    </equals>
   </condition>
@@ -1371,11 +1371,11 @@
   <condition>
    <and>
     <greater-than>
-     <property>/gear/gear[3]/position-norm</property>
+     <property>gear/gear[3]/position-norm</property>
      <value>0.0</value>
     </greater-than>
     <less-than>
-     <property>/gear/gear[3]/position-norm</property>
+     <property>gear/gear[3]/position-norm</property>
      <value>1.0</value>
     </less-than>
    </and>
@@ -1388,11 +1388,11 @@
   <condition>
    <or>
     <equals>
-     <property>/gear/gear[3]/position-norm</property>
+     <property>gear/gear[3]/position-norm</property>
      <value>0.0</value>
     </equals>
     <equals>
-     <property>/gear/gear[3]/position-norm</property>
+     <property>gear/gear[3]/position-norm</property>
      <value>1.0</value>
     </equals>
    </or>
@@ -1414,7 +1414,7 @@
   <object-name>Left4Gear</object-name> <!-- spare frame rate -->
   <condition>
    <greater-than>
-    <property>/gear/gear[1]/position-norm</property>
+    <property>gear/gear[1]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1460,7 +1460,7 @@
   <object-name>Lmainram</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[1]/position-norm</property>
+    <property>gear/gear[1]/position-norm</property>
     <value>0.76</value> <!-- visible through wing -->
    </greater-than>
   </condition>
@@ -1472,13 +1472,13 @@
   <condition>
    <and>
     <less-than>
-     <property>/position/altitude-agl-ft</property> <!-- possible bug of wow -->
+     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
      <value>50.0</value>
     </less-than>
-    <property>/gear/gear[1]/wow</property> <!-- ground contact -->
+    <property>gear/gear[1]/wow</property> <!-- ground contact -->
    </and>
   </condition>
-  <property>/velocities/uBody-fps</property>
+  <property>velocities/uBody-fps</property>
   <factor>-2.0</factor>
   <center>
    <x-m>4.461</x-m>
@@ -1498,13 +1498,13 @@
   <condition>
    <and>
     <less-than>
-     <property>/position/altitude-agl-ft</property> <!-- possible bug of wow -->
+     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
      <value>50.0</value>
     </less-than>
-    <property>/gear/gear[4]/wow</property> <!-- ground contact -->
+    <property>gear/gear[4]/wow</property> <!-- ground contact -->
    </and>
   </condition>
-  <property>/velocities/uBody-fps</property>
+  <property>velocities/uBody-fps</property>
   <factor>-2.0</factor>
   <center>
    <x-m>6.214</x-m>
@@ -1557,7 +1557,7 @@
   <object-name>OLOmaindoor</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[1]/position-norm</property>
+    <property>gear/gear[1]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1568,7 +1568,7 @@
   <object-name>LOdoorclosed</object-name>
   <condition>
    <equals>
-    <property>/gear/gear[1]/position-norm</property>
+    <property>gear/gear[1]/position-norm</property>
     <value>0.0</value>
    </equals>
   </condition>
@@ -1614,11 +1614,11 @@
   <condition>
    <and>
     <greater-than>
-     <property>/gear/gear[1]/position-norm</property>
+     <property>gear/gear[1]/position-norm</property>
      <value>0.0</value>
     </greater-than>
     <less-than>
-     <property>/gear/gear[1]/position-norm</property>
+     <property>gear/gear[1]/position-norm</property>
      <value>1.0</value>
     </less-than>
    </and>
@@ -1631,11 +1631,11 @@
   <condition>
    <or>
     <equals>
-     <property>/gear/gear[1]/position-norm</property>
+     <property>gear/gear[1]/position-norm</property>
      <value>0.0</value>
     </equals>
     <equals>
-     <property>/gear/gear[1]/position-norm</property>
+     <property>gear/gear[1]/position-norm</property>
      <value>1.0</value>
     </equals>
    </or>
@@ -1656,7 +1656,7 @@
   <object-name>Tail2Gear</object-name> <!-- spare frame rate -->
   <condition>
    <greater-than>
-    <property>/gear/gear[5]/position-norm</property>
+    <property>gear/gear[5]/position-norm</property>
     <value>0.0</value>
    </greater-than>
   </condition>
@@ -1703,7 +1703,7 @@
   <object-name>Taildoorfront</object-name>
   <condition>
    <greater-than>
-    <property>/gear/gear[5]/position-norm</property>
+    <property>gear/gear[5]/position-norm</property>
     <value>0.17</value>
    </greater-than>
   </condition>
@@ -1816,7 +1816,7 @@
   <object-name>Taildoorclosed</object-name>
   <condition>
    <less-than-equals>
-    <property>/gear/gear[5]/position-norm</property>
+    <property>gear/gear[5]/position-norm</property>
     <value>0.17</value>
    </less-than-equals>
   </condition>
@@ -1833,7 +1833,7 @@
  <animation>
   <type>rotate</type>
   <object-name>Right2Elevon</object-name>
-  <property>/surface-positions/right-aileron-pos-norm</property>
+  <property>surface-positions/right-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1851,7 +1851,7 @@
  <animation>
   <type>rotate</type>
   <object-name>Right2Elevon</object-name>
-  <property>/surface-positions/elevator-pos-norm</property>
+  <property>surface-positions/elevator-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1869,7 +1869,7 @@
  <animation>
   <type>rotate</type>
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
-  <property>/surface-positions/right-aileron-pos-norm</property>
+  <property>surface-positions/right-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1887,7 +1887,7 @@
  <animation>
   <type>rotate</type>
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
-  <property>/surface-positions/elevator-pos-norm</property>
+  <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1913,7 +1913,7 @@
  <animation>
   <type>rotate</type>
   <object-name>Left2Elevon</object-name>
-  <property>/surface-positions/left-aileron-pos-norm</property>
+  <property>surface-positions/left-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1931,7 +1931,7 @@
  <animation>
   <type>rotate</type>
   <object-name>Left2Elevon</object-name>
-  <property>/surface-positions/elevator-pos-norm</property>
+  <property>surface-positions/elevator-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1949,7 +1949,7 @@
  <animation>
   <type>rotate</type>
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
-  <property>/surface-positions/left-aileron-pos-norm</property>
+  <property>surface-positions/left-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1967,7 +1967,7 @@
  <animation>
   <type>rotate</type>
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
-  <property>/surface-positions/elevator-pos-norm</property>
+  <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -1988,7 +1988,7 @@
   <type>rotate</type>
   <object-name>Upperrudder</object-name>
   <object-name>Lowerrudder</object-name>
-  <property>/surface-positions/rudder-pos-norm</property>
+  <property>surface-positions/rudder-pos-norm</property>
   <factor>29</factor> <!-- max real is 30 deg -->
   <offset-deg>0</offset-deg>   
   <center>
@@ -2010,7 +2010,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop1</object-name>
-  <property>/engines/engine[0]/bucket-deg</property>
+  <property>engines/engine[0]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2026,7 +2026,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom1</object-name>
-  <property>/engines/engine[0]/bucket-deg</property>
+  <property>engines/engine[0]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2044,7 +2044,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop2</object-name>
-  <property>/engines/engine[1]/bucket-deg</property>
+  <property>engines/engine[1]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2060,7 +2060,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom2</object-name>
-  <property>/engines/engine[1]/bucket-deg</property>
+  <property>engines/engine[1]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2078,7 +2078,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop3</object-name>
-  <property>/engines/engine[2]/bucket-deg</property>
+  <property>engines/engine[2]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2094,7 +2094,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom3</object-name>
-  <property>/engines/engine[2]/bucket-deg</property>
+  <property>engines/engine[2]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2112,7 +2112,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop4</object-name>
-  <property>/engines/engine[3]/bucket-deg</property>
+  <property>engines/engine[3]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2128,7 +2128,7 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom4</object-name>
-  <property>/engines/engine[3]/bucket-deg</property>
+  <property>engines/engine[3]/bucket-deg</property>
   <center>
    <x-m>15.2</x-m>
    <y-m>0</y-m>
@@ -2256,7 +2256,7 @@
  <animation>
   <type>rotate</type>
   <object-name>FlightDeckDoor</object-name>
-  <property>/controls/doors/flight-deck/position-norm</property>
+  <property>controls/doors/flight-deck/position-norm</property>
   <factor>-90</factor>
   <offset-deg>0</offset-deg>   
   <center>
@@ -2274,7 +2274,7 @@
  <animation>
   <type>translate</type>
   <object-name>EngineerDeck</object-name>
-  <property>/controls/doors/engineer-deck/position-norm</property>
+  <property>controls/doors/engineer-deck/position-norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -2325,9 +2325,9 @@
   <object-name>NavigationTail</object-name>
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
-    <property>/controls/lighting/nav-lights</property>
+    <property>controls/lighting/nav-lights</property>
     <not>
-     <property>/controls/lighting/external/strobe/state</property>
+     <property>controls/lighting/external/strobe/state</property>
     </not>
    </and>
   </condition>
@@ -2338,7 +2338,7 @@
   <object-name>Navigation2Lights</object-name>
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
-    <property>/controls/lighting/nav-lights</property>
+    <property>controls/lighting/nav-lights</property>
    </and>
   </condition>
  </animation>
@@ -2382,7 +2382,7 @@
  <animation>
   <type>scale</type>
   <object-name>NavigationTail</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2435,7 +2435,7 @@
  <animation>
   <type>scale</type>
   <object-name>NavigationLeft</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2488,7 +2488,7 @@
  <animation>
   <type>scale</type>
   <object-name>NavigationRight</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2519,7 +2519,7 @@
   <object-name>Strobe3Lights</object-name>
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
-    <property>/controls/lighting/external/strobe/state</property>
+    <property>controls/lighting/external/strobe/state</property>
    </and>
   </condition>
  </animation>
@@ -2553,7 +2553,7 @@
  <animation>
   <type>scale</type>
   <object-name>CollisionTail</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2606,7 +2606,7 @@
  <animation>
   <type>scale</type>
   <object-name>CollisionLeft</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2659,7 +2659,7 @@
  <animation>
   <type>scale</type>
   <object-name>CollisionRight</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2689,7 +2689,7 @@
   <object-name>TaxiTurnLeft</object-name>
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
-    <property>/controls/lighting/external/taxi-turn[0]/on</property>
+    <property>controls/lighting/external/taxi-turn[0]/on</property>
    </and>
   </condition>
  </animation>
@@ -2699,7 +2699,7 @@
   <object-name>TaxiTurnRight</object-name>
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
-    <property>/controls/lighting/external/taxi-turn[1]/on</property>
+    <property>controls/lighting/external/taxi-turn[1]/on</property>
    </and>
   </condition>
  </animation>
@@ -2735,10 +2735,10 @@
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
     <greater-than-equals>
-     <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+     <property>controls/lighting/external/landing-taxi[0]/norm</property>
      <property n="1">/controls/lighting/external/interpolate/on</property>
     </greater-than-equals>
-    <property>/controls/lighting/external/landing-taxi[0]/on</property>
+    <property>controls/lighting/external/landing-taxi[0]/on</property>
     <or>
      <equals>
       <property>gear/gear[0]/position-norm</property>
@@ -2759,10 +2759,10 @@
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
     <greater-than-equals>
-     <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+     <property>controls/lighting/external/landing-taxi[1]/norm</property>
      <property n="1">/controls/lighting/external/interpolate/on</property>
     </greater-than-equals>
-    <property>/controls/lighting/external/landing-taxi[1]/on</property>
+    <property>controls/lighting/external/landing-taxi[1]/on</property>
     <or>
      <equals>
       <property>gear/gear[0]/position-norm</property>
@@ -2823,7 +2823,7 @@
  <animation>
   <type>rotate</type>
   <object-name>LandingTaxiLeft</object-name>
-  <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+  <property>controls/lighting/external/landing-taxi[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -2853,7 +2853,7 @@
  <animation>
   <type>scale</type>
   <object-name>LandingTaxiLeft</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2901,7 +2901,7 @@
  <animation>
   <type>rotate</type>
   <object-name>LandingTaxiRight</object-name>
-  <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+  <property>controls/lighting/external/landing-taxi[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -2931,7 +2931,7 @@
  <animation>
   <type>scale</type>
   <object-name>LandingTaxiRight</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -2948,7 +2948,7 @@
   <object-name>TaxiConeLeft</object-name>
   <condition>
    <greater-than>
-    <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+    <property>controls/lighting/external/landing-taxi[0]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/off</property>
    </greater-than>
   </condition>
@@ -2957,7 +2957,7 @@
  <animation>
   <type>translate</type>
   <object-name>TaxiConeLeft</object-name>
-  <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+  <property>controls/lighting/external/landing-taxi[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -2978,7 +2978,7 @@
  <animation>
   <type>rotate</type>
   <object-name>TaxiConeLeft</object-name>
-  <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+  <property>controls/lighting/external/landing-taxi[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3014,7 +3014,7 @@
   <object-name>TaxiConeLeft</object-name>
   <condition>
    <greater-than-equals>
-    <property>/controls/lighting/external/landing-taxi[0]/norm</property>
+    <property>controls/lighting/external/landing-taxi[0]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/on</property>
    </greater-than-equals>
   </condition>
@@ -3054,7 +3054,7 @@
   <object-name>TaxiConeRight</object-name>
   <condition>
    <greater-than>
-    <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+    <property>controls/lighting/external/landing-taxi[1]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/off</property>
    </greater-than>
   </condition>
@@ -3063,7 +3063,7 @@
  <animation>
   <type>translate</type>
   <object-name>TaxiConeRight</object-name>
-  <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+  <property>controls/lighting/external/landing-taxi[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3084,7 +3084,7 @@
  <animation>
   <type>rotate</type>
   <object-name>TaxiConeRight</object-name>
-  <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+  <property>controls/lighting/external/landing-taxi[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3120,7 +3120,7 @@
   <object-name>TaxiConeRight</object-name>
   <condition>
    <greater-than-equals>
-    <property>/controls/lighting/external/landing-taxi[1]/norm</property>
+    <property>controls/lighting/external/landing-taxi[1]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/on</property>
    </greater-than-equals>
   </condition>
@@ -3174,10 +3174,10 @@
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
     <greater-than-equals>
-     <property>/controls/lighting/external/main-landing[0]/norm</property>
+     <property>controls/lighting/external/main-landing[0]/norm</property>
      <property n="1">/controls/lighting/external/interpolate/on</property>
     </greater-than-equals>
-    <property>/controls/lighting/external/main-landing[0]/on</property>
+    <property>controls/lighting/external/main-landing[0]/on</property>
    </and>
   </condition>
  </animation>
@@ -3188,10 +3188,10 @@
   <condition>
    <and include="../Panels/Instruments/concorde-cond-voltage-light.xml">
     <greater-than-equals>
-     <property>/controls/lighting/external/main-landing[1]/norm</property>
+     <property>controls/lighting/external/main-landing[1]/norm</property>
      <property n="1">/controls/lighting/external/interpolate/on</property>
     </greater-than-equals>
-    <property>/controls/lighting/external/main-landing[1]/on</property>
+    <property>controls/lighting/external/main-landing[1]/on</property>
    </and>
   </condition>
  </animation>
@@ -3242,7 +3242,7 @@
  <animation>
   <type>rotate</type>
   <object-name>MainLandingLeft</object-name>
-  <property>/controls/lighting/external/main-landing[0]/norm</property>
+  <property>controls/lighting/external/main-landing[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3272,7 +3272,7 @@
  <animation>
   <type>scale</type>
   <object-name>MainLandingLeft</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -3320,7 +3320,7 @@
  <animation>
   <type>rotate</type>
   <object-name>MainLandingRight</object-name>
-  <property>/controls/lighting/external/main-landing[1]/norm</property>
+  <property>controls/lighting/external/main-landing[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3350,7 +3350,7 @@
  <animation>
   <type>scale</type>
   <object-name>MainLandingRight</object-name>
-  <property>/sim/time/sun-angle-rad</property>
+  <property>sim/time/sun-angle-rad</property>
   <x-min>1</x-min>
   <y-min>1</y-min>
   <z-min>1</z-min>
@@ -3367,7 +3367,7 @@
   <object-name>MainConeLeft</object-name>
   <condition>
    <greater-than>
-    <property>/controls/lighting/external/main-landing[0]/norm</property>
+    <property>controls/lighting/external/main-landing[0]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/off</property>
    </greater-than>
   </condition>
@@ -3376,7 +3376,7 @@
  <animation>
   <type>translate</type>
   <object-name>MainConeLeft</object-name>
-  <property>/controls/lighting/external/main-landing[0]/norm</property>
+  <property>controls/lighting/external/main-landing[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3397,7 +3397,7 @@
  <animation>
   <type>rotate</type>
   <object-name>MainConeLeft</object-name>
-  <property>/controls/lighting/external/main-landing[0]/norm</property>
+  <property>controls/lighting/external/main-landing[0]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3433,7 +3433,7 @@
   <object-name>MainConeRight</object-name>
   <condition>
    <greater-than>
-    <property>/controls/lighting/external/main-landing[1]/norm</property>
+    <property>controls/lighting/external/main-landing[1]/norm</property>
     <property n="1">/controls/lighting/external/interpolate/off</property>
    </greater-than>
   </condition>
@@ -3442,7 +3442,7 @@
  <animation>
   <type>translate</type>
   <object-name>MainConeRight</object-name>
-  <property>/controls/lighting/external/main-landing[1]/norm</property>
+  <property>controls/lighting/external/main-landing[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
@@ -3463,7 +3463,7 @@
  <animation>
   <type>rotate</type>
   <object-name>MainConeRight</object-name>
-  <property>/controls/lighting/external/main-landing[1]/norm</property>
+  <property>controls/lighting/external/main-landing[1]/norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
