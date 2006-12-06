@@ -1323,7 +1323,7 @@ Generic = {};
 
 Generic.new = func {
    obj = { parents : [Generic],
-           generic : aircraft.light.new("/instrumentation/generic",1.5,0.2)
+           generic : aircraft.light.new("/instrumentation/generic",[1.5,0.2])
          };
 
    obj.generic.toggle();

@@ -789,7 +789,7 @@ Lighting.init = func {
    me.floodnorms[2] = "/controls/lighting/crew/engineer/flood-norm";
 
    strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
-   aircraft.light.new("controls/lighting/external/strobe", 0.03, 1.20, strobe_switch);
+   aircraft.light.new("controls/lighting/external/strobe", [0.03, 1.20], strobe_switch);
 }
 
 Lighting.set_relation = func( electrical ) {
