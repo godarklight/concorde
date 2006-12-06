@@ -44,33 +44,33 @@ file, these values will be used (they are hardcoded).
   <airspeed-indicator>
     <name>airspeed-indicator</name>
     <number>0</number>
-    <pitot-port>/systems/pitot</pitot-port>
-    <static-port>/systems/static</static-port>
+    <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <airspeed-indicator>                                                       <!-- standby -->
     <name>airspeed-standby</name>
     <number>0</number>
-    <pitot-port>/systems/pitot</pitot-port>
-    <static-port>/systems/static</static-port>
+    <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <altimeter>
     <name>altimeter</name>
     <number>0</number>
-    <static-port>/systems/static</static-port>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </altimeter>
 
   <altimeter>                                                                <!-- standby -->
     <name>altimeter-standby</name>
     <number>0</number>
-    <static-port>/systems/static</static-port>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </altimeter>
 
   <altimeter>                                                                <!-- vented to cabin pressure -->
     <name>cabin-altitude</name>
     <number>0</number>
-    <static-port>/systems/pressurization</static-port>
+    <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </altimeter>
 
   <clock>
@@ -92,7 +92,7 @@ file, these values will be used (they are hardcoded).
   <encoder>
     <name>encoder</name>
     <number>0</number>
-    <static-port>/systems/static</static-port>
+    <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </encoder>
 -->
 
@@ -105,7 +105,7 @@ file, these values will be used (they are hardcoded).
   <heading-indicator>                                                        <!-- required by autopilot ? -->
     <name>heading-indicator</name>
     <number>0</number>
-    <vacuum-system>/systems/vacuum</vacuum-system>
+    <suction>/systems/vacuum/suction-inhg</suction>
   </heading-indicator>
 
   <inst-vertical-speed-indicator>
@@ -149,7 +149,7 @@ file, these values will be used (they are hardcoded).
   <transponder>
     <name>transponder</name>
     <number>0</number>
-    <encoder>/instrumentation/encoder</encoder>
+    <mode-c-altitude>/instrumentation/encoder/mode-c-alt-ft</mode-c-altitude>
   </transponder>
 -->
 
@@ -161,7 +161,11 @@ file, these values will be used (they are hardcoded).
   <vertical-speed-indicator>                                                 <!-- vented to cabin pressure -->
     <name>cabin-rate-climb</name>
     <number>0</number>
-    <static-port>/systems/pressurization</static-port>
+    <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </vertical-speed-indicator>
 
+  <wxradar>
+    <name>wxRadar</name>
+    <number>0</number>
+  </wxradar>
 </PropertyList>
