@@ -24,7 +24,7 @@ Jan 30 2003
    <w>512</w>
    <h>512</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/vsi1.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-cabin-rate-climb.rgb</path>
     <x1>0.0</x1>
     <x2>1.0</x2>
     <y1>0.0</y1>
@@ -34,14 +34,14 @@ Jan 30 2003
 
   <layer>
    <name>Needle</name>
-   <w>240</w>
-   <h>48</h>
+   <w>24</w>
+   <h>120</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/misc2.rgb</path>
-    <x1>0.0</x1>
-    <x2>0.46875</x2>
-    <y1>0.5546875</y1>
-    <y2>0.6484375</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+    <x1>0.8</x1>
+    <y1>0.78125</y1>
+    <x2>0.8375</x2>
+    <y2>1.0</y2>
    </texture>
    <transformations>
     <transformation>
@@ -50,7 +50,7 @@ Jan 30 2003
      <min>-2000.0</min>
      <max>2000.0</max>
      <scale>1.0</scale>
-     <offset>0</offset>
+     <offset>-90.0</offset>
      <interpolation>
       <entry><ind>  -2000.0</ind><dep>-173.5</dep></entry>
       <entry><ind>  -1500.0</ind><dep>-131.5</dep></entry>
@@ -64,8 +64,8 @@ Jan 30 2003
      </interpolation>     
     </transformation>
     <transformation>
-     <type>x-shift</type>
-     <offset>-56</offset>
+     <type>y-shift</type>
+     <offset>50.0</offset>
     </transformation>
    </transformations>
   </layer>

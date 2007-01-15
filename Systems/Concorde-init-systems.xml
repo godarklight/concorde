@@ -4,6 +4,12 @@
 
      - avoid nil values for Nasal.
      - avoid string numbers (comparison doesn't work in XML instrument) for Nasal.
+     - autopilot, engines and gear also to distinguish the specific additions.
+
+     - <slave> is a real dependancy on instruments.
+     - <noinstrument> is to built the system; or for fuzzy decision of virtual crew :
+       visual estimation of altitude over ground, if failure of radio altimeter;
+       speed implicitly known, during a subsonic cruise.
 
 
      Known problems :
@@ -16,36 +22,48 @@
 
   <air-bleed>
    <serviceable type="bool" archive="y">true</serviceable>
-   <ground-supply type="bool">false</ground-supply>                                    <!-- door closed -->
-   <ground-service-psi type="double">0.0</ground-service-psi>
+
+   <ground-service>
+    <door type="bool">false</door>                                           <!-- door closed -->
+    <pressure-psi type="double">0.0</pressure-psi>
+   </ground-service>
+
+   <pressurization type="bool">false</pressurization>
+
    <engine n="0">
     <jet-pump type="bool">true</jet-pump>
     <ram-air type="bool">true</ram-air>
-    <fuel-valve type="bool">true</fuel-valve>
     <bleed-psi type="double">0.0</bleed-psi>
     <conditioning-psi type="double">0.0</conditioning-psi>
    </engine>
    <engine n="1">
     <jet-pump type="bool">true</jet-pump>
     <ram-air type="bool">true</ram-air>
-    <fuel-valve type="bool">true</fuel-valve>
     <bleed-psi type="double">0.0</bleed-psi>
     <conditioning-psi type="double">0.0</conditioning-psi>
    </engine>
    <engine n="2">
     <jet-pump type="bool">true</jet-pump>
     <ram-air type="bool">true</ram-air>
-    <fuel-valve type="bool">true</fuel-valve>
     <bleed-psi type="double">0.0</bleed-psi>
     <conditioning-psi type="double">0.0</conditioning-psi>
    </engine>
    <engine n="3">
     <jet-pump type="bool">true</jet-pump>
     <ram-air type="bool">true</ram-air>
-    <fuel-valve type="bool">true</fuel-valve>
     <bleed-psi type="double">0.0</bleed-psi>
     <conditioning-psi type="double">0.0</conditioning-psi>
    </engine>
+
+   <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
+    <airspeed>/velocities/airspeed-kt</airspeed>
+   </noinstrument>
+
+   <slave>
+    <engine>/engines</engine>
+    <gear>/gear/gear[0]</gear>
+   </slave>
   </air-bleed>
 
   <autopilot>
@@ -61,34 +79,137 @@
     <target-max-ft type="double">999.0</target-max-ft>
    </altimeter>
 
+   <noinstrument>
+    <altitude>/position/altitude-ft</altitude>
+    <magnetic>/orientation/heading-magnetic-deg</magnetic>
+    <pitch>/orientation/pitch-deg</pitch>
+    <roll>/orientation/roll-deg</roll>
+   </noinstrument>
+
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
     <asi>/instrumentation/airspeed-indicator[0]</asi>
     <dme>/instrumentation/dme[0]</dme>
+    <electric>/systems/electrical/power</electric>
     <ins>/instrumentation/ins[0]</ins>
     <ivsi>/instrumentation/inst-vertical-speed-indicator[0]</ivsi>
     <mach>/instrumentation/mach-indicator[0]</mach>
-    <nav>/instrumentation/nav[0]</nav>
+    <nav>/instrumentation</nav>                                              <!-- all nav -->
     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
     <weight>/instrumentation/fuel[0]</weight>
    </slave>
 
    <state>
-    <vor-engage type="bool">false</vor-engage>
-    <virtual-copilot type="bool">false</virtual-copilot>
-    <virtual-autopilot type="bool">false</virtual-autopilot>
+    <virtual type="bool">false</virtual>                                     <!-- copilot -->
    </state>
   </autopilot>
 
+  <crew>
+   <serviceable type="bool">true</serviceable>
+   <checklist></checklist>
+
+   <copilot>
+    <activ type="bool">false</activ>                                         <!-- yellow -->
+
+    <noinstrument>
+     <agl>/position/altitude-agl-ft</agl>
+     <altitude>/position/altitude-ft</altitude>
+     <mach>/velocities/mach</mach>
+    </noinstrument>
+
+    <slave>
+     <asi>/instrumentation/airspeed-indicator[0]</asi>
+    </slave>
+
+    <state></state>
+    <time></time>
+   </copilot>
+
+   <emergency type="bool">false</emergency>
+
+   <engineer>
+    <activ type="bool">false</activ>                                        <!-- yellow -->
+
+    <noinstrument>
+     <agl>/position/altitude-agl-ft</agl>
+     <altitude>/position/altitude-ft</altitude>
+     <mach>/velocities/mach</mach>
+    </noinstrument>
+
+    <route>                                                                 <!-- estimated fuel -->
+     <wp n="0">
+      <fuel-kg type="double">-999.0</fuel-kg>
+     </wp>
+     <wp n="1">
+      <fuel-kg type="double">-999.0</fuel-kg>
+     </wp>
+     <wp n="2">
+      <fuel-kg type="double">-999.0</fuel-kg>                               <!-- last waypoint -->
+     </wp>
+    </route>
+
+    <slave>
+     <cg>/instrumentation/cg</cg>
+     <fuel>/instrumentation/fuel</fuel>
+     <ins>/instrumentation/ins</ins>
+    </slave>
+
+    <state></state>
+    <time></time>
+   </engineer>
+
+   <minimized type="bool">true</minimized>
+
+   <voice include="Concorde-checklists.xml">
+    <noinstrument>
+     <weight>/instrumentation/ac-weight/weight-lb</weight>
+    </noinstrument>
+
+    <slave>
+     <asi>/instrumentation/airspeed-indicator</asi>
+     <altimeter>/instrumentation/altimeter</altimeter>
+     <engine>/engines</engine>
+     <gear>/gear/gear[0]</gear>
+     <ins>/instrumentation/ins[0]</ins>                                      <!-- HSI -->
+     <ivsi>/instrumentation/inst-vertical-speed-indicator</ivsi>
+     <nav>/instrumentation/nav[0]</nav>
+     <nose>/instrumentation/nose-visor</nose>
+     <radioaltimeter>/instrumentation/radio-altimeter</radioaltimeter>
+    </slave>
+
+    <text></text>
+   </voice>
+  </crew>
+
   <electrical>
    <serviceable type="bool" archive="y">true</serviceable>
+
+   <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
+    <airspeed>/velocities/airspeed-kt</airspeed>
+    <temperature>/environment/temperature-degc</temperature>
+   </noinstrument>
+
+   <slave>
+    <engine>/engines</engine>
+    <engine2>/systems/engines</engine2>
+   </slave>
+
    <internal>
     <config include="Concorde-electrical.xml"/>
     <iterations type="int">0</iterations>
-    <iterations-forced type="int">2</iterations-forced>                                <!-- for correct parallel voltages -->
+    <iterations-forced type="int">2</iterations-forced>                      <!-- for correct parallel voltages -->
    </internal>
+
+   <power>
+    <autopilot1 type="bool">false</autopilot1>
+    <autopilot2 type="bool">false</autopilot2>
+    <ground-service type="bool">false</ground-service>
+    <specific type="bool">false</specific>
+   </power>
+
    <suppliers>
-    <battery n="0" type="double">0.0</battery>                                         <!-- avoids string number -->
+    <battery n="0" type="double">0.0</battery>                               <!-- avoids string number -->
     <battery n="1" type="double">0.0</battery>
     <battery-amps n="0" type="double">0.0</battery-amps>
     <battery-amps n="1" type="double">0.0</battery-amps>
@@ -98,21 +219,86 @@
    </suppliers>
   </electrical>
 
+  <engines>
+   <engine n="0">
+    <bucket-deg>21.0</bucket-deg>
+    <configuration type="bool">false</configuration>
+    <csd-diff-degc>0.0</csd-diff-degc>
+    <csd-inlet-degc>0.0</csd-inlet-degc>
+    <csd-oil-psi>0.0</csd-oil-psi>
+    <engine-num>1</engine-num>
+    <ramp-percent>0.0</ramp-percent>
+    <relight type="bool">false</relight>
+    <secondary-air-door type="bool">false</secondary-air-door>
+   </engine>
+   <engine n="1">
+    <bucket-deg>21.0</bucket-deg>
+    <configuration type="bool">false</configuration>
+    <csd-diff-degc>0.0</csd-diff-degc>
+    <csd-inlet-degc>0.0</csd-inlet-degc>
+    <csd-oil-psi>0.0</csd-oil-psi>
+    <engine-num>2</engine-num>
+    <ramp-percent>0.0</ramp-percent>
+    <relight type="bool">false</relight>
+    <secondary-air-door type="bool">false</secondary-air-door>
+   </engine>
+   <engine n="2">
+    <bucket-deg>21.0</bucket-deg>
+    <configuration type="bool">false</configuration>
+    <csd-diff-degc>0.0</csd-diff-degc>
+    <csd-inlet-degc>0.0</csd-inlet-degc>
+    <csd-oil-psi>0.0</csd-oil-psi>
+    <engine-num>3</engine-num>
+    <ramp-percent>0.0</ramp-percent>
+    <relight type="bool">false</relight>
+    <secondary-air-door type="bool">false</secondary-air-door>
+   </engine>
+   <engine n="3">
+    <bucket-deg>21.0</bucket-deg>
+    <configuration type="bool">false</configuration>
+    <csd-diff-degc>0.0</csd-diff-degc>
+    <csd-inlet-degc>0.0</csd-inlet-degc>
+    <csd-oil-psi>0.0</csd-oil-psi>
+    <engine-num>4</engine-num>
+    <ramp-percent>0.0</ramp-percent>
+    <relight type="bool">false</relight>
+    <secondary-air-door type="bool">false</secondary-air-door>
+   </engine>
+ 
+   <slave>
+    <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <mach>/instrumentation/mach-indicator[0]</mach>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+   </slave>
+  </engines>
+ 
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
-   <pump>
-    <engine></engine>                                                                  <!-- no pumping -->
-    <forward></forward>
-    <aft></aft>
-    <dump></dump>
-    <dump2></dump2>
-    <cross></cross>
-   </pump>
+
+   <noinstrument>
+    <altitude>/position/altitude-ft</altitude>
+   </noinstrument>
+
+   <slave>
+    <electric>/systems/electrical/power</electric>
+   </slave>
   </fuel>
+
+  <gear>
+   <bogie-left-deg type="double">0.0</bogie-left-deg>
+   <bogie-right-deg type="double">0.0</bogie-right-deg>
+   <brake-degc>200.0</brake-degc>
+   <brake-test-degc>0.0</brake-test-degc>
+
+   <noinstrument>
+    <pitch>/orientation/pitch-deg</pitch>
+   </noinstrument>
+  </gear>
 
   <gpws>
    <serviceable type="bool" archive="y">true</serviceable>
-   <decision-height type="bool">true</decision-height>                                 <!-- enable warning light -->
+   <decision-height type="bool">true</decision-height>                       <!-- enable warning light -->
+
    <slave>
     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
    </slave>
@@ -120,11 +306,21 @@
 
   <hydraulic>
    <serviceable type="bool" archive="y">true</serviceable>
+
+   <brakes>
+    <emerg-left-psi>0.0</emerg-left-psi>
+    <emerg-right-psi>0.0</emerg-right-psi>
+    <green-accu-psi>0.0</green-accu-psi>
+    <left-psi>0.0</left-psi>
+    <right-psi>0.0</right-psi>
+    <yellow-accu-psi>0.0</yellow-accu-psi>
+   </brakes>
+
    <circuits>
     <circuit n="0">
      <pressure-psi>0.0</pressure-psi>
-     <content-gal_us>6.0</content-gal_us>                                              <!-- content -->
-     <reservoir-gal_us>6.0</reservoir-gal_us>                                          <!-- level -->
+     <content-gal_us>6.0</content-gal_us>                                    <!-- content -->
+     <reservoir-gal_us>6.0</reservoir-gal_us>                                <!-- level -->
      <abbreviation>G</abbreviation>
     </circuit>
     <circuit n="1">
@@ -140,57 +336,146 @@
      <abbreviation>B</abbreviation>
     </circuit>
    </circuits>
-   <brakes>
-    <left-psi>0.0</left-psi>
-    <right-psi>0.0</right-psi>
-    <emerg-left-psi>0.0</emerg-left-psi>
-    <emerg-right-psi>0.0</emerg-right-psi>
-   </brakes>
+
+   <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
+    <airspeed>/velocities/airspeed-kt</airspeed>
+   </noinstrument>
+
    <rat>
     <selector n="0">
      <on type="bool">false</on>
-     <guard type="bool">true</guard>                                                   <!-- not deployed -->
+     <guard type="bool">true</guard>                                         <!-- not deployed -->
      <num type="int">1</num>
-     <test></test>
+     <test type="bool">false</test>
     </selector>
     <selector n="1">
      <on type="bool">false</on>
      <guard type="bool">true</guard>
      <num type="int">2</num>
-     <test></test>
+     <test type="bool">false</test>
     </selector>
-    <test></test>
-    <deploying></deploying>
-    <deployed></deployed>
+    <test type="bool">false</test>
+    <deploying type="bool">false</deploying>
+    <deployed type="bool">false</deployed>
    </rat>
+
+   <slave>
+    <electric>/systems/electrical/power</electric>
+    <engine>/engines</engine>
+   </slave>
   </hydraulic>
 
   <lighting>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <slave>
     <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <electric>/systems/electrical/power</electric>
     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
    </slave>
   </lighting>
 
   <pressurization>
    <serviceable type="bool" archive="y">true</serviceable>
-   <altitude-sea-ft>0.0</altitude-sea-ft>                                              <!-- sea level ISA -->
-   <atmosphere-inhg>29.92</atmosphere-inhg>
-   <outflow-inhg>0.0</outflow-inhg>
+   <internal>
+    <altitude-sea-ft>0.0</altitude-sea-ft>                                   <!-- sea level ISA -->
+    <atmosphere-inhg>29.92</atmosphere-inhg>
+    <outflow-inhg>0.0</outflow-inhg>
+    <target-inhg>29.92</target-inhg>
+   </internal>
+
    <pressure-inhg>29.92</pressure-inhg>
-   <target-inhg>29.92</target-inhg>
+
    <slave>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
-    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    <air>/systems/air-bleed</air>
+    <electric>/systems/electrical/power</electric>
+    <weight>/instrumentation/weight-switch</weight>
    </slave>
-   <static-port>/systems/static</static-port>                                          <!-- measures outside pressure -->
+
+   <static-pressure>/systems/static/pressure-inhg</static-pressure>          <!-- outside pressure -->
+
+   <system>
+    <cabin-alt-ft>8000.0</cabin-alt-ft>  <!-- human physiology tolerates 18 mbar per minute until 8000 ft. -->
+    <datum-mbar>1013.21</datum-mbar>
+    <max-diff-ft>29000.0</max-diff-ft>
+    <mbar-per-min>18.0</mbar-per-min>
+    <min-pressure-inhg>0.0</min-pressure-inhg>
+   </system>
+
+   <valve>
+    <air-vents type="bool">true</air-vents>
+    <ground-auto type="bool">true</ground-auto>
+    <ground-relief type="bool">false</ground-relief>
+    <ground-shut2 type="bool">false</ground-shut2>
+    <thrust type="bool">false</thrust>
+    <thrust-recuperator type="bool">false</thrust-recuperator>
+   </valve>
   </pressurization>
+
+  <seat>
+   <captain type="bool">true</captain>
+   <copilot type="bool">false</copilot>
+   <engineer type="bool">false</engineer>
+   <observer type="bool">false</observer>
+   <overhead type="bool">false</overhead>
+   <steward type="bool">false</steward>
+  </seat>
 
   <tank>
    <serviceable type="bool" archive="y">true</serviceable>
-   <pressure-inhg>29.92</pressure-inhg>                                                <!-- sea level ISA -->
-   <static-port>/systems/static</static-port>                                          <!-- measures outside pressure -->
+   <pressure-inhg>29.92</pressure-inhg>                                      <!-- sea level ISA -->
+
+   <slave>
+    <air>/systems/air-bleed</air>
+    <electric>/systems/electrical/power</electric>
+   </slave>
+
+   <static-port>/systems/static</static-port>                                <!-- outside pressure -->
   </tank>
+
+  <temperature>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <cabin-fwd-degc>20.0</cabin-fwd-degc>
+   <cabin-rear-degc>20.0</cabin-rear-degc>
+   <flight-deck-degc>20.0</flight-deck-degc>
+
+   <ground-service>
+    <door type="bool">false</door>                                           <!-- door closed -->
+    <pressure-psi type="double">0.0</pressure-psi>
+   </ground-service>
+
+   <group n="0">
+    <duct-degc>15.0</duct-degc>
+    <flow-kgph>0.0</flow-kgph>
+    <inlet-degc>15.0</inlet-degc>
+    <temperature-valve>0.0</temperature-valve>
+   </group>
+   <group n="1">
+    <duct-degc>15.0</duct-degc>
+    <flow-kgph>0.0</flow-kgph>
+    <inlet-degc>15.0</inlet-degc>
+    <temperature-valve>0.0</temperature-valve>
+   </group>
+   <group n="2">
+    <duct-degc>15.0</duct-degc>
+    <flow-kgph>0.0</flow-kgph>
+    <inlet-degc>15.0</inlet-degc>
+    <temperature-valve>0.0</temperature-valve>
+   </group>
+   <group n="3">
+    <duct-degc>15.0</duct-degc>
+    <flow-kgph>0.0</flow-kgph>
+    <inlet-degc>15.0</inlet-degc>
+    <temperature-valve>0.0</temperature-valve>
+   </group>
+
+   <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
+    <airspeed>/velocities/airspeed-kt</airspeed>
+    <temperature>/environment/temperature-degc</temperature>
+   </noinstrument>
+  </temperature>
 
 </PropertyList>

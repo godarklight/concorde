@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 
-<!--
-Throttle qquadrant.
+<!-- Concorde throttle :
 
-December 2001 by John Check, j4strngs@rockfish.net
+     - doesn't move if autothrottle (double control).
+
+
+Adapted from John Check, j4strngs@rockfish.net
 
 This is an instrument configuration file for the open-source flight
 simulator FlightGear (www.flightgear.org).  The file is an XML-encoded
@@ -35,6 +37,7 @@ Hacked to create a single throttle quadrant.
 
  <params>
   <engine-throttle-select>/controls/engines/engine[0]/throttle</engine-throttle-select>
+  <engine-manual-select>/controls/engines/engine[0]/throttle-manual</engine-manual-select>
  </params>
 
  <layers>
@@ -72,7 +75,7 @@ Hacked to create a single throttle quadrant.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <property alias="../../../../../params/engine-throttle-select"/>
+     <property alias="../../../../../params/engine-manual-select"/>
      <min>0.0</min>
      <max>1.0</max>
      <scale>40</scale>
@@ -101,6 +104,14 @@ Hacked to create a single throttle quadrant.
     <max>1.0</max>
     <wrap>false</wrap>
    </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/engine-manual-select"/>
+    <step>-0.01</step>
+    <min>0</min>
+    <max>1.0</max>
+    <wrap>false</wrap>
+   </binding>
   </action>
 
   <action>
@@ -113,6 +124,14 @@ Hacked to create a single throttle quadrant.
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/engine-throttle-select"/>
+    <step>0.01</step>
+    <min>0</min>
+    <max>1.0</max>
+    <wrap>false</wrap>
+   </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/engine-manual-select"/>
     <step>0.01</step>
     <min>0</min>
     <max>1.0</max>
@@ -135,6 +154,14 @@ Hacked to create a single throttle quadrant.
     <max>1.0</max>
     <wrap>false</wrap>
    </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/engine-manual-select"/>
+    <step>-0.1</step>
+    <min>0</min>
+    <max>1.0</max>
+    <wrap>false</wrap>
+   </binding>
   </action>
 
   <action>
@@ -147,6 +174,14 @@ Hacked to create a single throttle quadrant.
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/engine-throttle-select"/>
+    <step>0.1</step>
+    <min>0</min>
+    <max>1.0</max>
+    <wrap>false</wrap>
+   </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/engine-manual-select"/>
     <step>0.1</step>
     <min>0</min>
     <max>1.0</max>

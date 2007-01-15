@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 
-<!-- Landing light switch.
+<!-- Landing light switch :
+
+     - double switch, because text would disturb the 2nd switch.
 -->
 
 <PropertyList>
 
  <name>Landing light switch</name>
- <w-base>52</w-base>
- <h-base>52</h-base>
- <h-base>102</h-base>
+ <w-base>156</w-base>
+ <h-base>78</h-base>
 
  <params>
   <light-on>/controls/lighting/external/main-landing[0]/on</light-on>
-  <light-num>/controls/lighting/external/main-landing[0]/num</light-num>
+  <light-on2>/controls/lighting/external/main-landing[1]/on</light-on2>
  </params>
 
 
  <layers>
 
   <layer>
-   <name></name>
+   <name>switch</name>
    <type>switch</type>
 
    <layer>
@@ -62,12 +63,6 @@
 
   <layer>
    <name>On Title</name>
-   <condition>
-    <equals>
-     <property alias="../../../../../params/light-num"/>
-     <value>0</value>
-    </equals>
-   </condition>
    <type>text</type>
    <point-size>10</point-size>
    <color>
@@ -95,12 +90,6 @@
 
   <layer>
    <name>Off Title</name>
-   <condition>
-    <equals>
-     <property alias="../../../../../params/light-num"/>
-     <value>0</value>
-    </equals>
-   </condition>
    <type>text</type>
    <point-size>10</point-size>
    <color>
@@ -126,6 +115,54 @@
    </transformations>
   </layer>
 
+  <layer>
+   <name>switch 2</name>
+   <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/light-on2"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>0.25</x2>
+     <y2>0.31</y2>
+    </texture>
+    <w>40</w>
+    <h>47</h>
+   </layer>
+
+   <layer>
+    <name>on</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.74</y1>
+     <x2>0.25</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>40</w>
+    <h>40</h>
+    <transformations>
+     <transformation>
+      <type>y-shift</type>
+      <offset>2.75</offset>
+     </transformation>
+    </transformations>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>53</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  </layers>
 
  <actions>
@@ -140,6 +177,23 @@
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/light-on"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>toggle light 2</name>
+   <button>0</button>
+   <x>32</x>
+   <y>-19</y>
+   <w>44</w>
+   <h>44</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/light-on2"/>
    </binding>
    <binding>
     <command>property-toggle</command>

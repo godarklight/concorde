@@ -35,6 +35,13 @@ properties' values.
  <w-base>128</w-base>
  <h-base>128</h-base>
 
+ <params>
+  <roll-deg>/instrumentation/attitude-indicator[0]/indicated-roll-deg</roll-deg>
+  <pitch-deg>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</pitch-deg>
+  <offset-deg>/instrumentation/attitude-standby/horizon-offset-deg</offset-deg>
+ </params>
+
+
  <layers>
   <layer>
    <name>background</name>
@@ -49,7 +56,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -72,7 +79,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -80,7 +87,7 @@ properties' values.
     <transformation>
      <type>y-shift</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/instrumentation/attitude-standby/indicated-pitch-deg</property>
+     <property alias="../../../../../params/pitch-deg"/>
      <min>-20.0</min>
      <max>20.0</max>
      <scale>-1.075</scale>
@@ -102,7 +109,7 @@ properties' values.
     <transformation>
      <type>rotation</type>
      <condition include="concorde-cond-voltage-standby.xml"/>
-     <property>/instrumentation/attitude-standby/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -179,7 +186,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
+   <property alias="../../../../params/offset-deg"/>
    <step>-0.5</step>
    <min>-5</min>
    <max>5</max>
@@ -196,7 +203,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
+   <property alias="../../../../params/offset-deg"/>
    <step>-5</step>
    <min>-5</min>
    <max>5</max>
@@ -213,7 +220,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
+   <property alias="../../../../params/offset-deg"/>
    <step>0.5</step>
    <min>-5</min>
    <max>5</max>
@@ -230,7 +237,7 @@ properties' values.
    <h>22</h>
   <binding>
   <command>property-adjust</command>
-   <property>/instrumentation/attitude-standby/horizon-offset-deg</property>
+   <property alias="../../../../params/offset-deg"/>
    <step>5</step>
    <min>-5</min>
    <max>5</max>

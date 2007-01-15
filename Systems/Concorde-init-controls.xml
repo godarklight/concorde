@@ -8,13 +8,110 @@
 
 <PropertyList>
 
+  <audio>
+   <comm n="0">
+    <selected type="bool">true</selected>
+    <standby type="bool">false</standby>
+   </comm>
+   <comm n="1">
+    <selected type="bool">true</selected>
+    <standby type="bool">false</standby>
+   </comm>
+   <crew>
+    <captain>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>            <!-- knob disabled -->
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>                      <!-- FG default -->
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </captain>
+    <copilot>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </copilot>
+    <engineer>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </engineer>
+   </crew>
+  </audio>
+
   <autoflight>
    <altitude></altitude>
    <autopilot n="0">
     <engage type="bool">false</engage>
+    <heading-select type="double">0.0</heading-select>
+    <heading-true-select type="double">0.0</heading-true-select>
+    <track-push type="bool">false</track-push>                <!-- magnetic heading -->
    </autopilot>
    <autopilot n="1">
     <engage type="bool">false</engage>
+    <heading-select type="double">0.0</heading-select>
+    <heading-true-select type="double">0.0</heading-true-select>
+    <track-push type="bool">false</track-push>                <!-- magnetic heading -->
    </autopilot>
    <autothrottle n="0">
     <engage type="bool">false</engage>
@@ -22,6 +119,10 @@
    <autothrottle n="1">
     <engage type="bool">false</engage>
    </autothrottle>
+   <datum>
+    <altitude type="double">0.0</altitude>
+    <speed type="double">0.0</speed>
+   </datum>
    <flight-director n="0">
     <engage type="bool">false</engage>
    </flight-director>
@@ -30,16 +131,27 @@
    </flight-director>
    <heading></heading>
    <horizontal></horizontal>
+   <real-nav type="bool">true</real-nav>                      <!-- NAV accurate until 0 ft -->
    <speed></speed>
    <speed2></speed2>
-   <track-push type="bool">false</track-push>                 <!-- magnetic heading -->
    <vertical></vertical>
    <vertical2></vertical2>
   </autoflight>
 
+  <crew>
+   <copilot type="bool">false</copilot>
+   <engineer type="bool">false</engineer>
+   <minimized-s>10.0</minimized-s>                            <!-- 0 if no time out -->
+   <voice>
+   <sound type="bool">true</sound>
+   <text type="bool">false</text>                             <!-- debug without Festival -->
+   </voice>
+  </crew>
+
   <doors>
    <flight-deck>
-    <closed type="bool">true</closed>
+    <opened type="bool">false</opened>
+    <normal type="bool">true</normal>
    </flight-deck>
    <engineer-deck>
     <out type="bool">false</out>
@@ -75,6 +187,7 @@
     <voltmeter type="int">0</voltmeter>                       <!-- vertical -->
     <emergency>
      <arm type="bool">true</arm>                              <!-- emergency generator armed -->
+     <arm-guard type="bool">true</arm-guard>
      <generator type="bool">false</generator>                 <!-- generator to emergency bus -->
      <manual type="bool">false</manual>
      <asb type="bool">true</asb>                              <!-- auto shed breaker -->
@@ -104,34 +217,63 @@
 
   <engines>
    <engine n="0">
+    <bug_pph>10000.0</bug_pph>
+    <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
     <master-bat type="bool">true</master-bat>                 <!-- battery A (like the old C++ electrical system) -->
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
+    <rating-flight>climb</rating-flight>
+    <secondary-air-door type="bool">true</secondary-air-door>
+    <throttle-manual>0.0</throttle-manual>                    <!-- differentiate autothrottle -->
    </engine>
    <engine n="1">
+    <bug_pph>10000.0</bug_pph>
+    <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
+    <rating-flight>climb</rating-flight>
+    <secondary-air-door type="bool">true</secondary-air-door>
+    <throttle-manual>0.0</throttle-manual>
    </engine>
    <engine n="2">
+    <bug_pph>10000.0</bug_pph>
+    <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
+    <rating-flight>climb</rating-flight>
+    <secondary-air-door type="bool">true</secondary-air-door>
+    <throttle-manual>0.0</throttle-manual>
    </engine>
    <engine n="3">
+    <bug_pph>10000.0</bug_pph>
+    <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <n1-to-limiter type="bool">true</n1-to-limiter>           <!-- 88% -->
     <rating>takeoff</rating>
+    <rating-flight>climb</rating-flight>
+    <secondary-air-door type="bool">true</secondary-air-door>
+    <throttle-manual>0.0</throttle-manual>
    </engine>
   </engines>
 
   <fuel>
+   <pumps>
+    <engine type="bool">false</engine>
+    <forward type="bool">false</forward>
+    <aft type="bool">false</aft>
+    <dump type="bool">false</dump>
+    <dump2 type="bool">false</dump2>
+    <cross type="bool">false</cross>
+   </pumps>
+
    <tank n="0">
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
@@ -198,6 +340,8 @@
 
   <gear>
    <brake-emergency type="bool">false</brake-emergency>       <!-- normal brakes -->
+   <brake-parking-lever type="bool">false</brake-parking-lever>
+   <brake-test type="bool">false</brake-test>
    <neutral type="bool">false</neutral>
    <time>
     <main>    
@@ -256,14 +400,19 @@
 
   <lighting>
    <crew>
+    <autoflight-norm type="double">1.0</autoflight-norm>
     <captain>
-     <flood-light type="double">0.0</flood-light>             <!-- real light -->
-     <flood-norm type="double">0.0</flood-norm>               <!-- knob -->
+     <flood-light type="double">0.0</flood-light>             <!-- the real light -->
+     <flood-norm type="double">0.0</flood-norm>               <!-- the knob -->
     </captain>
     <center>
      <flood-light type="double">0.0</flood-light>
      <flood-norm type="double">0.0</flood-norm>
     </center>
+    <copilot>
+     <flood-light type="double">0.0</flood-light>
+     <flood-norm type="double">0.0</flood-norm>
+    </copilot>
     <engineer>
      <flood-light type="double">0.0</flood-light>
      <flood-norm type="double">0.0</flood-norm>
@@ -315,18 +464,8 @@
    <strobe type="bool">false</strobe>
   </lighting>
 
-  <nose-visor>                                                <!-- hysteresis -->
-   <visor>
-    <up>0.0</up>
-    <down-min>0.31</down-min>                                 <!-- min = greater than / less than equals -->
-    <down-max>0.35</down-max>                                 <!-- max = less than / greater than equals -->
-   </visor>
-   <nose>
-    <up-min>0.34</up-min>
-    <deg5-min>0.65</deg5-min>
-    <deg5-max>0.69</deg5-max>
-    <down>1.0</down>
-   </nose>
+  <nose-visor>
+   <pos-norm alias="/controls/flight/flaps"/>                 <!-- FDM uses flaps as nose -->
   </nose-visor>
 
   <pneumatic>
@@ -334,22 +473,62 @@
     <bleed-valve type="bool">true</bleed-valve>               <!-- connected to engine -->
     <cross-bleed-valve type="bool">false</cross-bleed-valve>  <!-- no ground supply or adjacent engine -->
     <conditioning-valve type="bool">true</conditioning-valve> <!-- air conditioning -->
+    <fuel-valve type="bool">true</fuel-valve>
+    <fuel-valve-guard type="bool">true</fuel-valve-guard>
    </engine>
    <engine n="1">
     <bleed-valve type="bool">true</bleed-valve>
     <cross-bleed-valve type="bool">false</cross-bleed-valve>
     <conditioning-valve type="bool">true</conditioning-valve>
+    <fuel-valve type="bool">true</fuel-valve>
+    <fuel-valve-guard type="bool">true</fuel-valve-guard>
    </engine>
    <engine n="2">
     <bleed-valve type="bool">true</bleed-valve>
     <cross-bleed-valve type="bool">false</cross-bleed-valve>
     <conditioning-valve type="bool">true</conditioning-valve>
+    <fuel-valve type="bool">true</fuel-valve>
+    <fuel-valve-guard type="bool">true</fuel-valve-guard>
    </engine>
    <engine n="3">
     <bleed-valve type="bool">true</bleed-valve>
     <cross-bleed-valve type="bool">false</cross-bleed-valve>
     <conditioning-valve type="bool">true</conditioning-valve>
+    <fuel-valve type="bool">true</fuel-valve>
+    <fuel-valve-guard type="bool">true</fuel-valve-guard>
    </engine>
   </pneumatic>
+
+  <pressurization>
+   <emergency>
+    <depressurization type="bool">false</depressurization>
+    <guard type="bool">true</guard>
+   </emergency>
+  </pressurization>
+
+  <seat>
+   <all type="bool">false</all>
+  </seat>
+
+  <temperature>
+   <group n="0">
+    <guard type="bool">true</guard>
+    <on type="bool">true</on>
+    <temperature-selector>1.5</temperature-selector>
+   </group>
+   <group n="1">
+    <guard type="bool">true</guard>
+    <on type="bool">true</on>
+    <temperature-selector>1.5</temperature-selector>
+   </group>
+   <group n="2">
+    <guard type="bool">true</guard>
+    <on type="bool">true</on>
+    <temperature-selector>1.5</temperature-selector>
+   </group>
+   <group n="3">
+    <temperature-selector>1.5</temperature-selector>
+   </group>
+  </temperature>
 
 </PropertyList>

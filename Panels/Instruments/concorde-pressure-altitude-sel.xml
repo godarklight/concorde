@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+
+
+<PropertyList>
+
+ <name>System altitude selector</name>
+ <w-base>50</w-base>
+ <h-base>50</h-base>
+
+ <params>
+  <datum-sel>/systems/pressurization/system[0]/datum-mbar</datum-sel>
+  <cabin-sel>/systems/pressurization/system[0]/cabin-alt-ft</cabin-sel>
+  <altitude-sel>/systems/pressurization/system[0]/max-diff-ft</altitude-sel>
+ </params>
+
+
+ <layers>
+
+  <layer>
+   <name>knob</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+   </texture>
+    <w>50</w>
+    <h>50</h>
+  </layer>
+
+<!-- DATUM -->
+
+  <layer>
+   <name>mbar</name>
+   <type>text</type>
+   <point-size>3</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>MB</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-12</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>12</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Datum</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>2</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property alias="../../../../../params/datum-sel"/>
+     <format>%4.0f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-6</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>14</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- CABIN ALTITUDE -->
+
+  <layer>
+   <name>cabin altitude</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>2</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property alias="../../../../../params/cabin-sel"/>
+     <format>%1.1f</format>
+     <scale>0.001</scale>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-3</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>6</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>title</name>
+   <type>text</type>
+   <point-size>3</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CABIN ALT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-9</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>unit</name>
+   <type>text</type>
+   <point-size>3</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>x1000 ft</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-7</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-3</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- MAX DIFFERENTIAL ALTITUDE -->
+
+  <layer>
+   <name>altitude</name>
+   <type>text</type>
+   <font>led</font>
+   <point-size>2</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property alias="../../../../../params/altitude-sel"/>
+     <format>%2.1f</format>
+     <scale>0.001</scale>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-6</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>title</name>
+   <type>text</type>
+   <point-size>2</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>A/C ALT AT MAX DIFF</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-13</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-14</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>unit</name>
+   <type>text</type>
+   <point-size>3</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>x1000 ft</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-7</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-18</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

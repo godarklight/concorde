@@ -8,8 +8,8 @@
 <PropertyList>
 
  <name>CSD disconnect</name>
- <w-base>102</w-base>
- <h-base>102</h-base>
+ <w-base>150</w-base>
+ <h-base>100</h-base>
 
  <params>
   <select-csd>/controls/engines/engine[0]/csd</select-csd>
@@ -192,7 +192,7 @@
      <property alias="../../../../../params/select-csd"/>
     </and>
    </condition>
-   <button>0</button>
+   <button>1</button>
    <x>-5</x>
    <y>-21</y>
    <w>42</w>
@@ -213,9 +213,9 @@
     <property alias="../../../../params/select-csd"/>
    </condition>
    <button>0</button>
-   <x>-27</x>
+   <x>-5</x>
    <y>-21</y>
-   <w>22</w>
+   <w>42</w>
    <h>42</h>
    <binding>
     <command>property-toggle</command>

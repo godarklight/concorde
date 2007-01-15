@@ -2,7 +2,13 @@
 
 <!-- Concorde ADF Radio Magnetic Indicator :
 
-     - the needle orientation by loss of voltage is managed by Flightgear.
+     - the needle orientation by loss of voltage is managed by Flightgear :
+       the failure flag is not raised, but the needle doesn't rotate.
+
+
+     Known problem :
+     =============
+     - Flightgear has only /systems/electrical/output/adf for 2 ADF.
 -->
 
 <PropertyList>
@@ -14,6 +20,7 @@
 
  <params>
   <voltage>/systems/electrical/outputs/specific</voltage>
+  <voltage-adf>/systems/electrical/outputs/adf</voltage-adf>
  </params>
 
 
@@ -100,10 +107,10 @@
      <not>
       <property>/instrumentation/adf[0]/in-range</property>
      </not>
-     <less-than>
-      <property>/systems/electrical/outputs/adf</property>
+     <less-than-equals>
+      <property alias="../../../../../../params/voltage-adf"/>
       <value>20.0</value>
-     </less-than>
+     </less-than-equals>
     </or>
    </condition>
    <texture>
@@ -135,7 +142,7 @@
       <property>/instrumentation/adf[1]/in-range</property>
      </not>
      <less-than>
-      <property>/systems/electrical/outputs/adf</property>
+      <property alias="../../../../../../params/voltage-adf"/>
       <value>20.0</value>
      </less-than>
     </or>
@@ -170,7 +177,13 @@
    <layer>
     <name>Needle 1</name>
     <condition>
-     <property>/instrumentation/adf[0]/in-range</property>
+     <and>
+      <property>/instrumentation/adf[0]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -236,7 +249,13 @@
    <layer>
     <name>Needle 2</name>
     <condition>
-     <property>/instrumentation/adf[1]/in-range</property>
+     <and>
+      <property>/instrumentation/adf[1]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -302,7 +321,13 @@
    <layer>
     <name>Needle tip 2</name>
     <condition>
-     <property>/instrumentation/adf[1]/in-range</property>
+     <and>
+      <property>/instrumentation/adf[1]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <w>16</w>
     <h>16</h>

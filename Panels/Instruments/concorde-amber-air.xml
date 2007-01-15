@@ -3,6 +3,7 @@
 <!-- Alarm on Air bleed :
 
      - above 85 PSI.
+     - duct temperature above 120°C.
      - IMPORTANT : no air bleed pressure at all (on the 4 conditioning groups) doesn't cause a warning.
 -->
 
@@ -17,8 +18,10 @@
   <layer>
    <name>Alarm light</name>
    <type>switch</type>
+
    <layer>
     <name>off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-test-mws.xml">
@@ -38,45 +41,66 @@
         <property>/systems/air-bleed/engine[3]/cross-psi</property>
         <value>85.0</value>
        </less-than>
-       <property>/systems/air-bleed/serviceable</property>
+       <less-than>
+        <property>/systems/temperature/group[0]/duct-degc</property>
+        <value>120.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/temperature/group[1]/duct-degc</property>
+        <value>120.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/temperature/group[2]/duct-degc</property>
+        <value>120.0</value>
+       </less-than>
+       <less-than>
+        <property>/systems/temperature/group[3]/duct-degc</property>
+        <value>120.0</value>
+       </less-than>
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-air.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.20</y1>
+      <x2>1.0</x2>
+      <y2>0.80</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
    </layer>
+
    <layer>
     <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-air.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.20</y1>
-     <x2>1.0</x2>
-     <y2>0.80</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-air.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.20</y1>
+      <x2>1.0</x2>
+      <y2>0.80</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
  </layers>

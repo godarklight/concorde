@@ -11,7 +11,7 @@
  <h-base>26</h-base>
 
  <params>
-  <eng-num>/engines/engine[0]/engine-num</eng-num>
+  <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
   <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
  </params>
 
@@ -20,8 +20,10 @@
   <layer>
    <name>Alarm light</name>
    <type>switch</type>
+
    <layer>
     <name>off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-test-mws.xml">
@@ -32,102 +34,175 @@
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+
+    <layer>
+     <name>Background off</name>
+     <type>switch</type>
+
+     <layer>
+      <name>Intake 1</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>1</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int1.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+
+     <layer>
+      <name>Intake 2</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>2</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int2.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+
+     <layer>
+      <name>Intake 3</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>3</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int3.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+
+     <layer>
+      <name>Intake 4</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int4.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+    </layer>
    </layer>
+
    <layer>
     <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>Background</name>
-   <type>switch</type>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
 
-   <layer>
-    <name>Intake 1</name>
-    <condition>
-     <equals>
-      <property alias="../../../../../../params/eng-num"/>
-      <value>1</value>
-     </equals>
-    </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int1.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.25</y1>
-     <x2>1.0</x2>
-     <y2>0.75</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
+    <layer>
+     <name>Background on</name>
+     <type>switch</type>
 
-   <layer>
-    <name>Intake 2</name>
-    <condition>
-     <equals>
-      <property alias="../../../../../../params/eng-num"/>
-      <value>2</value>
-     </equals>
-    </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int2.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.25</y1>
-     <x2>1.0</x2>
-     <y2>0.75</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
+     <layer>
+      <name>Intake 1</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>1</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int1.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
 
-   <layer>
-    <name>Intake 3</name>
-    <condition>
-     <equals>
-      <property alias="../../../../../../params/eng-num"/>
-      <value>3</value>
-     </equals>
-    </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int3.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.25</y1>
-     <x2>1.0</x2>
-     <y2>0.75</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
+     <layer>
+      <name>Intake 2</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>2</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int2.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
 
-   <layer>
-    <name>Intake 4</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int4.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.25</y1>
-     <x2>1.0</x2>
-     <y2>0.75</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+     <layer>
+      <name>Intake 3</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>3</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int3.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
+
+     <layer>
+      <name>Intake 4</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-int4.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
+    </layer>
    </layer>
   </layer>
 

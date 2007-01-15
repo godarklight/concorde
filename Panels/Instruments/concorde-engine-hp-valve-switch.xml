@@ -8,14 +8,14 @@
 
 <PropertyList>
  <name>Engine HP valve switch</name>
- <w-base>28</w-base>
- <h-base>28</h-base>
+ <w-base>39</w-base>
+ <h-base>78</h-base>
 
  <params>
-  <eng-num>/engines/engine[0]/engine-num</eng-num>
+  <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
   <cutoff>/engines/engine[0]/cutoff</cutoff>
   <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-  <relight>/engines/engine[0]/relight</relight>
+  <relight>/systems/engines/engine[0]/relight</relight>
   <starter>/engines/engine[0]/starter</starter>
  </params>
 
@@ -26,19 +26,13 @@
    <name>background</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hp-valve.rgb</path>
-    <x1>0.0</x1>
+    <x1>0.2</x1>
     <y1>0.0</y1>
-    <x2>1.0</x2>
+    <x2>0.8</x2>
     <y2>1.0</y2>
    </texture>
-   <w>65</w>
+   <w>39</w>
    <h>65</h>
-   <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
   </layer>
 
 <!-- translucent lens -->  
@@ -55,22 +49,14 @@
      </not>
     </condition>
 
-    <layer>
-     <name>lamp off</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.0</x1>
-      <y1>0.0</y1>
-      <x2>0.25</x2>
-      <y2>0.095</y2>
-     </texture>
+    <layer include="concorde-bulb-white-off.xml">
      <w>26</w>
      <h>26</h>
     </layer>
     <layer>
      <name>background off</name>
      <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
       <x1>0.0</x1>
       <y1>0.0</y1>
       <x2>1.0</x2>
@@ -89,29 +75,21 @@
 
    <layer>
     <name>on</name>
-    <type>group</type>
+    <type>switch</type>
 
-    <layer>
-     <name>on</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.37</x1>
-      <y1>0.0</y1>
-      <x2>0.38</x2>
-      <y2>0.095</y2>
-     </texture>
-     <w>26</w>
-     <h>26</h>
-    </layer>
     <layer>
      <name>background on</name>
-     <type>switch</type>
+     <type>group</type>
+     <condition include="concorde-cond-voltage-inst.xml"/>
 
+     <layer include="concorde-bulb-white-on.xml">
+      <w>26</w>
+      <h>26</h>
+     </layer>
      <layer>
       <name>on lighted</name>
-      <condition include="concorde-cond-voltage-inst.xml"/>
       <texture>
-       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
        <x1>0.0</x1>
        <y1>0.0</y1>
        <x2>1.0</x2>
@@ -119,12 +97,22 @@
       </texture>
       <w>26</w>
       <h>26</h>
+      <emissive>true</emissive>
      </layer>
+    </layer>
 
+    <layer>
+     <name>background no voltage</name>
+     <type>group</type>
+
+     <layer include="concorde-bulb-white-off.xml">
+      <w>26</w>
+      <h>26</h>
+     </layer>
      <layer>
       <name>on no voltage</name>
       <texture>
-       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
        <x1>0.0</x1>
        <y1>0.0</y1>
        <x2>1.0</x2>
@@ -332,10 +320,10 @@
     </and>
    </condition>
    <button>0</button>
-   <x>-13.5</x>
-   <y>-13</y>
+   <x>-13</x>
+   <y>-22</y>
    <w>26</w>
-   <h>26</h>
+   <h>42</h>
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/control-cutoff"/>
@@ -354,10 +342,10 @@
     </not>
    </condition>
    <button>0</button>
-   <x>-13.5</x>
-   <y>-13</y>
+   <x>-13</x>
+   <y>-22</y>
    <w>26</w>
-   <h>26</h>
+   <h>42</h>
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/control-cutoff"/>

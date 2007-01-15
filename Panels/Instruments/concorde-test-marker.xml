@@ -4,8 +4,8 @@
 
 <PropertyList>
  <name>Test Marker Beacon</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>26</w-base>
+ <h-base>52</h-base>
 
 
  <layers>
@@ -13,20 +13,20 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-led.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-knob.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>1.0</x2>
      <y2>1.0</y2>
    </texture>
-   <w>104</w>
+   <w>26</w>
    <h>26</h>
   </layer>
 
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>46</point-size>
+   <point-size>11</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -41,7 +41,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-11</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -56,25 +56,9 @@
   <action>
    <desc>Test markerbeacon</desc>
    <button>0</button>
-   <condition>
-    <and include="concorde-cond-voltage-marker.xml">
-     <not-equals>
-      <property>/instrumentation/marker-beacon/test-outer</property>
-      <value>on</value>
-     </not-equals>
-     <not-equals>
-      <property>/instrumentation/marker-beacon/test-middle</property>
-      <value>on</value>
-     </not-equals>
-     <not-equals>
-      <property>/instrumentation/marker-beacon/test-inner</property>
-      <value>on</value>
-     </not-equals>
-    </and>
-   </condition>
-   <x>-56</x>
+   <x>-13</x>
    <y>-14</y>
-   <w>104</w>
+   <w>26</w>
    <h>26</h>
    <binding>
     <command>nasal</command>

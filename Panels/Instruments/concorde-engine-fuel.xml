@@ -2,12 +2,12 @@
 
 <PropertyList>
  <name>Fuel flow kg/h x1000</name>
- <w-base>128</w-base>
- <h-base>128</h-base>
+ <w-base>135</w-base>
+ <h-base>135</h-base>
 
  <params>
   <ff-select>/engines/engine[0]/fuel-flow_pph</ff-select>
-  <bug-select>/engines/engine[0]/bug_pph</bug-select>
+  <bug-select>/controls/engines/engine[0]/bug_pph</bug-select>
  </params>
 
  <layers>
@@ -26,7 +26,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-30</offset>
+     <offset>-3</offset>
     </transformation>
    </transformations>
   </layer>
@@ -57,7 +57,7 @@
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-40</offset>
+      <offset>-13</offset>
      </transformation>
       <transformation>
       <type>y-shift</type>
@@ -80,7 +80,7 @@
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-14</offset>
+      <offset>13</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
@@ -112,7 +112,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-55</offset>
+     <offset>-28</offset>
     </transformation>
      <transformation>
      <type>y-shift</type>
@@ -126,7 +126,7 @@
    <w>20</w>
    <h>15</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.8515625</x1>
     <x2>0.953125</x2>
     <y1>0.359375</y1>
@@ -135,7 +135,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-30</offset>
+     <offset>-3</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -171,7 +171,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-30</offset>
+     <offset>-3</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -205,10 +205,6 @@
    <h>128</h>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>-27</offset>
-    </transformation>
-    <transformation>
      <type>y-shift</type>
      <offset>-3</offset>
     </transformation>
@@ -220,7 +216,7 @@
    <w>27</w>
    <h>27</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.0</x1>
     <x2>0.171875</x2>
     <y1>0.0</y1>
@@ -229,7 +225,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>20</offset>
+     <offset>42</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -250,7 +246,7 @@
   <action>
    <name>Minus 1000</name>
    <button>0</button>
-   <x>0</x>
+   <x>27</x>
    <y>-62</y>
    <w>20</w>
    <h>25</h>
@@ -266,7 +262,7 @@
   <action>
    <name>Plus 1000</name>
    <button>0</button>
-   <x>23</x>
+   <x>47</x>
    <y>-62</y>
    <w>20</w>
    <h>25</h>

@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- Aircraft weight -->
+<!-- Aircraft weight :
+
+     TO DO : serviceable.
+-->
 
 <PropertyList>
 
  <name>Aircraft Weight</name>
- <w-base>40</w-base>
- <h-base>10</h-base>
+ <w-base>60</w-base>
+ <h-base>40</h-base>
 
  <layers>
 
@@ -18,10 +21,6 @@
     <w>60</w>
     <h>20</h>
    <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>28</offset>
-    </transformation>
     <transformation>
      <type>y-shift</type>
      <offset>10</offset>
@@ -43,7 +42,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>fdm/jsbsim/inertia/weight-lbs</property>
+     <property>instrumentation/ac-weight/weight-lb</property>
      <format>%5.0f</format>
      <scale>0.1</scale>      <!-- 5 digits only -->
     </chunk>
@@ -51,7 +50,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>8</offset>
+     <offset>-20</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -78,7 +77,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>22</offset>
+     <offset>-6</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -105,7 +104,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>5</offset>
+     <offset>-23</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

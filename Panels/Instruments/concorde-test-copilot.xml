@@ -23,10 +23,10 @@
     <condition>
      <and>
       <not>
-       <property>/controls/lighting/crew/captain/low</property>
+       <property>/controls/lighting/crew/copilot/low</property>
       </not>
       <not>
-       <property>/controls/lighting/crew/captain/test</property>
+       <property>/controls/lighting/crew/copilot/test</property>
       </not>
      </and>
     </condition>
@@ -50,7 +50,7 @@
    <layer>
     <name>off</name>
     <condition>
-     <property>/controls/lighting/crew/captain/test</property>
+     <property>/controls/lighting/crew/copilot/test</property>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
@@ -85,11 +85,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-34</offset>
+     <offset>6</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-3</offset>
+     <offset>7</offset>
     </transformation>
    </transformations>
   </layer>
@@ -114,11 +114,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-86</offset>
+     <offset>-46</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>18</offset>
+     <offset>28</offset>
     </transformation>
    </transformations>
   </layer>
@@ -141,11 +141,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-82</offset>
+     <offset>-42</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-5</offset>
+     <offset>5</offset>
     </transformation>
    </transformations>
   </layer>
@@ -168,11 +168,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-88</offset>
+     <offset>-48</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-28</offset>
+     <offset>-18</offset>
     </transformation>
    </transformations>
   </layer>
@@ -195,11 +195,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-5</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-37</offset>
+     <offset>-27</offset>
     </transformation>
    </transformations>
   </layer>
@@ -222,11 +222,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-53</offset>
+     <offset>-13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-53</offset>
+     <offset>-43</offset>
     </transformation>
    </transformations>
   </layer>
@@ -238,13 +238,13 @@
   <action>
    <name>Test</name>
    <button>0</button>
-   <x>-55</x>
-   <y>-21</y>
+   <x>-15</x>
+   <y>-11</y>
    <w>42</w>
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/lighting/crew/captain/test</property>
+    <property>/controls/lighting/crew/copilot/test</property>
    </binding>
    <binding>
     <command>property-toggle</command>

@@ -4,8 +4,8 @@
 
 <PropertyList>
  <name>Take off monitor</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>160</w-base>
+ <h-base>200</h-base>
 
 
  <layers>
@@ -20,7 +20,7 @@
     <y2>0.5</y2>
    </texture>
    <w>120</w>
-   <h>30</h>
+   <h>120</h>
   </layer>
 
   <layer>
@@ -35,27 +35,27 @@
      </not>
     </condition>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-led.rgb</path>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-knob.rgb</path>
      <x1>0.0</x1>
       <y1>0.0</y1>
      <x2>1.0</x2>
      <y2>1.0</y2>
     </texture>
     <w>104</w>
-    <h>26</h>
+    <h>104</h>
    </layer>
 
    <layer>
     <name>push</name>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-led.rgb</path>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-knob.rgb</path>
      <x1>0.0</x1>
       <y1>0.0</y1>
      <x2>1.0</x2>
      <y2>1.0</y2>
     </texture>
     <w>92</w>
-    <h>24</h>
+    <h>92</h>
    </layer>
   </layer>
 
@@ -83,7 +83,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>22</offset>
+     <offset>67</offset>
     </transformation>
    </transformations>
   </layer>
@@ -110,7 +110,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
+     <offset>-70</offset>
     </transformation>
    </transformations>
   </layer>
@@ -137,7 +137,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>-87</offset>
     </transformation>
    </transformations>
   </layer>
@@ -164,7 +164,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
+     <offset>-70</offset>
     </transformation>
    </transformations>
   </layer>
@@ -191,7 +191,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>-87</offset>
     </transformation>
    </transformations>
   </layer>
@@ -202,10 +202,10 @@
   <action>
    <desc>Test lights</desc>
    <button>0</button>
-   <x>-54</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
+   <x>-48</x>
+   <y>-48</y>
+   <w>96</w>
+   <h>96</h>
    <binding>
     <command>property-toggle</command>
     <property>/instrumentation/takeoff-monitor/armed</property>

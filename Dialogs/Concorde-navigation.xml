@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-navigation</name>
+  <layout>vbox</layout>
+  <width>450</width>
+
+  <text>
+    <label>Concorde navigation (debug)</label>
+  </text>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+      <label>Estimated fuel at waypoint (kg)</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <halign>left</halign>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp[0]/id</property>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/route/wp[0]/fuel-kg</property>
+      </text>
+    </group>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <halign>left</halign>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp[1]/id</property>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/route/wp[1]/fuel-kg</property>
+      </text>
+    </group>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <halign>left</halign>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp-last/id</property>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/route/wp[2]/fuel-kg</property>
+      </text>
+    </group>
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>hbox</layout>
+    <empty><stretch>true</stretch></empty>
+
+    <button>
+      <legend>Close</legend>
+      <default>true</default>
+      <key>Esc</key>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <empty><stretch>true</stretch></empty>
+  </group>
+</PropertyList>

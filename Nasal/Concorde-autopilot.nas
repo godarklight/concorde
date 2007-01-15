@@ -16,58 +16,67 @@ Autopilot.new = func {
    obj = { parents : [Autopilot],
 
            autothrottlesystem : nil,
-           electricalsystem : nil,
  
            ap : nil,
            channels : nil,
+           flightdirectors : nil,
+           locks : nil,
+           mouse : nil,
+           settings : nil,
+           sonic : nil,
            waypoints : nil,
 
            AUTOPILOTSEC : 3.0,                            # refresh rate
            ALTACQUIRESEC : 2.0,
            MAXCLIMBSEC : 1.0,
-
-           AUTOPILOTSONIC : 1.0,                          # Mach where the PID changes
-           CLIMBFPM : 2000.0,
-           ACQUIREFPM : 800.0,
-           DESCENTFPM : -1000.0,
-           TRANSITIONFT : 25000.0,                        # altitude for Mach speed
-           COEFVOR : 0.0,
-           COEFWPT : 0.0,
-           ROLLDEG : 2.0,
-
-# autoland
-           SAFESEC : 1.0,
+           SAFESEC : 1.0,                                 # autoland
            GOAROUNDSEC : 1.0,
            TOUCHSEC : 0.2,
            FLARESEC : 0.1,
+
+           SONICMACH : 1.0,                               # Mach where the PID changes
+           CRUISEKT : 450.0,
+           TRANSITIONKT : 250.0,
+           VREFLANDINGKT : 162.0,                         # autoland
+           VREFEMPTYKT : 152.0,
+
+           CLIMBFPM : 2000.0,
+           ACQUIREFPM : 800.0,
+           TOUCHFPM : -750.0,                             # autoland
+           DESCENTFPM : -1000.0,
+
+           MACHFT : 25000.0,                              # altitude for Mach speed
+           AUTOLANDFT : 1500.0,
+           ALTIMETERFT : 1200.0,
+           LANDINGFT : 500.0,                             # adjusts to the landing pitch
+           PITCHFT : 100.0,                               # reaches the landing pitch
+           FLAREFT : 100.0,                               # leaves glide slope
+           LIGHTFT : 50.0,
+
+           ROLLDEG : 2.0,                                 # roll to swap to next waypoint
+           WPTNM : 4.0,                                   # distance to swap to next waypoint
+           VORNM : 3.0,                                   # distance to inhibate VOR
+
            LANDINGKG : 19000.0,                           # max fuel for landing
-           LANDINGDEG : 10.0,                             # landing pitch
-# If 10 degrees, vertical speed, too high to catch the glide slope, cannot be recovered during the last 100 ft.
+
+           GOAROUNDDEG : 15.0,
+
 # If no pitch control, sudden swap to 10 deg causes a rebound, worsened by the ground effect.
 # Ignoring the glide slope at 200-300 ft, with a pitch of 10 degrees, would be simpler;
 # but the glide slope following is implicit until 100 ft (red autoland light).
-# Note that these values depends of FDM.
-           FLAREDEG : 8.5,
-           AUTOLANDFEET : 1500.0,
-           FLAREFEET : 500.0,                             # starts the flare pitch
-           PITCHFEET : 100.0,                             # reaches the flare pitch
-           LANDFEET : 100.0,                              # controls the landing vertical speed
-           VREFLANDINGKT : 162.0,
-           VREFEMPTYKT : 152.0,
-           TOUCHFPM : -750.0,
+           FLAREDEG : 10.0,
+
+# If 10 degrees, vertical speed, too high to catch the glide slope,
+# cannot be recovered during the last 100 ft.
+           LANDINGDEG : 8.5,                              # landing pitch
+
            landheadingdeg : 0.0,
 
-# slaves
-           slave : [ nil, nil, nil, nil, nil, nil, nil, nil, nil ],
-           altimeter : 0,
-           asi : 1,
-           dme : 2,
-           ins : 3,
-           ivsi : 4,
-           mach : 5,
-           nav : 6,
-           radioaltimeter : 7,
-           weight : 8
+           engaged_channel : -1,
+
+           noinstrument : { "altitude" : "", "magnetic" : "", "pitch" : "", "roll" : "" },
+           slave : { "altimeter" : nil, "asi" : nil, "dme" : nil, "electric" : nil, "ins" : nil,
+                     "ivsi" : nil, "mach" : nil, "nav" : nil, "radioaltimeter" : nil, "weight" : nil }
          };
 
 # autopilot initialization
@@ -77,44 +86,59 @@ Autopilot.new = func {
 };
 
 Autopilot.init = func {
-   me.ap = props.globals.getNode("/controls").getChildren("autoflight");
+   me.ap = props.globals.getNode("/controls/autoflight");
    me.channels = props.globals.getNode("/controls/autoflight").getChildren("autopilot");
+   me.flightdirectors = props.globals.getNode("/controls/autoflight").getChildren("flight-director");
+   me.locks = props.globals.getNode("/autopilot/locks");
+   me.mouse = props.globals.getNode("/devices/status/mice/mouse").getChildren("button");
+   me.settings = props.globals.getNode("/autopilot/settings");
+   me.sonic = props.globals.getNode("/autopilot/locks/sonic");
    me.waypoints = props.globals.getNode("/autopilot/route-manager").getChildren("wp");
 
-   propname = getprop("/systems/autopilot/slave/altimeter");
-   me.slave[me.altimeter] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/asi");
-   me.slave[me.asi] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/dme");
-   me.slave[me.dme] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/ins");
-   me.slave[me.ins] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/ivsi");
-   me.slave[me.ivsi] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/mach");
-   me.slave[me.mach] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/nav");
-   me.slave[me.nav] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/radio-altimeter");
-   me.slave[me.radioaltimeter] = props.globals.getNode(propname);
-   propname = getprop("/systems/autopilot/slave/weight");
-   me.slave[me.weight] = props.globals.getNode(propname);
+   me.noinstrument["altitude"] = getprop("/systems/autopilot/noinstrument/altitude");
+   me.noinstrument["magnetic"] = getprop("/systems/autopilot/noinstrument/magnetic");
+   me.noinstrument["pitch"] = getprop("/systems/autopilot/noinstrument/pitch");
+   me.noinstrument["roll"] = getprop("/systems/autopilot/noinstrument/roll");
 
-   # 3 NM at 450 kt 
-   me.COEFWPT = 3 * constant.HOURTOSECOND / 450;
-   # 3 NM at 250 kt 
-   me.COEFVOR = 3 * constant.HOURTOSECOND / 250;
+   propname = getprop("/systems/autopilot/slave/altimeter");
+   me.slave["altimeter"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/asi");
+   me.slave["asi"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/dme");
+   me.slave["dme"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/electric");
+   me.slave["electric"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/ins");
+   me.slave["ins"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/ivsi");
+   me.slave["ivsi"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/mach");
+   me.slave["mach"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/nav");
+   me.slave["nav"] = props.globals.getNode(propname).getChildren("nav");
+   propname = getprop("/systems/autopilot/slave/radio-altimeter");
+   me.slave["radioaltimeter"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/weight");
+   me.slave["weight"] = props.globals.getNode(propname);
+
+   # - NAV 0 is reserved for autopilot.
+   # - copy NAV 0-1 from preferences.xml to 1-2.
+   me.sendnav( 1, 2 );
+   me.sendnav( 0, 1 );
 
    me.apdiscexport();
 }
 
-Autopilot.set_relation = func( autothrottle, electrical ) {
+Autopilot.set_relation = func( autothrottle ) {
    me.autothrottlesystem = autothrottle;
-   me.electricalsystem = electrical;
 }
 
 Autopilot.schedule = func {
    me.supervisor();
+}
+
+Autopilot.slowschedule = func {
+   me.releasedatum();
 }
 
 Autopilot.supervisor = func {
@@ -122,62 +146,65 @@ Autopilot.supervisor = func {
 
    # waypoint transition
    if( me.is_engaged() ) {
-       mode = getprop("/controls/autoflight/horizontal");
-       if( mode == "ins" ) {
-           me.waypointroll();
+       if( me.is_ins() ) {
+           me.lockwaypointroll();
        }
 
        # VOR transition
-       elsif( mode == "vor" ) {
-           me.vorroll();
+       elsif( me.is_vor() ) {
+           me.lockvorroll();
        }
    }
 
    # more sensitive at supersonic speed
-   lock = getprop("/autopilot/locks/heading");
-   if( lock == "dg-heading-hold" ) {
+   if( me.is_lock_magnetic() ) {
        me.sonicmagneticheading();
-
-       # not real : FG default keyboard changes autopilot heading
-       if( getprop("/controls/autoflight/horizontal") == "track-heading" ) {
-           headingdeg = getprop("/autopilot/settings/heading-bug-deg");
-           setprop("/controls/autoflight/heading-select",headingdeg);
-       }
    }
 
-   elsif( lock == "true-heading-hold" ) {
+   elsif( me.is_lock_true() ) {
        me.sonictrueheading();
    }
    else {
-       me.apdischeadingsonic();
+       me.sonic.getChild("heading").setValue("");
    }
 
-   lock2 = getprop("/autopilot/locks/altitude");
-   if( lock2 == "vertical-speed-hold" ) {
+   if( me.is_lock_vertical() ) {
        me.sonicverticalspeed();
    }
    else {
-       me.apdiscaltitudesonic();
+       me.sonic.getChild("altitude").setValue("");
    }
 
    # disconnect autopilot if no voltage (TO DO by FG)
    me.voltage();
 }
 
+Autopilot.no_voltage = func {
+   if( !me.slave["electric"].getChild("autopilot1").getValue() and
+       !me.slave["electric"].getChild("autopilot2").getValue() ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 # disconnect if no voltage (cannot disable the autopilot !)
 Autopilot.voltage = func {
-   voltage1 = me.electricalsystem.has_autopilot1();
-   voltage2 = me.electricalsystem.has_autopilot2();
+   voltage1 = me.slave["electric"].getChild("autopilot1").getValue();
+   voltage2 = me.slave["electric"].getChild("autopilot2").getValue();
 
    if( !voltage1 or !voltage2 ) {
        # not yet in hand of copilot
-       if( !getprop("/systems/autopilot/state/virtual-autopilot") ) {
+       if( !getprop("/systems/autopilot/state/virtual") ) {
 
            # disconnect autopilot 1
            if( !voltage1 ) {
                channel = me.channels[0].getChild("engage").getValue();
                if( channel ) {
-                   me.channels[0].getChild("engage").setValue(constant.FALSE);
+                   me.engagechannel(0, constant.FALSE);
                    channel = me.channels[1].getChild("engage").getValue();
                    if( !channel ) {
                        me.apdiscexport();
@@ -189,7 +216,7 @@ Autopilot.voltage = func {
            if( !voltage2 ) {
                channel = me.channels[1].getChild("engage").getValue();
                if( channel ) {
-                   me.channels[1].getChild("engage").setValue(constant.FALSE);
+                   me.engagechannel(1, constant.FALSE);
                    channel = me.channels[0].getChild("engage").getValue();
                    if( !channel ) {
                        me.apdiscexport();
@@ -197,159 +224,105 @@ Autopilot.voltage = func {
                }
            }
 
-           me.autothrottlesystem.voltage( voltage1, voltage2 );
-       }
-   }
-
-   # only if no voltage
-   me.clearcopilot( voltage1, voltage2 );
-}
-
-# for 4 engines flame out
-Autopilot.virtualcopilot = func {
-   if( getprop("/systems/autopilot/state/virtual-copilot") ) {
-
-       # clear autopilot
-       if( !getprop("/systems/autopilot/state/virtual-autopilot") ) {
-           me.apdiscexport();
-           me.autothrottlesystem.atdiscexport();
-           setprop("/systems/autopilot/state/virtual-autopilot",constant.TRUE);
-       }
-
-       # hold current heading and speed
-       me.apenable();
-
-       if( getprop("/autopilot/locks/heading") != "dg-heading-hold") {
-           me.apheadingholdexport();
-       }
-
-       altitudemode = getprop("/autopilot/locks/altitude");
-       altitudeft = noinstrument.get_altitude_ft();
-       if( altitudeft > me.TRANSITIONFT and altitudemode != "mach-with-pitch" ) {
-           me.apmachpitchexport();
-       }
-       elsif( altitudeft <= me.TRANSITIONFT and altitudemode != "speed-with-pitch" ) {
-           me.apspeedpitchexport();
+           me.autothrottlesystem.voltage();
        }
    }
 }
 
-# disable virtual copilot
-Autopilot.clearcopilot = func( voltage1, voltage2 ) {
-   if( getprop("/systems/autopilot/state/virtual-copilot") ) {
+# emulates a human pilot
+Autopilot.virtual = func {
+    # cut autopilot before, if no voltage
+    me.voltage();
 
-       # returns to real mode, once voltages are normal
-       if( voltage1 and voltage2 ) {
-           setprop("/systems/autopilot/state/virtual-autopilot",constant.FALSE);
-           setprop("/systems/autopilot/state/virtual-copilot",constant.FALSE);
-       }
-
-       # disconnect button pressed
-       else {
-           me.virtualcopilot();
-       }
-   }
+    setprop("/systems/autopilot/state/virtual",constant.TRUE);
 }
 
-# virtual copilot
-Autopilot.apcopilotexport = func {
-   if( !getprop("/systems/autopilot/state/virtual-copilot") ) {
-       setprop("/systems/autopilot/state/virtual-autopilot",constant.FALSE);
-       setprop("/systems/autopilot/state/virtual-copilot",constant.TRUE);
-
-       me.virtualcopilot();
-   }
-
-   # keep the buttons pressed by the copilot
-   else {
-       me.clearcopilot( constant.TRUE, constant.TRUE );
-   }
+Autopilot.real = func {
+    setprop("/systems/autopilot/state/virtual",constant.FALSE);
 }
 
 # avoid strong roll near a waypoint
-Autopilot.waypointroll = func {
-    lock = getprop("/autopilot/locks/heading");
-
-    distance = me.waypoints[0].getChild("dist").getValue();
+Autopilot.lockwaypointroll = func {
+    distancenm = me.waypoints[0].getChild("dist").getValue();
 
     # next waypoint
-    if( distance != nil ) {
-
-        # 3 NM at 450 kt 
-        speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
-        speednmps =  speedkt / constant.HOURTOSECOND;
-        rangenm = speednmps * me.COEFWPT;
-
+    if( distancenm != nil ) {
         # restores after waypoint pop
-        if( lock == "dg-heading-hold" ) {
+        if( me.is_lock_magnetic() ) {
             wpt = me.waypoints[0].getChild("id").getValue();
             lastwpt = getprop("/systems/autopilot/state/waypoint");
             if( wpt != lastwpt ) {
-                me.locktrueheading();
+                me.locktrue();
             }
         }
 
         # avoids strong roll
-        elsif( distance < rangenm ) {
-            # 2 time steps
-            stepnm = speednmps * me.AUTOPILOTSEC;
-            stepnm = stepnm * 2.0;
+        else {
+            if( distancenm < me.WPTNM ) {
+                # 2 time steps
+                speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+                speednmps =  speedkt / constant.HOURTOSECOND;
+                stepnm = speednmps * me.AUTOPILOTSEC;
+                stepnm = stepnm * 2.0;
 
-            # switches to heading hold
-            rolldeg =  getprop("/orientation/roll-deg");
-            if( distance < stepnm or rolldeg < - me.ROLLDEG or rolldeg > me.ROLLDEG ) {
-                if( lock == "true-heading-hold" ) {
-                    me.magneticheading();
-                    me.lockmagneticheading();
-                    wpt = me.waypoints[0].getChild("id").getValue();
-                    setprop("/systems/autopilot/state/waypoint",wpt);
+                # switches to heading hold
+                rolldeg =  getprop(me.noinstrument["roll"]);
+                if( distancenm < stepnm or rolldeg < - me.ROLLDEG or rolldeg > me.ROLLDEG ) {
+                    if( me.is_lock_true() ) {
+                        me.magneticheading();
+                        me.lockmagnetic();
+                        wpt = me.waypoints[0].getChild("id").getValue();
+                        setprop("/systems/autopilot/state/waypoint",wpt);
+                    }
                 }
             }
         }
     }
 }
 
+Autopilot.get_nav = func {
+    # NAV 0, if not engaged
+    index = me.engaged_channel + 1;
+
+    # once frenquecy is sended, NAV 0 reflects NAV 1/2 only at the next loop !!
+    return me.slave["nav"][index];
+}
+
 # avoid strong roll near a VOR
-Autopilot.vorroll = func {
-    lock = getprop("/autopilot/locks/heading");
-
+Autopilot.lockvorroll = func {
     # near VOR
-    if( me.slave[me.dme].getChild("in-range").getValue() ) {
-
-        # 3 NM at 250 kt 
-        speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
-        speednmps =  speedkt / constant.HOURTOSECOND;
-        rangenm = speednmps * me.COEFVOR;
-
+    if( me.slave["dme"].getChild("in-range").getValue() ) {
         # restores after VOR
-        if( me.slave[me.dme].getChild("indicated-distance-nm").getValue() > rangenm ) {
-            if( lock == "dg-heading-hold" ) {
+        distancenm = me.slave["dme"].getChild("indicated-distance-nm").getValue();
+        if( distancenm > me.VORNM ) {
+            if( me.is_lock_magnetic() ) {
                 me.locknav1();
             }
-
-            setprop("/systems/autopilot/state/vor-engage",constant.FALSE);
         }
 
         # avoids strong roll
         else {
             # switches to heading hold
-             if( lock == "nav1-hold" ) {
-                 # except if mode has just been engaged, leaving a VOR :
-                 # EGLL 27R, then leaving LONDON VOR 113.60 on its 260 deg radial (SID COMPTON 3).
-                 if( !getprop("/systems/autopilot/state/vor-engage") or
-                     ( getprop("/systems/autopilot/state/vor-engage") and
-                       me.slave[me.nav].getChild("from-flag").getValue() ) ) { 
-                     me.magneticheading();
-                     me.lockmagneticheading();
-                 }
+            if( me.is_lock_nav() ) {
+                # except if mode has just been engaged, leaving a VOR :
+                # EGLL 27R, then leaving LONDON VOR 113.60 on its 260 deg radial (SID COMPTON 3).
+                if( !me.get_nav().getChild("from-flag").getValue() ) { 
+                    me.magneticheading();
+                    me.lockmagnetic();
+                }
             }
         }
     }
 }
 
+
 # ---------------
 # AUTOPILOT MODES
 # ---------------
+
+# To avoid bugs, swaping from an horizontal / vertical mode (composed of 2 or more submodes)
+# may keep submodes, if that is coherent.
+# Example : swaping from turbulence mode (= pitch + heading hold) to pitch hold, keeps heading hold.
 
 # disconnect autopilot
 Autopilot.apdiscexport = func {
@@ -358,29 +331,76 @@ Autopilot.apdiscexport = func {
    me.apdischorizontal();
    me.apdiscaltitude();
 
-   me.channels[0].getChild("engage").setValue(constant.FALSE);
-   me.channels[1].getChild("engage").setValue(constant.FALSE);
+   me.engagechannel(0, constant.FALSE);
+   me.engagechannel(1, constant.FALSE);
+
+   me.locks.getChild("altitude").setValue("");
+   me.locks.getChild("heading").setValue("");
+}
+
+Autopilot.is_disc = func {
+   altitude = me.ap.getChild("altitude").getValue();
+   heading = me.ap.getChild("heading").getValue();
+   vertical = me.ap.getChild("vertical").getValue();
+   horizontal = me.ap.getChild("horizontal").getValue();
+
+   if( altitude == "" and heading == "" and vertical == "" and horizontal == "" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # activate a mode, and engage a channel
-# - property
-# - value
-Autopilot.apactivatemode = func {
-   property = arg[0];
-   value = arg[1];
+Autopilot.apactivatemode2 = func( property, value, value2 ) {
+   if( property == "altitude" ) {
+       if( value2 != "" ) {
+           me.apactivatemode("vertical",value2);
+       }
+       else {
+           me.apdiscvertical();
+       }
+   }
+   elsif( property == "heading" ) {
+       if( value2 != "" ) {
+           me.apactivatemode("horizontal",value2);
+       }
+       else {
+           me.apdischorizontal();
+       }
+   }
 
-   setprop(property, value);
+   me.apactivatemode( property, value );
+}
+
+# activate a mode, and engage a channel
+Autopilot.apactivatemode = func( property, value ) {
+   if( property == "altitude" ) {
+       me.apdiscaltitude();
+   }
+   elsif( property == "vertical" ) {
+       me.apdiscvertical();
+   }
+   elsif( property == "heading" ) {
+       me.apdischeading();
+   }
+   elsif( property == "horizontal" ) {
+       me.apdischorizontal();
+   }
+
+   me.ap.getChild(property).setValue(value);
 
    channel1 = me.channels[0].getChild("engage").getValue();
    channel2 = me.channels[1].getChild("engage").getValue();
 
    # remove 2nd channel of autoland after a goaround
    if( channel1 and channel2 ) {
-       vertical = me.ap[0].getChild("vertical").getValue();
-
-       if( vertical != "autoland" and vertical != "autoland-armed" ) {
+       if( !me.is_autoland() ) {
            channel2 = constant.FALSE;
-           me.channels[1].getChild("engage").setValue(channel2);
+           me.engagechannel(1, channel2);
        }
    }
 
@@ -389,7 +409,7 @@ Autopilot.apactivatemode = func {
 
 Autopilot.apenable = func {
    if( !me.is_engaged() ) {
-       me.channels[0].getChild("engage").setValue(constant.TRUE);
+       me.engagechannel(0, constant.TRUE);
    }
 }
 
@@ -407,39 +427,54 @@ Autopilot.is_engaged = func {
 
 Autopilot.apengage = func {
    if( me.is_engaged() ) {
-       altitudemode = getprop("/controls/autoflight/altitude");
-       headingmode = getprop("/controls/autoflight/heading");
+       altitudemode = me.ap.getChild("altitude").getValue();
+       headingmode = me.ap.getChild("heading").getValue();
    }
    else {
        altitudemode = "";
        headingmode = "";
    }
 
-   setprop("/autopilot/locks/altitude",altitudemode);
-   setprop("/autopilot/locks/heading",headingmode);
+   me.locks.getChild("altitude").setValue(altitudemode);
+   me.locks.getChild("heading").setValue(headingmode);
+
+   me.supervisor();
+}
+
+Autopilot.apengagealtitude = func {
+   if( me.is_engaged() ) {
+       altitudemode = me.ap.getChild("altitude").getValue();
+   }
+   else {
+       altitudemode = "";
+   }
+
+   me.locks.getChild("altitude").setValue(altitudemode);
 
    me.supervisor();
 }
 
 # activate autopilot
 Autopilot.apexport = func {
-   altitude = me.ap[0].getChild("altitude").getValue();
-   heading = me.ap[0].getChild("heading").getValue();
-   vertical = me.ap[0].getChild("vertical").getValue();
-   horizontal = me.ap[0].getChild("horizontal").getValue();
    channel1 = me.channels[0].getChild("engage").getValue();
    channel2 = me.channels[1].getChild("engage").getValue();
 
+   # channel engaged by XML
+   me.whichchannel();
+
+   me.apsendheadingexport();
+   me.apsendnavexport();
+
    # 2 channels only in land mode
    if( channel1 and channel2 ) {
-       if( vertical != "autoland" and vertical != "autoland-armed" ) {
-           me.channels[1].getChild("engage").setValue(constant.FALSE);
+       if( !me.is_autoland() ) {
+           me.engagechannel(1, constant.FALSE);
        }
    }
 
    # pitch hold and heading hold is default on activation
    elsif( channel1 or channel2 ) {
-       if( altitude == "" and heading == "" and vertical == "" and horizontal == "" ) {
+       if( me.is_disc() ) {
            me.appitchexport();
            me.apheadingholdexport();
        }
@@ -457,15 +492,69 @@ Autopilot.apexport = func {
    }
 }
 
+Autopilot.engagechannel = func( index, value ) {
+    me.channels[index].getChild("engage").setValue(value);
+
+    me.whichchannel();
+}
+
+Autopilot.whichchannel = func {
+    # records the 1st channel of autoland; otherwise must disengage to swap.
+    if( me.channels[0].getChild("engage").getValue() ) {
+        if( !me.channels[1].getChild("engage").getValue() ) {
+            me.engaged_channel = 0;
+        }
+    }
+    elsif( me.channels[1].getChild("engage").getValue() ) {
+        if( !me.channels[0].getChild("engage").getValue() ) {
+            me.engaged_channel = 1;
+        }
+    }
+
+    # crash if channel access !
+    else {
+        me.engaged_channel = -1;
+    }
+}
+
+# spring returns to center, once released by hand
+Autopilot.releasedatum = func {
+   if( me.ap.getNode("datum/altitude").getValue() != 0.0 ) {
+       # no mouse left click
+       if( !me.mouse[0].getValue() ) {
+           me.ap.getNode("datum/altitude").setValue(0.0);
+       }
+   }
+}
+
 # datum adjust of autopilot, arguments
 # - step plus/minus 1 (fast) or 0.1 (slow)
 Autopilot.datumapexport = func( sign ) {
-   altitudemode = getprop("/autopilot/locks/altitude");
+   altitudemode = me.locks.getChild("altitude").getValue();
+
    if( altitudemode != "" and altitudemode != nil ) {
        result = constant.TRUE;
 
+       maxcruise = me.autothrottlesystem.is_maxcruise();
+# TO DO : slaving to TMO not implemented
+       maxcruise = constant.FALSE;
+
+       # plus/minus 6000 ft/min (real)
+       # plus/minus 17 kt (real) : maxclimb
+       if( me.is_lock_vertical() and !maxcruise ) {
+           # 80 or 800 ft/min per second (real) : 10 or 100 ft/min per key
+           # 0.7 or 2 kt per second (real) : 10 or 100 ft/min per key
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 100.0 * sign;
+               step = 0.16667 * sign;
+           }
+           else {
+               value = 100.0 * sign;
+               step = 0.16667 * sign;
+           }
+       }
        # plus/minus 11 deg
-       if( altitudemode == "pitch-hold" ) {
+       elsif( altitudemode == "pitch-hold" ) {
            # 0.1 or 0.5 deg per key
            if( sign >= -0.1 and sign <= 0.1 ) {
                value = 1.0 * sign;
@@ -512,25 +601,14 @@ Autopilot.datumapexport = func( sign ) {
                step = 1.166667 * sign;
            }
        }
-       # plus/minus 6000 ft/min (real)
-       elsif( altitudemode == "vertical-speed-hold" ) {
-           # 80 or 800 ft/min per second (real) : 10 or 100 ft/min per key
-           if( sign >= -0.1 and sign <= 0.1 ) {
-               value = 100.0 * sign;
-               step = 0.16667 * sign;
-           }
-           else {
-               value = 100.0 * sign;
-               step = 0.16667 * sign;
-           }
-       }
        # default (touches cursor)
        else {
+           value = 0.0;
            step = 1.0 * sign;
        }
 
        # limited to plus/minus 10 steps
-       datum = getprop("/controls/autoflight/datum/altitude");
+       datum = me.ap.getNode("datum/altitude").getValue();
        if( datum == nil ) {
            datum = step;
        }
@@ -555,36 +633,36 @@ Autopilot.datumapexport = func( sign ) {
        }
 
        if( datum >= -10.0 and datum <= 10.0 ) {
-           if( altitudemode == "pitch-hold" ) {
-               targetdeg = getprop("/autopilot/settings/target-pitch-deg");
-               targetdeg = targetdeg + value;
-               me.pitch( targetdeg );
-           }
-           elsif( altitudemode == "altitude-hold" ) {
-               targetft = getprop("/autopilot/settings/target-altitude-ft");
-               targetft = targetft + value;
-               setprop("/autopilot/settings/target-altitude-ft",targetft);
-           }
-           elsif( altitudemode == "speed-with-pitch" ) {
-               targetkt = getprop("/autopilot/settings/target-speed-kt");
-               targetkt = targetkt + value;
-               setprop("/autopilot/settings/target-speed-kt",targetkt);
-           }
-           elsif( altitudemode == "mach-with-pitch" ) {
-               targetmach = getprop("/autopilot/settings/target-mach");
-               targetmach = targetmach + value;
-               setprop("/autopilot/settings/target-mach",targetmach);
-           }
-           elsif( altitudemode == "vertical-speed-hold" ) {
-               targetfpm = getprop("/autopilot/settings/vertical-speed-fpm");
+           if( me.is_lock_vertical() and !maxcruise ) {
+               targetfpm = me.settings.getChild("vertical-speed-fpm").getValue();
                if( targetfpm == nil ) {
                    targetfpm = 0.0;
                }
                targetfpm = targetfpm + value;
-               setprop("/autopilot/settings/vertical-speed-fpm",targetfpm);
+               me.verticalspeed(targetfpm);
+           }
+           elsif( altitudemode == "pitch-hold" ) {
+               targetdeg = me.settings.getChild("target-pitch-deg").getValue();
+               targetdeg = targetdeg + value;
+               me.pitch( targetdeg );
+           }
+           elsif( altitudemode == "altitude-hold" ) {
+               targetft = me.settings.getChild("target-altitude-ft").getValue();
+               targetft = targetft + value;
+               me.apaltitude(targetft);
+           }
+           elsif( altitudemode == "speed-with-pitch" ) {
+               targetkt = me.settings.getChild("target-speed-kt").getValue();
+               targetkt = targetkt + value;
+               me.autothrottlesystem.speed(targetkt);
+           }
+           elsif( altitudemode == "mach-with-pitch" ) {
+               targetmach = me.settings.getChild("target-mach").getValue();
+               targetmach = targetmach + value;
+               me.autothrottlesystem.mach(targetmach);
            }
 
-           setprop("/controls/autoflight/datum/altitude",datum);
+           me.ap.getNode("datum/altitude").setValue(datum);
        }
    }
 
@@ -602,15 +680,14 @@ Autopilot.datumapexport = func( sign ) {
 
 # activate autopilot
 Autopilot.fdexport = func {
-   fds = props.globals.getNode("/controls/autoflight").getChildren("flight-director");
-   fd1 = fds[0].getChild("engage").getValue();
-   fd2 = fds[1].getChild("engage").getValue();
+   fd1 = me.flightdirectors[0].getChild("engage").getValue();
+   fd2 = me.flightdirectors[1].getChild("engage").getValue();
 
    if( fd1 or fd2 ) {
-       altitude = me.ap[0].getChild("altitude").getValue();
-       heading = me.ap[0].getChild("heading").getValue();
-       vertical = me.ap[0].getChild("vertical").getValue();
-       horizontal = me.ap[0].getChild("horizontal").getValue();
+       altitude = me.ap.getChild("altitude").getValue();
+       heading = me.ap.getChild("heading").getValue();
+       vertical = me.ap.getChild("vertical").getValue();
+       horizontal = me.ap.getChild("horizontal").getValue();
 
        # pitch hold is default on activation
        if( ( altitude == "" or altitude == nil ) and ( vertical == "" or vertical == nil ) and
@@ -620,29 +697,33 @@ Autopilot.fdexport = func {
    }
 }
 
+
 # -------------
 # VERTICAL MODE
 # -------------
 
+Autopilot.apdiscverticalmode2 = func {
+   me.apdiscvertical();
+   me.apdiscaltitude();
+}
+
 # disconnect vertical mode
 Autopilot.apdiscvertical = func {
-   setprop("/controls/autoflight/vertical","");
+   me.ap.getChild("vertical").setValue("");
 }
 
 # go around mode
 Autopilot.goaround = func {
-   verticalmode = getprop("/controls/autoflight/vertical");
-
    # cron runs without autopilot engagement
    if( me.is_engaged() ) {
 
        # 2 throttles full foward during an autoland or glide slope
-       if( getprop("/controls/autoflight/altitude") == "gs1-hold" or verticalmode == "autoland" ) {
+       if( me.is_glide() or me.is_landing() ) {
            if( me.autothrottlesystem.goaround() ) {
-               setprop("/controls/autoflight/heading","wing-leveler");
+               me.apactivatemode("heading","wing-leveler","");
 
                # pitch at 15 deg and hold the wing level, until the next command of crew
-               me.modepitch( 15 );
+               me.modepitch( me.GOAROUNDDEG );
 
                # crew control
                me.autothrottlesystem.atdiscexport();
@@ -651,27 +732,37 @@ Autopilot.goaround = func {
                me.autothrottlesystem.full();
 
                # light on
-               me.apactivatemode("/controls/autoflight/vertical","goaround");
+               me.apactivatemode("vertical","goaround");
 
                me.apengage();
            }
        }
-   }
 
-   # light off
-   if( verticalmode == "goaround" ) {
-       if( getprop("/controls/autoflight/altitude") != "pitch-hold" or
-           getprop("/controls/autoflight/heading") != "wing-leveler" ) {
-           me.apdiscvertical();
+       # light off
+       elsif( me.is_going_around() ) {
+           if( !me.is_pitch() or
+               me.ap.getChild("heading").getValue() != "wing-leveler" ) {
+               me.apdiscvertical();
+           }
        }
    }
+}
+
+Autopilot.is_going_around = func {
+   if( me.ap.getChild("vertical").getValue() == "goaround" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # CAUTION, avoids concurrent crons (stack overflow Nasal error) :
 # one may activate glide slope, then arm autoland = 2 calls.
 Autopilot.is_goaround = func {
-   if( getprop("/controls/autoflight/vertical2") == "goaround-armed" or
-       getprop("/controls/autoflight/vertical") == "goaround" ) {
+   if( me.ap.getChild("vertical2").getValue() == "goaround-armed" or me.is_going_around() ) {
        result = constant.TRUE;
    }
    else {
@@ -682,7 +773,7 @@ Autopilot.is_goaround = func {
 }
 
 Autopilot.clampkg = func ( vallanding, valempty ) {
-    tankskg = me.slave[me.weight].getChild("total-kg").getValue();
+    tankskg = me.slave["weight"].getChild("total-kg").getValue();
     if( tankskg > me.LANDINGKG ) {
         result = vallanding;
     }
@@ -700,10 +791,10 @@ Autopilot.targetwind = func {
    targetkt = me.clampkg( me.VREFLANDINGKT, me.VREFEMPTYKT );
 
    # wind increases lift
-   windkt = me.slave[me.ins].getChild("wind-speed-kt").getValue();
+   windkt = me.slave["ins"].getChild("wind-speed-kt").getValue();
    if( windkt > 0 ) {
-       winddeg = me.slave[me.ins].getChild("wind-from-heading-deg").getValue();
-       vordeg = me.slave[me.nav].getNode("radials").getChild("target-radial-deg").getValue();
+       winddeg = me.slave["ins"].getChild("wind-from-heading-deg").getValue();
+       vordeg = me.get_nav().getNode("radials").getChild("target-radial-deg").getValue();
        offsetdeg = vordeg - winddeg;
        offsetdeg = constant.crossnorth( offsetdeg );
 
@@ -715,24 +806,25 @@ Autopilot.targetwind = func {
            targetkt = targetkt + offsetkt;
        }
    }
+
    # avoid infinite gliding (too much ground effect ?)
-   setprop("/autopilot/settings/target-speed-kt",targetkt);
+   me.autothrottlesystem.speed(targetkt);
 }
 
 # smooth the rebound of pitch hold during the flare
 Autopilot.targetpitch = func( targetdeg, aglft, rates ) {
    # start from attitude
-   if( getprop("/controls/autoflight/altitude") != "pitch-hold" ) {
-       pitchdeg = getprop("/orientation/pitch-deg");
+   if( !me.is_pitch() ) {
+       pitchdeg = getprop(me.noinstrument["pitch"]);
    }
    else {
-       pitchdeg = getprop("/autopilot/settings/target-pitch-deg");
+       pitchdeg = me.settings.getChild("target-pitch-deg").getValue();
    }
 
    if( pitchdeg != targetdeg ) {
        if( targetdeg > pitchdeg ) {
-           speedfps = - me.slave[me.ivsi].getChild("indicated-speed-fps").getValue();
-           deltaft = aglft - me.PITCHFEET;
+           speedfps = - me.slave["ivsi"].getChild("indicated-speed-fps").getValue();
+           deltaft = aglft - me.PITCHFT;
            timesec = deltaft / speedfps;
 
            deltadeg = targetdeg - pitchdeg;
@@ -760,41 +852,39 @@ autolandcron = func {
 Autopilot.autoland = func {
    me.goaround();
 
-   verticalmode = getprop("/controls/autoflight/vertical") ;
    verticalmode2 = "";      
 
    # to catch the go around
    rates = me.GOAROUNDSEC;
 
-   if( verticalmode == "autoland" or verticalmode == "autoland-armed" ) {
+   if( me.is_autoland() ) {
        verticalmode2 = "goaround-armed";
 
        # cron runs without autopilot engagement
        if( me.is_engaged() ) {
-           aglft = me.slave[me.radioaltimeter].getChild("indicated-altitude-ft").getValue();
+           aglft = me.slave["radioaltimeter"].getChild("indicated-altitude-ft").getValue();
 
            # armed
-           if( verticalmode == "autoland-armed" ) {
-               if( aglft <= me.AUTOLANDFEET ) {
-                   verticalmode = "autoland";
-                   setprop("/controls/autoflight/vertical",verticalmode);
+           if( me.is_land_armed() ) {
+               if( aglft <= me.AUTOLANDFT ) {
+                   me.ap.getChild("vertical").setValue("autoland");
                }
            }
 
            # engaged
-           if( verticalmode == "autoland" ) {
+           if( me.is_landing() ) {
                # touch down
                if( aglft < constantaero.AGLTOUCHFT ) {
 
                    # gently reduce pitch
-                   if( getprop("/orientation/pitch-deg") > 1.0 ) {
+                   if( getprop(me.noinstrument["pitch"]) > 1.0 ) {
                        rates = me.TOUCHSEC;
 
                        # 1 deg / s
-                       pitchdeg = getprop("/autopilot/settings/target-pitch-deg");
+                       pitchdeg = me.settings.getChild("target-pitch-deg").getValue();
                        pitchdeg = pitchdeg - 0.2;
                        me.modepitch( pitchdeg );
-                       me.autothrottlesystem.atdiscthrottle();
+                       me.autothrottlesystem.atdiscspeedmode2();
                    }
 
                    # safe on ground
@@ -817,58 +907,58 @@ Autopilot.autoland = func {
                }
  
                # triggers below 1500 ft
-               elsif( aglft > me.AUTOLANDFEET ) {
-                   verticalmode = "autoland-armed";
-                   setprop("/controls/autoflight/vertical",verticalmode);
+               elsif( aglft > me.AUTOLANDFT ) {
+                   me.ap.getChild("vertical").setValue("autoland-armed");
                }
 
                # approach
                else {
-                   mode = getprop("/controls/autoflight/speed");
-
                    # if activated below 1500 ft
                    me.apdischorizontal();
 
-                   if( aglft < me.FLAREFEET ) {
+                   if( aglft < me.LANDINGFT ) {
                        rates = me.FLARESEC;
 
                        # landing pitch (flare) :
                        # - not above 100 ft, because outside of glide slope (autoland red light).
-                       # - vertical-speed-with-throttle removes the rebound at touch down of vertical-speed-hold.
-                       # - possible glide slope (real ?) errors below 100 ft (example KJFK 22L, EGLL 27R) :
-                       # heading hold avoids roll outside the runway.
-                       if( aglft < me.LANDFEET ) {
-                           if( getprop("/controls/autoflight/heading") != "dg-heading-hold" ) {
-                                  me.landheadingdeg = getprop("/orientation/heading-magnetic-deg");
+                       # - vertical-speed-with-throttle removes the rebound at touch down of
+                       # vertical-speed-hold.
+                       if( aglft < me.FLAREFT ) {
+                           # possible nav errors below 100 ft (example KJFK 22L, EGLL 27R) :
+                           # heading hold avoids roll outside the runway.
+                           if( !me.ap.getChild("real-nav").getValue() ) {
+                               if( !me.is_magnetic() ) {
+                                   me.landheadingdeg = getprop(me.noinstrument["magnetic"]);
+                               }
+                               me.heading(me.landheadingdeg);
+                               me.apactivatemode("heading","dg-heading-hold");
                            }
-                           setprop("/autopilot/settings/heading-bug-deg",me.landheadingdeg);
-                           me.apactivatemode("/controls/autoflight/heading","dg-heading-hold");
-                           me.modepitch( me.LANDINGDEG );
-                           setprop("/autopilot/settings/vertical-speed-fpm",me.TOUCHFPM);
-                           me.autothrottlesystem.atactivatemode("/controls/autoflight/speed","vertical-speed-with-throttle");
+                           me.modepitch( me.FLAREDEG );
+                           me.verticalspeed(me.TOUCHFPM);
+                           me.autothrottlesystem.atactivatemode("speed","vertical-speed-with-throttle");
                        }
 
                        # tip to landing pitch :
                        # - sooner at 10 deg reduces the rebound.
                        # - cannot go back, when rebound.
-                       # - possible glide slope (real ?) errors below 200 ft (example RJAA 34) :
-                       # glide slope with throttle is less prone to lose pitch to catch the glide slope below.
-                       elsif( mode != "vertical-speed-with-throttle" ) {
-                           me.apactivatemode("/controls/autoflight/heading","nav1-hold");
-                           me.targetpitch( me.FLAREDEG, aglft, rates );
-                           me.autothrottlesystem.atactivatemode("/controls/autoflight/speed","gs1-with-throttle");
+                       # - glide slope with throttle is less prone to lose pitch
+                       # to catch the glide slope below.
+                       elsif( !me.autothrottlesystem.is_lock_vertical() ) {
+                           me.apactivatemode("heading","nav1-hold");
+                           me.targetpitch( me.LANDINGDEG, aglft, rates );
+                           me.autothrottlesystem.atactivatemode("speed","gs1-with-throttle");
                        } 
                    }
 
-                   # glide slope : cannot go back when then aircraft climbs again (rebound caused by landing pitch),
-                   # otherwise will crash to catch the glide slope.
-                   elsif( mode != "gs1-with-throttle" ) {
-                       me.apactivatemode("/controls/autoflight/heading","nav1-hold");
+                   # glide slope : cannot go back when then aircraft climbs again
+                   # (rebound caused by landing pitch), otherwise will crash to catch the glide slope.
+                   elsif( !me.autothrottlesystem.is_lock_glide() ) {
+                       me.apactivatemode("heading","nav1-hold");
                        me.modeglide();
 
                        # near VREF (no wind)
                        me.targetwind();
-                       me.autothrottlesystem.atactivatemode("/controls/autoflight/speed","speed-with-throttle");
+                       me.autothrottlesystem.atactivatemode("speed","speed-with-throttle");
                    }
 
                    # pilot must activate autothrottle
@@ -880,12 +970,12 @@ Autopilot.autoland = func {
        }
    }
    else {
-       if( getprop("/controls/autoflight/altitude") == "gs1-hold" ) {
+       if( me.is_glide() ) {
            verticalmode2 = "goaround-armed";      
        }
    }
 
-   setprop("/controls/autoflight/vertical2",verticalmode2);
+   me.ap.getChild("vertical2").setValue(verticalmode2);
 
    # re-schedule the next call
    if( me.is_goaround() ) {
@@ -893,11 +983,45 @@ Autopilot.autoland = func {
    }
 }
 
+Autopilot.is_landing = func {
+   verticalmode = me.ap.getChild("vertical").getValue();
+   if( verticalmode == "autoland" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_land_armed = func {
+   verticalmode = me.ap.getChild("vertical").getValue();
+   if( verticalmode == "autoland-armed" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_autoland = func {
+   if( me.is_landing() or me.is_land_armed() ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 # autopilot autoland
 Autopilot.aplandexport = func {
-   verticalmode = getprop("/controls/autoflight/vertical");
-   if( verticalmode != "autoland" and verticalmode != "autoland-armed" ) {
-       me.apactivatemode("/controls/autoflight/vertical","autoland-armed");
+   if( !me.is_autoland() ) {
+       me.apactivatemode("vertical","autoland-armed");
    }
    else {
        me.apdiscvertical();
@@ -910,25 +1034,34 @@ Autopilot.aplandexport = func {
    }
 }
 
-# autopilot turbulence mode
-Autopilot.apturbulenceexport = func {
-   verticalmode = getprop("/controls/autoflight/vertical");
-   if( verticalmode != "turbulence" ) {
-       me.apactivatemode("/controls/autoflight/vertical","turbulence");
-       me.attitudepitch();
-       setprop("/controls/autoflight/altitude","pitch-hold");
-       me.magneticheading();
-       setprop("/controls/autoflight/heading","dg-heading-hold");
-       me.apdischorizontal();
+Autopilot.is_turbulence = func {
+   verticalmode = me.ap.getChild("vertical").getValue();
+   if( verticalmode == "turbulence" ) {
+       result = constant.TRUE;
    }
    else {
-       me.apdiscvertical();
-       me.apdiscaltitude();
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# autopilot turbulence mode
+Autopilot.apturbulenceexport = func {
+   if( !me.is_turbulence() ) {
+       me.magneticheading();
+       me.apactivatemode2("heading","dg-heading-hold","");
+       me.attitudepitch();
+       me.apactivatemode2("altitude","pitch-hold","turbulence");
+   }
+   else {
+       me.apdiscverticalmode2();
        me.apdischeading(); 
    }
 
    me.apengage();
 }
+
 
 # -------------
 # ALTITUDE MODE
@@ -936,40 +1069,46 @@ Autopilot.apturbulenceexport = func {
 
 # disconnect autopilot altitude
 Autopilot.apdiscaltitude = func {
-   setprop("/controls/autoflight/altitude","");
-   setprop("/autopilot/locks/altitude","");
+   me.ap.getChild("altitude").setValue("");
 
-   me.apdiscaltitudesonic();
-}
-
-Autopilot.apdiscaltitudesonic = func {
-   setprop("/autopilot/locks/sonic/altitude","");
+   # switch to speed hold
+   if( me.autothrottlesystem != nil ) {
+       me.autothrottlesystem.discmaxclimb();
+   }
 }
 
 # altitude button lights, when the dialed altitude is reached.
 # altimeter light, when the dialed altitude is reached.
 Autopilot.altitudelight = func {
    if( me.is_engaged() ) {
-
-       altitudemode = getprop("/controls/autoflight/altitude");
-       verticalmode = getprop("/controls/autoflight/vertical");
-
-       if( altitudemode == "altitude-hold" or verticalmode == "altitude-acquire" ) {
-           altft = getprop("/autopilot/settings/target-altitude-ft");
+       if( me.is_altitude_hold() or me.is_altitude_acquire() ) {
+           altft = me.ap.getChild("altitude-select").getValue();
 
            # altimeter light within 1200 ft
-           minft = altft - 1200;
+           minft = altft - me.ALTIMETERFT;
            setprop("/systems/autopilot/altimeter/target-min-ft",minft);
-           maxft = altft + 1200;
+           maxft = altft + me.ALTIMETERFT;
            setprop("/systems/autopilot/altimeter/target-max-ft",maxft);
 
            # no altimeter light within 50 ft
-           minft = altft - 50;
+           minft = altft - me.LIGHTFT;
            setprop("/systems/autopilot/altimeter/light-min-ft",minft);
-           maxft = altft + 50;
+           maxft = altft + me.LIGHTFT;
            setprop("/systems/autopilot/altimeter/light-max-ft",maxft);
        }
    }
+}
+
+Autopilot.altitudelight_on = func ( altitudeft, targetft ) {
+   if( altitudeft < targetft - me.ALTIMETERFT or
+       altitudeft > targetft + me.ALTIMETERFT ) {
+       result = constant.FALSE;
+   }
+   else {
+       result = constant.TRUE;
+   }
+
+   return result;
 }
 
 # cannot make a settimer on a class member
@@ -980,12 +1119,10 @@ altitudeacquirecron = func {
 # altitude acquire
 Autopilot.altitudeacquire = func {
    if( me.is_engaged() ) {
-       verticalmode = getprop("/controls/autoflight/vertical");
-       if( verticalmode == "altitude-acquire" ) {
-           altitudemode = getprop("/controls/autoflight/altitude");
+       if( me.is_altitude_acquire() ) {
            me.altitudelight();
 
-           altitudeft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
+           altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
            if( altitudeft > getprop("/systems/autopilot/altimeter/target-max-ft") ) {
                speedfpm = -me.ACQUIREFPM;
                mode = "vertical";
@@ -998,27 +1135,28 @@ Autopilot.altitudeacquire = func {
            # capture
            elsif( altitudeft > getprop("/systems/autopilot/altimeter/light-max-ft") or
                   altitudeft < getprop("/systems/autopilot/altimeter/light-min-ft") ) {
-               if( altitudemode != "altitude-hold" ) {
-                   me.apactivatemode("/controls/autoflight/altitude","altitude-hold");
+               if( !me.is_altitude_hold() ) {
+                   me.apactivatemode("altitude","altitude-hold");
                }
                mode = "capture";
            }
 
            # at level
            else {
-               me.apdiscvertical();
+               me.apactivatemode2("altitude","altitude-hold","");
                mode = "";
            }
 
            # default to vertical speed hold 800 ft/min, if comes from altitude hold;
            if( mode == "vertical" ) {
-               if( altitudemode == "altitude-hold" ) {
+               if( me.is_altitude_hold() ) {
                    # pilot can change
                    me.modeverticalspeed( speedfpm );
                }
            }
 
-           me.apengage();
+           # nav1 can switch to magnetic
+           me.apengagealtitude();
 
            # otherwise keep the previous vertical mode (if any),
            # which is supposed to reach the capture level, by pilot action
@@ -1031,76 +1169,123 @@ Autopilot.altitudeacquire = func {
    }
 }
 
-# toggle altitude hold (ctrl-A)
-Autopilot.aptogglealtitudeexport = func {
-   altitudemode = getprop("/autopilot/locks/altitude");
-
-   # disable speed hold, if any
-   if( altitudemode == "altitude-hold" ) {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+Autopilot.selectfpm = func( altitudeft, targetft ) {
+   if( altitudeft > targetft ) {
+       speedfpm = me.DESCENTFPM;
+   }
+   else {
+       speedfpm = me.CLIMBFPM;
    }
 
-   # must toggle the mode
+   me.verticalspeed(speedfpm);
+}
+
+Autopilot.is_lock_altitude = func {
+   altitudemode = me.locks.getChild("altitude").getValue();
+   if( altitudemode == "altitude-hold" ) {
+       result = constant.TRUE;
+   }
    else {
-       altitudemode = getprop("/controls/autoflight/altitude");
-       verticalmode = getprop("/controls/autoflight/vertical");
-       if( altitudemode != "vertical-speed-hold" or verticalmode == "altitude-acquire" ) {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# toggle altitude hold (ctrl-A)
+Autopilot.aptogglealtitudeexport = func {
+   if( !me.no_voltage() ) {
+       if( !me.is_vertical_speed() or me.is_altitude_acquire() ) {
            me.apenable();
            me.apverticalexport();
        }
        me.apaltitudeexport();
 
        # avoid many manual operations
-       altitudemode = getprop("/controls/autoflight/altitude");
-       if( altitudemode == "vertical-speed-hold" ) {
-           altitudeft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
-           targetft = getprop("/autopilot/settings/target-altitude-ft");
-           if( altitudeft > targetft ) {
-               speedfpm = me.DESCENTFPM;
-           }
-           else {
-               speedfpm = me.CLIMBFPM;
-           }
-           setprop("/autopilot/settings/vertical-speed-fpm",speedfpm);
+       if( me.is_vertical_speed() ) {
+           altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+           targetft = me.ap.getChild("altitude-select").getValue();
+           me.selectfpm( altitudeft, targetft );
        }
    }
 }
 
+Autopilot.apaltitudeselectexport = func {
+   if( me.is_altitude_acquire() ) {
+       altitudeft = me.ap.getChild("altitude-select").getValue();
+       me.apaltitude(altitudeft);
+   }
+}
+
+Autopilot.is_altitude_hold = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
+   if( altitudemode == "altitude-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_altitude_acquire = func {
+   verticalmode = me.ap.getChild("vertical").getValue();
+   if( verticalmode == "altitude-acquire" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 # autopilot altitude acquire
 Autopilot.apaltitudeexport = func {
-   # only if a previous mode for the capture
-   altitudemode = getprop("/controls/autoflight/altitude");
-   if( altitudemode != "" ) {
-       verticalmode = getprop("/controls/autoflight/vertical");
-       if( verticalmode != "altitude-acquire" ) {
-           me.apdiscvertical();
-           altitudeft = getprop("/controls/autoflight/altitude-select");
-           setprop("/autopilot/settings/target-altitude-ft",altitudeft);
-           setprop("/controls/autoflight/vertical","altitude-acquire");
-       }
-       else {
-           me.apdiscvertical();
-       }
+   if( !me.is_altitude_acquire() ) {
+       me.apactivatemode("vertical","altitude-acquire");
+       me.apaltitudeselectexport();
 
        me.apengage();
 
        me.altitudeacquire();
    }
+   else {
+       me.apdiscvertical();
+
+       me.apengage();
+   }
+}
+
+Autopilot.apaltitude = func( altitudeft ) {
+   me.settings.getChild("target-altitude-ft").setValue(altitudeft);
+}
+
+# toggle altitude hold (ctrl-T)
+Autopilot.aptogglealtitudeholdexport = func {
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_altitude() ) {
+           me.apdiscaltitude();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.apaltitudeholdexport();
+       }
+   }
 }
 
 # autopilot altitude hold
 Autopilot.apaltitudeholdexport = func {
-   altitudemode = getprop("/controls/autoflight/altitude");
-   if( altitudemode != "altitude-hold" ) {
-       altitudeft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
-       setprop("/autopilot/settings/target-altitude-ft",altitudeft);
-       me.apactivatemode("/controls/autoflight/altitude","altitude-hold");
-       me.apdiscvertical();
+   if( !me.is_altitude_hold() ) {
+       altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+       me.apaltitude(altitudeft);
+       me.apactivatemode2("altitude","altitude-hold","");
    }
    else {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       me.apdiscverticalmode2();
    }
 
    me.apengage();
@@ -1108,13 +1293,11 @@ Autopilot.apaltitudeholdexport = func {
    me.altitudelight();
 }
 
-Autopilot.is_altitude_hold = func {
+Autopilot.has_altitude_hold = func {
    result = me.is_engaged();
 
    if( result ) {
-       altitudemode = getprop("/controls/autoflight/altitude");
-       verticalmode = getprop("/controls/autoflight/vertical");
-       if( altitudemode != "altitude-hold" or verticalmode != "" ) {
+       if( !me.is_altitude_hold() or me.is_altitude_acquire() ) {
            result = constant.FALSE;
        }
        else {
@@ -1126,35 +1309,58 @@ Autopilot.is_altitude_hold = func {
 }
 
 Autopilot.modeglide = func {
-    setprop("/controls/autoflight/altitude","gs1-hold");
+    me.ap.getChild("altitude").setValue("gs1-hold");
+}
+
+Autopilot.is_lock_glide = func {
+   altitudemode = me.locks.getChild("altitude").getValue();
+   if( altitudemode == "gs1-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # toggle glide slope (ctrl-G)
 Autopilot.aptoggleglideexport = func {
-   altitudemode = getprop("/autopilot/locks/altitude");
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_glide() ) {
+           me.apdiscverticalmode2();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.apglideexport();
+       }
+   }
+}
 
-   # disable speed hold, if any
+Autopilot.is_glide = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
    if( altitudemode == "gs1-hold" ) {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       result = constant.TRUE;
    }
    else {
-       me.apenable();
-       me.apglideexport();
+       result = constant.FALSE;
    }
+
+   return result;
 }
 
 # autopilot glide slope
 Autopilot.apglideexport = func {
-   altitudemode = getprop("/controls/autoflight/altitude");
-   if( altitudemode != "gs1-hold" ) {
-       me.apactivatemode("/controls/autoflight/altitude","gs1-hold");
-       setprop("/controls/autoflight/heading","nav1-hold");
-       me.apdischorizontal();
+   altitudemode = me.ap.getChild("altitude").getValue();
+   if( !me.is_glide() ) {
+       me.apactivatemode("altitude","gs1-hold");
+       me.apactivatemode2("heading","nav1-hold","");
+       me.apsendnavexport();
    }
    else {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       me.apdiscverticalmode2();
        me.modevorloc();
    }
 
@@ -1166,44 +1372,69 @@ Autopilot.apglideexport = func {
 }
 
 Autopilot.attitudepitch = func {
-   pitchdeg = getprop("/orientation/pitch-deg");
-   setprop("/autopilot/settings/target-pitch-deg",pitchdeg);
+   pitchdeg = getprop(me.noinstrument["pitch"]);
+   me.pitch( pitchdeg );
 }
 
 Autopilot.pitch = func( pitchdeg ) {
-   setprop("/autopilot/settings/target-pitch-deg",pitchdeg);
+   me.settings.getChild("target-pitch-deg").setValue(pitchdeg);
 }
 
 Autopilot.modepitch = func( pitchdeg ) {
    me.pitch( pitchdeg );
-   setprop("/controls/autoflight/altitude","pitch-hold");
+   me.ap.getChild("altitude").setValue("pitch-hold");
+}
+
+Autopilot.is_lock_pitch = func {
+   altitudemode = me.locks.getChild("altitude").getValue();
+   if( altitudemode == "pitch-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # toggle pitch hold (ctrl-P)
 Autopilot.aptogglepitchexport = func {
-   altitudemode = getprop("/autopilot/locks/altitude");
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_pitch() ) {
+           me.apdiscaltitude();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.appitchexport();
+       }
+   }
+}
 
-   # disable speed hold, if any
+Autopilot.is_pitch = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
    if( altitudemode == "pitch-hold" ) {
-       me.apdiscaltitude();
+       result = constant.TRUE;
    }
    else {
-       me.apenable();
-       me.appitchexport();
+       result = constant.FALSE;
    }
+
+   return result;
 }
 
 # autopilot pitch hold
 Autopilot.appitchexport = func {
-   altitudemode = getprop("/controls/autoflight/altitude");
-   if( altitudemode != "pitch-hold" ) {
+   if( !me.is_pitch() or me.is_turbulence() ) {
        me.attitudepitch();
-       me.apactivatemode("/controls/autoflight/altitude","pitch-hold");
-       me.apdiscvertical();
+       me.apactivatemode("altitude","pitch-hold");
+       if( !me.is_altitude_acquire() ) {
+           me.apdiscvertical();
+       }
    }
    else {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       me.apdiscverticalmode2();
    }
 
    me.apengage();
@@ -1211,48 +1442,90 @@ Autopilot.appitchexport = func {
 
 # sonic vertical speed
 Autopilot.sonicverticalspeed = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
-   if( speedmach <= me.AUTOPILOTSONIC ) {
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   if( speedmach <= me.SONICMACH ) {
        mode = "vertical-speed-hold-sub";
    }
    else {
        mode = "vertical-speed-hold-super";
    }
-   setprop("/autopilot/locks/sonic/altitude",mode);
+   me.sonic.getChild("altitude").setValue(mode);
+}
+
+Autopilot.verticalspeed = func( speedfpm ) {
+   me.settings.getChild("vertical-speed-fpm").setValue(speedfpm);
 }
 
 Autopilot.modeverticalspeed = func( speedfpm ) {
-   setprop("/autopilot/settings/vertical-speed-fpm",speedfpm);
-   me.apactivatemode("/controls/autoflight/altitude","vertical-speed-hold");
+   me.verticalspeed(speedfpm);
+   me.apactivatemode("altitude","vertical-speed-hold");
+}
+
+Autopilot.modeverticalspeedhold = func {
+   speedfps = me.slave["ivsi"].getChild("indicated-speed-fps").getValue();
+   speedfpm = speedfps * constant.MINUTETOSECOND;
+   me.modeverticalspeed(speedfpm);
+}
+
+Autopilot.is_lock_vertical = func {
+   altitudemode = me.locks.getChild("altitude").getValue();
+   if( altitudemode == "vertical-speed-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_vertical_speed = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
+   if( altitudemode == "vertical-speed-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # autopilot vertical speed hold
 Autopilot.apverticalexport = func {
-   altitudemode = getprop("/controls/autoflight//altitude");
-   if( altitudemode != "vertical-speed-hold" ) {
-       speedfps = me.slave[me.ivsi].getChild("indicated-speed-fps").getValue();
-       speedfpm = speedfps * constant.MINUTETOSECOND;
-       me.modeverticalspeed(speedfpm);
-       me.apdiscvertical();
+   if( !me.is_vertical_speed() or me.autothrottlesystem.is_maxclimb() ) {
+       if( !me.is_altitude_acquire() ) {
+           me.apdiscverticalmode2();
+       }
+       me.modeverticalspeedhold();
    }
+
    else {
        me.apdiscaltitude();
-       me.apdiscvertical();
    }
 
    me.apengage();
+}
+
+Autopilot.is_speed_pitch = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
+   if( altitudemode == "speed-with-pitch" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # speed with pitch
 Autopilot.apspeedpitchexport = func {
-   altitudemode = getprop("/controls/autoflight/altitude");
-
    # only if no autothrottle
-   if( altitudemode != "speed-with-pitch" ) {
+   if( !me.is_speed_pitch() ) {
        if( !me.autothrottlesystem.is_engaged() ) {
            me.autothrottlesystem.holdspeed();
-           me.apactivatemode("/controls/autoflight/altitude","speed-with-pitch");
-           me.apdiscvertical();
+           me.apactivatemode2("altitude","speed-with-pitch","");
        }
 
        # default to pitch hold if autothrottle
@@ -1261,23 +1534,31 @@ Autopilot.apspeedpitchexport = func {
        }
    }
    else {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       me.apdiscverticalmode2();
    }
 
    me.apengage();
+}
+
+Autopilot.is_mach_pitch = func {
+   altitudemode = me.ap.getChild("altitude").getValue();
+   if( altitudemode == "mach-with-pitch" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # mach with pitch
 Autopilot.apmachpitchexport = func {
-   altitudemode = getprop("/controls/autoflight/altitude");
-
    # only if no autothrottle
-   if( altitudemode != "mach-with-pitch" ) {
+   if( !me.is_mach_pitch() ) {
        if( !me.autothrottlesystem.is_engaged() ) {
            me.autothrottlesystem.holdmach();
-           me.apactivatemode("/controls/autoflight/altitude","mach-with-pitch");
-           me.apdiscvertical();
+           me.apactivatemode2("altitude","mach-with-pitch","");
        }
 
        # default to pitch hold if autothrottle
@@ -1287,222 +1568,11 @@ Autopilot.apmachpitchexport = func {
    }
 
    else {
-       me.apdiscaltitude();
-       me.apdiscvertical();
+       me.apdiscverticalmode2();
    }
 
    me.apengage();
 }
-
-# ---------------
-# HORIZONTAL MODE
-# ---------------
-
-# disconnect horizontal mode
-Autopilot.apdischorizontal = func {
-   setprop("/controls/autoflight/horizontal","");
-}
-
-Autopilot.inslight = func {
-   # pilot must activate himself the mode
-   if( getprop("/controls/autoflight/horizontal") != "ins" ) {
-       if( getprop("/autopilot/locks/heading") == "true-heading-hold" ) {
-
-           # restore the previous heading mode
-           distance = me.waypoints[0].getChild("dist").getValue();
-           if( distance != nil and distance != 0.0 ) {
-               me.apengage();
-           }
-       }
-   }
-
-   # no more waypoint
-   else {
-
-       # keeps the current heading mode
-       if( me.waypoints[0].getChild("dist").getValue() == 0.0 ) {
-           me.apdischorizontal();
-       }
-   }
-}
-
-# ins mode
-Autopilot.apinsexport = func {
-   horizontalmode = getprop("/controls/autoflight/horizontal");
-
-   if( horizontalmode != "ins" ) {
-       if( me.waypoints[0].getChild("id").getValue() != "" ) {
-           me.apactivatemode("/controls/autoflight/heading","true-heading-hold");
-           setprop("/controls/autoflight/horizontal","ins");
-       }
-   }
-   else {
-       me.apdischeading(); 
-       me.apdischorizontal();
-   }
-
-   me.apengage();
-}
-
-# ------------
-# HEADING MODE
-# ------------
-
-# disconnect heading mode
-Autopilot.apdischeading = func {
-   setprop("/controls/autoflight/heading","");
-   setprop("/autopilot/locks/heading","");
-
-   me.apdischeadingsonic();
-}
-
-# disconnect heading sonic
-Autopilot.apdischeadingsonic = func {
-   setprop("/autopilot/locks/sonic/heading","");
-}
-
-# sonic true mode
-Autopilot.sonictrueheading = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
-   if( speedmach <= me.AUTOPILOTSONIC ) {
-       mode = "true-heading-hold-sub";
-   }
-   else {
-       mode = "true-heading-hold-super";
-   }
-   setprop("/autopilot/locks/sonic/heading",mode);
-}
-
-# true heading mode
-Autopilot.locktrueheading = func {
-    setprop("/autopilot/locks/heading","true-heading-hold");
-}
-
-# sonic magnetic mode
-Autopilot.sonicmagneticheading = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
-   if( speedmach <= me.AUTOPILOTSONIC ) {
-       mode = "dg-heading-hold-sub";
-   }
-   else {
-       mode = "dg-heading-hold-super";
-   }
-   setprop("/autopilot/locks/sonic/heading",mode);
-}
-
-# magnetic heading mode
-Autopilot.lockmagneticheading = func {
-   setprop("/autopilot/locks/heading","dg-heading-hold");
-}
-
-# magnetic heading
-Autopilot.magneticheading = func {
-   headingdeg = getprop("/orientation/heading-magnetic-deg");
-   setprop("/autopilot/settings/heading-bug-deg",headingdeg);
-}
-
-# heading hold
-Autopilot.apheadingholdexport = func {
-   mode = getprop("/controls/autoflight/horizontal");
-   if( mode != "magnetic" ) {
-       me.magneticheading();
-       me.apactivatemode("/controls/autoflight/horizontal","magnetic");
-       setprop("/controls/autoflight/heading","dg-heading-hold");
-   }
-   else {
-       me.apdischeading(); 
-       me.apdischorizontal();
-   }
-
-   me.apengage();
-}
-
-# toggle heading hold (ctrl-H)
-Autopilot.aptoggleheadingexport = func {
-   headingmode = getprop("/autopilot/locks/heading");
-
-   # disable speed hold, if any
-   if( headingmode == "dg-heading-hold" ) {
-       me.apdischeading();
-       me.apdischorizontal();
-   }
-   else {
-       me.apenable();
-       me.apheadingexport();
-   }
-}
-
-# autopilot heading
-Autopilot.apheadingexport = func {
-   horizontalmode = getprop("/controls/autoflight/horizontal");
-   if( horizontalmode != "track-heading" ) {
-       me.apactivatemode("/controls/autoflight/horizontal","track-heading");
-       if( !getprop("/controls/autoflight/track-push") ) {
-           headingdeg = getprop("/controls/autoflight/heading-select");
-           setprop("/autopilot/settings/heading-bug-deg",headingdeg);
-           setprop("/controls/autoflight/heading","dg-heading-hold");
-       }
-       else {
-           setprop("/controls/autoflight/heading","true-heading-hold");
-       }
-   }
-   else {
-       me.apdischeading(); 
-       me.apdischorizontal();
-   }
-
-   me.apengage();
-}
-
-# VOR loc
-Autopilot.modevorloc = func {
-   headingmode = getprop("/controls/autoflight/heading");
-   altitudemode = getprop("/controls/autoflight/altitude");
-   if( headingmode == "nav1-hold" and altitudemode != "gs1-hold" ) {
-       setprop("/controls/autoflight/horizontal","vor");
-       setprop("/systems/autopilot/state/vor-engage",constant.TRUE);
-   }
-}
-
-Autopilot.locknav1 = func {
-   setprop("/autopilot/locks/heading","nav1-hold");
-}
-
-# toggle nav 1 hold (ctrl-N)
-Autopilot.aptogglenav1export = func {
-   headingmode = getprop("/autopilot/locks/heading");
-
-   # disable speed hold, if any
-   if( headingmode == "nav1-hold" ) {
-       me.apdischeading();
-       me.apdischorizontal();
-   }
-   else {
-       me.apenable();
-       me.apvorlocexport();
-   }
-}
-
-# autopilot vor localizer
-Autopilot.apvorlocexport = func {
-   headingmode = getprop("/controls/autoflight/heading");
-   if( headingmode != "nav1-hold" ) {
-       me.apdischeadingsonic();
-       me.apdischorizontal();
-       me.apactivatemode("/controls/autoflight/heading","nav1-hold");
-       me.modevorloc();
-   }
-   else {
-       me.apdischeading(); 
-       me.apdischorizontal();
-   }
-
-   me.apengage();
-}
-
-# ----------
-# SPEED MODE
-# ----------
 
 # cannot make a settimer on a member function
 maxclimbcron = func {
@@ -1511,28 +1581,9 @@ maxclimbcron = func {
 
 # max climb mode (includes max cruise mode)
 Autopilot.maxclimb = func {
-   speedmode = getprop("/controls/autoflight/speed2");
-   if( speedmode == "maxclimb" or speedmode == "maxcruise" ) {          
+   if( me.autothrottlesystem.is_maxclimb() ) {          
        if( me.is_engaged() ) {
-
-           # holds the VMO / MMO with pitch
-           if( !me.autothrottlesystem.maxclimb( speedmode ) ) {
-               altitudeft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
-               if( altitudeft > me.TRANSITIONFT ) {
-                   me.apmachpitchexport();
-                   mmomach = me.slave[me.mach].getChild("mmo-mach").getValue();
-                   setprop("/autopilot/settings/target-mach",mmomach);
-               }
-               else {
-                   me.apspeedpitchexport();
-                   vmokt = me.slave[me.asi].getChild("vmo-kt").getValue();
-                   setprop("/autopilot/settings/target-speed-kt",vmokt);
-               }
-
-               # disable max climb
-               me.autothrottlesystem.atdiscthrottle();
-               me.autothrottlesystem.atengage();
-           }
+           me.autothrottlesystem.maxclimb();
        }
 
        # re-schedule the next call
@@ -1542,16 +1593,387 @@ Autopilot.maxclimb = func {
 
 # max climb mode
 Autopilot.apmaxclimbexport = func {
-   speedmode = getprop("/controls/autoflight/speed2");
-   if( speedmode == "maxclimb" or speedmode == "maxcruise" ) {
-       # switch to speed hold
-       me.autothrottlesystem.atdiscspeed2();
-       me.autothrottlesystem.holdspeed();
+   if( me.autothrottlesystem.is_maxclimb() ) {          
+       me.apdiscaltitude();
    }
+
+   # holds pitch and VMO with throttle
    else {
-       me.autothrottlesystem.atactivatemode("/controls/autoflight/speed2","maxclimb");
+       if( !me.is_altitude_acquire() ) {
+           me.apdiscverticalmode2();
+       }
+       me.modeverticalspeedhold();
+       me.autothrottlesystem.atactivatemode("speed2","maxclimb");
        me.maxclimb();
    }          
+
+   me.apengage();
+}
+
+
+# ---------------
+# HORIZONTAL MODE
+# ---------------
+
+Autopilot.apdischorizontalmode2 = func {
+   me.apdischorizontal();
+   me.apdischeading();
+}
+
+# disconnect horizontal mode
+Autopilot.apdischorizontal = func {
+   me.ap.getChild("horizontal").setValue("");
+}
+
+Autopilot.is_waypoint = func {
+   id = me.waypoints[0].getChild("id").getValue();
+   if( id != nil and id != "" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.locktrue = func {
+   me.locks.getChild("heading").setValue("true-heading-hold");
+}
+
+Autopilot.is_lock_true = func {
+   headingmode = me.locks.getChild("heading").getValue();
+   if( headingmode == "true-heading-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_true = func {
+   headingmode = me.ap.getChild("heading").getValue();
+   if( headingmode == "true-heading-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.inslight = func {
+   # pilot must activate himself the mode
+   if( !me.is_ins() ) {
+       if( me.is_lock_true() ) {
+
+           # restore the previous heading mode
+           if( me.is_waypoint() ) {
+               if( !me.is_true() ) {
+                   me.apengage();
+               }
+
+               # FG limitation : cannot activate true heading alone with waypoint.
+               else {
+                   me.apinsexport();
+               }
+           }
+       }
+   }
+
+   # no more waypoint
+   else {
+
+       # keeps the current heading mode
+       if( !me.is_waypoint() ) {
+           me.apdischorizontal();
+       }
+   }
+}
+
+Autopilot.is_ins = func {
+   horizontalmode = me.ap.getChild("horizontal").getValue();
+   if( horizontalmode == "ins" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# ins mode
+Autopilot.apinsexport = func {
+   if( !me.is_ins() ) {
+       if( me.is_waypoint() ) {
+           me.apactivatemode2("heading","true-heading-hold","ins");
+       }
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+
+# ------------
+# HEADING MODE
+# ------------
+
+# disconnect heading mode
+Autopilot.apdischeading = func {
+   me.ap.getChild("heading").setValue("");
+
+   if( me.is_turbulence() ) {
+       me.apdiscvertical();
+   }
+}
+
+Autopilot.trueheading = func( headingdeg ) {
+   me.settings.getChild("true-heading-deg").setValue(headingdeg);
+}
+
+# sonic true mode
+Autopilot.sonictrueheading = func {
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   if( speedmach <= me.SONICMACH ) {
+       mode = "true-heading-hold-sub";
+   }
+   else {
+       mode = "true-heading-hold-super";
+   }
+
+   me.sonic.getChild("heading").setValue(mode);
+
+   # not real : FG default keyboard changes autopilot heading
+   if( me.istrackheading() ) {
+       headingdeg = me.settings.getChild("true-heading-deg").getValue();
+       me.channels[me.engaged_channel].getChild("heading-true-select").setValue(headingdeg);
+   }
+}
+
+# sonic magnetic mode
+Autopilot.sonicmagneticheading = func {
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   if( speedmach <= me.SONICMACH ) {
+       mode = "dg-heading-hold-sub";
+   }
+   else {
+      mode = "dg-heading-hold-super";
+   }
+
+   me.sonic.getChild("heading").setValue(mode);
+
+   # not real : FG default keyboard changes autopilot heading
+   if( me.istrackheading() ) {
+       headingdeg = me.settings.getChild("heading-bug-deg").getValue();
+       me.channels[me.engaged_channel].getChild("heading-select").setValue(headingdeg);
+   }
+}
+
+Autopilot.heading = func( headingdeg ) {
+   me.settings.getChild("heading-bug-deg").setValue(headingdeg);
+}
+
+# magnetic heading
+Autopilot.magneticheading = func {
+   headingdeg = getprop(me.noinstrument["magnetic"]);
+   me.heading(headingdeg);
+}
+
+# heading hold
+Autopilot.apheadingholdexport = func {
+   mode = me.ap.getChild("horizontal").getValue();
+   if( mode != "magnetic" ) {
+       me.magneticheading();
+       me.apactivatemode2("heading","dg-heading-hold","magnetic");
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+Autopilot.lockmagnetic = func {
+   me.locks.getChild("heading").setValue("dg-heading-hold");
+}
+
+Autopilot.is_lock_magnetic = func {
+   headingmode = me.locks.getChild("heading").getValue();
+   if( headingmode == "dg-heading-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.is_magnetic = func {
+   headingmode = me.ap.getChild("heading").getValue();
+   if( headingmode == "dg-heading-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# toggle heading hold (ctrl-H)
+Autopilot.aptoggleheadingexport = func {
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_magnetic() ) {
+           me.apdischorizontalmode2();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.apheadingexport();
+       }
+   }
+}
+
+Autopilot.istrackheading = func {
+   if( me.ap.getChild("horizontal").getValue() == "track-heading" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+  }
+
+  return result;
+}
+
+Autopilot.apsendheadingexport = func {
+   if( me.istrackheading() ) {
+       if( me.is_engaged() ) {
+           if( !me.channels[me.engaged_channel].getChild("track-push").getValue() ) {
+               me.apactivatemode("heading","dg-heading-hold");
+               headingdeg = me.channels[me.engaged_channel].getChild("heading-select").getValue();
+               me.heading(headingdeg);
+           }
+           else {
+               me.apactivatemode("heading","true-heading-hold");
+               headingdeg = me.channels[me.engaged_channel].getChild("heading-true-select").getValue();
+               me.trueheading(headingdeg);
+           }
+       }
+   }
+}
+
+# autopilot heading
+Autopilot.apheadingexport = func {
+   if( !me.istrackheading() ) {
+       me.apactivatemode("horizontal","track-heading");
+       me.apsendheadingexport();
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+Autopilot.is_vor = func {
+   horizontalmode = me.ap.getChild("horizontal").getValue();
+   if( horizontalmode == "vor" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# VOR loc
+Autopilot.modevorloc = func {
+   if( me.is_nav() and !me.is_glide() ) {
+       me.ap.getChild("horizontal").setValue("vor");
+   }
+}
+
+Autopilot.locknav1 = func {
+   me.locks.getChild("heading").setValue("nav1-hold");
+}
+
+Autopilot.sendnav = func( index, target ) {
+   freqmhz = getprop("/instrumentation/nav[" ~ index ~ "]/frequencies/selected-mhz");
+   setprop("/instrumentation/nav[" ~ target ~ "]/frequencies/selected-mhz",freqmhz);
+   freqmhz = getprop("/instrumentation/nav[" ~ index ~ "]/frequencies/standby-mhz");
+   setprop("/instrumentation/nav[" ~ target ~ "]/frequencies/standby-mhz",freqmhz);
+   radialdeg = getprop("/instrumentation/nav[" ~ index ~ "]/radials/selected-deg");
+   setprop("/instrumentation/nav[" ~ target ~ "]/radials/selected-deg",radialdeg);
+}
+
+Autopilot.apsendnavexport = func {
+   if( me.is_engaged() ) {
+       index = me.engaged_channel + 1;
+       me.sendnav( index, 0 );
+   }
+}
+
+Autopilot.is_lock_nav = func {
+   headingmode = me.locks.getChild("heading").getValue();
+   if( headingmode == "nav1-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# toggle nav 1 hold (ctrl-N)
+Autopilot.aptogglenav1export = func {
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_nav() ) {
+           me.apdischorizontalmode2();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.apvorlocexport();
+       }
+   }
+}
+
+Autopilot.is_nav = func {
+   headingmode = me.ap.getChild("heading").getValue();
+   if( headingmode == "nav1-hold" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# autopilot vor localizer
+Autopilot.apvorlocexport = func {
+   if( !me.is_nav() ) {
+       me.apactivatemode2("heading","nav1-hold","");
+       me.modevorloc();
+       me.apsendnavexport();
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
 }
 
 
@@ -1567,18 +1989,18 @@ Autothrottle.new = func {
            ap : nil,
            engines : nil,
            channels : nil,
+           locks : nil,
+           mouse : nil,
+           settings : nil,
 
            SPEEDACQUIRESEC : 2.0,
 
            MAXMACH : 2.02,
            CRUISEMACH : 2.0,
            CLIMBMACH : 1.7,
+           LIGHTKT : 10.0,
 
-# slaves
-           slave : [ nil, nil, nil ],
-           altimeter : 0,
-           asi : 1,
-           mach : 2
+           slave : { "altimeter" : nil, "asi" : nil, "electric" : nil, "mach" : nil }
          };
 
 # autopilot initialization
@@ -1588,71 +2010,96 @@ Autothrottle.new = func {
 }
 
 Autothrottle.init = func {
-   me.ap = props.globals.getNode("/controls").getChildren("autoflight");
+   me.ap = props.globals.getNode("/controls/autoflight");
    me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
    me.channels = props.globals.getNode("/controls/autoflight").getChildren("autothrottle");
+   me.locks = props.globals.getNode("/autopilot/locks");
+   me.mouse = props.globals.getNode("/devices/status/mice/mouse").getChildren("button");
+   me.settings = props.globals.getNode("/autopilot/settings");
 
    propname = getprop("/systems/autopilot/slave/altimeter");
-   me.slave[me.altimeter] = props.globals.getNode(propname);
+   me.slave["altimeter"] = props.globals.getNode(propname);
    propname = getprop("/systems/autopilot/slave/asi");
-   me.slave[me.asi] = props.globals.getNode(propname);
+   me.slave["asi"] = props.globals.getNode(propname);
+   propname = getprop("/systems/autopilot/slave/electric");
+   me.slave["electric"] = props.globals.getNode(propname);
    propname = getprop("/systems/autopilot/slave/mach");
-   me.slave[me.mach] = props.globals.getNode(propname);
+   me.slave["mach"] = props.globals.getNode(propname);
 
    me.atdiscexport();
 }
 
 Autothrottle.schedule = func {
    me.iaslight();
+   me.releasedatum();
 }
 
 # ias light, when discrepancy with the autothrottle
 Autothrottle.iaslight = func {
    if( me.is_engaged() ) {
-       speedmode = getprop("/controls/autoflight/speed");
-       if( speedmode == "speed-with-throttle" ) {
-           speedkt = getprop("/autopilot/settings/target-speed-kt");
+       if( me.is_speed_throttle() ) {
+           speedkt = me.settings.getChild("target-speed-kt").getValue();
 
            # ias light within 10 kt
-           minkt = speedkt - 10;
+           minkt = speedkt - me.LIGHTKT;
            setprop("/systems/autopilot/airspeed/light-min-kt",minkt);
-           maxkt = speedkt + 10;
+           maxkt = speedkt + me.LIGHTKT;
            setprop("/systems/autopilot/airspeed/light-max-kt",maxkt);
        }
    }
 }
 
+Autothrottle.is_maxcruise = func {
+    speed2 = me.ap.getChild("speed2").getValue();
+    if( speed2 == "maxcruise" ) {
+        result = constant.TRUE;
+    }
+    else {
+        result = constant.FALSE;
+    }
+
+    return result;
+}
+
+Autothrottle.is_maxclimb = func {
+    speed2 = me.ap.getChild("speed2").getValue();
+    if( speed2 == "maxclimb" or speed2 == "maxcruise" ) {
+        result = constant.TRUE;
+    }
+    else {
+        result = constant.FALSE;
+    }
+
+    return result;
+}
+
+Autothrottle.discmaxclimb = func {
+    if( me.is_maxclimb() ) {
+        # switch to speed hold
+        me.atdiscspeed2();
+    }
+}
+
 # max climb mode
-Autothrottle.maxclimb = func( speedmode ) {
-   result = constant.TRUE;
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
+Autothrottle.maxclimb = func {
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
 
    # climb
    if( speedmach < me.CLIMBMACH ) {
-       vmokt = me.slave[me.asi].getChild("vmo-kt").getValue();
-       maxkt = me.slave[me.asi].getChild("overspeed-kt").getValue();
-       speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();      # may be out of order
+       vmokt = me.slave["asi"].getChild("vmo-kt").getValue();
 
        # catches the VMO with autothrottle
-       if( speedkt < maxkt ) {
-            setprop("/autopilot/settings/target-speed-kt",vmokt);
-            me.atactivatemode("/controls/autoflight/speed","speed-with-throttle");
-       }
+       me.speed(vmokt);
+       me.atactivatemode("speed","speed-with-throttle");
 
-       # then holds the VMO with pitch
-       else {
-            result = constant.FALSE;
-            me.atdiscspeed();
-       }
-
-       if( speedmode == "maxcruise" ) {
-           me.atactivatemode("/controls/autoflight/speed2","maxclimb");
+       if( me.is_maxcruise() ) {
+           me.atactivatemode("speed2","maxclimb");
        }
    }
 
    # cruise
    else {
-       mmomach = me.slave[me.mach].getChild("mmo-mach").getValue();
+       mmomach = me.slave["mach"].getChild("mmo-mach").getValue();
 
        # cruise at Mach 2.0-2.02 (reduce fuel consumption)          
        if( mmomach > me.MAXMACH ) {
@@ -1661,27 +2108,37 @@ Autothrottle.maxclimb = func( speedmode ) {
 
        # TO DO : control TMO over 128C
        # catches the MMO with autothrottle
-       setprop("/autopilot/settings/target-mach",mmomach);
-       me.atactivatemode("/controls/autoflight/speed","mach-with-throttle");
+       me.mach(mmomach);
 
-       altft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
+       altft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
        if( speedmach > me.CRUISEMACH or altft > constantaero.MAXCRUISEFT ) {
-           me.atactivatemode("/controls/autoflight/speed2","maxcruise");
+           me.atactivatemode2("speed","mach-with-throttle","maxcruise");
        }
        else {
-           me.atactivatemode("/controls/autoflight/speed2","maxclimb");
+           me.atactivatemode2("speed","mach-with-throttle","maxclimb");
        }
    }
 
-   if( result ) {
-       me.atengage();
+   me.atengage();
+}
+
+Autothrottle.no_voltage = func {
+   if( !me.slave["electric"].getChild("autopilot1").getValue() and
+       !me.slave["electric"].getChild("autopilot2").getValue() ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
    }
 
    return result;
 }
 
 # disconnect if no voltage (cannot disable the autopilot !)
-Autothrottle.voltage = func( voltage1, voltage2 ) {
+Autothrottle.voltage = func() {
+   voltage1 = me.slave["electric"].getChild("autopilot1").getValue();
+   voltage2 = me.slave["electric"].getChild("autopilot2").getValue();
+
    if( !voltage1 or !voltage2 ) {
        # disconnect autothrottle 1
        if( !voltage1 ) {
@@ -1712,32 +2169,23 @@ Autothrottle.voltage = func( voltage1, voltage2 ) {
 # idle throttle
 Autothrottle.idle = func {
    if( me.is_engaged() ) {
-       if( me.engines[0].getChild("throttle").getValue != 0 ) {
-           for(i=0; i<=3; i=i+1) {
-               me.engines[i].getChild("throttle").setValue(0);
-           }
+       for(i=0; i<=3; i=i+1) {
+           me.engines[i].getChild("throttle").setValue(0);
        }
    }
 }
 
 # full foward throttle
 Autothrottle.full = func {
-  if( me.engines[0].getChild("throttle").getValue != 1 ) {
-      for(i=0; i<=3; i=i+1) {
-          me.engines[i].getChild("throttle").setValue(1);
-      }
+  for(i=0; i<=3; i=i+1) {
+      me.engines[i].getChild("throttle").setValue(1);
    }
 }
 
 Autothrottle.goaround = func {
    count = 0;
    for( i=0; i<=3; i=i+1 ) {
-        child = me.engines[i].getChild("throttle-manual");
-        # may not work with Cygwin
-        if( child == nil ) {
-            print("cannot override control.Throttleaxis");
-        }
-        elsif( child.getValue() == 1.0 ) {
+        if( me.engines[i].getChild("throttle-manual").getValue() == 1.0 ) {
             count = count + 1;
         }
    }
@@ -1761,9 +2209,7 @@ Autothrottle.atdiscincompatible = func {
     apchannel2 = arg[1];
 
     # disconnect autothrottle, if not compatible
-    speed2 = me.ap[0].getChild("speed2").getValue();
-
-    if( speed2 == "maxclimb" or speed2 == "maxcruise" ) {
+    if( me.is_maxclimb() ) {
         channel1 = me.channels[0].getChild("engage").getValue();
         channel2 = me.channels[1].getChild("engage").getValue();
 
@@ -1776,24 +2222,23 @@ Autothrottle.atdiscincompatible = func {
 
 # disconnect speed 2 mode
 Autothrottle.atdiscspeed2 = func {
-   setprop("/controls/autoflight/speed2","");
+   me.ap.getChild("speed2").setValue("");
 }
 
 # disconnect speed mode
 Autothrottle.atdiscspeed = func {
-   setprop("/controls/autoflight/speed","");
-   setprop("/autopilot/locks/speed","");
+   me.ap.getChild("speed").setValue("");
 }
 
 # disconnect autothrottle
-Autothrottle.atdiscthrottle = func {
+Autothrottle.atdiscspeedmode2 = func {
    me.atdiscspeed();
    me.atdiscspeed2();
 }
 
 # disconnect autothrottle
 Autothrottle.atdiscexport = func {
-   me.atdiscthrottle();
+   me.atdiscspeedmode2();
 
    me.channels[0].getChild("engage").setValue(constant.FALSE);
    me.channels[1].getChild("engage").setValue(constant.FALSE);
@@ -1801,31 +2246,30 @@ Autothrottle.atdiscexport = func {
    me.atengage();
 }
 
-# activate a mode
-# - property
-# - value
-Autothrottle.atactivatemode = func {
-   property = arg[0];
-   value = arg[1];
+Autothrottle.is_disc = func {
+   speedmode = me.ap.getChild("speed").getValue();
+   speedmode2 = me.ap.getChild("speed2").getValue();
 
-   setprop(property, value);
-}
-
-Autothrottle.is_enabled = func {
-   result = me.is_engaged();
-
-   if( result ) {
-       speedmode = getprop("/controls/autoflight/speed");
-       speedmode2 = getprop("/controls/autoflight/speed2");
-       if( ( speedmode == nil or speedmode == "" ) and ( speedmode2 == nil or speedmode2 == "" ) ) {
-           result = constant.FALSE;
-       }
-       else {
-           result = constant.TRUE;
-       }
+   if( speedmode == "" and speedmode2 == "" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
    }
 
    return result;
+}
+
+Autothrottle.atactivatemode2 = func( property, value, value2 ) {
+   if( property == "speed" ) {
+       me.ap.getChild("speed2").setValue(value2);
+   }
+
+   me.ap.getChild(property).setValue(value);
+}
+
+Autothrottle.atactivatemode = func( property, value ) {
+   me.ap.getChild(property).setValue(value);
 }
 
 Autothrottle.is_engaged = func {
@@ -1842,13 +2286,13 @@ Autothrottle.is_engaged = func {
 
 Autothrottle.atengage = func {
    if( me.is_engaged() ) {
-       mode = getprop("/controls/autoflight/speed");
+       mode = me.ap.getChild("speed").getValue();
    }
    else {
       mode = "";
    }
 
-   setprop("/autopilot/locks/speed",mode);
+   me.locks.getChild("speed").setValue(mode);
 
    me.iaslight();
 }
@@ -1861,22 +2305,19 @@ Autothrottle.atenable = func {
 
 # activate autothrottle
 Autothrottle.atexport = func {
-   ap = props.globals.getNode("/controls").getChildren("autoflight");
-   speed = me.ap[0].getChild("speed").getValue();
-   speed2 = me.ap[0].getChild("speed2").getValue();
    channel1 = me.channels[0].getChild("engage").getValue();
    channel2 = me.channels[1].getChild("engage").getValue();
 
    # only 1 channel in max climb or max cruise mode
    if( channel1 and channel2 ) {
-       if( speed2 == "maxclimb" or speed2 == "maxcruise" ) {
+       if( me.is_maxclimb() ) {
            me.channels[1].getChild("engage").setValue(constant.FALSE);
        }
    }
 
    # IAS hold is default on activation
    elsif( channel1 or channel2 ) {
-       if( speed == "" and speed2 == "" ) {
+       if( me.is_disc() ) {
            me.atspeedholdexport();
        }
        else {
@@ -1896,11 +2337,10 @@ speedacquirecron = func {
 
 Autothrottle.speedacquire = func {
    if( me.is_engaged() ) {
-       speed2mode = getprop("/controls/autoflight/speed2");
-       if( speed2mode == "speed-acquire" ) {
+       if( me.is_speed_acquire() ) {
            minkt = getprop("/systems/autopilot/airspeed/light-min-kt");
            maxkt = getprop("/systems/autopilot/airspeed/light-max-kt");
-           speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
+           speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
 
            # swaps to speed hold
            if( speedkt > minkt and speedkt < maxkt ) {
@@ -1913,17 +2353,37 @@ Autothrottle.speedacquire = func {
    }
 }
 
+Autothrottle.speed = func( speedkt ) {
+   me.settings.getChild("target-speed-kt").setValue(speedkt);
+}
+
+Autothrottle.atspeedselectexport = func {
+   if( me.is_speed_acquire() ) {
+       speedkt = me.ap.getChild("speed-select").getValue();
+       me.speed(speedkt);
+   }
+}
+
+Autothrottle.is_speed_acquire = func {
+   speed2mode = me.ap.getChild("speed2").getValue();
+   if( speed2mode == "speed-acquire" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 # autothrottle
 Autothrottle.atspeedexport = func {
-   speed2mode = getprop("/controls/autoflight/speed2");
-   if( speed2mode != "speed-acquire" ) {
-       setprop("/controls/autoflight/speed2","speed-acquire");
-       speedkt = getprop("/controls/autoflight/speed-select");
-       setprop("/autopilot/settings/target-speed-kt",speedkt);
-       me.atactivatemode("/controls/autoflight/speed","speed-with-throttle");
+   if( !me.is_speed_acquire() ) {
+       me.atactivatemode2("speed","speed-with-throttle","speed-acquire");
+       me.atspeedselectexport();
    }
    else{
-       me.atdiscthrottle();
+       me.atdiscspeedmode2();
    }
 
    me.atengage();
@@ -1931,36 +2391,86 @@ Autothrottle.atspeedexport = func {
    me.speedacquire();
 }
 
-# toggle autothrottle (ctrl-S)
-Autothrottle.attogglespeedexport = func {
-   speedmode = getprop("/autopilot/locks/speed");
-
-   # disable speed hold, if any
-   if( speedmode == "speed-with-throttle" ) {
-       me.atdiscexport();
+Autothrottle.is_lock_vertical = func {
+   speedmode = me.locks.getChild("speed").getValue();
+   if( speedmode == "vertical-speed-with-throttle" ) {
+       result = constant.TRUE;
    }
    else {
-       me.atenable();
-       me.atspeedexport();
+       result = constant.FALSE;
    }
+
+   return result;
+}
+
+Autothrottle.is_lock_glide = func {
+   speedmode = me.locks.getChild("speed").getValue();
+   if( speedmode == "gs1-with-throttle" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autothrottle.is_lock_throttle = func {
+   speedmode = me.locks.getChild("speed").getValue();
+   if( speedmode == "speed-with-throttle" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+# toggle autothrottle (ctrl-S)
+Autothrottle.attogglespeedexport = func {
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_throttle() ) {
+           me.atdiscexport();
+       }
+       else {
+           me.atenable();
+           me.atspeedexport();
+       }
+   }
+}
+
+Autothrottle.mach = func( speedmach ) {
+   me.settings.getChild("target-mach").setValue(speedmach);
 }
 
 # hold mach
 Autothrottle.holdmach = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
-   setprop("/autopilot/settings/target-mach",speedmach);
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   me.mach(speedmach);
+}
+
+Autothrottle.is_mach_throttle = func {
+   speedmode = me.ap.getChild("speed").getValue();
+   if( speedmode == "mach-with-throttle" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # mach hold
 Autothrottle.atmachexport = func {
-   speedmode = getprop("/controls/autoflight/speed");
-   if( speedmode != "mach-with-throttle" ) {
+   if( !me.is_mach_throttle() ) {
        me.holdmach();
-       me.atactivatemode("/controls/autoflight/speed","mach-with-throttle");
-       me.atdiscspeed2();
+       me.atactivatemode("speed","mach-with-throttle","");
    }
    else{
-       me.atdiscthrottle();
+       me.atdiscspeedmode2();
    }
 
    me.atengage();
@@ -1968,30 +2478,61 @@ Autothrottle.atmachexport = func {
 
 # hold speed
 Autothrottle.holdspeed = func {
-   speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
-   setprop("/autopilot/settings/target-speed-kt",speedkt);
+   speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+   me.speed(speedkt);
+}
+
+Autothrottle.is_speed_throttle = func {
+   speedmode = me.ap.getChild("speed").getValue();
+   if( speedmode == "speed-with-throttle" ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autothrottle.is_speed_hold = func {
+   speed2mode = me.ap.getChild("speed2").getValue();
+   if( speed2mode == "" and me.is_speed_throttle() ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
 }
 
 # speed hold
 Autothrottle.atspeedholdexport = func {
-   speedmode = getprop("/controls/autoflight/speed");
-   speed2mode = getprop("/controls/autoflight/speed2");
-   if( speed2mode != "" or speedmode != "speed-with-throttle" ) {
+   if( !me.is_speed_hold() ) {
        me.holdspeed();
-       me.atactivatemode("/controls/autoflight/speed","speed-with-throttle");
-       me.atdiscspeed2();
+       me.atactivatemode2("speed","speed-with-throttle","");
    }
    else{
-       me.atdiscthrottle();
+       me.atdiscspeedmode2();
    }
 
    me.atengage();
 }
 
+# spring returns to center, once released by hand
+Autothrottle.releasedatum = func {
+   if( me.ap.getNode("datum/speed").getValue() != 0.0 ) {
+       # no mouse left click
+       if( !me.mouse[0].getValue() ) {
+           me.ap.getNode("datum/speed").setValue(0.0);
+       }
+   }
+}
+
 # datum adjust of autothrottle, argument :
 # - step : plus/minus 1
 Autothrottle.datumatexport = func( sign ) {
-   speedmode = getprop("/autopilot/locks/speed");
+   speedmode = me.locks.getChild("speed").getValue();
    if( speedmode != "" and speedmode != nil ) {
        result = constant.TRUE;
 
@@ -2013,7 +2554,7 @@ Autothrottle.datumatexport = func( sign ) {
        }
 
        # limited to plus/minus 10 steps
-       datum = getprop("/controls/autoflight/datum/speed");
+       datum = me.ap.getNode("datum/speed").getValue();
        if( datum == nil ) {
            datum = step;
        }
@@ -2039,17 +2580,17 @@ Autothrottle.datumatexport = func( sign ) {
 
        if( datum >= -10.0 and datum <= 10.0 ) {
            if( speedmode == "mach-with-throttle" ) {
-               targetmach = getprop("/autopilot/settings/target-mach");
+               targetmach = me.settings.getChild("target-mach").getValue();
                targetmach = targetmach + value;
-               setprop("/autopilot/settings/target-mach",targetmach);
+               me.mach(targetmach);
            }
            elsif( speedmode == "speed-with-throttle" ) {
-               targetkt = getprop("/autopilot/settings/target-speed-kt");
+               targetkt = me.settings.getChild("target-speed-kt").getValue();
                targetkt = targetkt + value;
-               setprop("/autopilot/settings/target-speed-kt",targetkt);
+               me.speed(targetkt);
            }
 
-           setprop("/controls/autoflight/datum/speed",datum);
+           me.ap.getNode("datum/speed").setValue(datum);
        }
    }
 
@@ -2070,9 +2611,7 @@ Gpws = {};
 Gpws.new = func {
    obj = { parents : [Gpws],
 
-# slaves
-           slave : [ nil ],
-           radioaltimeter : 0
+           slave : { "radioaltimeter" : nil }
          };
 
    obj.init();
@@ -2082,19 +2621,19 @@ Gpws.new = func {
 
 Gpws.init = func {
    propname = getprop("/systems/gpws/slave/radio-altimeter");
-   me.slave[me.radioaltimeter] = props.globals.getNode(propname);
+   me.slave["radioaltimeter"] = props.globals.getNode(propname);
 
    # reads the user customization, JSBSim has an offset of 11 ft
-   decisionft = me.slave[me.radioaltimeter].getChild("dial-decision-ft").getValue();
+   decisionft = me.slave["radioaltimeter"].getChild("dial-decision-ft").getValue();
    decisionft = decisionft + constantaero.AGLFT;
-   me.slave[me.radioaltimeter].getChild("decision-ft").setValue(decisionft);
+   me.slave["radioaltimeter"].getChild("decision-ft").setValue(decisionft);
 }
 
 Gpws.schedule = func {
     if( getprop("/systems/gpws/serviceable") ) {
         if( !getprop("/systems/gpws/decision-height") ) {
-            decisionft = me.slave[me.radioaltimeter].getChild("decision-ft").getValue();
-            aglft = me.slave[me.radioaltimeter].getChild("indicated-altitude-ft").getValue();
+            decisionft = me.slave["radioaltimeter"].getChild("decision-ft").getValue();
+            aglft = me.slave["radioaltimeter"].getChild("indicated-altitude-ft").getValue();
 
             # reset the DH light
             if( aglft > decisionft ) {

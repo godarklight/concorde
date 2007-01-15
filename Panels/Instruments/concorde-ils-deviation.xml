@@ -3,14 +3,18 @@
 <!-- ILS deviation :
 
      - flashes if missing ILS.
-     - the bars are not implemented.
+     - the white bars are not implemented.
      - flashes on test.
 -->
 
 <PropertyList>
  <name>ILS deviation</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>52</w-base>
+ <h-base>52</h-base>
+
+ <params>
+  <test>/controls/autoflight/autopilot[0]/test-land</test>
+ </params>
 
 
  <layers>
@@ -27,7 +31,9 @@
       <and>
        <or>
         <or include="concorde-cond-flashing-light.xml"/>    <!-- bug -->
-        <not include="concorde-cond-test-land.xml"/>
+        <not>
+         <property alias="../../../../../../../../../params/test"/>
+        </not>
        </or>
        <or include="concorde-cond-flashing-light.xml">
         <and>
@@ -47,16 +53,8 @@
      </or>
     </condition>
 
-    <layer>
-     <name>lamp off</name>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
+    <layer include="concorde-bulb-off.xml">
+     <w>52</w>
      <h>52</h>
     </layer>
     <layer>
@@ -68,7 +66,7 @@
       <x2>1.0</x2>
       <y2>0.9</y2>
      </texture>
-     <w>104</w>
+     <w>52</w>
      <h>52</h>
     </layer>
    </layer>
@@ -76,17 +74,11 @@
    <layer>
     <name>on</name>
     <type>group</type>
-    <layer>
-     <name>lamp on</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.37</x1>
-      <y1>0.0</y1>
-      <x2>0.38</x2>
-      <y2>0.095</y2>
-     </texture>
-     <w>104</w>
+
+    <layer include="concorde-bulb-on.xml">
+     <w>52</w>
      <h>52</h>
+     <emissive>true</emissive>
     </layer>
     <layer>
      <name>background lighted</name>
@@ -97,8 +89,9 @@
       <x2>1.0</x2>
       <y2>0.9</y2>
      </texture>
-     <w>104</w>
+     <w>52</w>
      <h>52</h>
+     <emissive>true</emissive>
     </layer>
    </layer>
 
@@ -107,7 +100,7 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>46</point-size>
+   <point-size>25</point-size>
    <color>
     <red>0.0</red>
     <green>0.0</green>
@@ -122,7 +115,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-38</offset>
+     <offset>-19</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

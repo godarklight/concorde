@@ -5,7 +5,7 @@
 <PropertyList>
 
  <name>RAT selector</name>
- <w-base>102</w-base>
+ <w-base>153</w-base>
  <h-base>102</h-base>
 
  <params>
@@ -47,10 +47,7 @@
    <layer>
     <name>3rd state</name>
     <condition>
-     <equals>
-      <property alias="../../../../../params/rat-test"/>
-      <value>on</value>
-     </equals>
+     <property alias="../../../../../params/rat-test"/>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
@@ -326,6 +323,7 @@
 
   <action>
    <name>On selector (only 1 time)</name>
+   <button>0</button>
    <condition>
     <and>
      <not>
@@ -336,7 +334,6 @@
      </not>
     </and>
    </condition>
-   <button>0</button>
    <x>-5</x>
    <y>-35</y>
    <w>42</w>
@@ -362,19 +359,18 @@
 
   <action>
    <name>Test selector</name>
+   <button>0</button>
    <condition>
     <and>
      <not>
       <property alias="../../../../../../params/rat-on"/>
      </not>
-     <not-equals>
+     <not>
       <property>/systems/hydraulic/rat/test</property>
-      <value>on</value>
-     </not-equals>
+     </not>
      <property alias="../../../../../params/rat-guard"/>
     </and>
    </condition>
-   <button>0</button>
    <x>-5</x>
    <y>-35</y>
    <w>42</w>
@@ -382,7 +378,7 @@
    <binding>
     <command>property-assign</command>
     <property alias="../../../../params/rat-test"/>
-    <value>on</value>
+    <value>true</value>
    </binding>
    <binding>
     <command>nasal</command>
@@ -396,20 +392,19 @@
 
   <action>
    <name>Toggle guard</name>
+   <button>1</button>
    <condition>
     <not>
      <property alias="../../../../../params/rat-on"/>
     </not>
    </condition>
-   <button>0</button>
    <x>-5</x>
-   <y>10</y>
+   <y>-35</y>
    <w>42</w>
    <h>42</h>
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/rat-guard"/>
-    <property>/systems/hydraulic/rat/selector[0]/guard</property>
    </binding>
    <binding>
     <command>property-toggle</command>

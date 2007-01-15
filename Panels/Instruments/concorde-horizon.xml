@@ -35,6 +35,14 @@ properties' values.
  <w-base>128</w-base>
  <h-base>128</h-base>
 
+ <params>
+  <roll-deg>/instrumentation/attitude-indicator[0]/indicated-roll-deg</roll-deg>
+  <pitch-deg>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</pitch-deg>
+  <offset-deg>/instrumentation/attitude-indicator[0]/horizon-offset-deg</offset-deg>
+  <fd2>/instrumentation/attitude-indicator[0]/fd2</fd2>
+ </params>
+
+
  <layers>
   <layer>
    <name>background</name>
@@ -49,7 +57,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -72,7 +80,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -80,7 +88,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>y-shift</type>
-     <property>/instrumentation/attitude-indicator/indicated-pitch-deg</property>
+     <property alias="../../../../../params/pitch-deg"/>
      <min>-20.0</min>
      <max>20.0</max>
      <scale>-1.075</scale>
@@ -102,7 +110,7 @@ properties' values.
     <transformation>
      <condition include="concorde-cond-voltage-horizon.xml"/>
      <type>rotation</type>
-     <property>/instrumentation/attitude-indicator/indicated-roll-deg</property>
+     <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
      <scale>-1</scale>
@@ -124,7 +132,7 @@ properties' values.
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
+     <property alias="../../../../../params/offset-deg"/>
      <offset>-17</offset>
     </transformation>
    </transformations>
@@ -148,8 +156,16 @@ properties' values.
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
      <or>
-      <property>/controls/autoflight/flight-director[0]/engage</property>
-      <property>/controls/autoflight/flight-director[1]/engage</property>
+      <and>
+       <not>
+        <property alias="../../../../../../../../params/fd2"/>
+       </not>
+       <property>/controls/autoflight/flight-director[0]/engage</property>
+      </and>
+      <and>
+       <property alias="../../../../../../../params/fd2"/>
+       <property>/controls/autoflight/flight-director[1]/engage</property>
+      </and>
      </or>
     </and>
    </condition>
@@ -168,8 +184,23 @@ properties' values.
      <offset>-23</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/fd2"/>
+      </not>
+     </condition>
      <type>x-shift</type>
-     <property>/instrumentation/nav[0]/heading-needle-deflection</property>
+     <property>/instrumentation/nav[1]/heading-needle-deflection</property>
+     <min>-12.0</min>
+     <max>12.0</max>
+     <scale>4.0</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/fd2"/>
+     </condition>
+     <type>x-shift</type>
+     <property>/instrumentation/nav[2]/heading-needle-deflection</property>
      <min>-12.0</min>
      <max>12.0</max>
      <scale>4.0</scale>
@@ -191,10 +222,19 @@ properties' values.
    <name>GS needle left</name>
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
-     <property>/instrumentation/nav[0]/has-gs</property>
      <or>
-      <property>/controls/autoflight/flight-director[0]/engage</property>
-      <property>/controls/autoflight/flight-director[1]/engage</property>
+      <and>
+       <not>
+        <property alias="../../../../../../../../params/fd2"/>
+       </not>
+       <property>/instrumentation/nav[1]/has-gs</property>
+       <property>/controls/autoflight/flight-director[0]/engage</property>
+      </and>
+      <and>
+       <property alias="../../../../../../../params/fd2"/>
+       <property>/instrumentation/nav[2]/has-gs</property>
+       <property>/controls/autoflight/flight-director[1]/engage</property>
+      </and>
      </or>
     </and>
    </condition>
@@ -213,8 +253,24 @@ properties' values.
      <offset>-40</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/fd2"/>
+      </not>
+     </condition>
      <type>y-shift</type>
-     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[1]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>3.7</scale>
+     <offset>-1</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/fd2"/>
+     </condition>
+     <type>y-shift</type>
+     <property>/instrumentation/nav[2]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>3.7</scale>
@@ -227,10 +283,19 @@ properties' values.
    <name>GS needle right</name>
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
-     <property>/instrumentation/nav[0]/has-gs</property>
      <or>
-      <property>/controls/autoflight/flight-director[0]/engage</property>
-      <property>/controls/autoflight/flight-director[1]/engage</property>
+      <and>
+       <not>
+        <property alias="../../../../../../../../params/fd2"/>
+       </not>
+       <property>/instrumentation/nav[1]/has-gs</property>
+       <property>/controls/autoflight/flight-director[0]/engage</property>
+      </and>
+      <and>
+       <property alias="../../../../../../../params/fd2"/>
+       <property>/instrumentation/nav[2]/has-gs</property>
+       <property>/controls/autoflight/flight-director[1]/engage</property>
+      </and>
      </or>
     </and>
    </condition>
@@ -249,8 +314,24 @@ properties' values.
      <offset>40</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/fd2"/>
+      </not>
+     </condition>
      <type>y-shift</type>
-     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[1]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>3.7</scale>
+     <offset>-1</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/fd2"/>
+     </condition>
+     <type>y-shift</type>
+     <property>/instrumentation/nav[2]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>3.7</scale>
@@ -268,12 +349,19 @@ properties' values.
      <not include="concorde-cond-voltage-horizon.xml"/>
      <and>
       <not>
-       <property>/instrumentation/nav[0]/in-range</property>
+       <property alias="../../../../../../../params/fd2"/>
       </not>
-      <or>
-       <property>/controls/autoflight/flight-director[0]/engage</property>
-       <property>/controls/autoflight/flight-director[1]/engage</property>
-      </or>
+      <not>
+       <property>/instrumentation/nav[1]/in-range</property>
+      </not>
+      <property>/controls/autoflight/flight-director[0]/engage</property>
+     </and>
+     <and>
+      <property alias="../../../../../../params/fd2"/>
+      <not>
+       <property>/instrumentation/nav[2]/in-range</property>
+      </not>
+      <property>/controls/autoflight/flight-director[1]/engage</property>
      </and>
     </or>
    </condition>
@@ -308,14 +396,14 @@ properties' values.
    <y>-62</y>
    <w>11</w>
    <h>22</h>
-  <binding>
-  <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
-   <step>-0.5</step>
-   <min>-5</min>
-   <max>5</max>
-   <wrap>false</wrap>
-  </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/offset-deg"/>
+    <step>-0.5</step>
+    <min>-5</min>
+    <max>5</max>
+    <wrap>false</wrap>
+   </binding>
   </action>
 
   <action>
@@ -325,14 +413,14 @@ properties' values.
    <y>-62</y>
    <w>11</w>
    <h>22</h>
-  <binding>
-  <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
-   <step>-5</step>
-   <min>-5</min>
-   <max>5</max>
-   <wrap>false</wrap>
-  </binding>
+   <binding>
+   <command>property-adjust</command>
+    <property alias="../../../../params/offset-deg"/>
+    <step>-5</step>
+    <min>-5</min>
+    <max>5</max>
+    <wrap>false</wrap>
+   </binding>
   </action>
 
   <action>
@@ -342,15 +430,15 @@ properties' values.
    <y>-62</y>
    <w>11</w>
    <h>22</h>
-  <binding>
-  <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
-   <step>0.5</step>
-   <min>-5</min>
-   <max>5</max>
-   <wrap>false</wrap>
-  </binding>
- </action>
+   <binding>
+   <command>property-adjust</command>
+    <property alias="../../../../params/offset-deg"/>
+    <step>0.5</step>
+    <min>-5</min>
+    <max>5</max>
+    <wrap>false</wrap>
+   </binding>
+  </action>
 
   <action>
    <name>coarse raise</name>
@@ -359,16 +447,16 @@ properties' values.
    <y>-62</y>
    <w>11</w>
    <h>22</h>
-  <binding>
-  <command>property-adjust</command>
-   <property>/instrumentation/attitude-indicator/horizon-offset-deg</property>
-   <step>5</step>
-   <min>-5</min>
-   <max>5</max>
-   <wrap>false</wrap>
-  </binding>
- </action>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/offset-deg"/>
+    <step>5</step>
+    <min>-5</min>
+    <max>5</max>
+    <wrap>false</wrap>
+   </binding>
+  </action>
 
-</actions>
+ </actions>
 
 </PropertyList>

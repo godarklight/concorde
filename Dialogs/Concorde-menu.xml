@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-menu</name>
+  <modal>false</modal>
+  <layout>vbox</layout>
+
+  <text>
+    <label>Concorde menu</label>
+  </text>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>hbox</layout>
+    <empty><stretch>true</stretch></empty>
+
+    <button>
+      <legend>Crew</legend>
+      <key>c</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-crew</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Fuel</legend>
+      <key>f</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-fuel</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Instrument</legend>
+      <key>i</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-instruments</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Navigation</legend>
+      <key>n</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-navigation</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Radio</legend>
+      <key>r</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-radios</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>System</legend>
+      <key>s</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-systems</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Help</legend>
+      <key>h</key>
+      <binding>
+       <command>nasal</command>
+       <script>gui.showHelpDialog("/sim/help")</script>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <empty><stretch>true</stretch></empty>
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label>press the first letter, or escape/return</label>
+    <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.5</blue>
+    </color>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>hbox</layout>
+    <empty><stretch>true</stretch></empty>
+
+    <button>
+      <legend>Close</legend>
+      <default>true</default>
+      <key>Esc</key>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <empty><stretch>true</stretch></empty>
+  </group>
+</PropertyList>

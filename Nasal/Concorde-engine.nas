@@ -36,10 +36,6 @@ Engine.set_rate = func( rates ) {
    me.bucket.set_rate( rates );
 }
 
-Engine.set_relation = func( autopilot ) {
-   me.rating.set_relation( autopilot );
-}
-
 # engine controls
 Engine.schedule = func {
     me.bucket.schedule();
@@ -85,6 +81,7 @@ EngineN1 = {};
 
 EngineN1.new = func {
    obj = { parents : [EngineN1],
+
            N1MAX : 88.0,                                  # maximum N1
            N1LIMITER : 0.0,                               # lowest N1 during the control
            ENGINE4KT : 60.0,
@@ -92,12 +89,11 @@ EngineN1.new = func {
            NON1 : -1.0,
            lastn1 : 0.0,
            engine4limiter : constant.FALSE,
+
            engcontrols : nil,
            engines : nil,
 
-# slaves
-           slave : [ nil ],
-           asi : 0
+           slave : { "asi" : nil }
          };
 
    obj.init();
@@ -106,8 +102,8 @@ EngineN1.new = func {
 };
 
 EngineN1.init = func {
-    propname = getprop("/engines/slave/asi");
-    me.slave[me.asi] = props.globals.getNode(propname);
+    propname = getprop("/systems/engines/slave/asi");
+    me.slave["asi"] = props.globals.getNode(propname);
 
     me.engines = props.globals.getNode("/engines").getChildren("engine");
     me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
@@ -125,7 +121,7 @@ takeofflimitercron = func {
 
 # Engine 4 N1 takeoff limiter
 EngineN1.takeofflimiter = func {
-    speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
+    speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
     rates = 5.0;
     saven1 = me.NON1;
 
@@ -217,9 +213,11 @@ Rating = {};
 Rating.new = func {
    obj = { parents : [Rating],
 
-           autopilotsystem : nil,
+           engines : nil,
+           gears : nil,
 
-           engines : nil
+           GEARLEFT : 1,
+           GEARRIGHT : 3
          };
 
    obj.init();
@@ -229,43 +227,29 @@ Rating.new = func {
 
 Rating.init = func {
    me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
-}
-
-Rating.set_relation = func( autopilot ) {
-   me.autopilotsystem = autopilot;
-}
-
-# no engine rating in JSBSim : emulates the engineer
-Rating.humanemulation = func() {
-   rating = "climb";
-
-   aglft = noinstrument.get_agl_ft();
-   if( aglft <= 1500.0 ) {
-       rating = "takeoff";
-   }
-
-   elsif( me.autopilotsystem.is_altitude_hold() ) {
-       rating = "cruise";
-   }
-
-   else {
-       speedmach = noinstrument.get_mach();
-       # see check-list
-       if( speedmach > 1.95 ) {
-           rating = "cruise";
-       }
-   }
-
-   for( i=0; i<4; i=i+1 ) {
-        ratingnow = me.engines[i].getChild("rating").getValue();
-        if( ratingnow != rating and rating != "contingency" ) {
-            me.engines[i].getChild("rating").setValue(rating);
-        }
-   }
+   me.gears = props.globals.getNode("/gear").getChildren("gear");
 }
 
 Rating.schedule = func {
-   me.humanemulation();
+   # arm takeoff rating
+   for( i=0; i<4; i=i+1 ) {
+        ratingnow = me.engines[i].getChild("rating").getValue();
+        if( ratingnow != "takeoff" ) {
+            # engines 2 and 3 by right gear
+            if( i > 0 and i < 3 ) {
+                j = me.GEARRIGHT;
+            }
+
+            # engines 1 and 4 armed by left gear
+            else {
+                j = me.GEARLEFT;
+            }
+
+            if( me.gears[j].getChild("position-norm").getValue() == 1.0 ) {
+                me.engines[i].getChild("rating").setValue("takeoff");
+            }
+        }
+   }
 
    monitor = getprop("/instrumentation/takeoff-monitor/armed");
 
@@ -276,11 +260,11 @@ Rating.schedule = func {
        if( augmentation and rating == "takeoff" ) {
            # automatic contigency, if takeoff monitor
            if( monitor ) {
-               me.engines[i].getChild("rating").setValue("contingency");
+               me.engines[i].getChild("contingency").setValue(constant.TRUE);
            }
        }
-       elsif( !augmentation and rating == "contingency" ) {
-           me.engines[i].getChild("rating").setValue("takeoff");
+       elsif( !augmentation and me.engines[i].getChild("contingency").getValue() ) {
+           me.engines[i].getChild("contingency").setValue(constant.FALSE);
        }
    }
 }
@@ -294,6 +278,7 @@ Bucket = {};
 
 Bucket.new = func {
    obj = { parents : [Bucket],
+
            TRANSITSEC : 6.0,                                   # reverser transit in 6 s
            BUCKETSEC : 1.0,                                    # refresh rate
            RATEDEG : 0.0,                                      # maximum rotation speed
@@ -303,13 +288,12 @@ Bucket.new = func {
            SUBSONICMACH : 0.55,
            SUPERSONICMACH : 1.1,
            COEF : 0.0,
+
            propulsions : nil,
            engcontrols : nil,
            engines : nil,
 
-# slaves
-           slave : [ nil ],
-           mach : 0
+           slave : { "mach" : nil }
          };
 
    obj.init();
@@ -325,12 +309,12 @@ Bucket.set_rate = func( rates ) {
 }
 
 Bucket.init = func {
-   propname = getprop("/engines/slave/mach");
-   me.slave[me.mach] = props.globals.getNode(propname);
+   propname = getprop("/systems/engines/slave/mach");
+   me.slave["mach"] = props.globals.getNode(propname);
 
    me.propulsions = props.globals.getNode("/fdm/jsbsim/propulsion").getChildren("engine");
 
-   me.engines = props.globals.getNode("/engines").getChildren("engine");
+   me.engines = props.globals.getNode("/systems/engines").getChildren("engine");
    me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
 
    me.set_rate( me.BUCKETSEC );
@@ -376,7 +360,7 @@ Bucket.apply = func( property, angledeg, targetdeg ) {
 
 # bucket position
 Bucket.position = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
    # takeoff : 21 deg
    if( speedmach < me.SUBSONICMACH ) {
        bucketdeg = me.TAKEOFFDEG;
@@ -404,7 +388,7 @@ Bucket.position = func {
        }
 
        result = me.engines[i].getChild("bucket-deg").getValue();
-       me.apply( "/engines/engine[" ~ i ~ "]/bucket-deg", result, valuedeg );
+       me.apply( "/systems/engines/engine[" ~ i ~ "]/bucket-deg", result, valuedeg );
 # reverser was implemented by 0.9.9
 #       result = me.propulsions[i].getChild("reverser-angle").getValue();
 #       me.apply( "/fdm/jsbsim/propulsion/engine[" ~ i ~ "]/reverser-angle", result, angledeg );
@@ -420,14 +404,14 @@ AirDoor = {};
 
 AirDoor.new = func {
    obj = { parents : [AirDoor],
+
            ENGINESMACH : 0.26,
            ENGINE4KT : 220.0,
-           engines : nil,
 
-# slaves
-           slave : [ nil, nil ],
-           asi : 0,
-           mach : 1
+           engines : nil,
+           engcontrols : nil,
+
+           slave : { "asi" : nil, "mach" : nil }
          };
 
    obj.init();
@@ -436,52 +420,57 @@ AirDoor.new = func {
 };
 
 AirDoor.init = func {
-   me.engines = props.globals.getNode("/engines").getChildren("engine");
+   me.engines = props.globals.getNode("/systems/engines").getChildren("engine");
+   me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
 
-   propname = getprop("/engines/slave/asi");
-   me.slave[me.asi] = props.globals.getNode(propname);
-   propname = getprop("/engines/slave/mach");
-   me.slave[me.mach] = props.globals.getNode(propname);
+   propname = getprop("/systems/engines/slave/asi");
+   me.slave["asi"] = props.globals.getNode(propname);
+   propname = getprop("/systems/engines/slave/mach");
+   me.slave["mach"] = props.globals.getNode(propname);
 }
 
 # air door position
 AirDoor.schedule = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
-   speedkt = me.slave[me.asi].getChild("indicated-speed-kt").getValue();
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
 
-   # left gear
-   gearpos = getprop("/gear/gear[1]/position-norm");
-   touchdown = getprop("/gear/gear[1]/wow");
+   touchdown = getprop("/instrumentation/weight-switch/wow");
 
    # engines 1 to 3 :
    for( i=0; i<3; i=i+1 ) {
-       value = me.engines[i].getChild("secondary-air-door").getValue();
-       # opens above Mach 0.26
-       if( !value ) {
-           if( speedmach > me.ENGINESMACH ) {
-               value = constant.TRUE;
+       if( me.engcontrols[i].getChild("secondary-air-door").getValue() ) {
+           value = me.engines[i].getChild("secondary-air-door").getValue();
+           # opens above Mach 0.26
+           if( !value ) {
+               if( speedmach > me.ENGINESMACH ) {
+                   value = constant.TRUE;
+               }
            }
+           # shuts below Mach 0.26, if touch down
+           elsif( speedmach < me.ENGINESMACH and touchdown ) {
+               value = constant.FALSE;
+           }
+           me.engines[i].getChild("secondary-air-door").setValue(value);
        }
-       # shuts below Mach 0.26, if touch down
-       elsif( speedmach < me.ENGINESMACH and touchdown ) {
-           value = constant.FALSE;
-       }
-       me.engines[i].getChild("secondary-air-door").setValue(value);
    }
 
    # engine 4
-   value = me.engines[3].getChild("secondary-air-door").getValue();
-   # opens above 220 kt
-   if( !value ) {
-       if( speedkt > me.ENGINE4KT ) {
-           value = constant.TRUE;
+   if( me.engcontrols[3].getChild("secondary-air-door").getValue() ) {
+       gearpos = getprop("/gear/gear[1]/position-norm");
+
+       value = me.engines[3].getChild("secondary-air-door").getValue();
+       # opens above 220 kt
+       if( !value ) {
+           if( speedkt > me.ENGINE4KT ) {
+               value = constant.TRUE;
+           }
+       } 
+       # shuts below Mach 0.26, gear down
+       elsif( speedmach < me.ENGINESMACH and gearpos == 1.0 ) {
+           value = constant.FALSE;
        }
-   } 
-   # shuts below Mach 0.26, gear down
-   elsif( speedmach < me.ENGINESMACH and gearpos == 1.0 ) {
-       value = constant.FALSE;
+       me.engines[3].getChild("secondary-air-door").setValue(value);
    }
-   me.engines[3].getChild("secondary-air-door").setValue(value);
 }
 
 
@@ -493,16 +482,16 @@ Intake = {};
 
 Intake.new = func {
    obj = { parents : [Intake],
+
            MAXRAMP : 50.0,
            MINRAMP : 0.0,
            MAXMACH : 2.02,
            MINMACH : 1.3,
            OFFSETMACH : 0.0,
+
            engines : nil,
 
-# slaves
-           slave : [ nil ],
-           mach : 0
+           slave : { "mach" : nil }
          };
 
    obj.init();
@@ -511,17 +500,17 @@ Intake.new = func {
 };
 
 Intake.init = func {
-   propname = getprop("/engines/slave/mach");
-   me.slave[me.mach] = props.globals.getNode(propname);
+   propname = getprop("/systems/engines/slave/mach");
+   me.slave["mach"] = props.globals.getNode(propname);
 
-   me.engines = props.globals.getNode("/engines").getChildren("engine");
+   me.engines = props.globals.getNode("/systems/engines").getChildren("engine");
 
    me.OFFSETMACH = me.MAXMACH - me.MINMACH;
 }
 
 # ramp position
 Intake.schedule = func {
-   speedmach = me.slave[me.mach].getChild("indicated-mach").getValue();
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
    if( speedmach <= me.MINMACH ) {
        ramppercent = me.MINRAMP;
    }

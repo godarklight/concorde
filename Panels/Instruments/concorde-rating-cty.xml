@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Concorde engine rating : contingency.
+<!-- Concorde engine rating : contingency :
 
-Flashing if automatic selection of contingency = reheat selector + takeoff monitor.
-
-Flightgear doesn't have support for engine rating.
+     - flashing if automatic selection of contingency = reheat selector + takeoff monitor.
+     - Flightgear doesn't have support for engine rating.
 -->
 
 <PropertyList>
@@ -22,64 +21,72 @@ Flightgear doesn't have support for engine rating.
  
    <layer>
     <name>off</name>
+    <type>group</type>
     <condition>
-     <or include="concorde-cond-flashing-light.xml">
+     <or>
       <and>
-       <not-equals>
-        <property>/controls/engines/engine[0]/rating</property>
-        <value>contingency</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[1]/rating</property>
-        <value>contingency</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[2]/rating</property>
-        <value>contingency</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[3]/rating</property>
-        <value>contingency</value>
-       </not-equals>
+       <or include="concorde-cond-flashing-light.xml">
+        <and>
+         <not>
+          <property>/controls/engines/engine[0]/contingency</property>
+         </not>
+         <not>
+          <property>/controls/engines/engine[1]/contingency</property>
+         </not>
+         <not>
+          <property>/controls/engines/engine[2]/contingency</property>
+         </not>
+         <not>
+          <property>/controls/engines/engine[3]/contingency</property>
+         </not>
+        </and>
+       </or>
+       <or include="concorde-cond-test-captain.xml"/>
       </and>
       <or include="concorde-cond-voltage-bulb.xml"/>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
    </layer>
+
    <layer>
     <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.37</x1>
-     <y1>0.0</y1>
-     <x2>0.38</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
-    <x1>0.7</x1>
-    <y1>0.8</y1>
-    <x2>1.0</x2>
-    <y2>0.9</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+      <x1>0.7</x1>
+      <y1>0.8</y1>
+      <x2>1.0</x2>
+      <y2>0.9</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
   <layer>

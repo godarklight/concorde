@@ -16,10 +16,9 @@
    <layer>
     <name>off</name>
     <condition>
-     <not-equals>
-      <property>/systems/fuel/pump/aft</property>
-      <value>on</value>
-     </not-equals>
+     <not>
+      <property>/controls/fuel/pumps/aft</property>
+     </not>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -87,57 +86,17 @@
  </layers>
  
  <actions>
-  <action>
-   <desc>Enable Aft Pump</desc>
-   <button>0</button>
-   <condition>
-    <not-equals>
-     <property>/systems/fuel/pump/aft</property>
-     <value>on</value>
-    </not-equals>
-   </condition>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property>/systems/fuel/pump/forward</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/systems/fuel/pump/aft</property>
-    <value type="string">on</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
 
   <action>
-   <desc>Disable Aft Pump</desc>
+   <desc>Toggle Aft Pump</desc>
    <button>0</button>
-   <condition>
-    <equals>
-     <property>/systems/fuel/pump/aft</property>
-     <value>on</value>
-    </equals>
-   </condition>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
-    <property>/systems/fuel/pump/forward</property>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/systems/fuel/pump/aft</property>
-    <value type="string"></value>
+    <command>nasal</command>
+    <script>globals.Concorde.fuelsystem.aftexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

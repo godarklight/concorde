@@ -37,25 +37,28 @@ properties' values.
 
 <PropertyList>
 
- <name>T-38 Airspeed Indicator</name>
+ <name>Airspeed Indicator</name>
+ <w-base>128</w-base>
+ <h-base>128</h-base>
  
-  <w-base>128</w-base>
-  <h-base>128</h-base>
+ <params>
+  <test>/controls/lighting/crew/captain/test</test>
+ </params>
   
  
-  <layers>
-   <layer>
-    <name>gauge face</name>
-    <texture>   
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/T38-airspeed.rgb</path>
-     <x1>0.5</x1>
-     <y1>0.5</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>112</w>
-    <h>112</h>
-   </layer>
+ <layers>
+  <layer>
+   <name>gauge face</name>
+   <texture>   
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/T38-airspeed.rgb</path>
+    <x1>0.5</x1>
+    <y1>0.5</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+   </texture>
+   <w>112</w>
+   <h>112</h>
+  </layer>
 
   <layer>
    <name>Digital windows</name>
@@ -271,23 +274,32 @@ properties' values.
    <layer>
     <name>Warning light</name>
     <type>switch</type>
+
     <layer>
      <name>off</name>
+     <type>group</type>
      <condition>
       <or>
-       <not-equals>
-        <property>/autopilot/locks/speed</property>
-        <value>speed-with-throttle</value>
-       </not-equals>
        <and>
-        <greater-than-equals>
-         <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-         <property n="1">/systems/autopilot/airspeed/light-min-kt</property>
-        </greater-than-equals>
-        <less-than-equals>
-         <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-         <property n="1">/systems/autopilot/airspeed/light-max-kt</property>
-        </less-than-equals>
+        <or>
+         <not-equals>
+          <property>/autopilot/locks/speed</property>
+          <value>speed-with-throttle</value>
+         </not-equals>
+         <and>
+          <greater-than-equals>
+           <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+           <property n="1">/systems/autopilot/airspeed/light-min-kt</property>
+          </greater-than-equals>
+          <less-than-equals>
+           <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+           <property n="1">/systems/autopilot/airspeed/light-max-kt</property>
+          </less-than-equals>
+         </and>
+        </or>
+        <not>
+         <property alias="../../../../../../../../params/test"/>
+        </not>
        </and>
        <not include="concorde-cond-voltage-inst.xml"/>
        <not>
@@ -295,62 +307,58 @@ properties' values.
        </not>
       </or>
      </condition>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-      <x1>0.25</x1>
-      <y1>0.75</y1>
-      <x2>0.5</x2>
-      <y2>1.0</y2>
-     </texture>
-     <w>16</w>
-     <h>16</h>
-    </layer>
-   <layer>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.5</x1>
-     <y1>0.75</y1>
-     <x2>0.75</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>16</w>
-    <h>16</h>
-   </layer>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-52</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>50</offset>
-    </transformation>
-   </transformations>
-  </layer>
 
-  <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-led.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-   </texture>
-   <w>16</w>
-   <h>16</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-52</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>50</offset>
-    </transformation>
-   </transformations>
-  </layer>
+     <layer include="concorde-bulb-led-off.xml">
+      <w>16</w>
+      <h>16</h>
+     </layer>
+     <layer>
+      <name>background off</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-led.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.0</y1>
+       <x2>1.0</x2>
+       <y2>1.0</y2>
+      </texture>
+      <w>16</w>
+      <h>16</h>
+     </layer>
+    </layer>
+
+    <layer>
+     <name>on</name>
+     <type>group</type>
+ 
+     <layer include="concorde-bulb-led-on.xml">
+      <w>16</w>
+      <h>16</h>
+     </layer>
+     <layer>
+      <name>background on</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-led.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.0</y1>
+       <x2>1.0</x2>
+       <y2>1.0</y2>
+      </texture>
+      <w>16</w>
+      <h>16</h>
+      <emissive>true</emissive>
+     </layer>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-52</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>50</offset>
+     </transformation>
+    </transformations>
+   </layer>
 
  </layers>
 </PropertyList>

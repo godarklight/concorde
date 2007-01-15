@@ -1,40 +1,41 @@
 <?xml version="1.0"?>
 
-<!-- CAUTION, if preferences.xml isn't with 6 views, update Concorde-views.xml and Concorde-keyboard.xml !
--->
-
-<!-- Version           CVS date                   Milestone
-     ==========================================================================================
-                       October 2003               3D aircraft.
-     1.0               July 2004                  FDM, 2D panel.
-     1.1               September 2004
-     1.2               October 2004               3D cockpit.
-     2.0               January 2005               First version with flight manual.
-                                                  Nose visible from cockpit.
-                                                  Engineer and overhead views.
-                                                  Optimization of instruments.
-                                                  Instruments dynamic with the view angle.
-     2.1               November 2005              Electrical system (JSBSim), hydraulics,
-                                                  fuel pumps.
-                                                  Text in alarm textures.
-                                                  First instrument textures.
-                                                  Transparent windows.
-                                                  Copilot and steward views.
-     2.2               not yet known              Air bleed, electrical system (Nasal).
-                                                  Autoland has a gradual pitch below 500 ft.
-                                                  Panels aligned (no more vibrations).
-                                                  Cockpit textures, with (pseudo) lighting.
-                                                  External lights.
-     ==========================================================================================
+<!--
+ Version       CVS date                   Milestone
+ ==============================================================================================
+               October 2003               3D aircraft.
+ 1.0           July 2004                  FDM, 2D panel.
+                                          Center of gravity by fuel transfer, autoland.
+ 1.1           September 2004             Pressurization.
+ 1.2           October 2004               3D cockpit.
+ 2.0           January 2005               First version with flight manual.
+                                          Engineer and overhead views.
+                                          Optimization of instruments.
+                                          Instruments dynamic with the view angle.
+ 2.1           November 2005              Copilot and steward views.
+                                          Text in alarm textures, first instrument textures.
+                                          Electrical system (JSBSim), hydraulics, fuel pumps.
+                                          Virtual copilot (4 engines flame out).
+ 2.2           April 2006                 Lighting (internal and external).
+                                          Cockpit textures.
+                                          Autoland has a gradual pitch below 500 ft.
+                                          Air bleed, electrical system (Nasal).
+ 2.3           not yet known              3D flood lights.
+                                          Observer view.
+                                          Each autopilot has its own NAV frequency.
+                                          VRP at nose, longer front gear.
+                                          Air conditioning, depressurization.
+                                          Virtual engineer, voice callouts, menu.
+ ==============================================================================================
 -->
 
 <PropertyList>
 
- <sim include="Nasal/Concorde-views.xml">
+ <sim include="Nasal/Concorde-sim.xml">
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.2</aircraft-version>
+  <aircraft-version>2.3</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
@@ -57,7 +58,7 @@
   <sound>
    <audible>true</audible>
    <path>Aircraft/Concorde/Sounds/Concorde-sound.xml</path>
-<!--
+<!-- select one of the sound files
    <path>Aircraft/Concorde/Sounds/Concorde-real-sound.xml</path>
 -->
   </sound>
@@ -78,17 +79,9 @@
 
   <presets include="Nasal/Concorde-fuel.xml">
 
-<!-- Filton 09 -->
-<!--
-   <airport-id>EGTG</airport-id>
-   <runway>09</runway>
--->
+<!-- fuel load saved on exit -->
 
-<!-- Toulouse Blagnac 14L/14R -->
-<!--
-   <airport-id>LFBO</airport-id>
-   <runway>14L</runway>
--->
+   <fuel type="int" userarchive="y">0</fuel>
   </presets>
 
   <help include="help.xml"/>
@@ -110,6 +103,8 @@
    <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-engine.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-crew.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-voice.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-jbsim.nas</file>
   </Concorde>
  </nasal>
@@ -119,37 +114,82 @@
   </keyboard>
  </input>
 
-<!-- avoids the crash on alias -->
-
-<!--
- <position>
-  <altitude-agl-ft type="double">0.0</altitude-agl-ft>
- </position>
-
- <velocities>
-  <vertical-speed-fps type="double">0.0</vertical-speed-fps>
- </velocities>
--->
+ <autopilot include="Systems/Concorde-init-autopilot.xml"/>
 
 
 <!-- ============= -->
 <!-- customization -->
 <!-- ============= -->
 
+ <controls include="Systems/Concorde-init-controls.xml">
+
+<!-- audio -->
+
+  <audio>
+   <captain>
+    <adf n="0">
+     <volume type="double">0.0</volume>                                    <!-- only by volume -->
+    </adf>
+    <adf n="1">
+     <volume type="double">0.0</volume>
+    </adf>
+    <nav n="0">
+     <volume type="double">0.0</volume>
+    </nav>
+    <nav n="1">
+     <volume type="double">0.0</volume>
+    </nav>
+   </captain>
+  </audio>
+
 <!-- autopilot -->
 
- <autopilot include="Systems/Concorde-init-autopilot.xml">
-  <settings>
-   <true-heading-deg>0</true-heading-deg>
-  </settings>
- </autopilot>
-
- <controls include="Systems/Concorde-init-controls.xml">
   <autoflight>
    <altitude-select>10000</altitude-select>
-   <heading-select>283</heading-select>                                     <!-- magnetic -->
    <speed-select>250</speed-select>
+   <autopilot n="0">
+    <heading-select>283</heading-select>                                    <!-- magnetic -->
+    <heading-true-select>0</heading-true-select>                            <!-- true -->
+   </autopilot>
+   <autopilot n="1">
+    <heading-select>324</heading-select>                                    <!-- LFBO 32R -->
+    <heading-true-select>87</heading-true-select>                           <!-- EGTG 09 -->
+   </autopilot>
+   <real-nav type="bool">true</real-nav>                                    <!-- nav is accurate until ground -->
   </autoflight>
+
+<!-- crew + voice -->
+
+  <crew>
+   <minimized-s>10.0</minimized-s>                                          <!-- 0 if no time out -->
+   <voice>
+    <sound type="bool">true</sound>
+    <text type="bool">false</text>
+   </voice>
+  </crew>
+
+<!-- takeoff monitor bug -->
+ 
+  <engines>
+   <engine n="0">
+    <bug_pph>10000.0</bug_pph>
+   </engine>
+   <engine n="1">
+    <bug_pph>10000.0</bug_pph>
+   </engine>
+   <engine n="2">
+    <bug_pph>10000.0</bug_pph>
+   </engine>
+   <engine n="3">
+    <bug_pph>10000.0</bug_pph>
+   </engine>
+  </engines>
+
+<!-- parking brake -->
+
+  <gear>
+   <brake-parking-lever type="bool">true</brake-parking-lever>
+  </gear>
 
 <!-- external lights -->
 
@@ -181,12 +221,27 @@
    <nav-lights type="bool">true</nav-lights>
    <strobe type="bool">true</strobe>
   </lighting>
+
+<!-- not all instruments -->
+
+  <seat>
+   <all type="bool">false</all>
+  </seat>
  </controls>
 
  <systems include="Systems/Concorde-init-systems.xml">
  </systems>
 
  <instrumentation include="Systems/Concorde-init-instrumentation.xml">
+
+<!-- ADF 2 (not available by GUI dialog) -->
+
+  <adf n="1">
+   <frequencies>
+    <selected-khz>352</selected-khz>                          <!-- Woodley near EGLL -->
+    <standby-khz>373</standby-khz>                            <!-- Conda near KJFK -->
+   </frequencies>
+  </adf>
 
 <!-- INS 1 on -->
 
@@ -206,34 +261,22 @@
    <dial-decision-ft>200</dial-decision-ft>
   </radio-altimeter>
 
-<!-- ADF 2 (not available by GUI dialog) -->
-
-  <adf n="1">
-   <frequencies>
-    <selected-khz>352</selected-khz>                          <!-- Woodley near EGLL -->
-   </frequencies>
-  </adf>
-
  </instrumentation>
 
 <!-- engines on -->
  
- <engines include="Systems/Concorde-init-engines.xml">
+ <engines>
   <engine n="0">
     <running>true</running>
-    <bug_pph>10000.0</bug_pph>                                <!-- takeoff monitor bug -->
   </engine>
   <engine n="1">
     <running>true</running>
-    <bug_pph>10000.0</bug_pph>
   </engine>
   <engine n="2">
     <running>true</running>
-    <bug_pph>10000.0</bug_pph>
   </engine>
   <engine n="3">
     <running>true</running>
-    <bug_pph>10000.0</bug_pph>
   </engine>
  </engines>
 

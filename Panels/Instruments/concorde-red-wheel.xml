@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<!-- Concorde alarm on wheel overheat :
+
+     - brake over 220 deg.
+-->
+
+<PropertyList>
+ <name>Alarm wheel overheat</name>
+ <w-base>52</w-base>
+ <h-base>104</h-base>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>Alarm light</name>
+   <type>switch</type>
+    <layer>
+     <name>off</name>
+     <type>group</type>
+     <condition>
+      <and>
+       <or include="concorde-cond-test-copilot.xml"/>
+       <or include="concorde-cond-test-brakes.xml"/>
+       <less-than>
+        <property>/systems/gear/brake-degc</property>
+        <value>220</value>
+       </less-than>
+      </and>
+     </condition>
+
+     <layer include="concorde-bulb-off.xml">
+      <w>104</w>
+      <h>52</h>
+     </layer>
+     <layer>
+      <name>background off</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-wheel.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.28</y1>
+       <x2>1.0</x2>
+       <y2>0.70</y2>
+      </texture>
+      <w>104</w>
+      <h>52</h>
+     </layer>
+    </layer>
+
+    <layer>
+     <name>on</name>
+     <type>group</type>
+
+     <layer include="concorde-bulb-on.xml">
+      <w>104</w>
+      <h>52</h>
+     </layer>
+     <layer>
+      <name>background on</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-wheel.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.28</y1>
+       <x2>1.0</x2>
+       <y2>0.70</y2>
+      </texture>
+      <w>104</w>
+      <h>52</h>
+      <emissive>true</emissive>
+     </layer>
+    </layer>
+
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>90</offset>
+     </transformation>
+    </transformations>
+  </layer>
+
+ </layers>
+
+</PropertyList>

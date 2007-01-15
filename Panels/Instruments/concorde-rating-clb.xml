@@ -2,8 +2,8 @@
 
 <!-- Concorde engine rating : climb.
 
-Flightgear doesn't have support for engine rating.
-Emulation : in reality, the engineer switches the rating.
+     - Flightgear doesn't have support for engine rating.
+     - Emulation : in reality, the engineer switches the rating.
 -->
 
 <PropertyList>
@@ -25,43 +25,60 @@ Emulation : in reality, the engineer switches the rating.
     <condition>
      <or>
       <and>
-       <not-equals>
-        <property>/controls/engines/engine[0]/rating</property>
-        <value>climb</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[1]/rating</property>
-        <value>climb</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[2]/rating</property>
-        <value>climb</value>
-       </not-equals>
-       <not-equals>
-        <property>/controls/engines/engine[3]/rating</property>
-        <value>climb</value>
-       </not-equals>
+       <or>
+        <not-equals>
+         <property>/controls/engines/engine[0]/rating</property>
+         <value>flight</value>
+        </not-equals>
+        <not-equals>
+         <property>/controls/engines/engine[0]/rating-flight</property>
+         <value>climb</value>
+        </not-equals>
+       </or>
+       <or>
+        <not-equals>
+         <property>/controls/engines/engine[1]/rating</property>
+         <value>flight</value>
+        </not-equals>
+        <not-equals>
+         <property>/controls/engines/engine[1]/rating-flight</property>
+         <value>climb</value>
+        </not-equals>
+       </or>
+       <or>
+        <not-equals>
+         <property>/controls/engines/engine[2]/rating</property>
+         <value>flight</value>
+        </not-equals>
+        <not-equals>
+         <property>/controls/engines/engine[2]/rating-flight</property>
+         <value>climb</value>
+        </not-equals>
+       </or>
+       <or>
+        <not-equals>
+         <property>/controls/engines/engine[3]/rating</property>
+         <value>flight</value>
+        </not-equals>
+        <not-equals>
+         <property>/controls/engines/engine[3]/rating-flight</property>
+         <value>climb</value>
+        </not-equals>
+       </or>
+       <or include="concorde-cond-test-captain.xml"/>
       </and>
       <or include="concorde-cond-voltage-bulb.xml"/>
      </or>
     </condition>
 
-    <layer>
-     <name>lamp off</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.0</x1>
-      <y1>0.0</y1>
-      <x2>0.25</x2>
-      <y2>0.095</y2>
-     </texture>
+    <layer include="concorde-bulb-white-off.xml">
      <w>104</w>
      <h>26</h>
     </layer>
     <layer>
      <name>background</name>
      <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
       <x1>0.7</x1>
       <y1>0.8</y1>
       <x2>1.0</x2>
@@ -75,22 +92,16 @@ Emulation : in reality, the engineer switches the rating.
    <layer>
     <name>on</name>
     <type>group</type>
-    <layer>
-     <name>lamp on</name>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-      <x1>0.37</x1>
-      <y1>0.0</y1>
-      <x2>0.38</x2>
-      <y2>0.095</y2>
-     </texture>
+
+    <layer include="concorde-bulb-white-on.xml">
      <w>104</w>
      <h>26</h>
+     <emissive>true</emissive>
     </layer>
     <layer>
      <name>background lighted</name>
      <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-orange-button.rgb</path>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
       <x1>0.7</x1>
       <y1>0.8</y1>
       <x2>1.0</x2>
@@ -98,6 +109,7 @@ Emulation : in reality, the engineer switches the rating.
      </texture>
      <w>104</w>
      <h>26</h>
+     <emissive>true</emissive>
     </layer>
    </layer>
   </layer>

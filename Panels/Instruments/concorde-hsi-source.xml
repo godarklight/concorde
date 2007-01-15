@@ -5,8 +5,12 @@
 <PropertyList>
 
  <name>HSI source</name>
- <w-base>52</w-base>
- <h-base>52</h-base>
+ <w-base>80</w-base>
+ <h-base>80</h-base>
+
+ <params>
+  <ins-source>/instrumentation/hsi[0]/ins-source</ins-source>
+ </params>
 
 
  <layers>
@@ -16,7 +20,7 @@
    <type>switch</type>
    <layer>
     <condition>
-     <property>/instrumentation/hsi/ins-source</property>
+     <property alias="../../../../../params/ins-source"/>
     </condition>
     <name>on</name>
     <texture>
@@ -114,7 +118,7 @@
  <actions>
 
   <action>
-   <name>Toggle source</name>
+   <name>Toggle</name>
    <button>0</button>
    <x>-21</x>
    <y>-21</y>
@@ -122,7 +126,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/instrumentation/hsi/ins-source</property>
+    <property alias="../../../../params/ins-source"/>
    </binding>
    <binding>
     <command>property-toggle</command>

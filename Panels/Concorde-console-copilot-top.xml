@@ -5,8 +5,8 @@
 Weather radar :
 - 2 receiver RCA AVQ-X weather radars (http://www.titanic.com/story/159/Concorde/).
 - the controls are on the pedestal, left above the transponder (http://www.concordesst.com/).
-- weather radar announcement is on side console (http://www.flybernhard.de/conc_e.htm), with teleprinter, oxygen and
-interphone.
+- weather radar announcement is on side console (http://www.flybernhard.de/conc_e.htm),
+  with teleprinter, oxygen and interphone.
 
 
 WARNING : a button not working by click, means that it is too close of another button (eventually hidden);
@@ -51,13 +51,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
  <view-height>500</view-height>
 
  <instruments>
-  <instrument include="Instruments/concorde-light-copilot-flood.xml">
-   <name>Copilot flood light</name>
+
+  <instrument include="Instruments/concorde-light-copilot.xml">
+   <name>Copilot dash light</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>230</value>
@@ -75,13 +76,46 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-45</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>42</x>
+   <y>305</y>
+   <w>72</w>
+   <h>72</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-copilot-flood.xml">
+   <name>Copilot flood light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>230</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>300</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-45</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>65</x>
    <y>220</y>
    <w>72</w>
-   <h>32</h>
+   <h>72</h>
   </instrument>
 
   <instrument include="Instruments/concorde-test-copilot.xml">
@@ -90,7 +124,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>225</value>
@@ -108,7 +142,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-45</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>90</x>

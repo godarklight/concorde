@@ -3,6 +3,7 @@
 <!-- Concorde instrumentation :
 
      - 2 DME (always visible) to bypass the limitation of switching frequencies.
+     - 3 NAV, because only NAV 0 can drive FG autopilot.
      - 1 instrument for both Captain and Copilot.
      - the cabin altitude is a specific altimeter.
      - the cabin rate of climb is a specific vertical speed indicator.
@@ -92,10 +93,9 @@ file, these values will be used (they are hardcoded).
   <encoder>
     <name>encoder</name>
     <number>0</number>
-    <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </encoder>
 -->
-
 
   <gps>                                                                      <!-- required by autopilot -->
     <name>gps</name>
@@ -130,14 +130,19 @@ file, these values will be used (they are hardcoded).
     <number>0</number>
   </marker-beacon>
 
-  <nav-radio>                                                                <!-- 1st needle -->
+  <nav-radio>                                                                <!-- reserved for autopilot -->
     <name>nav</name>
     <number>0</number>
   </nav-radio>
 
-  <nav-radio>                                                                <!-- 2nd needle -->
+  <nav-radio>                                                                <!-- 1st needle -->
     <name>nav</name>
     <number>1</number>
+  </nav-radio>
+
+  <nav-radio>                                                                <!-- 2nd needle -->
+    <name>nav</name>
+    <number>2</number>
   </nav-radio>
 
   <slip-skid-ball>
@@ -164,8 +169,4 @@ file, these values will be used (they are hardcoded).
     <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </vertical-speed-indicator>
 
-  <wxradar>
-    <name>wxRadar</name>
-    <number>0</number>
-  </wxradar>
 </PropertyList>

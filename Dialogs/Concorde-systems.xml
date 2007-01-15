@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+ <name>Concorde-systems</name>
+ <width>600</width>
+ <height>370</height>
+ <modal>false</modal>
+
+ <text>
+  <x>10</x>
+  <y>340</y>
+  <label>Concorde Systems</label>
+ </text>
+
+ <text>
+  <x>30</x>
+  <y>310</y>
+  <label>(Uncheck a system to fail it.)</label>
+  <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+  </color>
+ </text>
+
+ <group>
+  <y>60</y>
+
+  <checkbox>
+   <x>30</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Air Bleed</label>
+   <property>/systems/air-bleed/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Air Conditioning</label>
+   <property>/systems/temperature/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Crew</label>
+   <property>/systems/crew/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>30</y>
+
+  <checkbox>
+   <x>30</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Electrical</label>
+   <property>/systems/electrical/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Fuel</label>
+   <property>/systems/fuel/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <width>20</width>
+   <height>20</height>
+   <label>GPWS</label>
+   <property>/systems/gpws/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>0</y>
+
+  <checkbox>
+   <x>30</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Hydraulic</label>
+   <property>/systems/hydraulic/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Lighting</label>
+   <property>/systems/lighting/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Pitot</label>
+   <property>/systems/pitot/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>-30</y>
+
+  <checkbox>
+   <x>30</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Pressurization</label>
+   <property>/systems/pressurization/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Static</label>
+   <property>/systems/static/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Tank</label>
+   <property>/systems/tank/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>-60</y>
+
+  <checkbox>
+   <x>30</x>
+   <width>20</width>
+   <height>20</height>
+   <label>Vacuum</label>
+   <property>/systems/vacuum/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>10</y>
+
+  <button>
+   <x>40</x>
+   <legend>OK</legend>
+   <default>true</default>
+   <equal>true</equal>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>170</x>
+   <legend>Apply</legend>
+   <equal>true</equal>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>340</x>
+   <legend>Reset</legend>
+   <equal>true</equal>
+   <binding>
+    <command>dialog-update</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>490</x>
+   <legend>Cancel</legend>
+   <equal>true</equal>
+   <key>Esc</key>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+  </button>
+
+ </group>
+
+</PropertyList>

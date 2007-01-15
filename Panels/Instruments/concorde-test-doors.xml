@@ -4,8 +4,8 @@
 
 <PropertyList>
  <name>Test Doors</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>52</w-base>
+ <h-base>78</h-base>
 
 
  <layers>
@@ -13,20 +13,20 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-led.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-knob.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>1.0</x2>
      <y2>1.0</y2>
    </texture>
-   <w>104</w>
+   <w>26</w>
    <h>26</h>
   </layer>
 
   <layer>
    <name>Title 1</name>
    <type>text</type>
-   <point-size>35</point-size>
+   <point-size>9</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -41,11 +41,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-66</offset>
+     <offset>-16</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>27</offset>
+     <offset>30</offset>
     </transformation>
    </transformations>
   </layer>
@@ -53,7 +53,7 @@
   <layer>
    <name>Title 2</name>
    <type>text</type>
-   <point-size>35</point-size>
+   <point-size>9</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -68,7 +68,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-48</offset>
+     <offset>-11</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -83,10 +83,10 @@
   <action>
    <desc>Test</desc>
    <button>0</button>
-   <x>-55</x>
+   <x>-13</x>
    <y>-13</y>
-   <w>103</w>
-   <h>25</h>
+   <w>26</w>
+   <h>26</h>
    <binding>
     <command>property-assign</command>
     <property>/controls/doors/push</property>

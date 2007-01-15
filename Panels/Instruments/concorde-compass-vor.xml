@@ -2,7 +2,8 @@
 
 <!-- Concorde VOR Radio Magnetic Indicator :
 
-     - the needle orientation by loss of voltage is managed by Flightgear.
+     - the needle orientation by loss of voltage is managed by Flightgear :
+       the failure flag is not raised, but the needle doesn't rotate.
 -->
 
 <PropertyList>
@@ -12,6 +13,8 @@
 
  <params>
   <voltage>/systems/electrical/outputs/main-26b</voltage>
+  <voltage-nav>/systems/electrical/outputs/nav[0]</voltage-nav>
+  <voltage-nav2>/systems/electrical/outputs/nav[1]</voltage-nav2>
  </params>
 
 
@@ -180,9 +183,15 @@
   <layer>
    <name>OFF 1 flag</name>
    <condition>
-    <not>
-     <property>/instrumentation/nav[0]/in-range</property>
-    </not>
+    <or>
+     <not>
+      <property>/instrumentation/nav[1]/in-range</property>
+     </not>
+     <less-than>
+      <property alias="../../../../../../params/voltage-nav"/>
+      <value>20.0</value>
+     </less-than>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -208,9 +217,15 @@
   <layer>
    <name>OFF 2 flag</name>
    <condition>
-    <not>
-     <property>/instrumentation/nav[1]/in-range</property>
-    </not>
+    <or>
+     <not>
+      <property>/instrumentation/nav[2]/in-range</property>
+     </not>
+     <less-than>
+      <property alias="../../../../../../params/voltage-nav2"/>
+      <value>20.0</value>
+     </less-than>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -242,7 +257,13 @@
    <layer>
     <name>Needle VOR 1 in range</name>
     <condition>
-     <property>/instrumentation/nav[0]/in-range</property>
+     <and>
+      <property>/instrumentation/nav[1]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -256,7 +277,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/nav[0]/heading-deg</property>
+      <property>/instrumentation/nav[1]/heading-deg</property>
       <min>-360</min>
       <max>360</max>
      </transformation>
@@ -315,7 +336,13 @@
    <layer>
     <name>Needle VOR 2 in range</name>
     <condition>
-     <property>/instrumentation/nav[1]/in-range</property>
+     <and>
+      <property>/instrumentation/nav[2]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -329,7 +356,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/nav[1]/heading-deg</property>
+      <property>/instrumentation/nav[2]/heading-deg</property>
       <min>-360</min>
       <max>360</max>
      </transformation>
@@ -388,7 +415,13 @@
    <layer>
     <name>Needle tip VOR 2 in range</name>
     <condition>
-     <property>/instrumentation/nav[1]/in-range</property>
+     <and>
+      <property>/instrumentation/nav[2]/in-range</property>
+      <greater-than>
+       <property alias="../../../../../../../params/voltage"/>
+       <value>20.0</value>
+      </greater-than>
+     </and>
     </condition>
     <w>16</w>
     <h>16</h>
@@ -402,7 +435,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/nav[1]/heading-deg</property>
+      <property>/instrumentation/nav[2]/heading-deg</property>
       <min>-360</min>
       <max>360</max>
      </transformation>

@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 
-<!-- Disable flight director -->
+<!-- Disable flight director :
+
+     - group works by offset from previous layer inside group, except 1st layer which is absolute.
+-->
 
 
 <PropertyList>
 
  <name>Disable flight director</name>
  <w-base>104</w-base>
- <h-base>36</h-base>
+ <h-base>416</h-base>
 
  <params>
   <flight-director>/controls/autoflight/flight-director[0]/engage</flight-director>
@@ -15,6 +18,29 @@
 
 
  <layers>
+
+  <layer>
+   <name>inside</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <x1>0.7</x1>
+    <y1>0.8</y1>
+    <x2>1.0</x2>
+    <y2>0.9</y2>
+   </texture>
+   <w>60</w>
+   <h>150</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>1</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>70</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
   <layer>
    <name>Switch</name>
@@ -37,7 +63,7 @@
       <y2>0.9</y2>
      </texture>
      <w>104</w>
-     <h>26</h>
+     <h>78</h>
      <transformations>
       <transformation>
        <type>x-shift</type>
@@ -45,7 +71,7 @@
       </transformation>
       <transformation>
        <type>y-shift</type>
-       <offset>1</offset>
+       <offset>125</offset>
       </transformation>
      </transformations>
     </layer>
@@ -71,7 +97,7 @@
       </transformation>
       <transformation>
        <type>y-shift</type>
-       <offset>-4</offset>
+       <offset>-20</offset>
       </transformation>
      </transformations>
     </layer>
@@ -90,7 +116,7 @@
       <y2>0.9</y2>
      </texture>
      <w>104</w>
-     <h>26</h>
+     <h>78</h>
      <transformations>
       <transformation>
        <type>x-shift</type>
@@ -98,7 +124,7 @@
       </transformation>
       <transformation>
        <type>y-shift</type>
-       <offset>-10</offset>
+       <offset>25</offset>
       </transformation>
      </transformations>
     </layer>
@@ -124,7 +150,7 @@
       </transformation>
       <transformation>
        <type>y-shift</type>
-       <offset>-5</offset>
+       <offset>-20</offset>
       </transformation>
      </transformations>
     </layer>
@@ -139,10 +165,10 @@
    <desc>Toggle flight director</desc>
    <condition include="concorde-cond-voltage-autopilot.xml"/>
    <button>0</button>
-   <x>-53</x>
-   <y>-24</y>
+   <x>-52</x>
+   <y>-20</y>
    <w>104</w>
-   <h>37</h>
+   <h>185</h>
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/flight-director"/>

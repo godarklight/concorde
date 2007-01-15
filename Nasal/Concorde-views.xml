@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 
 <!-- CAUTION, if preferences.xml isn't with 6 views, update below :
-
      - /sim/number-views.
-     - /sim/view n="xxx".
+     - view n="6".
+
+     IMPORTANT : the index of views is automatically created, and then retrieved by Nasal.
+
+
+     VRP :
+     The external views look at the FDM movement point, which is by default a CG.
+     But the CG moves with time, while the view point is hard coded.
+
+     The solution is to hard code the movement point :
+     - sets the gear height and CG, and VRP to nose tip, inside the FDM.
+     - shifts the model at nose tip.
 -->
 
 <PropertyList>
@@ -15,39 +25,37 @@
    <config>
      <!-- x/y/z == right/up/back -->
      <x-offset-m archive="y">-0.452</x-offset-m>
-     <y-offset-m archive="y">2.45</y-offset-m>
-     <z-offset-m archive="y">-24.5</z-offset-m>
+     <y-offset-m archive="y">1.530</y-offset-m>
+     <z-offset-m archive="y">8.03</z-offset-m>
      <pitch-offset-deg archive="y">-17.0</pitch-offset-deg> <!-- look at the instruments -->
    </config>
-
-   <!-- for only 2D panel, substitute -->
-<!--
-   <internal archive="y">false</internal>
-   <config>
-     <x-offset-m archive="y">-0.525</x-offset-m>
-     <y-offset-m archive="y">2.5</y-offset-m>
-     <z-offset-m archive="y">-25.23</z-offset-m>
-     <pitch-offset-deg archive="y">-4.0</pitch-offset-deg>
-   </config>
--->
   </view>
 
-  <!-- additional seats -->
+<!-- shift from nose to CG (54 % : 33.64 m = 18.7 + 0.54 x 27.66), to make the view natural -->
 
-  <current-view>
-   <seat>
-    <captain type="bool">true</captain>
-    <engineer type="bool">false</engineer>
-    <overhead type="bool">false</overhead>
-    <copilot type="bool">false</copilot>
-    <steward type="bool">false</steward>
-    <all type="bool">false</all>
-   </seat>
-  </current-view>
+  <view n="1">
+<!-- put in comment to check that the view really points at the nose.
+-->
+   <config>
+     <target-z-offset-m archive="y">33.64</target-z-offset-m>
+   </config>
+  </view>
 
-  <number-views type="int">10</number-views>
+  <view n="2">
+   <config>
+     <target-z-offset-m archive="y">33.64</target-z-offset-m>
+   </config>
+  </view>
 
-  <view n="6">
+  <view n="5">
+   <config>
+     <target-z-offset-m archive="y">33.64</target-z-offset-m>
+   </config>
+  </view>
+
+  <number-views type="int">11</number-views>                       <!-- MANDATORY, nasal cannot update -->
+
+  <view n="6">                                                     <!-- MANDATORY view number -->
     <name>Engineer View</name>
     <type>lookfrom</type>
     <internal type="bool">true</internal>
@@ -68,14 +76,14 @@
       <front-right-direction-deg type="double">315</front-right-direction-deg>
       <!-- x/y/z == right/up/back -->
       <x-offset-m archive="y">0.0</x-offset-m> <!-- behind the pedestal -->
-      <y-offset-m archive="y">2.40</y-offset-m> <!-- head at the bottom of the (tilted) top rack --> 
-      <z-offset-m archive="y">-22.98</z-offset-m> <!--in the middle of the horizontal table --> 
+      <y-offset-m archive="y">1.457</y-offset-m> <!-- head at the bottom of the (tilted) top rack --> 
+      <z-offset-m archive="y">9.55</z-offset-m> <!--in the middle of the horizontal table --> 
       <pitch-offset-deg archive="y">-23.0</pitch-offset-deg> <!-- look at the fuel instruments -->
       <heading-offset-deg type="double">270</heading-offset-deg> <!-- parallel to the panel -->
     </config>
   </view>
 
-  <view n="7">
+  <view>
     <name>Overhead View</name>
     <type>lookfrom</type>
     <internal type="bool">true</internal>
@@ -96,14 +104,14 @@
       <front-right-direction-deg type="double">315</front-right-direction-deg>
       <!-- x/y/z == right/up/back -->
       <x-offset-m archive="y">0.0</x-offset-m> <!-- seat rolls behind the pedestal -->
-      <y-offset-m archive="y">2.45</y-offset-m> <!-- rolling seat in front on the engineer panel -->
-      <z-offset-m archive="y">-23.95</z-offset-m> <!--seat stops behind the pedestal -->
+      <y-offset-m archive="y">1.530</y-offset-m> <!-- rolling seat in front on the engineer panel -->
+      <z-offset-m archive="y">8.58</z-offset-m> <!--seat stops behind the pedestal -->
       <pitch-offset-deg archive="y">25.0</pitch-offset-deg> <!-- look at the rear panel -->
       <heading-offset-deg type="double">0</heading-offset-deg> <!-- parallel to the panel -->
     </config>
   </view>
 
-  <view n="8">
+  <view>
     <name>Copilot View</name>
     <type>lookfrom</type>
     <internal archive="y">true</internal>
@@ -124,14 +132,14 @@
       <front-right-direction-deg type="double">315</front-right-direction-deg>
       <!-- x/y/z == right/up/back -->
       <x-offset-m archive="y">0.452</x-offset-m>   <!-- symmetry with captain -->
-      <y-offset-m archive="y">2.45</y-offset-m>
-      <z-offset-m archive="y">-24.5</z-offset-m>
+      <y-offset-m archive="y">1.530</y-offset-m>
+      <z-offset-m archive="y">8.03</z-offset-m>
       <pitch-offset-deg archive="y">-5.0</pitch-offset-deg> <!-- look the horizon -->
       <heading-offset-deg type="double">280</heading-offset-deg> <!-- inside its windows -->
     </config>
   </view>
 
-  <view n="9">
+  <view>
     <name>Steward View</name>
     <type>lookfrom</type>
     <internal archive="y">true</internal>
@@ -151,11 +159,39 @@
       <right-direction-deg type="double">270</right-direction-deg>
       <front-right-direction-deg type="double">315</front-right-direction-deg>
       <!-- x/y/z == right/up/back -->
-      <x-offset-m archive="y">-0.393</x-offset-m>
-      <y-offset-m archive="y">2.60</y-offset-m> <!-- stands up -->
-      <z-offset-m archive="y">-19.5</z-offset-m>
+      <x-offset-m archive="y">-0.41</x-offset-m>
+      <y-offset-m archive="y">1.657</y-offset-m> <!-- stands up -->
+      <z-offset-m archive="y">13.06</z-offset-m>
       <pitch-offset-deg archive="y">0.0</pitch-offset-deg> <!-- looks forwards -->
       <heading-offset-deg type="double">180</heading-offset-deg> <!-- backwards its panel -->
+    </config>
+  </view>
+
+  <view>
+    <name>Observer View</name>
+    <type>lookfrom</type>
+    <internal type="bool">true</internal>
+    <config>
+      <from-model type="bool">true</from-model>
+      <from-model-idx type="int">0</from-model-idx>
+      <ground-level-nearplane-m type="double">0.5f</ground-level-nearplane-m>
+      <default-field-of-view-deg type="double">55.0</default-field-of-view-deg>
+      <default-pitch-deg type="double">0</default-pitch-deg>
+      <default-heading-deg type="double">0</default-heading-deg>
+      <front-direction-deg type="double">0</front-direction-deg>
+      <front-left-direction-deg type="double">45</front-left-direction-deg>
+      <left-direction-deg type="double">90</left-direction-deg>
+      <back-left-direction-deg type="double">135</back-left-direction-deg>
+      <back-direction-deg type="double">180</back-direction-deg>
+      <back-right-direction-deg type="double">225</back-right-direction-deg>
+      <right-direction-deg type="double">270</right-direction-deg>
+      <front-right-direction-deg type="double">315</front-right-direction-deg>
+      <!-- x/y/z == right/up/back -->
+      <x-offset-m archive="y">-0.452</x-offset-m>         <!-- like captain -->
+      <y-offset-m archive="y">1.457</y-offset-m>          <!-- like engineer -->
+      <z-offset-m archive="y">9.33</z-offset-m>            <!-- observer seat -->
+      <pitch-offset-deg archive="y">0.0</pitch-offset-deg>
+      <heading-offset-deg type="double">0</heading-offset-deg>
     </config>
   </view>
 

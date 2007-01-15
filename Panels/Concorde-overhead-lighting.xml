@@ -54,13 +54,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>5</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
@@ -74,53 +74,28 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-light-extend.xml">
-   <name>Extend main landing left</name>
+   <name>Extend main landing</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>5</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <light-extend>/controls/lighting/external/main-landing[0]/extend</light-extend>
-    <light-num>/controls/lighting/external/main-landing[0]/num</light-num>
+    <light-extend2>/controls/lighting/external/main-landing[1]/extend</light-extend2>
    </params>
    <x>50</x>
    <y>30</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-light-extend.xml">
-   <name>Extend main landing right</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
-      </greater-than>
-     </and>
-     <property>/sim/current-view/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <light-extend>/controls/lighting/external/main-landing[1]/extend</light-extend>
-    <light-num>/controls/lighting/external/main-landing[1]/num</light-num>
-   </params>
-   <x>80</x>
-   <y>30</y>
-   <w>30</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-title-lights.xml">
@@ -129,18 +104,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>0</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>140</x>
    <y>80</y>
-   <w>25</w>
+   <w>50</w>
    <h>25</h>
   </instrument>
 
@@ -150,69 +125,44 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>0</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>130</x>
    <y>65</y>
-   <w>25</w>
+   <w>100</w>
    <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-light-landing.xml">
-   <name>Main landing left</name>
+   <name>Main landing</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>0</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <light-on>/controls/lighting/external/main-landing[0]/on</light-on>
-    <light-num>/controls/lighting/external/main-landing[0]/num</light-num>
+    <light-on2>/controls/lighting/external/main-landing[1]/on</light-on2>
    </params>
    <x>130</x>
    <y>30</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-light-landing.xml">
-   <name>Main landing right</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>0</value>
-      </greater-than>
-     </and>
-     <property>/sim/current-view/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <light-on>/controls/lighting/external/main-landing[1]/on</light-on>
-    <light-num>/controls/lighting/external/main-landing[1]/num</light-num>
-   </params>
-   <x>160</x>
-   <y>30</y>
-   <w>30</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
 <!-- LANDING TAXI LIGHTS -->
@@ -223,13 +173,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
@@ -243,53 +193,28 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-light-extend.xml">
-   <name>Extend landing taxi left</name>
+   <name>Extend landing taxi</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <light-extend>/controls/lighting/external/landing-taxi[0]/extend</light-extend>
-    <light-num>/controls/lighting/external/landing-taxi[0]/num</light-num>
+    <light-extend2>/controls/lighting/external/landing-taxi[1]/extend</light-extend2>
    </params>
    <x>710</x>
    <y>30</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-light-extend.xml">
-   <name>Extend landing taxi right</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-10</value>
-      </greater-than>
-     </and>
-     <property>/sim/current-view/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <light-extend>/controls/lighting/external/landing-taxi[1]/extend</light-extend>
-    <light-num>/controls/lighting/external/landing-taxi[1]/num</light-num>
-   </params>
-   <x>740</x>
-   <y>30</y>
-   <w>30</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-title-light-landing-taxi.xml">
@@ -298,69 +223,44 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>780</x>
    <y>65</y>
-   <w>25</w>
+   <w>100</w>
    <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-light-landing.xml">
-   <name>Landing taxi left</name>
+   <name>Landing taxi</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <light-on>/controls/lighting/external/landing-taxi[0]/on</light-on>
-    <light-num>/controls/lighting/external/landing-taxi[0]/num</light-num>
+    <light-on2>/controls/lighting/external/landing-taxi[1]/on</light-on2>
    </params>
    <x>790</x>
    <y>30</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-light-landing.xml">
-   <name>Landing taxi right</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-10</value>
-      </greater-than>
-     </and>
-     <property>/sim/current-view/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <light-on>/controls/lighting/external/landing-taxi[1]/on</light-on>
-    <light-num>/controls/lighting/external/landing-taxi[1]/num</light-num>
-   </params>
-   <x>820</x>
-   <y>30</y>
-   <w>30</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
 <!-- TAXI TURN LIGHTS -->
@@ -371,18 +271,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>820</x>
    <y>80</y>
-   <w>25</w>
+   <w>50</w>
    <h>25</h>
   </instrument>
 
@@ -392,69 +292,40 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>855</x>
    <y>65</y>
-   <w>25</w>
+   <w>75</w>
    <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-light-taxi-turn.xml">
-   <name>Taxi turn left</name>
+   <name>Taxi turn</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <light-on>/controls/lighting/external/taxi-turn[0]/on</light-on>
-    <light-num>/controls/lighting/external/taxi-turn[0]/num</light-num>
-   </params>
    <x>860</x>
    <y>30</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-light-taxi-turn.xml">
-   <name>Taxi turn right</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-10</value>
-      </greater-than>
-     </and>
-     <property>/sim/current-view/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <light-on>/controls/lighting/external/taxi-turn[1]/on</light-on>
-    <light-num>/controls/lighting/external/taxi-turn[1]/num</light-num>
-   </params>
-   <x>890</x>
-   <y>30</y>
-   <w>30</w>
-   <h>30</h>
+   <w>90</w>
+   <h>60</h>
   </instrument>
 
  </instruments>

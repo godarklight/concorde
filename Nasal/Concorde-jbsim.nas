@@ -4,7 +4,7 @@
 
 # current nasal version doesn't accept :
 # - too many operations on 1 line.
-# - variable with hyphen.
+# - variable with hyphen (?).
 
 
 
@@ -13,23 +13,27 @@
 # ==============
 
 # the possible relations :
-# - pumpsystem : Pump.new(),                              inside another system / instrument, to synchronize the objects.
-# - me.electricalsystem = electrical;                     local pointer to the global object, to call its nasal code.
-# - <slave>/instrumentation/altimeter[0]</slave>          tag in the instrumentation / system initialization, to read the properties.
-# - <static-port>/systems/static</static-port>            tag in the instrumentation file, to customize a C++ instrument.
-# - /position/altitude-agl-ft, /velocities/mach.          no relation to an instrument / system failure, use NoInstrument.
-setrelations = func {
-   autopilotsystem.set_relation( autothrottlesystem, electricalsystem );
-   fuelsystem.set_relation( electricalsystem );
-   hydraulicsystem.set_relation( electricalsystem );
-   pressuresystem.set_relation( airbleedsystem, electricalsystem );
-   tanksystem.set_relation( airbleedsystem, electricalsystem );
-   enginesystem.set_relation( autopilotsystem );
-   lightingsystem.set_relation( electricalsystem );
+# - pumpsystem : Pump.new(),
+#   inside another system / instrument, to synchronize the objects.
 
-   INSinstrument.set_relation( electricalsystem );
-   TMOinstrument.set_relation( electricalsystem );
-   TCASinstrument.set_relation( electricalsystem );
+# - me.electricalsystem = electrical;
+#   local pointer to the global object, to call its nasal code.
+
+# - <slave>/instrumentation/altimeter[0]</slave>
+#   tag in the instrumentation / system initialization, to read the properties.
+
+# - <static-port>/systems/static</static-port>
+#   tag in the instrumentation file, to customize a C++ instrument.
+
+# - <noinstrument>/position/altitude-agl-ft</noinstrument>.
+#   no relation to an instrument / system failure.
+
+putinrelation = func {
+   autopilotsystem.set_relation( autothrottlesystem );
+
+   copilotcrew.set_relation( autopilotsystem );
+   engineercrew.set_relation( autopilotsystem, fuelsystem );
+   calloutcrew.set_relation( autopilotsystem );
 }
 
 synchronize1sec = func {
@@ -39,7 +43,7 @@ synchronize1sec = func {
    enginesystem.set_rate( fuelsystem.PUMPSEC );
 }
 
-# 1 seconds cron
+# 1 seconds cron (only, to spare frame rate)
 sec1cron = func {
    electricalsystem.schedule();
    fuelsystem.schedule();
@@ -67,6 +71,7 @@ sec5cron = func {
    CGinstrument.schedule();
    IASinstrument.schedule();
    machinstrument.schedule();
+   autopilotsystem.slowschedule();
    autothrottlesystem.schedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
@@ -78,7 +83,6 @@ sec5cron = func {
 # 15 seconds cron
 sec15cron = func {
    TMOinstrument.schedule();
-   INSinstrument.slowschedule();
    GPWSsystem.schedule();
 
    # schedule the next call
@@ -87,10 +91,10 @@ sec15cron = func {
 
 # 30 seconds cron
 sec30cron = func {
-   tanksystem.schedule();
+   tankpressuresystem.schedule();
 
    # schedule the next call
-   settimer(sec30cron,tanksystem.TANKSEC);
+   settimer(sec30cron,tankpressuresystem.TANKSEC);
 }
 
 # 60 seconds cron
@@ -104,7 +108,7 @@ sec60cron = func {
 
 # general initialization
 init = func {
-   setrelations();
+   putinrelation();
    synchronize1sec();
 
    # schedule the 1st call
@@ -114,6 +118,9 @@ init = func {
    settimer(sec15cron,0);
    settimer(sec30cron,0);
    settimer(sec60cron,0);
+
+   # the 3D is soon visible (long by Cygwin)
+   print("concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 
 # objects must be here, otherwise local to init()
@@ -124,12 +131,13 @@ hydraulicsystem = Concorde.Hydraulic.new();
 airbleedsystem = Concorde.Airbleed.new();
 pressuresystem = Concorde.Pressurization.new();
 fuelsystem = Concorde.Fuel.new();
-tanksystem = Concorde.Tank.new();
+tankpressuresystem = Concorde.PressurizeTank.new();
 autopilotsystem = Concorde.Autopilot.new();
 autothrottlesystem = Concorde.Autothrottle.new();
 GPWSsystem = Concorde.Gpws.new();
 enginesystem = Concorde.Engine.new();
 lightingsystem = Concorde.Lighting.new();
+gearsystem = Concorde.Gear.new();
 
 CGinstrument = Concorde.CenterGravity.new();
 IASinstrument = Concorde.Airspeed.new();
@@ -139,8 +147,14 @@ INSinstrument = Concorde.Inertial.new();
 TCASinstrument = Concorde.Traffic.new();
 markerinstrument = Concorde.Markerbeacon.new();
 RATinstrument = Concorde.Rat.new();
-doorinstrument = Concorde.Doors.new();
 genericinstrument = Concorde.Generic.new();
-noinstrument = Concorde.NoInstrument.new();
 
-init();
+doorsystem = Concorde.Doors.new();
+seatsystem = Concorde.Seats.new();
+menusystem = Menu.new();
+copilotcrew = Concorde.VirtualCopilot.new();
+engineercrew = Concorde.VirtualEngineer.new();
+calloutcrew = Concorde.Callout.new();
+
+setlistener("/sim/signals/fdm-initialized", init);
+#init();

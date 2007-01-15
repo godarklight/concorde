@@ -57,7 +57,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>50</value>
@@ -67,9 +67,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>0</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
+   <params>
+    <test>/controls/lighting/crew/overhead/push</test>
+   </params>
    <x>430</x>
    <y>171</y>
    <w>55</w>
@@ -82,7 +85,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>45</value>
@@ -92,11 +95,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-5</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[0]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
     <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
    </params>
    <x>510</x>
@@ -111,7 +114,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>45</value>
@@ -121,11 +124,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-5</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[1]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[1]/engine-num</eng-num>
     <oil-select>/engines/engine[1]/oil-pressure-psi</oil-select>
    </params>
    <x>590</x>
@@ -140,7 +143,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -150,11 +153,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[2]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[2]/engine-num</eng-num>
     <oil-select>/engines/engine[2]/oil-pressure-psi</oil-select>
    </params>
    <x>670</x>
@@ -169,7 +172,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -179,11 +182,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[3]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[3]/engine-num</eng-num>
     <oil-select>/engines/engine[3]/oil-pressure-psi</oil-select>
    </params>
    <x>750</x>
@@ -198,7 +201,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -208,7 +211,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>910</x>
@@ -223,7 +226,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -233,7 +236,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>1080</x>
@@ -250,7 +253,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>55</value>
@@ -260,7 +263,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>0</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>190</x>
@@ -275,7 +278,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>45</value>
@@ -285,7 +288,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-5</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>430</x>
@@ -300,7 +303,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -310,7 +313,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>830</x>
@@ -325,7 +328,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -335,7 +338,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>910</x>
@@ -350,7 +353,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>35</value>
@@ -360,7 +363,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>1000</x>
@@ -377,7 +380,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>45</value>
@@ -387,11 +390,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[0]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
    </params>
    <x>510</x>
@@ -406,7 +409,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -416,11 +419,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[1]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[1]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
    </params>
    <x>590</x>
@@ -435,7 +438,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -445,11 +448,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[2]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[2]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
    </params>
    <x>670</x>
@@ -464,7 +467,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -474,11 +477,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[3]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[3]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
    </params>
    <x>750</x>
@@ -493,7 +496,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -503,7 +506,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>830</x>
@@ -518,7 +521,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>35</value>
@@ -528,7 +531,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>910</x>
@@ -545,7 +548,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -555,11 +558,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[0]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
     <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
    </params>
@@ -575,7 +578,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -585,11 +588,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-10</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[1]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[1]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
     <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
    </params>
@@ -605,7 +608,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -615,11 +618,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[2]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[2]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
     <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
    </params>
@@ -635,7 +638,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -645,11 +648,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
-    <eng-num>/engines/engine[3]/engine-num</eng-num>
+    <eng-num>/systems/engines/engine[3]/engine-num</eng-num>
     <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
     <pressure-psi2>/systems/hydraulic/circuits/circuit[1]/pressure-psi</pressure-psi2>
    </params>
@@ -667,7 +670,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>35</value>
@@ -677,13 +680,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>1160</x>
    <y>128</y>
    <w>20</w>
-   <h>20</h>
+   <h>40</h>
   </instrument>
 
  </instruments>

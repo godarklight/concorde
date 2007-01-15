@@ -2,37 +2,62 @@
 
 <!-- Initialize instrumentation  :
 
+     - WARNING : this file inherits from preferences.xml.
      - avoids nasal nil values or non-member error.
      - nasal instruments are also serviceable.
 
+     - 1 instrument for both Captain and Copilot.
+     - <slave> is a real dependancy on instruments.
+     - <noinstrument> is to built the instrument.
 
-     - IMPORTANT : by default, Concorde comes with the C++ IVSI.
 
-       With /velocities/vertical-speed-fps near Mach 2, setting vertical speed at +60 ft/min, IVSI doesn't match altimeter,
-       which may even go down. While /velocities/vertical-speed-fps, controlled by autopilot, is correct :
-       compare IVSI with /autopilot/internal/vert-speed-fpm.
-       Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510; during the 2 hours
-       of the Mach 2 cruise, one must constantly check the real climb rate (50 ft/min = 3000 ft in 1 hour), and adjust
-       the autopilot.
+     IMPORTANT : by default Concorde comes with the C++ IVSI.
+     =========
+     Because near Mach2, when setting vertical speed at +60 ft/min, an IVSI built with
+     /velocities/vertical-speed-fps doesn't match the altimeter, which may even go down.
+     While /velocities/vertical-speed-fps, controlled by autopilot, is correct : compare IVSI with
+     /autopilot/internal/vert-speed-fpm.
 
-       To avoid this annoyance, the C++ IVSI (Instantaneous VSI) works by pressure and matches the altimeter reading.
-       It doesn't make measure, when the pressure rate of change is too strong (external weather).
+     Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510.
+     The worst : during the 2 hours of the Mach 2 cruise, one must every 10 minutes check
+     the real climb rate (50 ft/min = 3000 ft in 1 hour), and adjust the autopilot, because
+     /velocities/vertical-speed-fps is slowly varying.
 
-       To swap to /velocities/vertical-speed-fps :
-       a) set serviceable to false;
-       b) remove the comment around the alias of /velocities/vertical-speed-fps.
+     /velocities/vertical-speed-fps is also barely usable with AI (virtual crew).
+     Example : it may indicate -100 ft/min, while the autopilot is locked at 26000 ft.
+
+
+     To avoid this annoyance, the C++ IVSI (Instantaneous VSI) works by pressure to match
+     the altimeter reading. It doesn't make measure, when the pressure rate of change is
+     too strong (external weather).
+
+     To restore /velocities/vertical-speed-fps :
+     a) set serviceable to false;
+     b) remove the comment around the alias of /velocities/vertical-speed-fps.
 -->
 
 <PropertyList>
 
-  <adf n="1">                                                                   <!-- specific ADF -->
-   <mode>adf</mode>
+  <ac-weight>
+   <weight-lb alias="/fdm/jsbsim/inertia/weight-lbs"/>
+  </ac-weight>
+
+  <adf n="0">
+   <ident-audible type="bool">true</ident-audible>                         <!-- only by volume -->
+   <volume-norm type="double">0.0</volume-norm>
+  </adf>
+
+  <adf n="1">                                                              <!-- specific ADF -->
    <serviceable type="bool">true</serviceable>
+   <ident-audible type="bool">true</ident-audible>                         <!-- only by volume -->
+   <mode>adf</mode>
+   <volume-norm type="double">0.0</volume-norm>
   </adf>
 
   <airspeed-indicator>
    <vmo-kt type="double">999.0</vmo-kt>
    <overspeed-kt type="double">999.0</overspeed-kt>
+
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
    </slave>
@@ -47,24 +72,27 @@
    <setting-inhg>29.92</setting-inhg>
   </altimeter-standby>
 
-  <attitude-indicator>
+  <attitude-indicator n="0">
+   <serviceable type="bool">true</serviceable>
+   <fd2 type="bool">false</fd2>
    <indicated-pitch-deg alias="/orientation/pitch-deg"/>
    <indicated-roll-deg alias="/orientation/roll-deg"/>
+   <horizon-offset-deg type="double">0.0</horizon-offset-deg>
+  </attitude-indicator>
+
+  <attitude-indicator n="1">
    <serviceable type="bool">true</serviceable>
+   <fd2 type="bool">true</fd2>
+   <horizon-offset-deg type="double">0.0</horizon-offset-deg>
   </attitude-indicator>
 
   <attitude-standby>
-   <indicated-pitch-deg alias="/orientation/pitch-deg"/>
-   <indicated-roll-deg alias="/orientation/roll-deg"/>
    <serviceable type="bool">true</serviceable>
+   <horizon-offset-deg type="double">0.0</horizon-offset-deg>
   </attitude-standby>
 
   <cabin-altitude>
    <serviceable type="bool" archive="y">true</serviceable>
-<!--
-   <cabin-inhg>29.92</cabin-inhg>
-   <indicated-altitude-ft>0.0</indicated-altitude-ft>
--->
    <setting-inhg>29.92</setting-inhg>
   </cabin-altitude>
 
@@ -74,40 +102,79 @@
 
   <cg>
    <serviceable type="bool" archive="y">true</serviceable>
+   <percent type="double">50.0</percent>
+   <max-percent type="double">100.0</max-percent>
+   <min-percent type="double">0.0</min-percent>
+
    <slave>
     <mach>/instrumentation/mach-indicator</mach>
    </slave>
   </cg>
 
+  <compass n="0">
+   <att-ins3 type="bool">false</att-ins3>
+  </compass>
+
+  <compass n="1">
+   <att-ins3 type="bool">true</att-ins3>
+  </compass>
+
+  <comm n="0">
+   <serviceable type="bool">true</serviceable>                             <!-- boolean for menu -->
+  </comm>
+
+  <comm n="1">
+   <serviceable type="bool">true</serviceable>                             <!-- boolean for menu -->
+  </comm>
+
   <differential-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
    <differential-psi>0.0</differential-psi>
-   <static-port>/systems/static</static-port>                                   <!-- measures outside pressure -->
+   <static-pressure>/systems/static/pressure-inhg</static-pressure>        <!-- outside pressure -->
   </differential-pressure>
 
-  <dme>                                                                         <!-- specific DME -->
+  <dme n="0">                                                              <!-- specific DME -->
    <frequencies>
-    <source>/instrumentation/nav[0]/frequencies/selected-mhz</source>
+    <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
    </frequencies>
   </dme>
 
   <dme n="1">
    <serviceable type="bool">true</serviceable>
    <frequencies>
-    <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
+    <source>/instrumentation/nav[2]/frequencies/selected-mhz</source>
    </frequencies>
   </dme>
 
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
+   <total-gal_us type="double">0.0</total-gal_us>
+   <total-kg type="double">0.0</total-kg>
   </fuel>
 
-  <hsi>
+  <hsi n="0">
    <serviceable type="bool" archive="y">true</serviceable>
+   <compass2 type="bool">false</compass2>
+   <dev-nav2 type="bool">false</dev-nav2>
+   <ins-source type="bool">false</ins-source>
+   <nav-ins2 type="bool">false</nav-ins2>
+  </hsi>
+
+  <hsi n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+   <compass2 type="bool">true</compass2>
+   <dev-nav2 type="bool">true</dev-nav2>
+   <ins-source type="bool">false</ins-source>
+   <nav-ins2 type="bool">true</nav-ins2>
   </hsi>
 
   <ins n="0">
    <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+
+   <slave>
+    <electric>/systems/electrical/power</electric>
+   </slave>
+
    <selector type="int">0</selector>
    <wind-speed-kt alias="/environment/wind-speed-kt"/>
    <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
@@ -132,13 +199,61 @@
    <serviceable type="bool" archive="y">true</serviceable>
    <indicated-mach alias="/velocities/mach"/>
    <mmo-mach type="double">999.0</mmo-mach>
+
+   <noinstrument>
+    <airspeed>/velocities/airspeed-kt</airspeed>
+    <mach>/velocities/mach</mach>
+    <temperature>/environment/temperature-degc</temperature>
+   </noinstrument>
+
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
     <cg>/instrumentation/cg[0]</cg>
    </slave>
   </mach-indicator>
 
-  <radar>                                                                       <!-- TCAS 1) required by AI -->
+  <marker-beacon>
+   <test-inner type="bool">false</test-inner>
+   <test-middle type="bool">false</test-middle>
+   <test-outer type="bool">false</test-outer>
+  </marker-beacon>
+
+  <nav n="0">
+   <volume type="double">0.0</volume>                                      <!-- reserved for autopilot -->
+  </nav>
+
+  <nav n="1">
+   <volume type="double">0.0</volume>
+   <serviceable type="bool">true</serviceable>                             <!-- boolean for menu -->
+  </nav>
+
+  <nav n="2">
+   <frequencies>
+    <selected-mhz type="double">120.00</selected-mhz>
+    <standby-mhz type="double">121.00</standby-mhz>
+   </frequencies>
+   <radials>
+    <selected-deg type="double">122.0</selected-deg>
+   </radials>
+   <serviceable type="bool">true</serviceable>
+   <cdi>
+    <serviceable>true</serviceable>
+   </cdi>
+   <gs>
+    <serviceable>true</serviceable>
+   </gs>
+   <to-from>
+    <serviceable>true</serviceable>
+   </to-from>
+   <slaved-to-gps type="bool">false</slaved-to-gps>
+   <volume type="double">0.0</volume>
+  </nav>
+
+  <nose-visor>
+   <pos-norm alias="/surface-positions/flap-pos-norm"/>
+  </nose-visor>
+
+  <radar>                                                                  <!-- TCAS 1) required by AI -->
    <range type="int" archive="y">40</range>
   </radar>
 
@@ -152,7 +267,7 @@
    <differential-psi>0.0</differential-psi>
    <falling type="bool" >false</falling>
    <raising type="bool" >false</raising>
-   <static-port>/systems/static</static-port>                                   <!-- measures outside pressure -->
+   <static-port>/systems/static</static-port>                              <!-- outside pressure -->
   </tank-pressure>
 
   <tas-indicator>
@@ -160,15 +275,19 @@
    <indicated-speed-fps alias="/fdm/jsbsim/velocities/vt-fps"/>
   </tas-indicator>
 
-  <tcas>                                                                        <!-- TCAS 2) number of visible traffics -->
+  <tcas>                                                                   <!-- TCAS 2) number of visible traffics -->
    <serviceable type="bool">true</serviceable>
-   <range type="int" archive="y">45</range>                                     <!-- maximum range -->
+
+   <range type="int" archive="y">45</range>                                <!-- maximum range -->
+
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <electric>/systems/electrical/power</electric>
    </slave>
+
    <traffics>
     <traffic n="0">
-     <distance-nm>9999.0</distance-nm>                                          <!-- no traffic -->
+     <distance-nm>9999.0</distance-nm>                                     <!-- no traffic -->
     </traffic>
     <traffic n="1">
      <distance-nm>9999.0</distance-nm>
@@ -201,9 +320,19 @@
    <serviceable type="bool" archive="y">true</serviceable>
    <indicated-tmo-degc alias="/fdm/jsbsim/velocities/tat-c"/>
    <indicated-static-degc alias="/environment/temperature-degc"/>
+
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <electric>/systems/electrical/power</electric>
    </slave>
   </temperature>
+
+  <weight-switch>
+   <wow type="bool">true</wow>
+
+   <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
+   </noinstrument>
+  </weight-switch>
 
 </PropertyList>

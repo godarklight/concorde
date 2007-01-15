@@ -8,8 +8,8 @@
 <PropertyList>
 
  <name>G and AOA display</name>
- <w-base>10</w-base>
- <h-base>40</h-base>
+ <w-base>50</w-base>
+ <h-base>200</h-base>
 
  <layers>
 
@@ -28,10 +28,6 @@
     <transformation>
      <type>x-shift</type>
      <offset>8</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -58,7 +54,7 @@
     </transformation> 
     <transformation>
      <type>x-shift</type>
-     <offset>16</offset> <!-- 1 g -->
+     <offset>-9</offset> <!-- 1 g -->
     </transformation> 
     <transformation>
      <condition include="concorde-cond-voltage-inst.xml"/>
@@ -97,10 +93,6 @@
      <offset>21</offset> <!-- aligned right -->
     </transformation> 
     <transformation>
-     <type>x-shift</type>
-     <offset>25</offset> <!-- 0 deg -->
-    </transformation> 
-    <transformation>
      <condition include="concorde-cond-voltage-inst.xml"/>
      <type>x-shift</type>
      <property>/orientation/alpha-deg</property>
@@ -137,7 +129,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>39</offset>
+     <offset>14</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -167,7 +159,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-11</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>rotation</type>

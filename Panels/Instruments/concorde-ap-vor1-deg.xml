@@ -5,12 +5,11 @@
 <PropertyList>
 
  <name>Dial VOR 1 heading</name>
- <w-base>124</w-base>
- <h-base>40</h-base>
+ <w-base>100</w-base>
+ <h-base>100</h-base>
 
  <params>
-  <spd-disp>/instrumentation/nav/radials/selected-deg</spd-disp>
-  <spd-ctrl>/instrumentation/nav/radials/selected-deg</spd-ctrl>
+  <radial-ctrl>/instrumentation/nav[1]/radials/selected-deg</radial-ctrl>
  </params>
 
  <layers>
@@ -21,123 +20,15 @@
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
     <w>74</w>
-    <h>40</h>
+    <h>35</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>38</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 10</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>2</offset>
+     <offset>13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <offset>4</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 10</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-15</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 1</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>16</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>4</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 1</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>18</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-15</offset>
     </transformation>
    </transformations>
   </layer>
@@ -146,7 +37,7 @@
    <name>AP heading display</name>
    <type>text</type>
    <font>led</font>
-   <point-size>8</point-size>
+   <point-size>7.5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -155,18 +46,18 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property alias="../../../../../params/spd-disp"/>
+     <property alias="../../../../../params/radial-ctrl"/>
      <format>%03.0f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>35</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-8</offset>
+     <offset>-2</offset>
     </transformation>
    </transformations>
   </layer>
@@ -174,7 +65,7 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -183,17 +74,72 @@
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>VOR LOC</text>
+     <text>VOR</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-1</offset>
+     <offset>-26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-40</offset>
+     <offset>-31</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title right</name>
+   <type>text</type>
+   <point-size>10</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>REF</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-31</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Knob</name>
+   <w>25</w>
+   <h>25</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.0</x1>
+    <x2>0.171875</x2>
+    <y1>0.0</y1>
+    <y2>0.171875</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>13</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-27</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <property alias="../../../../../params/radial-ctrl"/>
+     <scale>2</scale>
     </transformation>
    </transformations>
   </layer>
@@ -205,68 +151,84 @@
   <action>
    <name>Minus 10</name>
    <button>0</button>
-   <x>2</x>
-   <y>-19</y>
+   <x>1</x>
+   <y>-40</y>
    <w>14</w>
-   <h>18</h>
+   <h>14</h>
    <binding>
     <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
+    <property alias="../../../../params/radial-ctrl"/>
     <step>-10</step>
     <min>0</min>
     <max>360</max>
     <wrap>1</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </action>
 
   <action>
    <name>Plus 10</name>
    <button>0</button>
-   <x>2</x>
-   <y>1</y>
+   <x>1</x>
+   <y>-28</y>
    <w>14</w>
-   <h>18</h>
+   <h>14</h>
    <binding>
     <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
+    <property alias="../../../../params/radial-ctrl"/>
     <step>10</step>
     <min>0</min>
     <max>360</max>
     <wrap>1</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </action>
 
   <action>
    <name>Minus 1</name>
    <button>0</button>
-   <x>16</x>
-   <y>-19</y>
+   <x>15</x>
+   <y>-40</y>
    <w>14</w>
-   <h>18</h>
+   <h>14</h>
    <binding>
     <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
+    <property alias="../../../../params/radial-ctrl"/>
     <step>-1</step>
     <min>0</min>
     <max>360</max>
     <wrap>1</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </action>
 
   <action>
    <name>Plus 1</name>
    <button>0</button>
-   <x>16</x>
-   <y>1</y>
+   <x>15</x>
+   <y>-28</y>
    <w>14</w>
-   <h>18</h>
+   <h>14</h>
    <binding>
     <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
+    <property alias="../../../../params/radial-ctrl"/>
     <step>1</step>
     <min>0</min>
     <max>360</max>
     <wrap>1</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </action>
 

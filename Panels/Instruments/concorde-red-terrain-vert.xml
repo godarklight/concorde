@@ -10,8 +10,8 @@
 
 <PropertyList>
  <name>Alarm Terrain (VERTICAL)</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>52</w-base>
+ <h-base>104</h-base>
 
 
  <layers>
@@ -21,54 +21,56 @@
    <type>switch</type>
     <layer>
      <name>off</name>
+     <type>group</type>
      <condition include="concorde-cond-gpws.xml"/>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
+
+     <layer include="concorde-bulb-off.xml">
+      <w>104</w>
+      <h>52</h>
+     </layer>
+     <layer>
+      <name>background off</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-terrain.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.28</y1>
+       <x2>1.0</x2>
+       <y2>0.70</y2>
+      </texture>
+      <w>104</w>
+      <h>52</h>
+     </layer>
     </layer>
+
     <layer>
      <name>on</name>
-     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-     </texture>
-     <w>104</w>
-     <h>26</h>
+     <type>group</type>
+
+     <layer include="concorde-bulb-on.xml">
+      <w>104</w>
+      <h>52</h>
+     </layer>
+     <layer>
+      <name>background on</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-terrain.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.28</y1>
+       <x2>1.0</x2>
+       <y2>0.70</y2>
+      </texture>
+      <w>104</w>
+      <h>52</h>
+      <emissive>true</emissive>
+     </layer>
     </layer>
+
     <transformations>
      <transformation>
       <type>rotation</type>
       <offset>90</offset>
      </transformation>
     </transformations>
-  </layer>
-
-  <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-red-terrain.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.28</y1>
-     <x2>1.0</x2>
-     <y2>0.70</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
-   <transformations>
-    <transformation>
-     <type>rotation</type>
-     <offset>90</offset>
-    </transformation>
-   </transformations>
   </layer>
 
  </layers>
@@ -80,9 +82,9 @@
    <name>Test</name>
    <button>0</button>
    <x>-25</x>
-   <y>-30</y>
+   <y>-52</y>
    <w>50</w>
-   <h>58</h>
+   <h>104</h>
    <binding>
     <command>property-assign</command>
     <property>/systems/gpws/test</property>

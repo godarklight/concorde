@@ -5,23 +5,21 @@
      - all warning lights are supposed to be DC (26 volts).
      - night lightning (reddish surrounding light) is DC.
 
-
      Connection :
-     ==========
      - AC Essential Bus 1-4 is connected to AC Main Bus 1-4, or all the buses in parallel.
      - Transform Rectifier Unit 2-3 is connected to AC Main Bus 2-3, or all the buses in parallel.
+
+     Format :
+     - the same than the old C++ electrical system.
+     - the <initial-state>off</initial-state> of connector is not used.
+     - voltages in parallel (= double connectors) are possible.
+
 
      Known problems :
      ==============
      - /controls/engines/engine[0]/master-bat seems (?) required by FG.
      - when no AC voltage, AC instruments are still visible at night (reddish), otherwise that also cuts the DC warning lights,
      because of systems/electrical/outputs/instrument-lights.
-
-     Format :
-     ======
-     - the same than the old C++ electrical system.
-     - the <initial-state>off</initial-state> of connector is not used.
-     - voltages in parallel (= double connectors) are possible.
 -->
 
 <PropertyList>

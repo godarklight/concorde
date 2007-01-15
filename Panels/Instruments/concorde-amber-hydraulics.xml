@@ -18,12 +18,13 @@
   <layer>
    <name>Fault light</name>
    <type>switch</type>
+
    <layer>
     <name>off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-test-mws.xml">
-       <property>/systems/hydraulic/serviceable</property>
        <not include="concorde-cond-hyd-green.xml"/>
        <not include="concorde-cond-hyd-yellow.xml"/>
        <not include="concorde-cond-hyd-blue.xml"/>
@@ -52,41 +53,47 @@
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-hyd.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.17</y1>
+      <x2>1.0</x2>
+      <y2>0.83</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
    </layer>
+
    <layer>
     <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-hyd.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.17</y1>
-     <x2>1.0</x2>
-     <y2>0.83</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-hyd.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.17</y1>
+      <x2>1.0</x2>
+      <y2>0.83</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
  </layers>

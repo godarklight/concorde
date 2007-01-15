@@ -56,7 +56,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>40</value>
@@ -66,7 +66,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-15</value>
       </greater-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>872</x>

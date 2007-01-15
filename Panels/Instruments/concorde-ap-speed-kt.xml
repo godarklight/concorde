@@ -1,23 +1,14 @@
 <?xml version="1.0"?>
 
 <!--Concorde speed setting indicator.
-
-    - real range is 130 to 400 kt.
-    - the speed dial is dissociated from its autopilot target;
-    as speed hold is pressed, the current speed is supposed not echoed on the dial.
 -->
 
 <PropertyList>
 
  <name>Speed setting indicator</name>
- <w-base>124</w-base>
- <h-base>40</h-base>
+ <w-base>100</w-base>
+ <h-base>100</h-base>
 
- <params>
-  <spd-disp>/controls/autoflight/speed-select</spd-disp>
-  <spd-ctrl>/controls/autoflight/speed-select</spd-ctrl>
-  <spd-auto>/autopilot/settings/target-speed-kt</spd-auto>
- </params>
 
  <layers>
 
@@ -26,133 +17,15 @@
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>70</w>
-    <h>40</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>34</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 10</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>2</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>4</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 10</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>4</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-14</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 1</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>16</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>4</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 1</name>
-   <type>text</type>
-   <point-size>22</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>18</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-14</offset>
-    </transformation>
-   </transformations>
+    <w>60</w>
+    <h>35</h>
   </layer>
 
   <layer>
    <name>AP Speed display</name>
    <type>text</type>
    <font>led</font>
-   <point-size>8</point-size>
+   <point-size>8.5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -161,14 +34,14 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property alias="../../../../../params/spd-disp"/>
+     <property>/controls/autoflight/speed-select</property>
      <format>%03.0f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>32</offset>
+     <offset>-17</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -180,7 +53,34 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>7</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>AUTOTHROTTLE</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>30</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title unit</name>
+   <type>text</type>
+   <point-size>7</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -195,131 +95,15 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>7</offset>
+     <offset>-12</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-40</offset>
+     <offset>-35</offset>
     </transformation>
    </transformations>
   </layer>
 
  </layers>
-
- <actions>
-
-  <action>
-   <name>Minus 10</name>
-   <button>0</button>
-   <x>2</x>
-   <y>-19</y>
-   <w>14</w>
-   <h>18</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
-    <step>-10</step>
-    <min>130</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <equals>
-      <property>/controls/autoflight/speed2</property>
-      <value>speed-acquire</value>
-     </equals>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/spd-auto"/>
-    <property n="1" alias="../../../../params/spd-ctrl"/>
-   </binding>
-  </action>
-
-  <action>
-   <name>Plus 10</name>
-   <button>0</button>
-   <x>2</x>
-   <y>1</y>
-   <w>14</w>
-   <h>18</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
-    <step>10</step>
-    <min>130</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <equals>
-      <property>/controls/autoflight/speed2</property>
-      <value>speed-acquire</value>
-     </equals>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/spd-auto"/>
-    <property n="1" alias="../../../../params/spd-ctrl"/>
-   </binding>
-  </action>
-
-  <action>
-   <name>Minus 1</name>
-   <button>0</button>
-   <x>16</x>
-   <y>-19</y>
-   <w>14</w>
-   <h>18</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
-    <step>-1</step>
-    <min>130</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <equals>
-      <property>/controls/autoflight/speed2</property>
-      <value>speed-acquire</value>
-     </equals>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/spd-auto"/>
-    <property n="1" alias="../../../../params/spd-ctrl"/>
-   </binding>
-  </action>
-
-  <action>
-   <name>Plus 10</name>
-   <button>0</button>
-   <x>16</x>
-   <y>1</y>
-   <w>14</w>
-   <h>18</h>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/spd-ctrl"/>
-    <step>1</step>
-    <min>130</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <equals>
-      <property>/controls/autoflight/speed2</property>
-      <value>speed-acquire</value>
-     </equals>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/spd-auto"/>
-    <property n="1" alias="../../../../params/spd-ctrl"/>
-   </binding>
-  </action>
-
- </actions>
 
 </PropertyList>

@@ -2,6 +2,7 @@
 
 <!-- Concorde Marker beacon indicator
 
+
 Adapted from John Check <j4strngs@usa.net>
 _____________________________________________________________________
 
@@ -26,8 +27,8 @@ properties' values.
 
 <PropertyList>
  <name>marker beacon</name>
- <w-base>60</w-base>
- <h-base>22</h-base>
+ <w-base>30</w-base>
+ <h-base>90</h-base>
 
  <layers>
 
@@ -35,69 +36,62 @@ properties' values.
   <layer>
    <name>lamp</name>
    <type>switch</type>
+
    <layer>
     <name>on</name>
+    <type>group</type>
     <condition>
      <or>
       <and include="concorde-cond-voltage-marker.xml">
-       <equals>
-        <property>/instrumentation/marker-beacon/test-outer</property>
-        <value>on</value>
-       </equals>
+       <property>/instrumentation/marker-beacon/test-outer</property>
       </and>
       <property>/instrumentation/marker-beacon/outer</property>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.5</x1>
-     <y1>0.75</y1>
-     <x2>0.75</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-     <type>y-shift</type>
-      <offset>-26</offset>
-     </transformation>
-    </transformations>
+
+    <layer include="concorde-bulb-led-on.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Lens-Outer on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.75</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>0.25</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
    </layer>
+
    <layer>
     <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.75</y1>
-     <x2>0.5</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-     <type>y-shift</type>
-      <offset>-26</offset>
-     </transformation>
-    </transformations>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>Lens-Outer</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-    <x1>0.75</x1>
-    <y1>0.0</y1>
-    <x2>1.0</x2>
-    <y2>0.25</y2>
-   </texture>
-   <w>26</w>
-   <h>26</h>
+    <layer include="concorde-bulb-led-off.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Lens-Outer off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.75</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>0.25</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+    </layer>
+   </layer>
    <transformations>
     <transformation>
-     <type>y-shift</type>
+    <type>y-shift</type>
      <offset>-26</offset>
     </transformation>
    </transformations>
@@ -126,74 +120,67 @@ properties' values.
   <layer>
    <name>lamp</name>
    <type>switch</type>
+
    <layer>
     <name>on</name>
+    <type>group</type>
     <condition>
      <or>
       <and include="concorde-cond-voltage-marker.xml">
-       <equals>
-        <property>/instrumentation/marker-beacon/test-middle</property>
-        <value>on</value>
-       </equals>
+       <property>/instrumentation/marker-beacon/test-middle</property>
       </and>
       <property>/instrumentation/marker-beacon/middle</property> 
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.5</x1>
-     <y1>0.75</y1>
-     <x2>0.75</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-     <type>y-shift</type>
-      <offset>3</offset>
-     </transformation>
-    </transformations>
+
+    <layer include="concorde-bulb-led-on.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Lens-Middle on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.5</x1>
+      <y1>0.0</y1>
+      <x2>0.75</x2>
+      <y2>0.25</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
    </layer>
+
    <layer>
     <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.75</y1>
-     <x2>0.5</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>3</offset>
-     </transformation>
-    </transformations>
+    <type>group</type>
+
+    <layer include="concorde-bulb-led-off.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+   <layer>
+     <name>Lens-Middle off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.5</x1>
+      <y1>0.0</y1>
+      <x2>0.75</x2>
+      <y2>0.25</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+    </layer>
    </layer>
-  </layer>
- 
-  <layer>
-   <name>Lens-Middle</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-    <x1>0.5</x1>
-    <y1>0.0</y1>
-    <x2>0.75</x2>
-    <y2>0.25</y2>
-   </texture>
-   <w>26</w>
-   <h>26</h>
    <transformations>
     <transformation>
-     <type>y-shift</type>
+    <type>y-shift</type>
      <offset>3</offset>
     </transformation>
    </transformations>
   </layer>
- 
+  
   <layer>
    <name>Bezel-Middle</name>
    <texture>
@@ -217,66 +204,59 @@ properties' values.
   <layer>
    <name>lamp</name>
    <type>switch</type>
+
    <layer>
+    <name>on</name>
+    <type>group</type>
     <condition>
      <or>
       <and include="concorde-cond-voltage-marker.xml">
-       <equals>
-        <property>/instrumentation/marker-beacon/test-inner</property>
-        <value>on</value>
-       </equals>
+       <property>/instrumentation/marker-beacon/test-inner</property>
       </and>
       <property>/instrumentation/marker-beacon/inner</property> 
      </or>
     </condition>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.5</x1>
-     <y1>0.75</y1>
-     <x2>0.75</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>32</offset>
-     </transformation>
-    </transformations>
+
+    <layer include="concorde-bulb-led-on.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Lens-Inner on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.25</y1>
+      <x2>0.25</x2>
+      <y2>0.5</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+    <emissive>true</emissive>
+    </layer>
    </layer>
+
    <layer>
     <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-     <x1>0.25</x1>
-     <y1>0.75</y1>
-     <x2>0.5</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>26</w>
-    <h>26</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>32</offset>
-     </transformation>
-    </transformations>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>Lens-Inner</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.25</y1>
-    <x2>0.25</x2>
-    <y2>0.5</y2>
-   </texture>
-   <w>26</w>
-   <h>26</h>
+    <layer include="concorde-bulb-led-off.xml">
+     <w>26</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Lens-Inner off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/led.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.25</y1>
+      <x2>0.25</x2>
+      <y2>0.5</y2>
+     </texture>
+     <w>26</w>
+     <h>26</h>
+   </layer>
+   </layer>
    <transformations>
     <transformation>
      <type>y-shift</type>

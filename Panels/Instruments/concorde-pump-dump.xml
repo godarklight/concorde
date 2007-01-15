@@ -8,7 +8,7 @@
  <h-base>26</h-base>
 
  <params>
-  <dump-ctrl>/systems/fuel/pump/dump</dump-ctrl>
+  <dump-ctrl>/controls/fuel/pumps/dump</dump-ctrl>
  </params>
 
 
@@ -21,10 +21,9 @@
    <layer>
     <name>off</name>
     <condition>
-     <not-equals>
+     <not>
       <property alias="../../../../../../params/dump-ctrl"/>
-      <value>on</value>
-     </not-equals>
+     </not>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
@@ -92,23 +91,17 @@
  </layers>
  
  <actions>
+
   <action>
-   <desc>Enable Dump Pump</desc>
+   <desc>Toggle Dump Pump</desc>
    <button>0</button>
-   <condition>
-    <not-equals>
-     <property alias="../../../../../params/dump-ctrl"/>
-     <value>on</value>
-    </not-equals>
-   </condition>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-assign</command>
+    <command>property-toggle</command>
     <property alias="../../../../params/dump-ctrl"/>
-    <value type="string">on</value>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -116,29 +109,6 @@
    </binding>
   </action>
 
-  <action>
-   <desc>Disable Dump Pump</desc>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property alias="../../../../../params/dump-ctrl"/>
-     <value>on</value>
-    </equals>
-   </condition>
-   <x>-52</x>
-   <y>-13</y>
-   <w>104</w>
-   <h>26</h>
-   <binding>
-    <command>property-assign</command>
-    <property alias="../../../../params/dump-ctrl"/>
-    <value type="string"></value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
  </actions>
 
 </PropertyList>

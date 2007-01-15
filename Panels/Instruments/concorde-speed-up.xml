@@ -1,15 +1,21 @@
 <?xml version="1.0"?>
 
-<!-- Message for speed-up, virtual copilot and pause.
+<!-- speed-up display, with virtual crew :
+
+     - red : speed-up.
+     - yellow : passiv crew member, pause.
+     - green : activ crew member, checklist.
 -->
 
 <PropertyList>
 
  <name>Speed up display</name>
- <w-base>10</w-base>
+ <w-base>60</w-base>
  <h-base>40</h-base>
 
  <layers>
+
+<!-- SPEED-UP, or PAUSE, or MINIMIZED, or CHECKLIST -->
 
   <layer>
    <name>time</name>
@@ -21,10 +27,10 @@
      <property>/sim/freeze/master</property>
     </condition>
     <type>text</type>
-    <point-size>20</point-size>
+    <point-size>10</point-size>
     <color>
      <red>1.0</red>
-     <green>0.0</green>
+     <green>1.0</green>
      <blue>0.0</blue>
     </color>
     <chunks>
@@ -36,7 +42,11 @@
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-10</offset>
+      <offset>-18</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>12</offset>
      </transformation>
     </transformations>
    </layer>
@@ -55,7 +65,7 @@
      <name>acceleration</name>
      <type>text</type>
      <font>led</font>
-     <point-size>7</point-size>
+     <point-size>4</point-size>
      <color>
       <red>1.0</red>
       <green>0.0</green>
@@ -73,18 +83,18 @@
        <type>x-shift</type>
        <offset>-20</offset>
       </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>0</offset>
-      </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>12</offset>
+     </transformation>
      </transformations>
     </layer>
  
     <layer>
-     <name>title</name>
+     <name>unit</name>
      <type>text</type>
      <font>led</font>
-     <point-size>7</point-size>
+     <point-size>4</point-size>
      <color>
       <red>1.0</red>
       <green>0.0</green>
@@ -99,48 +109,311 @@
      <transformations>
       <transformation>
        <type>x-shift</type>
-       <offset>35</offset>
+       <offset>20</offset>
       </transformation>
+     </transformations>
+    </layer>
+ 
+    <layer>
+     <name>crew</name>
+     <condition>
+      <or>
+       <property>/controls/crew/copilot</property>
+       <property>/controls/crew/engineer</property>
+      </or>
+     </condition>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>crew</text>
+      </chunk>
+     </chunks>
+     <transformations>
       <transformation>
-       <type>y-shift</type>
-       <offset>0</offset>
+       <type>x-shift</type>
+       <offset>20</offset>
       </transformation>
      </transformations>
     </layer>
    </layer>
 
+   <layer>
+    <name>minimized</name>
+    <type>switch</type>
+    <condition>
+     <and>
+      <property>/systems/crew/serviceable</property>
+      <or>
+       <property>/controls/crew/copilot</property>
+       <property>/controls/crew/engineer</property>
+      </or>
+     </and>
+    </condition>
+
+    <layer>
+     <name>crew</name>
+     <condition>
+      <property>/systems/crew/minimized</property>
+     </condition>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>crew</text>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>checklist</name>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>text-value</type>
+       <property>/systems/crew/checklist</property>
+      </chunk>
+     </chunks>
+    </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-18</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>12</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
   </layer>
+
+<!-- COPILOT -->
 
   <layer>
    <name>virtual copilot</name>
+   <type>switch</type>
    <condition>
-    <property>/systems/autopilot/state/virtual-copilot</property>
+    <and>
+     <property>/systems/crew/serviceable</property>
+     <property>/controls/crew/copilot</property>
+     <not>
+      <property>/systems/crew/minimized</property>
+     </not>
+    </and>
    </condition>
-   <type>text</type>
-   <point-size>20</point-size>
-   <color>
-    <red>1.0</red>
-    <green>0.0</green>
-    <blue>0.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>copilot</text>
-    </chunk>
-   </chunks>
+
+   <layer>
+    <name>passiv copilot</name>
+    <condition>
+     <not>
+      <property>/systems/crew/copilot/activ</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>10</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>copilot</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>activ copilot</name>
+    <type>switch</type>
+
+    <layer>
+     <name>action</name>
+     <condition>
+      <not-equals>
+       <property>/systems/crew/copilot/state</property>
+       <value></value>
+      </not-equals>
+     </condition>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>text-value</type>
+       <property>/systems/crew/copilot/state</property>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>idle</name>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>copilot</text>
+      </chunk>
+     </chunks>
+    </layer>
+   </layer>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-10</offset>
+     <offset>-18</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- ENGINEER -->
+
+  <layer>
+   <name>virtual engineer</name>
+   <type>switch</type>
+   <condition>
+    <and>
+     <property>/systems/crew/serviceable</property>
+     <property>/controls/crew/engineer</property>
+     <not>
+      <property>/systems/crew/minimized</property>
+     </not>
+    </and>
+   </condition>
+
+   <layer>
+    <name>passiv engineer</name>
+    <condition>
+     <not>
+      <property>/systems/crew/engineer/activ</property>
+     </not>
+    </condition>
+    <type>text</type>
+    <point-size>10</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>engineer</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>activ engineer</name>
+    <type>switch</type>
+
+    <layer>
+     <name>action</name>
+     <condition>
+      <not-equals>
+       <property>/systems/crew/engineer/state</property>
+       <value></value>
+      </not-equals>
+     </condition>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>text-value</type>
+       <property>/systems/crew/engineer/state</property>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>idle</name>
+     <type>text</type>
+     <point-size>10</point-size>
+     <color>
+      <red>0.0</red>
+      <green>1.0</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>literal</type>
+       <text>engineer</text>
+      </chunk>
+     </chunks>
+    </layer>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-18</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-13</offset>
     </transformation>
    </transformations>
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Toggle crew display</name>
+   <button>0</button>
+   <x>-20</x>
+   <y>-14</y>
+   <w>40</w>
+   <h>34</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/systems/crew/minimized</property>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

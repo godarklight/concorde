@@ -1,9 +1,10 @@
 The real aircraft
 =================
-The nose strakes improves the air flow over the delta wing.
+The nose strakes improves the air flow over the delta wing (A).
+The plane bulge at the top of the aft fuselage is the ADF antenna (A).
 
-The black strip under the wing edge is de-icing.
-The black holes below the front doors are the pressure discharge valves.
+The black strip under the wing edge is de-icing (A).
+The black holes below the front doors are the pressure discharge valves (A).
 
 The cockpit :
 - blue (instrument panels), white beige (walls) and black (window pillars and sills).
@@ -13,36 +14,78 @@ The cockpit :
 - panel height = 1/2 of height to floor (below the panel).
 
 
-Cockpit Model
-=============
+Model
+=====
 The floor is supposed to be at the same level than the external nose strakes (blade),
 which puts it slightly above the bottom of the (textured) doors.
 
+The mesh of the overhead is not smoothed (solid).
+
+
+Pitch
+------
+The original 3D model had a pitch and a longer front gear :
+- the fuselage is always horizontal (B).
+- the pitch seems to exist (C)(D) at empty load.
+- the front gear is longer in flight (piston extended) (E).
+
+
+Transparency
+------------
+The external lights must be the last of the file :
+- all other objects belong to a hull, cockpit group, front or light group;
+  the front window must be after the cockpit; the visor must be after the front window :
+
+      Hull
+      Cockpit
+      Front + nose
+      Visor + lights
+
+- the hull group, not visible, is disabled inside cockpit.
+- a few invisible parents, at origin, help the ordering by 2.42a export script.
+- for selection during design, hull, cockpit, front and lights are in separate layers
+  (one cannot use a group to isolate the cockpit).
+
+The external lights must :
+- be centered at the model origin, where the billboard rotation happen (also required by scaling).
+- have the surface vertical, oriented to the left of aircraft (otherwise billboard makes
+  the object disappear !).
+
+
+VRP
+---
+The model is aligned vertically along the nose axis, but is still centered
+horizontally on the center of gravity :
+- that is more handy with the Blender grid. 
+- the alignment of VRP to the nose tip is finished by XML (horizontal offset).
+
+
+Texturing
+---------
 The cockpit texture without alpha makes the 2D instruments visible on a panel;
 the other texture with alpha is for clipping of 2D instruments.
-
-The external lights :
-- must be the last of the file, for the transparency;
- they are inside a single group, whose parent is the last object of the AC3D file.
-- must be centered at the model origin, where the billboard rotation happen (also required by scaling).
-- must have the surface vertical, oriented to the left of aircraft (otherwise billboard makes the object disappear !).
 
 
 TO DO
 =====
 - visor well.
-- compression of wing gear.
+- compression of gear spring.
 - afterburner (smoke).
 - probes on nose, RAT.
 - seats, yokes.
+- levers.
 
 
 Known problems
 ==============
-- removing polygons (mainly the wings) could increase the frame rate : it will be waited for hardware upgrade.
+- removing polygons (mainly the wings) could increase the frame rate :
+  it will be waited for hardware upgrade.
 - polygons with no area must be removed with Utils/Modeller/ac3d-despeckle, after Blender export.
-- avionics racks are not enough long, because the textured doors and portholes are too forwards
-  (left aft door more below the vertical fin).
+- avionics racks are not enough long, because the textured doors and portholes are too forwards :
+  left aft door should be more below the vertical fin, and front doors more aft (B).
+- the tail wheel door seems too long : one part of tail gear hole is closed by the small left and
+  right doors.
+- the water deflector of main gear crosses the fuselage at retraction.
 
 Known problems cockpit
 ----------------------
@@ -53,7 +96,19 @@ Known problems cockpit
 
 References
 ==========
-- http://www.concordesst.com :
+(A) http://www.concordesst.com :
+
+(B) http://www.airliners.net/open.file/0603013/L/ :
+    G-BOAD, by Stefan Welsch, without pitch.
+
+(C) http://www.airliners.net/open.file/0229834/L/ :
+    G-BOAF, by Carlos Borda, with pitch.
+
+(D) http://www.concordesst.com/video/98airtoair.mov :
+    British Airways clip.
+
+(E) http://www.airliners.net/open.file/0441886/L/ :
+    G-BOAE, by Harm Rutten.
 
 
 Credits
@@ -61,22 +116,26 @@ Credits
 Concorde model (without 3D cockpit) is from "Bogey" (unknown name and mail).
 
 It has been made available to Flightgear upon a request of M. Franz.
-See the forum of http://www.blender.org/, message from "Bogey", subject "Update Concord. Screen shots and download
-links" (24 october 2003 6:23 pm).
+See the forum of http://www.blender.org/, message from "Bogey", subject "Update Concord. Screen shots
+and download links" (24 october 2003 6:23 pm).
 
 
-List of updates to the original model :
-- addition of tail door closed, cockpit, external lights.
-- visibility of visor and nose from cockpit.
-- split of nozzles, main gear wheels (animation).
-- transparent windows (texture alpha).
+List of updates (-) / additions (+) to the original model :
++ tail door closed.
++ cockpit.                                                                             v1.2
+- visibility of visor and nose from cockpit.                                            2.0
+- split of nozzles (reverser).                                                          2.1
+- transparent windows (texture alpha).                                                  2.1
 - alignment of main gear internal doors with their well.
+- split of main gear wheels (spin).
++ external lights.                                                                      2.2
+- alignment to the nose tip, instead of the tail tip (VRP).                             2.3
+- split of main gear pistons (bogie compression and torsion).                           2.3
+- higher side stays and stearing unit (front gear compression).                         2.3
+- horizontal fuselage, without pitch (flat cockpit).                                    2.3
 
 
-Contact devel-list for the .blend file (Blender 2.36) :
-- distinct object group for the cockpit (lost at AC3D export/import).
-- which is otherwise very difficult to isolate in the mesh jungle : one needs to eliminate the fuselage to vizualize the
-cockpit interior (alternate solution : cockpit in different layer).
+Made with Blender 2.42a.
 
 
-19 March 2006.
+19 September 2006.

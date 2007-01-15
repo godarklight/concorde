@@ -3,22 +3,23 @@
 <!-- - the magnetic heading dial is dissociated from its autopilot bug;
      as heading hold is pressed, the current heading is supposed not echoed on the dial.
 
-     Known problem :
-     =============
-     - as the true heading dial is not dissociated from its autopilot bug, one cannot dial a true heading,
-     if there are waypoints. Because autopilot PID cannot work without the computed heading error, adjusted around zero.
+     - the true heading dial is also dissociated from its autopilot bug;
+     but the value is always mirrored to the autopilot, for the HSI, except if INS, because
+     true heading hold and waypoint hold are not dissociated by the autopilot.
+
+     - mouse 3rd button toggles track / heading.
 -->
 
 <PropertyList>
 
  <name>Dial heading</name>
- <w-base>164</w-base>
- <h-base>110</h-base>
+ <w-base>100</w-base>
+ <h-base>100</h-base>
 
  <params>
-  <hdg-auto>/autopilot/settings/heading-bug-deg</hdg-auto>
-  <hdg-ctrl>/controls/autoflight/heading-select</hdg-ctrl>
-  <true-hdg-ctrl>/autopilot/settings/true-heading-deg</true-hdg-ctrl>
+  <hdg-ctrl>/controls/autoflight/autopilot[0]/heading-select</hdg-ctrl>
+  <true-hdg-ctrl>/controls/autoflight/autopilot[0]/heading-true-select</true-hdg-ctrl>
+  <track-ctrl>/controls/autoflight/autopilot[0]/track-push</track-ctrl>
  </params>
 
  <layers>
@@ -29,123 +30,15 @@
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
     <w>70</w>
-    <h>49</h>
+    <h>35</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>33</offset>
+     <offset>13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 10</name>
-   <type>text</type>
-   <point-size>21</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>1</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>5</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 10</name>
-   <type>text</type>
-   <point-size>21</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>3</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-19</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Incr 1</name>
-   <type>text</type>
-   <point-size>21</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>+</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>14</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>5</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Decr 1</name>
-   <type>text</type>
-   <point-size>21</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>-</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>16</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-19</offset>
+     <offset>4</offset>
     </transformation>
    </transformations>
   </layer>
@@ -158,7 +51,7 @@
     <name>magnetic heading display</name>
     <condition>
      <not>
-      <property>/controls/autoflight/track-push</property>
+      <property alias="../../../../../../params/track-ctrl"/>
      </not>
     </condition>
     <type>text</type>
@@ -200,11 +93,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>32</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-9</offset>
+     <offset>-2</offset>
     </transformation>
    </transformations>
   </layer>
@@ -212,71 +105,60 @@
 <!-- selector -->
 
   <layer>
-   <name>knob left</name>
-   <condition>
-    <not>
-     <property>/controls/autoflight/track-push</property>
-    </not>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
-    <x1>0.53125</x1>
-    <x2>0.59765625</x2>
-    <y1>0.05859375</y1>
-    <y2>0.1484375</y2>
-   </texture>
-   <w>18</w>
-   <h>32</h>
-   <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-24</offset>
-    </transformation>
-    <transformation>
-     <type>rotation</type>
-     <offset>-90</offset>
-    </transformation>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-13</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-46</offset>
-    </transformation>
-   </transformations>
-  </layer>
+   <name>knob</name>
+   <type>switch</type>
 
-  <layer>
-   <name>knob right</name>
-   <condition>
-    <property>/controls/autoflight/track-push</property>
-   </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
-    <x1>0.53125</x1>
-    <x2>0.59765625</x2>
-    <y1>0.05859375</y1>
-    <y2>0.1484375</y2>
-   </texture>
-   <w>18</w>
-   <h>32</h>
+   <layer>
+    <name>knob left</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/track-ctrl"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
+     <x1>0.53125</x1>
+     <x2>0.59765625</x2>
+     <y1>0.05859375</y1>
+     <y2>0.1484375</y2>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>-90</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>knob right</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/navcom-radios.rgb</path>
+     <x1>0.53125</x1>
+     <x2>0.59765625</x2>
+     <y1>0.05859375</y1>
+     <y2>0.1484375</y2>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+    <transformations>
+     <transformation>
+      <type>rotation</type>
+      <offset>90</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
    <transformations>
     <transformation>
-     <type>y-shift</type>
-     <offset>-24</offset>
-    </transformation>
-    <transformation>
-     <type>rotation</type>
-     <offset>90</offset>
-    </transformation>
-    <transformation>
      <type>x-shift</type>
-     <offset>13</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>45</offset>
+     <offset>-27</offset>
     </transformation>
    </transformations>
   </layer>
@@ -284,7 +166,7 @@
   <layer>
    <name>Heading Pull Title</name>
    <type>text</type>
-   <point-size>14</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -299,11 +181,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-21</offset>
+     <offset>-26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-50</offset>
+     <offset>-31</offset>
     </transformation>
    </transformations>
   </layer>
@@ -311,7 +193,7 @@
   <layer>
    <name>Track Push Title</name>
    <type>text</type>
-   <point-size>14</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -326,11 +208,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>52</offset>
+     <offset>30</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-50</offset>
+     <offset>-31</offset>
     </transformation>
    </transformations>
   </layer>
@@ -343,12 +225,12 @@
    <name>Plus 10</name>
    <button>0</button>
    <x>1</x>
-   <y>-1</y>
+   <y>-28</y>
    <w>14</w>
-   <h>23</h>
+   <h>14</h>
    <binding>
     <condition>
-     <property>/controls/autoflight/track-push</property>
+     <property alias="../../../../../params/track-ctrl"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
@@ -360,7 +242,7 @@
    <binding>
     <condition>
      <not>
-      <property>/controls/autoflight/track-push</property>
+      <property alias="../../../../../../params/track-ctrl"/>
      </not>
     </condition>
     <command>property-adjust</command>
@@ -371,21 +253,8 @@
     <wrap>1</wrap>
    </binding>
    <binding>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/autoflight/heading</property>
-       <value>dg-heading-hold</value>
-      </equals>
-      <equals>
-       <property>/controls/autoflight/horizontal</property>
-       <value>track-heading</value>
-      </equals>
-     </and>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/hdg-auto"/>
-    <property n="1" alias="../../../../params/hdg-ctrl"/>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
    </binding>
   </action>
 
@@ -393,12 +262,12 @@
    <name>Minus 10</name>
    <button>0</button>
    <x>1</x>
-   <y>-23</y>
+   <y>-40</y>
    <w>14</w>
-   <h>23</h>
+   <h>14</h>
    <binding>
     <condition>
-     <property>/controls/autoflight/track-push</property>
+     <property alias="../../../../../params/track-ctrl"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
@@ -410,7 +279,7 @@
    <binding>
     <condition>
      <not>
-      <property>/controls/autoflight/track-push</property>
+      <property alias="../../../../../../params/track-ctrl"/>
      </not>
     </condition>
     <command>property-adjust</command>
@@ -421,21 +290,8 @@
     <wrap>1</wrap>
    </binding>
    <binding>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/autoflight/heading</property>
-       <value>dg-heading-hold</value>
-      </equals>
-      <equals>
-       <property>/controls/autoflight/horizontal</property>
-       <value>track-heading</value>
-      </equals>
-     </and>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/hdg-auto"/>
-    <property n="1" alias="../../../../params/hdg-ctrl"/>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
    </binding>
   </action>
 
@@ -443,12 +299,12 @@
    <name>Plus 1</name>
    <button>0</button>
    <x>14</x>
-   <y>-1</y>
+   <y>-28</y>
    <w>14</w>
-   <h>23</h>
+   <h>14</h>
    <binding>
     <condition>
-     <property>/controls/autoflight/track-push</property>
+     <property alias="../../../../../params/track-ctrl"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
@@ -460,7 +316,7 @@
    <binding>
     <condition>
      <not>
-      <property>/controls/autoflight/track-push</property>
+      <property alias="../../../../../../params/track-ctrl"/>
      </not>
     </condition>
     <command>property-adjust</command>
@@ -471,21 +327,8 @@
     <wrap>1</wrap>
    </binding>
    <binding>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/autoflight/heading</property>
-       <value>dg-heading-hold</value>
-      </equals>
-      <equals>
-       <property>/controls/autoflight/horizontal</property>
-       <value>track-heading</value>
-      </equals>
-     </and>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/hdg-auto"/>
-    <property n="1" alias="../../../../params/hdg-ctrl"/>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
    </binding>
   </action>
 
@@ -493,12 +336,12 @@
    <name>Minus 1</name>
    <button>0</button>
    <x>14</x>
-   <y>-23</y>
+   <y>-40</y>
    <w>14</w>
-   <h>23</h>
+   <h>14</h>
    <binding>
     <condition>
-     <property>/controls/autoflight/track-push</property>
+     <property alias="../../../../../params/track-ctrl"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/true-hdg-ctrl"/>
@@ -510,7 +353,7 @@
    <binding>
     <condition>
      <not>
-      <property>/controls/autoflight/track-push</property>
+      <property alias="../../../../../../params/track-ctrl"/>
      </not>
     </condition>
     <command>property-adjust</command>
@@ -521,36 +364,23 @@
     <wrap>1</wrap>
    </binding>
    <binding>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/autoflight/heading</property>
-       <value>dg-heading-hold</value>
-      </equals>
-      <equals>
-       <property>/controls/autoflight/horizontal</property>
-       <value>track-heading</value>
-      </equals>
-     </and>
-    </condition>
-    <command>property-assign</command>
-    <property alias="../../../../params/hdg-auto"/>
-    <property n="1" alias="../../../../params/hdg-ctrl"/>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
    </binding>
   </action>
 
 <!-- selector -->
 
   <action>
-   <name>Heading Pull/Track push</name>
-   <button>0</button>
-   <x>-25</x>
-   <y>-58</y>
-   <w>110</w>
-   <h>25</h>
+   <name>Heading Pull / Track push</name>
+   <button>1</button>
+   <x>1</x>
+   <y>-41</y>
+   <w>26</w>
+   <h>26</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/autoflight/track-push</property>
+    <property alias="../../../../params/track-ctrl"/>
    </binding>
   </action>
 

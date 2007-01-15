@@ -26,6 +26,7 @@
 
    <layer>
     <name>lamp off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
@@ -38,41 +39,47 @@
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>20</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>20</h>
+    </layer>
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-low-press.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.2</y1>
+      <x2>1.0</x2>
+      <y2>0.8</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+    </layer>
    </layer>
+
    <layer>
     <name>lamp on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>20</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>background on</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-low-press.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.2</y1>
-    <x2>1.0</x2>
-    <y2>0.8</y2>
-   </texture>
-   <w>104</w>
-   <h>20</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>20</h>
+    </layer>
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-low-press.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.2</y1>
+      <x2>1.0</x2>
+      <y2>0.8</y2>
+     </texture>
+     <w>104</w>
+     <h>20</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
  </layers>

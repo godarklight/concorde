@@ -5,8 +5,8 @@
 <PropertyList>
 
  <name>Digital Fuel Tank monitor display</name>
- <w-base>40</w-base>
- <h-base>6</h-base>
+ <w-base>90</w-base>
+ <h-base>20</h-base>
 
  <params>
   <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
@@ -21,18 +21,8 @@
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
-    <w>90</w>
-    <h>20</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>98</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
-   </transformations>
+   <w>90</w>
+   <h>20</h>
   </layer>
 
   <layer>
@@ -54,11 +44,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>60</offset>
+     <offset>-38</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>4</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -102,16 +92,6 @@
        <format>%0.f</format>
       </chunk>
      </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>87</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>4</offset>
-      </transformation>
-     </transformations>
     </layer>
 
     <layer>
@@ -138,16 +118,6 @@
        <format>%0.f</format>
       </chunk>
      </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>87</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>4</offset>
-      </transformation>
-     </transformations>
     </layer>
 
     <layer>
@@ -168,17 +138,17 @@
        <format>%0.f</format>
       </chunk>
      </chunks>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>87</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>4</offset>
-      </transformation>
-     </transformations>
     </layer>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-11</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-6</offset>
+     </transformation>
+    </transformations>
    </layer>
 
    <layer>
@@ -195,11 +165,7 @@
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>105</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>10</offset>
+      <offset>-7</offset>
      </transformation>
     </transformations>
    </layer>

@@ -16,7 +16,7 @@
   <control-relight>/controls/engines/engine[0]/relight</control-relight>
   <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
   <air-pressure>/systems/air-bleed/engine[0]/cross-psi</air-pressure>
-  <num>/engines/engine[0]/engine-num</num>
+  <num>/systems/engines/engine[0]/engine-num</num>
  </params>
 
 
@@ -218,6 +218,7 @@
 
   <action>
    <name>Toggle Relight</name>
+   <button>1</button>
    <condition>
     <and>
      <not>
@@ -229,8 +230,7 @@
      </greater-than>
     </and>
    </condition>
-   <button>0</button>
-   <x>-54</x>
+   <x>-5</x>
    <y>-21</y>
    <w>42</w>
    <h>42</h>
@@ -246,6 +246,7 @@
 
   <action>
    <name>Toggle Starter</name>
+   <button>0</button>
    <condition>
     <and>
      <not>
@@ -261,7 +262,6 @@
      </greater-than-equals>
     </and>
    </condition>
-   <button>0</button>
    <x>-5</x>
    <y>-21</y>
    <w>42</w>

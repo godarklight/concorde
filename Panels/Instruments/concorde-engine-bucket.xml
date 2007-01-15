@@ -6,11 +6,11 @@
 <PropertyList>
 
  <name>Bucket position</name>
- <w-base>10</w-base>
+ <w-base>40</w-base>
  <h-base>40</h-base>
 
  <params>
-  <bucket-pos>/engines/engine[0]/bucket-deg</bucket-pos>
+  <bucket-pos>/systems/engines/engine[0]/bucket-deg</bucket-pos>
  </params>
 
 
@@ -19,20 +19,10 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-knob.rgb</path>
    </texture>
-    <w>40</w>
-    <h>30</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>5</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>70</offset>
-    </transformation>
-   </transformations>
+   <w>40</w>
+   <h>40</h>
   </layer>
 
   <layer>
@@ -55,11 +45,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-5</offset>
+     <offset>-10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>64</offset>
+     <offset>-6</offset>
     </transformation>
    </transformations>
   </layer>
@@ -82,11 +72,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-4</offset>
+     <offset>-9</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>40</offset>
+     <offset>-30</offset>
     </transformation>
    </transformations>
   </layer>

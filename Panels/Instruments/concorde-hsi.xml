@@ -15,7 +15,15 @@ Adapted from Martin Dressler dr@musicabona.cz
 
  <name>HSI</name>
  <w-base>512</w-base>
- <h-base>512</h-base>
+ <h-base>768</h-base>
+
+ <params>
+  <ins-source>/instrumentation/hsi[0]/ins-source</ins-source>
+  <serviceable>/instrumentation/hsi[0]/serviceable</serviceable>
+  <nav2>/instrumentation/hsi[0]/dev-nav2</nav2>
+  <heading-select>/controls/autoflight/autopilot[0]/heading-select</heading-select>
+  <true-select>/controls/autoflight/autopilot[0]/heading-true-select</true-select>
+ </params>
  
  
  <layers>
@@ -53,21 +61,39 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
+     <scale>1</scale>
+     <offset>180</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -78,8 +104,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -90,9 +116,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -106,11 +132,22 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>VOR TO</name>
    <condition>
     <and>
-     <property>/instrumentation/nav[0]/to-flag</property>
+     <or>
+      <and>
+       <property>/instrumentation/nav[1]/to-flag</property>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
+      </and>
+      <and>
+       <property>/instrumentation/nav[2]/to-flag</property>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </or>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
-     <property>/instrumentation/hsi/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <w>48</w>
@@ -128,8 +165,22 @@ Adapted from Martin Dressler dr@musicabona.cz
      <offset>-23</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/nav2"/>
+      </not>
+     </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
+     <offset>180</offset>
+     <scale>1</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/nav2"/>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
@@ -149,11 +200,22 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>VOR FROM</name>
    <condition>
     <and>
-     <property>/instrumentation/nav[0]/from-flag</property>
+     <or>
+      <and>
+       <property>/instrumentation/nav[1]/from-flag</property>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
+      </and>
+      <and>
+       <property>/instrumentation/nav[2]/from-flag</property>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </or>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
-     <property>/instrumentation/hsi/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <w>48</w>
@@ -171,8 +233,22 @@ Adapted from Martin Dressler dr@musicabona.cz
      <offset>-23</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/nav2"/>
+      </not>
+     </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
+     <offset>180</offset>
+     <scale>1</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/nav2"/>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
@@ -212,21 +288,39 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
      <scale>1</scale>
      <offset>180</offset>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
+     <scale>1</scale>
+     <offset>180</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -238,9 +332,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -250,8 +344,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -304,9 +398,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -316,8 +410,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -347,33 +441,33 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/controls/autoflight/heading-select</property>
+     <property alias="../../../../../params/heading-select"/>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/autopilot/settings/true-heading-deg</property>
+     <property alias="../../../../../params/true-select"/>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -383,8 +477,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -418,21 +512,39 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
+     <offset>180</offset>
+     <scale>1</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -444,9 +556,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -456,8 +568,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -468,13 +580,32 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>x-shift</type>
-     <property>/instrumentation/nav[0]/heading-needle-deflection</property>
+     <property>/instrumentation/nav[1]/heading-needle-deflection</property>
+     <min>-12.0</min>
+     <max>12.0</max>
+     <scale>-7.6</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>x-shift</type>
+     <property>/instrumentation/nav[2]/heading-needle-deflection</property>
      <min>-12.0</min>
      <max>12.0</max>
      <scale>-7.6</scale>
@@ -482,8 +613,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-hsi.xml">
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>x-shift</type>
@@ -519,21 +650,39 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
+     <offset>180</offset>
+     <scale>1</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -545,9 +694,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -557,8 +706,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -592,21 +741,39 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/nav[0]/radials/selected-deg</property>
+     <property>/instrumentation/nav[1]/radials/selected-deg</property>
      <offset>180</offset>
      <scale>1</scale>
     </transformation>
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <not>
+        <property alias="../../../../../../../../params/ins-source"/>
+       </not>
+       <property alias="../../../../../../../params/serviceable"/>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/nav[2]/radials/selected-deg</property>
+     <offset>180</offset>
+     <scale>1</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <and>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -618,9 +785,9 @@ Adapted from Martin Dressler dr@musicabona.cz
      <condition>
       <and>
        <not>
-        <property>/instrumentation/hsi/ins-source</property>
+        <property alias="../../../../../../../../params/ins-source"/>
        </not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -630,8 +797,8 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformation>
      <condition>
       <and>
-       <property>/instrumentation/hsi/ins-source</property>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/ins-source"/>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
@@ -668,11 +835,22 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>GS needle right</name>
    <condition>
     <and>
-     <property>/instrumentation/nav[0]/has-gs</property>
+     <or>
+      <and>
+       <property>/instrumentation/nav[1]/has-gs</property>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
+      </and>
+      <and>
+       <property>/instrumentation/nav[2]/has-gs</property>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </or>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
-     <property>/instrumentation/hsi/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <w>40</w>
@@ -690,8 +868,24 @@ Adapted from Martin Dressler dr@musicabona.cz
      <offset>192</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/nav2"/>
+      </not>
+     </condition>
      <type>y-shift</type>
-     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[1]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>8.35</scale>
+     <offset>-24</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/nav2"/>
+     </condition>
+     <type>y-shift</type>
+     <property>/instrumentation/nav[2]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>8.35</scale>
@@ -704,11 +898,22 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>GS needle left</name>
    <condition>
     <and>
-     <property>/instrumentation/nav[0]/has-gs</property>
+     <or>
+      <and>
+       <property>/instrumentation/nav[1]/has-gs</property>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
+      </and>
+      <and>
+       <property>/instrumentation/nav[2]/has-gs</property>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
+     </or>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
-     <property>/instrumentation/hsi/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <w>40</w>
@@ -726,8 +931,24 @@ Adapted from Martin Dressler dr@musicabona.cz
      <offset>-192</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/nav2"/>
+      </not>
+     </condition>
      <type>y-shift</type>
-     <property>/instrumentation/nav[0]/gs-needle-deflection</property>
+     <property>/instrumentation/nav[1]/gs-needle-deflection</property>
+     <min>-10.0</min>
+     <max>10.0</max>
+     <scale>8.35</scale>
+     <offset>-24</offset>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/nav2"/>
+     </condition>
+     <type>y-shift</type>
+     <property>/instrumentation/nav[2]/gs-needle-deflection</property>
      <min>-10.0</min>
      <max>10.0</max>
      <scale>8.35</scale>
@@ -742,15 +963,26 @@ Adapted from Martin Dressler dr@musicabona.cz
    <condition>
     <and>
      <or>
+      <and>
+       <not>
+        <property>/instrumentation/nav[1]/in-range</property>
+       </not>
+       <not>
+        <property alias="../../../../../../../../params/nav2"/>
+       </not>
+      </and>
+      <and>
+       <not>
+        <property>/instrumentation/nav[2]/in-range</property>
+       </not>
+       <property alias="../../../../../../../params/nav2"/>
+      </and>
       <not>
-       <property>/instrumentation/nav[0]/in-range</property>
-      </not>
-      <not>
-       <property>/instrumentation/hsi/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </not>
      </or>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
     </and>
    </condition>
@@ -802,7 +1034,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     <name>Title magnetic</name>
     <condition>
      <not>
-      <property>/instrumentation/hsi/ins-source</property>
+      <property alias="../../../../../../params/ins-source"/>
      </not>
     </condition>
     <type>text</type>
@@ -862,7 +1094,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     <or>
      <not include="concorde-cond-voltage-hsi.xml"/>
      <not>
-      <property>/instrumentation/hsi/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or>
    </condition>
@@ -990,7 +1222,7 @@ Adapted from Martin Dressler dr@musicabona.cz
        <property>/autopilot/route-manager/wp/id</property>
        <value></value>
       </not-equals>
-      <property>/instrumentation/hsi/serviceable</property>
+      <property alias="../../../../../params/serviceable"/>
      </and>
     </condition>
 
@@ -1150,7 +1382,7 @@ Adapted from Martin Dressler dr@musicabona.cz
    <name>Ground speed</name>
    <condition>
     <and include="concorde-cond-voltage-hsi.xml">
-     <property>/instrumentation/hsi/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <type>text</type>

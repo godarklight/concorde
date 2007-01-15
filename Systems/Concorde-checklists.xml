@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+
+<!-- checklists :
+
+     - to make reading easier.
+-->
+
+<PropertyList>
+
+    <checklists>
+     <all>
+      <pilot>
+       <description>controls in flight</description>
+       <message>
+        <action>gearup</action>
+        <text>gear up</text>
+       </message>
+       <message>
+        <action>5greens</action>
+        <text>5 greens</text>
+       </message>
+      </pilot>
+     </all>
+
+     <flight>
+      <pilot>
+       <description>main check</description>
+       <message>
+        <action>altitudeset</action>
+        <text>cleared altitude set</text>
+       </message>
+       <message>
+        <action>1000fttogo</action>
+        <text>1000 feet to go</text>
+       </message>
+       <message>
+        <action>altimetercheck</action>
+        <text>altimeter check</text>
+       </message>
+      </pilot>
+     </flight>
+ 
+     <goaround>
+      <pilot>
+       <description>main check</description>
+       <message>
+        <action>positivclimb</action>
+        <text>positiv climb</text>
+       </message>
+      </pilot>
+     </goaround>
+ 
+     <landing>
+      <engineer>
+       <description>main check</description>
+       <message>
+        <action>2500ft</action>
+        <text>radio altimeter activ</text>
+       </message>
+       <message>
+        <action>1000ft</action>
+        <text>1000 feet radio</text>
+       </message>
+       <message>
+        <action>800ft</action>
+        <text>800</text>
+       </message>
+       <message>
+        <action>500ft</action>
+        <text>500</text>
+       </message>
+       <message>
+       <action>400ft</action>
+       <text>400</text>
+       </message>
+       <message>
+        <action>300ft</action>
+        <text>300</text>
+       </message>
+       <message>
+        <action>200ft</action>
+        <text>200</text>
+       </message>
+       <message>
+        <action>100ft</action>
+        <text>100</text>
+       </message>
+       <message>
+       <action>50ft</action>
+       <text>50</text>
+       </message>
+       <message>
+        <action>40ft</action>
+        <text>40</text>
+       </message>
+       <message>
+        <action>30ft</action>
+        <text>30</text>
+       </message>
+       <message>
+        <action>20ft</action>
+        <text>20</text>
+       </message>
+       <message>
+        <action>15ft</action>
+        <text>15</text>
+       </message>
+      </engineer>
+ 
+      <pilot>
+       <description>second check</description>
+       <message>
+        <action>glideslope</action>
+        <text>glide slope active</text>
+       </message>
+       <message>
+        <action>100kt</action>
+        <text>100 knots</text>
+       </message>
+       <message>
+        <action>75kt</action>
+        <text>75 knots</text>
+       </message>
+       <message>
+       <action>40kt</action>
+        <text>40 knots</text>
+       </message>
+       <message>
+        <action>20kt</action>
+        <text>20 knots</text>
+       </message>
+      </pilot>
+ 
+      <pilot>
+       <description>controls during landing</description>
+       <message>
+        <action>goaroundset</action>
+        <text>go-around altitude set</text>
+       </message>
+       <message>
+        <action>vsiexcess</action>
+        <text>rate of descent</text>
+       </message>
+       <message>
+        <action>approachspeed</action>
+        <text>airspeed</text>
+       </message>
+       <message>
+        <action>100fttogo</action>
+        <text>100 to go</text>
+       </message>
+       <message>
+        <action>decisionheight</action>
+        <text>decision height</text>
+       </message>
+      </pilot>
+     </landing>
+
+     <takeoff>
+      <engineer>
+       <description>main check</description>
+       <message>
+        <action>100kt</action>
+        <text>power checked</text>
+       </message>
+      </engineer>
+ 
+      <pilot>
+       <description>main check</description>
+       <message>
+        <action>brakes3</action>
+        <text>3</text>
+       </message>
+       <message>
+        <action>brakes2</action>
+        <text>2</text>
+       </message>
+       <message>
+        <action>brakes1</action>
+        <text>1</text>
+       </message>
+       <message>
+        <action>brakes</action>
+        <text>now</text>
+       </message>
+       <message>
+        <action>airspeed</action>
+        <text>airspeed building</text>
+       </message>
+       <message>
+        <action>100kt</action>
+        <text>100 knots</text>
+       </message>
+       <message>
+        <action>V1</action>
+        <text>V 1</text>
+       </message>
+       <message>
+        <action>VR</action>
+        <text>rotate</text>
+       </message>
+       <message>
+        <action>V2</action>
+        <text>V 2</text>
+       </message>
+       <message>
+        <action>240kt</action>
+        <text>240</text>
+       </message>
+      </pilot>
+
+      <pilot>
+       <description>lift off</description>
+       <message>
+        <action>liftoff</action>
+        <text>positiv climb</text>
+       </message>
+      </pilot>
+ 
+      <pilot>
+       <description>controls during takeoff</description>
+       <message>
+        <action>negativvsi</action>
+        <text>rate of climb</text>
+       </message>
+       <message>
+        <action>airspeeddecay</action>
+        <text>airspeed</text>
+       </message>
+      </pilot>
+     </takeoff>
+    </checklists>
+
+</PropertyList>

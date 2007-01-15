@@ -13,34 +13,57 @@ Pressurization = {};
 Pressurization.new = func {
    obj = { parents : [Pressurization],
 
-           electricalsystem : nil,
-           airbleedsystem : nil,
+           diffpressure : Differentialpressure.new(),
 
-           diffpressureinstrument : Differentialpressure.new(),
-#           cabininstrument : Cabinaltitude.new(),
-
-           PRESSURIZEMBARPM : 18.0,                   # human physiology tolerates 18 mbar per minute until 8000 ft.
-           PRESSURIZEINHGPM : 0.0,                    # 18 mbar/minute = 0.53 inhg/minute
-           PRESSURIZESEC : 5.0,                       # sampling
-           PRESSURIZEMBAR : 0.0,
-           PRESSURIZEINHG : 0.0,
-           PRESSURIZEFTPM : 0.0,                      # max descent speed around 6000 feet/minute.
-           PRESSURIZEMININHG : 22.25,                 # 8000 ft (standard atmosphere)
-           PRESSURIZEMAXFT : 8000.0,
-           aglft : 0.0,                               # ISA default
-           altseaft : 0.0,
-           seainhg : 29.92,
-           pressureinhg : 29.92,
-           cabininhg : 29.92,
-           targetinhg : 29.92,
-           outflowinhg : 0.0,
+           engines : nil,
+           internal : nil,
            pressurenode : nil,
-           staticport : "",
+           valves : nil,
+           systems : nil,
 
-# slaves
-           slave : [ nil, nil ],
-           altimeter : 0,
-           radioaltimeter : 1
+           PRESSURIZESEC : 5.0,                       # sampling
+
+           speedup : 1.0,
+
+           DEPRESSURIZEINHGPM : 10.0,                 # 10 inhg/minute (guess)
+           LEAKINHGPM : 0.01,                         # 0.01 inhg/minute if no pressurization
+
+           PRESSURIZEINHGPM : 0.0,                    # 18 mbar/minute = 0.53 inhg/minute
+
+           MININHG : 19.82,                           # 11000 ft
+
+           DEPRESSURIZEINHG : 0.0,
+           LEAKINHG : 0.0,
+           PRESSURIZEINHG : 0.0,
+           PRESSURIZEMININHG : 0.0,
+
+           cabininhg : constant.P0_inhg,
+           datuminhg : constant.P0_inhg,
+           outflowinhg : 0.0,
+           pressureinhg : constant.P0_inhg,
+           targetinhg : constant.P0_inhg,
+
+           THRUSTPSI : 7.0,
+           THRUSTOFFPSI : 3.0,
+           GROUNDPSI : 1.45,
+
+           diffpsi : 0.0,
+
+           LANDINGFT : 2500.0,
+
+           PRESSURIZEFT : 0.0,                        # max descent speed around 6000 feet/minute.
+
+           altseaft : 0.0,
+
+           PRESSURIZEMAXFTPM : 7000.0,
+           CLIMBFTPM : 2000.0,
+           DESCENTFTPM : 1500.0,
+
+           ground : constant.TRUE,
+           system_no : 0,
+
+           staticport : "",
+           slave : { "air" : nil, "electric" : nil, "weight": nil }
          };
 
    obj.init();
@@ -49,56 +72,152 @@ Pressurization.new = func {
 };
 
 Pressurization.init = func {
-    propname = getprop("/systems/pressurization/slave/altimeter");
-    me.slave[me.altimeter] = props.globals.getNode(propname);
-    propname = getprop("/systems/pressurization/slave/radio-altimeter");
-    me.slave[me.radioaltimeter] = props.globals.getNode(propname);
+    propname = getprop("/systems/pressurization/slave/air");
+    me.slave["air"] = props.globals.getNode(propname);
+    propname = getprop("/systems/pressurization/slave/electric");
+    me.slave["electric"] = props.globals.getNode(propname);
+    propname = getprop("/systems/pressurization/slave/weight");
+    me.slave["weight"] = props.globals.getNode(propname);
 
-    me.PRESSURIZEINHGPM = me.PRESSURIZEMBARPM * constant.MBARTOINHG;
-    me.PRESSURIZEMBAR = me.PRESSURIZEMBARPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
-    me.PRESSURIZEINHG = me.PRESSURIZEMBAR * constant.MBARTOINHG;
-    me.PRESSURIZEFTPM = 7000.0 / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
+    me.LEAKINHG = me.LEAKINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
+    me.DEPRESSURIZEINHG = me.DEPRESSURIZEINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
 
+    me.PRESSURIZEFT = me.PRESSURIZEMAXFTPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
+
+    me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
+    me.internal = props.globals.getNode("/systems/pressurization/internal");
     me.pressurenode = props.globals.getNode("/systems/pressurization");
+    me.valves = props.globals.getNode("/systems/pressurization/valve");
+    me.systems = props.globals.getNode("/systems/pressurization").getChildren("system");
 
-    me.staticport = getprop("/systems/pressurization/static-port");
-    me.staticport = me.staticport ~ "/pressure-inhg";
+    me.staticport = getprop("/systems/pressurization/static-pressure");
 
-    me.diffpressureinstrument.set_rate( me.PRESSURIZESEC );
+    me.initconstant();
+
+    me.diffpressure.set_rate( me.PRESSURIZESEC );
 }
 
-Pressurization.set_relation = func( airbleed, electrical ) {
-   me.airbleedsystem = airbleed;
-   me.electricalsystem = electrical;
+# engineer can change
+Pressurization.initconstant = func {
+    pressurizembarpm = me.systems[me.system_no].getChild("mbar-per-min").getValue();
+
+    me.PRESSURIZEINHGPM = pressurizembarpm * constant.MBARTOINHG;
+    me.PRESSURIZEINHG = me.PRESSURIZEINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
+
+    me.datuminhg = me.systems[me.system_no].getChild("datum-mbar").getValue() * constant.MBARTOINHG;
+    altitudeft = me.systems[me.system_no].getChild("cabin-alt-ft").getValue();
+    me.PRESSURIZEMININHG = constant.pressure_inhg( altitudeft );
+
+    stepinhg = me.datuminhg - me.PRESSURIZEMININHG;
+    maxdiffft = ( stepinhg / me.PRESSURIZEINHGPM ) * me.CLIMBFTPM;
+    me.systems[me.system_no].getChild("max-diff-ft").setValue(maxdiffft);
+
+    me.speedup = getprop("/sim/speed-up");
+    if( me.speedup > 1 ) {
+        me.PRESSURIZEINHG = me.PRESSURIZEINHG * me.speedup;
+    }
+
+   
+    me.systems[me.system_no].getChild("min-pressure-inhg").setValue(me.PRESSURIZEMININHG);
+}
+
+Pressurization.ground_relief = func {
+    me.pressureinhg = getprop(me.staticport);
+    me.cabininhg = me.pressurenode.getChild("pressure-inhg").getValue();
+    
+    me.diffpsi = ( me.cabininhg - me.pressureinhg ) * constant.INHGTOPSI;
+
+    # opens ground relief valve if not takeoff
+    me.ground = constant.FALSE;
+    if( me.slave["weight"].getChild("wow").getValue() and
+        me.engines[0].getChild("throttle" ).getValue() < 1.0 and
+        me.engines[1].getChild("throttle" ).getValue() < 1.0 and
+        me.engines[2].getChild("throttle" ).getValue() < 1.0 and
+        me.engines[3].getChild("throttle" ).getValue() < 1.0 ) {
+        if( me.valves.getChild("ground-auto").getValue() ) {
+            if( me.diffpsi < me.GROUNDPSI ) {
+                me.ground = constant.TRUE;
+            }
+        }
+    }
+
+    me.valves.getChild("ground-relief").setValue(me.ground);
+}
+
+Pressurization.thrust_recuperator = func {
+    if( me.diffpsi < me.THRUSTOFFPSI ) {
+        thrust = constant.FALSE;
+        recuperator = constant.FALSE;
+    }
+    elsif( me.diffpsi < me.THRUSTPSI ) {
+        thrust = constant.FALSE;
+        recuperator = constant.TRUE;
+    }
+    else {
+        thrust = constant.TRUE;
+        recuperator = constant.TRUE;
+    }
+
+    me.valves.getChild("thrust").setValue(thrust);
+    me.valves.getChild("thrust-recuperator").setValue(recuperator);
+}
+
+Pressurization.flow = func( maxinhg, mininhg ) {
+    me.pressureinhg = getprop(me.staticport);
+    me.altseaft = constant.altitude_ft( me.pressureinhg, me.datuminhg );
+    me.targetinhg = me.pressureinhg;
+    me.cabininhg = me.pressurenode.getChild("pressure-inhg").getValue();
+    result = me.cabininhg;
+
+    if( me.targetinhg < mininhg ) {
+        me.targetinhg = mininhg;
+    }
+
+    me.outflowinhg = me.cabininhg - me.targetinhg;
+    if( me.outflowinhg > maxinhg ) {
+        me.outflowinhg = maxinhg;
+    }
+    elsif( me.outflowinhg < -maxinhg ) {
+        me.outflowinhg = -maxinhg;
+    }
+
+    me.cabininhg = me.cabininhg - me.outflowinhg;
+
+    me.apply( constant.TRUE );
+}
+
+Pressurization.depressurization = func {
+    maxinhg = me.DEPRESSURIZEINHG * me.speedup;
+
+    # limited to 11000 ft
+    me.flow( maxinhg, me.MININHG );
 }
 
 # leak when no pressurization
 Pressurization.cabinleak = func {
-   # ignored !
+    maxinhg = me.LEAKINHG * me.speedup;
+
+    me.flow( maxinhg, 0.0 );
 }
 
 Pressurization.last = func {
-    me.aglft = me.slave[me.radioaltimeter].getChild("indicated-altitude-ft").getValue();
-    me.altseaft = me.slave[me.altimeter].getChild("indicated-altitude-ft").getValue();
-    me.seainhg = noinstrument.get_sea_inhg();              # avoids lengthy computations
     me.pressureinhg = getprop(me.staticport);
-#    me.cabininhg = getprop("/instrumentation/cabin-altitude/cabin-inhg");
+    me.altseaft = constant.altitude_ft( me.pressureinhg, me.datuminhg );
     me.cabininhg = me.pressurenode.getChild("pressure-inhg").getValue();
 
-    # filters startup
-    if( me.aglft == nil or me.altseaft == nil or me.seainhg == nil or me.pressureinhg == nil ) {
-        me.aglft = 0.0;
-        me.altseaft = 0.0;
-        me.seainhg = 29.92;
-        me.pressureinhg = 29.92;
 
-        me.targetinhg = 29.92;
+    # filters startup
+    if( me.altseaft == nil or me.pressureinhg == nil ) {
+        me.altseaft = 0.0;
+        me.pressureinhg = constant.P0_inhg;
+
+        me.targetinhg = constant.P0_inhg;
         me.outflowinhg = 0.0;
 
-        startup = "true";
+        startup = constant.TRUE;
      }
      else {
-        startup = "false";
+        startup = constant.FALSE;
      }
 
      return startup;
@@ -106,26 +225,21 @@ Pressurization.last = func {
 
 # pressurization curve has a lower slope than aircraft descent/climb profile
 Pressurization.curve = func {
-     speedup = getprop("/sim/speed-up");
-
-     # pressure is slightly lower than ground, because cabin is on the gears !
-
-     if( me.aglft > 2500.0 ) {
-         # average vertical speed of 2000 feet/minute
-         minutes = me.altseaft / 2000.0;
-         minutes = minutes * speedup;
-         me.targetinhg = me.seainhg - minutes * me.PRESSURIZEINHGPM;
+     # average vertical speed of 2000 feet/minute
+     if( me.altseaft > me.LANDINGFT ) {
+         minutes = me.altseaft / me.CLIMBFTPM;
+         minutes = minutes * me.speedup;
+         me.targetinhg = me.datuminhg - minutes * me.PRESSURIZEINHGPM;
          if( me.targetinhg < me.PRESSURIZEMININHG ) {
              me.targetinhg = me.PRESSURIZEMININHG;
          }
      }
 
-     # radio altimeter works below 2500 feet
+     # average landing speed of 1500 feet/minute
      else {
-         # average landing speed of 1500 feet/minute
-         minutes = ( me.altseaft - me.aglft ) / 1500.0;
-         minutes = minutes * speedup;
-         me.targetinhg = me.seainhg - minutes * me.PRESSURIZEINHGPM;
+         minutes = me.altseaft / me.DESCENTFTPM;
+         minutes = minutes * me.speedup;
+         me.targetinhg = me.datuminhg - minutes * me.PRESSURIZEINHGPM;
          if( me.targetinhg < me.PRESSURIZEMININHG ) {
              me.targetinhg = me.PRESSURIZEMININHG;
          }
@@ -156,12 +270,12 @@ Pressurization.real = func {
 Pressurization.interpolation = func {
       # one supposes instrument calibrated by standard atmosphere
       if( me.outflowinhg != 0 or me.cabininhg > me.PRESSURIZEMININHG ) {
-          interpol = "true";
+          interpol = constant.TRUE;
       }
 
       # above 8000 ft
       else {
-          interpol = "false";
+          interpol = constant.FALSE;
       }
 
       return interpol;
@@ -169,32 +283,32 @@ Pressurization.interpolation = func {
 
 # relocation in flight
 Pressurization.relocation = func( interpol ) {
-      lastaltft = me.pressurenode.getChild("altitude-sea-ft").getValue();
+      lastaltft = me.internal.getChild("altitude-sea-ft").getValue();
 
       variationftpm = lastaltft - me.altseaft;
-      if( variationftpm < -me.PRESSURIZEFTPM or variationftpm > me.PRESSURIZEFTPM ) {
+      if( variationftpm < -me.PRESSURIZEFT or variationftpm > me.PRESSURIZEFT ) {
            me.outflowinhg = 0.0;
            me.cabininhg = me.targetinhg;
-           interpol = "true";        
+           interpol = constant.TRUE;        
       }
       # relocation on ground (change of airport)
-      elsif( me.aglft < constantaero.AGLTOUCHFT ) {
+      elsif( me.ground ) {
            me.outflowinhg = 0.0;
            me.targetinhg = me.pressureinhg;
            me.cabininhg = me.targetinhg;
-           interpol = "true";
+           interpol = constant.TRUE;
       }
 
       return interpol;
 }
 
 Pressurization.apply = func( interpol ) {
-      me.pressurenode.getChild("atmosphere-inhg").setValue(me.pressureinhg);
-      me.pressurenode.getChild("target-inhg").setValue(me.targetinhg);
-      me.pressurenode.getChild("outflow-inhg").setValue(me.outflowinhg);
-      me.pressurenode.getChild("altitude-sea-ft").setValue(me.altseaft);
+      me.internal.getChild("atmosphere-inhg").setValue(me.pressureinhg);
+      me.internal.getChild("target-inhg").setValue(me.targetinhg);
+      me.internal.getChild("outflow-inhg").setValue(me.outflowinhg);
+      me.internal.getChild("altitude-sea-ft").setValue(me.altseaft);
 
-      if( interpol != "true" ) {
+      if( !interpol ) {
           me.cabininhg = me.PRESSURIZEMININHG;
       }
 
@@ -202,227 +316,53 @@ Pressurization.apply = func( interpol ) {
       if( result != me.cabininhg ) {
           interpolate("/systems/pressurization/pressure-inhg",me.cabininhg,me.PRESSURIZESEC);
       }
-#       me.cabininstrument.schedule( me.cabininhg );        
 }
 
-# cabin altitude meter
+Pressurization.system = func {
+   startup = me.last();
+
+   # real modes
+   if( !startup ) {
+       me.curve();
+       me.real();
+   }
+
+   interpol = me.interpolation();
+
+   # artificial modes
+   if( !startup ) {
+       interpol = me.relocation( interpol );
+   }
+
+   me.apply( interpol );
+}
+
 Pressurization.schedule = func {
-   if( me.electricalsystem.has_specific() ) {
-       if( getprop("/systems/pressurization/serviceable") and me.airbleedsystem.has_pressure() ) {
-           startup = me.last();
+   if( me.slave["electric"].getChild("specific").getValue() ) {
+       if( me.pressurenode.getChild("serviceable").getValue() ) {
+           me.initconstant();
+           me.ground_relief();
 
-           # real modes
-           if( startup == "false" ) {
-               me.curve();
-               me.real();
+           if( getprop("/controls/pressurization/emergency/depressurization") ) {
+               me.depressurization();
            }
 
-           interpol = me.interpolation();
-
-           # artificial modes
-           if( startup == "false" ) {
-               interpol = me.relocation( interpol );
+           elsif( me.slave["air"].getChild("pressurization").getValue() ) {
+               me.system();
            }
 
-           me.apply( interpol );
-       }
+           # leaks
+           else {
+               me.cabinleak();
+           }
 
-       # leaks
-       else {
-           me.cabinleak();
-       }
-
-
-       # instrumentation
-       me.diffpressureinstrument.schedule();
-   }
-}
-
-
-# ===============
-# CABINE ALTITUDE
-# ===============
-
-Cabinaltitude = {};
-
-Cabinaltitude.new = func {
-   obj = { parents : [Cabinaltitude]
-         };
-   return obj;
-};
-
-# cabin altitude in feet, arguments
-# - cabin pressure in inhg
-Cabinaltitude.schedule = func( cabininhg ) {
-   # optimization (cruise)
-   if( cabininhg == pressuresystem.PRESSURIZEMININHG ) {
-       cabinaltft = pressuresystem.PRESSURIZEMAXFT;
-   }
-
-   # one supposes instrument calibrated by standard atmosphere
-   else {
-       ratio = cabininhg / 29.92;
-
-   # guess below sea level
-       found = "true";
-       if( ratio > 1.09 ) {
-           found = "false";
-       }
-       elsif( ratio > 1.0 and ratio <= 1.09 ) {
-           altmaxm = 0;
-           altminm = -900;
-           minfactor = 1.0;
-           maxfactor = 1.09;
-       }
-
-       # standard atmosphere
-       elsif( ratio > 0.898 and ratio <= 1.0 ) {
-           altmaxm = 900;
-           altminm = 0;
-           minfactor = 0.898;
-           maxfactor = 1.0;
-       }
-       elsif( ratio > 0.804 and ratio <= 0.898 ) {
-           altmaxm = 1800;
-           altminm = 900;
-           minfactor = 0.804;
-           maxfactor = 0.898;
-       }
-       elsif( ratio > 0.719 and ratio <= 0.804 ) {
-           altmaxm = 2700;
-           altminm = 1800;
-           minfactor = 0.719;
-           maxfactor = 0.804;
-       }
-       elsif( ratio > 0.641 and ratio <= 0.719 ) {
-           altmaxm = 3600;
-           altminm = 2700;
-           minfactor = 0.641;
-           maxfactor = 0.719;
-       }
-       elsif( ratio > 0.570 and ratio <= 0.641 ) {
-           altmaxm = 4500;
-           altminm = 3600;
-           minfactor = 0.570;
-           maxfactor = 0.641;
-       }
-       elsif( ratio > 0.506 and ratio <= 0.570 ) {
-           altmaxm = 5400;
-           altminm = 4500;
-           minfactor = 0.506;
-           maxfactor = 0.570;
-       }
-       elsif( ratio > 0.447 and ratio <= 0.506 ) {
-           altmaxm = 6300;
-           altminm = 5400;
-           minfactor = 0.447;
-           maxfactor = 0.506;
-       }
-       elsif( ratio > 0.394 and ratio <= 0.447 ) {
-           altmaxm = 7200;
-           altminm = 6300;
-           minfactor = 0.394;
-           maxfactor = 0.447;
-       }
-       elsif( ratio > 0.347 and ratio <= 0.394 ) {
-           altmaxm = 8100;
-           altminm = 7200;
-           minfactor = 0.347;
-           maxfactor = 0.394;
-       }
-       elsif( ratio > 0.304 and ratio <= 0.347 ) {
-           altmaxm = 9000;
-           altminm = 8100;
-           minfactor = 0.304;
-           maxfactor = 0.347;
-       }
-       elsif( ratio > 0.266 and ratio <= 0.304 ) {
-           altmaxm = 9900;
-           altminm = 9000;
-           minfactor = 0.266;
-           maxfactor = 0.304;
-       }
-       elsif( ratio > 0.231 and ratio <= 0.266 ) {
-           altmaxm = 10800;
-           altminm = 9900;
-           minfactor = 0.231;
-           maxfactor = 0.266;
-       }
-       elsif( ratio > 0.201 and ratio <= 0.231 ) {
-           altmaxm = 11700;
-           altminm = 10800;
-           minfactor = 0.201;
-           maxfactor = 0.231;
-       }
-       elsif( ratio > 0.174 and ratio <= 0.201 ) {
-           altmaxm = 12600;
-           altminm = 11700;
-           minfactor = 0.174;
-           maxfactor = 0.201;
-       }
-       elsif( ratio > 0.151 and ratio <= 0.174 ) {
-           altmaxm = 13500;
-           altminm = 12600;
-           minfactor = 0.151;
-           maxfactor = 0.174;
-       }
-       elsif( ratio > 0.131 and ratio <= 0.151 ) {
-           altmaxm = 14400;
-           altminm = 13500;
-           minfactor = 0.131;
-           maxfactor = 0.151;
-       }
-       elsif( ratio > 0.114 and ratio <= 0.131 ) {
-           altmaxm = 15300;
-           altminm = 14400;
-           minfactor = 0.114;
-           maxfactor = 0.131;
-       }
-       elsif( ratio > 0.099 and ratio <= 0.114 ) {
-           altmaxm = 16200;
-           altminm = 15300;
-           minfactor = 0.099;
-           maxfactor = 0.114;
-       }
-       elsif( ratio > 0.086 and ratio <= 0.099 ) {
-           altmaxm = 17100;
-           altminm = 16200;
-           minfactor = 0.086;
-           maxfactor = 0.099;
-       }
-       elsif( ratio > 0.075 and ratio <= 0.086 ) {
-          altmaxm = 18000;
-          altminm = 17100;
-          minfactor = 0.075;
-          maxfactor = 0.086;
-       }
-       elsif( ratio > 0.065 and ratio <= 0.075 ) {
-           altmaxm = 18900;
-           altminm = 18000;
-           minfactor = 0.065;
-           maxfactor = 0.075;
-       }
-       else {
-           found = "false";
-       }
-
-       if( found == "true" ) {
-           step = maxfactor - ratio;
-           delta = maxfactor - minfactor;
-           deltam = altmaxm - altminm;
-           coeff = step / delta ;
-           cabinaltm = altminm + deltam * coeff;
-           cabinaltft = cabinaltm * constant.METERTOFEET;
-       }
-       # out of range
-       else {
-           cabininhg = 29.92;
-           cabinaltft = 0;
+           me.thrust_recuperator();
        }
    }
 
-   setprop("/instrumentation/cabin-altitude/cabin-inhg",cabininhg);
-   setprop("/instrumentation/cabin-altitude/indicated-altitude-ft",cabinaltft);
+
+   # energy provided by differential pressure
+   me.diffpressure.schedule();
 }
 
 
@@ -434,7 +374,9 @@ Differentialpressure = {};
 
 Differentialpressure.new = func {
    obj = { parents : [Differentialpressure],
+
            DIFFSEC : 5.0,
+
            staticport : ""                         # energy provided by differential pressure
          };
 
@@ -444,8 +386,7 @@ Differentialpressure.new = func {
 };
 
 Differentialpressure.init = func {
-    me.staticport = getprop("/instrumentation/differential-pressure/static-port");
-    me.staticport = me.staticport ~ "/pressure-inhg";
+    me.staticport = getprop("/instrumentation/differential-pressure/static-pressure");
 }
 
 Differentialpressure.set_rate = func( rates ) {
@@ -453,7 +394,6 @@ Differentialpressure.set_rate = func( rates ) {
 }
 
 Differentialpressure.schedule = func {
-#   cabininhg = getprop("/instrumentation/cabin-altitude/cabin-inhg");
    cabininhg = getprop("/systems/pressurization/pressure-inhg");
    pressureinhg = getprop(me.staticport);
    diffpsi = ( cabininhg - pressureinhg ) * constant.INHGTOPSI;
@@ -473,12 +413,23 @@ Airbleed = {};
 
 Airbleed.new = func {
    obj = { parents : [Airbleed],
+
+           airconditioning : Airconditioning.new(),
+
+           AIRSEC : 1.0,                              # refresh rate
+
            MAXPSI : 65.0,                             # maximum pressure
            GROUNDPSI : 35.0,                          # ground supply pressure
-           AIRSEC : 1.0,                              # refresh rate
-           engines : nil,
+           NOPSI : 0.0,
+
            valves : nil,
-           bleeds : nil
+           bleeds : nil,
+           airbleed : nil,
+
+           adjacent : { 0 : 1, 1 : 0, 2 : 3, 3 : 2  },
+
+           noinstrument : { "agl" : "", "airspeed" : "" },
+           slave : { "engine" : nil, "gear" : nil }
          };
 
    obj.init();
@@ -487,178 +438,533 @@ Airbleed.new = func {
 };
 
 Airbleed.init = func {
-    me.engines = props.globals.getNode("/engines/").getChildren("engine");
+    me.noinstrument["agl"] = getprop("/systems/air-bleed/noinstrument/agl");
+    me.noinstrument["airspeed"] = getprop("/systems/air-bleed/noinstrument/airspeed");
+
+    propname = getprop("/systems/air-bleed/slave/engine");
+    me.slave["engine"] = props.globals.getNode(propname).getChildren("engine");
+    propname = getprop("/systems/air-bleed/slave/gear");
+    me.slave["gear"] = props.globals.getNode(propname);
+
     me.valves = props.globals.getNode("/controls/pneumatic/").getChildren("engine");
     me.bleeds = props.globals.getNode("/systems/air-bleed/").getChildren("engine");
+    me.airbleed = props.globals.getNode("/systems/air-bleed/");
 }
 
 Airbleed.set_rate = func( rates ) {
     me.AIRSEC = rates;
+
+    me.airconditioning.set_rate( me.AIRSEC );
 }
 
-# adjacent engine
-Airbleed.adjacent = func( engine ) {
-    if( engine == 0 ) {
-        result = 1;
-    }
-    elsif( engine == 1 ) {
-        result = 0;
-    }
-    elsif( engine == 2 ) {
-        result = 3;
-    }
-    elsif( engine == 3 ) {
-        result = 2;
-    }
-
-    # should never happen
-    else {
-        result = 0;
-    }
-
-    return result;
-}
-
-# connection with delay by ground operator
 Airbleed.slowschedule = func {
-    aglft = noinstrument.get_agl_ft();
-    speedkt = noinstrument.get_speed_kt();
-    if( aglft >=  15 or speedkt >= 15 ) {
+    me.door();
 
-        # door stays open, has forgotten to call for disconnection !
-        setprop("/systems/air-bleed/ground-service-psi",constant.FALSE);
-    }
+    me.airconditioning.slowschedule();
 }
 
 # detects loss of all engines
 Airbleed.schedule = func {
-   if( getprop("/systems/air-bleed/serviceable") ) {
+   serviceable = me.airbleed.getChild("serviceable").getValue();
 
-       # ground supply
-       groundpsi = getprop("/systems/air-bleed/ground-service-psi");
+   # ground supply
+   groundpsi = me.airbleed.getNode("ground-service").getChild("pressure-psi").getValue();
 
-       # ===============================
-       # bleed valve limits the pressure
-       # ===============================
+   # ===============================
+   # bleed valve limits the pressure
+   # ===============================
+   for( i = 0; i < 4; i = i+1 ) {
+        if( serviceable and
+            me.slave["engine"][i].getChild("running").getValue() and
+            me.valves[i].getChild("bleed-valve").getValue() ) {
+            # maximum 65 PSI
+            pressurepsi = me.MAXPSI;
+        }
+        else {
+            pressurepsi = me.NOPSI;
+        }
+
+        result = me.bleeds[i].getChild("bleed-psi").getValue();
+        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/bleed-psi",pressurepsi,result);
+
+        # ===========
+        # cross bleed
+        # ===========
+        bleedpsi = pressurepsi;
+        if( me.valves[i].getChild("cross-bleed-valve").getValue() and bleedpsi == 0.0 ) {
+            pressurepsi = 0.0;
+            # adjacent engine
+            a = me.adjacent[i];
+            if( me.valves[a].getChild("cross-bleed-valve").getValue() ) {
+                pressurepsi = me.bleeds[a].getChild("bleed-psi").getValue();
+            }
+            # ground supply
+            if( pressurepsi == me.NOPSI ) {
+                pressurepsi = groundpsi;
+            }
+        }
+        else {
+            pressurepsi = bleedpsi;
+        }
+
+        result = me.bleeds[i].getChild("cross-psi").getValue();
+        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/cross-psi",pressurepsi,result);
+
+        # ==================
+        # conditioning valve
+        # ==================
+        crosspsi = pressurepsi;
+        if( me.valves[i].getChild("conditioning-valve").getValue() ) {
+            pressurepsi = crosspsi;
+        }
+        else {
+            pressurepsi = me.NOPSI;
+        }
+
+        result = me.bleeds[i].getChild("conditioning-psi").getValue();
+        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/conditioning-psi",pressurepsi,result);
+   }
+
+   # jet pump only when landing gear down
+   if( me.slave["gear"].getChild("position-norm").getValue() == 1.0 ) {
        for( i = 0; i < 4; i = i+1 ) {
-            if( me.engines[i].getChild("running").getValue() and
-                me.valves[i].getChild("bleed-valve").getValue() ) {
-                pressurepsi = me.engines[i].getChild("n1").getValue();
-                # maximum 65 PSI
-                if( pressurepsi > me.MAXPSI ) {
-                    pressurepsi = me.MAXPSI;
-                }
-                # minimum ground
-                elsif( pressurepsi < me.GROUNDPSI ) {
-                    pressurepsi = me.GROUNDPSI;
-                }
-            }
-            else {
-                pressurepsi = 0.0;
-            }
-
-            result = me.bleeds[i].getChild("bleed-psi").getValue();
-            if( result != pressurepsi ) {
-                interpolate("/systems/air-bleed/engine[" ~ i ~ "]/bleed-psi",pressurepsi,me.AIRSEC);
-            }
-
-            # ===========
-            # cross bleed
-            # ===========
-            bleedpsi = pressurepsi;
-            if( me.valves[i].getChild("cross-bleed-valve").getValue() and bleedpsi == 0.0 ) {
-                pressurepsi = 0.0;
-                # adjacent engine
-                a = me.adjacent(i);
-                if( me.valves[a].getChild("cross-bleed-valve").getValue() ) {
-                    pressurepsi = me.bleeds[a].getChild("bleed-psi").getValue();
-                }
-                # ground supply
-                if( pressurepsi == 0.0 ) {
-                    pressurepsi = groundpsi;
-                }
-            }
-            else {
-                pressurepsi = bleedpsi;
-            }
-
-            result = me.bleeds[i].getChild("cross-psi").getValue();
-            if( result != pressurepsi ) {
-                interpolate("/systems/air-bleed/engine[" ~ i ~ "]/cross-psi",pressurepsi,me.AIRSEC);
-            }
-
-            # ==================
-            # conditioning valve
-            # ==================
-            crosspsi = pressurepsi;
-            if( me.valves[i].getChild("conditioning-valve").getValue() ) {
-                pressurepsi = crosspsi;
-            }
-            else {
-                pressurepsi = 0.0;
-            }
-
-            result = me.bleeds[i].getChild("conditioning-psi").getValue();
-            if( result != pressurepsi ) {
-                interpolate("/systems/air-bleed/engine[" ~ i ~ "]/conditioning-psi",pressurepsi,me.AIRSEC);
-            }
+            me.bleeds[i].getChild("jet-pump").setValue(constant.TRUE);
        }
-
-       # jet pump only when landing gear down
-       if( getprop("/gear/gear[0]/position-norm") == 1.0 ) {
-           for( i = 0; i < 4; i = i+1 ) {
-                me.bleeds[i].getChild("jet-pump").setValue(constant.TRUE);
-           }
-       }
-       else {
-           for( i = 0; i < 4; i = i+1 ) {
-                me.bleeds[i].getChild("jet-pump").setValue(constant.FALSE);
-           }
-       }
-
-       # pressurization doesn't see the 4 distinct groups : will get the result after the interpolate
-       pressurepsi = 0.0;
+   }
+   else {
        for( i = 0; i < 4; i = i+1 ) {
-            condpsi = me.bleeds[i].getChild("conditioning-psi").getValue();
-            if( condpsi > pressurepsi ) {
-                pressurepsi = condpsi;
-            }
+            me.bleeds[i].getChild("jet-pump").setValue(constant.FALSE);
        }
-    }
-    else {
-       pressurepsi = 0.0;
-    }
+   }
 
-    # for pressurization
-    setprop("/systems/air-bleed/pressure-psi",pressurepsi);
+   # pressurization doesn't see the 4 distinct groups : will get the result after the interpolate
+   pressurization = constant.FALSE;
+   for( i = 0; i < 4; i = i+1 ) {
+        condpsi = me.bleeds[i].getChild("conditioning-psi").getValue();
+        if( condpsi >= me.MAXPSI ) {
+            pressurization = constant.TRUE;
+            break;
+        }
+   }
+   me.airbleed.getChild("pressurization").setValue(pressurization);
+
+   me.airconditioning.schedule();
 }
 
-Airbleed.has_pressure = func {
-    if( getprop("/systems/air-bleed/pressure-psi") >= me.GROUNDPSI ) { 
-        result = constant.TRUE;
+Airbleed.apply = func( path, value, result ) {
+    if( result != value ) {
+        interpolate(path,value,me.AIRSEC);
     }
-    else {
-        result = constant.FALSE;
-    }
+}
 
-    return result;
+# connection with delay by ground operator
+Airbleed.door = func {
+    aglft = getprop(me.noinstrument["agl"]);
+    speedkt = getprop(me.noinstrument["airspeed"]);
+    if( aglft >=  15 or speedkt >= 15 ) {
+
+        # door stays open, has forgotten to call for disconnection !
+        me.airbleed.getNode("ground-service").getChild("pressure-psi").setValue(me.NOPSI);
+    }
 }
 
 Airbleed.groundserviceexport = func {
-    aglft = noinstrument.get_agl_ft();
-    speedkt = noinstrument.get_speed_kt();
+    aglft = getprop(me.noinstrument["agl"]);
+    speedkt = getprop(me.noinstrument["airspeed"]);
 
     if( aglft <  15 and speedkt < 15 ) {
-        supply = getprop("/systems/air-bleed/ground-supply");
+        supply = me.airbleed.getNode("ground-service").getChild("door").getValue();
+
         if( supply ) {
-            pressurepsi = 0.0;
-            setprop("/systems/air-bleed/ground-supply",constant.FALSE);
+            pressurepsi = me.NOPSI;
         }
         else {
-            pressurepsi = 35.0;
-            setprop("/systems/air-bleed/ground-supply",constant.TRUE);
+            pressurepsi = me.GROUNDPSI;
         }
 
-        setprop("/systems/air-bleed/ground-service-psi",pressurepsi);
+        me.airbleed.getNode("ground-service").getChild("door").setValue(!supply);
+        me.airbleed.getNode("ground-service").getChild("pressure-psi").setValue(pressurepsi);
     }
+}
+
+Airbleed.reargroundserviceexport = func {
+    me.airconditioning.groundservice();
+}
+
+
+# =================
+# AIR CONDITIONNING
+# =================
+
+Airconditioning = {};
+
+Airconditioning.new = func {
+   obj = { parents : [Airconditioning],
+
+           AIR60SEC : 60.0,                           # warming rate
+           VALVESEC : 5.0,
+           AIRSEC : 1.0,                              # refresh rate
+
+           speedup : 1.0,
+
+           MINPSI : 65.0,                             # minimum pressure for air conditioning
+           NOPSI : 0.0,
+
+           NORMALKGPH : 4200.0,
+           NOMASSKGPH : 0.0,
+
+           VALVEH : 1.0,                              # opened : hot air maximum
+           VALVEC : 0.0,                              # shut : cold air only
+
+           temperature_valve : 0.0,
+           ground_supply : constant.FALSE,
+
+           PRIMARYDEGC : 150.0,
+           DUCTDEGC : 30.0,                           # selector range
+           DUCTMINDEGC : 5.0,
+
+           ramairdegc : 0.0,
+
+           WARMINGDEGCPMIN : 0.5,                     # cabin
+           COOLINGDEGCPMIN : 0.1,                     # isolation
+
+           valves : nil,
+           bleeds : nil,
+           groups : nil,
+           conditioning : nil,
+
+           thegroup : { "1" : 0, "2" : 1, "3" : 2, "4" : 3 },
+           thetemperature : { "1" : "flight-deck-degc", "2" : "cabin-fwd-degc", "3" : "cabin-rear-degc",
+                              "4" : "cabin-rear-degc" },
+
+           noinstrument : { "agl" : "", "airspeed" : "", "temperature" : "" }
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+Airconditioning.init = func {
+    me.noinstrument["agl"] = getprop("/systems/air-bleed/noinstrument/agl");
+    me.noinstrument["airspeed"] = getprop("/systems/air-bleed/noinstrument/airspeed");
+    me.noinstrument["temperature"] = getprop("/systems/temperature/noinstrument/temperature");
+
+    me.valves = props.globals.getNode("/controls/temperature/").getChildren("group");
+    me.bleeds = props.globals.getNode("/systems/air-bleed/").getChildren("engine");
+    me.groups = props.globals.getNode("/systems/temperature/").getChildren("group");
+    me.conditioning = props.globals.getNode("/systems/temperature/");
+}
+
+Airconditioning.set_rate = func( rates ) {
+    me.AIRSEC = rates;
+}
+
+Airconditioning.slowschedule = func {
+   me.door();
+   me.ground_supply = me.conditioning.getNode("ground-service").getChild("door").getValue();
+
+   me.ramairdegc = getprop(me.noinstrument["temperature"]);
+   me.speedup = getprop("/sim/speed-up");
+
+   # group 4
+   flow4kgph = me.groups[me.thegroup["4"]].getChild("flow-kgph").getValue();
+   target4degc = me.selectordegc( me.thegroup["4"] );
+
+ 
+   for( i = 0; i < 3; i = i+1 ) {
+        flowkgph = me.groups[i].getChild("flow-kgph").getValue();
+        targetdegc = me.selectordegc( i );
+
+        location = "";
+
+
+        # ===========
+        # flight deck
+        # ===========
+        if( i == me.thegroup["1"] ) {
+            # group 1 failed
+            if( !me.valves[i].getChild("on").getValue() ) {
+                me.closevalve();
+            }
+
+            else {
+                location = me.thetemperature["1"];
+            }
+        }
+
+
+        # =============
+        # forward cabin
+        # =============
+        elsif( i == me.thegroup["2"] ) {
+            # group 1 failed
+            if( !me.valves[me.thegroup["1"]].getChild("on").getValue() ) {
+                location = me.thetemperature["1"];
+            }
+
+            # group 2 failed
+            elsif( !me.valves[i].getChild("on").getValue() ) {
+                me.closevalve();
+            }
+
+            else {
+                location = me.thetemperature["2"];
+            }
+        }
+
+
+        # ==========
+        # rear cabin
+        # ==========
+        elsif( i == me.thegroup["3"] ) {
+            # group 1 failed
+            if( !me.valves[me.thegroup["1"]].getChild("on").getValue() ) {
+                location = me.thetemperature["2"];
+
+                me.control( me.thegroup["4"], me.thetemperature["4"], flow4kgph, target4degc );
+            }
+
+            # group 2 failed
+            elsif( !me.valves[me.thegroup["2"]].getChild("on").getValue() ) {
+                location = me.thetemperature["2"];
+
+                me.control( me.thegroup["4"], me.thetemperature["4"], flow4kgph, target4degc );
+            }
+
+            # group 3 + 4 : supposes 1 group is enough
+            else {
+                location = me.thetemperature["3"];
+
+                # group 3 slaved to rotary selector 4
+                if( me.valves[i].getChild("on").getValue() ) {
+                    targetdegc = target4degc;
+                }
+
+                # group 3 alone
+                if( me.is_off( flow4kgph ) ) {
+                    me.closevalve();
+                    me.adjustvalve( me.thegroup["4"] );
+                }
+
+                # group 4 alone
+                elsif( me.is_off( flowkgph ) ) {
+                     me.control( me.thegroup["4"], location, flow4kgph, target4degc );
+
+                     location = "";
+
+                     me.closevalve();
+                     me.adjustvalve( i );
+                }
+
+                # group 4
+                else {
+                     currentdegc = me.conditioning.getChild(location).getValue();
+                     targetdegc = me.warmingdegc( flow4kgph, currentdegc, target4degc );
+
+                     me.adjustvalve( me.thegroup["4"] );
+                }
+            }
+        }
+
+
+        # temperature control
+        me.control( i, location, flowkgph, targetdegc );
+   }
+}
+
+Airconditioning.schedule = func {
+   serviceable = me.conditioning.getChild("serviceable").getValue();
+
+   # external air
+   me.ramairdegc = getprop(me.noinstrument["temperature"]);
+
+   # ground supply
+   groundpsi = me.conditioning.getNode("ground-service").getChild("pressure-psi").getValue();
+
+   for( i = 0; i < 4; i = i+1 ) {
+        oldductdegc = me.groups[i].getChild("duct-degc").getValue();
+
+        if( serviceable ) {
+            condpsi = me.bleeds[i].getChild("conditioning-psi").getValue();
+            if( condpsi < me.MINPSI ) {
+                condpsi = groundpsi;
+            }
+        }
+        else {
+            condpsi = me.NOPSI;
+        }
+
+        if( condpsi >= me.MINPSI ) {
+            flowkgph = me.NORMALKGPH;
+            inletdegc = me.PRIMARYDEGC;
+            ductdegc = me.mixingdegc( i );
+        }
+        else {
+            coef = condpsi / me.MINPSI;
+
+            flowkgph = coef * me.NORMALKGPH;
+            inletdegc = me.coolingdegc( coef, me.PRIMARYDEGC );
+            ductdegc = me.coolingdegc( coef, oldductdegc );
+        }
+
+        result = me.groups[i].getChild("flow-kgph").getValue();
+        me.apply("/systems/temperature/group[" ~ i ~ "]/flow-kgph",flowkgph, result);
+
+        # one supposes quick cooling by RAM air, when no mass flow.
+        result = me.groups[i].getChild("inlet-degc").getValue();
+        me.apply("/systems/temperature/group[" ~ i ~ "]/inlet-degc",inletdegc,result);
+        me.apply("/systems/temperature/group[" ~ i ~ "]/duct-degc",ductdegc,oldductdegc);
+   }
+}
+
+Airconditioning.apply = func( path, value, result ) {
+    if( result != value ) {
+        interpolate(path,value,me.AIRSEC);
+    }
+}
+
+Airconditioning.groundservice = func {
+    aglft = getprop(me.noinstrument["agl"]);
+    speedkt = getprop(me.noinstrument["airspeed"]);
+
+    if( aglft <  15 and speedkt < 15 ) {
+        supply = me.conditioning.getNode("ground-service").getChild("door").getValue();
+
+        if( supply ) {
+            pressurepsi = me.NOPSI;
+        }
+        else {
+            pressurepsi = me.MINPSI;
+        }
+
+        me.conditioning.getNode("ground-service").getChild("door").setValue(!supply);
+        me.conditioning.getNode("ground-service").getChild("pressure-psi").setValue(pressurepsi);
+    }
+}
+
+# connection with delay by ground operator
+Airconditioning.door = func {
+    aglft = getprop(me.noinstrument["agl"]);
+    speedkt = getprop(me.noinstrument["airspeed"]);
+    if( aglft >=  15 or speedkt >= 15 ) {
+
+        # door stays open, has forgotten to call for disconnection !
+        me.conditioning.getNode("ground-service").getChild("pressure-psi").setValue(me.NOPSI);
+    }
+}
+
+Airconditioning.control = func( index, location, flowkgph, targetdegc ) {
+    if( location != "" ) {
+        currentdegc = me.conditioning.getChild(location).getValue();
+        targetdegc = me.warmingdegc( flowkgph, currentdegc, targetdegc );
+
+        if( currentdegc != targetdegc ) {
+            interpolate("/systems/temperature/" ~ location,targetdegc,me.AIR60SEC);
+        }
+    }
+
+    me.adjustvalve( index );
+}
+
+Airconditioning.is_off = func( flowkgph ) {
+   if( flowkgph < me.NORMALKGPH ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Airconditioning.warmingdegc = func( flowkgph, currentdegc, targetdegc ) {
+   off = me.is_off( flowkgph );
+
+   # heat loss
+   if( off ) {
+       targetdegc = me.ramairdegc;
+       stepdegc = me.speedup * me.COOLINGDEGCPMIN;
+   }
+
+   # air conditioning
+   else {
+       stepdegc = me.speedup * me.WARMINGDEGCPMIN;
+   }
+
+   diffdegc = targetdegc - currentdegc;
+
+   # warming
+   if( diffdegc > stepdegc ) {
+       targetdegc = currentdegc + stepdegc;
+       me.temperature_valve = me.VALVEH;
+   }
+
+   # cooling
+   elsif( diffdegc < - stepdegc ) {
+       targetdegc = currentdegc - stepdegc;
+       me.temperature_valve = me.VALVEC;
+   }
+
+   # temperature reached
+   else {
+       me.temperature_valve = ( targetdegc - me.DUCTMINDEGC ) / me.DUCTDEGC;
+   }
+
+   # close valve
+   if( off or me.ground_supply ) {
+       me.temperature_valve = me.VALVEC;
+   }
+
+   return targetdegc;
+}
+
+# rough duct temperature
+Airconditioning.coolingdegc = func( coef, targetdegc ) {
+   resultdegc = me.ramairdegc + coef * ( targetdegc - me.ramairdegc );
+
+   return resultdegc;
+}
+
+Airconditioning.mixingdegc = func( index ) {
+   valve = me.groups[index].getChild("temperature-valve").getValue();
+
+   # warming
+   if( valve == me.VALVEH ) {
+       resultdegc = me.DUCTMINDEGC + me.DUCTDEGC;
+   }
+
+   # cooling
+   elsif( valve == me.VALVEC ) {
+       resultdegc = me.DUCTMINDEGC;
+   }
+
+   # temperature regulation
+   else {
+       resultdegc = me.selectordegc( index );
+   }
+
+   return resultdegc;
+}
+
+Airconditioning.selectordegc = func( index ) {
+   selector = me.valves[index].getChild("temperature-selector").getValue();
+
+   # - cold : 5°C.
+   # - hot  : 35°C.
+   targetdegc = me.DUCTMINDEGC + ( selector / 3.0 ) * me.DUCTDEGC;
+
+   return targetdegc;
+}
+
+Airconditioning.closevalve = func {
+   me.temperature_valve = me.VALVEC;
+}
+
+Airconditioning.adjustvalve = func( index ) {
+   result = me.groups[index].getChild("temperature-valve").getValue();
+   if( result != me.temperature_valve ) {
+       interpolate("/systems/temperature/group[" ~ index ~ "]/temperature-valve",
+                   me.temperature_valve, me.VALVESEC);
+   }
 }

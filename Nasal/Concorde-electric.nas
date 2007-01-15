@@ -3,10 +3,6 @@
 # SCHEDULE : functions ending by schedule are called from cron
 
 
-# current nasal version doesn't accept :
-# - array of class objects (array of integer works).
-
-
 
 # =================
 # ELECTRICAL SYSTEM
@@ -16,15 +12,36 @@ Electrical = {};
 
 Electrical.new = func {
    obj = { parents : [Electrical],
+
            parser : ElectricalXML.new(),
            csd : ConstantSpeedDrive.new(),
-           ELECSEC : 1.0                                  # refresh rate
+
+           ELECSEC : 1.0,                                 # refresh rate
+
+           SERVICEVOLT : 600.0,
+           GROUNDVOLT : 110.0,
+           SPECIFICVOLT : 20.0,
+
+           outputs : nil,
+           power : nil,
+
+           noinstrument : { "agl" : "", "airspeed" : "" }
          };
 
-   obj.csd.set_rate( obj.ELECSEC );
+   obj.init();
 
    return obj;
 };
+
+Electrical.init = func {
+   me.noinstrument["agl"] = getprop("/systems/electrical/noinstrument/agl");
+   me.noinstrument["airspeed"] = getprop("/systems/electrical/noinstrument/airspeed");
+
+   me.outputs = props.globals.getNode("/systems/electrical/outputs");
+   me.power = props.globals.getNode("/systems/electrical/power");
+
+   me.csd.set_rate( me.ELECSEC );
+}
 
 Electrical.set_rate = func( rates ) {
    me.ELECSEC = rates;
@@ -34,6 +51,11 @@ Electrical.set_rate = func( rates ) {
 Electrical.schedule = func {
     me.csd.schedule();
     me.parser.schedule();
+
+    me.power.getChild("autopilot1").setValue( me.has_autopilot1() );
+    me.power.getChild("autopilot2").setValue( me.has_autopilot2() );
+    me.power.getChild("ground-service").setValue( me.has_ground_power() );
+    me.power.getChild("specific").setValue( me.has_specific() );
 }
 
 Electrical.slowschedule = func {
@@ -43,11 +65,11 @@ Electrical.slowschedule = func {
 
 # connection with delay by ground operator
 Electrical.groundservice = func {
-    aglft = noinstrument.get_agl_ft();
-    speedkt = noinstrument.get_speed_kt();
+    aglft = getprop(me.noinstrument["agl"]);
+    speedkt = getprop(me.noinstrument["airspeed"]);
 
     if( aglft <  15 and speedkt < 15 ) {
-        powervolt = 600.0;
+        powervolt = me.SERVICEVOLT;
     }
     else {
         powervolt = 0.0;
@@ -57,11 +79,11 @@ Electrical.groundservice = func {
 }
 
 Electrical.has_specific() = func {
-    volts =  getprop("/systems/electrical/outputs/specific");
+    volts =  me.outputs.getChild("specific").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
     }
-    elsif( volts > 20 ) {
+    elsif( volts > me.SPECIFICVOLT ) {
         result = constant.TRUE;
     }
     else {
@@ -72,7 +94,7 @@ Electrical.has_specific() = func {
 }
 
 Electrical.has_autopilot1() = func {
-    volts =  getprop("/systems/electrical/outputs/autopilot1");
+    volts =  me.outputs.getChild("autopilot1").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
     }
@@ -87,7 +109,7 @@ Electrical.has_autopilot1() = func {
 }
 
 Electrical.has_autopilot2() = func {
-    volts =  getprop("/systems/electrical/outputs/autopilot2");
+    volts =  me.outputs.getChild("autopilot2").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
     }
@@ -102,11 +124,11 @@ Electrical.has_autopilot2() = func {
 }
 
 Electrical.has_ground_power() = func {
-    volts =  getprop("/systems/electrical/outputs/probe/ac-gpb");
+    volts =  me.outputs.getNode("probe").getChild("ac-gpb").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
     }
-    elsif( volts > 110 ) {
+    elsif( volts > me.GROUNDVOLT ) {
         result = constant.TRUE;
     }
     else {
@@ -128,8 +150,10 @@ ConstantSpeedDrive.new = func {
 
            ELECSEC : 1.0,                                 # refresh rate
 
-           engcontrols : nil,
-           engines : nil
+           engines : nil,
+
+           noinstrument : { "temperature" : "" },
+           slave : { "engine" : nil, "engine2" : nil }
          };
 
    obj.init();
@@ -138,8 +162,14 @@ ConstantSpeedDrive.new = func {
 };
 
 ConstantSpeedDrive.init = func {
-   me.engines = props.globals.getNode("/engines").getChildren("engine");
-   me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
+   me.noinstrument["temperature"] = getprop("/systems/electrical/noinstrument/temperature");
+
+   propname = getprop("/systems/electrical/slave/engine");
+   me.slave["engine"] = props.globals.getNode(propname).getChildren("engine");
+   propname = getprop("/systems/electrical/slave/engine2");
+   me.slave["engine2"] = props.globals.getNode(propname).getChildren("engine");
+
+   me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
 }
 
 ConstantSpeedDrive.set_rate = func( rates ) {
@@ -149,30 +179,30 @@ ConstantSpeedDrive.set_rate = func( rates ) {
 # oil temperature
 ConstantSpeedDrive.schedule = func {
    for( i=0; i<4; i=i+1 ) {
-       csd = me.engcontrols[i].getChild("csd").getValue();
+       csd = me.engines[i].getChild("csd").getValue();
        if( csd ) {
-           csdpressurepsi = me.engines[i].getChild("oil-pressure-psi").getValue();
+           csdpressurepsi = me.slave["engine"][i].getChild("oil-pressure-psi").getValue();
        }
        else {
            csdpressurepsi = 0.0;
        }
 
        # not real
-       result = me.engines[i].getChild("csd-oil-psi").getValue();
+       result = me.slave["engine2"][i].getChild("csd-oil-psi").getValue();
        if( result != csdpressurepsi ) {
-           interpolate("/engines/engine[" ~ i ~ "]/csd-oil-psi",csdpressurepsi,me.ELECSEC);
+           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-oil-psi",csdpressurepsi,me.ELECSEC);
        }
 
-       oatdegc = noinstrument.get_degc();
+       oatdegc = getprop(me.noinstrument["temperature"]);
 
        # connected
        if( csd ) {
-           egtdegf = me.engines[i].getChild("egt_degf").getValue();
+           egtdegf = me.slave["engine"][i].getChild("egt_degf").getValue();
            egtdegc = constant.fahrenheit_to_celsius( egtdegf );
        }
 
        # not real
-       result = me.engines[i].getChild("csd-inlet-degc").getValue();
+       result = me.slave["engine2"][i].getChild("csd-inlet-degc").getValue();
        if( csd ) {
            inletdegc = egtdegc / 3.3;
        }
@@ -184,11 +214,11 @@ ConstantSpeedDrive.schedule = func {
            inletdegc = oatdegc;
        }
        if( result != inletdegc ) {
-           interpolate("/engines/engine[" ~ i ~ "]/csd-inlet-degc",inletdegc,me.ELECSEC);
+           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-inlet-degc",inletdegc,me.ELECSEC);
        }
 
        # not real
-       result = me.engines[i].getChild("csd-diff-degc").getValue();
+       result = me.slave["engine2"][i].getChild("csd-diff-degc").getValue();
        if( csd ) {
            diffdegc = egtdegc / 17.0;
        }
@@ -197,7 +227,7 @@ ConstantSpeedDrive.schedule = func {
            diffdegc = result * 0.95;
        }
        if( result != diffdegc ) {
-           interpolate("/engines/engine[" ~ i ~ "]/csd-diff-degc",diffdegc,me.ELECSEC);
+           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-diff-degc",diffdegc,me.ELECSEC);
        }
    }
 }
@@ -206,26 +236,17 @@ ConstantSpeedDrive.schedule = func {
 # =================
 # ELECTRICAL PARSER
 # =================
-# current nasal version cannot store array of class objects (supplier, bus, output, connector).
-
 ElectricalXML = {};
 
 ElectricalXML.new = func {
    obj = { parents : [ElectricalXML],
+
            config : nil,
            passes : 0.0,
            iterations : nil,
-           suppliers : nil,
-           nb_suppliers : 0.0,
-           supplier_names : LookupName.new(),
-           buses : nil,
-           nb_buses : 0.0,
-           bus_names : LookupName.new(),
-           outputs : nil,
-           nb_outputs : 0.0,
-           output_names : LookupName.new(),
-           connectors : nil,
-           nb_connectors : 0.0
+
+           components : ComponentArray.new(),
+           connectors : ConnectorArray.new()
          };
 
    obj.init();
@@ -239,74 +260,63 @@ ElectricalXML.init = func {
    me.forced = props.globals.getNode("/systems/electrical/internal/iterations-forced").getValue();
    me.iterations = props.globals.getNode("/systems/electrical/internal/iterations");
 
-   component = ElectricalComponent.new();
-
-   me.suppliers = me.config.getChildren("supplier");
-   me.nb_suppliers = size( me.suppliers );
-   for( i = 0; i < me.nb_suppliers; i = i+1 ) {
-        # lookup table accelerates the search of connectors
-        name = me.suppliers[i].getChild("name").getValue();
-        me.supplier_names.add( name );
-
-        component.set_supplier( me.suppliers[i] );
+   suppliers = me.config.getChildren("supplier");
+   nb_suppliers = size( suppliers );
+   for( i = 0; i < nb_suppliers; i = i+1 ) {
+        me.components.add_supplier( suppliers[i] );
+        component = me.components.get_supplier( i );
         component.charge();
    }
 
-   me.buses = me.config.getChildren("bus");
-   me.nb_buses = size( me.buses );
-   for( i = 0; i < me.nb_buses; i = i+1 ) {
-        # lookup table accelerates the search of connectors
-        name = me.buses[i].getChild("name").getValue();
-        me.bus_names.add( name );
-
-        component.set_bus( me.buses[i] );
+   buses = me.config.getChildren("bus");
+   nb_buses = size( buses );
+   for( i = 0; i < nb_buses; i = i+1 ) {
+        me.components.add_bus( buses[i] );
+        component = me.components.get_bus( i );
         component.charge();
    }
 
-   me.outputs = me.config.getChildren("output");
-   me.nb_outputs = size( me.outputs );
-   for( i = 0; i < me.nb_outputs; i = i+1 ) {
-        # lookup table accelerates the search of connectors
-        name = me.outputs[i].getChild("name").getValue();
-        me.output_names.add( name );
-
-        component.set_output( me.outputs[i] );
+   outputs = me.config.getChildren("output");
+   nb_outputs = size( outputs );
+   for( i = 0; i < nb_outputs; i = i+1 ) {
+        me.components.add_output( outputs[i] );
+        component = me.components.get_output( i );
         component.charge();
    }
 
-   me.connectors = me.config.getChildren("connector");
-   me.nb_connectors = size( me.connectors );
+   connectors = me.config.getChildren("connector");
+   nb_connectors = size( connectors );
+   for( i = 0; i < nb_connectors; i = i+1 ) {
+        me.connectors.add( connectors[i] );
+   }
 }
 
 # battery discharge
 ElectricalXML.slowschedule = func {
-   component = ElectricalComponent.new();
-   for( i = 0; i < me.nb_suppliers; i = i+1 ) {
-        component.set_supplier( me.suppliers[i] );
+   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+        component = me.components.get_supplier( i );
         component.discharge();
    }
 }
 
 ElectricalXML.schedule = func {
-   component = ElectricalComponent.new();
-   me.clear( component );
+   me.clear();
 
    # suppliers, not real, always works
-   for( i = 0; i < me.nb_suppliers; i = i+1 ) {
-        component.set_supplier( me.suppliers[i] );
+   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+        component = me.components.get_supplier( i );
         component.supply();
    }
 
    if( getprop("/systems/electrical/serviceable") ) {
         iter = 0;
-        connector = ElectricalConnector.new();
-        remain = "true";
-        while( remain == "true" ) {
-            remain = "false";
-            for( i = 0; i < me.nb_connectors; i = i+1 ) {
-                 connector.set( me.connectors[i] );
+        remain = constant.TRUE;
+        while( remain ) {
+            remain = constant.FALSE;
+            for( i = 0; i < me.connectors.count(); i = i+1 ) {
+                 connector = me.connectors.get( i );
                  if( !me.supply( connector ) ) {
-                     remain = "true";
+                     remain = constant.TRUE;
                  }
             }
             iter = iter + 1;
@@ -314,8 +324,8 @@ ElectricalXML.schedule = func {
 
        # makes last iterations for voltages in parallel
        for( j = 0; j < me.forced; j = j+1 ) {
-            for( i = 0; i < me.nb_connectors; i = i+1 ) {
-                 connector.set( me.connectors[i] );
+            for( i = 0; i < me.connectors.count(); i = i+1 ) {
+                 connector = me.connectors.get( i );
                  me.supply( connector );
             }
             iter = iter + 1;
@@ -326,14 +336,14 @@ ElectricalXML.schedule = func {
 
    # failure : no voltage
    else {
-       for( i = 0; i < me.nb_buses; i = i+1 ) {
-            component.set_bus( me.buses[i] );
-            component.propagate( constant.FALSE );
+       for( i = 0; i < me.components.count_bus(); i = i+1 ) {
+            component = me.components.get_bus( i );
+            component.propagate( 0.0 );
        }
 
-       for( i = 0; i < me.nb_outputs; i = i+1 ) {
-            component.set_output( me.outputs[i] );
-            component.propagate( constant.FALSE );
+       for( i = 0; i < me.components.count_output(); i = i+1 ) {
+            component = me.components.get_output( i );
+            component.propagate( 0.0 );
        }
    }
 }
@@ -344,7 +354,7 @@ ElectricalXML.supply = func( connector ) {
    output = connector.get_output();
 
    # propagate voltage
-   component2 = me.find( output );
+   component2 = me.components.find( output );
    if( component2.is_exist() ) {
        if( !component2.is_propagate() ) {
            switch = connector.get_switch();
@@ -357,7 +367,7 @@ ElectricalXML.supply = func( connector ) {
 
             else {
                 input = connector.get_input();
-                component = me.find( input );
+                component = me.components.find( input );
                 if( component.is_exist() ) {
 
                     # input knows its voltage
@@ -379,7 +389,7 @@ ElectricalXML.supply = func( connector ) {
                # voltages in parallel : if no voltage, can accept another connection
                if( switch ) {
                    input = connector.get_input();
-                   component = me.find( input );
+                   component = me.components.find( input );
                    if( component.is_exist() ) {
 
                        # input knows its voltage
@@ -398,57 +408,247 @@ ElectricalXML.supply = func( connector ) {
    return found;
 }
 
+ElectricalXML.clear = func {
+   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+        component = me.components.get_supplier( i );
+        component.clear();
+   }
+
+   for( i = 0; i < me.components.count_bus(); i = i+1 ) {
+        component = me.components.get_bus( i );
+        component.clear();
+   }
+
+   for( i = 0; i < me.components.count_output(); i = i+1 ) {
+        component = me.components.get_output( i );
+        component.clear();
+   }
+}
+
+
+# ===============
+# COMPONENT ARRAY
+# ===============
+
+ComponentArray = {};
+
+ComponentArray.new = func {
+   obj = { parents : [ComponentArray],
+
+           supplier_name : ["","","","","","","","","",""],
+           bus_name :      ["","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","",""],
+           output_name :   ["","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","","",
+                            "","","","","","","","","",""],
+
+           MAXSUPPLIERS : 10,
+           suppliers : [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
+           nb_charges : 0,                                        # number of batteries
+           nb_suppliers : 0,
+
+           MAXBUSES : 50,
+           buses :    [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
+           MAXPROPS : 20,
+           bus_prop : ["","","","","","","","","","",
+                       "","","","","","","","","",""],
+           nb_buses : 0,
+
+           MAXOUTPUTS : 50,
+           outputs : [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
+           nb_outputs : 0
+         };
+
+   return obj;
+};
+
+ComponentArray.add_supplier = func( node ) {
+   if( me.nb_suppliers >= me.MAXSUPPLIERS ) {
+       print( "Electrical: number of suppliers exceeded ! ", me.MAXSUPPLIERS );
+   }
+
+   else {
+       name = node.getChild("name").getValue();
+       me.supplier_name[ me.nb_suppliers ] = name;
+
+       kind = node.getChild("kind").getValue();
+
+       state = "";
+       rpm = "";
+       charge = "";
+       amps = 0;
+
+       if( kind == "alternator" ) {
+           state = node.getChild("prop").getValue();
+           rpm = node.getChild("rpm-source").getValue();
+       }
+
+       # 1 variable per battery
+       elsif( kind == "battery" ) {
+           state = node.getChild("prop").getValue();
+
+           charge = "/systems/electrical/suppliers/battery-amps[" ~ me.nb_charges ~ "]";
+           me.nb_charges = me.nb_charges + 1;
+           node.getNode("charge",constant.TRUE).setValue(charge);
+
+           amps = node.getChild("amps").getValue();
+       }
+
+       volts = node.getChild("volts").getValue();
+
+       result = ElectricalComponent.new();
+       result.create_supplier( kind, state, rpm, volts, charge, amps );
+       me.suppliers[ me.nb_suppliers ] = result;
+
+       me.nb_suppliers = me.nb_suppliers + 1;
+   }
+}
+
+ComponentArray.add_bus = func( node ) {
+   if( me.nb_buses >= me.MAXBUSES ) {
+       print( "Electrical: number of buses exceeded ! ", me.MAXBUSES );
+   }
+
+   else {
+       name = node.getChild("name").getValue();
+       me.bus_name[ me.nb_buses ] = name;
+
+       allprops = node.getChildren("prop");
+       nbprops = size( allprops );
+
+       for( i = 0; i < me.MAXPROPS; i = i+1 ) {
+            if( i < nbprops ) {
+                state = allprops[i].getValue();
+            }
+            else {
+                state = "";
+            }
+            me.bus_prop[ i ] = state;
+       }
+
+       result = ElectricalComponent.new();
+       result.create_bus( me.bus_prop );
+       me.buses[ me.nb_buses ] = result;
+
+       me.nb_buses = me.nb_buses + 1;
+   }
+}
+
+ComponentArray.add_output = func( node ) {
+   if( me.nb_outputs >= me.MAXOUTPUTS ) {
+       print( "Electrical: number of outputs exceeded ! ", me.MAXOUTPUTS );
+   }
+
+   else {
+       name = node.getChild("name").getValue();
+       me.output_name[ me.nb_outputs ] = name;
+
+       prop = node.getChild("prop").getValue();
+
+       result = ElectricalComponent.new();
+       result.create_output( prop );
+       me.outputs[ me.nb_outputs ] = result;
+
+       me.nb_outputs = me.nb_outputs + 1;
+   }
+}
+
+ComponentArray.find_supplier = func( ident ) {
+    result = ElectricalComponent.new();
+
+    for( i = 0; i < me.MAXSUPPLIERS; i = i+1 ) {
+         if( me.supplier_name[i] == ident ) {
+             result = me.get_supplier( i );
+             break;
+         }
+    }
+
+    return result;
+}
+
+ComponentArray.find_bus = func( ident ) {
+    result = ElectricalComponent.new();
+
+    for( i = 0; i < me.MAXBUSES; i = i+1 ) {
+         if( me.bus_name[i] == ident ) {
+             result = me.get_bus( i );
+             break;
+         }
+    }
+
+    return result;
+}
+
+ComponentArray.find_output = func( ident ) {
+    result = ElectricalComponent.new();
+
+    for( i = 0; i < me.MAXOUTPUTS; i = i+1 ) {
+         if( me.output_name[i] == ident ) {
+             result = me.get_output( i );
+             break;
+         }
+    }
+
+    return result;
+}
+
 # lookup tables accelerates the search !!!
-ElectricalXML.find = func( ident ) {
-   found = "false";
-   result = ElectricalComponent.new();
+ComponentArray.find = func( ident ) {
+   result = me.find_supplier( ident );
+   found = result.is_exist();
 
-   if( found == "false" ) {
-       i = me.supplier_names.find( ident );
-       if( i != nil ) {
-           result.set_supplier( me.suppliers[i] ); 
-           found = "true";
-       }
+   if( !found ) {
+       result = me.find_bus( ident );
+       found = result.is_exist();
    }
 
-   if( found == "false" ) {
-       i = me.bus_names.find( ident );
-       if( i != nil ) {
-           result.set_bus( me.buses[i] ); 
-           found = "true";
-       }
+   if( !found ) {
+       result = me.find_output( ident );
+       found = result.is_exist();
    }
 
-   if( found == "false" ) {
-       i = me.output_names.find( ident );
-       if( i != nil ) {
-           result.set_output( me.outputs[i] ); 
-           found = "true";
-       }
-   }
-
-   if( found == "false" ) {
+   if( !found ) {
        print("Electrical : component not found ", ident);
    }
 
    return result;
 }
 
-ElectricalXML.clear = func( component ) {
-   for( i = 0; i < me.nb_suppliers; i = i+1 ) {
-        component.set_supplier( me.suppliers[i] );
-        component.clear();
-   }
+ComponentArray.count_supplier = func {
+   return me.nb_suppliers;
+}
 
-   for( i = 0; i < me.nb_buses; i = i+1 ) {
-        component.set_bus( me.buses[i] );
-        component.clear();
-   }
+ComponentArray.count_bus = func {
+   return me.nb_buses;
+}
 
-   for( i = 0; i < me.nb_outputs; i = i+1 ) {
-        component.set_output( me.outputs[i] );
-        component.clear();
-   }
+ComponentArray.count_output = func {
+   return me.nb_outputs;
+}
+
+ComponentArray.get_supplier = func( index ) {
+   return me.suppliers[ index ];
+}
+
+ComponentArray.get_bus = func( index ) {
+   return me.buses[ index ];
+}
+
+ComponentArray.get_output = func( index ) {
+   return me.outputs[ index ];
 }
 
 
@@ -460,9 +660,23 @@ ElectricalComponent = {};
 
 ElectricalComponent.new = func {
    obj = { parents : [ElectricalComponent],
-           type : "",
-           nb_charges : 0,         # number of batteries
-           node : nil
+
+           index : -1,
+           done : constant.FALSE,
+
+# supplier
+           kind : "",
+           rpm : "",
+           volts : 0,
+           state : "",
+           amps : 0,
+
+# bus
+           MAXPROPS : 20,
+           props : ["","","","","","","","","","",
+                    "","","","","","","","","",""],
+
+           type : ""
          };
 
    return obj;
@@ -475,21 +689,14 @@ ElectricalComponent.is_exist = func {
 
 # is voltage known ?
 ElectricalComponent.is_propagate = func {
-   if( me.node != nil ) {
-       result = me.node.getChild("propagate").getValue();
-   }
-   else {
-       result = constant.FALSE;
-   }
-
-   return result;
+   return me.done;
 }
 
 # present voltage
 ElectricalComponent.get_volts = func {
    if( me.type == "supplier" or me.type == "bus" or me.type == "output" ) {
        # takes the 1st property
-       state = me.node.getChild("prop").getValue();
+       state = me.props[0];
        result = getprop(state);
    }
    else {
@@ -499,60 +706,60 @@ ElectricalComponent.get_volts = func {
    return result;
 }
 
-# specifies the object class
-ElectricalComponent.set_supplier = func( node ) {
+# creates the object class
+ElectricalComponent.create_supplier = func( kind, prop, rpm, volts, state, amps ) {
    me.type = "supplier";
-   me.node = node;
+
+   me.kind = kind;
+   me.props[0] = prop;
+   me.rpm = rpm;
+   me.volts = volts;
+   me.state = state;
+   me.amps = amps;
 }
 
-ElectricalComponent.set_bus = func( node ) {
+ElectricalComponent.create_bus = func( props ) {
    me.type = "bus";
-   me.node = node;
+
+   for( i = 0; i < me.MAXPROPS; i = i+1 ) {
+        me.props[ i ] = props[ i ];
+   }
 }
 
-ElectricalComponent.set_output = func( node ) {
+ElectricalComponent.create_output = func( prop ) {
    me.type = "output";
-   me.node = node;
+
+   me.props[0] = prop;
+}
+
+ElectricalComponent.create_none = func {
+   me.type = "";
 }
 
 # battery charge
 ElectricalComponent.charge = func {
    if( me.type == "supplier" ) {
-       kind = me.node.getChild("kind").getValue();
-
-       if( kind == "battery" ) {
-           amps = me.node.getChild("amps").getValue();
-
-           # 1 variable per battery
-           state = "/systems/electrical/suppliers/battery-amps[" ~ me.nb_charges ~ "]";
-           me.node.getNode(state,constant.TRUE).setValue(amps);
-
-           me.node.getNode("charge",constant.TRUE).setValue(state);
-           me.nb_charges = me.nb_charges + 1;
+       if( me.kind == "battery" ) {
+           setprop(me.state,me.amps);
        }
    }
 
-   me.node.getNode("propagate",constant.TRUE).setValue(constant.FALSE);
+   me.clear_propagate();
 }
 
 # battery discharge
 ElectricalComponent.discharge = func {
    if( me.type == "supplier" ) {
-       kind = me.node.getChild("kind").getValue();
-
-       if( kind == "battery" ) {
-           state = me.node.getChild("prop").getValue();
-           volts = me.node.getChild("volts").getValue();
-
-           setprop(state, volts);
-           me.node.getChild("propagate").setValue(constant.TRUE);
+       if( me.kind == "battery" ) {
+           setprop(me.props[0], me.volts);
+           me.set_propagate();
        }
 
-       elsif( kind == "alternator" ) {
+       elsif( me.kind == "alternator" ) {
        }
 
        else {
-           print("Electrical : supplier not found ", kind);
+           print("Electrical : supplier not found ", me.kind);
        }
    }
 } 
@@ -560,28 +767,22 @@ ElectricalComponent.discharge = func {
 # supplies voltage
 ElectricalComponent.supply = func {
    if( me.type == "supplier" ) {
-       kind = me.node.getChild("kind").getValue();
-
        # discharge only
-       if( kind == "battery" ) {
+       if( me.kind == "battery" ) {
        }
 
-       elsif( kind == "alternator" ) {
-           state = me.node.getChild("prop").getValue();
-           rpm = me.node.getChild("rpm-source").getValue();
-           volts = me.node.getChild("volts").getValue();
-
-           value = getprop(rpm);
-           if( value > volts ) {
-               value = volts;
+       elsif( me.kind == "alternator" ) {
+           value = getprop(me.rpm);
+           if( value > me.volts ) {
+               value = me.volts;
            }
 
-           setprop(state, value);
-           me.node.getChild("propagate").setValue(constant.TRUE);
+           setprop(me.props[0], value);
+           me.set_propagate();
        }
 
        else {
-           print("Electrical : supplier not found ", kind);
+           print("Electrical : supplier not found ", me.kind);
        }
    }
 } 
@@ -589,37 +790,110 @@ ElectricalComponent.supply = func {
 # propagates voltage to all properties
 ElectricalComponent.propagate = func( volts ) {
    if( me.type == "bus" or me.type == "output" ) {
-       allprops = me.node.getChildren("prop");
+       for( i = 0; i < me.MAXPROPS; i = i+1 ) {
+            state = me.props[i];
 
-       for( i = 0; i < size( allprops ); i = i+1 ) {
-            state = allprops[i].getValue();
+            # last
+            if( state == "" ) {
+                break;
+            }
+
             setprop(state, volts);
        }
 
-       me.node.getChild("propagate").setValue(constant.TRUE);
+       me.set_propagate();
    }
 }
 
 # reset propagate
 ElectricalComponent.clear = func() {
    if( me.type == "bus" or me.type == "output" ) {
-       me.node.getChild("propagate").setValue(constant.FALSE);
+       me.clear_propagate();
    }
    elsif( me.type == "supplier" ) {
-       kind = me.node.getChild("kind").getValue();
-
        # always knows its voltage
-       if( kind == "battery" ) {
+       if( me.kind == "battery" ) {
        }
 
-       elsif( kind == "alternator" ) {
-           me.node.getChild("propagate").setValue(constant.FALSE);
+       elsif( me.kind == "alternator" ) {
+           me.clear_propagate();
        }
 
        else {
-           print("Electrical : clear not found ", kind);
+           print("Electrical : clear not found ", me.kind);
        }
    }
+}
+
+ElectricalComponent.clear_propagate = func {
+   me.done = constant.FALSE;
+}
+
+ElectricalComponent.set_propagate = func {
+   me.done = constant.TRUE;
+}
+
+
+# ===============
+# CONNECTOR ARRAY
+# ===============
+
+ConnectorArray = {};
+
+ConnectorArray.new = func {
+   obj = { parents : [ConnectorArray],
+
+           MAXCONNECTORS : 100,
+           connectors      :  [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+                               nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
+           nb_connectors : 0
+         };
+
+   return obj;
+};
+
+ConnectorArray.add = func( node ) {
+   if( me.nb_connectors >= me.MAXCONNECTORS ) {
+       print( "Electrical: number of connectors exceeded ! ", me.MAXCONNECTORS );
+   }
+
+   else {
+       input = node.getChild("input").getValue();
+       output = node.getChild("output").getValue();
+
+       prop = "";
+
+       switch = node.getNode("switch");
+       if( switch != nil ) {
+           child = switch.getChild("prop");
+           # switch should always have a property !
+           if( child != nil ) {
+               prop = child.getValue();
+           }
+       }
+
+       result = ElectricalConnector.new();
+       result.create( input, output, prop );
+       me.connectors[ me.nb_connectors ] = result;
+
+       me.nb_connectors = me.nb_connectors + 1;
+   }
+}
+
+ConnectorArray.count = func {
+   return me.nb_connectors;
+}
+
+ConnectorArray.get = func( index ) {
+   return me.connectors[ index ];
 }
 
 
@@ -631,90 +905,39 @@ ElectricalConnector = {};
 
 ElectricalConnector.new = func {
    obj = { parents : [ElectricalConnector],
-           node : nil
+
+           input : "",
+           output : "",
+           prop : ""
          };
 
    return obj;
 };
 
-ElectricalConnector.set = func( node ) {
-   me.node = node;
+ElectricalConnector.create = func( input, output, prop ) {
+   me.input = input;
+   me.output = output;
+   me.prop = prop;
 }
 
 ElectricalConnector.get_input = func {
-   input = me.node.getChild("input").getValue();
-   return input;
+   return me.input;
 }
 
 ElectricalConnector.get_output = func {
-   output = me.node.getChild("output").getValue();
-   return output;
+   return me.output;
 }
 
 ElectricalConnector.get_switch = func {
     # switch is optional, on by default
-    node2 = me.node.getNode("switch");
-    if( node2 == nil ) {
+    if( me.prop == "" ) {
         switch = constant.TRUE;
     }
-          
-    # switch should always have a property !
     else {
-        child = node2.getChild("prop");
-        if( child == nil ) {
-            switch = constant.TRUE;
-        }
-        else {
-            switch = getprop(child.getValue());
-        }
+        switch = getprop(me.prop);
     }
 
     return switch;
-}
-
-
-# ============
-# LOOKUP TABLE
-# ============
-
-LookupName = {};
-
-LookupName.new = func {
-   obj = { parents : [LookupName],
-           components : [nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
-                         nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
-                         nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
-                         nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
-                         nil,nil,nil,nil,nil,nil,nil,nil,nil,nil],
-           nb_components : 0,
-           MAX_COMPONENTS : 50
-         };
-
-   return obj;
-};
-
-LookupName.add = func( name ) {
-    j = me.nb_components;
-    if( me.nb_components >= me.MAX_COMPONENTS ) {
-         print( "Electrical: number of components exceeded ! ", me.MAX_COMPONENTS );
-    }
-    else {
-        me.components[ j ] = name;
-        me.nb_components = j + 1;
-    }
-}
-
-LookupName.find = func( ident ) {
-    index = nil;
-
-    for( i = 0; i < me.nb_components; i = i+1 ) {
-         if( me.components[i] == ident ) {
-             index = i;
-             break;
-         }
-    }
-
-    return index;
 }
 
 
@@ -722,27 +945,57 @@ LookupName.find = func( ident ) {
 # LIGHTING
 # ========
 
-# the material animation is for instruments : no blend of fluorescent and flood.
 Lighting = {};
 
 Lighting.new = func {
    obj = { parents : [Lighting],
 
-           electricalsystem : nil,
+           internal : LightLevel.new(),
+           landing : LandingLight.new()
+         };
 
-# internal lights
-           LIGHTFULL : 1.0,
-           LIGHTINVISIBLE : 0.00001,                      # invisible offset
-           LIGHTNO : 0.0,
+   obj.init();
 
-           invisible : constant.TRUE,                     # force a change on 1st recover, then alternate
+   return obj;
+};
 
-           fluorescent : "",
-           fluorescentnorm : "",
-           floods : [ "", "", "", "" ],
-           floodnorms : [ "", "", "", "" ],
-           nbfloods : 3,
-           powerfailure : constant.FALSE,
+Lighting.init = func {
+   strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
+#   aircraft.light.new("controls/lighting/external/strobe", 0.03, 1.20, strobe_switch);
+   aircraft.light.new("controls/lighting/external/strobe", [ 0.03, 1.20 ], strobe_switch);
+}
+
+Lighting.set_relation = func( electrical ) {
+   me.landing.set_relation( electrical );
+   me.internal.set_relation( electrical );
+}
+
+Lighting.schedule = func {
+   me.landing.schedule();
+   me.internal.schedule();
+}
+
+Lighting.extendexport = func {
+   me.landing.extendexport();
+}
+
+Lighting.floodexport = func {
+   me.internal.floodexport();
+}
+
+Lighting.roofexport = func {
+   me.internal.roofexport();
+}
+
+
+# =============
+# LANDING LIGHT
+# =============
+
+LandingLight = {};
+
+LandingLight.new = func {
+   obj = { parents : [LandingLight],
 
 # landing light
            EXTENDSEC : 8.0,                                # time to extend a landing light
@@ -756,10 +1009,7 @@ Lighting.new = func {
            mainlanding : nil,
            landingtaxi : nil,
 
-# slaves
-           slave : [ nil, nil ],
-           asi : 0,
-           radioaltimeter : 1
+           slave : { "asi" : nil, "electric" : nil, "radioaltimeter" : nil }
          };
 
    obj.init();
@@ -767,46 +1017,27 @@ Lighting.new = func {
    return obj;
 };
 
-Lighting.init = func {
+LandingLight.init = func {
    propname = getprop("/systems/lighting/slave/asi");
-   me.slave[me.asi] = props.globals.getNode(propname);
+   me.slave["asi"] = props.globals.getNode(propname);
+   propname = getprop("/systems/lighting/slave/electric");
+   me.slave["electric"] = props.globals.getNode(propname);
    propname = getprop("/systems/lighting/slave/radio-altimeter");
-   me.slave[me.radioaltimeter] = props.globals.getNode(propname);
+   me.slave["radioaltimeter"] = props.globals.getNode(propname);
 
    me.mainlanding = props.globals.getNode("/controls/lighting/external").getChildren("main-landing");
    me.landingtaxi = props.globals.getNode("/controls/lighting/external").getChildren("landing-taxi");
-
-   # norm is user setting, light is animation
-   me.fluorescent = "/controls/lighting/crew/roof-light";
-   me.fluorescentnorm = "/controls/lighting/crew/roof-norm";
-
-   me.floods[0] = "/controls/lighting/crew/captain/flood-light";
-   me.floods[1] = "/controls/lighting/crew/center/flood-light";
-   me.floods[2] = "/controls/lighting/crew/engineer/flood-light";
-
-   me.floodnorms[0] = "/controls/lighting/crew/captain/flood-norm";
-   me.floodnorms[1] = "/controls/lighting/crew/center/flood-norm";
-   me.floodnorms[2] = "/controls/lighting/crew/engineer/flood-norm";
-
-   strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
-   aircraft.light.new("controls/lighting/external/strobe", [0.03, 1.20], strobe_switch);
 }
 
-Lighting.set_relation = func( electrical ) {
-   me.electricalsystem = electrical;
-}
-
-Lighting.schedule = func {
+LandingLight.schedule = func {
    if( getprop("/systems/lighting/serviceable") ) {
        if( me.landingextended() ) {
            me.extendexport();
        }
    }
-
-   me.internal();
 }
 
-Lighting.landingextended = func {
+LandingLight.landingextended = func {
    extension = constant.FALSE;
 
    # because of motor failure, may be extended with switch off, or switch on and not yet extended
@@ -827,8 +1058,8 @@ Lighting.landingextended = func {
 }
 
 # automatic blowback
-Lighting.landingblowback = func {
-   if( me.slave[me.asi].getChild("indicated-speed-kt").getValue() > me.MAXKT ) {
+LandingLight.landingblowback = func {
+   if( me.slave["asi"].getChild("indicated-speed-kt").getValue() > me.MAXKT ) {
        for( i=0; i < 2; i=i+1) {
             if( me.mainlanding[i].getChild("extend").getValue() ) {
                 me.mainlanding[i].getChild("extend").setValue(constant.FALSE);
@@ -841,9 +1072,9 @@ Lighting.landingblowback = func {
 }
 
 # compensate approach attitude
-Lighting.landingrotate = func {
+LandingLight.landingrotate = func {
    # pitch at approach
-   if( me.slave[me.radioaltimeter].getChild("indicated-altitude-ft").getValue() > constantaero.AGLTOUCHFT ) {
+   if( me.slave["radioaltimeter"].getChild("indicated-altitude-ft").getValue() > constantaero.AGLTOUCHFT ) {
        target = me.ROTATIONNORM;
    }
 
@@ -855,7 +1086,7 @@ Lighting.landingrotate = func {
    return target;
 }
 
-Lighting.landingmotor = func( light, present, target ) {
+LandingLight.landingmotor = func( light, present, target ) {
    if( present < me.RETRACTNORM + me.ERRORNORM ) {
        if( target == me.EXTENDNORM ) {
            durationsec = me.EXTENDSEC;
@@ -902,8 +1133,8 @@ Lighting.landingmotor = func( light, present, target ) {
    }
 }
 
-Lighting.extendexport = func {
-   if( me.electricalsystem.has_specific() ) {
+LandingLight.extendexport = func {
+   if( me.slave["electric"].getChild("specific").getValue() ) {
 
        # automatic blowback
        me.landingblowback();
@@ -941,9 +1172,62 @@ Lighting.extendexport = func {
    }
 }
 
-Lighting.internal = func {
+
+# ===========
+# LIGHT LEVEL
+# ===========
+
+# the material animation is for instruments : no blend of fluorescent and flood.
+LightLevel = {};
+
+LightLevel.new = func {
+   obj = { parents : [LightLevel],
+
+# internal lights
+           LIGHTFULL : 1.0,
+           LIGHTINVISIBLE : 0.00001,                      # invisible offset
+           LIGHTNO : 0.0,
+
+           invisible : constant.TRUE,                     # force a change on 1st recover, then alternate
+
+           fluorescent : "",
+           fluorescentnorm : "",
+           floods : [ "", "", "", "", "" ],
+           floodnorms : [ "", "", "", "", "" ],
+           nbfloods : 4,
+           powerfailure : constant.FALSE,
+
+           slave : { "electric" : nil }
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+LightLevel.init = func {
+   propname = getprop("/systems/lighting/slave/electric");
+   me.slave["electric"] = props.globals.getNode(propname);
+
+   # norm is user setting, light is animation
+   me.fluorescent = "/controls/lighting/crew/roof-light";
+   me.fluorescentnorm = "/controls/lighting/crew/roof-norm";
+
+   me.floods[0] = "/controls/lighting/crew/captain/flood-light";
+   me.floods[1] = "/controls/lighting/crew/copilot/flood-light";
+   me.floods[2] = "/controls/lighting/crew/center/flood-light";
+   me.floods[3] = "/controls/lighting/crew/engineer/flood-light";
+
+   me.floodnorms[0] = "/controls/lighting/crew/captain/flood-norm";
+   me.floodnorms[1] = "/controls/lighting/crew/copilot/flood-norm";
+   me.floodnorms[2] = "/controls/lighting/crew/center/flood-norm";
+   me.floodnorms[3] = "/controls/lighting/crew/engineer/flood-norm";
+}
+
+LightLevel.schedule = func {
    # clear all lights
-   if( !me.electricalsystem.has_specific() or !getprop("/systems/lighting/serviceable") ) {
+   if( !me.slave["electric"].getChild("specific").getValue() or
+       !getprop("/systems/lighting/serviceable") ) {
        me.powerfailure = constant.TRUE;
        me.failure();
    }
@@ -955,33 +1239,33 @@ Lighting.internal = func {
    }
 }
 
-Lighting.failure = func {
+LightLevel.failure = func {
    me.fluofailure();
    me.floodfailure();
 }
 
-Lighting.fluofailure = func {
+LightLevel.fluofailure = func {
    setprop(me.fluorescent,me.LIGHTNO);
 }
 
-Lighting.floodfailure = func {
+LightLevel.floodfailure = func {
    for( i=0; i < me.nbfloods; i=i+1 ) {
         setprop(me.floods[i],me.LIGHTNO);
    }
 }
 
-Lighting.recover = func {
+LightLevel.recover = func {
    me.fluorecover();
    me.floodrecover();
 }
 
-Lighting.fluorecover = func {
+LightLevel.fluorecover = func {
    if( !me.powerfailure ) {
        me.failurerecover(me.fluorescentnorm,me.fluorescent,constant.FALSE);
    }
 }
 
-Lighting.floodrecover = func {
+LightLevel.floodrecover = func {
    if( !getprop("/controls/lighting/crew/roof") and !me.powerfailure ) {
        for( i=0; i < me.nbfloods; i=i+1 ) {
             # may change a flood light, during a fluo lighting
@@ -991,7 +1275,7 @@ Lighting.floodrecover = func {
 }
 
 # was no light, because of failure, or the knob has changed
-Lighting.failurerecover = func( propnorm, proplight, offset ) {
+LightLevel.failurerecover = func( propnorm, proplight, offset ) {
    norm = getprop(propnorm);
    if( norm != getprop(proplight) ) {
 
@@ -1006,11 +1290,11 @@ Lighting.failurerecover = func( propnorm, proplight, offset ) {
    }
 }
 
-Lighting.floodexport = func {
+LightLevel.floodexport = func {
    me.floodrecover();
 }
 
-Lighting.roofexport = func {
+LightLevel.roofexport = func {
    if( getprop("/controls/lighting/crew/roof") ) {
        value = me.LIGHTFULL;
 

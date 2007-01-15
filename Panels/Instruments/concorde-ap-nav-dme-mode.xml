@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+
+<!--Concorde nav dme mode selector :
+
+    - frequency rotary selector.
+-->
+
+<PropertyList>
+
+ <name>Nav dme mode selector</name>
+ <w-base>80</w-base>
+ <h-base>40</h-base>
+
+ <params>
+  <frq-ctrl>/instrumentation/nav[1]/frequencies/selected-mhz</frq-ctrl>
+ </params>
+
+
+ <layers>
+
+  <layer>
+   <name>knob</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-knob.rgb</path>
+   </texture>
+    <w>40</w>
+    <h>40</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+ </layers>
+
+ <actions>
+
+  <action>
+   <name>Minus 10</name>
+   <button>0</button>
+   <x>2</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/frq-ctrl"/>
+    <step>-10</step>
+    <min>100</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <x>2</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/frq-ctrl"/>
+    <step>10</step>
+    <min>100</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Minus 1</name>
+   <button>0</button>
+   <x>16</x>
+   <y>-19</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/frq-ctrl"/>
+    <step>-1</step>
+    <min>100</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 1</name>
+   <button>0</button>
+   <x>16</x>
+   <y>1</y>
+   <w>14</w>
+   <h>18</h>
+   <binding>
+    <command>property-adjust</command>
+    <property alias="../../../../params/frq-ctrl"/>
+    <step>1</step>
+    <min>100</min>
+    <max>400</max>
+    <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+  </action>
+
+ </actions>
+
+</PropertyList>

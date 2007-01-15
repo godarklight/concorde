@@ -9,15 +9,15 @@
 <PropertyList>
 
  <name>Engine indicator lights</name>
- <w-base>90</w-base>
+ <w-base>140</w-base>
  <h-base>20</h-base>
 
  <params>
   <running-select>/engines/engine[0]/running</running-select>
-  <bucket-select>/engines/engine[0]/bucket-deg</bucket-select>
+  <bucket-select>/systems/engines/engine[0]/bucket-deg</bucket-select>
   <fuel-select>/engines/engine[0]/fuel-flow_pph</fuel-select>
-  <bug-select>/engines/engine[0]/bug_pph</bug-select>
-  <configuration-select>/engines/engine[0]/configuration</configuration-select>
+  <bug-select>/controls/engines/engine[0]/bug_pph</bug-select>
+  <configuration-select>/systems/engines/engine[0]/configuration</configuration-select>
  </params>
 
  <layers>
@@ -30,6 +30,7 @@
 
    <layer>
     <name>Off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
@@ -53,38 +54,39 @@
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>25</w>
-    <h>19</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>25</w>
+     <h>19</h>
+    </layer>
+    <layer>
+     <name>background go</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+     </texture>
+     <w>25</w>
+     <h>19</h>
+    </layer>
    </layer>
 
    <layer>
     <name>On</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.33</x1>
-     <y1>0.0</y1>
-     <x2>0.42</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>25</w>
-    <h>19</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>background go</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
-   </texture>
-    <w>25</w>
-    <h>19</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>25</w>
+     <h>19</h>
+    </layer>
+    <layer>
+     <name>background go</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-green-warning.rgb</path>
+     </texture>
+     <w>25</w>
+     <h>19</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
 <!-- CONFIGURATION -->
@@ -95,6 +97,7 @@
 
   <layer>
    <name>Off</name>
+   <type>group</type>
    <condition>
     <or include="concorde-cond-voltage-bulb.xml">
      <and>
@@ -105,28 +108,46 @@
      </and>
     </or>
    </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>25</w>
-   <h>19</h>
+
+   <layer include="concorde-bulb-off.xml">
+    <w>25</w>
+    <h>19</h>
+   </layer>
+   <layer>
+    <name>background configuration</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-con.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.1</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+   </layer>
   </layer>
 
   <layer>
    <name>On</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.33</x1>
-    <y1>0.0</y1>
-    <x2>0.42</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>25</w>
-   <h>19</h>
+   <type>group</type>
+
+   <layer include="concorde-bulb-on.xml">
+    <w>25</w>
+    <h>19</h>
+   </layer>
+   <layer>
+    <name>background configuration</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-con.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.1</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+    <emissive>true</emissive>
+   </layer>
   </layer>
   <transformations>
    <transformation>
@@ -136,25 +157,6 @@
   </transformations>
  </layer>
 
-  <layer>
-   <name>background configuration</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-con.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.1</y1>
-    <x2>1.0</x2>
-    <y2>0.9</y2>
-   </texture>
-    <w>25</w>
-    <h>19</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>25</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
 <!-- REVERSER -->
 
  <layer>
@@ -163,6 +165,7 @@
 
   <layer>
    <name>Off</name>
+   <type>group</type>
    <condition>
     <or include="concorde-cond-voltage-bulb.xml">
      <and>
@@ -187,28 +190,46 @@
      </and>
     </or>
    </condition>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.0</y1>
-    <x2>0.25</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>25</w>
-   <h>19</h>
+
+   <layer include="concorde-bulb-off.xml">
+    <w>25</w>
+    <h>19</h>
+   </layer>
+   <layer>
+    <name>background reverser</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-rev.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.1</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+   </layer>
   </layer>
 
   <layer>
    <name>On</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-    <x1>0.33</x1>
-    <y1>0.0</y1>
-    <x2>0.42</x2>
-    <y2>0.095</y2>
-   </texture>
-   <w>25</w>
-   <h>19</h>
+   <type>group</type>
+
+   <layer include="concorde-bulb-on.xml">
+    <w>25</w>
+    <h>19</h>
+   </layer>
+   <layer>
+    <name>background reverser</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-rev.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.1</y1>
+     <x2>1.0</x2>
+     <y2>0.9</y2>
+    </texture>
+    <w>25</w>
+    <h>19</h>
+    <emissive>true</emissive>
+   </layer>
   </layer>
   <transformations>
    <transformation>
@@ -217,25 +238,6 @@
    </transformation>
   </transformations>
  </layer>
-
-  <layer>
-   <name>background reverser</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-blue-rev.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.1</y1>
-    <x2>1.0</x2>
-    <y2>0.9</y2>
-   </texture>
-    <w>25</w>
-    <h>19</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>50</offset>
-    </transformation>
-   </transformations>
-  </layer>
 
  </layers>
 

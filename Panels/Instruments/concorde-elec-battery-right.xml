@@ -5,8 +5,8 @@
 <PropertyList>
 
  <name>Battery selector</name>
- <w-base>102</w-base>
- <h-base>102</h-base>
+ <w-base>100</w-base>
+ <h-base>140</h-base>
 
  <params>
   <master-bat>/controls/engines/engine[0]/master-bat</master-bat>
@@ -84,7 +84,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-34</offset>
+     <offset>-19</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -111,7 +111,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-63</offset>
+     <offset>-48</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -138,7 +138,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -165,7 +165,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>16</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -192,7 +192,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>14</offset>
+     <offset>29</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -219,7 +219,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-44</offset>
+     <offset>-29</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -246,7 +246,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-40</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -264,8 +264,8 @@
    <condition>
     <property alias="../../../../params/ess-main-split"/>
    </condition>
-   <button>0</button>
-   <x>-5</x>
+   <button>1</button>
+   <x>-40</x>
    <y>-21</y>
    <w>42</w>
    <h>42</h>
@@ -285,7 +285,7 @@
     <property alias="../../../../params/master-bat"/>
    </condition>
    <button>0</button>
-   <x>-55</x>
+   <x>-40</x>
    <y>-21</y>
    <w>42</w>
    <h>42</h>

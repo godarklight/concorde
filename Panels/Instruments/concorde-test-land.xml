@@ -4,8 +4,12 @@
 
 <PropertyList>
  <name>Test Landing Lights</name>
- <w-base>104</w-base>
- <h-base>26</h-base>
+ <w-base>26</w-base>
+ <h-base>52</h-base>
+
+ <params>
+  <test>/controls/autoflight/autopilot[0]/test-land</test>
+ </params>
 
 
  <layers>
@@ -13,20 +17,20 @@
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-led.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-knob.rgb</path>
      <x1>0.0</x1>
      <y1>0.0</y1>
      <x2>1.0</x2>
      <y2>1.0</y2>
    </texture>
-   <w>104</w>
+   <w>26</w>
    <h>26</h>
   </layer>
 
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>46</point-size>
+   <point-size>11</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -41,11 +45,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>60</offset>
+     <offset>-11</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-3</offset>
+     <offset>-25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -56,20 +60,20 @@
   <action>
    <desc>Test lights</desc>
    <button>0</button>
-   <x>-56</x>
+   <x>-13</x>
    <y>-14</y>
-   <w>104</w>
+   <w>26</w>
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/controls/autoflight/test-autoland</property>
+    <property alias="../../../../params/test"/>
     <value>true</value>
     <repeatable>true</repeatable>
    </binding>
    <mod-up>
     <binding>
      <command>property-assign</command>
-     <property>/controls/autoflight/test-autoland</property>
+     <property alias="../../../../../params/test"/>
      <value>false</value>
     </binding>
     <binding>

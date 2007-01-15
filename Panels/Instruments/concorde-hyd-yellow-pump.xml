@@ -8,14 +8,14 @@
 <PropertyList>
 
  <name>Pump selector</name>
- <w-base>102</w-base>
+ <w-base>153</w-base>
  <h-base>102</h-base>
 
  <params>
   <onload-pump>/controls/hydraulic/circuits/circuit[1]/onload2</onload-pump>
   <shut-pump>/controls/hydraulic/circuits/circuit[1]/shut2</shut-pump>
   <guard-pump>/controls/hydraulic/circuits/circuit[1]/guard2</guard-pump>
-  <engine-num>/engines/engine[0]/engine-num</engine-num>
+  <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
  </params>
 
 
@@ -440,8 +440,8 @@
      <property alias="../../../../../params/shut-pump"/>
     </not>
    </condition>
-   <button>0</button>
-   <x>-45</x>
+   <button>1</button>
+   <x>-5</x>
    <y>-21</y>
    <w>42</w>
    <h>42</h>

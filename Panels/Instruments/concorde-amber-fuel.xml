@@ -18,8 +18,10 @@
   <layer>
    <name>Fault light</name>
    <type>switch</type>
+
    <layer>
     <name>off</name>
+    <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and include="concorde-cond-test-mws.xml">
@@ -63,41 +65,47 @@
       </and>
      </or>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-fuel.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.25</y1>
+      <x2>1.0</x2>
+      <y2>0.75</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+    </layer>
    </layer>
+
    <layer>
     <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/warning-lamps.rgb</path>
-     <x1>0.35</x1>
-     <y1>0.0</y1>
-     <x2>0.4</x2>
-     <y2>0.095</y2>
-    </texture>
-    <w>104</w>
-    <h>26</h>
-   </layer>
-  </layer>
+    <type>group</type>
 
-  <layer>
-   <name>Background</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-fuel.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.25</y1>
-     <x2>1.0</x2>
-     <y2>0.75</y2>
-   </texture>
-   <w>104</w>
-   <h>26</h>
+    <layer include="concorde-bulb-on.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+    <layer>
+     <name>Background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-fuel.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.25</y1>
+      <x2>1.0</x2>
+      <y2>0.75</y2>
+     </texture>
+     <w>104</w>
+     <h>26</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
   </layer>
 
  </layers>

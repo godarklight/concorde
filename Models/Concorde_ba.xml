@@ -2,6 +2,20 @@
 
 <!-- Concorde British Airways :
 
+     VRP :
+     - the model is shifted at the nose tip, where one wants the FDM to compute the movement.
+     - CAUTION : this is the nose tip, without the droop nose (0.53 m).
+     - that doesn't affect the animations.
+     - that only requires a shift of views.
+     - IMPORTANT : the model is already align vertically from Blender.
+
+
+    Pitch :
+    - the piston of the nose gear is longer in flight.
+    - the spring of the nose gear is adjusted, so that the pitch is null at full load.
+    - as the weight becomes empty, the pitch comes back by the spring of the nose gear.
+
+
     Panels :
     - all panels are 1024x512, i.e. surface must have width/height = 2/1, to keep the scale of instruments.
     - all hotspots are at the same place whatever the view.
@@ -9,41 +23,44 @@
       Instrument visibility is limited by the view heading or view pitch (see each panel file).
       One takes the limit of the visual range, rounded to 5, plus/minus 5 degrees as margin.
 
+
     Animations :
     - all axis are correct !
     - CAUTION : when multiple objects per animation, behaviour may depend of ordering of animations.
+    - multiplayer requires property without leading slash.
+
+    Gear :
+    - 0.00 : door starts to open (0 s).
+    - 0.17 : door is opened (2 s => instead of 8 s, which overlaps gear).
+    - 0.17 : gear starts to lower (2 s).
+    - 0.83 : gear locks, door starts to close (10 s).
+    Exception, tail gear door moves with gear :
+    - 0.17 : door start to open (2 s).
+    - 0.50 : door start to close.
+    - 0.83 : gear locks (10 s).
 
     External lights :
     - translation must happen before the billboard.
     - unit (meter) is the same than Blender (add 0.2 in length to the landing light cone).
     - white material makes them visible at night.
     - scaling makes them more visible at night.
-    - CAUTION : no parent relation between 2 lights (group) - for transparency -, because of animation side effect.
+    - CAUTION : no parent relation between 2 lights (group) - for transparency -,
+      because of animation side effect.
 
 
     References :
     ==========
     - http://www.concordesst.com :
 
-    Flight systems (range up and down) : inner elevons 9 deg, middle and outer elevons 23.5 deg, rudder 30 deg.
-    Actual travel limits are a little lower than these mechanical limits.
+    Flight systems (range up and down) : inner elevons 9 deg, middle and outer elevons 23.5 deg,
+    rudder 30 deg. Actual travel limits are a little lower than these mechanical limits.
 
     Gear :
     - nose has plus minus 60 deg steering angle.
     - up process takes 12 s : door opening 2 s, gear retract 8 s, door closing 8 s.
+    - the main gear shortens during the retraction, to fit into the well.
 
     Nose / Visor : UP, visor down, nose -5 deg, nose DOWN -12.5 deg.
-
-    Constants :
-    - 0.00 : door starts to open (0 s).
-    - 0.17 : door is opened (2 s => instead of 8 s, which overlaps gear).
-    - 0.17 : gear starts to lower (2 s).
-    - 0.83 : gear locks, door starts to close (10 s).
-
-    Exception, tail gear door moves with gear :
-    - 0.17 : door start to open (2 s).
-    - 0.50 : door start to close.
-    - 0.83 : gear locks (10 s).
 
     Guide rails to retract the visor.
 
@@ -57,20 +74,21 @@
     TO DO :
     =====
     - limit elevon angle, when elevator + aileron.
-    - compression by gear spring.
+    - compression of gear spring.
+    - rotation of front gear spring.
     - compression of wing gear strut.
     - combined movement of landing taxi lights with front gear doors.
 
 
     Known problems  :
     ==============
-    - the tail wheel door seems too long : one part of tail gear hole is closed by the small left and right doors.
-    - the wing gears seems a little too long, and cross the inner doors.
-    - because of night scaling, wrong transparency ordering of navigation and strobe lights may become visible :
-      impossible to satisfy all possible orientations.
-    - as Nasal interpolate is not always round, 0.1 offset on landing light position : 0.0 1.0 becomes 0.1 0.9.
-    - pseudo lighting : no blending of flood and fluorescent lights, no shadow, flood illuminates not only the panel surface.
-    - from copilot view, electrical, fuel and intake panels overlap the upper tilted surface (visual effect ?).
+    - wow doesn't reset, when one starts in flight (filtered above 50 ft AGL).
+    - because of night scaling, wrong transparency ordering of navigation and strobe lights
+      may become visible : impossible to satisfy all possible orientations.
+    - as Nasal interpolate is not always round, 0.1 offset on landing light position :
+      0.0 1.0 becomes 0.1 0.9.
+    - pseudo lighting : no shadow, flood illuminates not only the panel surface,
+      no distinct flood for captain / center / copilot dash.
 
 -->
  
@@ -78,17 +96,11 @@
   <path>concorde.ac</path>
   <offsets>
 
-<!-- match the center of gravity of FDM (tail wheel doesn't touch the ground at 10 deg pitch) -->
+<!-- VRP at nose (without the droop nose !) -->
 
-   <x-m>-1.23</x-m>
+   <x-m>31.30</x-m>                    <!-- model is not exactly at the middle of length 61.66 m. -->
+   <z-m> 0.0</z-m>                     <!-- aligned by FDM gear, if model at scale. -->
 
-<!-- makes the wheels touch the ground, when changes center of gravity.
-     When changing this value, also adjust the seat to keep the 2D instruments. -->
-
-   <z-m>1.02</z-m>
-
-   <roll-deg>0</roll-deg>
-   <heading-deg>0</heading-deg>
   </offsets>
 
  <!-- ======================================= -->
@@ -100,38 +112,38 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
    <bottom-left>
-    <x-m>-23.678</x-m>
+    <x-m>-23.728</x-m>
     <y-m>-0.310</y-m>
-    <z-m> 1.044</z-m>
+    <z-m> 1.132</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.678</x-m>
+    <x-m>-23.728</x-m>
     <y-m> 0.190</y-m>
-    <z-m> 1.044</z-m>
+    <z-m> 1.132</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.756</x-m>
+    <x-m>-23.806</x-m>
     <y-m>-0.310</y-m>
-    <z-m> 1.294</z-m>
+    <z-m> 1.382</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot-right.xml</path>
    <bottom-left>
-    <x-m>-23.678</x-m>
+    <x-m>-23.728</x-m>
     <y-m> 0.256</y-m>
-    <z-m> 1.044</z-m>
+    <z-m> 1.132</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.678</x-m>
+    <x-m>-23.728</x-m>
     <y-m> 0.756</y-m>
-    <z-m> 1.044</z-m>
+    <z-m> 1.132</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.756</x-m>
+    <x-m>-23.806</x-m>
     <y-m> 0.256</y-m>
-    <z-m> 1.294</z-m>
+    <z-m> 1.382</z-m>
    </top-left>
   </panel>
 
@@ -140,19 +152,19 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-pilot.xml</path>
    <bottom-left>
-    <x-m>-23.765</x-m>
-    <y-m>-0.633</y-m>
-    <z-m> 0.895</z-m>
+    <x-m>-23.790</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 0.988</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.765</x-m>
-    <y-m> 0.577</y-m>
-    <z-m> 0.895</z-m>
+    <x-m>-23.790</x-m>
+    <y-m> 0.579</y-m>
+    <z-m> 0.988</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.870</x-m>
-    <y-m>-0.633</y-m>
-    <z-m> 1.500</z-m>
+    <x-m>-23.895</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 1.593</z-m>
    </top-left>
   </panel>
 
@@ -161,76 +173,76 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead.xml</path>
    <bottom-left>
-    <x-m>-23.526</x-m>
+    <x-m>-23.586</x-m>
     <y-m>-0.34</y-m>
-    <z-m> 1.520</z-m>       <!-- keep slope ! -->
+    <z-m> 1.613</z-m>       <!-- keep slope ! -->
    </bottom-left>
    <bottom-right>
-    <x-m>-23.526</x-m>
+    <x-m>-23.586</x-m>
     <y-m> 0.20</y-m>
-    <z-m> 1.520</z-m>
+    <z-m> 1.613</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.264</x-m>
+    <x-m>-23.324</x-m>
     <y-m>-0.34</y-m>
-    <z-m> 1.697</z-m>
+    <z-m> 1.790</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-lighting.xml</path>
    <bottom-left>
-    <x-m>-23.426</x-m>
+    <x-m>-23.476</x-m>
     <y-m>-0.25</y-m>
-    <z-m> 1.585</z-m>
+    <z-m> 1.678</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.426</x-m>
+    <x-m>-23.476</x-m>
     <y-m> 0.274</y-m>
-    <z-m> 1.585</z-m>
+    <z-m> 1.678</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.164</x-m>
+    <x-m>-23.214</x-m>
     <y-m>-0.25</y-m>
-    <z-m> 1.590</z-m>
+    <z-m> 1.683</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-engineer.xml</path>
    <bottom-left>
-    <x-m>-23.19</x-m>
+    <x-m>-23.255</x-m>
     <y-m>-0.430</y-m>
-    <z-m> 1.678</z-m>
+    <z-m> 1.781</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.19</x-m>
+    <x-m>-23.255</x-m>
     <y-m> 0.430</y-m>
-    <z-m> 1.678</z-m>
+    <z-m> 1.781</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.76</x-m>
+    <x-m>-22.825</x-m>
     <y-m>-0.430</y-m>
-    <z-m> 1.678</z-m>
+    <z-m> 1.791</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-pillar.xml</path>
    <bottom-left>
-    <x-m>-23.626</x-m>
+    <x-m>-23.681</x-m>
     <y-m>-0.185</y-m>
-    <z-m> 1.47</z-m>
+    <z-m> 1.563</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.626</x-m>
+    <x-m>-23.681</x-m>
     <y-m> 0.025</y-m>
-    <z-m> 1.47</z-m>
+    <z-m> 1.563</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.576</x-m>
+    <x-m>-23.631</x-m>
     <y-m>-0.185</y-m>
-    <z-m> 1.59</z-m>
+    <z-m> 1.683</z-m>
    </top-left>
   </panel>
 
@@ -239,76 +251,76 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-console-captain.xml</path>
    <bottom-left>
-    <x-m>-23.28</x-m>
+    <x-m>-23.30</x-m>
     <y-m>-0.765</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.853</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.28</x-m>
+    <x-m>-23.30</x-m>
     <y-m>-0.165</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.853</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.58</x-m>
+    <x-m>-23.60</x-m>
     <y-m>-0.765</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.873</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-console-captain-top.xml</path>
    <bottom-left>
-    <x-m>-23.05</x-m>
+    <x-m>-23.075</x-m>
     <y-m>-0.870</y-m>
-    <z-m>0.95</z-m>
+    <z-m>1.043</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.05</x-m>
+    <x-m>-23.075</x-m>
     <y-m>-0.490</y-m>
-    <z-m>0.85</z-m>
+    <z-m>1.043</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.35</x-m>
+    <x-m>-23.375</x-m>
     <y-m>-0.870</y-m>
-    <z-m>0.95</z-m>
+    <z-m>1.053</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-console-copilot.xml</path>
    <bottom-left>
-    <x-m>-23.28</x-m>
+    <x-m>-23.30</x-m>
     <y-m> 0.735</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.853</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.28</x-m>
+    <x-m>-23.30</x-m>
     <y-m> 1.335</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.853</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.58</x-m>
+    <x-m>-23.60</x-m>
     <y-m> 0.735</y-m>
-    <z-m>0.79</z-m>
+    <z-m>0.873</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-console-copilot-top.xml</path>
    <bottom-left>
-    <x-m>-23.05</x-m>
+    <x-m>-23.075</x-m>
     <y-m> 0.800</y-m>
-    <z-m>0.94</z-m>
+    <z-m>1.043</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.05</x-m>
+    <x-m>-23.075</x-m>
     <y-m> 1.180</y-m>
-    <z-m>1.04</z-m>
+    <z-m>1.043</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.35</x-m>
+    <x-m>-23.375</x-m>
     <y-m> 0.800</y-m>
-    <z-m>0.94</z-m>
+    <z-m>1.053</z-m>
    </top-left>
   </panel>
 
@@ -317,57 +329,57 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-pedestal.xml</path>
    <bottom-left>
-    <x-m>-23.170</x-m>
+    <x-m>-23.180</x-m>
     <y-m>-0.245</y-m>
-    <z-m> 0.74</z-m>
+    <z-m> 0.815</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.170</x-m>
+    <x-m>-23.180</x-m>
     <y-m> 0.485</y-m>
-    <z-m> 0.74</z-m>
+    <z-m> 0.815</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.535</x-m>
+    <x-m>-23.545</x-m>
     <y-m>-0.245</y-m>
-    <z-m> 0.76</z-m>
+    <z-m> 0.830</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-pedestal-middle.xml</path>
    <bottom-left>
-    <x-m>-23.11</x-m>
+    <x-m>-23.17</x-m>
     <y-m>-0.225</y-m>
-    <z-m> 0.75</z-m>
+    <z-m> 0.825</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.11</x-m>
+    <x-m>-23.17</x-m>
     <y-m> 0.455</y-m>
-    <z-m> 0.75</z-m>
+    <z-m> 0.825</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.45</x-m>
+    <x-m>-23.51</x-m>
     <y-m>-0.225</y-m>
-    <z-m> 0.76</z-m>
+    <z-m> 0.835</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-pedestal-bottom.xml</path>
    <bottom-left>
-    <x-m>-22.805</x-m>
+    <x-m>-22.815</x-m>
     <y-m>-0.165</y-m>
-    <z-m> 0.745</z-m>
+    <z-m> 0.815</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-22.805</x-m>
+    <x-m>-22.815</x-m>
     <y-m> 0.525</y-m>
-    <z-m> 0.745</z-m>
+    <z-m> 0.815</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.15</x-m>
+    <x-m>-23.16</x-m>
     <y-m>-0.165</y-m>
-    <z-m> 0.755</z-m>
+    <z-m> 0.825</z-m>
    </top-left>
   </panel>
 
@@ -376,76 +388,76 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-pressure.xml</path>
    <bottom-left>
-    <x-m>-22.370</x-m>
+    <x-m>-22.375</x-m>
     <y-m> 0.506</y-m>
-    <z-m> 1.213</z-m>
+    <z-m> 1.276</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.820</x-m>
+    <x-m>-21.825</x-m>
     <y-m> 0.559</y-m>
-    <z-m> 1.213</z-m>
+    <z-m> 1.276</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.370</x-m>
+    <x-m>-22.375</x-m>
     <y-m> 0.381</y-m>
-    <z-m> 1.488</z-m>
+    <z-m> 1.551</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-intake.xml</path>
    <bottom-left>
-    <x-m>-22.375</x-m>
+    <x-m>-22.380</x-m>
     <y-m> 0.510</y-m>
-    <z-m> 0.776</z-m>
+    <z-m> 0.839</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.727</x-m>
+    <x-m>-21.732</x-m>
     <y-m> 0.566</y-m>
-    <z-m> 0.776</z-m>
+    <z-m> 0.839</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.375</x-m>
+    <x-m>-22.380</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 1.110</z-m>
+    <z-m> 1.173</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-lighting.xml</path>
    <bottom-left>
-    <x-m>-22.513</x-m>
+    <x-m>-22.532</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 0.64</z-m>
+    <z-m> 0.703</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.483</x-m>
+    <x-m>-21.498</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 0.64</z-m>
+    <z-m> 0.703</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.513</x-m>
+    <x-m>-22.532</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 1.155</z-m>
+    <z-m> 1.218</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-engine.xml</path>
    <bottom-left>
-    <x-m>-22.405</x-m>
+    <x-m>-22.400</x-m>
     <y-m> 0.490</y-m>
-    <z-m> 0.366</z-m>
+    <z-m> 0.431</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.475</x-m>
+    <x-m>-21.470</x-m>
     <y-m> 0.580</y-m>
-    <z-m> 0.360</z-m>
+    <z-m> 0.431</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.405</x-m>
+    <x-m>-22.400</x-m>
     <y-m> 0.502</y-m>
-    <z-m> 0.831</z-m>
+    <z-m> 0.894</z-m>
    </top-left>
   </panel>
 
@@ -454,57 +466,76 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-air.xml</path>
    <bottom-left>
-    <x-m>-21.940</x-m>
+    <x-m>-21.950</x-m>
     <y-m> 0.445</y-m>
-    <z-m> 1.434</z-m>
+    <z-m> 1.502</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.390</x-m>
+    <x-m>-21.400</x-m>
     <y-m> 0.445</y-m>
-    <z-m> 1.434</z-m>
+    <z-m> 1.502</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.940</x-m>
+    <x-m>-21.950</x-m>
     <y-m> 0.32</y-m>
-    <z-m> 1.700</z-m>
+    <z-m> 1.768</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-temperature.xml</path>
+   <bottom-left>
+    <x-m>-21.710</x-m>
+    <y-m> 0.455</y-m>
+    <z-m> 1.467</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.160</x-m>
+    <y-m> 0.455</y-m>
+    <z-m> 1.467</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.710</x-m>
+    <y-m> 0.33</y-m>
+    <z-m> 1.733</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel-top.xml</path>
    <bottom-left>
-    <x-m>-21.930</x-m>
+    <x-m>-21.945</x-m>
     <y-m> 0.54</y-m>
-    <z-m> 1.225</z-m>
+    <z-m> 1.288</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.230</x-m>
+    <x-m>-21.245</x-m>
     <y-m> 0.54</y-m>
-    <z-m> 1.225</z-m>
+    <z-m> 1.288</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.930</x-m>
+    <x-m>-21.945</x-m>
     <y-m> 0.38</y-m>
-    <z-m> 1.575</z-m>
+    <z-m> 1.648</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel.xml</path>
    <bottom-left>
-    <x-m>-21.942</x-m>
+    <x-m>-21.957</x-m>
     <y-m> 0.542</y-m>
-    <z-m> 0.620</z-m>
+    <z-m> 0.688</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.002</x-m>
+    <x-m>-21.017</x-m>
     <y-m> 0.542</y-m>
-    <z-m> 0.620</z-m>
+    <z-m> 0.688</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.942</x-m>
+    <x-m>-21.947</x-m>
     <y-m> 0.552</y-m>
-    <z-m> 1.090</z-m>
+    <z-m> 1.158</z-m>
    </top-left>
   </panel>
 
@@ -513,57 +544,57 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-hydraulic.xml</path>
    <bottom-left>
-    <x-m>-21.475</x-m>
+    <x-m>-21.470</x-m>
     <y-m> 0.458</y-m>
-    <z-m> 1.400</z-m>
+    <z-m> 1.468</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.805</x-m>
+    <x-m>-20.800</x-m>
     <y-m> 0.390</y-m>
-    <z-m> 1.400</z-m>
+    <z-m> 1.468</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.475</x-m>
+    <x-m>-21.470</x-m>
     <y-m> 0.307</y-m>
-    <z-m> 1.715</z-m>
+    <z-m> 1.783</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-electric-top.xml</path>
    <bottom-left>
-    <x-m>-21.470</x-m>
+    <x-m>-21.475</x-m>
     <y-m> 0.535</y-m>
-    <z-m> 1.230</z-m>
+    <z-m> 1.288</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.920</x-m>
+    <x-m>-20.925</x-m>
     <y-m> 0.456</y-m>
-    <z-m> 1.230</z-m>
+    <z-m> 1.288</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.470</x-m>
+    <x-m>-21.475</x-m>
     <y-m> 0.400</y-m>
-    <z-m> 1.525</z-m>
+    <z-m> 1.583</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-electric.xml</path>
    <bottom-left>
-    <x-m>-21.480</x-m>
+    <x-m>-21.485</x-m>
     <y-m> 0.546</y-m>
-    <z-m> 0.749</z-m>
+    <z-m> 0.822</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.827</x-m>
+    <x-m>-20.832</x-m>
     <y-m> 0.458</y-m>
-    <z-m> 0.749</z-m>
+    <z-m> 0.822</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.480</x-m>
+    <x-m>-21.485</x-m>
     <y-m> 0.546</y-m>
-    <z-m> 1.0755</z-m>
+    <z-m> 1.1485</z-m>
    </top-left>
   </panel>
 
@@ -572,19 +603,19 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-steward.xml</path>
    <bottom-left>
-    <x-m>-18.00</x-m>
+    <x-m>-17.95</x-m>
     <y-m>-0.51</y-m>
-    <z-m> 1.555</z-m>
+    <z-m> 1.568</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-18.00</x-m>
+    <x-m>-17.95</x-m>
     <y-m>-0.89</y-m>
-    <z-m> 1.555</z-m>
+    <z-m> 1.568</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-18.00</x-m>
+    <x-m>-17.95</x-m>
     <y-m>-0.51</y-m>
-    <z-m> 1.745</z-m>
+    <z-m> 1.758</z-m>
    </top-left>
   </panel>
 
@@ -593,38 +624,116 @@
 <!-- LOD  -->
 <!-- ==== -->
 
-<!-- increases frame rate inside the cockpit, when looking backwards (parts above 1000 vertices) -->
+<!-- CAPTAIN -->
 
   <animation>
-   <name>Above1000</name>
-   <object-name>Hull</object-name>
-   <object-name>Wing</object-name>
-   <object-name>PrimaryNozzle</object-name>
-   <object-name>NozzleTop1</object-name>
-   <object-name>NozzleBottom1</object-name>
-   <object-name>NozzleTop2</object-name>
-   <object-name>NozzleBottom2</object-name>
-   <object-name>NozzleTop3</object-name>
-   <object-name>NozzleBottom3</object-name>
-   <object-name>NozzleTop4</object-name>
-   <object-name>NozzleBottom4</object-name>
-   <object-name>Intake</object-name>
-   <object-name>EngineIntake</object-name>
-   <object-name>Engine</object-name>
-   <object-name>Fwheels</object-name>
-   <object-name>Fstrut</object-name>
-   <object-name>Rmainwheels</object-name>
-   <object-name>Rmainwheels2</object-name>
-   <object-name>RMainstrut</object-name>
-   <object-name>Lmainwheels</object-name>
-   <object-name>Lmainwheels2</object-name>
-   <object-name>LMainstrut</object-name>
-   <object-name>Cabin</object-name>
+   <name>captain</name>
+   <object-name>CaptainFlood</object-name>
   </animation>
 
   <animation>
    <type>select</type>
-   <object-name>Above1000</object-name>                         <!-- group avoids side effects -->
+   <object-name>captain</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/captain</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- BOTH -->
+
+  <animation>
+   <name>both</name>
+   <object-name>CenterFlood</object-name>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>both</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <or>
+       <property>systems/seat/captain</property>
+       <property>systems/seat/copilot</property>
+      </or>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- COPILOT -->
+
+  <animation>
+   <name>copilot</name>
+   <object-name>CopilotFlood</object-name>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>copilot</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/copilot</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- ENGINEER -->
+
+  <animation>
+   <name>engineer</name>
+   <object-name>EngineerUnknown</object-name>
+  </animation>
+
+<!-- avoids side effect on selection -->
+
+  <animation>
+   <name>EngineerPanel</name> 
+   <object-name>EngineerLeft</object-name>
+   <object-name>EngineerRight</object-name>
+   <object-name>Engineer</object-name>
+   <object-name>EngineerAft</object-name>
+   <object-name>EngineerDeck</object-name>
+   <object-name>engineer</object-name>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>engineer</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/engineer</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- increases frame rate inside the cockpit (only cockpit and nose/visor) -->
+
+  <animation>
+   <name>external</name>
+   <object-name>Hull</object-name>
+<!-- doesn't enumerate all objects, because of hull group (Blender) -->
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>external</object-name>                         <!-- group avoids side effects -->
    <condition>
     <not>
      <property>sim/current-view/internal</property>
@@ -632,12 +741,22 @@
    </condition>
   </animation>
 
-<!-- increase frame rate in Captain view -->
+
+<!-- ========== -->
+<!-- Animations -->
+<!-- ========== -->
+
+<!-- NOSE -->
+
+  <animation>
+  <name>NoseVisor</name>
+  <object-name>Nose</object-name>
+  <object-name>Screen</object-name>
+  </animation>
 
   <animation>
    <type>select</type>
-   <object-name>Nose</object-name>
-   <object-name>Screen</object-name>
+   <object-name>NoseVisor</object-name>
    <condition>
     <or>
      <not>
@@ -651,15 +770,9 @@
    </condition>
   </animation>
 
-<!-- ========== -->
-<!-- Animations -->
-<!-- ========== -->
-
-<!-- NOSE -->
-
   <animation>
   <type>rotate</type>
-  <object-name>Nose</object-name>
+  <object-name>NoseVisor</object-name>
   <property>surface-positions/flap-pos-norm</property>
   <interpolation> <!-- real angles -->
     <entry>
@@ -680,9 +793,9 @@
     </entry>
   </interpolation>
   <center>
-   <x-m>-24.0</x-m>
+   <x-m>-23.20</x-m>
    <y-m>0</y-m>
-   <z-m>1.9</z-m>
+   <z-m>-0.43</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -765,34 +878,44 @@
   </axis>
  </animation>
 
-<!-- rotate the visor with the nose -->
+<!-- FRONT GEAR -->
 
-  <animation>
-  <type>rotate</type>
-  <object-name>Screen</object-name>
-  <property>surface-positions/flap-pos-norm</property>
-  <interpolation>
-    <entry>
-     <ind>0.0</ind>
-     <dep>0</dep>
-    </entry>
-    <entry>
-     <ind>0.34</ind>
-     <dep>0</dep>
-    </entry>
-    <entry>
-     <ind>0.68</ind>
-     <dep>-5</dep>
-    </entry>
-    <entry>
-     <ind>1.0</ind>
-     <dep>-12.5</dep>
-    </entry>
-  </interpolation>
+ <animation>
+  <name>FrontBogie</name>
+  <object-name>Fwheels</object-name>
+  <object-name>Fhub</object-name>
+ </animation>
+
+ <animation>
+  <name>Front2Gear</name>
+  <object-name>FrontBogie</object-name>
+  <object-name>Fstrut</object-name>
+ </animation>
+
+ <animation>
+  <name>FrontAllGear</name>
+  <object-name>Front2Gear</object-name>
+  <object-name>Fram</object-name>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Fwheels</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[0]/wow</property> <!-- ground contact -->
+   </and>
+  </condition>
+  <property>velocities/uBody-fps</property>
+  <factor>-2.0</factor>
   <center>
-   <x-m>-23.0</x-m>
+   <x-m>-12.123</x-m>
    <y-m>0</y-m>
-   <z-m>1.9</z-m>
+   <z-m>-3.758</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -801,18 +924,62 @@
   </axis>
  </animation>
 
-<!-- FRONT GEAR -->
+ <animation>
+  <type>rotate</type>
+  <object-name>FrontBogie</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[0]/wow</property> <!-- ground contact -->
+   </and>
+  </condition>
+  <property>gear/gear[0]/steering-norm</property>
+  <factor>-60</factor> <!-- real steering is 60 deg -->
+  <center>
+   <x-m>-12.123</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
 
  <animation>
-  <name>Nose2Gear</name>
-  <object-name>Fwheels</object-name>
-  <object-name>Fhub</object-name>
+  <type>rotate</type>
+  <object-name>FrontAllGear</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[0]/wow</property> <!-- ground contact -->
+   </and>
+  </condition>
+  <property>orientation/pitch-deg</property>
+  <factor>-1.0</factor>
+  <offset-deg>0.0</offset-deg>
+  <center>
+   <x-m>-12.123</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.610</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
  </animation>
 
  <animation>
   <type>select</type>
-  <object-name>Nose2Gear</object-name> <!-- spare frame rate -->
-  <object-name>Fstrut</object-name>
+  <object-name>Front2Gear</object-name> <!-- spare frame rate -->
   <condition>
    <greater-than>
     <property>gear/gear[0]/position-norm</property>
@@ -833,19 +1000,30 @@
  </animation>
 
  <animation>
+  <type>translate</type>
+  <object-name>FrontBogie</object-name>
+  <property>gear/gear[0]/compression-norm</property>
+  <factor>0.42</factor>
+  <offset-m>-0.64</offset-m>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+ <animation>
   <type>rotate</type>
-  <object-name>Nose2Gear</object-name>
-  <object-name>Fstrut</object-name>
-  <object-name>Fram</object-name>
+  <object-name>FrontAllGear</object-name>
   <property>gear/gear[0]/position-norm</property>
   <interpolation>
    <entry>
      <ind>0.0</ind>
-     <dep>90.0</dep>
+     <dep>95.0</dep>
    </entry>
    <entry>
      <ind>0.17</ind>
-     <dep>90.0</dep>
+     <dep>95.0</dep>
    </entry>
    <entry>
      <ind>0.83</ind>
@@ -857,9 +1035,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>-12.0</x-m>
+   <x-m>-12.123</x-m>
    <y-m>0</y-m>
-   <z-m>-0.9</z-m>
+   <z-m>-0.610</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -868,54 +1046,7 @@
   </axis>
  </animation> 
 
- <animation>
-  <type>rotate</type>
-  <object-name>Nose2Gear</object-name>
-  <condition>
-   <less-than>
-    <property>position/altitude-agl-ft</property>
-    <value>50.0</value>
-   </less-than>
-  </condition>
-  <property>gear/gear[0]/steering-norm</property>
-  <factor>-60</factor> <!-- real steering is 60 deg -->
-  <center>
-   <x-m>-12.0</x-m>
-   <y-m>0</y-m>
-   <z-m>-0.9</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>0</y>
-   <z>1</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>spin</type>
-  <object-name>Fwheels</object-name>
-  <condition>
-   <and>
-    <less-than>
-     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
-     <value>50.0</value>
-    </less-than>
-    <property>gear/gear[0]/wow</property> <!-- ground contact -->
-   </and>
-  </condition>
-  <property>velocities/uBody-fps</property>
-  <factor>-2.0</factor>
-  <center>
-   <x-m>-12.11</x-m>
-   <y-m>0</y-m>
-   <z-m>-4.66</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
- </animation>
+<!-- front doors -->
 
  <animation>
   <type>select</type>
@@ -969,15 +1100,13 @@
       <dep>74.0</dep> <!-- locks the door once gear down -->
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-14.2</x-m>
-   <y-m>-0.66</y-m>
-   <z-m>-1.15</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0.025</y>
-   <z>-0.05</z>
+   <x1-m>-16.135</x1-m>
+   <y1-m>-0.605</y1-m>
+   <z1-m>-0.737</z1-m>
+   <x2-m>-12.299</x2-m>
+   <y2-m>-0.635</y2-m>
+   <z2-m>-0.743</z2-m>
   </axis>
  </animation>
 
@@ -1003,15 +1132,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-12.0</x-m>
-   <y-m>-0.66</y-m>
-   <z-m>-1.2</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>-0.025</y>
-   <z>-0.06</z>
+   <x1-m>-12.268</x1-m>
+   <y1-m>-0.637</y1-m>
+   <z1-m>-0.743</z1-m>
+   <x2-m>-11.454</x2-m>
+   <y2-m>-0.640</y2-m>
+   <z2-m>-0.748</z2-m>
   </axis>
  </animation>
 
@@ -1037,15 +1164,13 @@
       <dep>-74.0</dep> <!-- locks the door once gear down -->
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-14.2</x-m>
-   <y-m>0.66</y-m>
-   <z-m>-1.15</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>-0.025</y>
-   <z>-0.05</z>
+   <x1-m>-16.135</x1-m>
+   <y1-m>0.605</y1-m>
+   <z1-m>-0.737</z1-m>
+   <x2-m>-12.299</x2-m>
+   <y2-m>0.635</y2-m>
+   <z2-m>-0.743</z2-m>
   </axis>
  </animation> 
 
@@ -1071,15 +1196,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-12.0</x-m>
-   <y-m>0.66</y-m>
-   <z-m>-1.2</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0.025</y>
-   <z>-0.06</z>
+   <x1-m>-12.268</x1-m>
+   <y1-m>0.637</y1-m>
+   <z1-m>-0.743</z1-m>
+   <x2-m>-11.454</x2-m>
+   <y2-m>0.640</y2-m>
+   <z2-m>-0.748</z2-m>
   </axis>
  </animation> 
 
@@ -1117,9 +1240,9 @@
     </entry>
   </interpolation>   
   <center>
-   <x-m>-10.9</x-m>
+   <x-m>-10.924</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.55</z-m>
+   <z-m>-0.965</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -1159,11 +1282,122 @@
 <!-- RIGHT GEAR -->
 
   <animation>
-  <name>Right4Gear</name>
+  <name>RightBogie</name>
   <object-name>Rmainwheels</object-name>
   <object-name>Rmainwheels2</object-name>
-  <object-name>RMainstrut</object-name>
   <object-name>Rmainhub</object-name>
+ </animation>
+
+  <animation>
+  <name>RightPiston</name>
+  <object-name>RightBogie</object-name>
+  <object-name>Rpiston</object-name>
+ </animation>
+
+  <animation>
+  <name>Right4Gear</name>
+  <object-name>RightPiston</object-name>
+  <object-name>RMainstrut</object-name>
+ </animation>
+
+  <animation>
+  <name>RightAllGear</name>
+  <object-name>Right4Gear</object-name>
+  <object-name>Rmainram</object-name>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Rmainwheels</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[3]/wow</property> <!-- ground contact -->
+   </and>
+  </condition>
+  <property>velocities/uBody-fps</property>
+  <factor>-2.0</factor>
+  <center>
+   <x-m>4.490</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.461</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Rmainwheels2</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[4]/wow</property>
+   </and>
+  </condition>
+  <property>velocities/uBody-fps</property>
+  <factor>-2.0</factor>
+  <center>
+   <x-m>6.243</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.478</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightBogie</object-name>
+  <property>systems/gear/bogie-right-deg</property>
+  <factor>-1.0</factor>
+  <center>
+   <x-m>5.353</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.081</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>RightPiston</object-name>
+  <property>gear/gear[3]/position-norm</property>
+  <interpolation>
+   <entry>
+     <ind>0.0</ind>
+     <dep>0.15</dep>
+   </entry>
+   <entry>
+     <ind>0.7</ind>
+     <dep>0.15</dep>
+   </entry>
+   <entry>
+     <ind>1.0</ind>
+     <dep>0.0</dep>
+   </entry>
+  </interpolation>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
  </animation>
 
  <animation>
@@ -1177,10 +1411,21 @@
   </condition>
  </animation>
 
+ <animation>
+  <type>translate</type>
+  <object-name>RightPiston</object-name>
+  <property>gear/gear[3]/compression-norm</property>
+  <factor>0.3</factor>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
   <animation>
   <type>rotate</type>
-  <object-name>Right4Gear</object-name>
-  <object-name>Rmainram</object-name>
+  <object-name>RightAllGear</object-name>
   <property>gear/gear[3]/position-norm</property>
   <interpolation>
    <entry>
@@ -1201,9 +1446,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>5.5</x-m>
-   <y-m>3.8</y-m>
-   <z-m>-1.3</z-m>
+   <x-m>0.0</x-m>
+   <y-m>3.731</y-m>
+   <z-m>-0.238</z-m>
   </center>
   <axis>
    <x>1</x>
@@ -1223,57 +1468,7 @@
   </condition>
  </animation>
 
- <animation>
-  <type>spin</type>
-  <object-name>Rmainwheels</object-name>
-  <condition>
-   <and>
-    <less-than>
-     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
-     <value>50.0</value>
-    </less-than>
-    <property>gear/gear[3]/wow</property> <!-- ground contact -->
-   </and>
-  </condition>
-  <property>velocities/uBody-fps</property>
-  <factor>-2.0</factor>
-  <center>
-   <x-m>4.461</x-m>
-   <y-m>0</y-m>
-   <z-m>-4.461</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>spin</type>
-  <object-name>Rmainwheels2</object-name>
-  <condition>
-   <and>
-    <less-than>
-     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
-     <value>50.0</value>
-    </less-than>
-    <property>gear/gear[2]/wow</property> <!-- ground contact -->
-   </and>
-  </condition>
-  <property>velocities/uBody-fps</property>
-  <factor>-2.0</factor>
-  <center>
-   <x-m>6.214</x-m>
-   <y-m>0</y-m>
-   <z-m>-4.461</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
- </animation>
+<!-- right doors -->
 
  <animation>
   <type>rotate</type>
@@ -1297,15 +1492,13 @@
      <dep>0.0</dep>
    </entry>
   </interpolation>   
-  <center>
-   <x-m>5.5</x-m>
-   <y-m>3.9</y-m>
-   <z-m>-1.45</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0</z>
+   <x1-m>4.944</x1-m>
+   <y1-m>3.828</y1-m>
+   <z1-m>-0.441</z1-m>
+   <x2-m>6.530</x2-m>
+   <y2-m>3.901</y2-m>
+   <z2-m>-0.385</z2-m>
   </axis>
  </animation>
 
@@ -1353,15 +1546,13 @@
       <dep>74.2</dep> <!-- locks the door once gear down -->
     </entry>
   </interpolation>
-  <center>
-   <x-m>5.5</x-m>
-   <y-m>0.1</y-m>
-   <z-m>-2.05</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0</z>
+   <x1-m>4.261</x1-m>
+   <y1-m>0.149</y1-m>
+   <z1-m>-1.035</z1-m>
+   <x2-m>6.346</x2-m>
+   <y2-m>0.144</y2-m>
+   <z2-m>-0.981</z2-m>
   </axis>
  </animation>
 
@@ -1402,11 +1593,122 @@
 <!-- LEFT GEAR -->
 
   <animation>
-  <name>Left4Gear</name>
+  <name>LeftBogie</name>
   <object-name>Lmainwheels</object-name>
   <object-name>Lmainwheels2</object-name>
-  <object-name>LMainstrut</object-name>
   <object-name>Lmainhub</object-name>
+ </animation>
+
+  <animation>
+  <name>LeftPiston</name>
+  <object-name>LeftBogie</object-name>
+  <object-name>Lpiston</object-name>
+ </animation>
+
+  <animation>
+  <name>Left4Gear</name>
+  <object-name>LeftPiston</object-name>
+  <object-name>LMainstrut</object-name>
+ </animation>
+
+  <animation>
+  <name>LeftAllGear</name>
+  <object-name>Left4Gear</object-name>
+  <object-name>Lmainram</object-name>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Lmainwheels</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[1]/wow</property> <!-- ground contact -->
+   </and>
+  </condition>
+  <property>velocities/uBody-fps</property>
+  <factor>-2.0</factor>
+  <center>
+   <x-m>4.490</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.461</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Lmainwheels2</object-name>
+  <condition>
+   <and>
+    <less-than>
+     <property>position/altitude-agl-ft</property>
+     <value>50.0</value>
+    </less-than>
+    <property>gear/gear[2]/wow</property>
+   </and>
+  </condition>
+  <property>velocities/uBody-fps</property>
+  <factor>-2.0</factor>
+  <center>
+   <x-m>6.243</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.478</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftBogie</object-name>
+  <property>systems/gear/bogie-left-deg</property>
+  <factor>-1.0</factor>
+  <center>
+   <x-m>5.353</x-m>
+   <y-m>0</y-m>
+   <z-m>-3.081</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>LeftPiston</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <interpolation>
+   <entry>
+     <ind>0.0</ind>
+     <dep>0.15</dep>
+   </entry>
+   <entry>
+     <ind>0.7</ind>
+     <dep>0.15</dep>
+   </entry>
+   <entry>
+     <ind>1.0</ind>
+     <dep>0.0</dep>
+   </entry>
+  </interpolation>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
  </animation>
 
  <animation>
@@ -1421,9 +1723,20 @@
  </animation>
 
  <animation>
+  <type>translate</type>
+  <object-name>LeftPiston</object-name>
+  <property>gear/gear[1]/compression-norm</property>
+  <factor>0.3</factor>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+ <animation>
   <type>rotate</type>
-  <object-name>Left4Gear</object-name>
-  <object-name>Lmainram</object-name>
+  <object-name>LeftAllGear</object-name>
   <property>gear/gear[1]/position-norm</property>
   <interpolation>
    <entry>
@@ -1444,9 +1757,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>5.5</x-m>
-   <y-m>-3.8</y-m>
-   <z-m>-1.3</z-m>
+   <x-m>0.0</x-m>
+   <y-m>-3.731</y-m>
+   <z-m>-0.238</z-m>
   </center>
   <axis>
    <x>1</x>
@@ -1466,57 +1779,7 @@
   </condition>
  </animation>
 
- <animation>
-  <type>spin</type>
-  <object-name>Lmainwheels</object-name>
-  <condition>
-   <and>
-    <less-than>
-     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
-     <value>50.0</value>
-    </less-than>
-    <property>gear/gear[1]/wow</property> <!-- ground contact -->
-   </and>
-  </condition>
-  <property>velocities/uBody-fps</property>
-  <factor>-2.0</factor>
-  <center>
-   <x-m>4.461</x-m>
-   <y-m>0</y-m>
-   <z-m>-4.461</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>spin</type>
-  <object-name>Lmainwheels2</object-name>
-  <condition>
-   <and>
-    <less-than>
-     <property>position/altitude-agl-ft</property> <!-- possible bug of wow -->
-     <value>50.0</value>
-    </less-than>
-    <property>gear/gear[4]/wow</property> <!-- ground contact -->
-   </and>
-  </condition>
-  <property>velocities/uBody-fps</property>
-  <factor>-2.0</factor>
-  <center>
-   <x-m>6.214</x-m>
-   <y-m>0</y-m>
-   <z-m>-4.461</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
- </animation>
+<!-- left doors -->
 
  <animation>
   <type>rotate</type>
@@ -1540,15 +1803,13 @@
      <dep>0.0</dep>
    </entry>
   </interpolation>   
-  <center>
-   <x-m>5.5</x-m>
-   <y-m>-3.9</y-m>
-   <z-m>-1.45</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0</z>
+   <x1-m>4.944</x1-m>
+   <y1-m>-3.828</y1-m>
+   <z1-m>-0.441</z1-m>
+   <x2-m>6.530</x2-m>
+   <y2-m>-3.901</y2-m>
+   <z2-m>-0.385</z2-m>
   </axis>
  </animation>
 
@@ -1596,15 +1857,13 @@
       <dep>-79.4</dep> <!-- locks the door once gear down -->
     </entry>
   </interpolation>
-  <center>
-   <x-m>5.5</x-m>
-   <y-m>-0.1</y-m>
-   <z-m>-2.05</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0</z>
+   <x1-m>4.261</x1-m>
+   <y1-m>-0.149</y1-m>
+   <z1-m>-1.035</z1-m>
+   <x2-m>6.346</x2-m>
+   <y2-m>-0.144</y2-m>
+   <z2-m>-0.981</z2-m>
   </axis>
  </animation>
 
@@ -1685,9 +1944,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>22.9</x-m> <!-- real axis is along the leg door -->
+   <x-m>22.880</x-m> <!-- real axis is along the leg door -->
    <y-m>0.0</y-m>
-   <z-m>-1.1</z-m>
+   <z-m>0.041</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -1696,9 +1955,11 @@
   </axis>
  </animation>
 
+<!-- doors -->
+
  <animation>
   <type>select</type>
-  <object-name>Littledoorleft.</object-name>
+  <object-name>Littledoorleft</object-name>
   <object-name>Littledoorright</object-name>
   <object-name>Taildoorfront</object-name>
   <condition>
@@ -1711,7 +1972,7 @@
 
  <animation>
   <type>rotate</type>
-  <object-name>Littledoorleft.</object-name> <!-- small left door -->
+  <object-name>Littledoorleft</object-name> <!-- small left door -->
   <property>gear/gear[5]/position-norm</property>
    <interpolation>
     <entry>
@@ -1731,15 +1992,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>24.2</x-m>
-   <y-m>-0.26</y-m>
-   <z-m>-1.32</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0.25</z> <!-- slope 1 for 4 -->
+   <x1-m>23.954</x1-m>
+   <y1-m>-0.265</y1-m>
+   <z1-m>0.214</z1-m>
+   <x2-m>24.572</x2-m>
+   <y2-m>-0.255</y2-m>
+   <z2-m>0.346</z2-m>
   </axis>
  </animation>
 
@@ -1765,15 +2024,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>24.2</x-m>
-   <y-m>0.26</y-m>
-   <z-m>-1.32</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0</y>
-   <z>0.25</z> <!-- slope 1 for 4 -->
+   <x1-m>23.954</x1-m>
+   <y1-m>0.265</y1-m>
+   <z1-m>0.214</z1-m>
+   <x2-m>24.572</x2-m>
+   <y2-m>0.255</y2-m>
+   <z2-m>0.346</z2-m>
   </axis>
  </animation> 
 
@@ -1800,9 +2057,9 @@
     </entry>
   </interpolation>   
   <center>
-   <x-m>22.95</x-m>
+   <x-m>22.847</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.25</z-m>
+   <z-m>-0.053</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -1836,15 +2093,13 @@
   <property>surface-positions/right-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>14.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
-  </center>
   <axis>
-   <x>0.0</x>
-   <y>-1.0</y>
-   <z>0.0</z>
+   <x1-m>14.008</x1-m>
+   <y1-m>12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>6.746</y2-m>
+   <z2-m>-0.303</z2-m>
   </axis>
  </animation>
 
@@ -1854,15 +2109,13 @@
   <property>surface-positions/elevator-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>14.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
-  </center>
   <axis>
-   <x>0.0</x>
-   <y>1.0</y>
-   <z>0.0</z>
+   <x1-m>14.008</x1-m>
+   <y1-m>12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>6.746</y2-m>
+   <z2-m>-0.303</z2-m>
   </axis>
  </animation>
 
@@ -1873,9 +2126,9 @@
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>14.0</x-m>
+   <x-m>13.965</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
+   <z-m>-0.182</z-m>
   </center>
   <axis>
    <x>0.0</x>
@@ -1891,9 +2144,9 @@
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>14.0</x-m>
+   <x-m>13.965</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
+   <z-m>-0.182</z-m>
   </center>
   <axis>
    <x>0.0</x>
@@ -1916,15 +2169,13 @@
   <property>surface-positions/left-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>14.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
-  </center>
   <axis>
-   <x>0.0</x>
-   <y>1.0</y>
-   <z>0.0</z>
+   <x1-m>14.008</x1-m>
+   <y1-m>-12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>-6.746</y2-m>
+   <z2-m>-0.303</z2-m>
   </axis>
  </animation>
 
@@ -1934,15 +2185,13 @@
   <property>surface-positions/elevator-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
   <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>14.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
-  </center>
   <axis>
-   <x>0.0</x>
-   <y>1.0</y>
-   <z>0.0</z>
+   <x1-m>14.008</x1-m>
+   <y1-m>-12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>-6.746</y2-m>
+   <z2-m>-0.303</z2-m>
   </axis>
  </animation>
 
@@ -1953,9 +2202,9 @@
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>14.0</x-m>
+   <x-m>13.965</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
+   <z-m>-0.182</z-m>
   </center>
   <axis>
    <x>0.0</x>
@@ -1971,9 +2220,9 @@
   <factor>8</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>14.0</x-m>
+   <x-m>13.965</x-m>
    <y-m>0.0</y-m>
-   <z-m>-1.5</z-m>
+   <z-m>-0.182</z-m>
   </center>
   <axis>
    <x>0.0</x>
@@ -1992,9 +2241,9 @@
   <factor>29</factor> <!-- max real is 30 deg -->
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>23.51</x-m>
+   <x-m>23.085</x-m>
    <y-m>0.0</y-m>
-   <z-m>2.21</z-m>
+   <z-m>0.0</z-m>
   </center>
   <axis>
    <x>0.0</x>
@@ -2010,11 +2259,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop1</object-name>
-  <property>engines/engine[0]/bucket-deg</property>
+  <property>systems/engines/engine[0]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2026,11 +2275,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom1</object-name>
-  <property>engines/engine[0]/bucket-deg</property>
+  <property>systems/engines/engine[0]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2044,11 +2293,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop2</object-name>
-  <property>engines/engine[1]/bucket-deg</property>
+  <property>systems/engines/engine[1]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2060,11 +2309,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom2</object-name>
-  <property>engines/engine[1]/bucket-deg</property>
+  <property>systems/engines/engine[1]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2078,11 +2327,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop3</object-name>
-  <property>engines/engine[2]/bucket-deg</property>
+  <property>systems/engines/engine[2]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2094,11 +2343,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom3</object-name>
-  <property>engines/engine[2]/bucket-deg</property>
+  <property>systems/engines/engine[2]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2112,11 +2361,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleTop4</object-name>
-  <property>engines/engine[3]/bucket-deg</property>
+  <property>systems/engines/engine[3]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2128,11 +2377,11 @@
  <animation>
   <type>rotate</type>
   <object-name>NozzleBottom4</object-name>
-  <property>engines/engine[3]/bucket-deg</property>
+  <property>systems/engines/engine[3]/bucket-deg</property>
   <center>
-   <x-m>15.2</x-m>
+   <x-m>15.603</x-m>
    <y-m>0</y-m>
-   <z-m>-2.2</z-m>
+   <z-m>-0.949</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -2145,6 +2394,26 @@
 
  <animation>
   <type>material</type>
+  <object-name>Cockpit</object-name>
+  <object-name>Dashboard</object-name>
+  <object-name>CeilingEdge</object-name>
+  <object-name>AvionicsLRack</object-name>
+  <object-name>AvionicsRRack</object-name>
+  <object-name>FlightDeckDoor</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>controls/lighting/crew/roof-light</factor-prop>
+  </emission> 
+ </animation> 
+
+<!-- change the color after, because cockpit is parent -->
+
+ <animation>
+  <type>material</type>
+  <object-name>RoofLight1</object-name>
+  <object-name>RoofLight2</object-name>
   <object-name>MainPanel</object-name>
   <object-name>UpperPanel</object-name>
   <object-name>ConsoleForward</object-name>
@@ -2156,28 +2425,11 @@
   <object-name>TopConsoleLeft</object-name>
   <object-name>TopConsoleRight</object-name>
   <object-name>CeilingPanel</object-name>
-  <object-name>EngineerLeft</object-name>
-  <object-name>EngineerRight</object-name>
-  <object-name>Engineer</object-name>
-  <object-name>EngineerAft</object-name>
-  <object-name>EngineerDeck</object-name>
+  <object-name>EngineerPanel</object-name>
   <emission>
    <red>0.71</red>
    <green>0.79</green>
    <blue>0.87</blue>
-   <factor-prop>controls/lighting/crew/roof-light</factor-prop>
-  </emission> 
- </animation> 
-
- <animation>
-  <type>material</type>
-  <object-name>Cockpit</object-name>
-  <object-name>Dashboard</object-name>
-  <object-name>FlightDeckDoor</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
    <factor-prop>controls/lighting/crew/roof-light</factor-prop>
   </emission> 
  </animation> 
@@ -2201,10 +2453,38 @@
 
  <animation>
   <type>material</type>
+  <object-name>CaptainFlood</object-name>
   <condition>
-   <not>
-    <property>controls/lighting/crew/roof</property>
-   </not>
+   <greater-than>
+    <property>controls/lighting/crew/captain/flood-light</property>
+    <property n="1">controls/lighting/crew/roof-light</property>
+   </greater-than>
+  </condition>
+  <emission>
+   <red>1.0</red>
+   <green>1.0</green>
+   <blue>1.0</blue>
+   <factor-prop>controls/lighting/crew/captain/flood-light</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <condition>
+   <and>
+    <greater-than>
+     <property>controls/lighting/crew/captain/flood-light</property>
+     <property n="1">controls/lighting/crew/roof-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/captain/flood-light</property>
+     <property n="1">controls/lighting/crew/center/flood-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/captain/flood-light</property>
+     <property n="1">controls/lighting/crew/copilot/flood-light</property>
+    </greater-than>
+   </and>
   </condition>
   <object-name>MainPanel</object-name>
   <emission>
@@ -2217,15 +2497,57 @@
 
  <animation>
   <type>material</type>
+  <object-name>CopilotFlood</object-name>
   <condition>
-   <not>
-    <property>controls/lighting/crew/roof</property>
-   </not>
+   <greater-than>
+    <property>controls/lighting/crew/copilot/flood-light</property>
+    <property n="1">controls/lighting/crew/roof-light</property>
+   </greater-than>
   </condition>
-  <object-name>EngineerLeft</object-name>
-  <object-name>EngineerRight</object-name>
-  <object-name>Engineer</object-name>
-  <object-name>EngineerAft</object-name>
+  <emission>
+   <red>1.0</red>
+   <green>1.0</green>
+   <blue>1.0</blue>
+   <factor-prop>controls/lighting/crew/copilot/flood-light</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <condition>
+   <and>
+    <greater-than>
+     <property>controls/lighting/crew/copilot/flood-light</property>
+     <property n="1">controls/lighting/crew/roof-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/copilot/flood-light</property>
+     <property n="1">controls/lighting/crew/center/flood-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/copilot/flood-light</property>
+     <property n="1">controls/lighting/crew/captain/flood-light</property>
+    </greater-than>
+   </and>
+  </condition>
+  <object-name>MainPanel</object-name>
+  <emission>
+   <red>0.83</red>
+   <green>0.74</green>
+   <blue>0.38</blue>
+   <factor-prop>controls/lighting/crew/copilot/flood-light</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <condition>
+   <greater-than>
+    <property>controls/lighting/crew/engineer/flood-light</property>
+    <property n="1">controls/lighting/crew/roof-light</property>
+   </greater-than>
+  </condition>
+  <object-name>EngineerPanel</object-name>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
@@ -2236,10 +2558,55 @@
 
  <animation>
   <type>material</type>
+  <object-name>CenterFlood</object-name>
   <condition>
-   <not>
-    <property>controls/lighting/crew/roof</property>
-   </not>
+   <greater-than>
+    <property>controls/lighting/crew/center/flood-light</property>
+    <property n="1">controls/lighting/crew/roof-light</property>
+   </greater-than>
+  </condition>
+  <emission>
+   <red>1.0</red>
+   <green>1.0</green>
+   <blue>1.0</blue>
+   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <condition>
+   <and>
+    <greater-than>
+     <property>controls/lighting/crew/center/flood-light</property>
+     <property n="1">controls/lighting/crew/roof-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/center/flood-light</property>
+     <property n="1">controls/lighting/crew/captain/flood-light</property>
+    </greater-than>
+    <greater-than>
+     <property>controls/lighting/crew/center/flood-light</property>
+     <property n="1">controls/lighting/crew/copilot/flood-light</property>
+    </greater-than>
+   </and>
+  </condition>
+  <object-name>MainPanel</object-name>
+  <emission>
+   <red>0.83</red>
+   <green>0.74</green>
+   <blue>0.38</blue>
+   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <condition>
+   <greater-than>
+    <property>controls/lighting/crew/center/flood-light</property>
+    <property n="1">controls/lighting/crew/roof-light</property>
+   </greater-than>
   </condition>
   <object-name>ConsoleForward</object-name>
   <object-name>ConsoleAft</object-name>
@@ -2260,8 +2627,8 @@
   <factor>-90</factor>
   <offset-deg>0</offset-deg>   
   <center>
-   <x-m>-20.21</x-m>
-   <y-m>-0.411</y-m>
+   <x-m>-20.171</x-m>
+   <y-m>-0.437</y-m>
    <z-m>0.0</z-m>
   </center>
   <axis>
@@ -2285,11 +2652,6 @@
      <dep>0.16</dep>
    </entry>
   </interpolation>   
-  <center>
-   <x-m>-21.32</x-m>
-   <y-m> 0.411</y-m>
-   <z-m>0.0</z-m>
-  </center>
   <axis>
    <x>0.0</x>
    <y>1.0</y>
@@ -2297,10 +2659,7 @@
   </axis>
  </animation>
 
-<!-- NAVIGATION LIGHTS
-
-     (separate the tail light, otherwise all lights blink with tail collision, because of strobe condition !)
--->
+<!-- NAVIGATION LIGHTS -->
 
  <animation>
   <name>Navigation2Lights</name>
@@ -2318,7 +2677,7 @@
   <object-name>Navigation2Lights</object-name>
  </animation>
 
-<!-- should be behind tail collision light : strobe condition avoids transparency ordering. -->
+<!-- strobe condition avoids transparency ordering. -->
 
  <animation>
   <type>select</type>
@@ -2375,6 +2734,17 @@
  </animation>
 
  <animation>
+  <type>translate</type>
+  <object-name>NavigationTail</object-name>
+  <offset-m>1.779</offset-m>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
   <type>billboard</type>
   <object-name>NavigationTail</object-name>
  </animation>
@@ -2419,7 +2789,7 @@
  <animation>
   <type>translate</type>
   <object-name>NavigationLeft</object-name>
-  <offset-m>-2.101</offset-m>
+  <offset-m>-0.868</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2472,7 +2842,7 @@
  <animation>
   <type>translate</type>
   <object-name>NavigationRight</object-name>
-  <offset-m>-2.101</offset-m>
+  <offset-m>-0.868</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2546,6 +2916,17 @@
  </animation>
 
  <animation>
+  <type>translate</type>
+  <object-name>CollisionTail</object-name>
+  <offset-m>1.779</offset-m>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
   <type>billboard</type>
   <object-name>CollisionTail</object-name>
  </animation>
@@ -2566,9 +2947,28 @@
  </animation>
 
  <animation>
+  <type>dist-scale</type>
+  <object-name>CollisionTail</object-name>
+  <interpolation>
+   <entry>
+    <ind>0</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>20</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>1500</ind>
+    <dep>5</dep>
+   </entry>
+  </interpolation>
+ </animation>
+
+ <animation>
   <type>translate</type>
   <object-name>CollisionLeft</object-name>
-  <offset-m>6.721</offset-m>
+  <offset-m>6.951</offset-m>
   <axis>
    <x>1.0</x>
    <y>0.0</y>
@@ -2590,7 +2990,7 @@
  <animation>
   <type>translate</type>
   <object-name>CollisionLeft</object-name>
-  <offset-m>-1.692</offset-m>
+  <offset-m>-0.459</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2619,9 +3019,28 @@
  </animation>
 
  <animation>
+  <type>dist-scale</type>
+  <object-name>CollisionLeft</object-name>
+  <interpolation>
+   <entry>
+    <ind>0</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>20</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>1500</ind>
+    <dep>5</dep>
+   </entry>
+  </interpolation>
+ </animation>
+
+ <animation>
   <type>translate</type>
   <object-name>CollisionRight</object-name>
-  <offset-m>6.721</offset-m>
+  <offset-m>6.951</offset-m>
   <axis>
    <x>1.0</x>
    <y>0.0</y>
@@ -2643,7 +3062,7 @@
  <animation>
   <type>translate</type>
   <object-name>CollisionRight</object-name>
-  <offset-m>-1.692</offset-m>
+  <offset-m>-0.459</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2669,6 +3088,25 @@
   <x-factor>2</x-factor>
   <y-factor>2</y-factor>
   <z-factor>2</z-factor>
+ </animation>
+
+ <animation>
+  <type>dist-scale</type>
+  <object-name>CollisionRight</object-name>
+  <interpolation>
+   <entry>
+    <ind>0</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>20</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>1500</ind>
+    <dep>5</dep>
+   </entry>
+  </interpolation>
  </animation>
 
 <!-- TAXI TURN LIGHTS -->
@@ -2812,7 +3250,7 @@
  <animation>
   <type>translate</type>
   <object-name>LandingTaxiLeft</object-name>
-  <offset-m>-1.465</offset-m>
+  <offset-m>-1.056</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2890,7 +3328,7 @@
  <animation>
   <type>translate</type>
   <object-name>LandingTaxiRight</object-name>
-  <offset-m>-1.465</offset-m>
+  <offset-m>-1.056</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -2998,9 +3436,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>-13.361</x-m>
+   <x-m>-13.335</x-m>
    <y-m>0</y-m>
-   <z-m>-1.465</z-m>
+   <z-m>-1.056</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -3037,15 +3475,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-14.2</x-m>
-   <y-m>-0.66</y-m>
-   <z-m>-1.15</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>0.025</y>
-   <z>-0.05</z>
+   <x1-m>-16.135</x1-m>
+   <y1-m>-0.605</y1-m>
+   <z1-m>-0.737</z1-m>
+   <x2-m>-12.299</x2-m>
+   <y2-m>-0.635</y2-m>
+   <z2-m>-0.743</z2-m>
   </axis>
  </animation>
 
@@ -3104,9 +3540,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>-13.361</x-m>
+   <x-m>-13.335</x-m>
    <y-m>0</y-m>
-   <z-m>-1.465</z-m>
+   <z-m>-1.056</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -3143,15 +3579,13 @@
       <dep>0.0</dep>
     </entry>
   </interpolation>   
-  <center>
-   <x-m>-14.2</x-m>
-   <y-m>0.66</y-m>
-   <z-m>-1.15</z-m>
-  </center>
   <axis>
-   <x>1</x>
-   <y>-0.025</y>
-   <z>-0.05</z>
+   <x1-m>-16.135</x1-m>
+   <y1-m>0.605</y1-m>
+   <z1-m>-0.737</z1-m>
+   <x2-m>-12.299</x2-m>
+   <y2-m>0.635</y2-m>
+   <z2-m>-0.743</z2-m>
   </axis>
  </animation> 
 
@@ -3231,7 +3665,7 @@
  <animation>
   <type>translate</type>
   <object-name>MainLandingLeft</object-name>
-  <offset-m>-0.764</offset-m>
+  <offset-m>-0.272</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -3285,6 +3719,25 @@
  </animation>
 
  <animation>
+  <type>dist-scale</type>
+  <object-name>MainLandingLeft</object-name>
+  <interpolation>
+   <entry>
+    <ind>0</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>20</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>1500</ind>
+    <dep>5</dep>
+   </entry>
+  </interpolation>
+ </animation>
+
+ <animation>
   <type>translate</type>
   <object-name>MainLandingRight</object-name>
   <offset-m>-10.856</offset-m>
@@ -3309,7 +3762,7 @@
  <animation>
   <type>translate</type>
   <object-name>MainLandingRight</object-name>
-  <offset-m>-0.764</offset-m>
+  <offset-m>-0.272</offset-m>
   <axis>
    <x>0.0</x>
    <y>0.0</y>
@@ -3360,6 +3813,25 @@
   <x-factor>1.3</x-factor>                       <!-- avoids to cut wing -->
   <y-factor>1.3</y-factor>
   <z-factor>1.3</z-factor>
+ </animation>
+
+ <animation>
+  <type>dist-scale</type>
+  <object-name>MainLandingRight</object-name>
+  <interpolation>
+   <entry>
+    <ind>0</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>20</ind>
+    <dep>1</dep>
+   </entry>
+   <entry>
+    <ind>1500</ind>
+    <dep>5</dep>
+   </entry>
+  </interpolation>
  </animation>
 
  <animation>
@@ -3417,9 +3889,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>-10.656</x-m>
+   <x-m>-10.659</x-m>
    <y-m>0</y-m>
-   <z-m>-0.764</z-m>
+   <z-m>-0.272</z-m>
   </center>
   <axis>
    <x>0</x>
@@ -3483,9 +3955,9 @@
    </entry>
   </interpolation>   
   <center>
-   <x-m>-10.656</x-m>
+   <x-m>-10.659</x-m>
    <y-m>0</y-m>
-   <z-m>-0.764</z-m>
+   <z-m>-0.272</z-m>
   </center>
   <axis>
    <x>0</x>

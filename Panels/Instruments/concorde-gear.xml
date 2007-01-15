@@ -1,8 +1,8 @@
 <PropertyList>
 
  <name>Gear</name>
- <w-base>40</w-base>
- <h-base>100</h-base>
+ <w-base>32</w-base>
+ <h-base>160</h-base>
 
  <layers>
   <layer>
@@ -15,13 +15,7 @@
     <y2>0.62</y2>
    </texture>    
    <w>5</w>
-   <h>130</h>
-   <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-10</offset>
-    </transformation>
-   </transformations>
+   <h>70</h>
   </layer> 
 
   <layer>
@@ -46,7 +40,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>108</offset>
+     <offset>58</offset>
     </transformation>
    </transformations>
   </layer>
@@ -73,7 +67,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>85</offset>
+     <offset>50</offset>
     </transformation>
    </transformations>
   </layer>
@@ -91,18 +85,11 @@
    <h>41</h>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <condition>
-      <property>/controls/gear/neutral</property>
-     </condition>
-     <offset>12</offset>
-    </transformation>
-    <transformation>
      <type>y-shift</type>
      <condition>
       <property>/controls/gear/neutral</property>
      </condition>
-     <offset>-75</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -114,11 +101,11 @@
        </not>
       </and>
      </condition>
-     <offset>-120</offset>
+     <offset>-55</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>50</offset>
+     <offset>35</offset>
     </transformation>
     <transformation>
     <type>rotation</type>
@@ -147,6 +134,10 @@
      <type>x-shift</type>
      <offset>10</offset>
     </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
    </transformations>
   </layer>
 
@@ -172,7 +163,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-120</offset>
+     <offset>-45</offset>
     </transformation>
    </transformations>
   </layer>
@@ -192,8 +183,8 @@
    <w>14</w>
    <h>96</h>
    <binding>
-    <command>property-toggle</command>
-    <property>/controls/gear/gear-down</property>
+    <command>nasal</command>
+    <script>controls.gearToggle()</script>
    </binding>
   </action> 
 
@@ -206,8 +197,8 @@
    <w>14</w>
    <h>96</h>
    <binding>
-    <command>property-toggle</command>
-    <property>/controls/gear/gear-down</property>
+    <command>nasal</command>
+    <script>controls.gearToggle()</script>
    </binding>
   </action> 
 
@@ -218,11 +209,11 @@
      <property>/controls/gear/gear-down</property>
     </not>
    </condition>
-   <button>0</button>
-   <x>9</x>
-   <y>-20</y>
-   <w>10</w>
-   <h>46</h>
+   <button>1</button>
+   <x>-7</x>
+   <y>-50</y>
+   <w>14</w>
+   <h>96</h>
    <binding>
     <command>property-toggle</command>
     <property>/controls/gear/neutral</property>

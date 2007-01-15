@@ -1,12 +1,23 @@
 Concorde instruments
 ====================
-- most instruments are optimized with "group" and "switch", the first layer is the most used (except if too complex) :
-priority to autoland (high load on CPU), otherwise the most common layer in flight.
-- concorde-amber-fault.rgb, black-bg, blue-indicator, green-warning, red-alarm, yellow-warning, white-button
-are color templates.
-- blue template has enough red to be visible by night lightning.
+- most instruments are optimized with "group" and "switch", the first layer is the most used
+  (except if too complex) : priority to autoland (high load on CPU), otherwise the most common
+  layer in flight.
+- color templates :
+     concorde-amber-fault.rgb,
+              black-bg,
+              blue-indicator,
+              green-warning,
+              red-alarm,
+              yellow-warning,
+              white-button.
+- blue template has enough red to be visible by night lightning (obsolete).
+- all warning lights are emissive by night :
+     concorde-bulb-on/off           : warning-lamps.rgb (rectangular).
+              bulb-led-on/off       : led.rgb (circular).
+              bulb-led-white-on/off : orange would be barely visible below white light.
 - specific textures (IVSI, Machmeter, etc ...) are made with Metafont (template by M. Franz);
-Gimp adds the alpha layer and the transparent areas.
+  Gimp adds the alpha layer and the transparent areas.
 
 
 TO DO
@@ -15,7 +26,6 @@ TO DO
 - night vision : replace fonts by textures.
 - white sliding tape for AoA (not possible with 2D instrument).
 - replace LED digits by textures.
-- better "on" texture for white buttons.
 - avoid manual manipulations to add the alpha layer (conversion to SVG ?).
 - 3D instruments, keeping the 3D cockpit complete (cohabitation 2D/3D instruments).
 - spot lights.
@@ -23,12 +33,14 @@ TO DO
 
 3D instruments
 --------------
-- 2D instruments will be converted as hotspots, except those common to 2D panel.
-- transparent 2D textures (warning lights) in 3D instruments : 2 mesh surfaces, or instrument emissivity ?
+- 2D instruments will be converted as hotspots, except those common to 2D panel :
+  requires texture without alpha ?
+- transparent 2D textures (warning lights) in 3D instruments : 2 mesh surfaces,
+  or instrument emissivity ?
 - transparent 2D background (to get the lighting of panel) will need a background painting.
 - 3D instruments do not seem to affect much frame rate;
-  but as 2D instruments are dynamic to keep performances, frame rate is expected to drop significantly
-  (50 % external view, 25 % cockpit view).
+  but as 2D instruments are dynamic to keep performances, frame rate is expected to drop
+  significantly (50 % external view, 25 % cockpit view).
 
 
 
@@ -55,8 +67,8 @@ Known problems
 
 - Gimp white textures become dark blurred when one zooms out (DME, INS).
 - a few instrument files are not more used in CVS, because of renaming :
-  remove is possible, if not used by /Panels/Instruments (condition -cond-), /Panels, /Models (condition)
-  and /Sounds (condition).
+  remove is possible, if not used by /Panels/Instruments (condition -cond-), /Panels, /Models
+  (condition) and /Sounds (condition).
 
 
-22 March 2006.
+5 January 2007.

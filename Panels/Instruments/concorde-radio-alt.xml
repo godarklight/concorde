@@ -4,13 +4,14 @@
 
      - altitude must be offset of 11 ft, because of JSBSim.
      - the dialed altitude is without offset.
+     - mouse 3rd button cancels decision height.
 -->
 
 <PropertyList>
 
  <name>Radio altimeter</name>
- <w-base>128</w-base>
- <h-base>128</h-base>
+ <w-base>180</w-base>
+ <h-base>180</h-base>
 
  <params>
   <voltage>/systems/electrical/outputs/standby-radio-alt</voltage>
@@ -30,7 +31,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -64,7 +65,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-15</offset>
+     <offset>10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -82,7 +83,7 @@
    <w>20</w>
    <h>15</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.8515625</x1>
     <x2>0.953125</x2>
     <y1>0.359375</y1>
@@ -91,7 +92,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -123,7 +124,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-50</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -172,7 +173,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-48</offset>
+     <offset>-23</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -188,7 +189,7 @@
    <w>27</w>
    <h>27</h>
    <texture>
-    <path>Aircraft/Instruments/Textures/hsi2.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.0</x1>
     <x2>0.171875</x2>
     <y1>0.0</y1>
@@ -197,7 +198,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>9</offset>
+     <offset>34</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -218,10 +219,10 @@
   <action>
    <name>Minus 10</name>
    <button>0</button>
-   <x>-22</x>
+   <x>22</x>
    <y>-62</y>
-   <w>20</w>
-   <h>25</h>
+   <w>13</w>
+   <h>26</h>
    <binding>
     <command>property-adjust</command>
     <property>/instrumentation/radio-altimeter/decision-ft</property>
@@ -233,6 +234,29 @@
     <command>property-adjust</command>
     <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
     <step>-10</step>
+    <min>0</min>
+    <max>500</max>
+   </binding>
+  </action>
+
+  <action>
+   <name>Plus 10</name>
+   <button>0</button>
+   <x>35</x>
+   <y>-62</y>
+   <w>13</w>
+   <h>26</h>
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/radio-altimeter/decision-ft</property>
+    <step>10</step>
+    <min>11</min>
+    <max>511</max>
+   </binding>
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
+    <step>10</step>
     <min>0</min>
     <max>500</max>
    </binding>
@@ -246,11 +270,11 @@
      <value>20</value>              <!-- don't disable in flight, because the reset is slow -->
     </less-than>
    </condition>
-   <button>0</button>
-   <x>0</x>
+   <button>1</button>
+   <x>22</x>
    <y>-62</y>
-   <w>20</w>
-   <h>25</h>
+   <w>26</w>
+   <h>26</h>
    <binding>
     <command>property-assign</command>
     <property>/systems/gpws/decision-height</property>
@@ -259,29 +283,6 @@
    <binding>
     <command>property-toggle</command>
     <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>Plus 10</name>
-   <button>0</button>
-   <x>23</x>
-   <y>-62</y>
-   <w>20</w>
-   <h>25</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/decision-ft</property>
-    <step>10</step>
-    <min>11</min>
-    <max>511</max>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
-    <step>10</step>
-    <min>0</min>
-    <max>500</max>
    </binding>
   </action>
 

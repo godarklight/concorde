@@ -58,13 +58,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-40</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>110</x>
@@ -79,20 +79,21 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-35</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[0]/throttle</engine-throttle-select>
+    <engine-manual-select>/controls/engines/engine[0]/throttle-manual</engine-manual-select>
    </params>
    <x>260</x>
-   <y>200</y>
+   <y>300</y>
    <w>30</w>
    <h>120</h>
   </instrument>
@@ -103,28 +104,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>350</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>185</value>
+       <value>210</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-35</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[1]/throttle</engine-throttle-select>
+    <engine-manual-select>/controls/engines/engine[1]/throttle-manual</engine-manual-select>
    </params>
    <x>320</x>
-   <y>200</y>
+   <y>300</y>
    <w>30</w>
    <h>120</h>
   </instrument>
@@ -135,28 +137,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>340</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>215</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-30</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[2]/throttle</engine-throttle-select>
+    <engine-manual-select>/controls/engines/engine[2]/throttle-manual</engine-manual-select>
    </params>
    <x>380</x>
-   <y>200</y>
+   <y>300</y>
    <w>30</w>
    <h>120</h>
   </instrument>
@@ -167,28 +170,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>330</value>
+       <value>340</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>210</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-30</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-throttle-select>/controls/engines/engine[3]/throttle</engine-throttle-select>
+    <engine-manual-select>/controls/engines/engine[3]/throttle-manual</engine-manual-select>
    </params>
    <x>440</x>
-   <y>200</y>
+   <y>300</y>
    <w>30</w>
    <h>120</h>
   </instrument>
@@ -199,20 +203,20 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-35</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[0]/augmentation</engine-reheat-select>
    </params>
    <x>260</x>
-   <y>90</y>
+   <y>190</y>
    <w>52</w>
    <h>68</h>
   </instrument>
@@ -223,28 +227,28 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>340</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>175</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-35</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[1]/augmentation</engine-reheat-select>
    </params>
    <x>320</x>
-   <y>90</y>
+   <y>190</y>
    <w>52</w>
    <h>68</h>
   </instrument>
@@ -255,28 +259,28 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>330</value>
+       <value>335</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>190</value>
+       <value>210</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-30</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[2]/augmentation</engine-reheat-select>
    </params>
    <x>380</x>
-   <y>90</y>
+   <y>190</y>
    <w>52</w>
    <h>68</h>
   </instrument>
@@ -287,39 +291,39 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>320</value>
+       <value>330</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>215</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-30</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <params>
     <engine-reheat-select>/controls/engines/engine[3]/augmentation</engine-reheat-select>
    </params>
    <x>440</x>
-   <y>90</y>
+   <y>190</y>
    <w>52</w>
    <h>68</h>
   </instrument>
 
-  <instrument include="../../Instruments/brakes.xml">
+  <instrument include="Instruments/concorde-brakes-lever.xml">
    <name>Brake Indicator Light</name>
    <condition>
     <or>
      <and>
       <property>/sim/current-view/internal</property>
-      <property>/sim/current-view/seat/captain</property>
+      <property>/systems/seat/captain</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>325</value>
@@ -333,13 +337,301 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        <value>-25</value>
       </less-than>
      </and>
-     <property>/sim/current-view/seat/all</property>
+     <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>560</x>
    <y>200</y>
    <w>83</w>
    <h>42</h>
+  </instrument>
+
+<!-- VHF -->
+
+  <instrument include="Instruments/concorde-vhf.xml">
+   <name>VHF 1 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-40</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>110</x>
+   <y>60</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-transfer.xml">
+   <name>VHF 1 transfer</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-40</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>178</x>
+   <y>40</y>
+   <w>60</w>
+   <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf.xml">
+   <name>standby VHF 1 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-35</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[0]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[0]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[0]/standby</selected>
+   </params>
+   <x>245</x>
+   <y>60</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-sel.xml">
+   <name>VHF 1 knob</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-35</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>102</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-sel.xml">
+   <name>standby VHF 1 knob</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-35</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[0]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[0]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[0]/standby</selected>
+   </params>
+   <x>237</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf.xml">
+   <name>VHF 2 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>320</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>205</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[1]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[1]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[1]/selected</selected>
+   </params>
+   <x>425</x>
+   <y>60</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-transfer.xml">
+   <name>VHF 2 transfer</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>315</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>210</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[1]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[1]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[1]/selected</selected>
+    <standby>/controls/audio/comm[1]/standby</standby>
+   </params>
+   <x>493</x>
+   <y>40</y>
+   <w>60</w>
+   <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf.xml">
+   <name>standby VHF 2 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>315</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>210</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[1]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[1]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[1]/standby</selected>
+   </params>
+   <x>560</x>
+   <y>60</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-sel.xml">
+   <name>VHF 2 knob</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>315</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>200</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[1]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[1]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[1]/selected</selected>
+   </params>
+   <x>417</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-vhf-sel.xml">
+   <name>standby VHF 2 knob</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>310</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>210</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/comm[1]/frequencies/selected-mhz</frq-disp>
+    <stdby-disp>/instrumentation/comm[1]/frequencies/standby-mhz</stdby-disp>
+    <selected>/controls/audio/comm[1]/standby</selected>
+   </params>
+   <x>552</x>
+   <y>0</y>
+   <w>40</w>
+   <h>40</h>
   </instrument>
 
  </instruments>

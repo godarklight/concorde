@@ -2,14 +2,13 @@
 
 <!-- Concorde nose status
 
-     WARNING : hysteresis.
 -->
 
 <PropertyList>
 
  <name>Nose status</name>
- <w-base>35</w-base>
- <h-base>10</h-base>
+ <w-base>60</w-base>
+ <h-base>90</h-base>
 
  <layers>
 
@@ -18,125 +17,66 @@
    <type>switch</type>
 
    <layer>
-    <name>background normal</name>
-    <type>switch</type>
+    <name>Nose down</name>
     <condition>
      <and include="concorde-cond-voltage-nose.xml">
-      <or>
-       <less-than-equals>
-        <property>/surface-positions/flap-pos-norm</property>
-        <property n="1">/controls/nose-visor/nose/up-min</property>
-       </less-than-equals>
-       <and>
-        <greater-than>
-         <property>/surface-positions/flap-pos-norm</property>
-         <property n="1">/controls/nose-visor/nose/deg5-min</property>
-        </greater-than>
-        <less-than>
-         <property>/surface-positions/flap-pos-norm</property>
-         <property n="1">/controls/nose-visor/nose/deg5-max</property>
-        </less-than>
-       </and>
-       <equals>
-        <property>/surface-positions/flap-pos-norm</property>
-        <property n="1">/controls/nose-visor/nose/down</property>
-       </equals>
-      </or>
+      <equals>
+       <property>/instrumentation/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[3]</property>
+      </equals>
      </and>
     </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-down.rgb</path>
+    </texture>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+    <w>60</w>
+    <h>50</h>
+   </layer>
 
-    <layer>
-     <name>Nose down</name>
-     <condition>
+   <layer>
+    <name>Nose 5 deg</name>
+    <condition>
+     <and include="concorde-cond-voltage-nose.xml">
       <equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <property n="1">/controls/nose-visor/nose/down</property>
+       <property>/instrumentation/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[2]</property>
       </equals>
-     </condition>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-down.rgb</path>
-     </texture>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-     <w>60</w>
-     <h>50</h>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>46</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>21</offset>
-      </transformation>
-     </transformations>
-    </layer>
+     </and>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-5-deg.rgb</path>
+    </texture>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+    <w>60</w>
+    <h>50</h>
+   </layer>
 
-    <layer>
-     <name>Nose 5 deg</name>
-     <condition>
-      <and>
-       <greater-than>
-        <property>/surface-positions/flap-pos-norm</property>
-        <property n="1">/controls/nose-visor/nose/deg5-min</property>
-       </greater-than>
-       <less-than>
-        <property>/surface-positions/flap-pos-norm</property>
-        <property n="1">/controls/nose-visor/nose/deg5-max</property>
-       </less-than>
-      </and>
-     </condition>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-5-deg.rgb</path>
-     </texture>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-     <w>60</w>
-     <h>50</h>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>46</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>21</offset>
-      </transformation>
-     </transformations>
-    </layer>
-
-    <layer>
-     <name>Nose up</name>
-     <condition>
+   <layer>
+    <name>Nose up</name>
+    <condition>
+     <and include="concorde-cond-voltage-nose.xml">
       <less-than-equals>
-       <property>/surface-positions/flap-pos-norm</property>
-       <property n="1">/controls/nose-visor/nose/up-min</property>
+       <property>/instrumentation/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[1]</property>
       </less-than-equals>
-     </condition>
-     <texture>
-      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-up.rgb</path>
-     </texture>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-     <w>60</w>
-     <h>50</h>
-     <transformations>
-      <transformation>
-       <type>x-shift</type>
-       <offset>46</offset>
-      </transformation>
-      <transformation>
-       <type>y-shift</type>
-       <offset>21</offset>
-      </transformation>
-     </transformations>
-    </layer>
+     </and>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-up.rgb</path>
+    </texture>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
+    <y2>1.0</y2>
+    <w>60</w>
+    <h>50</h>
    </layer>
 
    <layer>
@@ -146,16 +86,6 @@
     </texture>
     <w>60</w>
     <h>50</h>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>46</offset>
-     </transformation>
-     <transformation>
-      <type>y-shift</type>
-      <offset>21</offset>
-     </transformation>
-    </transformations>
    </layer>
   </layer>
 
@@ -177,11 +107,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>21</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
+     <offset>-41</offset>
     </transformation>
    </transformations>
   </layer>
