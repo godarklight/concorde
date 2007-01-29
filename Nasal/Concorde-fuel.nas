@@ -653,7 +653,7 @@ Tanks.menu = func {
    for( i=0; i < size(me.fillings); i=i+1 ) {
         if( me.fillings[i].getChild("comment").getValue() == value ) {
             me.load( i );
-            # for user archive
+            # for aircraft-data
             setprop("/sim/presets/fuel",i);
             break;
         }
@@ -662,6 +662,9 @@ Tanks.menu = func {
 
 # fuel configuration
 Tanks.presetfuel = func {
+   # saved on exit, restored at launch
+   aircraft.data.add("/sim/presets/fuel");
+
    # default is 0
    fuel = getprop("/sim/presets/fuel");
    if( fuel == nil ) {
