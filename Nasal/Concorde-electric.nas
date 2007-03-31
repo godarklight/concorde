@@ -78,7 +78,7 @@ Electrical.groundservice = func {
    setprop("/systems/electrical/suppliers/ground-service",powervolt);
 }
 
-Electrical.has_specific() = func {
+Electrical.has_specific = func {
     volts =  me.outputs.getChild("specific").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
@@ -93,7 +93,7 @@ Electrical.has_specific() = func {
     return result;
 }
 
-Electrical.has_autopilot1() = func {
+Electrical.has_autopilot1 = func {
     volts =  me.outputs.getChild("autopilot1").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
@@ -108,7 +108,7 @@ Electrical.has_autopilot1() = func {
     return result;
 }
 
-Electrical.has_autopilot2() = func {
+Electrical.has_autopilot2 = func {
     volts =  me.outputs.getChild("autopilot2").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
@@ -123,7 +123,7 @@ Electrical.has_autopilot2() = func {
     return result;
 }
 
-Electrical.has_ground_power() = func {
+Electrical.has_ground_power = func {
     volts =  me.outputs.getNode("probe").getChild("ac-gpb").getValue();
     if( volts == nil ) {
         result = constant.FALSE;
