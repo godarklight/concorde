@@ -259,7 +259,6 @@ CenterGravity.new = func {
    obj = { parents : [CenterGravity],
 
            slave : { "mach" : nil },
-           sensor : nil,
 
            weight : Weight.new(),
 
@@ -295,14 +294,11 @@ CenterGravity.new = func {
 CenterGravity.init = func {
    propname = getprop("/instrumentation/cg[0]/slave/mach");
    me.slave["mach"] = props.globals.getNode(propname);
-
-   me.sensor = props.globals.getNode("/fdm/jsbsim/inertia");
 }
 
 # center of gravity
 CenterGravity.schedule = func {
-   # not feet, inches !
-   cgxin = me.sensor.getChild("cg-x-ft").getValue();
+   cgxin = getprop("/instrumentation/cg/sensor-in");
 
    # % of aerodynamic chord C0 (18.7 m from nose).
    cgxin = cgxin - me.C0stationin;

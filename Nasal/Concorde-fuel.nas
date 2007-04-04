@@ -662,9 +662,6 @@ Tanks.menu = func {
 
 # fuel configuration
 Tanks.presetfuel = func {
-   # saved on exit, restored at launch
-   aircraft.data.add("/sim/presets/fuel");
-
    # default is 0
    fuel = getprop("/sim/presets/fuel");
    if( fuel == nil ) {

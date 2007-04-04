@@ -106,6 +106,10 @@ sec60cron = func {
    settimer(sec60cron,60);
 }
 
+savedata = func {
+   aircraft.data.add("/sim/presets/fuel");
+}
+
 # general initialization
 init = func {
    putinrelation();
@@ -118,6 +122,9 @@ init = func {
    settimer(sec15cron,0);
    settimer(sec30cron,0);
    settimer(sec60cron,0);
+
+   # saved on exit, restored at launch
+   savedata();
 
    # the 3D is soon visible (long by Cygwin)
    print("concorde systems started, version ", getprop("/sim/aircraft-version"));
