@@ -141,7 +141,7 @@ Seats.viewexport = func( name ) {
 
 Seats.scrollexport = func{
    # number of views = 11
-   nbviews = getprop("/sim/number-views");
+   nbviews = size(props.globals.getNode("/sim").getChildren("view"));
 
    # by default, returns to captain view
    targetview = nbviews;
@@ -187,7 +187,7 @@ Seats.scrollexport = func{
 
 Seats.scrollreverseexport = func{
    # number of views = 11
-   nbviews = getprop("/sim/number-views");
+   nbviews = size(props.globals.getNode("/sim").getChildren("view"));
 
    # by default, returns to captain view
    targetview = 0;
