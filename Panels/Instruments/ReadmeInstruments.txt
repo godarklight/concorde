@@ -4,18 +4,19 @@ Concorde instruments
   (except if too complex) : priority to autoland (high load on CPU), otherwise the most common
   layer in flight.
 - color templates :
-     concorde-amber-fault.rgb,
-              black-bg,
-              blue-indicator,
-              green-warning,
-              red-alarm,
-              yellow-warning,
-              white-button.
-- blue template has enough red to be visible by night lightning (obsolete).
-- all warning lights are emissive by night :
-     concorde-bulb-on/off           : warning-lamps.rgb (rectangular).
-              bulb-led-on/off       : led.rgb (circular).
-              bulb-led-white-on/off : orange would be barely visible below white light.
+  * concorde-amber-fault.rgb
+  *          black-bg
+  *          blue-indicator
+  *          green-warning
+  *          red-alarm
+  *          yellow-warning
+  *          white-button.
+- warning lights are emissive by night :
+  * concorde-bulb-on/off           : warning-lamps.rgb (rectangular).
+  *          bulb-white-on/off     : orange would be barely visible below white light.
+  *          bulb-led-on/off       : led.rgb (circular).
+  *          bulb-led-white-on/off : orange would be barely visible below white light.
+- low light is obtained without emission of the second layer (behind the color template).
 - specific textures (IVSI, Machmeter, etc ...) are made with Metafont (template by M. Franz);
   Gimp adds the alpha layer and the transparent areas.
 
@@ -71,4 +72,4 @@ Known problems
   (condition) and /Sounds (condition).
 
 
-5 January 2007.
+25 March 2007.

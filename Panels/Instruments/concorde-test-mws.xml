@@ -7,8 +7,8 @@
 
 <PropertyList>
  <name>Test MWS</name>
- <w-base>26</w-base>
- <h-base>52</h-base>
+ <w-base>60</w-base>
+ <h-base>60</h-base>
 
 
  <layers>
@@ -24,6 +24,12 @@
    </texture>
    <w>26</w>
    <h>26</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -38,20 +44,48 @@
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>Test</text>
+     <text>CANCEL</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-11</offset>
+     <offset>-30</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>18</offset>
     </transformation>
    </transformations>
   </layer>
+
+  <layer>
+   <name>Title 2</name>
+   <type>text</type>
+   <point-size>11</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>LTS TEST</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-28</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  </layers>
  
  <actions>
@@ -59,7 +93,7 @@
   <action>
    <desc>Test</desc>
    <button>0</button>
-   <x>-13</x>
+   <x>-23</x>
    <y>-14</y>
    <w>26</w>
    <h>26</h>
@@ -74,6 +108,10 @@
      <command>property-assign</command>
      <property>/controls/lighting/crew/overhead/push</property>
      <value>false</value>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.MWSsystem.cancelexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>

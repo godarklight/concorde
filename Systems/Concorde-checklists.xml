@@ -3,6 +3,16 @@
 <!-- checklists :
 
      - to make reading easier.
+     - CG calls are a guess.
+
+
+     References :
+     ==========
+
+     - http://www.youtube.com/watch?v=PrjrxuPnCIA :
+     Takeoff inside the cockpit, EGLL.
+
+     "240" is pronounced "2 40", "airspeed building" is shortened into "airspeed".
 -->
 
 <PropertyList>
@@ -23,6 +33,22 @@
      </all>
 
      <flight>
+      <engineer>
+       <description>main check</description>
+       <message>
+        <action>cgforward</action>
+        <text>fuel forward</text>
+       </message>
+       <message>
+        <action>cgcorrect</action>
+        <text>C G normal</text>
+       </message>
+       <message>
+        <action>cgaft</action>
+        <text>fuel aft</text>
+       </message>
+      </engineer>
+
       <pilot>
        <description>main check</description>
        <message>
@@ -36,6 +62,10 @@
        <message>
         <action>altimetercheck</action>
         <text>altimeter check</text>
+       </message>
+       <message>
+        <action>transition</action>
+        <text>transition level</text>
        </message>
       </pilot>
      </flight>
@@ -110,6 +140,10 @@
       <pilot>
        <description>second check</description>
        <message>
+        <action>beambar</action>
+        <text>beam bar active</text>
+       </message>
+       <message>
         <action>glideslope</action>
         <text>glide slope active</text>
        </message>
@@ -138,6 +172,14 @@
         <text>go-around altitude set</text>
        </message>
        <message>
+        <action>category2</action>
+        <text>cat 2</text>
+       </message>
+       <message>
+        <action>category3</action>
+        <text>cat 3</text>
+       </message>
+       <message>
         <action>vsiexcess</action>
         <text>rate of descent</text>
        </message>
@@ -146,12 +188,20 @@
         <text>airspeed</text>
        </message>
        <message>
+        <action>alertheight</action>
+        <text>alert height</text>
+       </message>
+       <message>
         <action>100fttogo</action>
         <text>100 to go</text>
        </message>
        <message>
         <action>decisionheight</action>
         <text>decision height</text>
+       </message>
+       <message>
+        <action>attitude</action>
+        <text>attitude</text>
        </message>
       </pilot>
      </landing>
@@ -185,7 +235,7 @@
        </message>
        <message>
         <action>airspeed</action>
-        <text>airspeed building</text>
+        <text>airspeed</text>                                      <!-- airspeed building -->
        </message>
        <message>
         <action>100kt</action>
@@ -205,7 +255,7 @@
        </message>
        <message>
         <action>240kt</action>
-        <text>240</text>
+        <text>2 40</text>                                          <!-- 240 -->
        </message>
       </pilot>
 

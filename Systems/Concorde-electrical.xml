@@ -3,7 +3,8 @@
      - each relight busbar needs AC to start its engine.
      - all instruments are supposed to be AC (115 or 26 volts).
      - all warning lights are supposed to be DC (26 volts).
-     - night lightning (reddish surrounding light) is DC.
+     - night lightning (reddish surrounding light) is AC,
+     which does cut the DC warning lights, because of their emissive property.
 
      Connection :
      - AC Essential Bus 1-4 is connected to AC Main Bus 1-4, or all the buses in parallel.
@@ -18,8 +19,7 @@
      Known problems :
      ==============
      - /controls/engines/engine[0]/master-bat seems (?) required by FG.
-     - when no AC voltage, AC instruments are still visible at night (reddish), otherwise that also cuts the DC warning lights,
-     because of systems/electrical/outputs/instrument-lights.
+     - feeds FG autopilot by /systems/electrical/outputs/autopilot[0].
 -->
 
 <PropertyList>
@@ -84,7 +84,7 @@
     <name>Hydraulic green</name>
     <prop>/systems/electrical/suppliers/emergency[0]</prop>
     <kind>alternator</kind>
-    <rpm-source>/systems/hydraulic/circuits/circuit[0]/pressure-psi</rpm-source>
+    <rpm-source>/systems/hydraulic/sensors/green</rpm-source>
     <volts>115</volts>
     <amps>225</amps>
   </supplier>
@@ -94,7 +94,7 @@
     <prop>/systems/electrical/suppliers/external[0]</prop>
 <!-- <kind>external</kind> -->
     <kind>alternator</kind> <!-- external is 0 amps -->
-    <rpm-source>/systems/electrical/suppliers/ground-service</rpm-source>
+    <rpm-source>/systems/electrical/ground-service/volts</rpm-source>
     <volts>115</volts>
     <amps>225</amps>
   </supplier>
@@ -115,62 +115,62 @@
 
   <bus>
     <name>Constant Speed Drive 1</name>
-    <prop>/systems/electrical/outputs/probe/ac-csd1</prop>
+    <prop>/systems/electrical/outputs/probe/ac-csd[0]</prop>
   </bus>
 
   <bus>
     <name>Constant Speed Drive 2</name>
-    <prop>/systems/electrical/outputs/probe/ac-csd2</prop>
+    <prop>/systems/electrical/outputs/probe/ac-csd[1]</prop>
   </bus>
 
   <bus>
     <name>Constant Speed Drive 3</name>
-    <prop>/systems/electrical/outputs/probe/ac-csd3</prop>
+    <prop>/systems/electrical/outputs/probe/ac-csd[2]</prop>
   </bus>
 
   <bus>
     <name>Constant Speed Drive 4</name>
-    <prop>/systems/electrical/outputs/probe/ac-csd4</prop>
+    <prop>/systems/electrical/outputs/probe/ac-csd[3]</prop>
   </bus>
 
   <bus>
     <name>Generator 1</name>
-    <prop>/systems/electrical/outputs/probe/ac-generator1</prop>
+    <prop>/systems/electrical/outputs/probe/ac-generator[0]</prop>
   </bus>
 
   <bus>
     <name>Generator 2</name>
-    <prop>/systems/electrical/outputs/probe/ac-generator2</prop>
+    <prop>/systems/electrical/outputs/probe/ac-generator[1]</prop>
   </bus>
 
   <bus>
     <name>Generator 3</name>
-    <prop>/systems/electrical/outputs/probe/ac-generator3</prop>
+    <prop>/systems/electrical/outputs/probe/ac-generator[2]</prop>
   </bus>
 
   <bus>
     <name>Generator 4</name>
-    <prop>/systems/electrical/outputs/probe/ac-generator4</prop>
+    <prop>/systems/electrical/outputs/probe/ac-generator[3]</prop>
   </bus>
 
   <bus>
     <name>AC Main 1X</name>
-    <prop>/systems/electrical/outputs/probe/ac-main1</prop>
+    <prop>/systems/electrical/outputs/probe/ac-main[0]</prop>
   </bus>
 
   <bus>
     <name>AC Main 2X</name>
-    <prop>/systems/electrical/outputs/probe/ac-main2</prop>
+    <prop>/systems/electrical/outputs/probe/ac-main[1]</prop>
   </bus>
 
   <bus>
     <name>AC Main 3X</name>
-    <prop>/systems/electrical/outputs/probe/ac-main3</prop>
+    <prop>/systems/electrical/outputs/probe/ac-main[2]</prop>
   </bus>
 
   <bus>
     <name>AC Main 4X</name>
-    <prop>/systems/electrical/outputs/probe/ac-main4</prop>
+    <prop>/systems/electrical/outputs/probe/ac-main[3]</prop>
   </bus>
 
   <bus>
@@ -190,34 +190,34 @@
 
   <bus>
     <name>AC Avionics 10X</name>
-    <prop>/systems/electrical/outputs/avionicsa</prop>
-    <prop>/systems/electrical/outputs/autopilot1</prop>
+    <prop>/systems/electrical/outputs/avionics-a</prop>
+    <prop>/systems/electrical/outputs/autopilot[1]</prop>
   </bus>
 
   <bus>
     <name>AC Avionics 11X</name>
-    <prop>/systems/electrical/outputs/avionicsb</prop>
-    <prop>/systems/electrical/outputs/autopilot2</prop>
+    <prop>/systems/electrical/outputs/avionics-b</prop>
+    <prop>/systems/electrical/outputs/autopilot[2]</prop>
   </bus>
 
   <bus>
     <name>AC Essential 5X</name>
-    <prop>/systems/electrical/outputs/probe/ac-essential1</prop>
+    <prop>/systems/electrical/outputs/probe/ac-essential[0]</prop>
   </bus>
 
   <bus>
     <name>AC Essential 6X</name>
-    <prop>/systems/electrical/outputs/probe/ac-essential2</prop>
+    <prop>/systems/electrical/outputs/probe/ac-essential[1]</prop>
   </bus>
 
   <bus>
     <name>AC Essential 7X</name>
-    <prop>/systems/electrical/outputs/probe/ac-essential3</prop>
+    <prop>/systems/electrical/outputs/probe/ac-essential[2]</prop>
   </bus>
 
   <bus>
     <name>AC Essential 8X</name>
-    <prop>/systems/electrical/outputs/probe/ac-essential4</prop>
+    <prop>/systems/electrical/outputs/probe/ac-essential[3]</prop>
   </bus>
 
   <bus>
@@ -232,39 +232,39 @@
 
   <bus>
     <name>Generator 5</name>
-    <prop>/systems/electrical/outputs/probe/ac-generator5</prop>
+    <prop>/systems/electrical/outputs/probe/ac-generator[4]</prop>
   </bus>
 
   <bus>
     <name>AC Emergency 16X</name>
-    <prop>/systems/electrical/outputs/probe/ac-emergencya</prop>
+    <prop>/systems/electrical/outputs/probe/ac-emergency-a</prop>
   </bus>
 
   <bus>
     <name>AC Emergency 17X</name>
-    <prop>/systems/electrical/outputs/probe/ac-emergencyb</prop>
+    <prop>/systems/electrical/outputs/probe/ac-emergency-b</prop>
   </bus>
 
   <!-- Relight engines 1, 2, 3 and 4 -->
 
   <bus>
     <name>AC Relight 24X</name>
-    <prop>/systems/electrical/outputs/probe/ac-relight1</prop>
+    <prop>/systems/electrical/outputs/probe/ac-relight[0]</prop>
   </bus>
 
   <bus>
     <name>AC Relight 25X</name>
-    <prop>/systems/electrical/outputs/probe/ac-relight2</prop>
+    <prop>/systems/electrical/outputs/probe/ac-relight[1]</prop>
   </bus>
 
   <bus>
     <name>AC Relight 26X</name>
-    <prop>/systems/electrical/outputs/probe/ac-relight3</prop>
+    <prop>/systems/electrical/outputs/probe/ac-relight[2]</prop>
   </bus>
 
   <bus>
     <name>AC Relight 27X</name>
-    <prop>/systems/electrical/outputs/probe/ac-relight4</prop>
+    <prop>/systems/electrical/outputs/probe/ac-relight[3]</prop>
   </bus>
 
   <!-- standby instruments -->
@@ -286,22 +286,22 @@
 
   <bus>
     <name>DC Main 1P</name>
-    <prop>/systems/electrical/outputs/probe/dc-maina</prop>
+    <prop>/systems/electrical/outputs/probe/dc-main-a</prop>
   </bus>
 
   <bus>
     <name>DC Main 2P</name>
-    <prop>/systems/electrical/outputs/probe/dc-mainb</prop>
+    <prop>/systems/electrical/outputs/probe/dc-main-b</prop>
   </bus>
 
   <bus>
     <name>DC Essential 3P</name>
-    <prop>/systems/electrical/outputs/probe/dc-essentiala</prop>
+    <prop>/systems/electrical/outputs/probe/dc-essential-a</prop>
   </bus>
 
   <bus>
     <name>DC Essential 4P</name>
-    <prop>/systems/electrical/outputs/probe/dc-essentialb</prop>
+    <prop>/systems/electrical/outputs/probe/dc-essential-b</prop>
   </bus>
 
   <!-- ====================== -->
@@ -312,6 +312,7 @@
     <!-- required by flightgear -->
 
     <name>Instrument bus</name>
+    <!-- AC -->
     <prop>/systems/electrical/outputs/bus[0]</prop>
     <!-- Avionics outputs tied directly to bus, note that this is a -->
     <!-- simple way to provide electrical outputs if you don't need -->
@@ -321,7 +322,7 @@
     <prop>/systems/electrical/outputs/adf</prop>
     <prop>/systems/electrical/outputs/audio-panel[0]</prop>
     <prop>/systems/electrical/outputs/audio-panel[1]</prop>
-    <prop>/systems/electrical/outputs/autopilot</prop>
+    <prop>/systems/electrical/outputs/autopilot[0]</prop>                <!-- reserved for FG -->
     <prop>/systems/electrical/outputs/avionics-fan</prop>
     <prop>/systems/electrical/outputs/dme</prop>
     <prop>/systems/electrical/outputs/gps-mfd</prop>
@@ -341,11 +342,13 @@
 
   <bus>
     <name>Light bus</name>
+    <!-- DC -->
     <prop>/systems/electrical/outputs/bulb</prop>
   </bus>
 
   <bus>
     <name>Standby bus</name>
+    <!-- standby -->
     <prop>/systems/electrical/outputs/standby</prop>
   </bus>
 
@@ -400,7 +403,7 @@
 
   <output>
     <name>Instrument Lights Power</name>
-    <prop>/systems/electrical/outputs/instrument-lights</prop>
+    <prop>/systems/electrical/outputs/instrument-lights</prop>              <!-- FG reddish light -->
   </output>
 
   <output>
@@ -523,7 +526,7 @@
     <input>Generator 1</input>
     <output>AC Main 1X</output>
     <switch>
-      <prop>/controls/electric/ac/generator1</prop>
+      <prop>/controls/electric/ac/generator[0]</prop>
     </switch>
   </connector>
 
@@ -531,7 +534,7 @@
     <input>Generator 2</input>
     <output>AC Main 2X</output>
     <switch>
-      <prop>/controls/electric/ac/generator2</prop>
+      <prop>/controls/electric/ac/generator[1]</prop>
     </switch>
   </connector>
 
@@ -539,7 +542,7 @@
     <input>Generator 3</input>
     <output>AC Main 3X</output>
     <switch>
-      <prop>/controls/electric/ac/generator3</prop>
+      <prop>/controls/electric/ac/generator[2]</prop>
     </switch>
   </connector>
 
@@ -547,7 +550,7 @@
     <input>Generator 4</input>
     <output>AC Main 4X</output>
     <switch>
-      <prop>/controls/electric/ac/generator4</prop>
+      <prop>/controls/electric/ac/generator[3]</prop>
     </switch>
   </connector>
 
@@ -557,7 +560,7 @@
     <input>Hydraulic green</input>
     <output>Generator 5</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/arm</prop>
+      <prop>/controls/electric/ac/emergency/generator/arm</prop>
     </switch>
   </connector>
 
@@ -565,7 +568,7 @@
     <input>Generator 5</input>
     <output>AC Emergency 16X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/generator</prop>
+      <prop>/controls/electric/ac/emergency/generator/selected</prop>
     </switch>
   </connector>
 
@@ -597,7 +600,7 @@
     <input>AC Main 1X</input>
     <output>Bus Tie Breaker left</output>
     <switch>
-      <prop>/controls/electric/ac/btb1</prop>
+      <prop>/controls/electric/ac/btb[0]</prop>
     </switch>
   </connector>
 
@@ -605,7 +608,7 @@
     <input>Bus Tie Breaker left</input>
     <output>AC Main 1X</output>
     <switch>
-      <prop>/controls/electric/ac/btb1</prop>
+      <prop>/controls/electric/ac/btb[0]</prop>
     </switch>
   </connector>
 
@@ -613,7 +616,7 @@
     <input>AC Main 2X</input>
     <output>Bus Tie Breaker left</output>
     <switch>
-      <prop>/controls/electric/ac/btb2</prop>
+      <prop>/controls/electric/ac/btb[1]</prop>
     </switch>
   </connector>
 
@@ -621,7 +624,7 @@
     <input>Bus Tie Breaker left</input>
     <output>AC Main 2X</output>
     <switch>
-      <prop>/controls/electric/ac/btb2</prop>
+      <prop>/controls/electric/ac/btb[1]</prop>
     </switch>
   </connector>
 
@@ -629,7 +632,7 @@
     <input>AC Main 3X</input>
     <output>Bus Tie Breaker right</output>
     <switch>
-      <prop>/controls/electric/ac/btb3</prop>
+      <prop>/controls/electric/ac/btb[2]</prop>
     </switch>
   </connector>
 
@@ -637,7 +640,7 @@
     <input>Bus Tie Breaker right</input>
     <output>AC Main 3X</output>
     <switch>
-      <prop>/controls/electric/ac/btb3</prop>
+      <prop>/controls/electric/ac/btb[2]</prop>
     </switch>
   </connector>
 
@@ -645,7 +648,7 @@
     <input>AC Main 4X</input>
     <output>Bus Tie Breaker right</output>
     <switch>
-      <prop>/controls/electric/ac/btb4</prop>
+      <prop>/controls/electric/ac/btb[3]</prop>
     </switch>
   </connector>
 
@@ -653,7 +656,7 @@
     <input>Bus Tie Breaker right</input>
     <output>AC Main 4X</output>
     <switch>
-      <prop>/controls/electric/ac/btb4</prop>
+      <prop>/controls/electric/ac/btb[3]</prop>
     </switch>
   </connector>
 
@@ -697,7 +700,7 @@
     <input>AC Main 1X</input>
     <output>AC Essential 5X</output>
     <switch>
-      <prop>/controls/electric/ac/essential1</prop>
+      <prop>/controls/electric/ac/essential[0]</prop>
     </switch>
   </connector>
 
@@ -705,7 +708,7 @@
     <input>AC Main 2X</input>
     <output>AC Essential 6X</output>
     <switch>
-      <prop>/controls/electric/ac/essential2</prop>
+      <prop>/controls/electric/ac/essential[1]</prop>
     </switch>
   </connector>
 
@@ -713,7 +716,7 @@
     <input>AC Main 3X</input>
     <output>AC Essential 7X</output>
     <switch>
-      <prop>/controls/electric/ac/essential3</prop>
+      <prop>/controls/electric/ac/essential[2]</prop>
     </switch>
   </connector>
 
@@ -721,7 +724,7 @@
     <input>AC Main 4X</input>
     <output>AC Essential 8X</output>
     <switch>
-      <prop>/controls/electric/ac/essential4</prop>
+      <prop>/controls/electric/ac/essential[3]</prop>
     </switch>
   </connector>
 
@@ -731,7 +734,7 @@
     <input>AC Main 2X</input>
     <output>AC Avionics 10X</output>
     <switch>
-      <prop>/controls/electric/ac/essential2</prop>
+      <prop>/controls/electric/ac/essential[1]</prop>
     </switch>
   </connector>
 
@@ -739,7 +742,7 @@
     <input>AC Main 3X</input>
     <output>AC Avionics 11X</output>
     <switch>
-      <prop>/controls/electric/ac/essential3</prop>
+      <prop>/controls/electric/ac/essential[2]</prop>
     </switch>
   </connector>
 
@@ -749,7 +752,7 @@
     <input>AC Essential 6X</input>
     <output>AC 26 V Main 12X</output>
     <switch>
-      <prop>/controls/electric/ac/essential2</prop>
+      <prop>/controls/electric/ac/essential[1]</prop>
     </switch>
   </connector>
 
@@ -757,17 +760,17 @@
     <input>AC Essential 7X</input>
     <output>AC 26 V Main 13X</output>
     <switch>
-      <prop>/controls/electric/ac/essential3</prop>
+      <prop>/controls/electric/ac/essential[2]</prop>
     </switch>
   </connector>
 
-  <!-- Emergency disconnected -->
+  <!-- Emergency disconnected (manual) -->
 
   <connector>
     <input>AC Emergency 16X</input>
     <output>AC Essential 5X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/essential1</prop>
+      <prop>/controls/electric/ac/emergency/essential[0]</prop>
     </switch>
   </connector>
 
@@ -775,7 +778,7 @@
     <input>AC Emergency 16X</input>
     <output>AC Essential 6X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/essential2</prop>
+      <prop>/controls/electric/ac/emergency/essential[1]</prop>
     </switch>
   </connector>
 
@@ -783,7 +786,7 @@
     <input>AC Emergency 17X</input>
     <output>AC Essential 7X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/essential3</prop>
+      <prop>/controls/electric/ac/emergency/essential[2]</prop>
     </switch>
   </connector>
 
@@ -791,7 +794,41 @@
     <input>AC Emergency 17X</input>
     <output>AC Essential 8X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/essential4</prop>
+      <prop>/controls/electric/ac/emergency/essential[3]</prop>
+    </switch>
+  </connector>
+
+  <!-- Emergency disconnected (automatic) -->
+
+  <connector>
+    <input>AC Emergency 16X</input>
+    <output>AC Essential 5X</output>
+    <switch>
+      <prop>/controls/electric/ac/emergency/essential-auto[0]</prop>
+    </switch>
+  </connector>
+
+  <connector>
+    <input>AC Emergency 16X</input>
+    <output>AC Essential 6X</output>
+    <switch>
+      <prop>/controls/electric/ac/emergency/essential-auto[1]</prop>
+    </switch>
+  </connector>
+
+  <connector>
+    <input>AC Emergency 17X</input>
+    <output>AC Essential 7X</output>
+    <switch>
+      <prop>/controls/electric/ac/emergency/essential-auto[2]</prop>
+    </switch>
+  </connector>
+
+  <connector>
+    <input>AC Emergency 17X</input>
+    <output>AC Essential 8X</output>
+    <switch>
+      <prop>/controls/electric/ac/emergency/essential-auto[3]</prop>
     </switch>
   </connector>
 
@@ -811,7 +848,7 @@
     <input>AC Main 1X</input>
     <output>AC Relight 24X</output>
     <switch>
-      <prop>/controls/electric/ac/relight1</prop>
+      <prop>/controls/electric/ac/relight[0]</prop>
     </switch>
   </connector>
 
@@ -819,7 +856,7 @@
     <input>AC Main 2X</input>
     <output>AC Relight 25X</output>
     <switch>
-      <prop>/controls/electric/ac/relight2</prop>
+      <prop>/controls/electric/ac/relight[1]</prop>
     </switch>
   </connector>
 
@@ -827,7 +864,7 @@
     <input>AC Main 3X</input>
     <output>AC Relight 26X</output>
     <switch>
-      <prop>/controls/electric/ac/relight3</prop>
+      <prop>/controls/electric/ac/relight[2]</prop>
     </switch>
   </connector>
 
@@ -835,7 +872,7 @@
     <input>AC Main 4X</input>
     <output>AC Relight 27X</output>
     <switch>
-      <prop>/controls/electric/ac/relight4</prop>
+      <prop>/controls/electric/ac/relight[3]</prop>
     </switch>
   </connector>
 
@@ -845,7 +882,7 @@
     <input>AC Emergency 16X</input>
     <output>AC Relight 24X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/relight1</prop>
+      <prop>/controls/electric/ac/emergency/relight[0]</prop>
     </switch>
   </connector>
 
@@ -853,7 +890,7 @@
     <input>AC Emergency 16X</input>
     <output>AC Relight 25X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/relight2</prop>
+      <prop>/controls/electric/ac/emergency/relight[1]</prop>
     </switch>
   </connector>
 
@@ -861,7 +898,7 @@
     <input>AC Emergency 16X</input>
     <output>AC Relight 26X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/relight3</prop>
+      <prop>/controls/electric/ac/emergency/relight[2]</prop>
     </switch>
   </connector>
 
@@ -869,7 +906,7 @@
     <input>AC Emergency 16X</input>
     <output>AC Relight 27X</output>
     <switch>
-      <prop>/controls/electric/ac/emergency/relight4</prop>
+      <prop>/controls/electric/ac/emergency/relight[3]</prop>
     </switch>
   </connector>
 
@@ -919,7 +956,7 @@
     <input>AC Essential 5X</input>
     <output>DC Essential 3P</output>
     <switch>
-      <prop>/controls/electric/dc/essentiala</prop>
+      <prop>/controls/electric/dc/essential-a</prop>
     </switch>
   </connector>
 
@@ -927,7 +964,7 @@
     <input>AC Main 2X</input>
     <output>DC Main 1P</output>
     <switch>
-      <prop>/controls/electric/dc/maina</prop>
+      <prop>/controls/electric/dc/main-a</prop>
     </switch>
   </connector>
 
@@ -935,7 +972,7 @@
     <input>AC Main 3X</input>
     <output>DC Main 2P</output>
     <switch>
-      <prop>/controls/electric/dc/mainb</prop>
+      <prop>/controls/electric/dc/main-b</prop>
     </switch>
   </connector>
 
@@ -943,7 +980,7 @@
     <input>AC Essential 8X</input>
     <output>DC Essential 4P</output>
     <switch>
-      <prop>/controls/electric/dc/essentialb</prop>
+      <prop>/controls/electric/dc/essential-b</prop>
     </switch>
   </connector>
 
@@ -965,7 +1002,7 @@
     <input>DC Main 1P</input>
     <output>DC Essential 3P</output>
     <switch>
-      <prop>/controls/electric/dc/emsa</prop>
+      <prop>/controls/electric/dc/ems-a</prop>
     </switch>
   </connector>
 
@@ -973,7 +1010,7 @@
     <input>DC Main 2P</input>
     <output>DC Essential 4P</output>
     <switch>
-      <prop>/controls/electric/dc/emsb</prop>
+      <prop>/controls/electric/dc/ems-b</prop>
     </switch>
   </connector>
 
@@ -1107,10 +1144,10 @@
   </connector>
 
   <connector>
-    <input>Light bus</input>
+    <input>Instrument bus</input>
     <output>Instrument Lights Power</output>
     <switch>
-      <prop>/controls/lighting/instrument-lights</prop>
+      <prop>/controls/lighting/instrument-lights</prop>              <!-- FG reddish light -->
     </switch>
   </connector>
 

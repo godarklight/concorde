@@ -18,9 +18,15 @@
    <layer>
     <name>close</name>
     <condition>
-     <not>
-      <property>/systems/pressurization/valve/thrust-recuperator</property>
-     </not>
+     <and>
+      <not>
+       <property>/systems/pressurization/valve/thrust</property>
+      </not>
+      <not>
+       <property>/systems/pressurization/valve/thrust-recuperator</property>
+      </not>
+      <property>/systems/electrical/power/specific</property>
+     </and>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-off.rgb</path>
@@ -34,12 +40,27 @@
    </layer>
 
    <layer>
-    <name>undefined</name>
+    <name>open</name>
     <condition>
-     <not>
+     <and>
       <property>/systems/pressurization/valve/thrust</property>
-     </not>
+      <property>/systems/pressurization/valve/thrust-recuperator</property>
+      <property>/systems/electrical/power/specific</property>
+     </and>
     </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-on.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
+
+   <layer>
+    <name>undefined</name>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
      <x1>0.0</x1>
@@ -51,18 +72,12 @@
     <h>28</h>
    </layer>
 
-   <layer>
-    <name>open</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-on.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>1.0</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>28</w>
-    <h>28</h>
-   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>

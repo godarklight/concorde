@@ -93,7 +93,7 @@ file, these values will be used (they are hardcoded).
   <encoder>
     <name>encoder</name>
     <number>0</number>
-    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    <static-port>/systems/static</static-port>
   </encoder>
 -->
 
@@ -144,11 +144,6 @@ file, these values will be used (they are hardcoded).
     <name>nav</name>
     <number>2</number>
   </nav-radio>
-
-  <slip-skid-ball>
-    <name>slip-skid-ball</name>
-    <number>0</number>
-  </slip-skid-ball>
 
 <!--
   <transponder>

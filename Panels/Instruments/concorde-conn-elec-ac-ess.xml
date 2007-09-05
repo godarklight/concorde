@@ -11,6 +11,7 @@
  <params>
   <connect-status>/controls/engines/engine[0]/master-alt</connect-status>
   <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
+  <defined-status>/systems/electrical/power/specific</defined-status>
  </params>
 
 
@@ -18,6 +19,21 @@
   <layer>
    <name>Connection flag</name>
    <type>switch</type>
+
+   <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/defined-status"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+   </layer>
+
    <layer>
     <name>on</name>
     <condition>
@@ -29,6 +45,7 @@
     <w>25</w>
     <h>25</h>
    </layer>
+
    <layer>
     <name>off</name>
     <texture>
@@ -40,29 +57,83 @@
   </layer>
 
   <layer>
-   <name>Title AC Main busbar</name>
-   <type>text</type>
-   <point-size>12</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property alias="../../../../../params/engine-num"/>
-     <format>%1.f</format>
-    </chunk>
-   </chunks>
+   <name>Title engine number</name>
+   <type>switch</type>
+
+   <layer>
+    <name>1</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/engine-num"/>
+      <value>1</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-1.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>18</w>
+    <h>18</h>
+   </layer>
+
+   <layer>
+    <name>2</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/engine-num"/>
+      <value>2</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-2.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>18</w>
+    <h>18</h>
+   </layer>
+
+   <layer>
+    <name>3</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/engine-num"/>
+      <value>3</value>
+     </equals>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-3.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>18</w>
+    <h>18</h>
+   </layer>
+
+   <layer>
+    <name>4</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-4.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>18</w>
+    <h>18</h>
+   </layer>
+
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>-4</offset>
-    </transformation>
-    <transformation>
      <type>y-shift</type>
-     <offset>28</offset>
+     <offset>32</offset>
     </transformation>
    </transformations>
   </layer>

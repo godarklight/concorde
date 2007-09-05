@@ -7,10 +7,6 @@
  <w-base>78</w-base>
  <h-base>26</h-base>
 
- <params>
-  <on-ctrl>/instrumentation/ins/on</on-ctrl>
- </params>
-
 
  <layers>
 
@@ -25,63 +21,34 @@
    </texture>
    <w>78</w>
    <h>26</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
   </layer>
 
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>32</point-size>
+   <point-size>15</point-size>
    <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
+    <red>0.0</red>
+    <green>0.0</green>
+    <blue>0.0</blue>
    </color>
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>CL</text>
+     <text>CLEAR</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-21</offset>
+     <offset>-29</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-5</offset>
+     <offset>-3</offset>
     </transformation>
    </transformations>
   </layer>
  </layers>
- 
- <actions>
-  <action>
-   <desc>Clear</desc>
-   <button>0</button>
-   <x>-41</x>
-   <y>-13</y>
-   <w>78</w>
-   <h>26</h>
-   <binding>
-    <command>property-toggle</command>
-    <property alias="../../../../params/on-ctrl"/>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
- </actions>
 
 </PropertyList>

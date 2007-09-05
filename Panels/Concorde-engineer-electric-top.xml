@@ -87,11 +87,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>265</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -120,11 +120,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>265</value>
+       <value>260</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -153,11 +153,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
+       <value>255</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -186,7 +186,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>255</value>
+       <value>250</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -502,7 +502,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-generator1</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-generator[0]</load-volts>
    </params>
    <x>35</x>
    <y>250</y>
@@ -534,7 +534,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-generator2</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-generator[1]</load-volts>
    </params>
    <x>135</x>
    <y>250</y>
@@ -566,7 +566,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-generator3</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-generator[2]</load-volts>
    </params>
    <x>315</x>
    <y>250</y>
@@ -598,7 +598,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-generator4</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-generator[3]</load-volts>
    </params>
    <x>415</x>
    <y>250</y>
@@ -1085,7 +1085,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-main1</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-main[0]</probe-volt>
    </params>
    <x>10</x>
    <y>100</y>
@@ -1117,7 +1117,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-main2</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-main[1]</probe-volt>
    </params>
    <x>110</x>
    <y>100</y>
@@ -1149,7 +1149,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-main3</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-main[2]</probe-volt>
    </params>
    <x>320</x>
    <y>100</y>
@@ -1181,7 +1181,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-main4</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-main[3]</probe-volt>
    </params>
    <x>410</x>
    <y>100</y>
@@ -1215,7 +1215,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/btb1</connect-status>
+    <connect-status>/controls/electric/ac/btb[0]</connect-status>
    </params>
    <x>-10</x>
    <y>50</y>
@@ -1247,8 +1247,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <btb-switch>/controls/electric/ac/btb1</btb-switch>
-    <btb-guard>/controls/electric/ac/btb-guard1</btb-guard>
+    <btb-switch>/controls/electric/ac/btb[0]</btb-switch>
+    <btb-guard>/controls/electric/ac/btb-guard[0]</btb-guard>
    </params>
    <x>50</x>
    <y>50</y>
@@ -1280,7 +1280,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/btb2</connect-status>
+    <connect-status>/controls/electric/ac/btb[1]</connect-status>
    </params>
    <x>90</x>
    <y>50</y>
@@ -1312,8 +1312,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <btb-switch>/controls/electric/ac/btb2</btb-switch>
-    <btb-guard>/controls/electric/ac/btb-guard2</btb-guard>
+    <btb-switch>/controls/electric/ac/btb[1]</btb-switch>
+    <btb-guard>/controls/electric/ac/btb-guard[1]</btb-guard>
    </params>
    <x>150</x>
    <y>50</y>
@@ -1345,7 +1345,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/btb3</connect-status>
+    <connect-status>/controls/electric/ac/btb[2]</connect-status>
    </params>
    <x>300</x>
    <y>50</y>
@@ -1377,8 +1377,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <btb-switch>/controls/electric/ac/btb3</btb-switch>
-    <btb-guard>/controls/electric/ac/btb-guard3</btb-guard>
+    <btb-switch>/controls/electric/ac/btb[2]</btb-switch>
+    <btb-guard>/controls/electric/ac/btb-guard[2]</btb-guard>
    </params>
    <x>360</x>
    <y>50</y>
@@ -1410,7 +1410,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/btb4</connect-status>
+    <connect-status>/controls/electric/ac/btb[3]</connect-status>
    </params>
    <x>400</x>
    <y>50</y>
@@ -1442,8 +1442,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <btb-switch>/controls/electric/ac/btb4</btb-switch>
-    <btb-guard>/controls/electric/ac/btb-guard4</btb-guard>
+    <btb-switch>/controls/electric/ac/btb[3]</btb-switch>
+    <btb-guard>/controls/electric/ac/btb-guard[3]</btb-guard>
    </params>
    <x>460</x>
    <y>50</y>

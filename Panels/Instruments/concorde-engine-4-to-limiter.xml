@@ -16,40 +16,18 @@
   <layer>
    <name>T/O limiter</name>
    <type>switch</type>
-   <layer>
+
+   <layer include="concorde-switch-on.xml">
     <name>normal</name>
     <condition>
      <not>
       <property>/controls/engines/engine[3]/n1-to-limiter</property>
      </not>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
    </layer>
-   <layer>
-    <name>54 percent</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
+
+   <layer include="concorde-switch-off.xml">
+    <name>88 percent</name>
    </layer>
   </layer>
 

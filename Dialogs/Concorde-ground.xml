@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-ground</name>
+  <layout>vbox</layout>
+
+  <text>
+    <label>Concorde ground</label>
+  </text>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+      <label>Ground supply</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Air bleed</label>
+         <property>/systems/air-bleed/ground-service/door</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.airbleedsystem.groundserviceexport();</script>
+         </binding>
+       </checkbox>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Air conditioning</label>
+         <property>/systems/temperature/ground-service/door</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.airbleedsystem.reargroundserviceexport();</script>
+         </binding>
+       </checkbox>
+      </group>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Electrical power</label>
+         <property>/systems/electrical/ground-service/door</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.electricalsystem.groundserviceexport();</script>
+         </binding>
+       </checkbox>
+
+      </group>
+
+    </group>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label>Autoland</label>
+    </text>
+
+    <checkbox>
+      <halign>left</halign>
+      <label>Real nav (accurate until 0 ft AGL)</label>
+      <property>/controls/autoflight/real-nav</property>
+      <binding>
+       <command>property-toggle</command>
+       <property>/controls/autoflight/real-nav</property>
+      </binding>
+    </checkbox>
+
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>hbox</layout>
+    <empty><stretch>true</stretch></empty>
+
+    <button>
+      <legend>Close</legend>
+      <default>true</default>
+      <key>Esc</key>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <empty><stretch>true</stretch></empty>
+  </group>
+</PropertyList>

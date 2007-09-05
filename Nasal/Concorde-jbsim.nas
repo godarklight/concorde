@@ -12,6 +12,17 @@
 # INITIALIZATION
 # ==============
 
+ConcordeMain = {};
+
+ConcordeMain.new = func {
+   obj = { parents : [ConcordeMain]
+         };
+
+   obj.init();
+
+   return obj;
+}
+
 # the possible relations :
 # - pumpsystem : Pump.new(),
 #   inside another system / instrument, to synchronize the objects.
@@ -28,15 +39,21 @@
 # - <noinstrument>/position/altitude-agl-ft</noinstrument>.
 #   no relation to an instrument / system failure.
 
-putinrelation = func {
+ConcordeMain.putinrelation = func {
    autopilotsystem.set_relation( autothrottlesystem );
+   MWSsystem.set_relation( CGinstrument, airbleedsystem, electricalsystem, enginesystem,
+                           flightsystem, fuelsystem, hydraulicsystem, antiicingsystem,
+                           pressuresystem, tankpressuresystem );
 
-   copilotcrew.set_relation( autopilotsystem );
+   copilotcrew.set_relation( autopilotsystem, MWSsystem );
    engineercrew.set_relation( autopilotsystem, fuelsystem );
    calloutcrew.set_relation( autopilotsystem );
+
+   copilothuman.set_relation( lightingsystem );
+   engineerhuman.set_relation( lightingsystem );
 }
 
-synchronize1sec = func {
+ConcordeMain.synchronize = func {
    electricalsystem.set_rate( fuelsystem.PUMPSEC );
    hydraulicsystem.set_rate( fuelsystem.PUMPSEC );
    airbleedsystem.set_rate( fuelsystem.PUMPSEC );
@@ -44,124 +61,157 @@ synchronize1sec = func {
 }
 
 # 1 seconds cron (only, to spare frame rate)
-sec1cron = func {
+ConcordeMain.sec1cron = func {
    electricalsystem.schedule();
-   fuelsystem.schedule();
    hydraulicsystem.schedule();
+   fuelsystem.schedule();
    airbleedsystem.schedule();
    enginesystem.schedule();
    lightingsystem.schedule();
+   daytimeinstrument.schedule();
 
    # schedule the next call
-   settimer(sec1cron,fuelsystem.PUMPSEC);
+   settimer(func { me.sec1cron(); },fuelsystem.PUMPSEC);
 }
 
 # 3 seconds cron
-sec3cron = func {
+ConcordeMain.sec3cron = func {
    autopilotsystem.schedule();
+   autothrottlesystem.schedule();
+   MWSsystem.schedule();
+   flightsystem.schedule();
+   fuelsystem.slowschedule();
+   antiicingsystem.schedule();
    TCASinstrument.schedule();
    INSinstrument.schedule();
+   crewscreen.schedule();
 
    # schedule the next call
-   settimer(sec3cron,autopilotsystem.AUTOPILOTSEC);
+   settimer(func { me.sec3cron(); },autopilotsystem.AUTOPILOTSEC);
 }
 
 # 5 seconds cron
-sec5cron = func {
+ConcordeMain.sec5cron = func {
    CGinstrument.schedule();
    IASinstrument.schedule();
    machinstrument.schedule();
    autopilotsystem.slowschedule();
-   autothrottlesystem.schedule();
+   autothrottlesystem.slowschedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
+   copilotcrew.schedule();
+   copilothuman.schedule();
+   engineerhuman.schedule();
 
    # schedule the next call
-   settimer(sec5cron,pressuresystem.PRESSURIZESEC);
+   settimer(func { me.sec5cron(); },pressuresystem.PRESSURIZESEC);
 }
 
 # 15 seconds cron
-sec15cron = func {
+ConcordeMain.sec15cron = func {
    TMOinstrument.schedule();
    GPWSsystem.schedule();
+   engineerhuman.slowschedule();
 
    # schedule the next call
-   settimer(sec15cron,15);
+   settimer(func { me.sec15cron(); },15);
 }
 
 # 30 seconds cron
-sec30cron = func {
+ConcordeMain.sec30cron = func {
    tankpressuresystem.schedule();
 
    # schedule the next call
-   settimer(sec30cron,tankpressuresystem.TANKSEC);
+   settimer(func { me.sec30cron(); },tankpressuresystem.TANKSEC);
 }
 
 # 60 seconds cron
-sec60cron = func {
+ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
+   antiicingsystem.slowschedule();
 
    # schedule the next call
-   settimer(sec60cron,60);
+   settimer(func { me.sec60cron(); },60);
 }
 
-savedata = func {
+ConcordeMain.savedata = func {
+   aircraft.data.add("/controls/crew/timeout");
+   aircraft.data.add("/controls/crew/voice/sound");
+   aircraft.data.add("/controls/crew/voice/text");
+   aircraft.data.add("/controls/human/lighting/night");
+   aircraft.data.add("/controls/seat/recover");
    aircraft.data.add("/sim/presets/fuel");
+   aircraft.data.add("/systems/human/serviceable");
+   aircraft.data.add("/systems/seat/position/observer/x-m");
+   aircraft.data.add("/systems/seat/position/observer/y-m");
+   aircraft.data.add("/systems/seat/position/observer/z-m");
+}
+
+# global variables in Concorde namespace, for call by XML
+ConcordeMain.instantiate = func {
+   globals.Concorde.constant = Concorde.Constant.new();
+   globals.Concorde.constantaero = Concorde.Constantaero.new();
+   globals.Concorde.electricalsystem = Concorde.Electrical.new();
+   globals.Concorde.hydraulicsystem = Concorde.Hydraulic.new();
+   globals.Concorde.flightsystem = Concorde.Flight.new();
+   globals.Concorde.airbleedsystem = Concorde.Airbleed.new();
+   globals.Concorde.pressuresystem = Concorde.Pressurization.new();
+   globals.Concorde.antiicingsystem = Concorde.Antiicing.new();
+   globals.Concorde.fuelsystem = Concorde.Fuel.new();
+   globals.Concorde.tankpressuresystem = Concorde.Pressurizetank.new();
+   globals.Concorde.autopilotsystem = Concorde.Autopilot.new();
+   globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
+   globals.Concorde.GPWSsystem = Concorde.Gpws.new();
+   globals.Concorde.MWSsystem = Concorde.Mws.new();
+   globals.Concorde.enginesystem = Concorde.Engine.new();
+   globals.Concorde.lightingsystem = Concorde.Lighting.new();
+   globals.Concorde.gearsystem = Concorde.Gear.new();
+
+   globals.Concorde.CGinstrument = Concorde.Centergravity.new();
+   globals.Concorde.IASinstrument = Concorde.Airspeed.new();
+   globals.Concorde.machinstrument = Concorde.Machmeter.new();
+   globals.Concorde.TMOinstrument = Concorde.Temperature.new();
+   globals.Concorde.INSinstrument = Concorde.Inertial.new();
+   globals.Concorde.TCASinstrument = Concorde.Traffic.new();
+   globals.Concorde.markerinstrument = Concorde.Markerbeacon.new();
+   globals.Concorde.RATinstrument = Concorde.Rat.new();
+   globals.Concorde.daytimeinstrument = Concorde.Daytime.new();
+   globals.Concorde.genericinstrument = Concorde.Generic.new();
+
+   globals.Concorde.doorsystem = Concorde.Doors.new();
+   globals.Concorde.seatsystem = Concorde.Seats.new();
+
+   globals.Concorde.menuscreen = Menu.new();
+   globals.Concorde.crewscreen = Crewbox.new();
+
+   globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
+   globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
+   globals.Concorde.calloutcrew = Concorde.Callout.new();
+
+   globals.Concorde.copilothuman = Concorde.Copilothuman.new();
+   globals.Concorde.engineerhuman = Concorde.Engineerhuman.new();
 }
 
 # general initialization
-init = func {
-   putinrelation();
-   synchronize1sec();
+ConcordeMain.init = func {
+   me.instantiate();
+   me.putinrelation();
+   me.synchronize();
 
    # schedule the 1st call
-   settimer(sec1cron,0);
-   settimer(sec3cron,0);
-   settimer(sec5cron,0);
-   settimer(sec15cron,0);
-   settimer(sec30cron,0);
-   settimer(sec60cron,0);
+   settimer(func { me.sec1cron(); },0);
+   settimer(func { me.sec3cron(); },0);
+   settimer(func { me.sec5cron(); },0);
+   settimer(func { me.sec15cron(); },0);
+   settimer(func { me.sec30cron(); },0);
+   settimer(func { me.sec60cron(); },0);
 
    # saved on exit, restored at launch
-   savedata();
+   me.savedata();
 
    # the 3D is soon visible (long by Cygwin)
    print("concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 
-# objects must be here, otherwise local to init()
-constant = Concorde.Constant.new();
-constantaero = Concorde.ConstantAero.new();
-electricalsystem = Concorde.Electrical.new();
-hydraulicsystem = Concorde.Hydraulic.new();
-airbleedsystem = Concorde.Airbleed.new();
-pressuresystem = Concorde.Pressurization.new();
-fuelsystem = Concorde.Fuel.new();
-tankpressuresystem = Concorde.PressurizeTank.new();
-autopilotsystem = Concorde.Autopilot.new();
-autothrottlesystem = Concorde.Autothrottle.new();
-GPWSsystem = Concorde.Gpws.new();
-enginesystem = Concorde.Engine.new();
-lightingsystem = Concorde.Lighting.new();
-gearsystem = Concorde.Gear.new();
-
-CGinstrument = Concorde.CenterGravity.new();
-IASinstrument = Concorde.Airspeed.new();
-machinstrument = Concorde.Machmeter.new();
-TMOinstrument = Concorde.Temperature.new();
-INSinstrument = Concorde.Inertial.new();
-TCASinstrument = Concorde.Traffic.new();
-markerinstrument = Concorde.Markerbeacon.new();
-RATinstrument = Concorde.Rat.new();
-genericinstrument = Concorde.Generic.new();
-
-doorsystem = Concorde.Doors.new();
-seatsystem = Concorde.Seats.new();
-menusystem = Menu.new();
-copilotcrew = Concorde.VirtualCopilot.new();
-engineercrew = Concorde.VirtualEngineer.new();
-calloutcrew = Concorde.Callout.new();
-
-setlistener("/sim/signals/fdm-initialized", init);
-#init();
+concordeL = setlistener("/sim/signals/fdm-initialized", func { theconcorde = ConcordeMain.new(); removelistener(concordeL); });

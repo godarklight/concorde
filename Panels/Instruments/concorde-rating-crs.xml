@@ -25,46 +25,22 @@
     <condition>
      <or>
       <and>
-       <or>
-        <not-equals>
-         <property>/controls/engines/engine[0]/rating</property>
-         <value>flight</value>
-        </not-equals>
-        <not-equals>
-         <property>/controls/engines/engine[0]/rating-flight</property>
-         <value>cruise</value>
-        </not-equals>
-       </or>
-       <or>
-        <not-equals>
-         <property>/controls/engines/engine[1]/rating</property>
-         <value>flight</value>
-        </not-equals>
-        <not-equals>
-         <property>/controls/engines/engine[1]/rating-flight</property>
-         <value>cruise</value>
-        </not-equals>
-       </or>
-       <or>
-        <not-equals>
-         <property>/controls/engines/engine[2]/rating</property>
-         <value>flight</value>
-        </not-equals>
-        <not-equals>
-         <property>/controls/engines/engine[2]/rating-flight</property>
-         <value>cruise</value>
-        </not-equals>
-       </or>
-       <or>
-        <not-equals>
-         <property>/controls/engines/engine[3]/rating</property>
-         <value>flight</value>
-        </not-equals>
-        <not-equals>
-         <property>/controls/engines/engine[3]/rating-flight</property>
-         <value>cruise</value>
-        </not-equals>
-       </or>
+       <not-equals>
+        <property>/systems/engines/engine[0]/rating</property>
+        <value>cruise</value>
+       </not-equals>
+       <not-equals>
+        <property>/systems/engines/engine[1]/rating</property>
+        <value>cruise</value>
+       </not-equals>
+       <not-equals>
+        <property>/systems/engines/engine[2]/rating</property>
+        <value>cruise</value>
+       </not-equals>
+       <not-equals>
+        <property>/systems/engines/engine[3]/rating</property>
+        <value>cruise</value>
+       </not-equals>
        <or include="concorde-cond-test-captain.xml"/>
       </and>
       <or include="concorde-cond-voltage-bulb.xml"/>
@@ -94,6 +70,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-white-on.xml">
+     <condition include="concorde-cond-light-captain.xml"/>
      <w>104</w>
      <h>26</h>
      <emissive>true</emissive>

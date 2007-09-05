@@ -3,18 +3,24 @@
 <!-- Concorde autopilot :
 
      - Speed with pitch and Mach with pitch are considered autopilot modes (datum).
+     - Speed with throttle limited to 0.980 (climb rating).
+     - Mach with throttle limited to 0.967 (cruise rating).
+     - restoring to /vertical/vertical-speed-fps (see Concorde-init-instrumentation.xml) 
+     doesn't require a new tuning of autopilot.
 
 
-     CAUTION : initial tuning of autopilot has been done with /vertical/vertical-speed-fps;
-     to swap, see Concorde-init-instrumentation.xml.
+     TO DO :
+     =====
+     - u_max cannot be controlled by engine rating.
+     - 1 PID per throttle with autoland (glide slope and vertical speed with throttle).
 
 
-     Known problems:
+     Known problems :
      ==============
-     - nav hold doesn't use /autopilot/internal/nav1-track-error-deg, because approach has a discrepancy
-     with /instrumentation/nav/heading-needle-deflection, only solved in the last 700 ft
-     (GPS computes /instrumentation/gps/indicated-track-true-deg with an offset, 0.3 degrees a KSFO),
-     causing a roll at 500 ft AGL during autoland. 
+     - nav hold doesn't use /autopilot/internal/nav1-track-error-deg, because approach has
+     a discrepancy with /instrumentation/nav/heading-needle-deflection, only solved in
+     the last 700 ft (GPS computes /instrumentation/gps/indicated-track-true-deg with
+     an offset, 0.3 degrees a KSFO), causing a roll at 500 ft AGL during autoland. 
      - roll on heading hold above Mach 1.0 (first PID only) : might be the FDM (?).
      Solved by a rudder trim, which unlocks the roll at Mach speeds.
      - increasing sensitivity reduces waddling at Mach 2 : 1 subsonic PID and
@@ -765,7 +771,7 @@
     <name>Auto Throttle (5 sec lookahead)</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/autothrottle/engine[0]</prop>
       <value>speed-with-throttle</value>
     </enable>
     <input>
@@ -776,8 +782,92 @@
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.980</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[1]</prop>
+      <value>speed-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-airspeed-kt</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-speed-kt</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[1]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.980</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[2]</prop>
+      <value>speed-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-airspeed-kt</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-speed-kt</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[2]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.980</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[3]</prop>
+      <value>speed-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-airspeed-kt</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-speed-kt</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[3]/throttle</prop>
     </output>
     <config>
@@ -789,7 +879,7 @@
       <Ti>10.0</Ti>       <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>0.0</u_min>  <!-- minimum output clamp -->
-      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+      <u_max>0.980</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
 
@@ -800,7 +890,7 @@
     <name>Mach Auto Throttle (5 sec lookahead)</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/autothrottle/engine[0]</prop>
       <value>mach-with-throttle</value>
     </enable>
     <input>
@@ -811,8 +901,92 @@
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
+    </output>
+    <config>
+      <Kp>25.0</Kp>       <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.967</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Mach Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[1]</prop>
+      <value>mach-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-mach</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-mach</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[1]/throttle</prop>
+    </output>
+    <config>
+      <Kp>25.0</Kp>       <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.967</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Mach Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[2]</prop>
+      <value>mach-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-mach</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-mach</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[2]/throttle</prop>
+    </output>
+    <config>
+      <Kp>25.0</Kp>       <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min>  <!-- minimum output clamp -->
+      <u_max>0.967</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+ <pid-controller>
+    <name>Mach Auto Throttle (5 sec lookahead)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/autothrottle/engine[3]</prop>
+      <value>mach-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/autopilot/internal/lookahead-5-sec-mach</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-mach</prop>
+    </reference>
+    <output>
       <prop>/controls/engines/engine[3]/throttle</prop>
     </output>
     <config>
@@ -824,7 +998,7 @@
       <Ti>10.0</Ti>       <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>0.0</u_min>  <!-- minimum output clamp -->
-      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+      <u_max>0.967</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
 

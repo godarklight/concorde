@@ -26,19 +26,19 @@ Emulation : in reality, the engineer switches the rating.
      <and>
       <or>
        <equals>
-        <property>/controls/engines/engine[0]/rating</property>
+        <property>/systems/engines/engine[0]/rating</property>
         <value>takeoff</value>
        </equals>
        <equals>
-        <property>/controls/engines/engine[1]/rating</property>
+        <property>/systems/engines/engine[1]/rating</property>
         <value>takeoff</value>
        </equals>
        <equals>
-        <property>/controls/engines/engine[2]/rating</property>
+        <property>/systems/engines/engine[2]/rating</property>
         <value>takeoff</value>
        </equals>
        <equals>
-        <property>/controls/engines/engine[3]/rating</property>
+        <property>/systems/engines/engine[3]/rating</property>
         <value>takeoff</value>
        </equals>
        <not include="concorde-cond-test-captain.xml"/>
@@ -48,6 +48,7 @@ Emulation : in reality, the engineer switches the rating.
     </condition>
 
     <layer include="concorde-bulb-white-on.xml">
+     <condition include="concorde-cond-light-captain.xml"/>
      <w>104</w>
      <h>26</h>
     </layer>

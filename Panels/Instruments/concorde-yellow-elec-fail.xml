@@ -26,10 +26,10 @@
       <and include="concorde-cond-test-eng-aft.xml">
        <or>
         <not>
-         <property>/controls/electric/ac/emergency/generator</property>
+         <property>/controls/electric/ac/emergency/generator/selected</property>
         </not>
         <greater-than>
-         <property>/systems/electrical/outputs/probe/ac-generator5</property>
+         <property>/systems/electrical/outputs/probe/ac-generator[4]</property>
          <value>59.0</value>
         </greater-than>
        </or>
@@ -60,6 +60,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-eng-aft.xml"/>
      <w>104</w>
      <h>20</h>
     </layer>

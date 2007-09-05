@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- Low pressure in the fuel accumulator.
+<!-- Low pressure in the fuel accumulator :
 
+     - 1 pump over 3 is enough.
 -->
 
 <PropertyList>
@@ -10,7 +11,9 @@
  <h-base>26</h-base>
 
  <params>
-  <cutoff-select>/engines/engine[0]/cutoff</cutoff-select>
+  <pump-switch>/controls/fuel/tank[0]/pump[0]</pump-switch>
+  <pump2-switch>/controls/fuel/tank[0]/pump[1]</pump2-switch>
+  <pump3-switch>/controls/fuel/tank[0]/pump[2]</pump3-switch>
  </params>
 
 
@@ -28,9 +31,11 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
        <or include="concorde-cond-test-eng-center.xml"/> <!-- bug -->
-       <not>
-        <property alias="../../../../../../../../params/cutoff-select"/>
-       </not>
+       <or>
+        <property alias="../../../../../../../../params/pump-switch"/>
+        <property alias="../../../../../../../../params/pump2-switch"/>
+        <property alias="../../../../../../../../params/pump3-switch"/>
+       </or>
       </and>
      </or>
     </condition>
@@ -58,6 +63,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-eng-center.xml"/>
      <w>104</w>
      <h>20</h>
     </layer>

@@ -12,6 +12,11 @@
  <w-base>25</w-base>
  <h-base>125</h-base>
 
+ <params>
+  <test>/controls/lighting/crew/captain/test</test>
+ </params>
+
+
  <layers>
 
   <layer>
@@ -206,8 +211,9 @@
      <or>
       <and>
        <or include="concorde-cond-cg.xml"/>
-       <or include="concorde-cond-test-captain.xml"/>
-       <or include="concorde-cond-test-eng-center.xml"/>
+       <not>
+        <property alias="../../../../../../../../params/test"/>
+       </not>
       </and>
       <not include="concorde-cond-voltage-inst.xml"/>
       <not>

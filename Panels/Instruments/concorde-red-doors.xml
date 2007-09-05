@@ -24,12 +24,12 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
        <or include="concorde-cond-test-mws.xml"/>
-       <not>
-        <property>/systems/air-bleed/ground-service/door</property>
-       </not>
-       <not>
-        <property>/systems/temperature/ground-service/door</property>
-       </not>
+       <or>
+        <not>
+         <property>/systems/mws/red/doors</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -77,5 +77,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/red/doors</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

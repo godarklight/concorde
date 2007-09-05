@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Cross pump -->
+<!-- Crossfeed pump -->
 
 <PropertyList>
- <name>Cross Pump</name>
+ <name>Crossfeed pump</name>
  <w-base>104</w-base>
  <h-base>26</h-base>
 
@@ -90,15 +90,15 @@
  <actions>
 
   <action>
-   <desc>Toggle Cross Pump</desc>
+   <desc>Toggle Crossfeed</desc>
    <button>0</button>
    <x>-52</x>
    <y>-13</y>
    <w>104</w>
    <h>26</h>
    <binding>
-    <command>property-toggle</command>
-    <property>/controls/fuel/pumps/cross</property>
+    <command>nasal</command>
+    <script>globals.Concorde.fuelsystem.crossexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

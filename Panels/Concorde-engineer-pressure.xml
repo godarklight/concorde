@@ -48,9 +48,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
-<!-- ============ -->
-<!-- LEFT COLUMNN -->
-<!-- ============ -->
+<!-- ========= -->
+<!-- COLUMNN 1 -->
+<!-- ========= -->
 
   <instrument include="Instruments/concorde-title-hyd-ground.xml">
    <name>Ground hydraulics check out</name>
@@ -119,11 +119,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>360</value>
+       <value>355</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>300</value>
+       <value>295</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -152,11 +152,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
+       <value>350</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
+       <value>290</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -526,9 +526,168 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>30</h>
   </instrument>
 
-<!-- ============== -->
-<!-- PRESSURIZATION -->
-<!-- ============== -->
+<!-- INTAKE PRESSURE RATIO ERROR -->
+
+  <instrument include="Instruments/concorde-title-intake-ratio-error.xml">
+   <name>Intake pressure ratio error</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>355</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>-10</x>
+   <y>55</y>
+   <w>450</w>
+   <h>15</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-intake-ratio-error.xml">
+   <name>Intake pressure ratio error 1</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>355</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>290</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <pressure-ratio>/systems/engines/engine[0]/intake-ratio-error</pressure-ratio>
+   </params>
+   <x>-15</x>
+   <y>15</y>
+   <w>50</w>
+   <h>50</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-intake-ratio-error.xml">
+   <name>Intake pressure ratio error 2</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>350</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <pressure-ratio>/systems/engines/engine[1]/intake-ratio-error</pressure-ratio>
+   </params>
+   <x>55</x>
+   <y>15</y>
+   <w>50</w>
+   <h>50</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-intake-ratio-error.xml">
+   <name>Intake pressure ratio error 3</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>350</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <pressure-ratio>/systems/engines/engine[2]/intake-ratio-error</pressure-ratio>
+   </params>
+   <x>125</x>
+   <y>15</y>
+   <w>50</w>
+   <h>50</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-intake-ratio-error.xml">
+   <name>Intake pressure ratio error 4</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>350</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>280</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <pressure-ratio>/systems/engines/engine[3]/intake-ratio-error</pressure-ratio>
+   </params>
+   <x>195</x>
+   <y>15</y>
+   <w>50</w>
+   <h>50</h>
+  </instrument>
+
+<!-- ======== -->
+<!-- COLUMN 2 -->
+<!-- ======== -->
 
   <instrument include="Instruments/concorde-title-pressure.xml">
    <name>Cabin Pressure Control</name>
@@ -554,7 +713,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>390</x>
-   <y>770</y>
+   <y>790</y>
    <w>320</w>
    <h>32</h>
   </instrument>
@@ -582,10 +741,68 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>280</x>
+   <x>265</x>
    <y>710</y>
-   <w>100</w>
+   <w>60</w>
    <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pressure-system.xml">
+   <name>System select</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>355</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>290</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>325</x>
+   <y>710</y>
+   <w>40</w>
+   <h>80</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pressure-system.xml">
+   <name>System select (2nd switch)</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>350</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>385</x>
+   <y>710</y>
+   <w>40</w>
+   <h>80</h>
   </instrument>
 
   <instrument include="Instruments/concorde-pressure-ground-relief-sel.xml">
@@ -611,7 +828,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>290</x>
+   <x>295</x>
    <y>620</y>
    <w>60</w>
    <h>60</h>
@@ -641,7 +858,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>650</x>
-   <y>750</y>
+   <y>760</y>
    <w>60</w>
    <h>90</h>
   </instrument>
@@ -655,11 +872,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
+       <value>345</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -669,8 +886,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>540</x>
-   <y>650</y>
+   <x>545</x>
+   <y>670</y>
    <w>100</w>
    <h>80</h>
   </instrument>
@@ -684,11 +901,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>345</value>
+       <value>340</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -699,7 +916,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>640</x>
-   <y>650</y>
+   <y>670</y>
    <w>100</w>
    <h>80</h>
   </instrument>
@@ -823,7 +1040,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-pressure-altitude-sel.xml">
-   <name>System altitude selector</name>
+   <name>System altitude selector 1</name>
    <condition>
     <or>
      <and>
@@ -835,7 +1052,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>285</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -845,6 +1062,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
+   <params>
+    <datum-sel>/systems/pressurization/system[0]/datum-mbar</datum-sel>
+    <cabin-sel>/systems/pressurization/system[0]/cabin-alt-ft</cabin-sel>
+    <rate-sel>/systems/pressurization/system[0]/mbar-per-min</rate-sel>
+    <altitude-sel>/systems/pressurization/system[0]/max-diff-ft</altitude-sel>
+   </params>
    <x>335</x>
    <y>455</y>
    <w>110</w>
@@ -860,7 +1083,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
+       <value>345</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -878,6 +1101,41 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <y>450</y>
    <w>75</w>
    <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-pressure-altitude-sel.xml">
+   <name>System altitude selector 2</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>340</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <datum-sel>/systems/pressurization/system[1]/datum-mbar</datum-sel>
+    <cabin-sel>/systems/pressurization/system[1]/cabin-alt-ft</cabin-sel>
+    <rate-sel>/systems/pressurization/system[1]/mbar-per-min</rate-sel>
+    <altitude-sel>/systems/pressurization/system[1]/max-diff-ft</altitude-sel>
+   </params>
+   <x>575</x>
+   <y>455</y>
+   <w>110</w>
+   <h>110</h>
   </instrument>
 
 <!-- LIGHTING -->
@@ -1648,7 +1906,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>340</value>
+       <value>335</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1684,7 +1942,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1712,7 +1970,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>335</value>
+       <value>330</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1748,7 +2006,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1780,7 +2038,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1805,11 +2063,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>340</value>
+       <value>335</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1843,7 +2101,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1873,11 +2131,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>335</value>
+       <value>330</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1911,7 +2169,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1947,7 +2205,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1972,11 +2230,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>340</value>
+       <value>335</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -2004,7 +2262,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>335</value>
+       <value>330</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -2036,11 +2294,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>335</value>
+       <value>330</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>

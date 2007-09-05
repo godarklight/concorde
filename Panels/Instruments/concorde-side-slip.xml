@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- Side slip indicator in degrees.
+<!-- Side slip indicator :
+
+     - true aerodynamical in degrees.
 -->
 
 <PropertyList>
@@ -45,18 +47,22 @@
      <offset>6</offset> <!-- aligned vertical -->
     </transformation> 
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property>instrumentation/side-slip/serviceable</property>
+      </and>
+     </condition>
      <type>x-shift</type>
-     <property>instrumentation/slip-skid-ball/indicated-slip-skid</property> <!-- which unit ? -->
+     <property>instrumentation/side-slip/angle-deg</property>
      <min>-15.0</min>
      <max>15.0</max>
      <scale>1.0</scale>
      <interpolation> <!-- index must increase, because of lookup ! -->
-      <entry><ind>-15.0</ind><dep>-41.0</dep></entry>
-      <entry><ind> -5.0</ind><dep>-20.0</dep></entry>
+      <entry><ind>-15.0</ind><dep> 41.0</dep></entry>
+      <entry><ind> -5.0</ind><dep> 20.0</dep></entry>
       <entry><ind>  0.0</ind><dep>  0.0</dep></entry>
-      <entry><ind>  5.0</ind><dep> 20.0</dep></entry>
-      <entry><ind> 15.0</ind><dep> 41.0</dep></entry>
+      <entry><ind>  5.0</ind><dep>-20.0</dep></entry>
+      <entry><ind> 15.0</ind><dep>-41.0</dep></entry>
      </interpolation>
     </transformation>
    </transformations>
@@ -68,7 +74,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not> 
-      <property>instrumentation/slip-skid-ball/serviceable</property>
+      <property>instrumentation/side-slip/serviceable</property>
      </not> 
     </or>
    </condition>
@@ -99,7 +105,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not> 
-      <property>instrumentation/slip-skid-ball/serviceable</property>
+      <property>instrumentation/side-slip/serviceable</property>
      </not> 
     </or>
    </condition>

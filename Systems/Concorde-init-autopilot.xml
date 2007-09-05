@@ -1,16 +1,22 @@
 <?xml version="1.0"?>
 
-<!-- - required, because some PID may not depend of Mach.
+<!-- - a few PID depend of Mach.
+     - to compare fast properties.
      - see /sytems/autopilot for the "slow" properties.
 -->
 
 
 <PropertyList>
 
-  <!-- 1 PID for subsonic, 1 PID for supersonic -->
 
   <locks>
-   <sonic>
+   <autothrottle>                                    <!-- 1 autothrottle per engine -->
+    <engine n="0"></engine>
+    <engine n="1"></engine>
+    <engine n="2"></engine>
+    <engine n="3"></engine>
+   </autothrottle>
+   <sonic>                                           <!-- 1 PID for subsonic, 1 PID for supersonic -->
     <altitude></altitude>
     <heading></heading>
    </sonic>

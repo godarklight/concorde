@@ -11,7 +11,7 @@
  <h-base>26</h-base>
 
  <params>
-  <probe-volt>/systems/electrical/outputs/probe/ac-main1</probe-volt>
+  <probe-volt>/systems/electrical/outputs/probe/ac-main[0]</probe-volt>
  </params>
 
 
@@ -59,6 +59,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-eng-aft.xml"/>
      <w>104</w>
      <h>20</h>
     </layer>

@@ -10,6 +10,7 @@
 
  <params>
   <air-door>/systems/engines/engine[0]/secondary-air-door</air-door>
+  <defined-status>/systems/electrical/power/specific</defined-status>
  </params>
 
 
@@ -18,6 +19,20 @@
   <layer>
    <name>door</name>
    <type>switch</type>
+
+   <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/defined-status"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
 
    <layer>
     <name>open</name>

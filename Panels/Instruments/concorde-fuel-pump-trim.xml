@@ -2,7 +2,7 @@
 
 <!-- Fuel pump switch :
 
-     - with auto trim (not yet implemented).
+     - with auto trim.
 -->
 
 <PropertyList>
@@ -12,7 +12,8 @@
  <h-base>102</h-base>
 
  <params>
-  <pump-switch>/controls/fuel/tank[10]/pump[0]</pump-switch>
+  <pump-switch>/controls/fuel/tank[10]/pump-on[0]</pump-switch>
+  <auto-switch>/controls/fuel/tank[10]/pump-auto[0]</auto-switch>
  </params>
 
 
@@ -22,58 +23,22 @@
    <name>Fuel pump</name>
    <type>switch</type>
 
-   <layer>
+   <layer include="concorde-switch-3rd.xml">
+    <name>auto</name>
+    <condition>
+     <property alias="../../../../../params/auto-switch"/>
+    </condition>
+   </layer>
+
+   <layer include="concorde-switch-on.xml">
     <name>on</name>
     <condition>
      <property alias="../../../../../params/pump-switch"/>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
    </layer>
 
-   <layer>
+   <layer include="concorde-switch-off.xml">
     <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
-   </layer>
-
-   <layer>
-    <name>3rd state</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.47</y1>
-     <x2>0.25</x2>
-     <y2>0.745</y2>
-    </texture>
-    <w>40</w>
-    <h>42</h>
-    <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>1.5</offset>
-    </transformation>
-    </transformations>
    </layer>
 
    <transformations>
@@ -173,21 +138,6 @@
 
  <actions>
 
-<!--
-  <action>
-   <name>Toggle auto trim</name>
-   <button>0</button>
-   <x>-54</x>
-   <y>-21</y>
-   <w>42</w>
-   <h>42</h>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
--->
-
   <action>
    <name>Toggle pump</name>
    <button>0</button>
@@ -198,6 +148,23 @@
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/pump-switch"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>Toggle auto trim</name>
+   <button>1</button>
+   <x>-5</x>
+   <y>-21</y>
+   <w>42</w>
+   <h>42</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/auto-switch"/>
    </binding>
    <binding>
     <command>property-toggle</command>

@@ -3,7 +3,6 @@
 <!-- Flight deck door :
 
      - open allows access from outside.
-     - temporarily disabled.
 -->
 
 <PropertyList>
@@ -18,39 +17,15 @@
    <name>Door</name>
    <type>switch</type>
 
-   <layer>
+   <layer include="concorde-switch-off.xml">
     <name>normal</name>
     <condition>
      <property>/controls/doors/flight-deck/normal</property>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
    </layer>
 
-   <layer>
+   <layer include="concorde-switch-on.xml">
     <name>open</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
    </layer>
   </layer>
 
@@ -137,7 +112,6 @@
 
  </layers>
 
-<!--
  <actions>
 
   <action>
@@ -158,6 +132,5 @@
   </action>
 
  </actions>
--->
  
 </PropertyList>

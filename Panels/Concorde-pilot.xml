@@ -134,9 +134,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      </greater-than>
     </and>
    </condition>
-   <x>-20</x>
+   <x>-10</x>
    <y>225</y>
-   <w>60</w>
+   <w>50</w>
    <h>40</h>
   </instrument>
 
@@ -438,7 +438,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>22</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-red-cg.xml">
+  <instrument include="Instruments/concorde-red-m-cg.xml">
    <name>Alarm on Center of Gravity</name>
    <condition>
     <or>
@@ -469,6 +469,41 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <x>49.5</x>
    <y>227</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-tyre.xml">
+   <name>Alarm on Tyre</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-heading-offset-deg</property>
+        <value>50</value>
+       </less-than>
+       <greater-than>
+        <property>/sim/current-view/goal-heading-offset-deg</property>
+        <value>335</value>
+       </greater-than>
+      </or>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-55</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>49.5</x>
+   <y>213</y>
    <w>25</w>
    <h>10</h>
   </instrument>
@@ -563,7 +598,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <or>
        <less-than>
         <property>/sim/current-view/goal-pitch-offset-deg</property>
-        <value>-22</value>
+        <value>-21</value>
        </less-than>
        <and include="Concorde-optimize-captain.xml">
         <less-than>
@@ -1650,8 +1685,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>375</x>
-   <y>-61</y>
+   <x>370</x>
+   <y>-85</y>
    <w>45</w>
    <h>45</h>
   </instrument>
@@ -2058,8 +2093,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>437</x>
    <y>145</y>
-   <w>47</w>
-   <h>47</h>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n2.xml">
@@ -2092,10 +2127,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <n2-select>/engines/engine[1]/n2</n2-select>
    </params>
-   <x>500</x>
+   <x>497</x>
    <y>145</y>
-   <w>47</w>
-   <h>47</h>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n2.xml">
@@ -2130,8 +2165,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>557</x>
    <y>145</y>
-   <w>47</w>
-   <h>47</h>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n2.xml">
@@ -2166,8 +2201,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>617</x>
    <y>145</y>
-   <w>47</w>
-   <h>47</h>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
 <!-- N1 -->
@@ -2205,9 +2240,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[0]/n1</n1-select>
    </params>
    <x>437</x>
-   <y>94</y>
-   <w>47</w>
-   <h>47</h>
+   <y>89</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n1.xml">
@@ -2241,9 +2276,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[1]/n1</n1-select>
    </params>
    <x>497</x>
-   <y>94</y>
-   <w>47</w>
-   <h>47</h>
+   <y>89</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n1.xml">
@@ -2277,9 +2312,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[2]/n1</n1-select>
    </params>
    <x>557</x>
-   <y>94</y>
-   <w>47</w>
-   <h>47</h>
+   <y>89</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-n1.xml">
@@ -2313,9 +2348,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <n1-select>/engines/engine[3]/n1</n1-select>
    </params>
    <x>617</x>
-   <y>94</y>
-   <w>47</w>
-   <h>47</h>
+   <y>89</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
 <!-- Fuel Flow -->
@@ -2362,9 +2397,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[0]/bug_pph</bug-select>
    </params>
    <x>437</x>
-   <y>43</y>
-   <w>50</w>
-   <h>50</h>
+   <y>33</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -2407,9 +2442,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[1]/bug_pph</bug-select>
    </params>
    <x>497</x>
-   <y>43</y>
-   <w>50</w>
-   <h>50</h>
+   <y>33</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -2444,9 +2479,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[2]/bug_pph</bug-select>
    </params>
    <x>557</x>
-   <y>43</y>
-   <w>50</w>
-   <h>50</h>
+   <y>33</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -2481,9 +2516,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[3]/bug_pph</bug-select>
    </params>
    <x>617</x>
-   <y>43</y>
-   <w>50</w>
-   <h>50</h>
+   <y>33</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
 <!-- EGT -->
@@ -2529,9 +2564,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <egt-select>/engines/engine[0]/egt_degf</egt-select>
    </params>
    <x>437</x>
-   <y>-8</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-23</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-egt.xml">
@@ -2573,9 +2608,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <egt-select>/engines/engine[1]/egt_degf</egt-select>
    </params>
    <x>497</x>
-   <y>-8</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-23</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-egt.xml">
@@ -2609,9 +2644,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <egt-select>/engines/engine[2]/egt_degf</egt-select>
    </params>
    <x>557</x>
-   <y>-8</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-23</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-egt.xml">
@@ -2645,9 +2680,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <egt-select>/engines/engine[3]/egt_degf</egt-select>
    </params>
    <x>617</x>
-   <y>-8</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-23</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
 <!-- NOZZLE -->
@@ -2691,12 +2726,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <nozzle-select>/engines/engine[0]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[0]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[0]/reheat</reheat-select>
    </params>
    <x>437</x>
-   <y>-60</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-80</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-nozzle.xml">
@@ -2738,12 +2773,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <nozzle-select>/engines/engine[1]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[1]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[1]/reheat</reheat-select>
    </params>
    <x>497</x>
-   <y>-60</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-80</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-nozzle.xml">
@@ -2763,10 +2798,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
         <value>270</value>
        </greater-than>
       </or>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-15</value>
-      </less-than>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-18</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-75</value>
@@ -2777,12 +2820,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <nozzle-select>/engines/engine[2]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[2]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[2]/reheat</reheat-select>
    </params>
    <x>557</x>
-   <y>-60</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-80</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-nozzle.xml">
@@ -2814,12 +2857,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <nozzle-select>/engines/engine[3]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[3]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[3]/reheat</reheat-select>
+    <engine-num>/systems/engines/engine[3]/engine-num</engine-num>
    </params>
    <x>617</x>
-   <y>-60</y>
-   <w>47</w>
-   <h>47</h>
+   <y>-80</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
 <!-- COPILOT far left -->
@@ -2852,7 +2896,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>655</x>
-   <y>130</y>
+   <y>120</y>
    <w>11</w>
    <h>22</h>
   </instrument>
@@ -2885,7 +2929,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>655</x>
-   <y>15</y>
+   <y>5</y>
    <w>32</w>
    <h>160</h>
   </instrument>
@@ -3083,7 +3127,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>685</x>
-   <y>75</y>
+   <y>65</y>
    <w>28</w>
    <h>112</h>
   </instrument>
@@ -3116,14 +3160,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>740</x>
-   <y>-13</y>
+   <y>-18</y>
    <w>42</w>
    <h>31</h>
   </instrument>
 
 <!-- COPILOT left -->
 
-  <instrument include="Instruments/concorde-red-cg.xml">
+  <instrument include="Instruments/concorde-red-m-cg.xml">
    <name>Alarm on Center of Gravity (Copilot)</name>
    <condition>
     <or>
@@ -3152,9 +3196,47 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <test>/controls/lighting/crew/copilot/test</test>
+    <low>/controls/lighting/crew/copilot/low</low>
    </params>
    <x>812</x>
    <y>227</y>
+   <w>25</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-tyre.xml">
+   <name>Alarm on Tyre (Copilot)</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>345</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>275</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-45</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <test>/controls/lighting/crew/copilot/test</test>
+    <low>/controls/lighting/crew/copilot/low</low>
+   </params>
+   <x>812</x>
+   <y>213</y>
    <w>25</w>
    <h>10</h>
   </instrument>
@@ -3295,6 +3377,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <test>/controls/autoflight/autopilot[1]/test-land</test>
+    <serviceable-sel>/systems/autopilot/serviceable[1]</serviceable-sel>
    </params>
    <x>862</x>
    <y>222</y>
@@ -3331,6 +3414,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <test>/controls/autoflight/autopilot[1]/test-land</test>
+    <serviceable-sel>/systems/autothrottle/serviceable[1]</serviceable-sel>
    </params>
    <x>875</x>
    <y>222</y>
@@ -3874,16 +3958,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <and>
       <property>/sim/current-view/internal</property>
       <property>/systems/seat/captain</property>
-      <or>
-       <less-than>
-        <property>/sim/current-view/goal-heading-offset-deg</property>
-        <value>325</value>
-       </less-than>
-       <greater-than>
-        <property>/sim/current-view/goal-heading-offset-deg</property>
-        <value>265</value>
-       </greater-than>
-      </or>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>330</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>0</value>
@@ -3942,21 +4024,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
 <!-- COPILOT far right -->
-
-  <instrument include="Instruments/concorde-speed-up.xml">
-   <name>Speed up (copilot)</name>
-   <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/controls/seat/all</property>
-     <property>/systems/seat/copilot</property>
-    </and>
-   </condition>
-   <x>1090</x>
-   <y>225</y>
-   <w>60</w>
-   <h>40</h>
-  </instrument>
 
   <instrument include="Instruments/concorde-compass-ins.xml">
    <name>Compass INS (Copilot)</name>

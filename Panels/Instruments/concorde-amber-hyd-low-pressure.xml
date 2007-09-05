@@ -2,8 +2,6 @@
 
 <!-- Fault on pump low pressure :
 
-     - engine oil pressure below 34 PSI (not real).
-     - pump off load.
 -->
 
 <PropertyList>
@@ -12,8 +10,7 @@
  <h-base>104</h-base>
 
  <params>
-  <oil-select>/engines/engine[0]/oil-pressure-psi</oil-select>
-  <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloada</onload-pump>
+  <pressure-psi>/systems/hydraulic/sensors/green-left</pressure-psi>
  </params>
 
 
@@ -28,12 +25,12 @@
      <type>group</type>
      <condition>
       <or include="concorde-cond-voltage-bulb.xml">
-       <and include="concorde-cond-test-eng-aft.xml">
-        <greater-than>
-         <property alias="../../../../../../../../params/oil-select"/>
-         <value>34.0</value>
-        </greater-than>
-        <property alias="../../../../../../../params/onload-pump"/>
+       <and>
+        <or include="concorde-cond-test-eng-aft.xml"/>        <!-- bug -->
+        <greater-than-equals>
+         <property alias="../../../../../../../../params/pressure-psi"/>
+         <value>3400</value>
+        </greater-than-equals>
        </and>
       </or>
      </condition>
@@ -61,6 +58,7 @@
      <type>group</type>
 
      <layer include="concorde-bulb-on.xml">
+      <condition include="concorde-cond-light-eng-aft.xml"/>
       <w>104</w>
       <h>52</h>
      </layer>

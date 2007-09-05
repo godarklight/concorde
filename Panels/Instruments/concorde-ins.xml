@@ -11,9 +11,13 @@
  <h-base>50</h-base>
 
  <params>
-  <on-ctrl>/instrumentation/ins/on</on-ctrl>
-  <selector-ctrl>/instrumentation/ins/selector</selector-ctrl>
-  <wpt-ctrl>/instrumentation/ins/waypoint</wpt-ctrl>
+  <data-ident>/instrumentation/ins[0]/data/ident</data-ident>
+  <data-left>/instrumentation/ins[0]/data/left</data-left>
+  <data-right>/instrumentation/ins[0]/data/right</data-right>
+  <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+  <selector-ctrl>/instrumentation/ins[0]/control/selector</selector-ctrl>
+  <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
+  <service-select>/instrumentation/ins[0]/serviceable</service-select>
  </params>
 
 
@@ -60,7 +64,11 @@
   <type>group</type>
   <condition>
    <and include="concorde-cond-voltage-inst.xml">
-    <property alias="../../../../../params/on-ctrl"/>
+    <not-equals>
+     <property alias="../../../../../../params/mode-ctrl"/>
+     <value>-2</value>
+    </not-equals>
+    <property alias="../../../../../params/service-select"/>
    </and>
   </condition>
 
@@ -90,7 +98,7 @@
      <name>present track</name>
      <condition>
       <greater-than>
-       <property>/instrumentation/ins[0]/ground-speed-fps</property>
+       <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
        <value>126.59</value>        <!-- 75 kt -->
       </greater-than>
      </condition>
@@ -146,7 +154,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins[0]/ground-speed-fps</property>
+      <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
       <format>%6.2f</format>
       <scale>0.592484</scale>        <!-- kt -->
      </chunk>
@@ -223,7 +231,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins/leg-course-error-nm</property>
+      <property>/instrumentation/ins/computed/leg-course-error-nm</property>
       <format>%5.2f</format>
      </chunk>
     </chunks>
@@ -242,7 +250,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins/leg-course-deviation-deg</property>
+      <property>/instrumentation/ins/computed/leg-course-deviation-deg</property>
       <format>%5.2f</format>
      </chunk>
     </chunks>
@@ -522,85 +530,50 @@
 <!-- WAYPOINT -->
 
   <layer>
-   <name>Waypoint 1</name>
+   <name>Waypoint</name>
    <type>group</type>
    <condition>
     <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
+     <greater-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
       <value>1</value>
-     </equals>
-     <not-equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">1</value>
-     </not-equals>
-     <not-equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">2</value>
-     </not-equals>
-    </and>
-   </condition>
-
-   <layer>
-    <name>Ident</name>
-    <type>text</type>
-    <point-size>21</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property>/autopilot/route-manager/wp/id</property>
-     </chunk>
-    </chunks>
-   </layer>
-  </layer> <!-- group -->
-
-<!-- Miles -->
-
-  <layer>
-   <name>Distance 1</name>
-   <type>group</type>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
+     </greater-than-equals>
+     <less-than-equals>
       <property alias="../../../../../../../params/selector-ctrl"/>
       <value>2</value>
-     </equals>
-     <not-equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">1</value>
-     </not-equals>
-     <not-equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">2</value>
-     </not-equals>
+     </less-than-equals>
     </and>
    </condition>
 
    <layer>
-    <name>Mileage</name>
+    <name>Left LED</name>
     <type>switch</type>
 
     <layer>
-     <name>Miles</name>
+     <name>left text</name>
+     <type>text</type>
      <condition>
-      <less-than>
-       <property>/autopilot/route-manager/wp/dist</property>
-       <value type="double">9999.0</value>
-      </less-than>
+      <equals>
+       <property alias="../../../../../../../../params/selector-ctrl"/>
+       <value>1</value>
+      </equals>
      </condition>
+     <point-size>21</point-size>
+     <color>
+      <red>0.0</red>
+      <green>0.85</green>
+      <blue>0.0</blue>
+     </color>
+     <chunks>
+      <chunk>
+       <type>text-value</type>
+       <property alias="../../../../../../../../params/data-ident"/>
+      </chunk>
+     </chunks>
+    </layer>
+
+    <layer>
+     <name>left numerical</name>
      <type>text</type>
      <font>led</font>
      <point-size>9</point-size>
@@ -612,35 +585,15 @@
      <chunks>
       <chunk>
        <type>number-value</type>
-       <property>/autopilot/route-manager/wp/dist</property>
+       <property alias="../../../../../../../../params/data-left"/>
        <format>%4.0f</format>
       </chunk>
      </chunks>
     </layer>
-
-    <layer>
-     <name>Miles (overflow)</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>9999</text>
-      </chunk>
-     </chunks>
-    </layer>
-   </layer> <!-- switch -->
-
-<!-- Estimated Time of Arrival -->
+   </layer>
 
    <layer>
-    <name>ETA</name>
+    <name>Right LED</name>
     <type>text</type>
     <font>led</font>
     <point-size>9</point-size>
@@ -652,281 +605,7 @@
     <chunks>
      <chunk>
       <type>text-value</type>
-      <property>/autopilot/route-manager/wp/eta</property>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>105</offset>
-     </transformation>
-    </transformations>
-   </layer>
-  </layer>
-
-<!-- NEXT WAYPOINT -->
-
-  <layer>
-   <name>Waypoint 2</name>
-   <type>group</type>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp[1]/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value>1</value>
-     </equals>
-     <equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">1</value>
-     </equals>
-    </and>
-   </condition>
-
-   <layer>
-    <name>Ident 2</name>
-    <type>text</type>
-    <point-size>21</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property>/autopilot/route-manager/wp[1]/id</property>
-     </chunk>
-    </chunks>
-   </layer>
-  </layer> <!-- group -->
-
-<!-- Miles -->
-
-  <layer>
-   <name>Distance 2</name>
-   <type>group</type>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp[1]/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value>2</value>
-     </equals>
-     <equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">1</value>
-     </equals>
-    </and>
-   </condition>
-
-   <layer>
-    <name>Mileage</name>
-    <type>switch</type>
-
-    <layer>
-     <name>Miles 2</name>
-     <condition>
-      <less-than>
-       <property>/autopilot/route-manager/wp[1]/dist</property>
-       <value type="double">9999.0</value>
-      </less-than>
-     </condition>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/autopilot/route-manager/wp[1]/dist</property>
-       <format>%4.0f</format>
-      </chunk>
-     </chunks>
-    </layer>
-
-    <layer>
-     <name>Miles 2 (overflow)</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>9999</text>
-      </chunk>
-     </chunks>
-    </layer>
-   </layer> <!-- switch -->
-
-<!-- Estimated Time of Arrival -->
-
-   <layer>
-    <name>ETA 2</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>9</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property>/autopilot/route-manager/wp[1]/eta</property>
-     </chunk>
-    </chunks>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>105</offset>
-     </transformation>
-    </transformations>
-   </layer>
-  </layer> <!-- group -->
-
-<!-- DESTINATION -->
-
-  <layer>
-   <name>Waypoint 3</name>
-   <type>group</type>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp-last/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value>1</value>
-     </equals>
-     <equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">2</value>
-     </equals>
-    </and>
-   </condition>
-
-   <layer>
-    <name>Ident 3</name>
-    <type>text</type>
-    <point-size>21</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property>/autopilot/route-manager/wp-last/id</property>
-     </chunk>
-    </chunks>
-   </layer>
-  </layer> <!-- group -->
-
-<!-- Miles -->
-
-  <layer>
-   <name>Distance 3</name>
-   <type>group</type>
-   <condition>
-    <and>
-     <not-equals>
-      <property>/autopilot/route-manager/wp-last/id</property>
-      <value type="string"></value>
-     </not-equals>
-     <equals>
-      <property alias="../../../../../../../params/selector-ctrl"/>
-      <value>2</value>
-     </equals>
-     <equals>
-      <property alias="../../../../../../../params/wpt-ctrl"/>
-      <value type="double">2</value>
-     </equals>
-    </and>
-   </condition>
-
-   <layer>
-    <name>Mileage</name>
-    <type>switch</type>
-
-    <layer>
-     <name>Miles 3</name>
-     <condition>
-      <less-than>
-       <property>/autopilot/route-manager/wp-last/dist</property>
-       <value type="double">9999.0</value>
-      </less-than>
-     </condition>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/autopilot/route-manager/wp-last/dist</property>
-       <format>%4.0f</format>
-      </chunk>
-     </chunks>
-    </layer>
-
-    <layer>
-     <name>Miles 3 (overflow)</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>9</point-size>
-     <color>
-      <red>0.0</red>
-      <green>0.85</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>9999</text>
-      </chunk>
-     </chunks>
-    </layer>
-   </layer> <!-- switch -->
-
-<!-- Estimated Time of Arrival -->
-
-   <layer>
-    <name>ETA 3</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>9</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>text-value</type>
-      <property>/autopilot/route-manager/wp-last/eta</property>
+      <property alias="../../../../../../../params/data-right"/>
      </chunk>
     </chunks>
     <transformations>
@@ -969,17 +648,19 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins[0]/wind-from-heading-deg</property>
+      <property>/instrumentation/ins[0]/computed/wind-from-heading-deg</property>
       <format>%03.0f</format>
      </chunk>
     </chunks>
    </layer>
 
+ <!-- works only with flight -->
+
    <layer>
     <name>Wind speed</name>
     <condition>
      <greater-than>
-      <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property> <!-- works only with flight -->
+      <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property>
       <value type="double">20</value>
      </greater-than>
     </condition>
@@ -994,7 +675,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins[0]/wind-speed-kt</property>
+      <property>/instrumentation/ins[0]/computed/wind-speed-kt</property>
       <format>%3.0f</format>
      </chunk>
     </chunks>
@@ -1039,7 +720,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/ins/leg-true-course-deg</property>
+      <property>/instrumentation/ins/computed/leg-true-course-deg</property>
       <format>%5.2f</format>
      </chunk>
     </chunks>

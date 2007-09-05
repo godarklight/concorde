@@ -9,7 +9,7 @@
     <label>Concorde menu</label>
   </text>
 
-  <hrule/>
+  <hrule><dummy/></hrule>
 
   <group>
     <layout>hbox</layout>
@@ -28,11 +28,35 @@
     </button>
 
     <button>
+      <legend>Environment</legend>
+      <key>e</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-environment</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
       <legend>Fuel</legend>
       <key>f</key>
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-fuel</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Ground</legend>
+      <key>g</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-ground</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>
@@ -108,6 +132,19 @@
 
   <text>
     <label>press the first letter, or escape/return</label>
+    <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.5</blue>
+    </color>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label>~  fields are saved on exit in aircraft-data</label>
     <color>
       <red>0.5</red>
       <green>0.5</green>

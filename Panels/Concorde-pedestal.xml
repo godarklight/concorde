@@ -72,14 +72,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <on-ctrl>/instrumentation/ins[0]/on</on-ctrl>
-    <selector-ctrl>/instrumentation/ins[0]/selector</selector-ctrl>
-    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+    <data-ident>/instrumentation/ins[0]/data/ident</data-ident>
+    <data-left>/instrumentation/ins[0]/data/left</data-left>
+    <data-right>/instrumentation/ins[0]/data/right</data-right>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <selector-ctrl>/instrumentation/ins[0]/control/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
+    <service-select>/instrumentation/ins[0]/serviceable</service-select>
    </params>
    <x>80</x>
    <y>780</y>
-   <w>350</w>
-   <h>50</h>
+   <w>315</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-selector.xml">
@@ -102,12 +106,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <on-ctrl>/instrumentation/ins[0]/on</on-ctrl>
-    <selector-ctrl>/instrumentation/ins[0]/selector</selector-ctrl>
-    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <selector-ctrl>/instrumentation/ins[0]/control/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
    </params>
-   <x>85</x>
-   <y>718</y>
+   <x>62</x>
+   <y>705</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -132,12 +136,190 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <selector-ctrl>/instrumentation/ins[0]/selector</selector-ctrl>
+    <selector-ctrl>/instrumentation/ins[0]/control/selector</selector-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
    </params>
-   <x>80</x>
+   <x>60</x>
    <y>660</y>
-   <w>140</w>
-   <h>140</h>
+   <w>120</w>
+   <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-white-ins-hold.xml">
+   <name>INS hold</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+   </params>
+   <x>47</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-remote.xml">
+   <name>INS remote</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <remote-ctrl>/instrumentation/ins[0]/control/remote</remote-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+   </params>
+   <x>77</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-white-ins-insert.xml">
+   <name>INS insert</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+   </params>
+   <x>123</x>
+   <y>735</y>
+   <w>37</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-alert.xml">
+   <name>INS alert</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <alert-ctrl>/instrumentation/ins[0]/light/alert</alert-ctrl>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+   </params>
+   <x>165</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-battery.xml">
+   <name>INS battery</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+   </params>
+   <x>195</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-ins-warning.xml">
+   <name>INS warning</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+    <service-select>/instrumentation/ins[0]/serviceable</service-select>
+   </params>
+   <x>225</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-1.xml">
@@ -159,10 +341,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>200</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
+   </params>
+   <x>165</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-2.xml">
@@ -185,12 +370,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
+    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
    </params>
-   <x>225</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <x>195</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-3.xml">
@@ -212,10 +397,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>250</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
+   </params>
+   <x>225</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-4.xml">
@@ -237,10 +425,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>200</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>165</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-5.xml">
@@ -262,10 +450,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>225</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>195</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-6.xml">
@@ -287,10 +475,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>250</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>225</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-7.xml">
@@ -312,10 +500,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>200</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>165</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-8.xml">
@@ -337,13 +525,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[0]/waypoint</wpt-ctrl>
-   </params>
-   <x>225</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>195</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-9.xml">
@@ -365,10 +550,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>250</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>225</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-0.xml">
@@ -390,10 +575,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>200</x>
-   <y>610</y>
-   <w>23</w>
-   <h>23</h>
+   <x>165</x>
+   <y>615</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-clear.xml">
@@ -415,13 +600,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <on-ctrl>/instrumentation/ins[0]/on</on-ctrl>
-   </params>
-   <x>236</x>
-   <y>610</y>
-   <w>35</w>
-   <h>23</h>
+   <x>211</x>
+   <y>615</y>
+   <w>37</w>
+   <h>25</h>
   </instrument>
 
 <!-- INS 2 -->
@@ -454,14 +636,18 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <on-ctrl>/instrumentation/ins[1]/on</on-ctrl>
-    <selector-ctrl>/instrumentation/ins[1]/selector</selector-ctrl>
-    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+    <data-ident>/instrumentation/ins[1]/data/ident</data-ident>
+    <data-left>/instrumentation/ins[1]/data/left</data-left>
+    <data-right>/instrumentation/ins[1]/data/right</data-right>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <selector-ctrl>/instrumentation/ins[1]/control/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
+    <service-select>/instrumentation/ins[1]/serviceable</service-select>
    </params>
-   <x>475</x>
+   <x>495</x>
    <y>780</y>
-   <w>350</w>
-   <h>50</h>
+   <w>315</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-selector.xml">
@@ -492,12 +678,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <on-ctrl>/instrumentation/ins[1]/on</on-ctrl>
-    <selector-ctrl>/instrumentation/ins[1]/selector</selector-ctrl>
-    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <selector-ctrl>/instrumentation/ins[1]/control/selector</selector-ctrl>
+    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
    </params>
-   <x>480</x>
-   <y>718</y>
+   <x>477</x>
+   <y>705</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -530,12 +716,238 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <selector-ctrl>/instrumentation/ins[1]/selector</selector-ctrl>
+    <selector-ctrl>/instrumentation/ins[1]/control/selector</selector-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
    </params>
    <x>475</x>
    <y>660</y>
-   <w>140</w>
-   <h>140</h>
+   <w>120</w>
+   <h>120</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-white-ins-hold.xml">
+   <name>INS hold</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-20</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+   </params>
+   <x>462</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-remote.xml">
+   <name>INS remote</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-20</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <remote-ctrl>/instrumentation/ins[1]/control/remote</remote-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+   </params>
+   <x>492</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-white-ins-insert.xml">
+   <name>INS insert</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-20</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+   </params>
+   <x>538</x>
+   <y>735</y>
+   <w>37</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-alert.xml">
+   <name>INS alert</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-20</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-65</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <alert-ctrl>/instrumentation/ins[1]/light/alert</alert-ctrl>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+   </params>
+   <x>580</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-ins-battery.xml">
+   <name>INS battery</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-18</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-65</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+   </params>
+   <x>610</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-ins-warning.xml">
+   <name>INS warning</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-18</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-65</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
+    <service-select>/instrumentation/ins[1]/serviceable</service-select>
+   </params>
+   <x>640</x>
+   <y>735</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-1.xml">
@@ -565,10 +977,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>595</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
+   </params>
+   <x>580</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-2.xml">
@@ -599,12 +1014,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
+    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
    </params>
-   <x>620</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <x>610</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-3.xml">
@@ -634,10 +1049,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>645</x>
-   <y>685</y>
-   <w>23</w>
-   <h>23</h>
+   <params>
+    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
+   </params>
+   <x>640</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-4.xml">
@@ -667,10 +1085,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>595</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>580</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-5.xml">
@@ -700,10 +1118,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>620</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>610</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-6.xml">
@@ -733,10 +1151,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>645</x>
-   <y>660</y>
-   <w>23</w>
-   <h>23</h>
+   <x>640</x>
+   <y>675</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-7.xml">
@@ -758,10 +1176,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>595</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>580</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-8.xml">
@@ -791,13 +1209,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[1]/waypoint</wpt-ctrl>
-   </params>
-   <x>620</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>610</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-9.xml">
@@ -827,10 +1242,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>645</x>
-   <y>635</y>
-   <w>23</w>
-   <h>23</h>
+   <x>640</x>
+   <y>645</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-0.xml">
@@ -852,10 +1267,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>595</x>
-   <y>610</y>
-   <w>23</w>
-   <h>23</h>
+   <x>580</x>
+   <y>615</y>
+   <w>25</w>
+   <h>25</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ins-clear.xml">
@@ -877,13 +1292,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <on-ctrl>/instrumentation/ins[1]/on</on-ctrl>
-   </params>
-   <x>631</x>
-   <y>610</y>
-   <w>35</w>
-   <h>23</h>
+   <x>626</x>
+   <y>615</y>
+   <w>37</w>
+   <h>25</h>
   </instrument>
 
 <!-- TEMPERATURES -->

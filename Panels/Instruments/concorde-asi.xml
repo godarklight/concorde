@@ -50,7 +50,7 @@ properties' values.
   <layer>
    <name>gauge face</name>
    <texture>   
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/T38-airspeed.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi.rgb</path>
     <x1>0.5</x1>
     <y1>0.5</y1>
     <x2>1.0</x2>
@@ -289,11 +289,11 @@ properties' values.
          <and>
           <greater-than-equals>
            <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-           <property n="1">/systems/autopilot/airspeed/light-min-kt</property>
+           <property n="1">/systems/autothrottle/airspeed/light-min-kt</property>
           </greater-than-equals>
           <less-than-equals>
            <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-           <property n="1">/systems/autopilot/airspeed/light-max-kt</property>
+           <property n="1">/systems/autothrottle/airspeed/light-max-kt</property>
           </less-than-equals>
          </and>
         </or>

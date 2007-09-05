@@ -6,7 +6,7 @@
     - CSD low oil pressure (engine stopped).
     - no voltage on AC Main Bus.
     - no voltage on AC Essential Bus.
-    - battery islated
+    - battery isolated.
 -->
 
 <PropertyList>
@@ -26,61 +26,14 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-mws.xml">
-       <property>controls/engines/engine[0]/master-alt</property>
-       <property>controls/engines/engine[1]/master-alt</property>
-       <property>controls/engines/engine[2]/master-alt</property>
-       <property>controls/engines/engine[3]/master-alt</property>
-       <greater-than>
-        <property>/systems/engines/engine[0]/csd-oil-psi</property>
-        <value>30</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/engines/engine[1]/csd-oil-psi</property>
-        <value>30</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/engines/engine[2]/csd-oil-psi</property>
-        <value>30</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/engines/engine[3]/csd-oil-psi</property>
-        <value>30</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-main1</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-main2</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-main3</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-main4</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-essential1</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-essential2</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-essential3</property>
-        <value>20</value>
-       </greater-than>
-       <greater-than>
-        <property>/systems/electrical/outputs/probe/ac-essential4</property>
-        <value>20</value>
-       </greater-than>
-       <property>/controls/engines/engine[0]/master-bat</property>
-       <property>/controls/electric/dc/master-bat</property>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>    <!-- bug -->
+       <or>
+        <not>
+         <property>/systems/mws/amber/electrical</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -128,5 +81,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/amber/electrical</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

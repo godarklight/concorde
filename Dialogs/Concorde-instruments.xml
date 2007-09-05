@@ -34,9 +34,9 @@
    <x>400</x>
    <label>Press p/P for next/previous page</label>
    <color>
-     <red>0.0</red>
-     <green>0.0</green>
-     <blue>1.0</blue>
+     <red>0.5</red>
+     <green>0.5</green>
+     <blue>0.5</blue>
    </color>
   </text>
 
@@ -213,8 +213,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Mach</label>
-   <property>/instrumentation/mach-indicator/serviceable</property>
+   <label>INS 1</label>
+   <property>/instrumentation/ins[0]/serviceable</property>
   </checkbox>
 
  </group>
@@ -228,8 +228,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Magnetic compass</label>
-   <property>/instrumentation/magnetic-compass/serviceable</property>
+   <label>Mach</label>
+   <property>/instrumentation/mach-indicator/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -237,8 +237,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Marker beacon</label>
-   <property>/instrumentation/marker-beacon/serviceable</property>
+   <label>Magnetic compass</label>
+   <property>/instrumentation/magnetic-compass/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -246,8 +246,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>NAV 1</label>
-   <property>/instrumentation/nav[1]/serviceable</property>
+   <label>Marker beacon</label>
+   <property>/instrumentation/marker-beacon/serviceable</property>
   </checkbox>
 
  </group>
@@ -261,8 +261,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Radio altimeter</label>
-   <property>/instrumentation/radio-altimeter/serviceable</property>
+   <label>NAV 1</label>
+   <property>/instrumentation/nav[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -270,8 +270,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Slip/Skid Ball</label>
-   <property>/instrumentation/slip-skid-ball/serviceable</property>
+   <label>Radio altimeter</label>
+   <property>/instrumentation/radio-altimeter/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -279,8 +279,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>TAS</label>
-   <property>/instrumentation/tas-indicator/serviceable</property>
+   <label>Sideslip</label>
+   <property>/instrumentation/side-slip/serviceable</property>
   </checkbox>
 
  </group>
@@ -294,8 +294,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Temperature</label>
-   <property>/instrumentation/temperature/serviceable</property>
+   <label>TAS</label>
+   <property>/instrumentation/tas-indicator/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -303,12 +303,26 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Turn</label>
-   <property>/instrumentation/turn-indicator/serviceable</property>
+   <label>Temperature</label>
+   <property>/instrumentation/temperature/serviceable</property>
   </checkbox>
 
   <checkbox>
    <x>470</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Turn</label>
+   <property>/instrumentation/turn-indicator/serviceable</property>
+  </checkbox>
+
+ </group>
+
+ <group>
+  <y>160</y>
+
+  <checkbox>
+   <x>10</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -327,20 +341,6 @@
   <button>
    <x>50</x>
    <y>0</y>
-   <legend>OK</legend>
-   <default>true</default>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>dialog-close</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>150</x>
-   <y>0</y>
    <legend>Apply</legend>
    <equal>true</equal>
    <binding>
@@ -349,21 +349,15 @@
   </button>
 
   <button>
-   <x>250</x>
+   <x>280</x>
    <y>0</y>
-   <legend>Reset</legend>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-update</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>350</x>
-   <y>0</y>
-   <legend>Cancel</legend>
+   <legend>Close</legend>
+   <default>true</default>
    <equal>true</equal>
    <key>Esc</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-close</command>
    </binding>
@@ -374,6 +368,9 @@
    <y>0</y>
    <legend>Page 3</legend>
    <key>P</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-show</command>
     <dialog-name>Concorde-instruments3</dialog-name>
@@ -388,6 +385,9 @@
    <y>0</y>
    <legend>Page 2</legend>
    <key>p</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-show</command>
     <dialog-name>Concorde-instruments2</dialog-name>

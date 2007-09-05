@@ -1,507 +1,36 @@
 # EXPORT : functions ending by export are called from xml
 # CRON : functions ending by cron are called from timer
 # SCHEDULE : functions ending by schedule are called from cron
+# HUMAN : functions ending by human are called by artificial intelligence
 
 
-# =====
-# SEATS
-# =====
 
-Seats = {};
-
-Seats.new = func {
-   obj = { parents : [Seats],
-
-           controls : nil,
-           theseats : nil,
-           thecrews : nil,
-
-           lookup : { "engineer" : 0, "overhead" : 0, "copilot" : 0, "steward" : 0, "observer" : 0 },
-           names : [ "engineer", "overhead", "copilot", "steward", "observer" ],
-           nb_seats : 5,
-
-           firstseatview : 0,
-           fullcokpit : constant.FALSE,
-
-           initial : { "observer" : {"x" : 0, "y" : 0, "z" : 0 } }
-         };
-
-   obj.init();
-
-   return obj;
-};
-
-Seats.init = func {
-   me.controls = props.globals.getNode("/controls/seat");
-   me.theseats = props.globals.getNode("/systems/seat");
-   me.thecrews = props.globals.getNode("/controls/audio/crew");
-
-   theviews = props.globals.getNode("/sim").getChildren("view");
-   last = size(theviews);
-
-   # retrieve the index as created by FG
-   for( i = 0; i < last; i=i+1 ) {
-        child = theviews[i].getChild("name");
-
-        # nasal doesn't see yet the views of preferences.xml
-        if( child != nil ) {
-            name = child.getValue();
-            if( name == "Engineer View" ) {
-                me.lookup["engineer"] = i;
-                me.firstseatview = i;
-            }
-            elsif( name == "Overhead View" ) {
-                me.lookup["overhead"] = i;
-            }
-            elsif( name == "Copilot View" ) {
-                me.lookup["copilot"] = i;
-           }
-           elsif( name == "Steward View" ) {
-                me.lookup["steward"] = i;
-           }
-           elsif( name == "Observer View" ) {
-                me.lookup["observer"] = i;
-                me.save_position( "observer", theviews[i] );
-           }
-        }
-   }
-
-   # default
-   me.fullcockpit = me.controls.getChild("all").getValue();
-}
-
-Seats.fullexport = func {
-   if( me.fullcockpit ) {
-       me.fullcockpit = constant.FALSE;
-   }
-   else {
-       me.fullcockpit = constant.TRUE;
-   }
-
-   me.controls.getChild("all").setValue( me.fullcockpit );
-}
-
-Seats.restorefull = func {
-   found = constant.FALSE;
-   index = getprop("/sim/current-view/view-number");
-   if( index == 0 or index >= me.firstseatview ) {
-       found = constant.TRUE;
-   }
-
-   # systematically disable all instruments in external view
-   if( found ) {
-       me.controls.getChild("all").setValue( me.fullcockpit );
-   }
-   else {
-       me.controls.getChild("all").setValue( constant.FALSE );
-   }
-}
-
-Seats.viewexport = func( name ) {
-   if( name != "captain" ) {
-
-       # swap to view
-       if( !me.theseats.getChild(name).getValue() ) {
-           index = me.lookup[name];
-           setprop("/sim/current-view/view-number", index);
-           me.theseats.getChild(name).setValue(constant.TRUE);
-           me.theseats.getChild("captain").setValue(constant.FALSE);
-       }
-
-       # return to captain view
-       else {
-           setprop("/sim/current-view/view-number", 0);
-           me.theseats.getChild(name).setValue(constant.FALSE);
-           me.theseats.getChild("captain").setValue(constant.TRUE);
-       }
-
-       # disable all other views
-       for( i = 0; i < me.nb_seats; i=i+1 ) {
-            if( name != me.names[i] ) {
-                me.theseats.getChild(me.names[i]).setValue(constant.FALSE);
-            }
-       }
-   }
-
-   # captain view
-   else {
-       setprop("/sim/current-view/view-number",0);
-       me.theseats.getChild("captain").setValue(constant.TRUE);
-
-        # disable all other views
-        for( i = 0; i < me.nb_seats; i=i+1 ) {
-             me.theseats.getChild(me.names[i]).setValue(constant.FALSE);
-        }
-   }
-
-   me.audioexport();
-
-   me.controls.getChild("all").setValue( me.fullcockpit );
-}
-
-Seats.scrollexport = func{
-   # number of views = 11
-   nbviews = size(props.globals.getNode("/sim").getChildren("view"));
-
-   # by default, returns to captain view
-   targetview = nbviews;
-
-   # if specific view, step once more to ignore captain view 
-   for( i = 0; i < me.nb_seats; i=i+1 ) {
-        name = me.names[i];
-        if( me.theseats.getChild(name).getValue() ) {
-            targetview = me.lookup[name];
-            break;
-        }
-   }
-
-   # number of default views (preferences.xml) = 6
-   nbdefaultviews = nbviews - me.nb_seats;
-
-   # last default view (preferences.xml) = 5
-   lastview = nbdefaultviews - 1;
-
-   # moves to seat
-   if( getprop("/sim/current-view/view-number") == lastview ) {
-       step = targetview - nbdefaultviews;
-       view.stepView(step);
-       view.stepView(1);
-   }
-
-   # returns to captain
-   elsif( getprop("/sim/current-view/view-number") == targetview ) {
-       step = nbviews - targetview;
-       view.stepView(step);
-       view.stepView(1);
-   }
-
-   # default
-   else {
-       view.stepView(1);
-   }
-
-   me.audioexport();
-
-   me.restorefull();
-}
-
-Seats.scrollreverseexport = func{
-   # number of views = 11
-   nbviews = size(props.globals.getNode("/sim").getChildren("view"));
-
-   # by default, returns to captain view
-   targetview = 0;
-
-   # if specific view, step once more to ignore captain view 
-   for( i = 0; i < me.nb_seats; i=i+1 ) {
-        name = me.names[i];
-        if( me.theseats.getChild(name).getValue() ) {
-            targetview = me.lookup[name];
-            break;
-        }
-   }
-
-   # number of default views (preferences.xml) = 6
-   nbdefaultviews = nbviews - me.nb_seats;
-
-   # last view = 10
-   lastview = nbviews - 1;
-
-   # moves to seat
-   if( getprop("/sim/current-view/view-number") == 1 ) {
-       # to 0
-       view.stepView(-1);
-       # to last
-       view.stepView(-1);
-       step = targetview - lastview;
-       view.stepView(step);
-   }
-
-   # returns to captain
-   elsif( getprop("/sim/current-view/view-number") == targetview ) {
-       step = nbdefaultviews - targetview;
-       view.stepView(step);
-       view.stepView(-1);
-   }
-
-   # default
-   else {
-       view.stepView(-1);
-   }
-
-   me.audioexport();
-
-   me.restorefull();
-}
-
-# forwards is positiv
-Seats.movelengthexport = func( step ) {
-   if( me.move() ) {
-       headdeg = getprop("/sim/current-view/goal-heading-offset-deg");
-
-       if( headdeg <= 45 or headdeg >= 315 ) {
-           prop = "/sim/current-view/z-offset-m";
-           sign = 1;
-       }
-       elsif( headdeg >= 135 and headdeg <= 225 ) {
-           prop = "/sim/current-view/z-offset-m";
-           sign = -1;
-       }
-       elsif( headdeg > 225 and headdeg < 315 ) {
-           prop = "/sim/current-view/x-offset-m";
-           sign = -1;
-       }
-       else {
-           prop = "/sim/current-view/x-offset-m";
-           sign = 1;
-       }
-
-       pos = getprop(prop);
-       pos = pos + sign * step;
-       setprop(prop,pos);
-
-       result = constant.TRUE;
-   }
-
-   else {
-       result = constant.FALSE;
-   }
-
-   return result;
-}
-
-# left is negativ
-Seats.movewidthexport = func( step ) {
-   if( me.move() ) {
-       headdeg = getprop("/sim/current-view/goal-heading-offset-deg");
-
-       if( headdeg <= 45 or headdeg >= 315 ) {
-           prop = "/sim/current-view/x-offset-m";
-           sign = 1;
-       }
-       elsif( headdeg >= 135 and headdeg <= 225 ) {
-           prop = "/sim/current-view/x-offset-m";
-           sign = -1;
-       }
-       elsif( headdeg > 225 and headdeg < 315 ) {
-           prop = "/sim/current-view/z-offset-m";
-           sign = 1;
-       }
-       else {
-           prop = "/sim/current-view/z-offset-m";
-           sign = -1;
-       }
-
-       pos = getprop(prop);
-       pos = pos + sign * step;
-       setprop(prop,pos);
-
-       result = constant.TRUE;
-   }
-
-   else {
-       result = constant.FALSE;
-   }
-
-   return result;
-}
-
-# up is positiv
-Seats.moveheightexport = func( step ) {
-   if( me.move() ) {
-       pos = getprop("/sim/current-view/y-offset-m");
-       pos = pos + step;
-       setprop("/sim/current-view/y-offset-m",pos);
-
-       result = constant.TRUE;
-   }
-
-   else {
-       result = constant.FALSE;
-   }
-
-   return result;
-}
-
-# backup initial position
-Seats.save_position = func( name, view ) {
-   config = view.getNode("config");
-   me.initial[name]["x"] = config.getChild("x-offset-m").getValue();
-   me.initial[name]["y"] = config.getChild("y-offset-m").getValue();
-   me.initial[name]["z"] = config.getChild("z-offset-m").getValue();
-}
-
-Seats.restore_position = func( name ) {
-   setprop("/sim/current-view/x-offset-m",me.initial[name]["x"]);
-   setprop("/sim/current-view/y-offset-m",me.initial[name]["y"]);
-   setprop("/sim/current-view/z-offset-m",me.initial[name]["z"]);
-}
-
-Seats.move = func {
-   if( me.theseats.getChild("observer").getValue() ) {
-       result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
-   }
-
-   return result;
-}
-
-# restore view
-Seats.restoreexport = func {
-   if( me.theseats.getChild("observer").getValue() ) {
-       me.restore_position( "observer" );
-   }
-}
-
-Seats.sendaudio = func( adf1, adf2, comm1, comm2, nav1, nav2, marker ) {
-   setprop("/instrumentation/adf[0]/volume-norm",adf1);
-   setprop("/instrumentation/adf[1]/volume-norm",adf2);
-   setprop("/instrumentation/comm[0]/volume",comm1);
-   setprop("/instrumentation/comm[1]/volume",comm2);
-   setprop("/instrumentation/nav[1]/volume",nav1);
-   setprop("/instrumentation/nav[2]/volume",nav2);
-   setprop("/instrumentation/marker-beacon/audio-btn",marker);
-}
-
-Seats.audioexport = func {
-   # hears nothing outside
-   if( !getprop("/sim/current-view/internal") ) {
-       me.sendaudio( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, constant.FALSE );
-   }
-
-   # each crew has an audio panel
-   else {
-       audio = nil;
-       if( me.theseats.getChild("captain").getValue() ) {
-           audio = me.thecrews.getNode("captain");
-       }
-       elsif( me.theseats.getChild("copilot").getValue() ) {
-           audio = me.thecrews.getNode("copilot");
-       }
-       elsif( me.theseats.getChild("engineer").getValue() ) {
-           audio = me.thecrews.getNode("engineer");
-       }
-
-       if( audio != nil ) {
-           adf1  = audio.getNode("adf[0]/volume").getValue();
-           adf2  = audio.getNode("adf[1]/volume").getValue();
-           comm1 = audio.getNode("comm[0]/volume").getValue();
-           comm2 = audio.getNode("comm[1]/volume").getValue();
-           nav1  = audio.getNode("nav[0]/volume").getValue();
-           nav2  = audio.getNode("nav[1]/volume").getValue();
-           me.sendaudio( adf1, adf2, comm1, comm2, nav1, nav2, constant.TRUE );
-       }
-       else {
-           me.sendaudio( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, constant.TRUE );
-       }
-   }
-}
-
-
-# =====
-# DOORS
-# =====
-
-Doors = {};
-
-Doors.new = func {
-   obj = { parents : [Doors],
-# 10 s, door closed
-           flightdeck : aircraft.door.new("controls/doors/flight-deck", 10.0),
-# 4 s, deck out
-           engineerdeck : aircraft.door.new("controls/doors/engineer-deck", 4.0)
-         };
-
-# user customization
-   obj.init();
-
-   return obj;
-};
-
-Doors.init = func {
-   if( getprop("/controls/doors/flight-deck/opened") ) {
-       me.flightdeck.toggle();
-   }
-   if( !getprop("/controls/doors/engineer-deck/out") ) {
-       me.engineerdeck.toggle();
-   }
-}
-
-Doors.flightdeckexport = func {
-   me.flightdeck.toggle();
-}
-
-Doors.engineerdeckexport = func {
-   me.engineerdeck.toggle();
-}
-
-
-# ====
-# MENU
-# ====
-
-Menu = {};
-
-Menu.new = func {
-   obj = { parents : [Menu],
-
-           crew : nil,
-           fuel : nil,
-           radios : nil,
-           instruments : [ nil, nil, nil ],
-           navigation : nil,
-           systems : nil,
-           menu : nil
-         };
-
-   obj.init();
-
-   return obj;
-};
-
-Menu.init = func {
-   me.menu = gui.Dialog.new("/sim/gui/dialogs/Concorde/menu/dialog",
-                            "Aircraft/Concorde/Dialogs/Concorde-menu.xml");
-   me.crew = gui.Dialog.new("/sim/gui/dialogs/Concorde/crew/dialog",
-                            "Aircraft/Concorde/Dialogs/Concorde-crew.xml");
-   me.fuel = gui.Dialog.new("/sim/gui/dialogs/Concorde/fuel/dialog",
-                            "Aircraft/Concorde/Dialogs/Concorde-fuel.xml");
-
-   me.instruments[0] = gui.Dialog.new("/sim/gui/dialogs/Concorde/instruments[0]/dialog",
-                                      "Aircraft/Concorde/Dialogs/Concorde-instruments.xml");
-   for( i = 1; i <= 2; i=i+1 ) {
-      j = i + 1;
-      me.instruments[i] = gui.Dialog.new("/sim/gui/dialogs/Concorde/instruments[" ~ i ~ "]/dialog",
-                                         "Aircraft/Concorde/Dialogs/Concorde-instruments" ~ j ~ ".xml");
-   }
-
-   me.navigation = gui.Dialog.new("/sim/gui/dialogs/Concorde/navigation/dialog",
-                                  "Aircraft/Concorde/Dialogs/Concorde-navigation.xml");
-
-   me.radios = gui.Dialog.new("/sim/gui/dialogs/Concorde/radios/dialog",
-                            "Aircraft/Concorde/Dialogs/Concorde-radios.xml");
-   me.systems = gui.Dialog.new("/sim/gui/dialogs/Concorde/systems/dialog",
-                               "Aircraft/Concorde/Dialogs/Concorde-systems.xml");
-}
+# This file contains checklist tasks.
 
 
 # ================
 # VIRTUAL ENGINEER
 # ================
 
-VirtualEngineer = {};
+Virtualengineer = {};
 
-VirtualEngineer.new = func {
-   obj = { parents : [VirtualEngineer], 
+Virtualengineer.new = func {
+   obj = { parents : [Virtualengineer,System], 
 
            autopilotsystem : nil,
            fuelsystem : nil,
 
+           navigation : Navigation.new(),
+
            GROUNDSEC : 30.0,
            CRUISESEC : 15.0,
            rates : 0.0,
+
+           crew : nil,
+           crewcontrol : nil,
+           engineer : nil,
+           engines : nil,
+           lighting : nil,
 
            SAFEFT : 1500.0,
 
@@ -509,35 +38,11 @@ VirtualEngineer.new = func {
 
            CRUISEMACH : 1.95,
 
-           SUBSONICKT : 480,                                 # estimated ground speed
-           FLIGHTKT : 150,                                   # minimum ground speed
-
-           grounkt : 0,
-
            MAXPERCENT : 53.6,                                # maximum on ground
            CGPERCENT : 0.3,
 
-           crew : nil,
-           crewcontrol : nil,
-           engineer : nil,
-           engines : nil,
-           waypoints : nil,
-           route : nil,
-
            activ : constant.FALSE,
-           state : "",
-
-           SUBSONICKGPH : 20000,                                # subsonic consumption
-
-           kgph : 0,
-
-           NOFUELKG : -999,
-
-           totalkg : 0,
-           estimatedfuelkg : [ 0.0, 0.0, 0.0 ],
-
-           slave : { "cg" : nil, "fuel" : nil, "ins" : nil },
-           noinstrument : { "agl" : "", "altitude" : "", "mach" : "" }
+           state : ""
          };
 
     obj.init();
@@ -545,136 +50,68 @@ VirtualEngineer.new = func {
     return obj;
 }
 
-VirtualEngineer.init = func {
-    propname = getprop("/systems/crew/engineer/slave/cg");
-    me.slave["cg"] = props.globals.getNode(propname);
-    propname = getprop("/systems/crew/engineer/slave/fuel");
-    me.slave["fuel"] = props.globals.getNode(propname);
-    propname = getprop("/systems/crew/engineer/slave/ins");
-    me.slave["ins"] = props.globals.getNode(propname);
-
-    me.noinstrument["agl"] = getprop("/systems/crew/engineer/noinstrument/agl");
-    me.noinstrument["altitude"] = getprop("/systems/crew/engineer/noinstrument/altitude");
-    me.noinstrument["mach"] = getprop("/systems/crew/engineer/noinstrument/mach");
+Virtualengineer.init = func {
+    me.init_ancestor("/systems/crew/engineer");
 
     me.crew = props.globals.getNode("/systems/crew");
     me.crewcontrol = props.globals.getNode("/controls/crew");
     me.engineer = props.globals.getNode("/systems/crew/engineer");
     me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
-    me.waypoints = props.globals.getNode("/autopilot/route-manager").getChildren("wp");
-    me.route = props.globals.getNode("/systems/crew/engineer/route").getChildren("wp");
 
-    settimer( engineercron, me.CRUISESEC );
+    settimer( func { me.reset(); }, me.CRUISESEC );
+    settimer( func { me.schedule(); }, me.CRUISESEC );
 }
 
-VirtualEngineer.set_relation = func( autopilot, fuel ) {
+Virtualengineer.set_relation = func( autopilot, fuel ) {
     me.autopilotsystem = autopilot;
     me.fuelsystem = fuel;
 }
 
-VirtualEngineer.toggleexport = func {
-   if( me.crew.getChild("serviceable").getValue() ) {
-       if( !me.crewcontrol.getChild("engineer").getValue() ) {
-           me.crewcontrol.getChild("engineer").setValue(constant.TRUE);
-       
+Virtualengineer.toggleexport = func {
+   if( !me.crewcontrol.getChild("engineer").getValue() ) {
+       me.crewcontrol.getChild("engineer").setValue(constant.TRUE);
+
+       if( me.crew.getChild("serviceable").getValue() ) {
            me.supervisor();
        }
        else {
-           me.crewcontrol.getChild("engineer").setValue(constant.FALSE);
+           me.engineer.getChild("activ").setValue(constant.FALSE);
        }
-
-       me.crew.getChild("minimized").setValue(constant.FALSE);
+   }
+   else {
+       me.crewcontrol.getChild("engineer").setValue(constant.FALSE);
    }
 }
 
-engineercron = func {
-   engineercrew.schedule();
+Virtualengineer.reset = func {
+    me.setweighthuman();
 }
 
-VirtualEngineer.schedule = func {
+Virtualengineer.schedule = func {
     if( me.crew.getChild("serviceable").getValue() ) {
         me.supervisor();
     }
     else {
         me.rates = me.GROUNDSEC;
+        me.engineer.getChild("activ").setValue(constant.FALSE);
     }
 
-    me.navigation();
+    me.navigation.schedule();
 
-    settimer( engineercron, me.rates );
+    settimer( func { me.schedule(); }, me.rates );
 }
 
-# for FDM debug
-VirtualEngineer.navigation = func {
-   groundfps = me.slave["ins"].getChild("ground-speed-fps").getValue();
-   if( groundfps == nil ) {
-       groundfps = 0.0;
-   }
-   me.groundkt = groundfps * constant.FPSTOKT;
-
-   # waypoint
-   id = me.waypoints[0].getChild("id").getValue();
-   distnm = me.waypoints[0].getChild("dist").getValue();
-   me.estimatefuel( 0, id, distnm );
-
-   # next
-   id = me.waypoints[1].getChild("id").getValue();
-   distnm = me.waypoints[1].getChild("dist").getValue();
-   me.estimatefuel( 1, id, distnm );
-
-   # last
-   id = getprop("/autopilot/route-manager/wp-last/id"); 
-   distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
-   me.estimatefuel( 2, id, distnm );
-
-
-   # display
-   for( i = 0; i < 3; i=i+1 ) {
-        me.route[i].getChild("fuel-kg").setValue(me.estimatedfuelkg[i]);
-   }
-}
-
-VirtualEngineer.estimatefuel = func( index, id, distnm ) {
-   if( id != "" and distnm != nil ) {
-       # refresh
-       if( index == 0 ) {
-           me.totalkg = me.slave["fuel"].getChild("total-kg").getValue();
-
-           # on ground
-           if( me.groundkt < me.FLIGHTKT ) {
-               me.groundkt = me.SUBSONICKT;
-               me.kgph = me.SUBSONICKGPH;
-           }
-           else {
-               # gauge is NOT REAL
-               me.kgph = me.slave["fuel"].getChild("fuel-flow-kg_ph").getValue();
-           }
-       }
-
-       ratio = distnm / me.groundkt;
-       fuelkg = me.kgph * ratio;
-       fuelkg = me.totalkg - fuelkg;
-       if( fuelkg < 0 ) {
-           fuelkg = 0;
-       }
-   }
-   else {
-       fuelkg = me.NOFUELKG;
-   }
-
-   me.estimatedfuelkg[index] = fuelkg;
-}
-
-VirtualEngineer.supervisor = func {
+Virtualengineer.supervisor = func {
     me.activ = constant.FALSE;
     me.rates = me.GROUNDSEC;
+
 
     if( me.crewcontrol.getChild("engineer").getValue() ) {
         me.state = "";
 
-        me.aglft = getprop(me.noinstrument["agl"]);
+        me.aglft = me.noinstrument["agl"].getValue();
         if( me.aglft > constantaero.APPROACHFT ) {
-            me.rates = me.CRUISESEC;
+            me.rates = constant.rates( me.CRUISESEC );
         }
 
         checklist = me.crew.getChild("checklist").getValue();
@@ -689,6 +126,9 @@ VirtualEngineer.supervisor = func {
             me.flight();
         }
 
+
+        me.allways();
+
         me.engineer.getChild("state").setValue(me.state);
         me.engineer.getChild("time").setValue(getprop("/sim/time/gmt-string"));
     }
@@ -696,12 +136,16 @@ VirtualEngineer.supervisor = func {
     me.engineer.getChild("activ").setValue(me.activ);
 }
 
-VirtualEngineer.flight = func {
+Virtualengineer.allways = func {
+    me.setweight();
+}
+
+Virtualengineer.flight = func {
     me.fuel();
     me.rating();
 }
 
-VirtualEngineer.afterlanding = func {
+Virtualengineer.afterlanding = func {
     me.fuel();
     me.rating();
 
@@ -716,7 +160,7 @@ VirtualEngineer.afterlanding = func {
     }
 }
 
-VirtualEngineer.rating = func {
+Virtualengineer.rating = func {
     rating = "takeoff";
     flight = "climb";
 
@@ -729,7 +173,7 @@ VirtualEngineer.rating = func {
     }
 
     else {
-        speedmach = getprop(me.noinstrument["mach"]);
+        speedmach = me.noinstrument["mach"].getValue();
         # see check-list
         if( speedmach > me.CRUISEMACH ) {
             flight = "cruise";
@@ -739,7 +183,7 @@ VirtualEngineer.rating = func {
     me.applyrating( flight, rating );
 }
 
-VirtualEngineer.applyrating = func( flight, rating ) {
+Virtualengineer.applyrating = func( flight, rating ) {
     for( i=0; i<4; i=i+1 ) {
          flightnow = me.engines[i].getChild("rating-flight").getValue();
          if( flightnow != flight ) {
@@ -756,14 +200,41 @@ VirtualEngineer.applyrating = func( flight, rating ) {
     }
 }
 
-VirtualEngineer.fuel = func {
+# set weight datum
+Virtualengineer.setweight = func {
+    # after fuel loading
+    reset = me.slave["fuel2"].getChild("reset").getValue();
+
+    # after 1 reset of fuel consumed
+    if( !reset ) {
+        for( i = 0; i < 4; i = i+1 ) {
+             if( me.slave["fuel-consumed"][i].getChild("reset").getValue() ) {
+                 reset = constant.TRUE;
+                 break;
+             }
+        }
+    }
+
+    if( reset ) {
+        me.log("set-weight");
+        me.setweighthuman();
+    }
+}
+
+Virtualengineer.setweighthuman = func {
+    totalkg = me.slave["fuel"].getChild("total-kg").getValue();
+    me.fuelsystem.setweighthuman( totalkg );
+}
+
+Virtualengineer.fuel = func {
+    forward = constant.FALSE;
+    aft = constant.FALSE;
+
     if( me.slave["cg"].getChild("serviceable").getValue() ) {
         max = me.slave["cg"].getChild("max-percent").getValue();
         min = me.slave["cg"].getChild("min-percent").getValue();
         cg = me.slave["cg"].getChild("percent").getValue();
 
-        forward = constant.FALSE;
-        aft = constant.FALSE;
         engine = constant.FALSE;
         afttrim = constant.FALSE;
 
@@ -781,7 +252,7 @@ VirtualEngineer.fuel = func {
         }
 
         # above 250 kt beyond 10000 ft
-        elsif( getprop(me.noinstrument["altitude"]) > constantaero.APPROACHFT ) {
+        elsif( me.noinstrument["altitude"].getValue() > constantaero.APPROACHFT ) {
             mean = min + ( max - min ) / 2;
 
             if( cg < mean - me.CGPERCENT ) {
@@ -800,9 +271,15 @@ VirtualEngineer.fuel = func {
 
         me.applyfuel( forward, aft, engine, afttrim );
     }
+
+    me.engineer.getNode("cg/aft").setValue(aft);
+    me.engineer.getNode("cg/forward").setValue(forward);
 }
 
-VirtualEngineer.applyfuel = func( forward, aft, engine, afttrim) {
+Virtualengineer.applyfuel = func( forward, aft, engine, afttrim) {
+    # no 2D panel
+    me.fuelsystem.aft2Dhuman( constant.FALSE );
+
     # pumps
     empty5 = me.fuelsystem.empty("5");
     empty5A = me.fuelsystem.empty("5A");
@@ -814,19 +291,39 @@ VirtualEngineer.applyfuel = func( forward, aft, engine, afttrim) {
     empty10 = me.fuelsystem.empty("10");
     empty11 = me.fuelsystem.empty("11");
 
-    me.fuelsystem.togglepump( "5", constant.TRUE );
-    me.fuelsystem.togglepump( "5A", !empty5A );
-    me.fuelsystem.togglepump( "6", !empty6 );
-    me.fuelsystem.togglepump( "7", constant.TRUE );
-    me.fuelsystem.togglepump( "7A", !empty7A );
-    me.fuelsystem.togglepump( "8", !empty8 );
-    me.fuelsystem.togglepump( "9", constant.TRUE );
-    me.fuelsystem.togglepump( "10", !empty10 );
-    me.fuelsystem.togglepump( "11", constant.TRUE );
+
+    # shut all unused pumps
+    me.fuelsystem.pumphuman( "5", !empty5 );
+    me.fuelsystem.pumphuman( "7", !empty7 );
+    me.fuelsystem.pumphuman( "5A", constant.FALSE );
+    me.fuelsystem.pumphuman( "7A", constant.FALSE );
+
+    if( empty5 and !empty6 ) {
+        pump6 = constant.TRUE;
+    }
+    else {
+        pump6 = constant.FALSE;
+    }
+    me.fuelsystem.pumphuman( "6", pump6 );
+
+    if( empty7 and !empty8 ) {
+        pump8 = constant.TRUE;
+    }
+    else {
+        pump8 = constant.FALSE;
+    }
+    me.fuelsystem.pumphuman( "8", pump8 );
+
+    # engineer normally uses auto trim
+    me.fuelsystem.pumphuman( "9", constant.FALSE );
+    me.fuelsystem.pumphuman( "10", constant.FALSE );
+    me.fuelsystem.pumphuman( "11", constant.FALSE );
+
+    me.fuelsystem.shutstandbyhuman();
 
 
     # aft trim
-    me.fuelsystem.toggleafttrim( afttrim );
+    me.fuelsystem.afttrimhuman( afttrim );
 
 
     # transfers auxilliary tanks
@@ -834,82 +331,70 @@ VirtualEngineer.applyfuel = func( forward, aft, engine, afttrim) {
     if( empty5 and empty6 ) {
         if( !empty5A ) {
             auxilliary = constant.TRUE;
-            me.fuelsystem.toggletransvalve( "5A", constant.TRUE );
+            me.fuelsystem.transvalvehuman( "5A", constant.TRUE );
+            me.fuelsystem.pumphuman( "5A", constant.TRUE );
         }
     }
     if( empty7 and empty8 ) {
         if( !empty7A ) {
             auxilliary = constant.TRUE;
-            me.fuelsystem.toggletransvalve( "7A", constant.TRUE );
+            me.fuelsystem.transvalvehuman( "7A", constant.TRUE );
+            me.fuelsystem.pumphuman( "7A", constant.TRUE );
         }
     }
     if( auxilliary ) {
         me.log("auxilliary");
     }
 
+
     # low level (emergency)
     if( me.fuelsystem.lowlevel() ) {
+        me.fuelsystem.offautohuman();
+
         # avoid aft CG  
         if( ( forward or !aft ) and !empty11 ) {
             me.log("low-level");
-            me.fuelsystem.toggleengine( constant.TRUE );
-            me.fuelsystem.toggleforward( constant.TRUE );
+            me.fuelsystem.pumphuman( "11", constant.TRUE );
+            me.fuelsystem.enginehuman( constant.TRUE );
+            me.fuelsystem.forwardhuman( constant.TRUE );
         }
         elsif( !empty9 or !empty10 ) {
             me.log("low-level");
-            me.fuelsystem.toggleengine( constant.TRUE );
-            me.fuelsystem.toggleaft( constant.TRUE );
+            me.fuelsystem.pumphuman( "9", !empty9 );
+            me.fuelsystem.pumphuman( "10", !empty10 );
+            me.fuelsystem.enginehuman( constant.TRUE );
+            me.fuelsystem.afthuman( constant.TRUE );
         }
         # last fuel
         elsif( !empty11 ) {
             me.log("low-level");
-            me.fuelsystem.toggleengine( constant.TRUE );
-            me.fuelsystem.toggleforward( constant.TRUE );
+            me.fuelsystem.pumphuman( "11", constant.TRUE );
+            me.fuelsystem.enginehuman( constant.TRUE );
+            me.fuelsystem.forwardhuman( constant.TRUE );
         }
         else {
-            me.fuelsystem.toggleengine( constant.FALSE );
+            me.fuelsystem.enginehuman( constant.FALSE );
         }
     }
 
     # aft transfert
     elsif( aft ) {
-        if( !empty9 or !empty10 ) {
-            if( !me.fuelsystem.full( "11" ) ) {
-                me.fuelsystem.toggleengine( constant.FALSE );
-            }
-            elsif( engine ) {
-                me.fuelsystem.toggleengine( constant.TRUE );
-            }
-            me.fuelsystem.toggleaft( constant.TRUE );
-        }
-        else {
-            me.fuelsystem.toggleengine( constant.FALSE );
-        }
+        me.fuelsystem.forwardautohuman( constant.FALSE );
     }
 
     # forward transfert
     elsif( forward ) {
-        if( !empty11 ) {
-            if( !me.fuelsystem.full( "9" ) ) {
-                me.fuelsystem.toggleengine( constant.FALSE );
-            }
-            elsif( engine ) {
-                me.fuelsystem.toggleengine( constant.TRUE );
-            }
-            me.fuelsystem.toggleforward( constant.TRUE );
-        }
-        else {
-            me.fuelsystem.toggleengine( constant.FALSE );
-        }
+        me.fuelsystem.forwardautohuman( constant.TRUE );
     }
 
     # no transfert
     else {
-        me.fuelsystem.toggleengine( constant.FALSE );
+        me.fuelsystem.offautohuman();
+        me.fuelsystem.enginehuman( constant.FALSE );
     }
 }
 
-VirtualEngineer.log = func( message ) {
+Virtualengineer.log = func( message ) {
     me.state = me.state ~ " " ~ message;
 }
 
@@ -918,43 +403,52 @@ VirtualEngineer.log = func( message ) {
 # VIRTUAL COPILOT
 # ===============
 
-VirtualCopilot = {};
+Virtualcopilot = {};
 
-VirtualCopilot.new = func {
-   obj = { parents : [VirtualCopilot],
+Virtualcopilot.new = func {
+   obj = { parents : [Virtualcopilot,System],
 
            autopilotsystem : nil,
+           mwssystem : nil,
  
            copilot : nil,
            crew : nil,
            crewcontrol : nil,
            flaps : nil,
            lighting : nil,
+           mwscontrol : nil,
 
            CRUISESEC : 30.0,
            TAKEOFFSEC : 5.0,
            rates : 0.0,
 
            SOUNDMACH : 1.0,
+           VLA41KT : 300.0,
+           VLA15KT : 250.0,
            GEARKT : 220.0,
+           MARGINKT : 25.0,
 
            speedkt : 0.0,
 
-           MACHFT : 25000.0,                              # altitude for Mach speed
+           FL41FT : 41000.0,
+           FL15FT : 15000.0,
            NOSEFT : 600.0,                                # nose retraction
-           GEARFT : 250.0,                                # gear retraction
            MARGINFT : 100.0,
 
            aglft : 0.0,
            altitudeft : 0.0,
 
+           STEPFTPM : 100.0,
+           GLIDEFTPM : -1500.0,                           # best glide (guess)
+
+           descentftpm : 0.0,
+
+           recalled : { "before" : constant.FALSE, "after" : constant.FALSE },
+
            activ : constant.FALSE,
            emergency : constant.FALSE,
            state : "",
-           checklist : "",
-
-           slave : { "asi" : nil },
-           noinstrument : { "agl" : "", "altitude" : "", "mach" : "" }
+           checklist : ""
          };
 
    obj.init();
@@ -962,121 +456,136 @@ VirtualCopilot.new = func {
    return obj;
 };
 
-VirtualCopilot.init = func {
+Virtualcopilot.init = func {
    me.copilot = props.globals.getNode("/systems/crew/copilot");
    me.crew = props.globals.getNode("/systems/crew");
    me.crewcontrol = props.globals.getNode("/controls/crew");
    me.flaps = props.globals.getNode("/sim/flaps");
    me.lighting = props.globals.getNode("/controls/lighting");
+   me.mwscontrol = props.globals.getNode("/controls/mws");
 
-   propname = getprop("/systems/crew/copilot/slave/asi");
-   me.slave["asi"] = props.globals.getNode(propname);
+   me.init_ancestor("/systems/crew/copilot");
 
-   me.noinstrument["agl"] = getprop("/systems/crew/copilot/noinstrument/agl");
-   me.noinstrument["altitude"] = getprop("/systems/crew/copilot/noinstrument/altitude");
-   me.noinstrument["mach"] = getprop("/systems/crew/copilot/noinstrument/mach");
-
-   settimer( copilotcron, me.TAKEOFFSEC );
+   settimer( func { me.slowschedule(); }, me.TAKEOFFSEC );
 }
 
-VirtualCopilot.set_relation = func( autopilot ) {
+Virtualcopilot.set_relation = func( autopilot, mws ) {
    me.autopilotsystem = autopilot;
+   me.mwssystem = mws;
 }
 
-VirtualCopilot.toggleexport = func {
-   if( me.crew.getChild("serviceable").getValue() ) {
-       if( !me.crewcontrol.getChild("copilot").getValue() ) {
-           me.crewcontrol.getChild("copilot").setValue(constant.TRUE);
-       
-           me.supervisor();
-       }
-       else {
-           me.crewcontrol.getChild("copilot").setValue(constant.FALSE);
-       }
-
-       me.crew.getChild("minimized").setValue(constant.FALSE);
-   }
-}
-
-copilotcron = func {
-   copilotcrew.schedule();
-}
-
-VirtualCopilot.schedule = func {
-   if( me.crew.getChild("serviceable").getValue() ) {
-       me.supervisor();
+Virtualcopilot.toggleexport = func {
+   if( !me.crewcontrol.getChild("copilot").getValue() ) {
+       me.crewcontrol.getChild("copilot").setValue(constant.TRUE);
    }
    else {
-       me.rates = me.CRUISESEC;
+       me.crewcontrol.getChild("copilot").setValue(constant.FALSE);
    }
-
-   settimer( copilotcron, me.rates );
+       
+   if( me.crew.getChild("serviceable").getValue() ) {
+       me.unexpected();
+       me.routine();
+   }
+   else {
+       me.copilot.getChild("activ").setValue(constant.FALSE);
+   }
 }
 
-VirtualCopilot.supervisor = func {
-   me.activ = constant.FALSE;
+Virtualcopilot.schedule = func {
+   if( me.crew.getChild("serviceable").getValue() ) {
+       me.unexpected();
+   }
+}
+
+Virtualcopilot.slowschedule = func {
+   if( me.crew.getChild("serviceable").getValue() ) {
+       me.routine();
+   }
+   else {
+       me.rates = constant.rates( me.CRUISESEC );
+       me.copilot.getChild("activ").setValue(constant.FALSE);
+   }
+
+   settimer( func { me.slowschedule(); }, me.rates );
+}
+
+Virtualcopilot.unexpected = func {
    me.emergency = constant.FALSE;
-   me.rates = me.CRUISESEC;
 
    if( me.crewcontrol.getChild("copilot").getValue() ) {
        me.state = "";
        me.checklist = me.crew.getChild("checklist").getValue();
 
-       me.altitudeft = getprop(me.noinstrument["altitude"]);
+       me.speedkt = me.noinstrument["airspeed"].getValue();
+       me.altitudeft = me.noinstrument["altitude"].getValue();
 
        # 4 engines flame out
-       if( me.engine4flameout() ) {
-       }
+       me.engine4flameout();
 
-       # normal procedures
-       elsif ( me.normal() ) {
-       }
-
-       else {
-           me.autopilotsystem.real();
-       }
-
-       me.copilot.getChild("state").setValue(me.state);
-       me.copilot.getChild("time").setValue(getprop("/sim/time/gmt-string"));
+       me.timestamp();
    }
 
    else {
-       me.autopilotsystem.real();
+       me.autopilotsystem.realhuman();
    }
 
    me.crew.getChild("emergency").setValue(me.emergency);
+}
+
+Virtualcopilot.routine = func {
+   me.activ = constant.FALSE;
+   me.rates = constant.rates( me.CRUISESEC );
+
+   if( !me.crew.getChild("emergency").getValue() ) {
+       if( me.crewcontrol.getChild("copilot").getValue() ) {
+           me.state = "";
+           me.checklist = me.crew.getChild("checklist").getValue();
+
+           # normal procedures
+           if ( me.normal() ) {
+           }
+
+           else {
+               me.autopilotsystem.realhuman();
+           }
+
+           me.timestamp();
+       }
+
+       else {
+           me.autopilotsystem.realhuman();
+       }
+   }
+
    me.copilot.getChild("activ").setValue(me.activ);
 }
 
-VirtualCopilot.engine4flameout = func {
+Virtualcopilot.engine4flameout = func {
    # hold heading and speed, during engine start
    if( me.altitudeft > constantaero.APPROACHFT and me.checklist == "flight" ) {
        if( me.autopilotsystem.no_voltage() ) {
-           me.activ = constant.TRUE;
            me.emergency = constant.TRUE;
            me.log("no-autopilot");
 
-           me.autopilotsystem.virtual();
-           me.autopilotsystem.apenable();
+           me.autopilotsystem.virtualhuman();
 
            me.keepheading();
 
            me.keepspeed();
        }
    }
-
-   return me.activ;
 }
 
 # instrument failures ignored
-VirtualCopilot.normal = func {
+Virtualcopilot.normal = func {
    if( me.checklist != "gate" and me.checklist != "parking" ) {
-       if( getprop(me.noinstrument["mach"]) < me.SOUNDMACH ) {
+       if( me.noinstrument["mach"].getValue() < me.SOUNDMACH ) {
            me.activ = constant.TRUE;
 
            me.speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
 
-           me.aglft = getprop(me.noinstrument["agl"]);
+           me.altitudeft = me.noinstrument["altitude"].getValue();
+           me.aglft = me.noinstrument["agl"].getValue();
 
            if( me.checklist == "landing" ) {
                me.beforelanding();
@@ -1086,39 +595,56 @@ VirtualCopilot.normal = func {
                me.afterlanding();
            }
            else {
+               if( me.checklist == "holding" ) {
+                   me.holding();
+               }
+
                if( me.aglft <= constantaero.APPROACHFT ) {
                    me.rates = me.TAKEOFFSEC;
                }
 
-               if( me.aglft <= me.GEARFT  ) {
+               if( me.aglft <= constantaero.GEARFT  ) {
                    me.beforetakeoff();
                }
                else {
                    me.aftertakeoff();
                }
            }
+
+           me.allways();
        }
    }
 
    return me.activ;
 }
 
-VirtualCopilot.beforetakeoff = func {
+Virtualcopilot.holding = func {
+   me.recallreset();
+}
+
+Virtualcopilot.beforetakeoff = func {
    me.nosevisor( constant.FALSE, constant.FALSE );
    me.landinglights( constant.FALSE );
+
+   # may take off with inhibit
+   if( !me.mwscontrol.getChild("inhibit").getValue() ) {
+       me.recall("before");
+   }
 
    setprop("/instrumentation/takeoff-monitor/armed",constant.TRUE);
 }
 
-VirtualCopilot.aftertakeoff = func {
+Virtualcopilot.aftertakeoff = func {
    me.landinggear( constant.FALSE );
    me.nosevisor( constant.FALSE, constant.FALSE );
    me.landinglights( constant.FALSE );
 
+   me.recall("after");
+
    setprop("/instrumentation/takeoff-monitor/armed",constant.FALSE);
 }
 
-VirtualCopilot.beforelanding = func {
+Virtualcopilot.beforelanding = func {
    me.landinggear( constant.TRUE );
    me.nosevisor( constant.TRUE, constant.FALSE );
    me.landinglights( constant.TRUE );
@@ -1132,30 +658,68 @@ VirtualCopilot.beforelanding = func {
    setprop("/instrumentation/takeoff-monitor/armed",constant.FALSE);
 }
 
-VirtualCopilot.afterlanding = func {
+Virtualcopilot.afterlanding = func {
    me.nosevisor( constant.TRUE, constant.TRUE );
 }
 
-VirtualCopilot.keepspeed = func {
-   if( me.altitudeft > me.MACHFT and !me.autopilotsystem.is_mach_pitch() ) {
-       me.log("mach-pitch");
-       me.autopilotsystem.apmachpitchexport();
-   }
-   elsif( me.altitudeft <= me.MACHFT and !me.autopilotsystem.is_speed_pitch() ) {
-       me.log("speed-pitch");
-       me.autopilotsystem.apspeedpitchexport();
+Virtualcopilot.allways = func {
+}
+
+Virtualcopilot.recallreset = func {
+   if( me.recalled["before"] and me.recalled["after"] ) {
+       me.recalled["before"] = constant.FALSE;
+       me.recalled["after"] = constant.FALSE;
    }
 }
 
-VirtualCopilot.keepheading = func {
+Virtualcopilot.recall = func( name ) {
+   # only once
+   if( !me.recalled[name] ) {
+       me.mwssystem.recallexport();
+       me.recalled[name] = constant.TRUE;
+   }
+}
+
+Virtualcopilot.keepspeed = func {
+   if( !me.autopilotsystem.is_vertical_speed() ) {
+       me.log("vertical-speed");
+       me.autopilotsystem.apverticalexport();
+       me.descentftpm = me.GLIDEFTPM;
+   }
+
+   # the copilot follows the best glide
+   me.adjustglide();  
+   me.autopilotsystem.verticalspeed( me.descentftpm );
+}
+
+Virtualcopilot.adjustglide = func {
+   if( me.altitudeft > me.FL41FT ) {
+       minkt = me.VLA41KT;
+   }
+   elsif( me.altitudeft > me.FL15FT and me.altitudeft <= me.FL41FT ) {
+       minkt = me.VLA15KT;
+   }
+   else {
+       minkt = constantaero.V2FULLKT;
+   }
+
+   # stay above VLA (lowest allowed speed)
+   minkt = minkt + me.MARGINKT;
+
+   if( me.speedkt < minkt ) {
+       me.descentftpm = me.descentftpm - me.STEPFTPM;
+   }
+}
+
+Virtualcopilot.keepheading = func {
    if( !me.autopilotsystem.is_lock_magnetic() ) {
        me.log("magnetic");
        me.autopilotsystem.apheadingholdexport();
    }
 }
 
-VirtualCopilot.landinggear = func( landing ) {
-   if( !landing and me.aglft > me.GEARFT ) {
+Virtualcopilot.landinggear = func( landing ) {
+   if( !landing and me.aglft > constantaero.GEARFT ) {
        if( me.speedkt > me.GEARKT ) {
            controls.gearDown(-1);
        }
@@ -1167,8 +731,8 @@ VirtualCopilot.landinggear = func( landing ) {
    }
 }
 
-VirtualCopilot.nosevisor = func( landing, taxi ) {
-    change = constant.TRUE;
+Virtualcopilot.nosevisor = func( landing, taxi ) {
+    targetpos = 0;
 
     # nose 5 degrees
     if( taxi ) {
@@ -1184,9 +748,6 @@ VirtualCopilot.nosevisor = func( landing, taxi ) {
             # visor down
             elsif( me.altitudeft < ( constantaero.APPROACHFT - me.MARGINFT ) ) {
                 targetpos = 1;
-            }
-            else {
-                change = constant.FALSE;
             }
         }
 
@@ -1208,26 +769,24 @@ VirtualCopilot.nosevisor = func( landing, taxi ) {
     }
 
     # not to us to create the property
-    if( change ) {
-        child = me.flaps.getChild("current-setting");
-        if( child == nil ) {
-            currentpos = 0;
-        }
-        else {
-            currentpos = child.getValue();
-        }
+    child = me.flaps.getChild("current-setting");
+    if( child == nil ) {
+        currentpos = 0;
+    }
+    else {
+        currentpos = child.getValue();
+    }
 
-        if( targetpos <= 1 or ( targetpos > 1 and me.speedkt < me.GEARKT ) ) {
-            pos = targetpos - currentpos;
-            if( pos != 0 ) {
-                controls.flapsDown( pos );
-                me.log("nose");
-            }
+    if( targetpos <= 1 or ( targetpos > 1 and me.speedkt < me.GEARKT ) ) {
+        pos = targetpos - currentpos;
+        if( pos != 0 ) {
+            controls.flapsDown( pos );
+            me.log("nose");
         }
     }
 }
 
-VirtualCopilot.landinglights = func( landing ) {
+Virtualcopilot.landinglights = func( landing ) {
     if( !landing and me.aglft > me.NOSEFT ) {
         me.landingtaxi( constant.FALSE );
         me.mainlanding( constant.FALSE );
@@ -1242,26 +801,154 @@ VirtualCopilot.landinglights = func( landing ) {
     }
 }
 
-VirtualCopilot.mainlanding = func( set ) {
+Virtualcopilot.mainlanding = func( set ) {
     for( i=0; i < 2; i=i+1 ) {
          me.lighting.getNode("external/main-landing[" ~ i ~ "]/extend").setValue( set );
          me.lighting.getNode("external/main-landing[" ~ i ~ "]/on").setValue( set );
     }
 }
 
-VirtualCopilot.landingtaxi = func( set ) {
+Virtualcopilot.landingtaxi = func( set ) {
     for( i=0; i < 2; i=i+1 ) {
          me.lighting.getNode("external/landing-taxi[" ~ i ~ "]/extend").setValue( set );
          me.lighting.getNode("external/landing-taxi[" ~ i ~ "]/on").setValue( set );
     }
 }
 
-VirtualCopilot.taxiturn = func( set ) {
+Virtualcopilot.taxiturn = func( set ) {
     for( i=0; i < 2; i=i+1 ) {
          me.lighting.getNode("external/taxi-turn[" ~ i ~ "]/on").setValue( set );
     }
 }
 
-VirtualCopilot.log = func( message ) {
+Virtualcopilot.timestamp = func {
+    me.copilot.getChild("state").setValue(me.state);
+    me.copilot.getChild("time").setValue(getprop("/sim/time/gmt-string"));
+}
+
+Virtualcopilot.log = func( message ) {
     me.state = me.state ~ " " ~ message;
+}
+
+
+# ==========
+# NAVIGATION
+# ==========
+
+Navigation = {};
+
+Navigation.new = func {
+   obj = { parents : [Navigation,System], 
+
+           ap : nil,
+           engineer : nil,
+           navigation : nil,
+           waypoints : nil,
+
+           DESTINATIONFT : 0.0,
+
+           altitudeft : 0.0,
+
+           NOSPEEDFPM : 0.0,
+
+           SUBSONICKT : 480,                                 # estimated ground speed
+           FLIGHTKT : 150,                                   # minimum ground speed
+
+           groundkt : 0,
+
+           SUBSONICKGPH : 20000,                             # subsonic consumption
+
+           kgph : 0,
+
+           NOFUELKG : -999,
+
+           totalkg : 0
+         };
+
+   obj.init();
+
+   return obj;
+}
+
+Navigation.init = func {
+    me.init_ancestor("/systems/crew/engineer");
+
+    me.ap = props.globals.getNode("/controls/autoflight");
+    me.engineer = props.globals.getNode("/systems/crew/engineer");
+    me.navigation = props.globals.getNode("/systems/crew/engineer/navigation").getChildren("wp");
+    me.waypoints = props.globals.getNode("/autopilot/route-manager").getChildren("wp");
+}
+
+Navigation.schedule = func {
+   groundfps = me.slave["ins"].getNode("ground-speed-fps").getValue();
+   if( groundfps != nil ) {
+       me.groundkt = groundfps * constant.FPSTOKT;
+   }
+
+   me.totalkg = me.slave["fuel"].getChild("total-kg").getValue();
+
+   # on ground
+   if( me.groundkt < me.FLIGHTKT ) {
+       me.groundkt = me.SUBSONICKT;
+       me.kgph = me.SUBSONICKGPH;
+   }
+   else {
+       # gauge is NOT REAL
+       me.kgph = me.slave["fuel"].getNode("fuel-flow-kg_ph").getValue();
+   }
+
+   me.altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+   selectft = me.ap.getChild("altitude-select").getValue();
+
+
+   # waypoint
+   for( i = 0; i < 3; i = i+1 ) {
+        if( i < 2 ) {
+            id = me.waypoints[i].getChild("id").getValue();
+            distnm = me.waypoints[i].getChild("dist").getValue();
+            targetft = selectft;
+        }
+
+        # last
+        else {
+            id = getprop("/autopilot/route-manager/wp-last/id"); 
+            distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
+            targetft = me.DESTINATIONFT;
+        }
+
+        fuelkg = me.estimatefuelkg( id, distnm );
+        speedfpm = me.estimatespeedfpm( id, distnm, targetft );
+
+        # display for FDM debug, or navigation
+        me.navigation[i].getChild("fuel-kg").setValue(fuelkg);
+        me.navigation[i].getChild("speed-fpm").setValue(speedfpm);
+   }
+}
+
+Navigation.estimatespeedfpm = func( id, distnm, targetft ) {
+   if( id != "" and distnm != nil ) {
+       minutes = ( distnm / me.groundkt ) * constant.HOURTOMINUTE;
+       speedfpm = ( targetft - me.altitudeft ) / minutes;
+   }
+   else {
+       speedfpm = me.NOSPEEDFPM;
+   }
+
+   return speedfpm;
+}
+
+Navigation.estimatefuelkg = func( id, distnm ) {
+   if( id != "" and distnm != nil ) {
+       ratio = distnm / me.groundkt;
+       fuelkg = me.kgph * ratio;
+       fuelkg = me.totalkg - fuelkg;
+       if( fuelkg < 0 ) {
+           fuelkg = 0;
+       }
+   }
+   else {
+       fuelkg = me.NOFUELKG;
+   }
+
+   return fuelkg;
 }

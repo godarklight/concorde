@@ -3,7 +3,7 @@
 <!-- Hydraulical pump status :
 
      - pump off load.
-     - pump shut off.
+     - pump valve off.
 -->
 
 <PropertyList>
@@ -12,8 +12,8 @@
  <h-base>28</h-base>
 
  <params>
-  <onload-pump>/controls/hydraulic/circuits/circuit[0]/onloada</onload-pump>
-  <shut-pump>/controls/hydraulic/circuits/circuit[0]/shuta</shut-pump>
+  <onload-pump>/controls/hydraulic/circuit[0]/onload[0]</onload-pump>
+  <shut-pump>/controls/hydraulic/circuit[0]/valve[0]</shut-pump>
  </params>
 
 
@@ -28,9 +28,7 @@
     <condition>
      <and>
       <property alias="../../../../../../params/onload-pump"/>
-      <not>
-       <property alias="../../../../../../../params/shut-pump"/>
-      </not>
+      <property alias="../../../../../../params/shut-pump"/>
      </and>
     </condition>
     <texture>

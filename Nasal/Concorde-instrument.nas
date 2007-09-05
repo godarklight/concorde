@@ -13,19 +13,23 @@ VMO = {};
 VMO.new = func {
    obj = { parents : [VMO],
 
-           weight : Weight.new(),
+           WEIGHTMINLB : 0,
+           WEIGHTMLAXLB : 0,
+
+           WEIGHTMINTON : 105,
+           WEIGHTMAXTON : 165,
 
            weightlb : 0.0,
 
 # lowest CG
-           find0 : "",
+           find0 : constant.FALSE,
            vminkt0 : 0.0,
            vmaxkt0 : 0.0,
            altminft0 : 0.0,
            altmaxft0 : 0.0,
            vmokt0 : 0.0,
 # CG
-           find : "",
+           find : constant.FALSE,
            vminkt : 0.0,
            vmaxkt : 0.0,
            altminft : 0.0,
@@ -33,11 +37,18 @@ VMO.new = func {
            vmokt : 0.0
          };
 
+   obj.init();
+
    return obj;
 };
 
-VMO.schedule = func( altitudeft ) {
-       me.weightlb = me.weight.getweightlb();
+VMO.init = func {
+   me.WEIGHTMINLB = me.WEIGHTMINTON * constant.TONTOLB;
+   me.WEIGHTMLAXLB = me.WEIGHTMAXTON * constant.TONTOLB;
+}
+
+VMO.getvmokt = func( altitudeft, acweightlb ) {
+       me.weightlb = acweightlb;
 
        me.speed105t( altitudeft );
        me.speed165t( altitudeft );
@@ -65,28 +76,30 @@ VMO.interpolateft = func( find, vmokt, vmaxkt, vminkt, altmaxft, altminft, altit
 }
 
 VMO.interpolatealtitude0 = func( altitudeft ) {
-   vmokt = me.interpolateft( me.find0, me.vmokt0, me.vmaxkt0, me.vminkt0, me.altmaxft0, me.altminft0, altitudeft );
+   vmokt = me.interpolateft( me.find0, me.vmokt0, me.vmaxkt0, me.vminkt0,
+                             me.altmaxft0, me.altminft0, altitudeft );
 
    return vmokt;
 }
 
 VMO.interpolatealtitude = func( altitudeft ) {
-   vmokt = me.interpolateft( me.find, me.vmokt, me.vmaxkt, me.vminkt, me.altmaxft, me.altminft, altitudeft );
+   vmokt = me.interpolateft( me.find, me.vmokt, me.vmaxkt, me.vminkt,
+                             me.altmaxft, me.altminft, altitudeft );
 
    return vmokt;
 }
 
 # interpolate between 105 and 165 t
 VMO.interpolateweight = func( vmokt, vmokt0 ) {
-   if( me.weightlb > me.weight.WEIGHTMINLB and me.weightlb < me.weight.WEIGHTMLAXLB ) {
+   if( me.weightlb > me.WEIGHTMINLB and me.weightlb < me.WEIGHTMLAXLB ) {
        offsetkt = vmokt - vmokt0;
-       stepweight = me.weightlb - me.weight.WEIGHTMINLB;
-       offsetweight = me.weight.WEIGHTMLAXLB - me.weight.WEIGHTMINLB;
+       stepweight = me.weightlb - me.WEIGHTMINLB;
+       offsetweight = me.WEIGHTMLAXLB - me.WEIGHTMINLB;
        ratio = stepweight / offsetweight;
        stepkt = offsetkt * ratio;
        vmokt = vmokt0 + stepkt;
    }
-   elsif( me.weightlb <= me.weight.WEIGHTMINLB ) {
+   elsif( me.weightlb <= me.WEIGHTMINLB ) {
        vmokt = vmokt0;
    }
 
@@ -95,8 +108,8 @@ VMO.interpolateweight = func( vmokt, vmokt0 ) {
 
 # below 105 t
 VMO.speed105t = func( altitudeft ) {
-   me.find0 = "";
-   if( me.weightlb < me.weight.WEIGHTMLAXLB ) {
+   me.find0 = constant.FALSE;
+   if( me.weightlb < me.WEIGHTMLAXLB ) {
        me.find0 = constant.TRUE;
        # at startup, altitude may be negativ
        if( altitudeft <= 0 ) {
@@ -152,8 +165,8 @@ VMO.speed105t = func( altitudeft ) {
 
 # above 165 t
 VMO.speed165t = func( altitudeft ) {
-   me.find = "";
-   if( me.weightlb > me.weight.WEIGHTMINLB ) {
+   me.find = constant.FALSE;
+   if( me.weightlb > me.WEIGHTMINLB ) {
        me.find  = constant.TRUE;
        # at startup, altitude may be negativ
        if( altitudeft <= 0 ) {
@@ -213,13 +226,13 @@ VMO.speed165t = func( altitudeft ) {
 Airspeed = {};
 
 Airspeed.new = func {
-   obj = { parents : [Airspeed],
+   obj = { parents : [Airspeed,System],
 
            vmo : VMO.new(),
 
-           OVERSPEEDKT : 10.0,
+           instrument : nil,
 
-           slave : { "altimeter": nil }
+           OVERSPEEDKT : 10.0
          };
 
    obj.init();
@@ -228,23 +241,25 @@ Airspeed.new = func {
 };
 
 Airspeed.init = func {
-   propname = getprop("/instrumentation/airspeed-indicator[0]/slave/altimeter");
-   me.slave["altimeter"] = props.globals.getNode(propname);
+   me.init_ancestor("/instrumentation/airspeed-indicator[0]");
+
+   me.instrument = props.globals.getNode("/instrumentation/airspeed-indicator");
 }
 
 # maximum operating speed (kt)
 Airspeed.schedule = func {
    altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
    if( altitudeft != nil ) {
-       vmokt = me.vmo.schedule( altitudeft ) ;
+       weightlb = me.slave["weight"].getChild("weight-lb").getValue();
+       vmokt = me.vmo.getvmokt( altitudeft, weightlb ) ;
 
        # captain + standby (?)
-       setprop("/instrumentation/airspeed-indicator[0]/vmo-kt", vmokt);
+       me.instrument.getChild("vmo-kt").setValue(vmokt);
        setprop("/instrumentation/airspeed-standby/vmo-kt", vmokt);
 
        # overspeed
        maxkt = vmokt + me.OVERSPEEDKT;
-       setprop("/instrumentation/airspeed-indicator/overspeed-kt", maxkt);
+       me.instrument.getChild("overspeed-kt").setValue(maxkt);
    }
 }  
 
@@ -253,14 +268,14 @@ Airspeed.schedule = func {
 # CENTER OF GRAVITY
 # =================
 
-CenterGravity= {};
+Centergravity= {};
 
-CenterGravity.new = func {
-   obj = { parents : [CenterGravity],
+Centergravity.new = func {
+   obj = { parents : [Centergravity,System],
 
-           slave : { "mach" : nil },
+           vmo : VMO.new(),
 
-           weight : Weight.new(),
+           instrument : nil,
 
            C0stationin : 736.22,                   # 18.7 m from nose
            C0in : 1089,                            # C0  90'9"
@@ -269,19 +284,21 @@ CenterGravity.new = func {
            NONEMAX : 100.0,                        # exterme forward cureve is not complete
 
 # lowest CG
-           find0 : "",
+           find0 : constant.FALSE,
            corrmin0 : 0.0,
            corrmax0 : 0.0,
            machmin0 : 0.0,
            machmax0 : 0.0,
            cgmin0 : 0.0,
+
 # CG
-           find : "",
+           find : constant.FALSE,
            corrmin : 0.0,
            corrmax : 0.0,
            machmin : 0.0,
            machmax : 0.0,
            cgmin : 0.0,
+
 # forward CG
            cgmax : 0.0
          };
@@ -291,29 +308,96 @@ CenterGravity.new = func {
    return obj;
 };
 
-CenterGravity.init = func {
-   propname = getprop("/instrumentation/cg[0]/slave/mach");
-   me.slave["mach"] = props.globals.getNode(propname);
+Centergravity.init = func {
+   me.init_ancestor("/instrumentation/cg[0]");
+
+   me.instrument = props.globals.getNode("/instrumentation/cg");
 }
 
-# center of gravity
-CenterGravity.schedule = func {
-   cgxin = getprop("/instrumentation/cg/sensor-in");
+Centergravity.red_cg = func {
+   percent = me.instrument.getChild("percent").getValue();
+
+   if( percent <= me.instrument.getChild("min-percent").getValue() or
+       percent >= me.instrument.getChild("max-percent").getValue() ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Centergravity.takeoffexport = func {
+   me.schedule();
+}
+
+Centergravity.schedule = func {
+   cgxin = me.instrument.getChild("cg-x-in").getValue();
 
    # % of aerodynamic chord C0 (18.7 m from nose).
    cgxin = cgxin - me.C0stationin;
-   setprop("/instrumentation/cg/cg-x-in", cgxin);
+   me.instrument.getChild("cg-c0-in").setValue(cgxin);
 
    # C0 = 90'9".
    cgfraction = cgxin / me.C0in;
    cgpercent = cgfraction * 100;
-   setprop("/instrumentation/cg/percent", cgpercent);
+   me.instrument.getChild("percent").setValue(cgpercent);
 
    me.corridorcg();
 }  
 
+# corridor of center of gravity
+Centergravity.corridorcg = func {
+   weightlb = me.slave["weight"].getChild("weight-lb").getValue();
+
+   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+
+   # ===============
+   # normal corridor
+   # ===============
+   me.min105t( weightlb, speedmach );
+   me.interpolate0( speedmach );
+
+   me.min165t( weightlb, speedmach );
+   me.interpolate( speedmach );
+
+   # interpolate between 105 and 165 t
+   cgmin = me.interpolateweight( weightlb );
+
+
+   # normal corridor maximum
+   # ------------------------
+   cgmax = me.max( speedmach );
+
+   me.instrument.getChild("min-percent").setValue(cgmin);
+   me.instrument.getChild("max-percent").setValue(cgmax);
+
+
+   # ================
+   # extreme corridor
+   # ================
+   # CAUTION : overwrites cgmin0 !!!
+   me.extrememin165t( weightlb, speedmach );
+   me.interpolate( speedmach );
+
+   me.extrememin105t( weightlb, speedmach );
+   me.interpolate0( speedmach );
+
+   # interpolate between 105 and 165 t
+   cgmin = me.interpolateweight( weightlb );
+
+
+   # extreme corridor maximum
+   # ------------------------
+   cgmax = me.extrememax( speedmach );
+
+   me.instrument.getChild("min-extreme-percent").setValue(cgmin);
+   me.instrument.getChild("max-extreme-percent").setValue(cgmax);
+}  
+
 # normal below 105 t, extreme above 165 t
-CenterGravity.min = func( speedmach ) {
+Centergravity.min = func( speedmach ) {
     me.find0 = constant.TRUE;
 
     if( speedmach <= 0.82 ) {
@@ -351,10 +435,10 @@ CenterGravity.min = func( speedmach ) {
 }
 
 # extreme below 105 t 
-CenterGravity.extrememin105t = func( weightlb, speedmach ) {
-   me.find0 = "";
+Centergravity.extrememin105t = func( weightlb, speedmach ) {
+   me.find0 = constant.FALSE;
 
-   if( weightlb < me.weight.WEIGHTMLAXLB ) {
+   if( weightlb < me.vmo.WEIGHTMLAXLB ) {
        me.find0 = constant.TRUE;
        if( speedmach <= 0.82 ) {
            me.find0 = constant.FALSE;
@@ -392,10 +476,10 @@ CenterGravity.extrememin105t = func( weightlb, speedmach ) {
 }
 
 # extreme above 165 t
-CenterGravity.extrememin165t = func( weightlb, speedmach ) {
-   me.find = "";
+Centergravity.extrememin165t = func( weightlb, speedmach ) {
+   me.find = constant.FALSE;
 
-   if( weightlb > me.weight.WEIGHTMLAXLB ) {
+   if( weightlb > me.vmo.WEIGHTMLAXLB ) {
        me.min( speedmach );
    }
 
@@ -408,19 +492,19 @@ CenterGravity.extrememin165t = func( weightlb, speedmach ) {
 }
 
 # normal below 105 t
-CenterGravity.min105t = func( weightlb, speedmach ) {
-   me.find0 = "";
+Centergravity.min105t = func( weightlb, speedmach ) {
+   me.find0 = constant.FALSE;
 
-   if( weightlb < me.weight.WEIGHTMLAXLB ) {
+   if( weightlb < me.vmo.WEIGHTMLAXLB ) {
        me.min( speedmach );
    }
 }
 
 # normal above 165 t
-CenterGravity.min165t = func( weightlb, speedmach ) {
-   me.find  = "";
+Centergravity.min165t = func( weightlb, speedmach ) {
+   me.find  = constant.FALSE;
 
-   if( weightlb > me.weight.WEIGHTMINLB ) {
+   if( weightlb > me.vmo.WEIGHTMINLB ) {
        me.find = constant.TRUE;
        # at startup, speed may be negativ
        if( speedmach <= 0 ) {
@@ -463,7 +547,7 @@ CenterGravity.min165t = func( weightlb, speedmach ) {
 }
 
 # normal forward
-CenterGravity.max = func( speedmach ) {
+Centergravity.max = func( speedmach ) {
    me.find = constant.TRUE;
 
    # at startup, speed may be negativ
@@ -499,7 +583,7 @@ CenterGravity.max = func( speedmach ) {
    }
 
    # Max performance Takeoff
-   if( getprop("/instrumentation/cg/max-performance-to" ) ) {
+   if( me.instrument.getChild("max-performance-to" ).getValue() ) {
        if( speedmach <= 0 ) {
            me.find = constant.FALSE;
            me.cgmax = 54.2;
@@ -517,13 +601,14 @@ CenterGravity.max = func( speedmach ) {
        }
    }
 
-   cgmax = me.interpolatemach( me.find, me.cgmax, me.corrmax, me.corrmin, me.machmax, me.machmin, speedmach );
+   cgmax = me.interpolatemach( me.find, me.cgmax, me.corrmax, me.corrmin,
+                               me.machmax, me.machmin, speedmach );
 
    return cgmax;
 }
 
 # extreme forward
-CenterGravity.extrememax = func( speedmach ) {
+Centergravity.extrememax = func( speedmach ) {
    me.find = constant.TRUE;
 
    # defined only within a Mach range
@@ -554,12 +639,13 @@ CenterGravity.extrememax = func( speedmach ) {
      me.cgmax = me.NONEMAX;
    }
 
-   cgmax = me.interpolatemach( me.find, me.cgmax, me.corrmax, me.corrmin, me.machmax, me.machmin, speedmach );
+   cgmax = me.interpolatemach( me.find, me.cgmax, me.corrmax, me.corrmin,
+                               me.machmax, me.machmin, speedmach );
 
    return cgmax;
 }
 
-CenterGravity.interpolatemach = func( find, cg, corrmax, corrmin, machmax, machmin, speedmach ) {
+Centergravity.interpolatemach = func( find, cg, corrmax, corrmin, machmax, machmin, speedmach ) {
    if( find ) {
      offsetcg = corrmax - corrmin;
      offsetmach = machmax - machmin;
@@ -572,21 +658,23 @@ CenterGravity.interpolatemach = func( find, cg, corrmax, corrmin, machmax, machm
    return cg;
 }
 
-CenterGravity.interpolate0 = func( speedmach ) {
-   me.cgmin0 = me.interpolatemach( me.find0, me.cgmin0, me.corrmax0, me.corrmin0, me.machmax0, me.machmin0, speedmach );
+Centergravity.interpolate0 = func( speedmach ) {
+   me.cgmin0 = me.interpolatemach( me.find0, me.cgmin0, me.corrmax0, me.corrmin0,
+                                   me.machmax0, me.machmin0, speedmach );
 }
 
-CenterGravity.interpolate = func( speedmach ) {
-   me.cgmin = me.interpolatemach( me.find, me.cgmin, me.corrmax, me.corrmin, me.machmax, me.machmin, speedmach );
+Centergravity.interpolate = func( speedmach ) {
+   me.cgmin = me.interpolatemach( me.find, me.cgmin, me.corrmax, me.corrmin,
+                                  me.machmax, me.machmin, speedmach );
 }
 
 # interpolate between 105 and 165 t
-CenterGravity.interpolateweight = func( weightlb ) {
-   if( weightlb > me.weight.WEIGHTMINLB and weightlb < me.weight.WEIGHTMLAXLB ) {
+Centergravity.interpolateweight = func( weightlb ) {
+   if( weightlb > me.vmo.WEIGHTMINLB and weightlb < me.vmo.WEIGHTMLAXLB ) {
        if( me.cgmin0 != me.NONEMIN and me.cgmin != me.NONEMIN ) {
            offsetcg = me.cgmin - me.cgmin0;
-           stepweight = weightlb - me.weight.WEIGHTMINLB;
-           offsetweight = me.weight.WEIGHTMLAXLB - me.weight.WEIGHTMINLB;
+           stepweight = weightlb - me.vmo.WEIGHTMINLB;
+           offsetweight = me.vmo.WEIGHTMLAXLB - me.vmo.WEIGHTMINLB;
            ratio = stepweight / offsetweight;
            stepcg = offsetcg * ratio;
            cgmin = me.cgmin0 + stepcg;
@@ -600,7 +688,7 @@ CenterGravity.interpolateweight = func( weightlb ) {
            cgmin = me.cgmin0;
        }
    }
-   elsif( weightlb <= me.weight.WEIGHTMINLB ) {
+   elsif( weightlb <= me.vmo.WEIGHTMINLB ) {
        cgmin = me.cgmin0;
    }
    else {
@@ -610,55 +698,6 @@ CenterGravity.interpolateweight = func( weightlb ) {
    return cgmin;
 }
 
-# corridor of center of gravity
-CenterGravity.corridorcg = func {
-   weightlb = me.weight.getweightlb();
-
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
-
-   # ===============
-   # normal corridor
-   # ===============
-   me.min105t( weightlb, speedmach );
-   me.interpolate0( speedmach );
-
-   me.min165t( weightlb, speedmach );
-   me.interpolate( speedmach );
-
-   # interpolate between 105 and 165 t
-   cgmin = me.interpolateweight( weightlb );
-
-
-   # normal corridor maximum
-   # ------------------------
-   cgmax = me.max( speedmach );
-
-   setprop("/instrumentation/cg/min-percent", cgmin);
-   setprop("/instrumentation/cg/max-percent", cgmax);
-
-
-   # ================
-   # extreme corridor
-   # ================
-   # CAUTION : overwrites cgmin0 !!!
-   me.extrememin165t( weightlb, speedmach );
-   me.interpolate( speedmach );
-
-   me.extrememin105t( weightlb, speedmach );
-   me.interpolate0( speedmach );
-
-   # interpolate between 105 and 165 t
-   cgmin = me.interpolateweight( weightlb );
-
-
-   # extreme corridor maximum
-   # ------------------------
-   cgmax = me.extrememax( speedmach );
-
-   setprop("/instrumentation/cg/min-extreme-percent", cgmin);
-   setprop("/instrumentation/cg/max-extreme-percent", cgmax);
-}  
-
 
 # ==========
 # MACH METER
@@ -667,34 +706,31 @@ CenterGravity.corridorcg = func {
 Machmeter= {};
 
 Machmeter.new = func {
-   obj = { parents : [Machmeter],
+   obj = { parents : [Machmeter,System],
 
            vmo : VMO.new(),
-           weight : Weight.new(),
+
+           instrument : nil,
 
            MAXMMO : 2.04,
            GROUNDKT : 50.0,
 
 # lowest CG
-           find0 : "",
+           find0 : constant.FALSE,
            corrmin0 : 0.0,
            corrmax0 : 0.0,
            machmax0 : 0.0,
            cgmin0 : 0.0,
            cgmax0 : 0.0,
 # CG
-           find : "",
+           find : constant.FALSE,
            corrmin : 0.0,
            corrmax : 0.0,
            machmax : 0.0,
            cgmin : 0.0,
            cgmax : 0.0,
 # foward CG
-           machmin : 0.0,
-
-
-           noinstrument : { "airspeed" : "", "mach" : "", "temperature" : "" },
-           slave : { "altimeter" : nil, "cg" : nil }
+           machmin : 0.0
          };
 
    obj.init();
@@ -703,14 +739,68 @@ Machmeter.new = func {
 };
 
 Machmeter.init = func {
-   me.noinstrument["airspeed"] = getprop("/instrumentation/mach-indicator/noinstrument/airspeed");
-   me.noinstrument["mach"] = getprop("/instrumentation/mach-indicator/noinstrument/mach");
-   me.noinstrument["temperature"] = getprop("/instrumentation/mach-indicator/noinstrument/temperature");
+   me.init_ancestor("/instrumentation/mach-indicator");
 
-   propname = getprop("/instrumentation/mach-indicator/slave/altimeter");
-   me.slave["altimeter"] = props.globals.getNode(propname);
-   propname = getprop("/instrumentation/mach-indicator/slave/cg");
-   me.slave["cg"] = props.globals.getNode(propname);
+   me.instrument = props.globals.getNode("/instrumentation/mach-indicator");
+}
+
+# Mach corridor
+Machmeter.schedule = func {
+   # =============
+   # MMO
+   # =============
+   weightlb = me.slave["weight"].getChild("weight-lb").getValue();
+   altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+   if( altitudeft != nil ) {
+       vmokt = me.vmo.getvmokt( altitudeft, weightlb ) ;
+
+       # speed of sound
+       soundkt = me.getsoundkt();
+
+       # mach number
+       mmomach = vmokt / soundkt;
+       # MMO Mach 2.04
+       if( mmomach > me.MAXMMO ) {
+           mmomach = me.MAXMMO;
+       }
+       # always mach number (= makes the consumption constant)
+       elsif( altitudeft >= constantaero.MAXCRUISEFT ) {
+           mmomach = me.MAXMMO;
+           vmokt = mmomach * soundkt;
+       }
+
+       me.instrument.getChild("mmo-mach").setValue(mmomach);
+
+       # overspeed
+       maxmach = mmomach + 0.04;
+       me.instrument.getChild("overspeed-mach").setValue(maxmach);
+   }
+
+
+   # ================
+   # corridor maximum
+   # ================
+   cgpercent = me.slave["cg"].getChild("percent").getValue();
+
+   me.max105t( weightlb, cgpercent );
+   me.max165t( weightlb, cgpercent );
+
+   machmax0 = me.interpolatecg( me.find0, me.machmax0, me.corrmax0, me.corrmin0, me.cgmax0, me.cgmin0, cgpercent );
+   machmax = me.interpolatecg( me.find, me.machmax, me.corrmax, me.corrmin, me.cgmax, me.cgmin, cgpercent );
+
+   # interpolate between 105 and 165 t
+   machmax = me.interpolateweight( weightlb, machmax, machmax0 );
+
+
+   # ================
+   # corridor minimum
+   # ================
+   me.min( cgpercent );
+
+   machmin = me.interpolatecg( me.find, me.machmin, me.corrmax, me.corrmin, me.cgmax, me.cgmin, cgpercent );
+
+   me.instrument.getChild("min").setValue(machmin);
+   me.instrument.getChild("max").setValue(machmax);
 }
 
 Machmeter.interpolatecg = func( find, machmax, corrmax, corrmin, cgmax, cgmin, cgpercent ) {
@@ -728,15 +818,15 @@ Machmeter.interpolatecg = func( find, machmax, corrmax, corrmin, cgmax, cgmin, c
 
 # interpolate between 105 and 165 t
 Machmeter.interpolateweight = func( weightlb, machmax, machmax0 ) {
-   if( weightlb > me.weight.WEIGHTMINLB and weightlb < me.weight.WEIGHTMLAXLB ) {
+   if( weightlb > me.vmo.WEIGHTMINLB and weightlb < me.vmo.WEIGHTMLAXLB ) {
        offsetmach = machmax - machmax0;
-       stepweight = weightlb - me.weight.WEIGHTMINLB;
-       offsetweight = me.weight.WEIGHTMLAXLB - me.weight.WEIGHTMINLB;
+       stepweight = weightlb - me.vmo.WEIGHTMINLB;
+       offsetweight = me.vmo.WEIGHTMLAXLB - me.vmo.WEIGHTMINLB;
        ratio = stepweight / offsetweight;
        stepmach = offsetmach * ratio;
        machmax = machmax0 + stepmach;
    }
-   elsif( weightlb <= me.weight.WEIGHTMINLB ) {
+   elsif( weightlb <= me.vmo.WEIGHTMINLB ) {
        machmax = machmax0;
    }
 
@@ -745,8 +835,8 @@ Machmeter.interpolateweight = func( weightlb, machmax, machmax0 ) {
 
 # normal corridor below 105 t
 Machmeter.max105t = func( weightlb, cgpercent ) {
-   me.find0 = "";
-   if( weightlb < me.weight.WEIGHTMLAXLB ) {
+   me.find0 = constant.FALSE;
+   if( weightlb < me.vmo.WEIGHTMLAXLB ) {
        me.find0 = constant.TRUE;
        if( cgpercent <= 51.8 ) {
            me.find0 = constant.FALSE;
@@ -785,8 +875,8 @@ Machmeter.max105t = func( weightlb, cgpercent ) {
 
 # normal corridor above 165 t
 Machmeter.max165t = func( weightlb, cgpercent ) {
-   me.find  = "";
-   if( weightlb > me.weight.WEIGHTMINLB ) {
+   me.find  = constant.FALSE;
+   if( weightlb > me.vmo.WEIGHTMINLB ) {
        me.find  = constant.TRUE;
        if( cgpercent <= 51.8 ) {
            me.find = constant.FALSE;
@@ -854,7 +944,7 @@ Machmeter.min = func( cgpercent ) {
    }
 
    # Max performance Takeoff
-   if( getprop("/instrumentation/cg/max-performance-to" ) ) {
+   if( me.slave["cg"].getChild("max-performance-to").getValue() ) {
        if( cgpercent <= 54.2 ) {
            me.find = constant.FALSE;
            me.machmin = 0.0;
@@ -872,112 +962,19 @@ Machmeter.min = func( cgpercent ) {
 # speed of sound
 Machmeter.getsoundkt = func {
    # simplification
-   speedkt = getprop(me.noinstrument["airspeed"]);
+   speedkt = me.noinstrument["airspeed"].getValue();
 
    if( speedkt > me.GROUNDKT ) {
-       speedmach = getprop(me.noinstrument["mach"]);
+       speedmach = me.noinstrument["mach"].getValue();
        soundkt = speedkt / speedmach;
    }
    else {
-       Tdegc = getprop(me.noinstrument["temperature"]);
+       Tdegc = me.noinstrument["temperature"].getValue();
        soundmps = constant.newtonsoundmps( Tdegc );
        soundkt = soundmps * constant.MPSTOKT;
    }
 
    return soundkt;
-}
-
-# Mach corridor
-Machmeter.schedule = func {
-   # =============
-   # MMO
-   # =============
-   altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
-   if( altitudeft != nil ) {
-       vmokt = me.vmo.schedule( altitudeft ) ;
-
-       # speed of sound
-       soundkt = me.getsoundkt();
-
-       # mach number
-       mmomach = vmokt / soundkt;
-       # MMO Mach 2.04
-       if( mmomach > me.MAXMMO ) {
-           mmomach = me.MAXMMO;
-       }
-       # always mach number (= makes the consumption constant)
-       elsif( altitudeft >= constantaero.MAXCRUISEFT ) {
-           mmomach = me.MAXMMO;
-           vmokt = mmomach * soundkt;
-       }
-
-       setprop("/instrumentation/mach-indicator/mmo-mach", mmomach);
-
-       # overspeed
-       maxmach = mmomach + 0.04;
-       setprop("/instrumentation/mach-indicator/overspeed-mach", maxmach);
-   }
-
-
-   cgpercent = me.slave["cg"].getChild("percent").getValue();
-   weightlb = me.weight.getweightlb();
-
-
-   # ================
-   # corridor maximum
-   # ================
-   me.max105t( weightlb, cgpercent );
-   me.max165t( weightlb, cgpercent );
-
-   machmax0 = me.interpolatecg( me.find0, me.machmax0, me.corrmax0, me.corrmin0, me.cgmax0, me.cgmin0, cgpercent );
-   machmax = me.interpolatecg( me.find, me.machmax, me.corrmax, me.corrmin, me.cgmax, me.cgmin, cgpercent );
-
-   # interpolate between 105 and 165 t
-   machmax = me.interpolateweight( weightlb, machmax, machmax0 );
-
-
-   # ================
-   # corridor minimum
-   # ================
-   me.min( cgpercent );
-
-   machmin = me.interpolatecg( me.find, me.machmin, me.corrmax, me.corrmin, me.cgmax, me.cgmin, cgpercent );
-
-   setprop("/instrumentation/mach-indicator/min", machmin);
-   setprop("/instrumentation/mach-indicator/max", machmax);
-}
-
-
-# ======
-# WEIGHT
-# ======
-Weight = {};
-
-Weight.new = func {
-   obj = { parents : [Weight],
-
-           WEIGHTMINLB : 0,
-           WEIGHTMLAXLB : 0,
-
-           sensor : nil
-         };
-
-    obj.init();
-
-   return obj;
-};
-
-Weight.init = func {
-   me.WEIGHTMINLB = 105 * constant.TONTOLB;
-   me.WEIGHTMLAXLB = 165 * constant.TONTOLB;
-
-   me.sensor = props.globals.getNode("/fdm/jsbsim/inertia");
-}
-
-Weight.getweightlb = func {
-   weightlb = me.sensor.getChild("weight-lbs").getValue();
-
-   return weightlb;
 }
 
 
@@ -988,15 +985,18 @@ Weight.getweightlb = func {
 Inertial = {};
 
 Inertial.new = func {
-   obj = { parents : [Inertial],
+   obj = { parents : [Inertial,System],
 
+           inss : nil,
+           last : nil,
            waypoints : nil,
 
+           MAXWPTNM : 9999.0,
            MAXXTKNM : 999.99,
-           bearingdeg : 0.0,
-           waypoint : "",
 
-           slave : { "electric" : nil }
+           bearingdeg : 0.0,
+
+           waypoint : ""
          };
 
    obj.init();
@@ -1005,10 +1005,88 @@ Inertial.new = func {
 };
 
 Inertial.init = func {
+   me.inss = props.globals.getNode("/instrumentation").getChildren("ins");
+   me.last = props.globals.getNode("/autopilot/route-manager/wp-last");
    me.waypoints = props.globals.getNode("/autopilot/route-manager").getChildren("wp");
 
-   propname = getprop("/instrumentation/tcas/slave/electric");
-   me.slave["electric"] = props.globals.getNode(propname);
+   me.init_ancestor("/instrumentation/ins[0]");
+}
+
+Inertial.schedule = func {
+   if( me.slave["electric"].getChild("specific").getValue() ) {
+       me.track();
+       me.display();
+       me.alertlight();
+   } 
+}
+
+Inertial.computeexport = func {
+   if( me.slave["electric"].getChild("specific").getValue() ) {
+       me.display();
+   } 
+}
+
+Inertial.alertlight = func {
+   alert = constant.FALSE;
+
+   value = me.waypoints[0].getChild("dist").getValue();
+   if( value != nil and value != "" ) {
+       speedfps = me.inss[0].getNode("computed/ground-speed-fps").getValue();
+       rangenm = speedfps * constant.MINUTETOSECOND * constant.FEETTONM;
+
+       # alert 1 minute before track change
+       if( value < rangenm ) {
+           alert = constant.TRUE;
+       }
+   } 
+
+   # send to all remote INS
+   for( i = 0; i < 3; i = i+1 ) {
+        me.inss[i].getNode("light/alert").setValue(alert);
+   }
+}
+
+Inertial.display = func {
+   for( i = 0; i < 3; i = i+1 ) {
+        selector = me.inss[i].getNode("control/selector").getValue();
+
+        j = me.inss[i].getNode("control/waypoint").getValue();
+
+        # last waypoint
+        if( j == 3 ) {
+            node = me.last;
+        }
+        else {
+            j = j - 1;
+            node = me.waypoints[j];
+        }
+
+        ident = "";
+        left = -999;
+        right = "";
+
+        value = node.getChild("id").getValue();
+        if( value != nil ) {
+            ident = value;
+        }
+
+        if( selector == 2 ) {
+            value = node.getChild("dist").getValue();
+            if( value !=  nil ) {
+                if( value > me.MAXWPTNM ) {
+                    left = me.MAXWPTNM;
+                }
+                else {
+                    left = value;
+                }
+                right = node.getChild("eta").getValue();
+            }
+        }
+
+        me.inss[i].getNode("data/ident").setValue(ident);
+        me.inss[i].getNode("data/left").setValue(left);
+        me.inss[i].getNode("data/right").setValue(right);
+   }
 }
 
 Inertial.track = func {
@@ -1019,7 +1097,7 @@ Inertial.track = func {
 
        # initial track
        me.bearingdeg = getprop("/autopilot/settings/true-heading-deg");
-       setprop("/instrumentation/ins/leg-true-course-deg",me.bearingdeg);
+       me.inss[0].getNode("computed/leg-true-course-deg").setValue(me.bearingdeg);
    }
 
    # deviation from initial track
@@ -1039,15 +1117,9 @@ Inertial.track = func {
            offsetnm = - me.MAXXTKNM;
        }
 
-       setprop("/instrumentation/ins/leg-course-deviation-deg",offsetdeg);
-       setprop("/instrumentation/ins/leg-course-error-nm",offsetnm);
+       me.inss[0].getNode("computed/leg-course-deviation-deg").setValue(offsetdeg);
+       me.inss[0].getNode("computed/leg-course-error-nm").setValue(offsetnm);
    }
-}
-
-Inertial.schedule = func {
-   if( me.slave["electric"].getChild("specific").getValue() ) {
-       me.track();
-   } 
 }
 
 
@@ -1058,9 +1130,9 @@ Inertial.schedule = func {
 Temperature = {};
 
 Temperature.new = func {
-   obj = { parents : [Temperature],
+   obj = { parents : [Temperature,System],
 
-           slave : { "altimeter" : nil, "electric" : nil }
+           instrument : nil
          };
 
    obj.init();
@@ -1069,10 +1141,9 @@ Temperature.new = func {
 };
 
 Temperature.init = func {
-   propname = getprop("/instrumentation/temperature/slave/altimeter");
-   me.slave["altimeter"] = props.globals.getNode(propname);
-   propname = getprop("/instrumentation/tcas/slave/electric");
-   me.slave["electric"] = props.globals.getNode(propname);
+   me.init_ancestor("/instrumentation/temperature");
+
+   me.instrument = props.globals.getNode("/instrumentation/temperature");
 }
 
 # International Standard Atmosphere temperature
@@ -1081,7 +1152,7 @@ Temperature.isa = func {
 
    isadegc = constant.temperature_degc( altft );
 
-   setprop("/instrumentation/temperature/isa-degc",isadegc);
+   me.instrument.getChild("isa-degc").setValue(isadegc);
 }
 
 Temperature.schedule = func {
@@ -1098,7 +1169,9 @@ Temperature.schedule = func {
 Markerbeacon = {};
 
 Markerbeacon.new = func {
-   obj = { parents : [Markerbeacon]
+   obj = { parents : [Markerbeacon],
+
+           TESTSEC : 1.5
          };
    return obj;
 };
@@ -1111,15 +1184,15 @@ Markerbeacon.testexport = func {
 
    # may press button during test
    if( !outer and !middle and !inner ) {
-       testmarker();
+       me.testmarker();
    }
 }
 
-# cannot make a settimer on class member
-testmarker = func {
+Markerbeacon.testmarker = func {
    outer = getprop("/instrumentation/marker-beacon/test-outer");
    middle = getprop("/instrumentation/marker-beacon/test-middle");
    inner = getprop("/instrumentation/marker-beacon/test-inner");
+
    if( !outer and !middle and !inner ) {
        setprop("/instrumentation/marker-beacon/test-outer",constant.TRUE);
        end = constant.FALSE;
@@ -1141,7 +1214,7 @@ testmarker = func {
 
    # re-schedule the next call
    if( !end ) {
-       settimer(testmarker, 1.5);
+       settimer(func { me.testmarker(); }, me.TESTSEC);
    }
 }
 
@@ -1155,7 +1228,6 @@ Generic = {};
 Generic.new = func {
    obj = { parents : [Generic],
 
-#           generic : aircraft.light.new("/instrumentation/generic",1.5,0.2)
            generic : aircraft.light.new("/instrumentation/generic",[ 1.5,0.2 ])
          };
 
@@ -1176,15 +1248,14 @@ Generic.init = func {
 Traffic = {};
 
 Traffic.new = func {
-   obj = { parents : [Traffic],
+   obj = { parents : [Traffic,System],
 
            aircrafts : nil,
+           instrument : nil,
            traffics : nil,
            nbtraffics : 0,
 
-           NOTRAFFIC : 9999,
-
-           slave : { "altimeter" : nil, "electric" : nil }
+           NOTRAFFIC : 9999
          };
 
    obj.init();
@@ -1193,11 +1264,9 @@ Traffic.new = func {
 };
 
 Traffic.init = func {
-   propname = getprop("/instrumentation/tcas/slave/altimeter");
-   me.slave["altimeter"] = props.globals.getNode(propname);
-   propname = getprop("/instrumentation/tcas/slave/electric");
-   me.slave["electric"] = props.globals.getNode(propname);
+   me.init_ancestor("/instrumentation/tcas");
 
+   me.instrument = props.globals.getNode("/instrumentation/tcas");
    me.traffics = props.globals.getNode("/instrumentation/tcas/traffics").getChildren("traffic");
 
    me.clear();
@@ -1214,7 +1283,7 @@ Traffic.schedule = func {
    me.nbtraffics = 0;
 
    if( me.slave["electric"].getChild("specific").getValue() ) {
-       if( getprop("/instrumentation/tcas/serviceable") ) {
+       if( me.instrument.getChild("serviceable").getValue() ) {
            altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
            if( altitudeft == nil ) {
                altitudeft = 0.0;
@@ -1264,5 +1333,124 @@ Traffic.schedule = func {
 
    # no traffic
    me.clear();
-   setprop("/instrumentation/tcas/nb-traffics",me.nbtraffics);
+   me.instrument.getChild("nb-traffics").setValue(me.nbtraffics);
+}
+
+
+# ===========
+# AUDIO PANEL
+# ===========
+
+AudioPanel = {};
+
+AudioPanel.new = func {
+   obj = { parents : [AudioPanel],
+
+           thecrew : nil
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+AudioPanel.init = func {
+   me.thecrew = props.globals.getNode("/controls/audio/crew");
+}
+
+AudioPanel.headphones = func( marker, panel, seat ) {
+   # hears nothing outside
+   adf1 = 0.0;
+   adf2 = 0.0;
+   comm1 = 0.0;
+   comm2 = 0.0;
+   nav1 = 0.0;
+   nav2 = 0.0;
+
+   # each crew member has an audio panel
+   if( panel ) {
+       audio = me.thecrew.getNode(seat);
+
+       if( audio != nil ) {
+           adf1  = audio.getNode("adf[0]/volume").getValue();
+           adf2  = audio.getNode("adf[1]/volume").getValue();
+           comm1 = audio.getNode("comm[0]/volume").getValue();
+           comm2 = audio.getNode("comm[1]/volume").getValue();
+           nav1  = audio.getNode("nav[0]/volume").getValue();
+           nav2  = audio.getNode("nav[1]/volume").getValue();
+       }
+   }
+
+   me.send( adf1, adf2, comm1, comm2, nav1, nav2, marker );
+}
+
+AudioPanel.send = func( adf1, adf2, comm1, comm2, nav1, nav2, marker ) {
+   setprop("/instrumentation/adf[0]/volume-norm",adf1);
+   setprop("/instrumentation/adf[1]/volume-norm",adf2);
+   setprop("/instrumentation/comm[0]/volume",comm1);
+   setprop("/instrumentation/comm[1]/volume",comm2);
+   setprop("/instrumentation/nav[1]/volume",nav1);
+   setprop("/instrumentation/nav[2]/volume",nav2);
+   setprop("/instrumentation/marker-beacon/audio-btn",marker);
+}
+
+
+# =============
+# SPEED UP TIME
+# =============
+
+Daytime = {};
+
+Daytime.new = func {
+   obj = { parents : [Daytime,System],
+
+           thesim : nil,
+           warpnode : nil,
+
+           SPEEDUPSEC : 1.0,
+
+           CLIMBFTPMIN : 3500,                                           # max climb rate
+           MAXSTEPFT : 0.0,                                              # altitude change for step
+
+           lastft : 0.0
+         };
+
+   obj.init();
+
+   return obj;
+}
+
+Daytime.init = func {
+    climbftpsec = me.CLIMBFTPMIN / constant.MINUTETOSECOND;
+    me.MAXSTEPFT = climbftpsec * me.SPEEDUPSEC;
+
+    me.thesim = props.globals.getNode("/sim");
+    me.warpnode = props.globals.getNode("/sim/time/warp");
+
+    me.init_ancestor("/instrumentation/clock");
+}
+
+Daytime.schedule = func {
+   altitudeft = me.noinstrument["altitude"].getValue();
+
+   speedup = me.thesim.getChild("speed-up").getValue();
+   if( speedup > 1 ) {
+       # accelerate day time
+       multiplier = speedup - 1;
+       offsetsec = me.SPEEDUPSEC * multiplier;
+       warp = me.warpnode.getValue() + offsetsec; 
+       me.warpnode.setValue(warp);
+
+       # safety
+       stepft = me.MAXSTEPFT * speedup;
+       maxft = me.lastft + stepft;
+       minft = me.lastft - stepft;
+
+       # too fast
+       if( altitudeft > maxft or altitudeft < minft ) {
+           me.thesim.getChild("speed-up").setValue(1);
+       }
+   }
+
+   me.lastft = altitudeft;
 }

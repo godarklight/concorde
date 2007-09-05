@@ -2,7 +2,7 @@
 
 <!-- Low pressure on fuel engine :
 
-     - all pumps disabled.
+     - no engine feed.
 -->
 
 <PropertyList>
@@ -11,9 +11,7 @@
  <h-base>26</h-base>
 
  <params>
-  <pump-switch>/controls/fuel/tank[0]/pump[0]</pump-switch>
-  <pump2-switch>/controls/fuel/tank[0]/pump[1]</pump2-switch>
-  <pump3-switch>/controls/fuel/tank[0]/pump[2]</pump3-switch>
+  <level-lb>/consumables/fuel/tank[13]/level-lb</level-lb>
  </params>
 
 
@@ -31,11 +29,10 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
        <or include="concorde-cond-test-eng-center.xml"/>  <!-- bug -->
-       <or>
-        <property alias="../../../../../../../../params/pump-switch"/>
-        <property alias="../../../../../../../../params/pump2-switch"/>
-        <property alias="../../../../../../../../params/pump3-switch"/>
-       </or>
+       <greater-than>
+        <property alias="../../../../../../../../params/level-lb"/>
+        <value>30.0</value>
+       </greater-than>
       </and>
      </or>
     </condition>
@@ -63,6 +60,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-eng-center.xml"/>
      <w>104</w>
      <h>20</h>
     </layer>

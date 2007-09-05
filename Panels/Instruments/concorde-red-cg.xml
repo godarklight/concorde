@@ -7,10 +7,6 @@
  <w-base>104</w-base>
  <h-base>26</h-base>
 
- <params>
-  <test>/controls/lighting/crew/captain/test</test>
- </params>
-
 
  <layers>
 <!-- translucent lens -->  
@@ -24,10 +20,13 @@
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
-       <or include="concorde-cond-cg.xml"/>    <!-- bug -->
-       <not>
-        <property alias="../../../../../../../../params/test"/>
-       </not>
+       <or include="concorde-cond-test-mws.xml"/>    <!-- bug -->
+       <or>
+        <not>
+         <property>/systems/mws/red/cg</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -75,5 +74,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/red/cg</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

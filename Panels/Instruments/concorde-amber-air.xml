@@ -4,7 +4,8 @@
 
      - above 85 PSI.
      - duct temperature above 120°C.
-     - IMPORTANT : no air bleed pressure at all (on the 4 conditioning groups) doesn't cause a warning.
+     - should not happen (systems debug).
+     - no air bleed pressure at all (on the 4 conditioning groups) doesn't cause a warning.
 -->
 
 <PropertyList>
@@ -24,39 +25,14 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-mws.xml">
-       <less-than>
-        <property>/systems/air-bleed/engine[0]/cross-psi</property>
-        <value>85.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/air-bleed/engine[1]/cross-psi</property>
-        <value>85.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/air-bleed/engine[2]/cross-psi</property>
-        <value>85.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/air-bleed/engine[3]/cross-psi</property>
-        <value>85.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/temperature/group[0]/duct-degc</property>
-        <value>120.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/temperature/group[1]/duct-degc</property>
-        <value>120.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/temperature/group[2]/duct-degc</property>
-        <value>120.0</value>
-       </less-than>
-       <less-than>
-        <property>/systems/temperature/group[3]/duct-degc</property>
-        <value>120.0</value>
-       </less-than>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>       <!-- bug -->
+       <or>
+        <not>
+         <property>/systems/mws/amber/air</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -104,5 +80,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/amber/air</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

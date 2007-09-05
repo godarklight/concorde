@@ -6,9 +6,13 @@ The plane bulge at the top of the aft fuselage is the ADF antenna (A).
 The black strip under the wing edge is de-icing (A).
 The black holes below the front doors are the pressure discharge valves (A).
 
-The cockpit :
+The anti-collision lights are red (G).
+
+Cockpit
+-------
 - blue (instrument panels), white beige (walls) and black (window pillars and sills).
-- pilot seat, near the 2nd pillar. As instruments (artificial horizon, ASI) are close, the reading at landing is easy.
+- pilot seat, near the 2nd pillar. As instruments (artificial horizon, ASI) are close,
+  the reading at landing is easy.
 - overhead panel stops before the engineer panel.
 - autopilot height = less than 1/2 of panel height.
 - panel height = 1/2 of height to floor (below the panel).
@@ -19,7 +23,13 @@ Model
 The floor is supposed to be at the same level than the external nose strakes (blade),
 which puts it slightly above the bottom of the (textured) doors.
 
-The mesh of the overhead is not smoothed (solid).
+The seats stop at window bottom, and pilot shoulder (F).
+The engineer seat must match the engineer view (rotation).
+
+These meshes are not smoothed (solid) :
+- overhead.
+- engineer panel.
+- blue avionics rack, near the observer seat.
 
 
 Pitch
@@ -70,10 +80,9 @@ TO DO
 =====
 - visor well.
 - compression of gear spring.
-- afterburner (smoke).
+- afterburner smoke.
 - probes on nose, RAT.
-- seats, yokes.
-- levers.
+- yokes, levers.
 
 
 Known problems
@@ -81,6 +90,9 @@ Known problems
 - removing polygons (mainly the wings) could increase the frame rate :
   it will be waited for hardware upgrade.
 - polygons with no area must be removed with Utils/Modeller/ac3d-despeckle, after Blender export.
+
+Known problems outside
+----------------------
 - avionics racks are not enough long, because the textured doors and portholes are too forwards :
   left aft door should be more below the vertical fin, and front doors more aft (B).
 - the tail wheel door seems too long : one part of tail gear hole is closed by the small left and
@@ -90,8 +102,7 @@ Known problems
 Known problems cockpit
 ----------------------
 - overhead slightly too large ?
-- in the engineer view, the autopilot panel is align with the yoke pillars, like in Blender;
-  in the captain view, the autopilot panel appears with a right shift : this is a visual effect.
+- joint of engineer panel with cockpit ceiling too large ?
 
 
 References
@@ -110,6 +121,11 @@ References
 (E) http://www.airliners.net/open.file/0441886/L/ :
     G-BOAE, by Harm Rutten.
 
+(F) http://www.airliners.net/open.file/0024969/L/ :
+    by Richard Paul.
+
+(G) http://fr.wikipedia.org/wiki/Concorde :
+
 
 Credits
 =======
@@ -120,22 +136,25 @@ See the forum of http://www.blender.org/, message from "Bogey", subject "Update 
 and download links" (24 october 2003 6:23 pm).
 
 
-List of updates (-) / additions (+) to the original model :
-+ tail door closed.
-+ cockpit.                                                                             v1.2
+Updates (-) and additions (+) to the original model                                   Version
+---------------------------------------------------------------------------------------------
++ tail door closed.                                                                     1.1
++ cockpit.                                                                              1.2
 - visibility of visor and nose from cockpit.                                            2.0
 - split of nozzles (reverser).                                                          2.1
 - transparent windows (texture alpha).                                                  2.1
 - alignment of main gear internal doors with their well.
-- split of main gear wheels (spin).
+- split of main gear wheels (spin).                                                     2.2
 + external lights.                                                                      2.2
 - alignment to the nose tip, instead of the tail tip (VRP).                             2.3
 - split of main gear pistons (bogie compression and torsion).                           2.3
 - higher side stays and stearing unit (front gear compression).                         2.3
 - horizontal fuselage, without pitch (flat cockpit).                                    2.3
+- centered axis of front window (to match overhead).                                    2.4
+- split of primary nozzles (reheat off texture).                                        2.4
 
 
-Made with Blender 2.42a.
+Made with Blender 2.43.
 
 
-19 September 2006.
+6 April 2007.

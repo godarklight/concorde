@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Transfer vavle connecting an auxilliary tank. -->
+<!-- Transfer valve connecting an auxilliary tank. -->
 
 
 <PropertyList>
@@ -11,6 +11,7 @@
  <params>
   <trans-valve>/controls/fuel/tank[11]/trans-valve</trans-valve>
   <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
+  <defined-status>/systems/electrical/power/specific</defined-status>
  </params>
 
 
@@ -18,12 +19,25 @@
   <layer>
    <name>Connection flag</name>
    <type>switch</type>
+
+   <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/defined-status"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+   </layer>
+
    <layer>
     <name>on</name>
     <condition>
-     <and>
-      <property alias="../../../../../../params/trans-valve"/>
-     </and>
+     <property alias="../../../../../params/trans-valve"/>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-bar-horizontal-bg.rgb</path>
@@ -31,6 +45,7 @@
     <w>25</w>
     <h>25</h>
    </layer>
+
    <layer>
     <name>off</name>
     <texture>

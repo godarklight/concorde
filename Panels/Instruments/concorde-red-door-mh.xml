@@ -2,7 +2,7 @@
 
 <!-- Alarm on Miscellaneous Hatches :
 
-     - opened when air ground supply.
+     - opened when ground supply.
 -->
 
 <PropertyList>
@@ -29,6 +29,9 @@
        </not>
        <not>
         <property>/systems/temperature/ground-service/door</property>
+       </not>
+       <not>
+        <property>/systems/electrical/ground-service/door</property>
        </not>
       </and>
      </or>

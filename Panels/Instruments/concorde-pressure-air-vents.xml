@@ -16,6 +16,20 @@
    <type>switch</type>
 
    <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property>/systems/electrical/power/specific</property>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
+
+   <layer>
     <name>open</name>
     <condition>
      <property>/systems/pressurization/valve/air-vents</property>

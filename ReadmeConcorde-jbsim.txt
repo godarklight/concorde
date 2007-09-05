@@ -91,24 +91,24 @@ Landing
 - at 750 ft AGL, disable autopilot and autothrottle, keep the trim of the glide slope mode;
   maintain pitch at 10 degrees, control descent rate with speed (throttle).
 - the tail wheel protects the reversers from hitting the ground (A1).
+- avoid autoland by gusty wind.
 
 
 Installation
 ============
-If your preferences.xml doesn't have 6 views, update Nasal/Concorde-views.xml.
-
 A mouse with 3rd (middle) button, or its emulation (left + right button), is required.
 
 Fuel load
 ---------
 - default is maximum landing weight, 245000 lb (19000 kg fuel).
-- for alternate load, press "ctrl-M f" (saved on exit by userarchive).
+- for alternate load, press "ctrl-M f" (saved on exit in aircraft-data).
 
 Sounds
 ------
-- see Sounds/concorde-real-sound.xml to install real Concorde sounds.
+- see Sounds/Concorde-real-sound.xml to install real Concorde sounds.
 - voice callouts requires Festival (festival --server in a separate shell),
-  set /sim/sound/voices/enabled to true; to see the text of callouts, press "shift-ctrl-R". 
+  set /sim/sound/voices/enabled to true; to see the text of callouts, press "shift-ctrl-R"
+  (saved on exit in aircraft-data). 
 
 Frame rate
 ----------
@@ -123,7 +123,6 @@ electric, hydraulic, pressurization, air bleed, temperature.
 Known compatibility
 -------------------
 - 0.9.11 : minimal version.
-- 0.9.10 : can work with a few updates (menu loaded by gui, Concorde-instrumentation.xml).
 
 
 Keyboard
@@ -160,7 +159,6 @@ Same behaviour
 - "s"      : swaps between Captain and Center 2D panels.
 - "ctrl-A" : "A"ltitude acquire.
 - "ctrl-G" : "G"lide slope.
-- "ctrl-H" : "H"eading hold.
 - "ctrl-N" : "N"av 1 hold.
 - "ctrl-P" : "P"itch hold.
 - "ctrl-R" : "R"adio frequencies.
@@ -170,6 +168,7 @@ Improved behaviour
 ------------------
 - "a / A" : speeds up BOTH speed and time. Until X 5 subsonic, X 7 supersonic;
             automatically resets to 1, when above 3500 ft/min.
+- "ctrl-H" : "H"eading hold.
 - "page up / page down" : increases / decreases speed hold, Mach hold.
 - "up / down"  : increases / decreases (fast) altitude hold, vertical speed hold, pitch hold,
                  speed hold with pitch, Mach hold with pitch.
@@ -189,15 +188,9 @@ Alternate behaviour
 
 Mouse
 =====
-Mouse 3rd button :
-- may push a button, when 1st button turns it; example : track / heading.
-- less used 3rd state; example : gear neutral, emergency switch.
-
-2D panel
---------
-The 2D Panel has simplified buttons for :
-- auxilliary tanks.
-- engine start (without voltage and air bleed).
+The 3rd button of mouse :
+- pushes a button, when 1st button turns it. Example : track / heading.
+- toggles a less used 3rd state. Example : gear neutral, emergency switch.
 
 Autopilot
 ---------
@@ -223,16 +216,36 @@ Engine
   or in flight (4 engines flame out) by the emergency generator :
   * activate the virtual copilot.
   * deploy the RAM Air Turbine : standby instruments work.
-  * swap the 4 AC ESS bus to EMERG : other instruments work.
+  * most other instruments also work, if the emergency generator has automatically started.
   * with the emergency relight busbar (below the starters), select the 1st engine to start.
   * relight this engine, before opening its HP VALVE (overhead).
-  * once this engine started, restore the relight selector to off, and the 4 AC ESS to NORM.
+  * once this engine started, restore the relight selector to off.
   * start the 3 other engines normally.
 
 Fuel
 ----
+Use virtual engineer (or to 2D panel) to start :
 - the collector tanks 1 2 3 4 feed respectively engines 1 2 3 4.
 - the main tanks 5 7 feed the collector tanks.
+
+Hydraulics
+----------
+- nose, gear, brakes depend of green (up only) and yellow circuits.
+- ground pumps require ground electrical power.
+
+Radio
+-----
+- only "ctrl-R" or "ctrl-M r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
+
+
+2D panel
+========
+The 2D Panel has simplified buttons for :
+- fuel transfers (inlet valves are automatically opened).
+- engine start (voltage and air bleed are not required).
+
+Fuel
+----
 - "Aft" transfers forwards trim tanks (9, 10) to aft trim tanks (11).
   "Forward" does the reverse transfer (only to 9).
 - "Engine" transfers trim tanks to the main tanks (5, 7) : choose the direction "Aft" or "Forw".
@@ -240,32 +253,26 @@ Fuel
 - "Jettison" (2 buttons for confirmation) dumps the trim (9, 10, 11) and collector tanks
   (1, 2, 3, 4) : isolate a trim tank by stopping its fuel pumps. 
 - activate "Cross", to balance the dissymetrical tanks.
-- "kg/h" (debug) checks that fuel pumping matches the fuel flow indicated by the engines.
-
-Hydraulics
-----------
-- nose, gear, brakes depend of green (up only) and yellow circuits.
-- ground pumps require ground electrical power.
-
-Inertial Navigation System
---------------------------
-- "2" (up) and "8" (down) scrolls the waypoints.
-- "CLear" turns on/off the INS. 
-
-Radio
------
-- only "ctrl-R" or "ctrl-M r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
 
 
 Virtual crew
 ============
 - to enable only 1 crew member, press "ctrl-M c".
-- a crew member performing his checklist is green; otherwise yellow.
 - the virtual crew is independent of the voice callouts.
+- a green crew member is performing his checklist.
+- a yellow crew member is not performing his checklist.
+
+3D
+--
+- to activate 3D, press "ctrl-M c".
+- a crew member without headset is not performing his checklist.
+
+Captain
+-------
+- brake release triggers the count down before takeoff.
 
 Copilot
 -------
-- brake release triggers the count down before reheat.
 - is never the pilot in command; except 4 engines flameout : holds the aircraft during
   engine start.
 - gear, nose and lightning (subsonic only).
@@ -294,18 +301,28 @@ Red
 - "AUTO LAND" : autothrottle expected, ILS missing, outside path at touch down.
 - "M/CG"  : center of gravity outside of corridor.
 - "TERRAIN"   : excessive descent speed; too low gear at approach, nose not down at touch down.
+- "TYRE"  : tyre pressure.
 
 Overhead
 ........
-- "DOORS" : air ground supply.
+- "DOORS" : ground supply.
 - "ELEC"  : electrical failure.
 - "ENG"   : engine stopped.
+- "FEEL"  : no green and blue hydraulics.
+- "ICE"   : engine and wing anti-icing expected.
 - "INT"   : intake without hydraulics.
+- "PFC"   : flight control channel on green or mechanical.
 - "PRESS" : pressurization failure, no air conditioning.
+
+Brakes
+......
+- "FWD"   : brake overheat.
+- "REAR"  : brake overheat.
+- "WHEEL" : brake overheat.
 
 Doors
 .....
-- "MISC HATCHES" : air ground supply.
+- "MISC HATCHES" : ground supply.
 
 Electrical
 ..........
@@ -320,6 +337,10 @@ Hydraulics
 ..........
 - "BRAKES FAIL" : no normal brakes (no green hydraulics).
 
+INS
+...
+- "WARN"   : INS failure.
+
 Pressurization
 ..............
 - "EXCESS ALT" : cabine under pressure.
@@ -328,6 +349,7 @@ Pressurization
 Amber
 -----
 - "ATT"  : excessive attitude.
+- "CTY"  : reheat at takeoff.
 - "DH"   : decision altitude.
 
 Overhead
@@ -335,6 +357,7 @@ Overhead
 - "ELEC" : electrical failure.
 - "FUEL" : fuel failure.
 - "HYD"  : hydraulical failure.
+- "INHIBIT" : all MWS lights inhibited, except red PFC and ENG.
 - "INT"  : intake lost its main hydraulics.
 
 Electrical
@@ -352,13 +375,19 @@ Engines
 Fuel
 ....
 - "LOW LEVEL" : collector tank low.
-- "LOW PRESSURE"  : all engine pumps stopped.
+- "LOW PRESSURE"  : no fuel pump, empty tank, LP valve not open.
 - "TANK PRESSURE" : air bleed failure.
 
 Hydraulics
 ..........
 - "BRAKES EMER" : parking or emergency brakes (no green hydraulics).
 - "L/PRESS"     : pump disconnected, engine stopped.
+
+INS
+...
+- "ALERT"  : 1 minute until next waypoint.
+- "BAT"    : no voltage.
+- "REMOTE" : waypoint insert to all INS.
 
 Yellow
 ------
@@ -378,8 +407,8 @@ Engines
 
 Fuel
 ....
-- "ACC"  : engine stopped.
-- "LOW PRESSURE" : fuel pump stopped, empty tank.
+- "ACC"  : no fuel pump.
+- "LOW PRESSURE" : engine fuel pump stopped, empty tank.
 
 Blue
 ----
@@ -388,6 +417,7 @@ Blue
 Overhead
 ........
 - "EXTENDED" : landing light not retracted.
+- "ICE " : ice condition detected.
 
 Hydraulics
 ..........
@@ -400,6 +430,10 @@ Green
 - "LAND 1" : autoland with 1 autopilot.
 - "LAND 2" : autoland with 2 autopilots.
 
+Overhead
+........
+- "IGV PRESS" : engine anti-icing activated.
+
 Engines
 .......
 - "LH IGN" : engine ignition.
@@ -411,6 +445,12 @@ Hydraulics
 
 White
 -----
+- CLB : climb engine rating.
+- CRS : cruise engine rating.
+- TO  : takeoff engine rating.
+
+Electrical
+..........
 - "GROUND PWR AVAILABLE" : electrical power from ground service.
 
 
@@ -465,53 +505,67 @@ JSBSim
 ======
 - maximum thrust (without air intakes) at FL500 is 10093 lb, matching the real value of 10000 lb !
 - center of gravity inside corridor.
+- shift of center or pressure.
 - the geometry is real data.
 - tanks default at maximum takeoff weight (408000 lb).
 - consumption London - New York : correct landing weight at KJFK.
 - climb Mach 0.95 - 1.7 in 10 minutes.
 - fuel around 20500 kg/h at Mach 2.02 (E).
+- intake failure (4 at once).
 
 
 TO DO
 =====
-- disable flight controls, when no hydraulics (joystick).
 - battery discharge.
-- inertia of surfaces.
 - control max cruise mode with TMO temperature (B).
+- move a few procedures to tutorials.
 
 TO DO instruments
 -----------------
 - control of 2D instrument luminosity (only possible with 3D instruments).
 - see Panels/Instruments/ReadmeInstruments.txt
 
-TO DO JSBSim
-------------
-- reverse thrust is not implemented : ctrl-B only animates the lights and nozzles.
-- aero reference point has its position of Mach 2.0 (static).
+TO FDM
+-------
 - weaker supersonic lift (no negativ AOA).
-- disable intake, when no hydraulics.
-- engine rating.
+- inertia of surfaces.
 - move autopilot PID inside the FDM ?
 - additional drag when RAT.
+- alteration of FDM by icing.
 - check the subsonic range.
 - turbulence filter.
 
 FDM update often implies a tuning of autopilot (mainly heading hold),
 and always a complete test (autoland, subsonic, supersonic).
 
+TO DO JSBSim
+------------
+- reverse thrust is not implemented : ctrl-B only animates the lights and nozzles.
+- failure on only 1 intake at once.
+
 
 Known problems
 ==============
+- the file in application-data (saved configuration) causes the bounce at loading
+ (it seems to trim over the runway).
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
+
+Known problems 0.9.11
+---------------------
+If nasal error, try to rename in Systems/Concorde-init-instrumentation.xml
+<cg-x-in alias="/fdm/jsbsim/inertia/cg-x-ft"/> into
+<cg-x-in alias="/fdm/jsbsim/inertia/cg-x-in"/>.
 
 Known problems OSG
 ------------------
-The following artefacts are supposed to be solved by OSG (works with 0.9.10 / Plib) :
+The following artefacts are supposed to be solved by OSG (works with 0.9.11 / Plib) :
 - missing hotspots.
 - panels swaping too early.
 - instrument transparent through layer with alpha (steward view).
 - blurr on texture crop (example : left edge of artificial horizon). 
 - transparency order of blinking anti-collision light over wing.
+- dark external lights.
+- engineer 3D seat/crew doesn't rotate forwards at takeoff (reset by ctrl-E).
 
 Known problems autopilot
 ------------------------
@@ -523,7 +577,7 @@ Known problems autoland
 -----------------------
 - nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
   but EGLL 27R, KJFK 22L are wrong : to land at these airports,
-  set /controls/autoflight/real-nav to false, by "ctrl-M c".
+  set /controls/autoflight/real-nav to false, by "ctrl-M g".
 
 Known problems sound
 --------------------
@@ -536,18 +590,20 @@ Known problems sound
 Secondary problems
 ==================
 
-Secondary problems JSBSim
---------------------------
+Secondary problems FDM
+-----------------------
 - very light waddling at mach 2 (autopilot rudder trim, to solve roll of autopilot heading
   at Mach speeds).
-- AoA at 180°, when one breaks strongly (empty tanks).
 - disable yaw damper, when turbulence ?
 - fuel consumption too low at idle (ground).
 - oil pressure too high.
 
+Secondary problems JSBSim
+-------------------------
+- AoA at 180°, when one breaks strongly (empty tanks).
+
 Secondary problems autopilot
 ----------------------------
-- avoid autoland by gusty wind.
 - confirm autoland landing speed, whatever the wind.
 
 Secondary problems instruments
@@ -557,7 +613,7 @@ Secondary problems instruments
 Secondary problems sound
 ------------------------
 - VHF volume not implemented for Festival (possible ?).
-- altitude count down may be repeated 2 times at touch down (Festival ?).
+- engineer uses pilot voice.
 
 
 References
@@ -586,4 +642,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-14 January 2007.
+2 September 2007.

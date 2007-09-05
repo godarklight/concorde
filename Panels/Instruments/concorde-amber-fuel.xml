@@ -24,43 +24,13 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-mws.xml">
-       <greater-than>
-        <property>/consumables/fuel/tank[0]/level-lb</property>
-        <property n="1">/consumables/fuel/tank[0]/low-level-lb</property>
-       </greater-than>
-       <greater-than>
-        <property>/consumables/fuel/tank[1]/level-lb</property>
-        <property n="1">/consumables/fuel/tank[1]/low-level-lb</property>
-       </greater-than>
-       <greater-than>
-        <property>/consumables/fuel/tank[2]/level-lb</property>
-        <property n="1">/consumables/fuel/tank[2]/low-level-lb</property>
-       </greater-than>
-       <greater-than>
-        <property>/consumables/fuel/tank[3]/level-lb</property>
-        <property n="1">/consumables/fuel/tank[3]/low-level-lb</property>
-       </greater-than>
-       <or include="concorde-cond-tank-pressure.xml"/>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>       <!-- bug -->
        <or>
-        <property>/controls/fuel/tank[0]/pump[0]</property>
-        <property>/controls/fuel/tank[0]/pump[1]</property>
-        <property>/controls/fuel/tank[0]/pump[2]</property>
-       </or>
-       <or>
-        <property>/controls/fuel/tank[1]/pump[0]</property>
-        <property>/controls/fuel/tank[1]/pump[1]</property>
-        <property>/controls/fuel/tank[1]/pump[2]</property>
-       </or>
-       <or>
-        <property>/controls/fuel/tank[2]/pump[0]</property>
-        <property>/controls/fuel/tank[2]/pump[1]</property>
-        <property>/controls/fuel/tank[2]/pump[2]</property>
-       </or>
-       <or>
-        <property>/controls/fuel/tank[3]/pump[0]</property>
-        <property>/controls/fuel/tank[3]/pump[1]</property>
-        <property>/controls/fuel/tank[3]/pump[2]</property>
+        <not>
+         <property>/systems/mws/amber/fuel</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
        </or>
       </and>
      </or>
@@ -109,5 +79,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/amber/fuel</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

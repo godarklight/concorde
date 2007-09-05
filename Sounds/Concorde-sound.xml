@@ -550,7 +550,7 @@
    <max-dist>8000.0</max-dist>
   </engine>
 
-  <engine>
+  <reverse>
    <name>reverser external</name>
    <path>Sounds/wind.wav</path>
    <mode>looped</mode>
@@ -611,12 +611,12 @@
    </volume>    
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
-  </engine>
+  </reverse>
 
-<!-- ENGINE START AND STOP -->
+<!-- ENGINE START -->
 
-  <engine>
-   <name>engine start</name>
+  <start>
+   <name>engine 1 2 start</name>
    <path>Sounds/exhaust_start.wav</path>
    <mode>once</mode>
    <condition>
@@ -637,6 +637,26 @@
         <value>37</value>
        </greater-than>
       </and>
+     </or>
+   </condition>
+   <position>
+    <x>-5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
+   <volume>
+    <max>0.3</max>
+   </volume>
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </start>
+
+  <start>
+   <name>engine 3 4 start</name>
+   <path>Sounds/exhaust_start.wav</path>
+   <mode>once</mode>
+   <condition>
+     <or>
       <and>
        <property>/engines/engine[2]/cranking</property>
        <property>/engines/engine[2]/starter</property>
@@ -656,7 +676,7 @@
      </or>
    </condition>
    <position>
-    <x>0.0</x>
+    <x>5.0</x>
     <y>0.0</y>
     <z>-40.0</z>
    </position>
@@ -665,10 +685,12 @@
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
-  </engine>
+  </start>
 
-  <engine>
-   <name>engine shutdown</name>
+<!-- ENGINE SHUTDOWN -->
+
+  <shutdown>
+   <name>engine 1 2 shutdown</name>
    <path>Sounds/exhaust_shutdown.wav</path>
    <mode>once</mode>
    <condition>
@@ -687,6 +709,26 @@
         <value>30</value>
        </greater-than>
       </and>
+     </or>
+   </condition>
+   <position>
+    <x>-5.0</x>
+    <y>0.0</y>
+    <z>-40.0</z>
+   </position>
+   <volume>
+    <max>0.5</max>
+   </volume>
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </shutdown>
+
+  <shutdown>
+   <name>engine 3 4 shutdown</name>
+   <path>Sounds/exhaust_shutdown.wav</path>
+   <mode>once</mode>
+   <condition>
+     <or>
       <and>
        <property>/engines/engine[2]/cutoff</property>
        <greater-than>
@@ -704,7 +746,7 @@
      </or>
    </condition>
    <position>
-    <x>0.0</x>
+    <x>5.0</x>
     <y>0.0</y>
     <z>-40.0</z>
    </position>
@@ -713,73 +755,9 @@
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
-  </engine>
+  </shutdown>
 
-<!-- COCKPIT -->
-
-  <rumble>
-   <name>rumble</name>
-   <mode>looped</mode>
-   <path>Sounds/rumble.wav</path>
-   <condition>
-    <and>
-     <less-than>            <!-- BUG : wow not reset, when starting in flight -->
-      <property>/position/altitude-agl-ft</property>
-      <value>50</value>
-     </less-than>
-     <or>
-      <property>/gear/gear[0]/wow</property>
-      <property>/gear/gear[1]/wow</property>
-      <property>/gear/gear[2]/wow</property>
-      <property>/gear/gear[3]/wow</property>
-      <property>/gear/gear[4]/wow</property>
-     </or>
-     <greater-than>          <!-- only rumble on taxi -->
-      <property>/instrumentation/ins[0]/ground-speed-fps</property> <!-- more accurate -->
-      <value>17</value>      <!-- 10 kt -->
-     </greater-than>
-    </and>
-   </condition>
-   <volume>
-    <property>/velocities/airspeed-kt</property>
-    <type>log</type>
-    <factor>0.5</factor>
-   </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
-  </rumble>
-
-  <gear>
-   <name>gear</name>
-   <mode>in-transit</mode>
-   <path>Sounds/gear.wav</path>
-   <condition>
-    <and>
-     <not>
-      <property>/sim/current-view/internal</property>
-     </not>
-     <greater-than>
-      <property>/gear/gear[0]/position-norm</property>
-      <value>0.0</value>
-     </greater-than>
-     <less-than>
-      <property>/gear/gear[0]/position-norm</property>
-      <value>1.0</value>
-     </less-than>
-    </and>
-   </condition>
-   <property>/gear/gear[0]/position-norm</property>
-   <pitch>
-    <internal>dt_play</internal>
-    <offset>1.0</offset>
-    <factor>-0.001</factor>
-   </pitch>
-   <volume>
-    <max>0.15</max>
-   </volume>
-   <reference-dist>10.0</reference-dist>
-   <max-dist>20.0</max-dist>
-  </gear>
+<!-- DEFAULT SOUNDS -->
 
   <gear>
    <name>gear-horn</name>
@@ -792,17 +770,23 @@
    </condition>
   </gear>
 
-  <squeal>
-   <name>squeal</name>
+  <shock>
+   <name>shock</name>
    <path>Sounds/squeal.wav</path>
    <condition>
-    <or>
-     <property>/gear/gear[0]/wow</property>
-     <property>/gear/gear[1]/wow</property>
-     <property>/gear/gear[2]/wow</property>
-     <property>/gear/gear[3]/wow</property>
-     <property>/gear/gear[4]/wow</property>
-    </or>
+    <and>
+     <or>
+      <property>/gear/gear[0]/wow</property>
+      <property>/gear/gear[1]/wow</property>
+      <property>/gear/gear[2]/wow</property>
+      <property>/gear/gear[3]/wow</property>
+      <property>/gear/gear[4]/wow</property>
+     </or>
+     <less-than>
+      <property>/velocities/vertical-speed-fps</property>
+      <value>0</value>
+     </less-than>
+    </and>
    </condition>
    <volume>
     <property>/velocities/speed-down-fps</property>
@@ -824,7 +808,7 @@
    </pitch>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
-  </squeal>
+  </shock>
  
   <flap>
    <name>flaps</name>
@@ -847,10 +831,6 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
-   <volume>
-    <property>/velocities/airspeed-kt</property>
-    <min>30.0</min>
-   </volume>
   </stall>
  
   <overspeed>

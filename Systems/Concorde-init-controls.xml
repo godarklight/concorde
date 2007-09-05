@@ -8,6 +8,38 @@
 
 <PropertyList>
 
+  <anti-ice>
+   <engine n="0">
+    <inlet-vane type="bool">false</inlet-vane>
+   </engine>
+   <engine n="1">
+    <inlet-vane type="bool">false</inlet-vane>
+   </engine>
+   <engine n="2">
+    <inlet-vane type="bool">false</inlet-vane>
+   </engine>
+   <engine n="3">
+    <inlet-vane type="bool">false</inlet-vane>
+   </engine>
+   <icing-model>
+    <duration>
+     <few-min userarchive="y" type="int">8</few-min>
+     <scattered-min userarchive="y" type="int">4</scattered-min>
+     <broken-min userarchive="y" type="int">2</broken-min>
+     <overcast-min userarchive="y" type="int">1</overcast-min>
+     <clear-min userarchive="y" type="int">999</clear-min>    <!-- icing rain -->
+    </duration>
+    <temperature>                                             <!-- usually between 0 and -15/-20 -->
+     <max-degc userarchive="y" type="double">0.0</max-degc>
+     <min-degc userarchive="y" type="double">-20.0</min-degc>
+    </temperature>
+   </icing-model>
+   <wing>
+    <alternate-selector type="int">0</alternate-selector>
+    <main-selector type="int">0</main-selector>
+   </wing>
+  </anti-ice>
+
   <audio>
    <comm n="0">
     <selected type="bool">true</selected>
@@ -131,7 +163,7 @@
    </flight-director>
    <heading></heading>
    <horizontal></horizontal>
-   <real-nav type="bool">true</real-nav>                      <!-- NAV accurate until 0 ft -->
+   <real-nav type="bool">true</real-nav>
    <speed></speed>
    <speed2></speed2>
    <vertical></vertical>
@@ -141,10 +173,11 @@
   <crew>
    <copilot type="bool">false</copilot>
    <engineer type="bool">false</engineer>
-   <minimized-s>10.0</minimized-s>                            <!-- 0 if no time out -->
+   <timeout userarchive="y" type="bool">true</timeout>                        <!-- of 10 seconds -->
+   <timeout-s type="double">10.0</timeout-s>
    <voice>
-   <sound type="bool">true</sound>
-   <text type="bool">false</text>                             <!-- debug without Festival -->
+    <sound userarchive="y" type="bool">true</sound>
+    <text userarchive="y" type="bool">false</text>                            <!-- debug without Festival -->
    </voice>
   </crew>
 
@@ -160,180 +193,324 @@
 
   <electric>
    <ac>
-    <generator1 type="bool">true</generator1>                 <!-- generator to main bus -->
-    <generator2 type="bool">true</generator2>
-    <generator3 type="bool">true</generator3>
-    <generator4 type="bool">true</generator4>
+    <generator n="0" type="bool">true</generator>             <!-- generator to main bus -->
+    <generator n="1" type="bool">true</generator>
+    <generator n="2" type="bool">true</generator>
+    <generator n="3" type="bool">true</generator>
     <ground type="bool">false</ground>                        <!-- ground service -->
     <gpb type="bool">false</gpb>                              <!-- ground power breaker -->
-    <btb1 type="bool">true</btb1>                             <!-- bus tie breaker -->
-    <btb-guard1 type="bool">true</btb-guard1>
-    <btb2 type="bool">true</btb2>
-    <btb-guard2 type="bool">true</btb-guard2>
-    <btb3 type="bool">true</btb3>
-    <btb-guard3 type="bool">true</btb-guard3>
-    <btb4 type="bool">true</btb4>
-    <btb-guard4 type="bool">true</btb-guard4>
+    <btb n="0" type="bool">true</btb>                         <!-- bus tie breaker -->
+    <btb-guard n="0" type="bool">true</btb-guard>
+    <btb n="1" type="bool">true</btb>
+    <btb-guard n="1" type="bool">true</btb-guard>
+    <btb n="2" type="bool">true</btb>
+    <btb-guard n="2" type="bool">true</btb-guard>
+    <btb n="3" type="bool">true</btb>
+    <btb-guard n="3" type="bool">true</btb-guard>
     <ssb type="bool">true</ssb>                               <!-- split system breaker -->
-    <essential1 type="bool">true</essential1>                 <!-- main to essential -->
-    <essential2 type="bool">true</essential2>
-    <essential3 type="bool">true</essential3>
-    <essential4 type="bool">true</essential4>
-    <relight1 type="bool">true</relight1>                     <!-- relight to main bus -->
-    <relight2 type="bool">true</relight2>
-    <relight3 type="bool">true</relight3>
-    <relight4 type="bool">true</relight4>
+    <essential n="0" type="bool">true</essential>             <!-- main to essential -->
+    <essential n="1" type="bool">true</essential>
+    <essential n="2" type="bool">true</essential>
+    <essential n="3" type="bool">true</essential>
+    <relight n="0" type="bool">true</relight>                 <!-- relight to main bus -->
+    <relight n="1" type="bool">true</relight>
+    <relight n="2" type="bool">true</relight>
+    <relight n="3" type="bool">true</relight>
     <standby type="bool">true</standby>                       <!-- standby to AC essential -->
     <voltmeter type="int">0</voltmeter>                       <!-- vertical -->
     <emergency>
-     <arm type="bool">true</arm>                              <!-- emergency generator armed -->
-     <arm-guard type="bool">true</arm-guard>
-     <generator type="bool">false</generator>                 <!-- generator to emergency bus -->
-     <manual type="bool">false</manual>
      <asb type="bool">true</asb>                              <!-- auto shed breaker -->
-     <essential1 type="bool">false</essential1>               <!-- emergency bus to AC essential -->
-     <essential2 type="bool">false</essential2>
-     <essential3 type="bool">false</essential3>
-     <essential4 type="bool">false</essential4>
+     <essential n="0" type="bool">false</essential>           <!-- emergency bus to AC essential (manual) -->
+     <essential n="1" type="bool">false</essential>
+     <essential n="2" type="bool">false</essential>
+     <essential n="3" type="bool">false</essential>
+     <essential-auto n="0" type="bool">false</essential-auto> <!-- emergency bus to AC essential (automatic) -->
+     <essential-auto n="1" type="bool">false</essential-auto>
+     <essential-auto n="2" type="bool">false</essential-auto>
+     <essential-auto n="3" type="bool">false</essential-auto>
+     <generator>
+      <arm type="bool">true</arm>                             <!-- emergency generator armed -->
+      <arm-guard type="bool">true</arm-guard>
+      <auto type="bool">true</auto>
+      <auto-guard type="bool">true</auto-guard>
+      <ground-bypass type="bool">true</ground-bypass>
+      <selected type="bool">false</selected>                  <!-- generator to emergency bus -->
+     </generator>
      <relight-selector type="int">0</relight-selector>        <!-- off -->
-     <relight1 type="bool">false</relight1>                   <!-- emergency to relight -->
-     <relight2 type="bool">false</relight2>
-     <relight3 type="bool">false</relight3>
-     <relight4 type="bool">false</relight4>
+     <relight n="0" type="bool">false</relight>               <!-- emergency to relight -->
+     <relight n="1" type="bool">false</relight>
+     <relight n="2" type="bool">false</relight>
+     <relight n="3" type="bool">false</relight>
      <standby type="bool">false</standby>                     <!-- standby to DC essential (RAT not deployed) -->
     </emergency>
    </ac>
    <dc>
     <master-bat type="bool">true</master-bat>                 <!-- battery B -->
-    <maina type="bool">true</maina>                           <!-- AC essential to DC main (TRU) -->
-    <mainb type="bool">true</mainb>
-    <essentiala type="bool">true</essentiala>                 <!-- AC essential to DC essential (TRU) -->
-    <essentialb type="bool">true</essentialb>
-    <emsa type="bool">true</emsa>                             <!-- essential / main split -->
-    <emsb type="bool">true</emsb>
+    <main-a type="bool">true</main-a>                         <!-- AC essential to DC main (TRU) -->
+    <main-b type="bool">true</main-b>
+    <essential-a type="bool">true</essential-a>               <!-- AC essential to DC essential (TRU) -->
+    <essential-b type="bool">true</essential-b>
+    <ems-a type="bool">true</ems-a>                           <!-- essential / main split -->
+    <ems-b type="bool">true</ems-b>
     <voltmeter type="int">0</voltmeter>                       <!-- vertical -->
    </dc>
   </electric>
 
   <engines>
    <engine n="0">
+    <autoignition type="bool">false</autoignition>            <!-- not implemented -->
+    <autothrottle type="bool">true</autothrottle>
     <bug_pph>10000.0</bug_pph>
     <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
+    <intake-auto type="bool">true</intake-auto>
+    <intake-main type="bool">true</intake-main>               <!-- main hydraulics -->
+    <intake-selector type="int">0</intake-selector>           <!-- auto A -->
     <master-bat type="bool">true</master-bat>                 <!-- battery A (like the old C++ electrical system) -->
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
+    <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>                    <!-- differentiate autothrottle -->
+    <throttle-master type="bool">true</throttle-master>
+    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="1">
+    <autoignition type="bool">false</autoignition>
+    <autothrottle type="bool">true</autothrottle>
     <bug_pph>10000.0</bug_pph>
     <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
+    <intake-auto type="bool">true</intake-auto>
+    <intake-main type="bool">true</intake-main>
+    <intake-selector type="int">0</intake-selector>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
+    <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
+    <throttle-master type="bool">true</throttle-master>
+    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="2">
+    <autoignition type="bool">false</autoignition>
+    <autothrottle type="bool">true</autothrottle>
     <bug_pph>10000.0</bug_pph>
     <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
+    <intake-auto type="bool">true</intake-auto>
+    <intake-main type="bool">true</intake-main>
+    <intake-selector type="int">0</intake-selector>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
+    <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
+    <throttle-master type="bool">true</throttle-master>
+    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="3">
+    <autoignition type="bool">false</autoignition>
+    <autothrottle type="bool">true</autothrottle>
     <bug_pph>10000.0</bug_pph>
     <contingency type="bool">false</contingency>
     <csd type="bool">true</csd>
     <csd-guard type="bool">true</csd-guard>
+    <intake-auto type="bool">true</intake-auto>
+    <intake-main type="bool">true</intake-main>
+    <intake-selector type="int">0</intake-selector>
     <master-alt type="bool">true</master-alt>                 <!-- generator -->
+    <n1-to-limit type="double">88.1</n1-to-limit>
     <n1-to-limiter type="bool">true</n1-to-limiter>           <!-- 88% -->
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
+    <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
+    <throttle-master type="bool">true</throttle-master>
+    <throttle-off type="bool">false</throttle-off>
    </engine>
   </engines>
 
+  <flight>
+   <channel>
+    <inner-blue type="bool">true</inner-blue>
+    <inner-mechanical type="bool">false</inner-mechanical>
+    <outer-blue type="bool">true</outer-blue>
+    <outer-mechanical type="bool">false</outer-mechanical>
+    <rudder-blue type="bool">true</rudder-blue>
+    <rudder-mechanical type="bool">false</rudder-mechanical>
+   </channel>
+  </flight>
+
   <fuel>
    <pumps>
-    <engine type="bool">false</engine>
-    <forward type="bool">false</forward>
     <aft type="bool">false</aft>
+    <aft-2D type="bool">false</aft-2D>                        <!-- 2D panel -->
+    <auto-forward type="bool">false</auto-forward>
+    <auto-guard type="bool">true</auto-guard>
+    <auto-off type="bool">true</auto-off>
+    <cross type="bool">false</cross>
     <dump type="bool">false</dump>
     <dump2 type="bool">false</dump2>
-    <cross type="bool">false</cross>
+    <engine type="bool">false</engine>
+    <forward type="bool">false</forward>
+    <forward-guard type="bool">true</forward-guard>
+    <forward-override type="bool">false</forward-override>
    </pumps>
 
    <tank n="0">
+    <aft-trim type="bool">false</aft-trim>
+    <cross-feed-valve type="bool">false</cross-feed-valve>
+    <inlet-standby type="bool">false</inlet-standby>
+    <lp-valve type="bool">true</lp-valve>                     <!-- engine on -->
+    <lp-valve-motor type="bool">true</lp-valve-motor>         <!-- motor 1 -->
+    <lp-valve-guard type="bool">true</lp-valve-guard>
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
-    <aft-trim type="bool">false</aft-trim>
    </tank>
    <tank n="1">
+    <aft-trim type="bool">false</aft-trim>                    <!-- always -->
+    <cross-feed-valve type="bool">false</cross-feed-valve>
+    <inlet-standby type="bool">false</inlet-standby>
+    <lp-valve type="bool">true</lp-valve>
+    <lp-valve-motor type="bool">true</lp-valve-motor>
+    <lp-valve-guard type="bool">true</lp-valve-guard>
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
-    <aft-trim type="bool">false</aft-trim>                    <!-- always -->
    </tank>
    <tank n="2">
+    <aft-trim type="bool">false</aft-trim>                    <!-- always -->
+    <cross-feed-valve type="bool">false</cross-feed-valve>
+    <inlet-standby type="bool">false</inlet-standby>
+    <lp-valve type="bool">true</lp-valve>
+    <lp-valve-motor type="bool">true</lp-valve-motor>
+    <lp-valve-guard type="bool">true</lp-valve-guard>
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
-    <aft-trim type="bool">false</aft-trim>                    <!-- always -->
    </tank>
    <tank n="3">
+    <aft-trim type="bool">false</aft-trim>
+    <cross-feed-valve type="bool">false</cross-feed-valve>
+    <inlet-standby type="bool">false</inlet-standby>
+    <lp-valve type="bool">true</lp-valve>
+    <lp-valve-motor type="bool">true</lp-valve-motor>
+    <lp-valve-guard type="bool">true</lp-valve-guard>
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
-    <aft-trim type="bool">false</aft-trim>
    </tank>
    <tank n="4">
+    <inlet-auto type="bool">false</inlet-auto>
+    <inlet-main type="bool">false</inlet-main>                <!-- shut -->
+    <inlet-off type="bool">true</inlet-off>                   <!-- main selector -->
+    <inlet-override type="bool">false</inlet-override>
+    <inlet-standby type="bool">false</inlet-standby>
+    <inlet-static type="bool">false</inlet-static>            <!-- not in transit -->
+    <inlet-valve type="bool">false</inlet-valve>
+    <interconnect-valve type="bool">false</interconnect-valve>
     <pump n="0" type="bool">true</pump>                       <!-- 5 to 1 -->
     <pump n="1" type="bool">true</pump>                       <!-- 5 to 2 -->
    </tank>
    <tank n="5">
-    <pump n="0" type="bool">true</pump>                       <!-- 6 to 1 -->
-    <pump n="1" type="bool">true</pump>                       <!-- 6 to 2 -->
+    <inlet-standby type="bool">false</inlet-standby>
+    <interconnect-valve type="bool">false</interconnect-valve>
+    <pump n="0" type="bool">false</pump>                      <!-- 6 to 1 -->
+    <pump n="1" type="bool">false</pump>                      <!-- 6 to 2 -->
    </tank>
    <tank n="6">
+    <inlet-auto type="bool">false</inlet-auto>
+    <inlet-main type="bool">false</inlet-main>                <!-- shut -->
+    <inlet-off type="bool">true</inlet-off>                   <!-- main selector -->
+    <inlet-override type="bool">false</inlet-override>
+    <inlet-standby type="bool">false</inlet-standby>
+    <inlet-static type="bool">false</inlet-static>
+    <inlet-valve type="bool">false</inlet-valve>
+    <interconnect-valve alias="/controls/fuel/tank[5]/interconnect-valve"/>
     <pump n="0" type="bool">true</pump>                       <!-- 7 to 3 -->
     <pump n="1" type="bool">true</pump>                       <!-- 7 to 4 -->
    </tank>
    <tank n="7">
-    <pump n="0" type="bool">true</pump>                       <!-- 8 to 3 -->
-    <pump n="1" type="bool">true</pump>                       <!-- 8 to 4 -->
+    <inlet-standby type="bool">false</inlet-standby>
+    <interconnect-valve alias="/controls/fuel/tank[4]/interconnect-valve"/>
+    <pump n="0" type="bool">false</pump>                      <!-- 8 to 3 -->
+    <pump n="1" type="bool">false</pump>                      <!-- 8 to 4 -->
    </tank>
    <tank n="8">
-    <pump n="0" type="bool">true</pump>
-    <pump n="1" type="bool">true</pump>
+    <inlet-auto n="0" type="bool">false</inlet-auto>
+    <inlet-auto n="1" type="bool">false</inlet-auto>
+    <inlet-main n="0" type="bool">false</inlet-main>
+    <inlet-main n="1" type="bool">false</inlet-main>
+    <inlet-off n="0" type="bool">true</inlet-off>             <!-- shut -->
+    <inlet-off n="1" type="bool">true</inlet-off>
+    <inlet-override n="0" type="bool">false</inlet-override>  <!-- main selector -->
+    <inlet-override n="1" type="bool">false</inlet-override>
+    <inlet-static n="0" type="bool">false</inlet-static>
+    <inlet-static n="1" type="bool">false</inlet-static>
+    <inlet-valve n="0" type="bool">false</inlet-valve>
+    <inlet-valve n="1" type="bool">false</inlet-valve>
+    <limit-kg type="double">0.0</limit-kg>
+    <pump n="0" type="bool">false</pump>                      <!-- all trim pumps are off -->
+    <pump n="1" type="bool">false</pump>
+    <pump-auto n="0" type="bool">false</pump-auto>
+    <pump-auto n="1" type="bool">false</pump-auto>
+    <pump-on n="0" type="bool">false</pump-on>                <!-- switch, not driven by auto -->
+    <pump-on n="1" type="bool">false</pump-on>
    </tank>
    <tank n="9">
-    <pump n="0" type="bool">true</pump>
-    <pump n="1" type="bool">true</pump>
+    <inlet-standby type="bool">false</inlet-standby>
+    <limit-kg alias="/controls/fuel/tank[8]/limit-kg"/>       <!-- tank 9 + 10 -->
+    <pump n="0" type="bool">false</pump>
+    <pump n="1" type="bool">false</pump>
+    <pump-auto n="0" type="bool">false</pump-auto>
+    <pump-auto n="1" type="bool">false</pump-auto>
+    <pump-on n="0" type="bool">false</pump-on>
+    <pump-on n="1" type="bool">false</pump-on>
    </tank>
    <tank n="10">
-    <pump n="0" type="bool">true</pump>
-    <pump n="1" type="bool">true</pump>
+    <inlet-auto n="0" type="bool">false</inlet-auto>
+    <inlet-auto n="1" type="bool">false</inlet-auto>
+    <inlet-main n="0" type="bool">false</inlet-main>          <!-- shut -->
+    <inlet-main n="1" type="bool">false</inlet-main>
+    <inlet-off n="0" type="bool">true</inlet-off>             <!-- main selector -->
+    <inlet-off n="1" type="bool">true</inlet-off>
+    <inlet-override n="0" type="bool">false</inlet-override>
+    <inlet-override n="1" type="bool">false</inlet-override>
+    <inlet-static n="0" type="bool">false</inlet-static>
+    <inlet-static n="1" type="bool">false</inlet-static>
+    <inlet-valve n="0" type="bool">false</inlet-valve>
+    <inlet-valve n="1" type="bool">false</inlet-valve> 
+    <limit-kg type="double">0.0</limit-kg>
+    <pump n="0" type="bool">false</pump>
+    <pump n="1" type="bool">false</pump>
+    <pump-auto n="0" type="bool">false</pump-auto>
+    <pump-auto n="1" type="bool">false</pump-auto>
+    <pump-blue type="bool">false</pump-blue>
+    <pump-blue-auto type="bool">false</pump-blue-auto>
+    <pump-blue-on type="bool">false</pump-blue-on>
+    <pump-green type="bool">false</pump-green>
+    <pump-green-auto type="bool">false</pump-green-auto>
+    <pump-green-on type="bool">false</pump-green-on>
+    <pump-on n="0" type="bool">false</pump-on>
+    <pump-on n="1" type="bool">false</pump-on>
    </tank>
    <tank n="11">      <!-- 5A -->
-    <pump n="0" type="bool">true</pump>
-    <pump n="1" type="bool">true</pump>
+    <pump n="0" type="bool">false</pump>
+    <pump n="1" type="bool">false</pump>
     <trans-valve type="bool">false</trans-valve>              <!-- not connected -->
    </tank>
    <tank n="12">      <!-- 7A -->
-    <pump n="0" type="bool">true</pump>
-    <pump n="1" type="bool">true</pump>
+    <pump n="0" type="bool">false</pump>
+    <pump n="1" type="bool">false</pump>
     <trans-valve type="bool">false</trans-valve>              <!-- not connected -->
    </tank>
   </fuel>
@@ -341,7 +518,6 @@
   <gear>
    <brake-emergency type="bool">false</brake-emergency>       <!-- normal brakes -->
    <brake-parking-lever type="bool">false</brake-parking-lever>
-   <brake-test type="bool">false</brake-test>
    <neutral type="bool">false</neutral>
    <time>
     <main>    
@@ -358,33 +534,44 @@
    </time>
   </gear>
 
+  <human>
+   <lighting>                                                 <!-- night lighting -->
+    <copilot type="double">0.6</copilot>
+    <engineer type="double">0.6</engineer>
+    <night userarchive="y" type="bool">true</night>
+   </lighting>
+  </human>
+
   <hydraulic>
-   <circuits>
-    <circuit n="0">
-     <onloada type="bool">true</onloada>
-     <shuta type="bool">false</shuta>
-     <guarda type="bool">true</guarda>
-     <onloadb type="bool">true</onloadb>
-     <shutb type="bool">false</shutb>
-     <guardb type="bool">true</guardb>
-    </circuit>
-    <circuit n="1">
-     <onloada type="bool">true</onloada>
-     <shuta type="bool">false</shuta>
-     <guarda type="bool">true</guarda>
-     <onloadb type="bool">true</onloadb>
-     <shutb type="bool">false</shutb>
-     <guardb type="bool">true</guardb>
-    </circuit>
-    <circuit n="2">
-     <onloada type="bool">true</onloada>
-     <shuta type="bool">false</shuta>
-     <guarda type="bool">true</guarda>
-     <onloadb type="bool">true</onloadb>
-     <shutb type="bool">false</shutb>
-     <guardb type="bool">true</guardb>
-    </circuit>
-   </circuits>
+   <brake-test type="bool">false</brake-test>
+   <circuit n="0">
+    <ground type="bool">false</ground>
+    <guard n="0" type="bool">true</guard>
+    <guard n="1" type="bool">true</guard>
+    <onload n="0" type="bool">true</onload>
+    <onload n="1" type="bool">true</onload>
+    <valve n="0" type="bool">true</valve>
+    <valve n="1" type="bool">true</valve>
+   </circuit>
+   <circuit n="1">
+    <ground n="0" type="bool">false</ground>
+    <ground n="1" type="bool">false</ground>
+    <guard n="0" type="bool">true</guard>
+    <guard n="1" type="bool">true</guard>
+    <onload n="0" type="bool">true</onload>
+    <onload n="1" type="bool">true</onload>
+    <valve n="0" type="bool">true</valve>
+    <valve n="1" type="bool">true</valve>
+   </circuit>
+   <circuit n="2">
+    <ground type="bool">false</ground>
+    <guard n="0" type="bool">true</guard>
+    <guard n="1" type="bool">true</guard>
+    <onload n="0" type="bool">true</onload>
+    <onload n="1" type="bool">true</onload>
+    <valve n="0" type="bool">true</valve>
+    <valve n="1" type="bool">true</valve>
+   </circuit>
    <ground>
     <selector type="int">4</selector>                         <!-- green yellow -->
     <pump n="0">
@@ -400,23 +587,51 @@
 
   <lighting>
    <crew>
-    <autoflight-norm type="double">1.0</autoflight-norm>
+    <afcs>
+     <low type="bool">false</low>
+    </afcs>
     <captain>
      <flood-light type="double">0.0</flood-light>             <!-- the real light -->
      <flood-norm type="double">0.0</flood-norm>               <!-- the knob -->
+     <low type="bool">false</low>
+     <test type="bool">false</test>
     </captain>
     <center>
      <flood-light type="double">0.0</flood-light>
      <flood-norm type="double">0.0</flood-norm>
+     <low type="bool">false</low>
+     <test type="bool">false</test>
     </center>
     <copilot>
      <flood-light type="double">0.0</flood-light>
      <flood-norm type="double">0.0</flood-norm>
+     <low type="bool">false</low>
+     <test type="bool">false</test>
     </copilot>
     <engineer>
+     <aft>
+      <low type="bool">false</low>
+      <test type="bool">false</test>
+     </aft>
+     <center>
+      <low type="bool">false</low>
+      <test type="bool">false</test>
+     </center>
      <flood-light type="double">0.0</flood-light>
      <flood-norm type="double">0.0</flood-norm>
+     <forward>
+      <low type="bool">false</low>
+      <test type="bool">false</test>
+     </forward>
+     <spot-light type="double">0.0</spot-light>
+     <spot-norm type="double">0.0</spot-norm>
     </engineer>
+    <overhead>
+     <compass-light alias="/sim/model/material/instruments/factor"/>
+     <compass-norm type="double">0.0</compass-norm>
+     <low type="bool">false</low>
+     <test type="bool">false</test>
+    </overhead>
     <roof type="bool">false</roof>
     <roof-light type="double">0.0</roof-light>
     <roof-norm type="double">0.0</roof-norm>
@@ -464,6 +679,10 @@
    <strobe type="bool">false</strobe>
   </lighting>
 
+  <mws>
+   <inhibit type="bool">false</inhibit>
+  </mws>
+
   <nose-visor>
    <pos-norm alias="/controls/flight/flaps"/>                 <!-- FDM uses flaps as nose -->
   </nose-visor>
@@ -504,10 +723,12 @@
     <depressurization type="bool">false</depressurization>
     <guard type="bool">true</guard>
    </emergency>
+   <system1 type="bool">true</system1>
   </pressurization>
 
   <seat>
    <all type="bool">false</all>
+   <recover userarchive="y" type="bool">false</recover>
   </seat>
 
   <temperature>

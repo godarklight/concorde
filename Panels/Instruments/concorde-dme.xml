@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Concorde DME : 2 frequencies, displayed at the same time (no knob) -->
+<!-- Concorde DME :
+
+     - 2 frequencies, displayed at the same time (no knob).
+-->
 
 <PropertyList>
 
@@ -37,63 +40,53 @@
 
    <layer>
     <name>DME 1 in range</name>
-    <type>switch</type>
+    <type>text</type>
     <condition>
-     <property>/instrumentation/dme[0]/in-range</property>
+     <and>
+      <property>/instrumentation/dme[0]/in-range</property>
+      <or>
+       <and>
+        <equals>
+         <property>/instrumentation/dme[0]/selector</property>
+         <value>0</value>
+        </equals>
+        <less-than-equals>
+         <property>/instrumentation/dme[0]/indicated-distance-nm</property>
+         <value type="double">200.0</value>
+        </less-than-equals>
+       </and>
+       <and>
+        <equals>
+         <property>/instrumentation/dme[0]/selector</property>
+         <value>1</value>
+        </equals>
+        <less-than-equals>
+         <property>/instrumentation/dme[0]/indicated-distance-nm</property>
+         <value type="double">399.0</value>
+        </less-than-equals>
+       </and>
+      </or>
+     </and>
     </condition>
-
-    <layer>
-     <name>DME 1 display</name>
-     <type>text</type>
-     <condition>
-      <less-than-equals>
-       <property>/instrumentation/dme[0]/indicated-distance-nm</property>
-       <value type="double">999.9</value>
-      </less-than-equals>
-     </condition>
-     <font>led</font>
-     <point-size>7</point-size>
-     <color>
-      <red>1.0</red>
-      <green>0.5</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/instrumentation/dme[0]/indicated-distance-nm</property>
-       <format>%5.1f</format>
-      </chunk>
-     </chunks>
-    </layer>
-
-    <layer>
-     <name>DME 1 overflow</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>7</point-size>
-     <color>
-      <red>1.0</red>
-      <green>0.5</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>999.9</text>
-      </chunk>
-     </chunks>
-    </layer>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.5</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/dme[0]/indicated-distance-nm</property>
+      <format>%5.1f</format>
+     </chunk>
+    </chunks>
    </layer>
 
    <layer>
     <name>DME 1 not in range</name>
     <type>text</type>
-    <condition>
-     <not>
-      <property>/instrumentation/dme[0]/in-range</property>
-     </not>
-    </condition>
     <font>led</font>
     <point-size>7</point-size>
     <color>
@@ -136,63 +129,53 @@
 
    <layer>
     <name>DME 2 in range</name>
-    <type>switch</type>
+    <type>text</type>
     <condition>
-     <property>/instrumentation/dme[1]/in-range</property>
+     <and>
+      <property>/instrumentation/dme[1]/in-range</property>
+      <or>
+       <and>
+        <equals>
+         <property>/instrumentation/dme[1]/selector</property>
+         <value>0</value>
+        </equals>
+        <less-than-equals>
+         <property>/instrumentation/dme[1]/indicated-distance-nm</property>
+         <value type="double">200.0</value>
+        </less-than-equals>
+       </and>
+       <and>
+        <equals>
+         <property>/instrumentation/dme[1]/selector</property>
+         <value>1</value>
+        </equals>
+        <less-than-equals>
+         <property>/instrumentation/dme[1]/indicated-distance-nm</property>
+         <value type="double">399.0</value>
+        </less-than-equals>
+       </and>
+      </or>
+     </and>
     </condition>
-
-    <layer>
-     <name>DME 2 display</name>
-     <type>text</type>
-     <condition>
-      <less-than-equals>
-       <property>/instrumentation/dme[1]/indicated-distance-nm</property>
-       <value type="double">999.9</value>
-      </less-than-equals>
-     </condition>
-     <font>led</font>
-     <point-size>7</point-size>
-     <color>
-      <red>1.0</red>
-      <green>0.5</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>number-value</type>
-       <property>/instrumentation/dme[1]/indicated-distance-nm</property>
-       <format>%5.1f</format>
-      </chunk>
-     </chunks>
-    </layer>
-
-    <layer>
-     <name>DME 2 overflow</name>
-     <type>text</type>
-     <font>led</font>
-     <point-size>7</point-size>
-     <color>
-      <red>1.0</red>
-      <green>0.5</green>
-      <blue>0.0</blue>
-     </color>
-     <chunks>
-      <chunk>
-       <type>literal</type>
-       <text>999.9</text>
-      </chunk>
-     </chunks>
-    </layer>
+    <font>led</font>
+    <point-size>7</point-size>
+    <color>
+     <red>1.0</red>
+     <green>0.5</green>
+     <blue>0.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property>/instrumentation/dme[1]/indicated-distance-nm</property>
+      <format>%5.1f</format>
+     </chunk>
+    </chunks>
    </layer>
 
    <layer>
     <name>DME 2 not in range</name>
     <type>text</type>
-    <condition>
-     <not>
-      <property>/instrumentation/dme[1]/in-range</property>
-     </not>
-    </condition>
     <font>led</font>
     <point-size>7</point-size>
     <color>

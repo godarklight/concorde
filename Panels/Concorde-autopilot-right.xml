@@ -209,11 +209,12 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <params>
     <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
+    <selector-ctrl>/instrumentation/dme[1]/selector</selector-ctrl>
    </params>
    <x>25</x>
    <y>390</y>
-   <w>60</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-nav-test.xml">

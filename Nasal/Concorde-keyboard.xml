@@ -1,14 +1,5 @@
 <?xml version="1.0"?>
 
-<!--
-
-     Known problems :
-     ==============
-     - for simplification, trims (elevator, autopilot and autothrottle) works without voltage;
-     which could be wrong if electrical commands.
--->
-
-
 <PropertyList>
 
    <key n="1">
@@ -72,21 +63,21 @@
    <key n="6">
     <name>Ctrl-F</name>
     <desc>Reheat</desc>
-    <binding n= "0">
+    <binding>
      <command>property-toggle</command>
-     <property>controls/engines/engine[0]/augmentation</property>
+     <property>/controls/engines/engine[0]/reheat</property>
     </binding>
-    <binding n= "1">
+    <binding>
      <command>property-toggle</command>
-     <property>controls/engines/engine[1]/augmentation</property>
+     <property>/controls/engines/engine[1]/reheat</property>
     </binding>
-    <binding n= "2">
+    <binding>
      <command>property-toggle</command>
-     <property>controls/engines/engine[2]/augmentation</property>
+     <property>/controls/engines/engine[2]/reheat</property>
     </binding>
-    <binding n= "3">
+    <binding>
      <command>property-toggle</command>
-     <property>controls/engines/engine[3]/augmentation</property>
+     <property>/controls/engines/engine[3]/reheat</property>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -193,7 +184,7 @@
     <desc>Toggle crew text.</desc>
      <binding>
       <command>nasal</command>
-      <script>globals.Concorde.calloutcrew.textexport();</script>
+      <script>globals.Concorde.calloutcrew.crewtextexport();</script>
      </binding>
     </mod-shift>
    </key>
@@ -262,7 +253,19 @@
     </binding>
     <binding>
      <command>nasal</command>
+     <script>globals.Concorde.copilothuman.wakeupexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
      <script>globals.Concorde.engineercrew.toggleexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.engineerhuman.wakeupexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.crewscreen.toggleexport();</script>
     </binding>
    </key>
 

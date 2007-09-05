@@ -13,7 +13,7 @@
  <h-base>80</h-base>
 
  <params>
-  <load-volts>/systems/electrical/outputs/probe/ac-main1</load-volts>
+  <load-volts>/systems/electrical/outputs/probe/ac-main[0]</load-volts>
  </params>
 
 
@@ -48,7 +48,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-8</offset>
+     <offset>-13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

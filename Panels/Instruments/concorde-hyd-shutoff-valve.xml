@@ -3,7 +3,7 @@
 <!-- Hydraulical shut off valve :
 
      _ engine shut down.
-     - pump shut off.
+     - pump valve off.
 -->
 
 <PropertyList>
@@ -13,7 +13,7 @@
 
  <params>
   <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-  <shut-pump>/controls/hydraulic/circuits/circuit[0]/shut1</shut-pump>
+  <shut-pump>/controls/hydraulic/circuit[0]/valve[0]</shut-pump>
  </params>
 
 
@@ -30,9 +30,7 @@
       <not>
        <property alias="../../../../../../../params/control-cutoff"/>
       </not>
-      <not>
-       <property alias="../../../../../../../params/shut-pump"/>
-      </not>
+      <property alias="../../../../../../params/shut-pump"/>
      </and>
     </condition>
     <texture>

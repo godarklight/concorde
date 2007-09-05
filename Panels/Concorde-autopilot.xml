@@ -1015,8 +1015,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <x>40</x>
    <y>380</y>
-   <w>60</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-nav-test.xml">
@@ -1122,7 +1122,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <params>
     <channel>/controls/autoflight/autothrottle[0]/engage</channel>
-    <voltage>/systems/electrical/outputs/autopilot1</voltage>
+    <voltage>/systems/electrical/outputs/autopilot[1]</voltage>
    </params>
    <x>245</x>
    <y>353</y>
@@ -1161,7 +1161,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <params>
     <channel>/controls/autoflight/autothrottle[1]/engage</channel>
-    <voltage>/systems/electrical/outputs/autopilot2</voltage>
+    <voltage>/systems/electrical/outputs/autopilot[2]</voltage>
    </params>
    <x>290</x>
    <y>353</y>
@@ -1373,7 +1373,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <params>
     <channel>/controls/autoflight/autopilot[0]/engage</channel>
-    <voltage>/systems/electrical/outputs/autopilot1</voltage>
+    <voltage>/systems/electrical/outputs/autopilot[1]</voltage>
    </params>
    <x>645</x>
    <y>353</y>
@@ -1410,7 +1410,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    </condition>
    <params>
     <channel>/controls/autoflight/autopilot[1]/engage</channel>
-    <voltage>/systems/electrical/outputs/autopilot2</voltage>
+    <voltage>/systems/electrical/outputs/autopilot[2]</voltage>
    </params>
    <x>694</x>
    <y>353</y>

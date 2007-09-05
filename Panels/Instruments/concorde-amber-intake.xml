@@ -12,7 +12,7 @@
 
  <params>
   <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
-  <pressure-psi>/systems/hydraulic/circuits/circuit[2]/pressure-psi</pressure-psi>
+  <pressure-psi>/systems/mws/amber/intake[0]</pressure-psi>
  </params>
 
  <layers>
@@ -26,11 +26,14 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-mws.xml">
-       <greater-than>
-        <property alias="../../../../../../../../params/pressure-psi"/>
-        <value>3400.0</value>
-       </greater-than>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>       <!-- bug -->
+       <or>
+        <not>
+         <property alias="../../../../../../../../../params/pressure-psi"/>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -207,5 +210,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/pressure-psi"/>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

@@ -60,7 +60,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>290</value>
+       <value>285</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -73,7 +73,36 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <x>50</x>
    <y>210</y>
    <w>90</w>
-   <h>30</h>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-light-engineer-spot.xml">
+   <name>Engineer spot light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>360</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>60</x>
+   <y>175</y>
+   <w>70</w>
+   <h>56</h>
   </instrument>
 
   <instrument include="Instruments/concorde-light-engineer-flood.xml">
@@ -90,7 +119,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
        </less-than>
        <greater-than>
         <property>/sim/current-view/goal-heading-offset-deg</property>
-        <value>285</value>
+        <value>280</value>
        </greater-than>
       </or>
       <less-than>

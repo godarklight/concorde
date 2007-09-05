@@ -18,8 +18,8 @@
    <name>Lighting selector</name>
    <type>switch</type>
 
-   <layer>
-    <name>3rd state</name>
+   <layer include="concorde-switch-3rd.xml">
+    <name>high</name>
     <condition>
      <and>
       <not>
@@ -30,56 +30,17 @@
       </not>
      </and>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.47</y1>
-     <x2>0.25</x2>
-     <y2>0.745</y2>
-    </texture>
-    <w>40</w>
-    <h>42</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>1.5</offset>
-     </transformation>
-    </transformations>
    </layer>
 
-   <layer>
-    <name>off</name>
+   <layer include="concorde-switch-off.xml">
+    <name>test</name>
     <condition>
      <property>/controls/lighting/crew/engineer/center/test</property>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
    </layer>
 
-   <layer>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
+   <layer include="concorde-switch-on.xml">
+    <name>low</name>
    </layer>
 
    <transformations>
@@ -218,6 +179,28 @@
    <binding>
     <command>property-toggle</command>
     <property>/controls/lighting/crew/engineer/center/test</property>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>Low</name>
+   <button>1</button>
+   <condition>
+    <not>
+     <property>/controls/lighting/crew/engineer/center/test</property>
+    </not>
+   </condition>
+   <x>-15</x>
+   <y>-21</y>
+   <w>42</w>
+   <h>42</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/controls/lighting/crew/engineer/center/low</property>
    </binding>
    <binding>
     <command>property-toggle</command>

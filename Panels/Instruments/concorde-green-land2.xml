@@ -26,12 +26,7 @@
        <not include="concorde-cond-voltage-bulb.xml"/>
        <or>
         <property alias="../../../../../../../params/test"/>
-        <and include="concorde-cond-land.xml">
-         <or>
-          <property>/controls/autoflight/autopilot[0]/engage</property>
-          <property>/controls/autoflight/autopilot[1]/engage</property>
-         </or>
-        </and>
+        <property>/systems/autopilot/state/land2</property>
        </or>
       </and>
      </condition>

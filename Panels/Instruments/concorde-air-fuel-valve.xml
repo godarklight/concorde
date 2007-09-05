@@ -19,49 +19,26 @@
   <layer>
    <name>valve selector</name>
    <type>switch</type>
-   <layer>
-    <name>on</name>
+
+   <layer include="concorde-switch-3rd.xml">
+    <name>auto</name>
     <condition>
      <property alias="../../../../../params/valve-switch"/>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.47</y1>
-     <x2>0.25</x2>
-     <y2>0.745</y2>
-    </texture>
-    <w>40</w>
-    <h>42</h>
-    <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-1.5</offset>
-    </transformation>
-    </transformations>
    </layer>
-   <layer>
-    <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>-2.75</offset>
-     </transformation>
-    </transformations>
+
+   <layer include="concorde-switch-off.xml">
+    <name>shut</name>
    </layer>
+
    <transformations>
     <transformation>
      <type>x-shift</type>
      <offset>-34</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-1.5</offset>
     </transformation>
    </transformations>
   </layer>

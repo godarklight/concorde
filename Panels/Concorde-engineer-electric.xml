@@ -62,7 +62,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -73,7 +73,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/essential1</connect-status>
+    <connect-status>/controls/electric/ac/essential[0]</connect-status>
     <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
    </params>
    <x>30</x>
@@ -91,7 +91,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -106,7 +106,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/essential2</connect-status>
+    <connect-status>/controls/electric/ac/essential[1]</connect-status>
     <engine-num>/systems/engines/engine[1]/engine-num</engine-num>
    </params>
    <x>80</x>
@@ -117,39 +117,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-conn-elec-ac-ess.xml">
    <name>AC Essential Bus 3</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
-      </less-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <connect-status>/controls/electric/ac/essential3</connect-status>
-    <engine-num>/systems/engines/engine[2]/engine-num</engine-num>
-   </params>
-   <x>325</x>
-   <y>620</y>
-   <w>18</w>
-   <h>54</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-conn-elec-ac-ess.xml">
-   <name>AC Essential Bus 4</name>
    <condition>
     <or>
      <and>
@@ -172,7 +139,40 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/ac/essential4</connect-status>
+    <connect-status>/controls/electric/ac/essential[2]</connect-status>
+    <engine-num>/systems/engines/engine[2]/engine-num</engine-num>
+   </params>
+   <x>325</x>
+   <y>620</y>
+   <w>18</w>
+   <h>54</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-conn-elec-ac-ess.xml">
+   <name>AC Essential Bus 4</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>255</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>190</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <connect-status>/controls/electric/ac/essential[3]</connect-status>
     <engine-num>/systems/engines/engine[3]/engine-num</engine-num>
    </params>
    <x>375</x>
@@ -225,7 +225,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -254,7 +254,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -265,7 +265,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-emergencya</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-emergency-a</load-volts>
    </params>
    <x>195</x>
    <y>610</y>
@@ -282,7 +282,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>265</value>
+       <value>260</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -340,11 +340,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -404,7 +404,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -415,7 +415,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-essential1</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-essential[0]</probe-volt>
    </params>
    <x>30</x>
    <y>585</y>
@@ -432,11 +432,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -447,7 +447,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-essential2</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-essential[1]</probe-volt>
    </params>
    <x>80</x>
    <y>585</y>
@@ -468,7 +468,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -479,7 +479,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-essential3</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-essential[2]</probe-volt>
    </params>
    <x>325</x>
    <y>585</y>
@@ -496,11 +496,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
+       <value>255</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -511,7 +511,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/ac-essential4</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/ac-essential[3]</probe-volt>
    </params>
    <x>375</x>
    <y>585</y>
@@ -534,7 +534,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -545,8 +545,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <emerg-switch>/controls/electric/ac/emergency/essential1</emerg-switch>
-    <essential-switch>/controls/electric/ac/essential1</essential-switch>
+    <emerg-switch>/controls/electric/ac/emergency/essential[0]</emerg-switch>
+    <essential-switch>/controls/electric/ac/essential[0]</essential-switch>
     <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
    </params>
    <x>35</x>
@@ -564,11 +564,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
        </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -579,8 +579,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <emerg-switch>/controls/electric/ac/emergency/essential2</emerg-switch>
-    <essential-switch>/controls/electric/ac/essential2</essential-switch>
+    <emerg-switch>/controls/electric/ac/emergency/essential[1]</emerg-switch>
+    <essential-switch>/controls/electric/ac/essential[1]</essential-switch>
     <engine-num>/systems/engines/engine[1]/engine-num</engine-num>
    </params>
    <x>85</x>
@@ -602,7 +602,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -613,8 +613,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <emerg-switch>/controls/electric/ac/emergency/essential3</emerg-switch>
-    <essential-switch>/controls/electric/ac/essential3</essential-switch>
+    <emerg-switch>/controls/electric/ac/emergency/essential[2]</emerg-switch>
+    <essential-switch>/controls/electric/ac/essential[2]</essential-switch>
     <engine-num>/systems/engines/engine[2]/engine-num</engine-num>
    </params>
    <x>330</x>
@@ -632,11 +632,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
+       <value>255</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -647,8 +647,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <emerg-switch>/controls/electric/ac/emergency/essential4</emerg-switch>
-    <essential-switch>/controls/electric/ac/essential4</essential-switch>
+    <emerg-switch>/controls/electric/ac/emergency/essential[3]</emerg-switch>
+    <essential-switch>/controls/electric/ac/essential[3]</essential-switch>
     <engine-num>/systems/engines/engine[3]/engine-num</engine-num>
    </params>
    <x>380</x>
@@ -670,7 +670,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -704,7 +704,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -732,11 +732,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -747,7 +747,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-essential1</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-essential[0]</load-volts>
    </params>
    <x>30</x>
    <y>510</y>
@@ -764,11 +764,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -811,7 +811,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/dc-maina</load-volts> <!-- parallel bus -->
+    <load-volts>/systems/electrical/outputs/probe/dc-main-a</load-volts> <!-- parallel bus -->
    </params>
    <x>140</x>
    <y>510</y>
@@ -843,7 +843,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/dc-mainb</load-volts> <!-- parallel bus -->
+    <load-volts>/systems/electrical/outputs/probe/dc-main-b</load-volts> <!-- parallel bus -->
    </params>
    <x>255</x>
    <y>510</y>
@@ -864,7 +864,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -907,7 +907,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/ac-essential4</load-volts>
+    <load-volts>/systems/electrical/outputs/probe/ac-essential[3]</load-volts>
    </params>
    <x>355</x>
    <y>510</y>
@@ -924,7 +924,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
+       <value>255</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -962,7 +962,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>210</value>
+       <value>205</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -987,7 +987,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
        <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1020,7 +1020,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1031,7 +1031,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <tru-switch>/controls/electric/dc/essentiala</tru-switch>
+    <tru-switch>/controls/electric/dc/essential-a</tru-switch>
    </params>
    <x>70</x>
    <y>460</y>
@@ -1048,7 +1048,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1077,11 +1077,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1092,7 +1092,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <tru-switch>/controls/electric/dc/maina</tru-switch>
+    <tru-switch>/controls/electric/dc/main-a</tru-switch>
    </params>
    <x>180</x>
    <y>460</y>
@@ -1138,11 +1138,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>265</value>
+       <value>260</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1153,7 +1153,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <tru-switch>/controls/electric/dc/mainb</tru-switch>
+    <tru-switch>/controls/electric/dc/main-b</tru-switch>
    </params>
    <x>300</x>
    <y>460</y>
@@ -1199,7 +1199,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>260</value>
+       <value>255</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1214,7 +1214,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <tru-switch>/controls/electric/dc/essentialb</tru-switch>
+    <tru-switch>/controls/electric/dc/essential-b</tru-switch>
    </params>
    <x>400</x>
    <y>460</y>
@@ -1262,11 +1262,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1277,7 +1277,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/dc-essentiala</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/dc-essential-a</probe-volt>
    </params>
    <x>30</x>
    <y>420</y>
@@ -1298,7 +1298,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1338,7 +1338,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <probe-volt>/systems/electrical/outputs/probe/dc-essentialb</probe-volt>
+    <probe-volt>/systems/electrical/outputs/probe/dc-essential-b</probe-volt>
    </params>
    <x>360</x>
    <y>420</y>
@@ -1357,7 +1357,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1372,7 +1372,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/dc/emsa</connect-status>
+    <connect-status>/controls/electric/dc/ems-a</connect-status>
    </params>
    <x>132</x>
    <y>420</y>
@@ -1393,7 +1393,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1404,7 +1404,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/dc/emsb</connect-status>
+    <connect-status>/controls/electric/dc/ems-b</connect-status>
    </params>
    <x>277</x>
    <y>420</y>
@@ -1423,11 +1423,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1505,7 +1505,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <master-bat>/controls/engines/engine[0]/master-bat</master-bat> <!-- hard coded -->
-    <ess-main-split>/controls/electric/dc/emsa</ess-main-split>
+    <ess-main-split>/controls/electric/dc/ems-a</ess-main-split>
    </params>
    <x>80</x>
    <y>360</y>
@@ -1522,11 +1522,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
+       <value>270</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1554,11 +1554,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
+       <value>265</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1586,7 +1586,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>265</value>
+       <value>260</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
@@ -1602,7 +1602,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <master-bat>/controls/electric/dc/master-bat</master-bat>
-    <ess-main-split>/controls/electric/dc/emsb</ess-main-split>
+    <ess-main-split>/controls/electric/dc/ems-b</ess-main-split>
    </params>
    <x>330</x>
    <y>360</y>
@@ -1625,7 +1625,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1687,11 +1687,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
+       <value>280</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>205</value>
+       <value>200</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1716,11 +1716,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
+       <value>275</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1749,7 +1749,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1778,7 +1778,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>190</value>
+       <value>185</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1807,7 +1807,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>190</value>
+       <value>185</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1838,7 +1838,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1854,6 +1854,35 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>52</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-mws-cancel.xml">
+   <name>cancel mws lights</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>275</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-15</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>150</x>
+   <y>222</y>
+   <w>52</w>
+   <h>52</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-test-eng-aft.xml">
    <name>Test aft lights</name>
    <condition>
@@ -1863,11 +1892,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>265</value>
+       <value>260</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>190</value>
+       <value>185</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1898,7 +1927,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1927,7 +1956,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>200</value>
+       <value>195</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -1952,11 +1981,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/engineer</property>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
+       <value>280</value>
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>195</value>
+       <value>190</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>

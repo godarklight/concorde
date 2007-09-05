@@ -2,10 +2,6 @@
 
 <!-- Concorde DC rotary selector (voltmeter) :
 
-
-     CAUTION : if click doesn't work always and everywhere, there is another instrument overlapping it.
-     Example : instrument having all layers shifted upwards, so that its bottom starts on the disturbed hotspot;
-     but the bottom is not visible because without texture !
 -->
 
 <PropertyList>
@@ -350,9 +346,9 @@
    <name>selector left</name>
    <button>0</button>
    <x>-43</x>
-   <y>-21</y>
+   <y>-41</y>
    <w>42</w>
-   <h>42</h>
+   <h>82</h>
    <binding>
     <command>property-adjust</command>
     <property>/controls/electric/dc/voltmeter</property>
@@ -371,9 +367,9 @@
    <name>selector right</name>
    <button>0</button>
    <x>1</x>
-   <y>-21</y>
+   <y>-41</y>
    <w>42</w>
-   <h>42</h>
+   <h>82</h>
    <binding>
     <command>property-adjust</command>
     <property>/controls/electric/dc/voltmeter</property>

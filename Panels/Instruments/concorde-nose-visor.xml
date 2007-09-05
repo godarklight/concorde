@@ -130,10 +130,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[0]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[0]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -193,10 +198,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[0]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[0]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -256,10 +266,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[1]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[1]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -319,10 +334,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[1]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[1]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -382,10 +402,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[2]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[2]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -445,10 +470,15 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <or>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[2]</property>
-     </not-equals>
+     <and>
+      <not-equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[2]</property>
+      </not-equals>
+      <not>
+       <property>/controls/lighting/crew/copilot/test</property>
+      </not>
+     </and>
      <not include="concorde-cond-voltage-nose.xml"/>
     </or>
    </condition>
@@ -508,10 +538,13 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <and include="concorde-cond-voltage-nose.xml">
-     <equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[3]</property>
-     </equals>
+     <or>
+      <equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[3]</property>
+      </equals>
+      <property>/controls/lighting/crew/copilot/test</property>
+     </or>
     </and>
    </condition>
 
@@ -570,10 +603,13 @@ extended/retracted in three steps.
    <type>group</type>
    <condition>
     <and include="concorde-cond-voltage-nose.xml">
-     <equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[3]</property>
-     </equals>
+     <or>
+      <equals>
+       <property>/controls/nose-visor/pos-norm</property>
+       <property n="1">/sim/flaps/setting[3]</property>
+      </equals>
+      <property>/controls/lighting/crew/copilot/test</property>
+     </or>
     </and>
    </condition>
 

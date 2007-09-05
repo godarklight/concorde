@@ -24,32 +24,14 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-mws.xml">
-       <not include="concorde-cond-hyd-green.xml"/>
-       <not include="concorde-cond-hyd-yellow.xml"/>
-       <not include="concorde-cond-hyd-blue.xml"/>
-       <greater-than>
-        <property>/engines/engine[0]/oil-pressure-psi</property>
-        <value>34</value>
-       </greater-than>
-       <greater-than>
-        <property>/engines/engine[1]/oil-pressure-psi</property>
-        <value>34</value>
-       </greater-than>
-       <greater-than>
-        <property>/engines/engine[2]/oil-pressure-psi</property>
-        <value>34</value>
-       </greater-than>
-       <greater-than>
-        <property>/engines/engine[3]/oil-pressure-psi</property>
-        <value>34</value>
-       </greater-than>
-       <property>/controls/hydraulic/circuits/circuit[0]/onloada</property>
-       <property>/controls/hydraulic/circuits/circuit[0]/onloadb</property>
-       <property>/controls/hydraulic/circuits/circuit[1]/onloada</property>
-       <property>/controls/hydraulic/circuits/circuit[1]/onloadb</property>
-       <property>/controls/hydraulic/circuits/circuit[2]/onloada</property>
-       <property>/controls/hydraulic/circuits/circuit[2]/onloadb</property>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>     <!-- bug -->
+       <or>
+        <not>
+         <property>/systems/mws/amber/hydraulics</property>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
       </and>
      </or>
     </condition>
@@ -97,5 +79,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/amber/hydraulics</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

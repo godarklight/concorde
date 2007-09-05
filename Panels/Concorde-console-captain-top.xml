@@ -61,11 +61,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>45</value>
+       <value>40</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>150</value>
+       <value>145</value>
       </less-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -90,11 +90,11 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>55</value>
+       <value>45</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>160</value>
+       <value>155</value>
       </less-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
@@ -110,6 +110,35 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>72</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-light-standby-compass.xml">
+   <name>Standby compass light</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>55</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>155</value>
+      </less-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>10</x>
+   <y>100</y>
+   <w>60</w>
+   <h>60</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-test-captain.xml">
    <name>Test captain lights</name>
    <condition>
@@ -119,7 +148,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>70</value>
+       <value>65</value>
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>

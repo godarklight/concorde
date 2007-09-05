@@ -16,6 +16,7 @@
 
  <params>
   <test>/controls/autoflight/autopilot[0]/test-land</test>
+  <serviceable-sel>/systems/autothrottle/serviceable[0]</serviceable-sel>
  </params>
 
 
@@ -39,6 +40,9 @@
         <and>
          <not include="concorde-cond-flashing-light.xml"/>
          <or>
+          <not>
+           <property alias="../../../../../../../../../../params/serviceable-sel"/>
+          </not>
           <and include="concorde-cond-altitude.xml">
            <equals>
             <property>/autopilot/locks/speed</property>

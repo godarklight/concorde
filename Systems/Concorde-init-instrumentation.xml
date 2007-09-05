@@ -13,10 +13,10 @@
 
      IMPORTANT : by default Concorde comes with the C++ IVSI.
      =========
-     Because near Mach2, when setting vertical speed at +60 ft/min, an IVSI built with
+     Because near Mach 2, when setting vertical speed at +60 ft/min, an IVSI built with
      /velocities/vertical-speed-fps doesn't match the altimeter, which may even go down.
-     While /velocities/vertical-speed-fps, controlled by autopilot, is correct : compare IVSI with
-     /autopilot/internal/vert-speed-fpm.
+     While /velocities/vertical-speed-fps, controlled by autopilot, is correct :
+     compare IVSI with /autopilot/internal/vert-speed-fpm.
 
      Example : for 30 ft/min, altimeter indicates 80 ft/min at FL500, and 50 ft/min at FL510.
      The worst : during the 2 hours of the Mach 2 cruise, one must every 10 minutes check
@@ -39,7 +39,19 @@
 <PropertyList>
 
   <ac-weight>
-   <weight-lb alias="/fdm/jsbsim/inertia/weight-lbs"/>
+   <fuel-datum-kg type="double">0.0</fuel-datum-kg>                        <!-- initial load -->
+   <fuel-remaining-kg type="double">0.0</fuel-remaining-kg>
+
+   <slave>
+    <fuel-consumed>
+     <component>/instrumentation</component>
+     <subcomponent>fuel-consumed</subcomponent>
+    </fuel-consumed>
+   </slave>
+
+   <weight-datum-lb type="double">0.0</weight-datum-lb>                    <!-- without fuel -->
+   <weight-real-lb alias="/fdm/jsbsim/inertia/weight-lbs"/>
+   <weight-lb type="double">0.0</weight-lb>
   </ac-weight>
 
   <adf n="0">
@@ -60,6 +72,7 @@
 
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <weight>/instrumentation/ac-weight</weight>
    </slave>
   </airspeed-indicator>
 
@@ -71,6 +84,11 @@
    <serviceable type="bool">true</serviceable>
    <setting-inhg>29.92</setting-inhg>
   </altimeter-standby>
+
+  <accelerometer-aoa>
+   <alpha-deg alias="/orientation/alpha-deg"/>
+   <g alias="/accelerations/nlf"/>
+  </accelerometer-aoa>
 
   <attitude-indicator n="0">
    <serviceable type="bool">true</serviceable>
@@ -103,15 +121,24 @@
   <cg>
    <serviceable type="bool" archive="y">true</serviceable>
 
+   <cg-x-in alias="/fdm/jsbsim/inertia/cg-x-in"/>
+   <cg-c0-in type="double">0.0</cg-c0-in>
    <max-percent type="double">100.0</max-percent>
+   <max-performance-to type="bool">false</max-performance-to>
    <min-percent type="double">0.0</min-percent>
    <percent type="double">50.0</percent>
-   <sensor-in alias="/fdm/jsbsim/inertia/cg-x-ft"/>
 
    <slave>
     <mach>/instrumentation/mach-indicator</mach>
+    <weight>/instrumentation/ac-weight</weight>
    </slave>
   </cg>
+
+  <clock>
+   <noinstrument>
+    <altitude>/position/altitude-ft</altitude>
+   </noinstrument>
+  </clock>
 
   <compass n="0">
    <att-ins3 type="bool">false</att-ins3>
@@ -139,6 +166,7 @@
    <frequencies>
     <source>/instrumentation/nav[1]/frequencies/selected-mhz</source>
    </frequencies>
+   <selector type="int">0</selector>                                       <!-- normal -->
   </dme>
 
   <dme n="1">
@@ -146,13 +174,42 @@
    <frequencies>
     <source>/instrumentation/nav[2]/frequencies/selected-mhz</source>
    </frequencies>
+   <selector type="int">0</selector>                                       <!-- normal -->
   </dme>
 
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
+   <fuel-flow-kg_ph type="double">0.0</fuel-flow-kg_ph>
    <total-gal_us type="double">0.0</total-gal_us>
    <total-kg type="double">0.0</total-kg>
   </fuel>
+
+  <fuel-consumed n="0">
+   <reset type="bool">false</reset>                                        <!-- by virtual engineer -->
+   <total-kg type="double">0.0</total-kg>
+
+   <slave>
+    <engine>
+     <component>/engines</component>
+     <subcomponent>engine</subcomponent>
+    </engine>
+   </slave>
+  </fuel-consumed>
+
+  <fuel-consumed n="1">
+   <reset type="bool">false</reset>
+   <total-kg type="double">0.0</total-kg>
+  </fuel-consumed>
+
+  <fuel-consumed n="2">
+   <reset type="bool">false</reset>
+   <total-kg type="double">0.0</total-kg>
+  </fuel-consumed>
+
+  <fuel-consumed n="3">
+   <reset type="bool">false</reset>
+   <total-kg type="double">0.0</total-kg>
+  </fuel-consumed>
 
   <hsi n="0">
    <serviceable type="bool" archive="y">true</serviceable>
@@ -171,23 +228,91 @@
   </hsi>
 
   <ins n="0">
-   <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <control>
+    <remote type="bool">true</remote>                                      <!-- to/from all INS -->
+    <selector type="int">0</selector>                                      <!-- position -->
+    <test type="bool">false</test>
+    <waypoint type="int">1</waypoint>                                      <!-- 1st waypoint -->
+   </control>
+
+   <computed>
+    <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
+    <leg-course-error-nm>0.0</leg-course-error-nm>
+    <leg-true-course-deg>0.0</leg-true-course-deg>
+    <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
+    <wind-speed-kt alias="/environment/wind-speed-kt"/>
+   </computed>
+
+   <data>
+    <ident></ident>                                                        <!-- string -->
+    <left></left>
+    <right></right>
+   </data>
+
+   <light>
+    <alert type="bool">false</alert>
+   </light>
+
+   <msu>
+    <mode type="int">1</mode>                                              <!-- nav -->
+   </msu>
 
    <slave>
     <electric>/systems/electrical/power</electric>
    </slave>
-
-   <selector type="int">0</selector>
-   <wind-speed-kt alias="/environment/wind-speed-kt"/>
-   <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
   </ins>
 
   <ins n="1">
-   <selector type="int">0</selector>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <control>
+    <remote type="bool">true</remote>
+    <selector type="int">0</selector>
+    <test type="bool">false</test>
+    <waypoint type="int">1</waypoint>
+   </control>
+
+   <data>
+    <ident></ident>
+    <left></left>
+    <right></right>
+   </data>
+
+   <light>
+    <alert type="bool">false</alert>
+   </light>
+
+   <msu>
+    <mode type="int">1</mode>
+   </msu>
   </ins>
 
   <ins n="2">
-   <selector type="int">0</selector>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <control>
+    <remote type="bool">true</remote>
+    <selector type="int">0</selector>
+    <test type="bool">false</test>
+    <waypoint type="int">1</waypoint>
+   </control>
+
+   <data>
+    <ident></ident>
+    <left></left>
+    <right></right>
+   </data>
+
+   <light>
+    <alert type="bool">false</alert>
+   </light>
+
+   <msu>
+    <mode type="int">1</mode>
+   </msu>
   </ins>
 
   <inst-vertical-speed-indicator>
@@ -211,6 +336,7 @@
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
     <cg>/instrumentation/cg[0]</cg>
+    <weight>/instrumentation/ac-weight</weight>
    </slave>
   </mach-indicator>
 
@@ -264,6 +390,11 @@
    <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
   </radio-altimeter>
 
+  <side-slip>
+   <serviceable type="bool" archive="y">true</serviceable>
+   <angle-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+  </side-slip>
+
   <tank-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
    <differential-psi>0.0</differential-psi>
@@ -280,6 +411,7 @@
   <tcas>                                                                   <!-- TCAS 2) number of visible traffics -->
    <serviceable type="bool">true</serviceable>
 
+   <nb-traffics type="int">0</nb-traffics>
    <range type="int" archive="y">45</range>                                <!-- maximum range -->
 
    <slave>
@@ -289,31 +421,31 @@
 
    <traffics>
     <traffic n="0">
-     <distance-nm>9999.0</distance-nm>                                     <!-- no traffic -->
+     <distance-nm type="double">9999.0</distance-nm>                       <!-- no traffic -->
     </traffic>
     <traffic n="1">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="2">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="3">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="4">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="5">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="6">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="7">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
     <traffic n="8">
-     <distance-nm>9999.0</distance-nm>
+     <distance-nm type="double">9999.0</distance-nm>
     </traffic>
    </traffics>
   </tcas>
@@ -335,6 +467,13 @@
    <noinstrument>
     <agl>/position/altitude-agl-ft</agl>
    </noinstrument>
+
+   <slave>
+    <gear>
+     <component>/gear</component>
+     <subcomponent>gear</subcomponent>
+    </gear>
+   </slave>
   </weight-switch>
 
 </PropertyList>

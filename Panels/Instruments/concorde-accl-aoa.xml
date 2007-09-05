@@ -2,7 +2,8 @@
 
 <!-- Accelorometer and AOA :
 
-     - the real AoA is a white moving tape.
+     - TODO : the real AoA is a white moving tape.
+     - TODO : serviceable ?
 -->
 
 <PropertyList>
@@ -59,7 +60,7 @@
     <transformation>
      <condition include="concorde-cond-voltage-inst.xml"/>
      <type>x-shift</type>
-     <property>/accelerations/nlf</property>
+     <property>/instrumentation/accelerometer-aoa/g</property>
      <min>-1.0</min>
      <max>3.5</max>
      <scale>1.0</scale>
@@ -95,14 +96,14 @@
     <transformation>
      <condition include="concorde-cond-voltage-inst.xml"/>
      <type>x-shift</type>
-     <property>/orientation/alpha-deg</property>
+     <property>/instrumentation/accelerometer-aoa/alpha-deg</property>
      <min>-5.0</min>
      <max>25.0</max>
      <scale>1.0</scale>
      <interpolation> <!-- index must increase, because of lookup ! -->
-      <entry><ind>-5.0</ind><dep>  26.0</dep></entry>
-      <entry><ind> 0.0</ind><dep>   0.0</dep></entry>
-      <entry><ind>25.0</ind><dep>-127.0</dep></entry>
+      <entry><ind>-5.0</ind><dep> 75.0</dep></entry>
+      <entry><ind>10.0</ind><dep>  0.0</dep></entry>
+      <entry><ind>25.0</ind><dep>-75.0</dep></entry>
       </interpolation>
     </transformation>
    </transformations>

@@ -33,9 +33,9 @@
    <x>400</x>
    <label>Press p/P for next/previous page</label>
    <color>
-     <red>0.0</red>
-     <green>0.0</green>
-     <blue>1.0</blue>
+     <red>0.5</red>
+     <green>0.5</green>
+     <blue>0.5</blue>
    </color>
   </text>
 
@@ -125,6 +125,15 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
+   <label>INS 3</label>
+   <property>/instrumentation/ins[2]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>240</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
    <label>Tank pressure</label>
    <property>/instrumentation/tank-pressure/serviceable</property>
   </checkbox>
@@ -140,20 +149,6 @@
   <button>
    <x>50</x>
    <y>0</y>
-   <legend>OK</legend>
-   <default>true</default>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>dialog-close</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>150</x>
-   <y>0</y>
    <legend>Apply</legend>
    <equal>true</equal>
    <binding>
@@ -162,21 +157,15 @@
   </button>
 
   <button>
-   <x>250</x>
+   <x>280</x>
    <y>0</y>
-   <legend>Reset</legend>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-update</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>350</x>
-   <y>0</y>
-   <legend>Cancel</legend>
+   <legend>Close</legend>
+   <default>true</default>
    <equal>true</equal>
    <key>Esc</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-close</command>
    </binding>
@@ -187,6 +176,9 @@
    <y>0</y>
    <legend>Page 2</legend>
    <key>P</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-show</command>
     <dialog-name>Concorde-instruments2</dialog-name>
@@ -201,6 +193,9 @@
    <y>0</y>
    <legend>Page 1</legend>
    <key>p</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-show</command>
     <dialog-name>Concorde-instruments</dialog-name>

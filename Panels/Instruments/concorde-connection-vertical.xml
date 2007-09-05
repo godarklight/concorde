@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- Vertical connection -->
+<!-- Vertical connection :
+
+     - by default, hatched if no specific voltage.
+-->
 
 <PropertyList>
  <name>Vertical Connection</name>
@@ -9,6 +12,7 @@
 
  <params>
   <connect-status>/controls/engines/engine[0]/master-alt</connect-status>
+  <defined-status>/systems/electrical/power/specific</defined-status>
  </params>
 
 
@@ -16,6 +20,21 @@
   <layer>
    <name>Connection flag</name>
    <type>switch</type>
+
+   <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/defined-status"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>25</w>
+    <h>25</h>
+   </layer>
+
    <layer>
     <name>on</name>
     <condition>
@@ -27,6 +46,7 @@
     <w>25</w>
     <h>25</h>
    </layer>
+
    <layer>
     <name>off</name>
     <texture>

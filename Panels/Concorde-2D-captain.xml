@@ -322,8 +322,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>NAV 1 knob</name>
    <x>153</x>
    <y>435</y>
-   <w>60</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-nav-test.xml">
@@ -357,11 +357,12 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>NAV 2 knob</name>
    <params>
     <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
+    <selector-ctrl>/instrumentation/dme[1]/selector</selector-ctrl>
    </params>
    <x>922</x>
    <y>435</y>
-   <w>60</w>
-   <h>30</h>
+   <w>90</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-ap-nav-test.xml">
@@ -466,7 +467,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>Speed up</name>
    <x>50</x>
    <y>300</y>
-   <w>120</w>
+   <w>100</w>
    <h>80</h>
   </instrument>
 
@@ -496,7 +497,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>20</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-red-cg.xml">
+  <instrument include="Instruments/concorde-red-m-cg.xml">
    <name>Alarm on Center of Gravity</name>
    <x>210</x>
    <y>398</y>
@@ -931,16 +932,6 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <y>163</y>
    <w>125</w>
    <h>20</h>
-  </instrument>
-
-<!-- totals -->
-
-  <instrument include="Instruments/concorde-kgph.xml">
-   <name>Fuel Flow</name>
-   <x>850</x>
-   <y>70</y>
-   <w>60</w>
-   <h>60</h>
   </instrument>
 
 <!-- copy from CENTER PANEL -->

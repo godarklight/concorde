@@ -2,12 +2,17 @@
 
 <!-- Alarm on Ice :
 
+     - not anti-icing with ice condition.
 -->
 
 <PropertyList>
  <name>Alarm on Ice</name>
  <w-base>104</w-base>
  <h-base>26</h-base>
+
+ <params>
+  <ice-select>/systems/mws/red/ice</ice-select>
+ </params>
 
 
  <layers>
@@ -21,7 +26,15 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <or include="concorde-cond-test-mws.xml"/>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>     <!-- bug -->
+       <or>
+        <not>
+         <property alias="../../../../../../../../../params/ice-select"/>
+        </not>
+        <property>/controls/mws/inhibit</property>
+       </or>
+      </and>
      </or>
     </condition>
 
@@ -68,5 +81,23 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property alias="../../../../params/ice-select"/>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
 
 </PropertyList>

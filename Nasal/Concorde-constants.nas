@@ -2,19 +2,35 @@
 # CONCORDE CONSTANTS
 # ==================
 
-ConstantAero = {};
+Constantaero = {};
 
-ConstantAero.new = func {
-   obj = { parents : [ConstantAero],
+Constantaero.new = func {
+   obj = { parents : [Constantaero],
 
-           APPROACHKT : 250.0,
-           LANDINGKT : 190.0,
+           FULLLB : 408000,
+           LANDINGLB : 245000,
+           EMPTYLB : 203000,
 
-           MAXCRUISEFT : 50190,                    # max cruise mode 
-           APPROACHFT : 10000,                     # 250 kt
-           LANDINGFT : 3000.0,                     # 190 kt
-           CLIMBFT : 1000.0,
-           REHEATFT : 500.0,                       # reheat off
+           MAXFPM : 7000.0,                                  # max descent rate
+
+           APPROACHKT : 250,
+           V2FULLKT : 220,
+           V2EMPTYKT : 205,                                  # guess
+           VRFULLKT : 195,
+           LANDINGKT : 190,
+           VREMPTYKT : 180,                                  # guess
+           V1FULLKT : 165,
+           VREFFULLKT : 162,
+           VREFEMPTYKT : 152,
+           V1EMPTYKT : 150,                                  # guess
+           TAXIKT : 10,
+
+           MAXCRUISEFT : 50190,                              # max cruise mode 
+           APPROACHFT : 10000,                               # 250 kt
+           LANDINGFT : 3000,                                 # 190 kt
+           CLIMBFT : 1000,
+           REHEATFT : 500,                                   # reheat off
+           GEARFT : 20,                                      # gear retraction
 
 # AGL altitude, where the gears touch the ground
            AGLTOUCHFT : 14,
@@ -27,6 +43,33 @@ ConstantAero.new = func {
    return obj;
 }
 
+Constantaero.Vkt = func( weightlb, minkt, maxkt ) {
+    if( weightlb > me.FULLLB ) {
+        valuekt = maxkt;
+    }
+    elsif( weightlb < me.EMPTYLB ) {
+        valuekt = minkt;
+    }
+    else {
+        ratio = ( me.FULLLB - weightlb ) / ( me.FULLLB - me.EMPTYLB );
+        valuekt = maxkt + ( minkt - maxkt ) * ratio;
+    }
+
+    return valuekt;
+}
+
+Constantaero.Vrefkt = func( weightlb ) {
+    if( weightlb > me.LANDINGLB ) {
+        valuekt = me.VREFFULLKT;
+    }
+    else {
+        ratio = ( me.FULLLB - weightlb ) / ( me.FULLLB - me.EMPTYLB );
+        valuekt = me.VREFFULLKT + ( me.VREFEMPTYKT - me.VREFFULLKT ) * ratio;
+    }
+
+   return valuekt;
+}
+
 
 # =========
 # CONSTANTS
@@ -36,6 +79,11 @@ Constant = {};
 
 Constant.new = func {
    obj = { parents : [Constant],
+
+           ready : 0.0,                            # waits for end of initialization
+
+# artificial intelligence
+           HUMANSEC : 1.0,                         # human reaction time
 
 # angles
            DEG360 : 360,
@@ -49,12 +97,14 @@ Constant.new = func {
 # ---------------
 # unit conversion
 # ---------------
+
 # angle
            DEGTORAD : 0.0174532925199,
 # length
            FEETTOMETER : 0.3048,
            METERTOFEET : 3.28083989501,
            NMTOFEET : 6076.11548556,
+           FEETTONM : 0.0001645788,
 # pressure
            INHGTOPSI : 0.491154077497,
            MBARTOINHG : 0.029529987508,
@@ -66,15 +116,16 @@ Constant.new = func {
            FTOCELSIUS : 0.0,
            F0TOCELSIUS : 0.0,
 # time
-           HOURTOMINUTE : 60.0,
-           HOURTOSECOND : 3600.0,
-           MINUTETOSECOND : 60.0,
+           HOURTOMINUTE : 60,
+           HOURTOSECOND : 3600,
+           MINUTETOSECOND : 60,
 # velocity
            FPSTOKT : 0.592483801296,
            MPSTOKT : 1.943844,
 # weight
            GALUSTOKG : 0.0,
            GALUSTOLB : 6.6,                        # 1 US gallon = 6.6 pound
+           KGTOLB : 2.20462,
            LBTOGALUS : 0.0,
            LBTOKG : 0.453592,
            TONTOLB : 2204.62,
@@ -84,7 +135,7 @@ Constant.new = func {
            T0_degc : 15.0,
 
 # --------
-# formulas
+# physical
 # --------
            gammaairstp : 1.4,                      # ratio of specific heats at STP
            Rpm2ps2pK : 286.0                       # gas constant 286 /m2/s2/K for air
@@ -100,6 +151,34 @@ Constant.init = func {
    me.LBTOGALUS = 1 / me.GALUSTOLB;
    me.FTOCELSIUS = 1 / me.CELSIUSTOF;
    me.F0TOCELSIUS = - me.CELSIUS0TOF * me.FTOCELSIUS;
+}
+
+Constant.abs = func( value ) {
+   if( value < 0 ) {
+       value = - value;
+   }
+
+   return value;
+}
+
+Constant.rates = func( steps ) {
+   speedup = getprop("/sim/speed-up");
+   if( speedup > 1 ) {
+       steps = steps / speedup;
+   }
+
+   return steps;
+}
+
+Constant.clip = func( min, max, value ) {
+   if( value < min ) {
+       value = min;
+   }
+   elsif( value > max ) {
+       value = max;
+   }
+
+   return value;
 }
 
 # north crossing
@@ -133,6 +212,15 @@ Constant.newtonsoundmps= func( temperaturedegc ) {
     speedmps = math.sqrt(dPdRo);
 
     return speedmps;
+}
+
+Constant.system_ready = func {
+    # if there is electrical power, there should be also hydraulics
+    if( !me.ready ) {
+        me.ready = getprop("/systems/electrical/power/specific");
+    }
+
+    return me.ready;
 }
 
 
@@ -572,4 +660,138 @@ Constant.temperature_degc = func( altitudeft ) {
 
 
    return isadegc;
+}
+
+
+# ======
+# SYSTEM
+# ======
+
+# for inheritance, the system must be the last of parents.
+System = {};
+
+# not called by child classes !!!
+System.new = func {
+   obj = { parents : [System],
+
+           SYSSEC : 0.0,                               # to be defined !
+
+           RELOCATIONFT : 0.0,                         # max descent speed around 6000 feet/minute.
+
+           altseaft : 0.0,
+
+           noinstrument : {},
+           slave : {}
+         };
+
+   return obj;
+};
+
+System.init_ancestor = func( path ) {
+   obj = System.new();
+
+   me.SYSSEC = obj.SYSSEC;
+   me.RELOCATIONFT = obj.RELOCATIONFT;
+   me.altseaft = obj.altseaft;
+   me.noinstrument = obj.noinstrument;
+   me.slave = obj.slave;
+
+   me.loadtree( path ~ "/slave" );
+   me.loadprop( path ~ "/noinstrument" );
+}
+
+System.set_rate_ancestor = func( rates ) {
+   me.SYSSEC = rates;
+
+   me.RELOCATIONFT = constantaero.MAXFPM / ( constant.MINUTETOSECOND / me.SYSSEC );
+}
+
+# property access is faster through its node, than parsing its string
+System.loadtree = func( path ) {
+   if( props.globals.getNode(path) != nil ) {
+       children = props.globals.getNode(path).getChildren();
+       foreach( c; children ) {
+          name = c.getName();
+          subchildren = c.getChildren();
+
+          # <slave>
+          #  <engine>
+          #   <component>/engines</component>
+          #   <subcomponent>engine</subcomponent>
+          #  </engine>
+          if( size(subchildren) > 0 ) {
+              component = c.getChild("component").getValue();
+              subcomponent = c.getChild("subcomponent").getValue();
+              me.slave[name] = props.globals.getNode(component).getChildren(subcomponent);
+          }
+
+          #  <altimeter>/instrumentation/altimeter[0]</altimeter>
+          # </slave>
+          else {
+              value = c.getValue();
+              me.slave[name] = props.globals.getNode(value);
+          }
+      }
+   }
+}
+
+System.loadprop = func( path ) {
+   if( props.globals.getNode(path) != nil ) {
+       children = props.globals.getNode(path).getChildren();
+       foreach( c; children ) {
+          name = c.getName();
+          subchildren = c.getChildren();
+
+          # <noinstrument>
+          #  <cloud>
+          #   <component>/environment/clouds</component>
+          #   <subcomponent>layer</subcomponent>
+          #  </cloud>
+          if( size(subchildren) > 0 ) {
+              component = c.getChild("component").getValue();
+              subcomponent = c.getChild("subcomponent").getValue();
+              me.noinstrument[name] = props.globals.getNode(component).getChildren(subcomponent);
+          }
+
+          #  <agl>/position/altitude-agl-ft</agl>
+          # </noinstrument>
+          else {
+              value = c.getValue();
+              me.noinstrument[name] = props.globals.getNode(value);
+          }
+       }
+   }
+}
+
+System.is_moving = func {
+   # must exist in XML
+   aglft = me.noinstrument["agl"].getValue();
+   speedkt = me.noinstrument["airspeed"].getValue();
+
+   if( aglft >=  constantaero.AGLTOUCHFT or speedkt >= constantaero.TAXIKT ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+System.is_relocating = func {
+   # must exist in XML
+   altft = me.noinstrument["altitude"].getValue();
+
+   # relocation in flight, or at another airport
+   variationftpm = altft - me.altseaft;
+   if( variationftpm < - me.RELOCATIONFT or variationftpm > me.RELOCATIONFT ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   me.altseaft = altft;
+
+   return result;
 }

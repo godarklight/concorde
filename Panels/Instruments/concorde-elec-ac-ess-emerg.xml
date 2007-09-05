@@ -12,8 +12,8 @@
  <h-base>84</h-base>
 
  <params>
-  <emerg-switch>/controls/electric/ac/emergency/essential1</emerg-switch>
-  <essential-switch>/controls/electric/ac/essential1</essential-switch>
+  <emerg-switch>/controls/electric/ac/emergency/essential[0]</emerg-switch>
+  <essential-switch>/controls/electric/ac/essential[0]</essential-switch>
   <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
  </params>
 
@@ -24,40 +24,17 @@
    <name>Emergency switch</name>
    <type>switch</type>
 
-   <layer>
+   <layer include="concorde-switch-on.xml">
+    <name>norm</name>
     <condition>
      <not>
       <property alias="../../../../../../params/emerg-switch"/>
      </not>
     </condition>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
    </layer>
-   <layer>
-    <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
+
+   <layer include="concorde-switch-off.xml">
+    <name>emerg</name>
    </layer>
   </layer>
 
@@ -165,7 +142,7 @@
    </binding>
    <binding>
     <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/generator</property>
+    <property>/controls/electric/ac/emergency/generator/selected</property>
     <value type="bool">true</value>
    </binding>
    <binding>

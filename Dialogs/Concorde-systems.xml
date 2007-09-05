@@ -4,18 +4,18 @@
 
  <name>Concorde-systems</name>
  <width>600</width>
- <height>370</height>
+ <height>400</height>
  <modal>false</modal>
 
  <text>
   <x>10</x>
-  <y>340</y>
+  <y>370</y>
   <label>Concorde Systems</label>
  </text>
 
  <text>
   <x>30</x>
-  <y>310</y>
+  <y>340</y>
   <label>(Uncheck a system to fail it.)</label>
   <color>
     <red>0.5</red>
@@ -25,10 +25,11 @@
  </text>
 
  <group>
-  <y>60</y>
+  <y>270</y>
 
   <checkbox>
    <x>30</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Air Bleed</label>
@@ -37,6 +38,7 @@
 
   <checkbox>
    <x>230</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Air Conditioning</label>
@@ -45,26 +47,82 @@
 
   <checkbox>
    <x>430</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Anti-icing</label>
+   <property>/systems/anti-icing/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>240</y>
+
+  <checkbox>
+   <x>30</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Autopilot 1</label>
+   <property>/systems/autopilot/serviceable[0]</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Autopilot 2</label>
+   <property>/systems/autopilot/serviceable[1]</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Autothrottle 1</label>
+   <property>/systems/autothrottle/serviceable[0]</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>210</y>
+
+  <checkbox>
+   <x>30</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Autothrottle 2</label>
+   <property>/systems/autothrottle/serviceable[1]</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Crew</label>
    <property>/systems/crew/serviceable</property>
   </checkbox>
- </group>
-
- <group>
-  <y>30</y>
 
   <checkbox>
-   <x>30</x>
+   <x>430</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Electrical</label>
    <property>/systems/electrical/serviceable</property>
   </checkbox>
+ </group>
+
+ <group>
+  <y>180</y>
 
   <checkbox>
-   <x>230</x>
+   <x>30</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Fuel</label>
@@ -72,27 +130,30 @@
   </checkbox>
 
   <checkbox>
-   <x>430</x>
+   <x>230</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>GPWS</label>
    <property>/systems/gpws/serviceable</property>
   </checkbox>
- </group>
-
- <group>
-  <y>0</y>
 
   <checkbox>
-   <x>30</x>
+   <x>430</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Hydraulic</label>
    <property>/systems/hydraulic/serviceable</property>
   </checkbox>
+ </group>
+
+ <group>
+  <y>150</y>
 
   <checkbox>
-   <x>230</x>
+   <x>30</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Lighting</label>
@@ -100,27 +161,30 @@
   </checkbox>
 
   <checkbox>
-   <x>430</x>
+   <x>230</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Pitot</label>
    <property>/systems/pitot/serviceable</property>
   </checkbox>
- </group>
-
- <group>
-  <y>-30</y>
 
   <checkbox>
-   <x>30</x>
+   <x>430</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Pressurization</label>
    <property>/systems/pressurization/serviceable</property>
   </checkbox>
+ </group>
+
+ <group>
+  <y>120</y>
 
   <checkbox>
-   <x>230</x>
+   <x>30</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Static</label>
@@ -128,19 +192,17 @@
   </checkbox>
 
   <checkbox>
-   <x>430</x>
+   <x>230</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Tank</label>
    <property>/systems/tank/serviceable</property>
   </checkbox>
- </group>
-
- <group>
-  <y>-60</y>
 
   <checkbox>
-   <x>30</x>
+   <x>430</x>
+   <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Vacuum</label>
@@ -153,19 +215,7 @@
 
   <button>
    <x>40</x>
-   <legend>OK</legend>
-   <default>true</default>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>dialog-close</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>170</x>
+   <y>0</y>
    <legend>Apply</legend>
    <equal>true</equal>
    <binding>
@@ -174,19 +224,15 @@
   </button>
 
   <button>
-   <x>340</x>
-   <legend>Reset</legend>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-update</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>490</x>
-   <legend>Cancel</legend>
+   <x>280</x>
+   <y>0</y>
+   <legend>Close</legend>
+   <default>true</default>
    <equal>true</equal>
    <key>Esc</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
    <binding>
     <command>dialog-close</command>
    </binding>

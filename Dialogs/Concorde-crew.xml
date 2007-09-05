@@ -8,63 +8,15 @@
     <label>Concorde crew</label>
   </text>
 
-  <hrule/>
+  <hrule><dummy/></hrule>
 
   <group>
     <layout>vbox</layout>
     <halign>center</halign>
 
     <text>
-      <label>Virtual crew</label>
-    </text>
-
-    <checkbox>
-      <halign>left</halign>
-      <label>Copilot</label>
-      <property>/controls/crew/copilot</property>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.copilotcrew.toggleexport();</script>
-      </binding>
-    </checkbox>
-
-    <checkbox>
-      <halign>left</halign>
-      <label>Engineer</label>
-      <property>/controls/crew/engineer</property>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.engineercrew.toggleexport();</script>
-      </binding>
-    </checkbox>
-
-    <text>
-      <label></label>
-    </text>
-
-    <text>
       <label>Doors</label>
     </text>
-
-    <checkbox>
-      <halign>left</halign>
-      <label>Air bleed ground supply</label>
-      <property>/systems/air-bleed/ground-service/door</property>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.airbleedsystem.groundserviceexport();</script>
-      </binding>
-    </checkbox>
-
-    <checkbox>
-      <halign>left</halign>
-      <label>Air conditioning ground supply</label>
-      <property>/systems/temperature/ground-service/door</property>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.airbleedsystem.reargroundserviceexport();</script>
-      </binding>
-    </checkbox>
 
     <checkbox>
       <halign>left</halign>
@@ -81,26 +33,148 @@
     </text>
 
     <text>
+      <label>Virtual crew</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Copilot</label>
+         <property>/controls/crew/copilot</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.copilotcrew.toggleexport();</script>
+         </binding>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.copilothuman.wakeupexport();</script>
+         </binding>
+       </checkbox>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Engineer</label>
+         <property>/controls/crew/engineer</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.engineercrew.toggleexport();</script>
+         </binding>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.engineerhuman.wakeupexport();</script>
+         </binding>
+       </checkbox>
+      </group>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Timeout of display  ~</label>
+         <property>/controls/crew/timeout</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/crew/timeout</property>
+         </binding>
+       </checkbox>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Night lighting  ~</label>
+         <property>/controls/human/lighting/night</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/human/lighting/night</property>
+         </binding>
+       </checkbox>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>3D  ~</label>
+         <property>/systems/human/serviceable</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/systems/human/serviceable</property>
+         </binding>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.copilothuman.wakeupexport();</script>
+         </binding>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.engineerhuman.wakeupexport();</script>
+         </binding>
+       </checkbox>
+      </group>
+
+    </group>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
       <label>Voice</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Callouts</label>
+         <property>/controls/crew/voice/sound</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/crew/voice/sound</property>
+         </binding>
+       </checkbox>
+      </group>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Crew text  ~</label>
+         <property>/controls/crew/voice/text</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.calloutcrew.crewtextexport();</script>
+         </binding>
+       </checkbox>
+      </group>
+
+    </group>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label>Views</label>
     </text>
 
     <checkbox>
       <halign>left</halign>
-      <label>Crew text</label>
-      <property>/controls/crew/voice/text</property>
+      <label>Recover position of last session  ~</label>
+      <property>/controls/seat/recover</property>
       <binding>
        <command>nasal</command>
-       <script>globals.Concorde.calloutcrew.textexport();</script>
-      </binding>
-    </checkbox>
-
-    <checkbox>
-      <halign>left</halign>
-      <label>Callouts</label>
-       <property>/controls/crew/voice/sound</property>
-      <binding>
-       <command>property-toggle</command>
-       <property>/controls/crew/voice/sound</property>
+       <script>globals.Concorde.seatsystem.recoverexport();</script>
       </binding>
     </checkbox>
 
@@ -109,18 +183,53 @@
     </text>
 
     <text>
-      <label>Autoland</label>
+      <label>Stowe seat</label>
     </text>
 
-    <checkbox>
-      <halign>left</halign>
-      <label>Real nav (accurate until 0 ft AGL)</label>
-      <property>/controls/autoflight/real-nav</property>
-      <binding>
-       <command>property-toggle</command>
-       <property>/controls/autoflight/real-nav</property>
-      </binding>
-    </checkbox>
+    <group>
+      <layout>hbox</layout>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Captain</label>
+         <property>/systems/human/captain/stowe-norm</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.doorsystem.railexport("captain");</script>
+         </binding>
+       </checkbox>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Copilot</label>
+         <property>/systems/human/copilot/stowe-norm</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.doorsystem.railexport("copilot");</script>
+         </binding>
+       </checkbox>
+      </group>
+
+      <group>
+       <layout>vbox</layout>
+       <halign>left</halign>
+
+       <checkbox>
+         <halign>left</halign>
+         <label>Engineer</label>
+         <property>/systems/human/engineer/stowe-norm</property>
+         <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.doorsystem.railexport("engineer");</script>
+         </binding>
+       </checkbox>
+      </group>
+    </group>
+
   </group>
 
   <text>

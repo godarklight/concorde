@@ -3,6 +3,7 @@
 <!-- engine HP valve switch :
 
      - requires starter or relight : relight effective only if allowed by JSBSim (enough speed).
+     - no test of light.
 -->
 
 
@@ -54,7 +55,7 @@
      <h>26</h>
     </layer>
     <layer>
-     <name>background off</name>
+     <name>off</name>
      <texture>
       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-bulb.rgb</path>
       <x1>0.0</x1>
@@ -65,6 +66,7 @@
      <w>26</w>
      <h>26</h>
     </layer>
+
     <transformations>
      <transformation>
       <type>y-shift</type>
@@ -80,7 +82,9 @@
     <layer>
      <name>background on</name>
      <type>group</type>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <not include="concorde-cond-voltage-bulb.xml"/>
+     </condition>
 
      <layer include="concorde-bulb-white-on.xml">
       <w>26</w>
@@ -122,6 +126,7 @@
       <h>26</h>
      </layer>
     </layer>
+
     <transformations>
      <transformation>
       <type>y-shift</type>

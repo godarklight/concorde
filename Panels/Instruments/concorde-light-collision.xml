@@ -15,41 +15,15 @@
    <name></name>
    <type>switch</type>
 
-   <layer>
-    <name>off</name>
+   <layer include="concorde-switch-on.xml">
+    <name>on</name>
     <condition>
-     <not>
-      <property>/controls/lighting/strobe</property>
-     </not>
+     <property>/controls/lighting/strobe</property>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
    </layer>
 
-   <layer>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
+   <layer include="concorde-switch-off.xml">
+    <name>off</name>
    </layer>
   </layer>
 

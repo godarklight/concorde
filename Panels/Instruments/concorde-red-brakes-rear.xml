@@ -12,7 +12,7 @@
  <h-base>104</h-base>
 
  <params>
-  <temp-degc>/systems/gear/brake-degc</temp-degc>
+  <temp-degc>/systems/hydraulic/brakes/temperature-degc</temp-degc>
  </params>
 
 
@@ -98,14 +98,22 @@
    <h>104</h>
    <binding>
     <command>property-assign</command>
-    <property>/systems/gear/brake-test-degc</property>
+    <property>/systems/hydraulic/brakes/test-degc</property>
     <property alias="../../../../params/temp-degc"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/systems/hydraulic/brakes/test</property>
    </binding>
    <mod-up>
     <binding>
      <command>property-assign</command>
-     <property>/systems/gear/brake-test-degc</property>
-     <value>0.0</value>
+     <property>/systems/hydraulic/brakes/test-degc</property>
+     <property>/systems/hydraulic/brakes/temp-max-degc</property>
+    </binding>
+    <binding>
+     <command>property-toggle</command>
+     <property>/systems/hydraulic/brakes/test</property>
     </binding>
     <binding>
      <command>property-toggle</command>

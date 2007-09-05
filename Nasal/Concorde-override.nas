@@ -7,19 +7,29 @@
 # OVERRIDING NASAL GLOBALS
 # ========================
 
+# joystick may move until listener is triggered.
+globals.Concorde.enginesystem = nil;
+
+
+# one cannot override the joystick flight controls;
+# but the mechanical channel should not fail.
+
 
 # overrides the joystick axis handler to catch a goaround
 override_throttleAxis = controls.throttleAxis;
 
 controls.throttleAxis = func {
-    val = cmdarg().getNode("setting").getValue();
-    if(size(arg) > 0) { val = -val; }
+    if( globals.Concorde.enginesystem == nil ) {
+        override_throttleAxis();
+    }
+    else {
+        val = cmdarg().getNode("setting").getValue();
+        if(size(arg) > 0) { val = -val; }
 
-    # default
-    override_throttleAxis();
+        position = (1 - val)/2;
 
-    # last human operation
-    props.setAll("/controls/engines/engine", "throttle-manual", (1 - val)/2);
+        globals.Concorde.enginesystem.set_throttle( position );
+    }
 }
 
 
@@ -28,12 +38,20 @@ override_gearDown = controls.gearDown;
 
 controls.gearDown = func( sign ) {
     if( sign < 0 ) {
-        if( hydraulicsystem.gear_up() ) {
+        if( globals.Concorde.hydraulicsystem.gear_up() ) {
             override_gearDown( sign );
+        }
+
+        # neutral, once retracted
+        if( getprop("/gear/gear[0]/position-norm") == 0.0 ) {
+            setprop("/controls/gear/neutral",globals.Concorde.constant.TRUE);
         }
     }
     elsif( sign > 0 ) {
-        if( hydraulicsystem.gear_down() ) {
+        # remove neutral to get hydraulics
+        setprop("/controls/gear/neutral",globals.Concorde.constant.FALSE);
+
+        if( globals.Concorde.hydraulicsystem.gear_down() ) {
             override_gearDown( sign );
         }
     }
@@ -45,12 +63,12 @@ override_flapsDown = controls.flapsDown;
 
 controls.flapsDown = func( sign ) {
     if( sign < 0 ) {
-        if( hydraulicsystem.nose_up() ) {
+        if( globals.Concorde.hydraulicsystem.nose_up() ) {
             override_flapsDown( sign );
         }
     }
     elsif( sign > 0 ) {
-        if( hydraulicsystem.nose_down() ) {
+        if( globals.Concorde.hydraulicsystem.nose_down() ) {
             override_flapsDown( sign );
         }
     }
@@ -61,7 +79,7 @@ controls.flapsDown = func( sign ) {
 override_applyBrakes = controls.applyBrakes;
 
 controls.applyBrakes = func(v, which = 0) {
-    if( hydraulicsystem.has_brakes() ) {
+    if( globals.Concorde.hydraulicsystem.has_brakes() ) {
         # default
         override_applyBrakes( v, which );
     }

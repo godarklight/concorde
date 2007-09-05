@@ -12,7 +12,7 @@
     <label>Concorde fuel</label>
   </text>
 
-  <hrule/>
+  <hrule><dummy/></hrule>
 
   <text>
     <label></label>
@@ -20,13 +20,14 @@
 
   <group>
     <layout>hbox</layout>
+
     <text>
-      <label>Tanks filling</label>
-      <halign>left</halign>
+      <label>Tanks filling  ~</label>
     </text>
+
     <combo>
       <pref-width>200</pref-width>
-      <property>/sim/presets/tanks/dialog</property>
+      <property>/systems/fuel/tanks/dialog</property>
       <value>max landing</value>
       <value>max takeoff</value>
       <value>min fuel</value>
@@ -34,8 +35,48 @@
       <value>supersonic climb</value>
       <value>supersonic cruise</value>
       <value>supersonic descent</value>
+      <value>low level</value>
     </combo>
   </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+   <label>after change (or use virtual engineer) :</label>
+   <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+   </color>
+  </text>
+
+  <text>
+   <label>1) reset fuel consumed (X4).</label>
+   <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+   </color>
+  </text>
+
+  <text>
+   <label>2) reset aircraft weight.</label>
+   <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+   </color>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
 
   <text>
     <label></label>

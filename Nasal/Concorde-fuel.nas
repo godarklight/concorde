@@ -1,10 +1,11 @@
 # EXPORT : functions ending by export are called from xml
 # CRON : functions ending by cron are called from timer
 # SCHEDULE : functions ending by schedule are called from cron
+# HUMAN : functions ending by human are called by artificial intelligence
 
 
-# IMPORTANT : always uses /consumables/fuel/tank[0]/level-gal_us, because /level-lb seems not synchronized
-# with level-gal_us, during the time of a procedure.
+# IMPORTANT : always uses /consumables/fuel/tank[0]/level-gal_us,
+# because /level-lb seems not synchronized with level-gal_us, during the time of a procedure.
 
 
 
@@ -15,29 +16,31 @@
 Fuel = {};
 
 Fuel.new = func {
-   obj = { parents : [Fuel], 
+   obj = { parents : [Fuel,System], 
 
            tanksystem : Tanks.new(),
-           totalinstrument : Totalfuel.new(),
+           totalfuelinstrument : TotalFuel.new(),
+           fuelconsumedinstrument : FuelConsumed.new(),
+           aircraftweightinstrument : AircraftWeight.new(),
 
            PUMPSEC : 1.0,
 
 # at Mach 2, trim tank 10 only feeds 2 supply tanks 5 and 7 : 45200 lb/h, or 6.3 lb/s per tank.
            PUMPLBPSEC : 10,                                              # 10 lb/s for 1 pump.
-           PUMPPMIN0 : 0.0,
-           PUMPLB0 : 0.0,
 
-           PUMPPMIN : 0.0,
-           PUMPLB : 0.0,
+           PUMPPMIN0 : 0.0,                                              # time step
+           PUMPPMIN : 0.0,                                               # speed up
 
-           CLIMBFTPMIN : 3500,                                           # max climb rate
-           CLIMBFTPSEC : 0.0,
-           MAXSTEPFT : 0.0,
+           PUMPLB0 : 0.0,                                                # rate for step
+           PUMPLB : 0.0,                                                 # speed up
 
-           pumps : nil,
+# auto trim limits
+           FORWARDKG : 24000,
+           AFTKG : 11000,
+           EMPTYKG : 0,
 
-           noinstrument : { "altitude" : "" },
-           slave : { "electric" : nil }
+           fuel : nil,
+           pumps : nil
          };
 
     obj.init();
@@ -51,21 +54,19 @@ Fuel.init = func {
     me.PUMPPMIN = me.PUMPPMIN0;
     me.PUMPLB = me.PUMPLB0;
 
-    me.CLIMBFTPSEC = me.CLIMBFTPMIN / constant.MINUTETOSECOND;
-    me.MAXSTEPFT = me.CLIMBFTPSEC * me.PUMPSEC;
+    me.init_ancestor("/systems/fuel");
 
-    me.noinstrument["altitude"] = getprop("/systems/fuel/noinstrument/altitude");
-
-    propname = getprop("/systems/fuel/slave/electric");
-    me.slave["electric"] = props.globals.getNode(propname);
-
+    me.fuel = props.globals.getNode("/systems/fuel");
     me.pumps = props.globals.getNode("/controls/fuel/pumps");
 
     me.tanksystem.initinstrument();
     me.tanksystem.presetfuel();
 }
 
-# feed engines
+Fuel.amber_fuel = func {
+   return me.tanksystem.amber_fuel();
+}
+
 Fuel.schedule = func {
    speedup = getprop("/sim/speed-up");
    if( speedup > 1 ) {
@@ -77,63 +78,362 @@ Fuel.schedule = func {
        me.PUMPLB = me.PUMPLB0;
    }
 
+   me.pumping();
+}
 
-   serviceable = constant.FALSE;
-   if( me.slave["electric"].getChild("specific").getValue() ) {
-       if( getprop("/systems/fuel/serviceable") ) {
-           serviceable = constant.TRUE;
+Fuel.slowschedule = func {
+   if( me.fuel.getChild("serviceable").getValue() ) {
+       # mechanical valves are supposed
+       me.inletvalve();
+   }
 
-           # avoid parallel updates
-           engine = me.pumps.getChild("engine").getValue();
-           forward = me.pumps.getChild("forward").getValue();
-           aft = me.pumps.getChild("aft").getValue();
-           dump = me.pumps.getChild("dump").getValue();
-           dump2 = me.pumps.getChild("dump2").getValue();
-           cross = me.pumps.getChild("cross").getValue();
+   me.fuelconsumedinstrument.schedule();
+   me.aircraftweightinstrument.schedule();
+}
+
+Fuel.menuexport = func {
+   change = me.tanksystem.menu();
+
+   me.fuel.getChild("reset").setValue( change );
+}
+
+Fuel.setweighthuman = func( totalkg ) {
+   me.aircraftweightinstrument.setdatum( totalkg );
+   me.fuelconsumedinstrument.reset();
+
+   me.fuel.getChild("reset").setValue( constant.FALSE );
+}
+
+Fuel.inletvalve = func {
+   # only 1 valve
+   me.computeinletvalve( "5", 0 );
+   me.computeinletvalve( "7", 0 );
+
+   for( i = 0; i < 2; i = i+1 ) {
+        me.computeinletvalve( "9", i );
+        me.computeinletvalve( "11", i );
+   }
+}
+
+Fuel.pumping = func {
+   if( me.fuel.getChild("serviceable").getValue() ) {
+       if( me.slave["electric"].getChild("specific").getValue() ) {
+           # controlled only by inlet valves and fuel pumps :
+           # tanks pumping each other is possible !
+           me.autotrim();
 
            # feeds from trim tanks
-           if( engine and ( forward or aft ) ) {
-               # balance the main tanks 5 and 7, closest to the collector tank
-               me.pumptrim( "5", me.PUMPLB, aft );
-               me.pumptrim( "7", me.PUMPLB, aft );
+           # balance the main tanks 5 and 7, closest to the collector tank
+           me.pumptrim("5");
+           me.pumptrim("7");
 
-               # avoids running out of fuel
-               me.pumpmain( me.PUMPLB );
-           }
-           # all tanks (balance)
-           else {
-               me.pumpmain( me.PUMPLB );
+           # avoids running out of fuel
+           me.pumpmain();
 
-               if( forward ) {
-                   me.pumpforward();
-               }
-               elsif( aft ) {
-                   me.pumpaft();
-               }
-           }
+           me.pumpforward();
+           me.pumpaft();
 
-           me.pressurizeaccumulators();
+           me.fuelpiping();
+
+
+           # avoid parallel updates
+           dump = me.pumps.getChild("dump").getValue();
+           dump2 = me.pumps.getChild("dump2").getValue();
 
            # avoid parallel events
            # 2 buttons for confirmation
            if( dump and dump2 ) {
                me.dumpreartanks();
            }
-           if( cross ) {
-               me.crosstanks();
+
+           me.connecttanks();
+       }
+
+
+       # for simplification, the diameter of inlet valves is enough for both the flow of
+       # hydraulical and electrical pumps.
+       me.hydraulicautotrim();
+       me.hydraulicforward();
+   }
+
+   # to synchronized with pumping
+   me.totalfuelinstrument.schedule();
+}
+
+Fuel.autotrim = func {
+   forwardoverride = me.pumps.getChild("forward-override").getValue();
+
+   if( !me.pumps.getChild("auto-off").getValue() or forwardoverride ) {
+       tank9kg = me.tanksystem.getlevelkg("9");
+       tank10kg = me.tanksystem.getlevelkg("10");
+       level910kg = tank9kg + tank10kg;
+       level11kg = me.tanksystem.getlevelkg("11");
+
+       # forward or emergency override (which ignores the load limits)
+       if( me.pumps.getChild("auto-forward").getValue() or forwardoverride ) {
+           if( me.tanksystem.controls( "11", "pump-auto", 0 ).getValue() and
+               me.tanksystem.controls( "11", "pump-auto", 1 ).getValue() ) {
+
+               empty11 = me.empty( "11" );
+
+               # stop everything
+               if( empty11 or
+                   ( level11kg <= me.tanksystem.controls( "11", "limit-kg" ).getValue() and
+                     !forwardoverride ) ) {
+                   me.stopautopumps();
+                   me.enginehuman( constant.FALSE );
+               }
+
+               # 11 to 5 and 7, until limit of 11
+               elsif( me.full( "9" ) or
+                      ( level910kg >= me.tanksystem.controls( "9", "limit-kg" ).getValue() and
+                        !forwardoverride ) ) {
+                   if ( me.tanksystem.controls( "5", "inlet-auto" ).getValue() and
+                        me.tanksystem.controls( "7", "inlet-auto" ).getValue() ) {
+                        me.forwardautopumps( constant.FALSE, constant.FALSE );
+                        me.enginehuman( constant.TRUE );
+                        me.forwardhuman( constant.TRUE );
+                   }
+               }
+
+               # 11 to 9 until limit of 9 + 10
+               elsif ( me.tanksystem.controls( "9", "inlet-auto", 0 ).getValue() and
+                       me.tanksystem.controls( "9", "inlet-auto", 1 ).getValue() ) {
+                   me.forwardautopumps( constant.FALSE, constant.FALSE );
+                   me.enginehuman( constant.FALSE );
+                   me.forwardhuman( constant.TRUE );
+               }
+
+               # stop
+               else {
+                   me.stopautopumps();
+                   me.enginehuman( constant.FALSE );
+               }
+           }
+       }
+
+       # rearward
+       else {
+           if( me.tanksystem.controls( "9", "pump-auto", 0 ).getValue() and
+               me.tanksystem.controls( "9", "pump-auto", 1 ).getValue() and
+               me.tanksystem.controls( "10", "pump-auto", 0 ).getValue() and
+               me.tanksystem.controls( "10", "pump-auto", 1 ).getValue() ) {
+
+               empty9 = me.empty( "9" );
+
+               # stop everything
+               if( ( empty9 and me.empty( "10" ) ) or
+                   level910kg <= me.tanksystem.controls( "9", "limit-kg" ).getValue() ) {
+                   me.stopautopumps();
+                   me.enginehuman( constant.FALSE );
+               }
+
+               # 9 + 10 to 5 and 7, until limit of 9 + 10 
+               elsif( me.full( "11" ) or
+                      level11kg >= me.tanksystem.controls( "11", "limit-kg" ).getValue() ) {
+                   if ( me.tanksystem.controls( "5", "inlet-auto" ).getValue() and
+                        me.tanksystem.controls( "7", "inlet-auto" ).getValue() ) {
+                        me.forwardautopumps( constant.TRUE, empty9 );
+                        me.enginehuman( constant.TRUE );
+                        me.afthuman( constant.TRUE );
+                   }
+               }
+
+               # 9 + 10 to 11 until limit of 11
+               elsif ( me.tanksystem.controls( "11", "inlet-auto", 0 ).getValue() and
+                       me.tanksystem.controls( "11", "inlet-auto", 1 ).getValue() ) {
+                   me.forwardautopumps( constant.TRUE, empty9 );
+                   me.enginehuman( constant.FALSE );
+                   me.afthuman( constant.TRUE );
+               }
+
+               # stop
+               else {
+                   me.stopautopumps();
+                   me.enginehuman( constant.FALSE );
+               }
            }
        }
    }
 
 
-   me.speedupfuel( speedup );
-
-   # the last
-   me.totalinstrument.schedule( me.PUMPPMIN );
+   # not driven by auto
+   else {
+       me.stopautopumps();
+   }
 }
 
-Fuel.menuexport = func {
-   me.tanksystem.menu();
+Fuel.stopautopumps = func {
+   # driven by switch
+   for( i = 0; i < 2; i = i+1 ) {
+        status = me.tanksystem.controls( "9", "pump-on", i ).getValue();
+        me.tanksystem.controls( "9", "pump", i ).setValue( status );
+        status = me.tanksystem.controls( "10", "pump-on", i ).getValue();
+        me.tanksystem.controls( "10", "pump", i ).setValue( status );
+        status = me.tanksystem.controls( "11", "pump-on", i ).getValue();
+        me.tanksystem.controls( "11", "pump", i ).setValue( status );
+   }
+}
+
+Fuel.forwardautopumps = func( forward, empty9 ) {
+   if( forward ) {
+       for( i = 0; i < 2; i = i+1 ) {
+            me.tanksystem.controls( "9", "pump", i ).setValue( !empty9 );
+            me.tanksystem.controls( "10", "pump", i ).setValue( empty9 );
+            me.tanksystem.controls( "11", "pump", i ).setValue( constant.FALSE );
+       }
+   }
+   else {
+       for( i = 0; i < 2; i = i+1 ) {
+            me.tanksystem.controls( "9", "pump", i ).setValue( constant.FALSE );
+            me.tanksystem.controls( "10", "pump", i ).setValue( constant.FALSE );
+            me.tanksystem.controls( "11", "pump", i ).setValue( constant.TRUE );
+       }
+   }
+}
+
+Fuel.hydraulicautotrim = func {
+   forwardoverride = me.pumps.getChild("forward-override").getValue();
+
+   if( !me.pumps.getChild("auto-off").getValue() or forwardoverride ) {
+       tank9kg = me.tanksystem.getlevelkg("9");
+       tank10kg = me.tanksystem.getlevelkg("10");
+       level910kg = tank9kg + tank10kg;
+       level11kg = me.tanksystem.getlevelkg("11");
+
+       # forward or emergency override (which ignores the load limits)
+       if( me.pumps.getChild("auto-forward").getValue() or forwardoverride ) {
+           if( me.tanksystem.controls( "11", "pump-blue-auto" ).getValue() and
+               me.tanksystem.controls( "11", "pump-green-auto" ).getValue() ) {
+
+               # stop everything
+               if( me.empty( "11" ) or
+                   ( level11kg <= me.tanksystem.controls( "11", "limit-kg" ).getValue() and
+                     !forwardoverride ) ) {
+                   me.stophydraulicpumps();
+                   me.enginehuman( constant.FALSE );
+               }
+
+               # 11 to 5 and 7, until limit of 11
+               elsif( me.full( "9" ) or
+                      ( level910kg >= me.tanksystem.controls( "9", "limit-kg" ).getValue() and
+                        !forwardoverride ) ) {
+                   if ( me.tanksystem.controls( "5", "inlet-auto" ).getValue() and
+                        me.tanksystem.controls( "7", "inlet-auto" ).getValue() ) {
+                        me.starthydraulicpumps();
+                        me.enginehuman( constant.TRUE );
+                        me.forwardhuman( constant.TRUE );
+                   }
+               }
+
+               # 11 to 9 until limit of 9 + 10
+               elsif ( me.tanksystem.controls( "9", "inlet-auto", 0 ).getValue() and
+                       me.tanksystem.controls( "9", "inlet-auto", 1 ).getValue() ) {
+                   me.starthydraulicpumps();
+                   me.enginehuman( constant.FALSE );
+                   me.forwardhuman( constant.TRUE );
+               }
+
+               # stop
+               else {
+                   me.stophydraulicpumps();
+                   me.enginehuman( constant.FALSE );
+               }
+           }
+       }
+   }
+
+
+   # not driven by auto
+   else {
+        me.stophydraulicpumps();
+   }
+}
+
+Fuel.stophydraulicpumps = func {
+   # driven by switch
+   for( i = 0; i < 2; i = i+1 ) {
+        status = me.tanksystem.controls( "11", "pump-green-on" ).getValue();
+        me.tanksystem.controls( "11", "pump-green" ).setValue( status );
+        status = me.tanksystem.controls( "11", "pump-blue-on" ).getValue();
+        me.tanksystem.controls( "11", "pump-green" ).setValue( status );
+   }
+}
+
+Fuel.starthydraulicpumps = func {
+   for( i = 0; i < 2; i = i+1 ) {
+        me.tanksystem.controls( "11", "pump-green" ).setValue( constant.TRUE );
+        me.tanksystem.controls( "11", "pump-blue" ).setValue( constant.TRUE );
+   }
+}
+
+Fuel.forwardautohuman = func( forward ) {
+   if( forward ) {
+       me.tanksystem.controls( "9", "limit-kg" ).setValue( me.FORWARDKG );
+       me.tanksystem.controls( "11", "limit-kg" ).setValue( me.EMPTYKG );
+   }
+   else {
+       me.tanksystem.controls( "9", "limit-kg" ).setValue( me.EMPTYKG );
+       me.tanksystem.controls( "11", "limit-kg" ).setValue( me.AFTKG );
+   }
+
+   me.pumps.getChild("auto-forward").setValue( forward );
+   me.pumps.getChild("auto-off").setValue( constant.FALSE );
+   me.pumps.getChild("auto-guard").setValue( constant.FALSE );
+
+   me.engineautotrim( constant.TRUE );
+
+   for( i = 0; i < 2; i = i+1 ) {
+        me.tanksystem.controls( "9", "inlet-auto", i ).setValue( forward );
+        me.tanksystem.controls( "11", "inlet-auto", i ).setValue( !forward );
+        me.tanksystem.controls( "9", "pump-auto", i ).setValue( !forward );
+        me.tanksystem.controls( "10", "pump-auto", i ).setValue( !forward );
+        me.tanksystem.controls( "11", "pump-auto", i ).setValue( forward );
+   }
+
+   me.offhydraulicautotrim();
+}
+
+Fuel.engineautotrim = func( set ) {
+   # only 1 valve
+   me.tanksystem.controls( "5", "inlet-auto" ).setValue( set );
+   me.tanksystem.controls( "7", "inlet-auto" ).setValue( set );
+}
+
+Fuel.offautohuman = func {
+   me.pumps.getChild("auto-off").setValue( constant.TRUE );
+   me.pumps.getChild("auto-guard").setValue( constant.TRUE );
+
+   me.engineautotrim( constant.FALSE );
+
+   for( i = 0; i < 2; i = i+1 ) {
+        me.tanksystem.controls( "9", "inlet-auto", i ).setValue( constant.FALSE );
+        me.tanksystem.controls( "11", "inlet-auto", i ).setValue( constant.FALSE );
+        me.tanksystem.controls( "9", "pump-auto", i ).setValue( constant.FALSE );
+        me.tanksystem.controls( "10", "pump-auto", i ).setValue( constant.FALSE );
+        me.tanksystem.controls( "11", "pump-auto", i ).setValue( constant.FALSE );
+   }
+
+   me.offhydraulicautotrim();
+}
+
+Fuel.offhydraulicautotrim = func {
+   me.tanksystem.controls( "11", "pump-blue-auto" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "11", "pump-green-auto" ).setValue( constant.FALSE );
+}
+
+Fuel.shutstandbyhuman = func {
+   me.tanksystem.controls( "1", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "2", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "3", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "4", "inlet-standby" ).setValue( constant.FALSE );
+
+   me.tanksystem.controls( "5", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "6", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "7", "inlet-standby" ).setValue( constant.FALSE );
+   me.tanksystem.controls( "8", "inlet-standby" ).setValue( constant.FALSE );
+
+   me.tanksystem.controls( "10", "inlet-standby" ).setValue( constant.FALSE );
 }
 
 Fuel.full = func( tank ) {
@@ -148,139 +448,423 @@ Fuel.lowlevel = func {
    return me.tanksystem.lowlevel();
 }
 
-Fuel.togglepump = func( tank, set ) {
-   for( i=0; i < 2; i=i+1 ) {
-        me.tanksystem.controls(tank).getChild("pump",i).setValue( set );
+# set manually the switch
+Fuel.pumphuman = func( tank, set ) {
+   # for trim tank, auto may also drive the pump
+   if( tank == "9" or tank == "10" or tank == "11" ) {
+       for( i=0; i < 2; i=i+1 ) {
+             me.tanksystem.controls(tank, "pump-on", i).setValue( set );
+       }
+   }
+
+   else {
+       for( i=0; i < 2; i=i+1 ) {
+             me.tanksystem.controls(tank, "pump", i).setValue( set );
+       }
    }
 }
 
-Fuel.toggletransvalve = func( tank, set ) {
-   me.tanksystem.controls(tank).getChild("trans-valve").setValue( set );
+Fuel.transvalvehuman = func( tank, set ) {
+   me.tanksystem.controls(tank, "trans-valve").setValue( set );
 }
 
-Fuel.toggleafttrim = func( set ) {
-   me.tanksystem.controls("1").getChild("aft-trim").setValue( set );
-   me.tanksystem.controls("4").getChild("aft-trim").setValue( set );
+Fuel.toggleinterconnectvalve = func( tank, set ) {
+   me.tanksystem.controls(tank, "interconnect-valve").setValue( set );
 }
 
-Fuel.toggleforward = func( set ) {
-   if( !set ) {
-       me.pumps.getChild("forward").setValue(constant.FALSE);
+Fuel.togglecrossfeedvalve = func( tank, set ) {
+   me.tanksystem.controls(tank, "cross-feed-valve").setValue( set );
+}
+
+Fuel.afttrimhuman = func( set ) {
+   me.tanksystem.controls("1", "aft-trim").setValue( set );
+   me.tanksystem.controls("4", "aft-trim").setValue( set );
+}
+
+Fuel.valveforward = func( set, toengine ) {
+   me.pumps.getChild("forward").setValue( set );
+   if( !toengine ) {
+       for( i = 0; i < 2; i = i+1 ) {
+            me.toggleinletvalve( "9", i, set );
+       }
+   }
+}
+
+Fuel.valveaft = func( set, toengine ) {
+   me.pumps.getChild("aft").setValue( set);
+   if( !toengine ) {
+       for( i = 0; i < 2; i = i+1 ) {
+            me.toggleinletvalve( "11", i, set );
+       }
+   }
+}
+
+Fuel.togglecross = func( set ) {
+   me.pumps.getChild("cross").setValue( set );
+
+   me.toggleinterconnectvalve( "6", set );
+   me.toggleinterconnectvalve( "8", set );
+
+   me.togglecrossfeedvalve( "1", set );
+   me.togglecrossfeedvalve( "2", set );
+   me.togglecrossfeedvalve( "3", set );
+   me.togglecrossfeedvalve( "4", set );
+}
+
+Fuel.forwardhuman = func( set ) {
+   toengine = me.pumps.getChild("engine").getValue();
+
+   me.valveforward( set, toengine );
+   me.valveaft( constant.FALSE, toengine );
+}
+
+Fuel.afthuman = func( set ) {
+   toengine = me.pumps.getChild("engine").getValue();
+
+   me.valveaft( set, toengine );
+   me.valveforward( constant.FALSE, toengine );
+}
+
+Fuel.enginehuman = func( set ) {
+   me.pumps.getChild("engine").setValue( set );
+
+   # only 1 valve
+   me.toggleinletvalve( "5", 0, set );
+   me.toggleinletvalve( "7", 0, set );
+
+   me.aft2Dhuman( constant.FALSE );
+
+   me.valveaft( constant.FALSE, constant.FALSE );
+   me.valveforward( constant.FALSE, constant.FALSE );
+}
+
+Fuel.aft2Dhuman = func( set ) {
+   me.pumps.getChild("aft-2D").setValue( set );
+}
+
+Fuel.toggleinletvalve = func( tank, valve, state ) {
+   # - with main selector only
+   # - auto is unchanged
+   me.tanksystem.controls(tank, "inlet-off", valve).setValue( constant.TRUE );
+   me.tanksystem.controls(tank, "inlet-main", valve).setValue( state );
+   me.computeinletvalve(tank, valve);
+}
+
+# computes the inlet valve from the main and override switches
+Fuel.computeinletvalve = func( tank, valve ) {
+   if( me.tanksystem.controls( tank, "inlet-off", valve ).getValue() ) {
+       # gets the switch as set either by :
+       # - engineer.
+       # - or 2D panel.
+       # - or auto trim.
+       state = me.tanksystem.controls( tank, "inlet-main", valve ).getValue();
+
+       if( !me.tanksystem.controls( tank, "inlet-auto", valve ).getValue() ) {
+           me.tanksystem.controls( tank, "inlet-valve", valve ).setValue( state );
+       }
+
+       # auto trim opens and closes itself the valve
+       elsif( !me.pumps.getChild("auto-off").getValue() ) {
+           me.tanksystem.controls( tank, "inlet-valve", valve ).setValue( state );
+       }
    }
    else {
-       me.pumps.getChild("forward").setValue(constant.TRUE);
+       state = me.tanksystem.controls( tank, "inlet-override", valve ).getValue();
+       me.tanksystem.controls( tank, "inlet-valve", valve ).setValue( state );
    }
 
-   me.pumps.getChild("aft").setValue(constant.FALSE);
+   # also sets to false, when engineer toggles a switch (valve transit)
+   voltage = me.slave["electric"].getChild("specific").getValue();
+   me.tanksystem.controls( tank, "inlet-static", valve ).setValue( voltage );
 }
 
-Fuel.toggleaft = func( set ) {
-   if( !set ) {
-       me.pumps.getChild("aft").setValue(constant.FALSE);
-   }
-   else {
-       me.pumps.getChild("aft").setValue(constant.TRUE);
-   }
-
-   me.pumps.getChild("forward").setValue(constant.FALSE);
-}
-
-Fuel.toggleengine = func( set ) {
-   if( !set ) {
-       me.pumps.getChild("engine").setValue(constant.FALSE);
-   }
-   else {
-       me.pumps.getChild("engine").setValue(constant.TRUE);
-   }
-
-   me.pumps.getChild("aft").setValue(constant.FALSE);
-   me.pumps.getChild("forward").setValue(constant.FALSE);
+Fuel.crossexport = func {
+   set = me.pumps.getChild("cross").getValue();
+   me.togglecross( !set );
 }
 
 Fuel.forwardexport = func {
    set = me.pumps.getChild("forward").getValue();
-   me.toggleforward( !set );
+
+   me.shutstandbyhuman();
+   me.offautohuman();
+
+   me.pumphuman( "9", constant.FALSE );
+   me.pumphuman( "10", constant.FALSE );
+   me.pumphuman( "11", !set );
+
+   me.aft2Dhuman( constant.FALSE );
+
+   me.forwardhuman( !set );
 }
 
 Fuel.aftexport = func {
    set = me.pumps.getChild("aft").getValue();
-   me.toggleaft( !set );
+
+   me.shutstandbyhuman();
+   me.offautohuman();
+
+   empty9 = me.empty("9");
+
+   me.pumphuman( "9", !empty9 );
+   me.pumphuman( "10", empty9 );
+   me.pumphuman( "11", constant.FALSE );
+
+   # will switch to tank 10
+   me.aft2Dhuman( !set );
+
+   me.afthuman( !set );
 }
 
 Fuel.engineexport = func {
    set = me.pumps.getChild("engine").getValue();
-   me.toggleengine( !set );
+
+   me.enginehuman( !set );
 }
 
-# pump forward
+Fuel.hydraulicforward = func {
+   # towards tank 9, from rear tank 11
+   if( me.slave["hydraulic"].getChild("green").getValue() ) {
+       if( me.tanksystem.controls("11", "pump-green").getValue() and
+           me.tanksystem.controls("9", "inlet-valve", 0).getValue() ) {
+           me.tanksystem.transfertanks( "9", "11", me.PUMPLB );
+       }
+   }
+   if( me.slave["hydraulic"].getChild("blue").getValue() ) {
+       if( me.tanksystem.controls("11", "pump-blue").getValue() and
+           me.tanksystem.controls("9", "inlet-valve", 1).getValue() ) {
+           me.tanksystem.transfertanks( "9", "11", me.PUMPLB );
+       }
+   }
+
+
+   # standby inlet valves left
+   if( me.tanksystem.controls("11", "pump-green").getValue() and
+       me.slave["hydraulic"].getChild("green").getValue() ) {
+       if( me.tanksystem.controls("1", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "1", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("2", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "2", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("5", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "5", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("6", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "6", "11", me.PUMPLB );
+       }
+   }
+
+
+   # standby inlet valves blue
+   if( me.tanksystem.controls("11", "pump-blue").getValue() and
+       me.slave["hydraulic"].getChild("blue").getValue() ) {
+       if( me.tanksystem.controls("3", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "3", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("4", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "4", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("7", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "7", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("8", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "8", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("10", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "10", "11", me.PUMPLB );
+       }
+   }
+}
+
 Fuel.pumpforward = func {
    # towards tank 9
    if( !me.full("9") ) {
        # from rear tank 11
        if( !me.empty("11") ) {
            for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("11").getChild("pump",i).getValue() ) {
+                if( me.tanksystem.controls("11", "pump", i).getValue() and
+                    me.tanksystem.controls("9", "inlet-valve", i).getValue() ) {
                     me.tanksystem.transfertanks( "9", "11", me.PUMPLB );
                 }
            }
        }
    }
+
+
+   # standby inlet valves left
+   if( me.tanksystem.controls("11", "pump", 0).getValue() ) {
+       if( me.tanksystem.controls("1", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "1", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("2", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "2", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("5", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "5", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("6", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "6", "11", me.PUMPLB );
+       }
+   }
+
+
+   # standby inlet valves right
+   if( me.tanksystem.controls("11", "pump", 1).getValue() ) {
+       if( me.tanksystem.controls("3", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "3", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("4", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "4", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("7", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "7", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("8", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "8", "11", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("10", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "10", "11", me.PUMPLB );
+       }
+   }
 }
 
-# pump aft
 Fuel.pumpaft = func {
-   # from tank 9 at first
-   if( !me.empty("9") and
-       ( me.tanksystem.controls("9").getChild("pump",0).getValue() or
-         me.tanksystem.controls("9").getChild("pump",1).getValue() ) ) {
-       # towards tank 11
-       if( !me.full("11") ) {
+   # towards tank 11
+   if( !me.full("11") ) {
+       # from tank 9
+       if( !me.empty("9") ) {
            for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("9").getChild("pump",i).getValue() ) {
+                if( me.tanksystem.controls("9", "pump", i).getValue() and
+                    me.tanksystem.controls("11", "inlet-valve", i).getValue() ) {
                     me.tanksystem.transfertanks( "11", "9", me.PUMPLB );
                 }
            }
        }
-   }
-   # from tank 10
-   elsif( !me.empty("10") and
-          ( me.tanksystem.controls("10").getChild("pump",0).getValue() or
-            me.tanksystem.controls("10").getChild("pump",1).getValue() ) ) {
-       # towards tank 11
-       if( !me.full("11") ) {
+
+       # for 2D panel, switch from tank 9 to tank 10
+       elsif( me.pumps.getChild("aft-2D").getValue() ) {
+           me.pumphuman( "9", constant.FALSE );
+           me.pumphuman( "10", constant.TRUE );
+       }
+
+       # from tank 10
+       if( !me.empty("10") ) {
            for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("10").getChild("pump",i).getValue() ) { 
+                if( me.tanksystem.controls("10", "pump", i).getValue() and
+                    me.tanksystem.controls("11", "inlet-valve", i).getValue() ) {
                     me.tanksystem.transfertanks( "11", "10", me.PUMPLB );
                 }
            }
        }
    }
+
+
+   # standby inlet valves left
+   if( me.tanksystem.controls("9", "pump", 0).getValue() ) {
+       if( me.tanksystem.controls("1", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "1", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("2", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "2", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("5", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "5", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("6", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "6", "9", me.PUMPLB );
+       }
+   }
+
+   if( me.tanksystem.controls("10", "pump", 0).getValue() ) {
+       if( me.tanksystem.controls("1", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "1", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("2", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "2", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("5", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "5", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("6", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "6", "10", me.PUMPLB );
+       }
+   }
+
+
+   # standby inlet valves right (should never happen)
+   if( me.tanksystem.controls("9", "pump", 1).getValue() ) {
+       if( me.tanksystem.controls("3", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "3", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("4", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "4", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("7", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "7", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("8", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "8", "9", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("10", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "10", "9", me.PUMPLB );
+       }
+   }
+
+   if( me.tanksystem.controls("10", "pump", 1).getValue() ) {
+       if( me.tanksystem.controls("3", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "3", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("4", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "4", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("7", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "7", "10", me.PUMPLB );
+       }
+
+       if( me.tanksystem.controls("8", "inlet-standby").getValue() ) {
+           me.tanksystem.transfertanks( "8", "10", me.PUMPLB );
+       }
+
+       # from tank 10, do nothing !
+   }
 }
 
 # feed a left engine supply tank, with left main tanks
-Fuel.pumpleftmain = func( tank, pumplb ) {
+Fuel.pumpleftmain = func( tank ) {
    # tank 1 by left pump
    if( tank == "1" ) {
-       if( me.tanksystem.controls("5").getChild("pump",0).getValue() ) {
-           tank5 = constant.TRUE; 
-       }
-       else {
-           tank5 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("6").getChild("pump",0).getValue() ) {
-           tank6 = constant.TRUE; 
-       }
-       else {
-           tank6 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("5A").getChild("pump",0).getValue() ) {
-           tank5a = constant.TRUE; 
-       }
-       else {
-           tank5a = constant.FALSE;
-       }
+       tank5 = me.tanksystem.controls("5", "pump", 0).getValue();
+       tank6 = me.tanksystem.controls("6", "pump", 0).getValue();
+       tank5a = me.tanksystem.controls("5A", "pump", 0).getValue();
 
-       if( me.tanksystem.controls("1").getChild("aft-trim").getValue() ) {
+       if( me.tanksystem.controls("1", "aft-trim").getValue() ) {
            tank1lb = me.tanksystem.getlevellb("1");
            if( tank1lb > me.tanksystem.getafttrimlb("1") ) {
                tank5 = constant.FALSE; 
@@ -291,92 +875,46 @@ Fuel.pumpleftmain = func( tank, pumplb ) {
 
    # tank 2 by right pump
    else {
-       if( me.tanksystem.controls("5").getChild("pump",1).getValue() ) {
-           tank5 = constant.TRUE; 
-       }
-       else {
-           tank5 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("6").getChild("pump",1).getValue() ) {
-           tank6 = constant.TRUE; 
-       }
-       else {
-           tank6 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("5A").getChild("pump",1).getValue() ) {
-           tank5a = constant.TRUE; 
-       }
-       else {
-           tank5a = constant.FALSE;
-       }
+       tank5 = me.tanksystem.controls("5", "pump", 1).getValue();
+       tank6 = me.tanksystem.controls("6", "pump", 1).getValue();
+       tank5a = me.tanksystem.controls("5A", "pump", 1).getValue();
    }
 
    # balance the load on tanks 5, 6, and 5A
    # serve the forwards tanks at first, to shift the center of gravity aft
    if( tank5 ) {
-       me.tanksystem.transfertanks( tank, "5", pumplb );
+       me.tanksystem.transfertanks( tank, "5", me.PUMPLB );
    }
-   # 6 only when 5 empty
+   # engineer shuts the pump 6, to optimize the shift of center of gravity
+   # (done automatically by autotrim)
    if( tank6 ) {
-       if( me.empty("5") ) {
-           me.tanksystem.transfertanks( tank, "6", pumplb );
-       }
+       me.tanksystem.transfertanks( tank, "6", me.PUMPLB );
    }
 
    # engineer transfers tank 5A to tank 5
    if( tank5a ) {
-       if( me.tanksystem.controls("5A").getChild("trans-valve").getValue() ) {
-           me.tanksystem.transfertanks( "5", "5A", pumplb );
+       if( me.tanksystem.controls("5A", "trans-valve").getValue() ) {
+           me.tanksystem.transfertanks( "5", "5A", me.PUMPLB );
        }
    }
 }
 
 # feed a right engine supply tank, with right main tanks
-Fuel.pumprightmain = func( tank, pumplb ) {
+Fuel.pumprightmain = func( tank ) {
    # tank 3 by left pump
    if( tank == "3" ) {
-       if( me.tanksystem.controls("7").getChild("pump",0).getValue() ) {
-           tank7 = constant.TRUE; 
-       }
-       else {
-           tank7 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("8").getChild("pump",0).getValue() ) {
-           tank8 = constant.TRUE; 
-       }
-       else {
-           tank8 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("7A").getChild("pump",0).getValue() ) {
-           tank7a = constant.TRUE; 
-       }
-       else {
-           tank7a = constant.FALSE;
-       }
+       tank7 = me.tanksystem.controls("7", "pump", 0).getValue();
+       tank8 = me.tanksystem.controls("8", "pump", 0).getValue();
+       tank7a = me.tanksystem.controls("7A", "pump", 0).getValue();
    }
 
    # tank 4 by right pump
    else {
-       if( me.tanksystem.controls("7").getChild("pump",1).getValue() ) {
-           tank7 = constant.TRUE; 
-       }
-       else {
-           tank7 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("8").getChild("pump",1).getValue() ) {
-           tank8 = constant.TRUE; 
-       }
-       else {
-           tank8 = constant.FALSE;
-       }
-       if( me.tanksystem.controls("7A").getChild("pump",1).getValue() ) {
-           tank7a = constant.TRUE; 
-       }
-       else {
-           tank7a = constant.FALSE;
-       }
+       tank7 = me.tanksystem.controls("7", "pump", 1).getValue();
+       tank8 = me.tanksystem.controls("8", "pump", 1).getValue();
+       tank7a = me.tanksystem.controls("7A", "pump", 1).getValue();
 
-       if( me.tanksystem.controls("4").getChild("aft-trim").getValue() ) {
+       if( me.tanksystem.controls("4", "aft-trim").getValue() ) {
            tank4lb = me.tanksystem.getlevellb("4");
            if( tank4lb > me.tanksystem.getafttrimlb("4") ) {
                tank7 = constant.FALSE; 
@@ -388,53 +926,51 @@ Fuel.pumprightmain = func( tank, pumplb ) {
    # balance the load on tanks 7, 8 and 7A
    # serve the forwards tanks at first, to shift the center of gravity aft
    if( tank7 ) {
-       me.tanksystem.transfertanks( tank, "7", pumplb );
+       me.tanksystem.transfertanks( tank, "7", me.PUMPLB );
    }
-   # 8 only when 7 empty
+
+   # engineer shuts the pump 8, to optimize the shift of center of gravity
+   # (done automatically by autotrim)
    if( tank8 ) {
-       if( me.empty("7") ) {
-           me.tanksystem.transfertanks( tank, "8", pumplb );
-       }
+       me.tanksystem.transfertanks( tank, "8", me.PUMPLB );
    }
 
    # engineer transfers tank 7A to tank 7
    if( tank7a ) {
-       if( me.tanksystem.controls("7A").getChild("trans-valve").getValue() ) {
-           me.tanksystem.transfertanks( "7", "7A", pumplb );
+       if( me.tanksystem.controls("7A", "trans-valve").getValue() ) {
+           me.tanksystem.transfertanks( "7", "7A", me.PUMPLB );
        }
    }
 }
 
 # feed engine supply tank, with trim tanks
-Fuel.pumptrim = func( tank, pumplb, aft ) {
+Fuel.pumptrim = func( tank ) {
    # front tanks 9 and 10 (center of gravity goes rear)
-   if( aft ) {
-       if( !me.empty("9") and
-           ( me.tanksystem.controls("9").getChild("pump",0).getValue() or
-             me.tanksystem.controls("9").getChild("pump",1).getValue() ) ) {
-           for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("9").getChild("pump",i).getValue() ) {
-                    me.tanksystem.transfertanks( tank, "9", pumplb );
-                }
-           }
+   if( !me.empty("9") ) {
+       for( i=0; i < 2; i=i+1 ) {
+            if( me.tanksystem.controls("9", "pump", i).getValue() and
+                me.tanksystem.controls(tank, "inlet-valve").getValue() ) {
+                me.tanksystem.transfertanks( tank, "9", me.PUMPLB );
+            }
        }
-       # front tank 10 at last
-       else {
-           for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("10").getChild("pump",i).getValue() ) {
-                    me.tanksystem.transfertanks( tank, "10", pumplb );
-                }
-           }
+   }
+
+   # front tank 10 at last
+   if( !me.empty("10") ) {
+       for( i=0; i < 2; i=i+1 ) {
+            if( me.tanksystem.controls("10", "pump", i).getValue() and
+                me.tanksystem.controls(tank, "inlet-valve").getValue() ) {
+                me.tanksystem.transfertanks( tank, "10", me.PUMPLB );
+            }
        }
    }
 
    # rear tanks 11 (center of gravity goes forwards)
-   else {
-       if( !me.empty("11") ) {
-           for( i=0; i < 2; i=i+1 ) {
-                if( me.tanksystem.controls("11").getChild("pump",i).getValue() ) {
-                    me.tanksystem.transfertanks( tank, "11", pumplb );
-                }
+   if( !me.empty("11") ) {
+       for( i=0; i < 2; i=i+1 ) {
+            if( me.tanksystem.controls("11", "pump", i).getValue() and
+                me.tanksystem.controls(tank, "inlet-valve").getValue() ) {
+                me.tanksystem.transfertanks( tank, "11", me.PUMPLB );
            }
        }
    }
@@ -446,134 +982,113 @@ Fuel.dumpreartanks = func {
    # - 9 and 10 (front)
    # - 11 (tail)
    for( j=0; j < 2; j=j+1 ) {
-        if( me.tanksystem.controls("9").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("9", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "9", me.PUMPLB );
         }
-        if( me.tanksystem.controls("10").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("10", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "10", me.PUMPLB );
         }
-        if( me.tanksystem.controls("11").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("11", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "11", me.PUMPLB );
         }
    }
 
    # collector tanks 1, and 3 (not the left pump reserved for engine)
    for( j=1; j < 3; j=j+1 ) {
-        if( me.tanksystem.controls("1").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("1", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "1", me.PUMPLB );
         }
-        if( me.tanksystem.controls("3").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("3", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "3", me.PUMPLB );
         }
    }
 
    # collector tanks 2 and 4 (not the right pump reserved for engine)
    for( j=0; j < 2; j=j+1 ) {
-        if( me.tanksystem.controls("2").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("2", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "2", me.PUMPLB );
         }
-        if( me.tanksystem.controls("4").getChild("pump",j).getValue() ) {
+        if( me.tanksystem.controls("4", "pump", j).getValue() ) {
             me.tanksystem.dumptank( "4", me.PUMPLB );
         }
    }
 }
 
 # balance all tanks (no pump)
-Fuel.crosstanks = func {
-   # engine cross feed (to be implemented)
-   # tanks 1 and 4
-   me.tanksystem.pumpcross( "1", "4", me.PUMPLB );
-   # tanks 2 and 3
-   me.tanksystem.pumpcross( "2", "3", me.PUMPLB );
-
+Fuel.connecttanks = func {
    # interconnect (by gravity)
    # tanks 5 and 7
-   me.tanksystem.pumpcross( "5", "7", me.PUMPLB );
-   # tanks 6 and 8
-   me.tanksystem.pumpcross( "6", "8", me.PUMPLB );
-}
-
-Fuel.accumulator = func( tank ) {
-   thetank = me.tanksystem.controls(tank);
-   if( !thetank.getChild("pump",0).getValue() and
-       !thetank.getChild("pump",1).getValue() and
-       !thetank.getChild("pump",2).getValue() ) {
-
-       # engine stops when no fuel pressure
-       me.tanksystem.getenginecontrols(tank).getChild("cutoff").setValue(constant.TRUE);
+   if( me.tanksystem.controls( "5", "interconnect-valve" ).getValue() ) {
+       me.tanksystem.pumpcross( "5", "8", me.PUMPLB );
    }
-}
 
-# pressurize the accumulators
-Fuel.pressurizeaccumulators = func {
-   me.accumulator("1");
-   me.accumulator("2");
-   me.accumulator("3");
-   me.accumulator("4");
+   # tanks 6 and 8
+   if( me.tanksystem.controls( "6", "interconnect-valve" ).getValue() ) {
+       me.tanksystem.pumpcross( "6", "7", me.PUMPLB );
+   }
 }
 
 # feed collector tanks :
-Fuel.pumpmain = func( pumplb ) {
-   me.pumpleftmain( "1", pumplb );
-   me.pumpleftmain( "2", pumplb );
+Fuel.pumpmain = func {
+   me.pumpleftmain( "1" );
+   me.pumpleftmain( "2" );
 
-   me.pumprightmain( "3", pumplb );
-   me.pumprightmain( "4", pumplb );
+   me.pumprightmain( "3" );
+   me.pumprightmain( "4" );
 }
 
-# speed up engine, arguments :
-Fuel.speedupengine = func( enginetank, multiplier ) {
-   flowlbph = me.tanksystem.getengines(enginetank).getChild("fuel-flow_pph").getValue();
-   if( flowlbph == nil ) {
-       flowlbph = 0;
-   }
+Fuel.crossfeed = func( dest, sour ) {
+   if( me.tanksystem.controls(sour, "cross-feed-valve").getValue() ) {
+       for( i = 1; i <= 4; i = i+1 ) {
+            tank = "" ~ i ~ "";
 
-   flowgph = flowlbph * constant.LBTOGALUS;
-
-   # fuel consumed during the time step
-   if( flowgph > 0 ) {
-       multiplier = multiplier - 1;
-       enginegal = flowgph * multiplier;
-       enginegal = enginegal / constant.HOURTOSECOND;
-       enginegal = enginegal * me.PUMPSEC;
-
-       # collector tank
-       me.tanksystem.reduce( enginetank, enginegal );
-   }
-}
-
-# speed up consumption
-Fuel.speedupfuel = func( speedup ) {
-   altitudeft = getprop(me.noinstrument["altitude"]);
-   if( speedup > 1 ) {
-       # disabled : JSBSim now supports time acceleration
-#       me.speedupengine( "1", speedup );
-#       me.speedupengine( "2", speedup );
-#       me.speedupengine( "3", speedup );
-#       me.speedupengine( "4", speedup );
-
-       # accelerate day time
-       node = props.globals.getNode("/sim/time/warp");
-       multiplier = speedup - 1;
-       offsetsec = me.PUMPSEC * multiplier;
-       warp = node.getValue() + offsetsec; 
-       node.setValue(warp);
-
-       # safety
-       lastft = getprop("/systems/fuel/pump/speed-up-ft");
-       if( lastft != nil ) {
-           stepft = me.MAXSTEPFT * speedup;
-           maxft = lastft + stepft;
-           minft = lastft - stepft;
-
-           # too fast
-           if( altitudeft > maxft or altitudeft < minft ) {
-               setprop("/sim/speed-up",1);
-           }
+            if( dest != tank ) {
+                if( me.tanksystem.controls(tank, "cross-feed-valve").getValue() ) {
+                    me.feedengine( dest, tank );
+ 
+                    if( me.tanksystem.full( dest ) ) {
+                        break;
+                    }
+                }
+            }
        }
    }
+}
 
-   setprop("/systems/fuel/pump/speed-up-ft",altitudeft);
+Fuel.feedengine = func( dest, sour ) {
+   full = constant.FALSE;
+
+   for( i = 0; i <= 2; i = i+1 ) {
+        # 1 pump over 3 is enough
+        if( me.tanksystem.controls(sour, "pump", i).getValue() ) {
+            me.tanksystem.filltank( dest, sour );
+
+            if( me.tanksystem.full( dest ) ) {
+                full = constant.TRUE;
+                break;
+            }
+        }
+   }
+
+   return full;
+}
+
+Fuel.hpvalve = func( dest, sour ) {
+   # HP valve shut stops the engine
+   if( me.tanksystem.controls(sour, "lp-valve").getValue() ) {
+       if( !me.feedengine( dest, sour ) ) {
+
+           # engine cross feed
+           me.crossfeed( dest, sour );
+       }
+   }
+}
+
+Fuel.fuelpiping = func {
+   me.hpvalve( "LP1", "1" );
+   me.hpvalve( "LP2", "2" );
+   me.hpvalve( "LP3", "3" );
+   me.hpvalve( "LP4", "4" );
 }
 
 
@@ -592,11 +1107,16 @@ Tanks.new = func {
            pumpsystem : Pump.new(),
 
            CONTENTLB : { "1" : 0.0, "2" : 0.0, "3" : 0.0, "4" : 0.0, "5" : 0.0, "6" : 0.0, "7" : 0.0,
-                         "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0 },
+                         "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0,
+                         "LP1" : 0.0, "LP2" : 0.0, "LP3" : 0.0, "LP4" : 0.0 },
            TANKINDEX : { "1" : 0, "2" : 1, "3" : 2, "4" : 3, "5" : 4, "6" : 5, "7" : 6,
-                         "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12 },
-           TANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A" ],
+                         "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12,
+                         "LP1" : 13, "LP2" : 14, "LP3" : 15, "LP4" : 16 },
+           TANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A",
+                        "LP1", "LP2", "LP3", "LP4" ],
+
            nb_tanks : 0,
+
            OVERFULL : 0.97,
            OVERFULL : 0.97,
            UNDERFULL : 0.8,
@@ -606,8 +1126,8 @@ Tanks.new = func {
            AFTTRIMLB : { "1" : 0.0, "4" : 0.0 },
            AFTTRIM : 0.4,                                                # aft trim at 40 %
 
-           enginecontrols : nil,
-           engines : nil,
+           HPVALVELB : 30.0,                                             # fuel low pressure
+
            fillings : nil,
            pumps : nil,
            tankcontrols : nil,
@@ -622,14 +1142,35 @@ Tanks.new = func {
 Tanks.init = func {
     me.tankcontrols = props.globals.getNode("/controls/fuel").getChildren("tank");
     me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
-    me.enginecontrols = props.globals.getNode("/controls/engines").getChildren("engine");
-    me.engines = props.globals.getNode("/engines/").getChildren("engine");
-    me.fillings = props.globals.getNode("/sim/presets/tanks").getChildren("filling");
+    me.fillings = props.globals.getNode("/systems/fuel/tanks").getChildren("filling");
     me.pumps = props.globals.getNode("/controls/fuel/pumps");
 
     me.nb_tanks = size(me.tanks);
 
     me.initcontent();
+}
+
+Tanks.amber_fuel = func {
+   result = constant.FALSE;
+
+   for( i = 0; i < 4; i = i+1 ) {
+        if( me.tanks[i].getChild("level-lb").getValue() <= me.LOWLEVELLB[i] ) {
+            result = constant.TRUE;
+            break;
+        }
+   }
+
+   if( !result ) {
+       # LP valve
+       for( i = 13; i <= 16; i = i+1 ) {
+            if( me.tanks[i].getChild("level-lb").getValue() <= me.HPVALVELB ) {
+                result = constant.TRUE;
+                break;
+            }
+       }
+   }
+
+   return result;
 }
 
 # fuel initialization
@@ -649,15 +1190,26 @@ Tanks.initcontent = func {
 
 # change by dialog
 Tanks.menu = func {
-   value = getprop("/sim/presets/tanks/dialog");
+   change = constant.FALSE;
+   last = getprop("/sim/presets/fuel");
+
+   comment = getprop("/systems/fuel/tanks/dialog");
+
    for( i=0; i < size(me.fillings); i=i+1 ) {
-        if( me.fillings[i].getChild("comment").getValue() == value ) {
+        if( me.fillings[i].getChild("comment").getValue() == comment ) {
             me.load( i );
+
             # for aircraft-data
             setprop("/sim/presets/fuel",i);
+            if( i != last ) {
+                change = constant.TRUE;
+            }
+
             break;
         }
    }
+
+   return change;
 }
 
 # fuel configuration
@@ -672,11 +1224,14 @@ Tanks.presetfuel = func {
        fuel = 0;
    } 
 
+   # to detect change
+   setprop("/sim/presets/fuel",fuel);
+
    # copy to dialog
-   dialog = getprop("/sim/presets/tanks/dialog");
+   dialog = getprop("/systems/fuel/tanks/dialog");
    if( dialog == "" or dialog == nil ) {
        value = me.fillings[fuel].getChild("comment").getValue();
-       setprop("/sim/presets/tanks/dialog", value);
+       setprop("/systems/fuel/tanks/dialog", value);
    }
 
    me.load( fuel );
@@ -687,14 +1242,15 @@ Tanks.load = func( fuel ) {
    for( i=0; i < size(presets); i=i+1 ) {
         child = presets[i].getChild("level-gal_us");
         if( child != nil ) {
-            level = child.getValue();
+            levelgalus = child.getValue();
         }
 
         # new load through dialog
         else {
-            level = me.CONTENTLB[me.TANKNAME[i]] * constant.LBTOGALUS;
+            levelgalus = me.CONTENTLB[me.TANKNAME[i]] * constant.LBTOGALUS;
         } 
-        me.pumpsystem.setlevel(i, level);
+
+        me.pumpsystem.setlevel(i, levelgalus);
    } 
 }
 
@@ -723,7 +1279,8 @@ Tanks.initinstrument = func {
         lowlevel = constant.FALSE;
 
         if( ( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) or
-            i == me.TANKINDEX["5"] or i == me.TANKINDEX["7"] or i == me.TANKINDEX["11"] ) {
+            i == me.TANKINDEX["5"] or i == me.TANKINDEX["7"] or
+            i == me.TANKINDEX["9"] or i == me.TANKINDEX["11"] ) {
             overfull = constant.TRUE;
         }
         if( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) {
@@ -737,16 +1294,8 @@ Tanks.initinstrument = func {
    }
 }
 
-Tanks.controls = func( name ) {
-   return me.tankcontrols[me.TANKINDEX[name]];
-}
-
-Tanks.getenginecontrols = func( name ) {
-   return me.enginecontrols[me.TANKINDEX[name]];
-}
-
-Tanks.getengines = func( name ) {
-   return me.engines[me.TANKINDEX[name]];
+Tanks.controls = func( name, switch, index = 0 ) {
+   return me.tankcontrols[me.TANKINDEX[name]].getChild( switch, index );
 }
 
 Tanks.getafttrimlb = func( name ) {
@@ -755,6 +1304,10 @@ Tanks.getafttrimlb = func( name ) {
 
 Tanks.getlevellb = func( name ) {
    return me.pumpsystem.getlevellb( me.TANKINDEX[name] );
+}
+
+Tanks.getlevelkg = func( name ) {
+   return me.pumpsystem.getlevelkg( me.TANKINDEX[name] );
 }
 
 Tanks.lowlevel = func {
@@ -796,6 +1349,12 @@ Tanks.transfertanks = func( dest, sour, pumplb ) {
    me.pumpsystem.transfertanks( me.TANKINDEX[dest], me.CONTENTLB[dest], me.TANKINDEX[sour], pumplb );
 }
 
+# fills completely a tank
+Tanks.filltank = func( dest, sour ) {
+   pumplb = me.CONTENTLB[dest] - me.getlevellb( dest );
+   me.pumpsystem.transfertanks( me.TANKINDEX[dest], me.CONTENTLB[dest], me.TANKINDEX[sour], pumplb );
+}
+
 
 # ==========
 # FUEL PUMPS
@@ -830,6 +1389,12 @@ Pump.getlevellb = func( index ) {
    tanklb = me.getlevel(index) * constant.GALUSTOLB;
 
    return tanklb;
+}
+
+Pump.getlevelkg = func( index ) {
+   tankkg = me.getlevel(index) * constant.GALUSTOKG;
+
+   return tankkg;
 }
 
 Pump.empty = func( index ) {
@@ -1004,10 +1569,10 @@ Pump.transfertanks = func {
 # TANK PRESSURIZATION
 # ===================
 
-PressurizeTank = {};
+Pressurizetank = {};
 
-PressurizeTank.new = func {
-   obj = { parents : [PressurizeTank],
+Pressurizetank.new = func {
+   obj = { parents : [Pressurizetank,System],
 
            diffpressure : TankPressure.new(),
 
@@ -1016,8 +1581,7 @@ PressurizeTank.new = func {
            MAXPSI : 1.5,
            MINPSI : 0.0,
 
-           staticport : "",
-           slave : { "air" : nil, "electric" : nil }
+           staticport : ""
          };
 
    obj.init();
@@ -1025,20 +1589,21 @@ PressurizeTank.new = func {
    return obj;
 };
 
-PressurizeTank.init = func {
+Pressurizetank.init = func {
     me.staticport = getprop("/systems/tank/static-port");
     me.staticport = me.staticport ~ "/pressure-inhg";
 
-    propname = getprop("/systems/tank/slave/air");
-    me.slave["air"] = props.globals.getNode(propname);
-    propname = getprop("/systems/tank/slave/electric");
-    me.slave["electric"] = props.globals.getNode(propname);
+    me.init_ancestor("/systems/tank");
 
     me.diffpressure.set_rate( me.TANKSEC );
 }
 
+Pressurizetank.amber_fuel = func {
+    return me.diffpressure.amber_fuel();
+}
+
 # tank pressurization
-PressurizeTank.schedule = func {
+Pressurizetank.schedule = func {
     if( me.slave["electric"].getChild("specific").getValue() ) {
         if( getprop("/systems/tank/serviceable") and
             me.slave["air"].getChild("pressurization").getValue() ) {
@@ -1071,7 +1636,15 @@ TankPressure = {};
 TankPressure.new = func {
    obj = { parents : [TankPressure],
 
+           instrument : nil,
+
            TANKSEC : 30.0,                         # refresh rate
+
+           HIGHPSI : 4.0,
+           RAISINGPSI : 1.5,
+           FALLINGPSI : -0.8,
+           LOWPSI : -1.75,
+
            staticport : ""                         # energy provided by differential pressure
          };
 
@@ -1081,12 +1654,31 @@ TankPressure.new = func {
 };
 
 TankPressure.init = func {
+    me.instrument = props.globals.getNode("/instrumentation/tank-pressure");
+
     me.staticport = getprop("/instrumentation/tank-pressure/static-port");
     me.staticport = me.staticport ~ "/pressure-inhg";
 }
 
 TankPressure.set_rate = func( rates ) {
     me.TANKSEC = rates;
+}
+
+TankPressure.amber_fuel = func {
+    diffpsi = me.instrument.getChild("differential-psi").getValue();
+    falling = me.instrument.getChild("falling").getValue();
+    raising = me.instrument.getChild("raising").getValue();
+
+    if( diffpsi < me.LOWPSI or diffpsi > me.HIGHPSI or
+        ( diffpsi < me.FALLINGPSI and falling ) or
+        ( diffpsi > me.RAISINGPSI and raising ) ) {
+        result = constant.TRUE;
+    }
+    else {
+        result = constant.FALSE;
+    }
+
+    return result;
 }
 
 TankPressure.schedule = func {
@@ -1108,8 +1700,8 @@ TankPressure.schedule = func {
         falling = constant.FALSE;
     }
 
-    setprop("/instrumentation/tank-pressure/raising",raising);
-    setprop("/instrumentation/tank-pressure/falling",falling);
+    me.instrument.getChild("raising").setValue(raising);
+    me.instrument.getChild("falling").setValue(falling);
 
     interpolate("/instrumentation/tank-pressure/differential-psi",diffpsi,me.TANKSEC);
 }
@@ -1118,12 +1710,16 @@ TankPressure.schedule = func {
 # ==========
 # TOTAL FUEL
 # ==========
-Totalfuel = {};
+TotalFuel = {};
 
-Totalfuel.new = func {
-   obj = { parents : [Totalfuel],
+TotalFuel.new = func {
+   obj = { parents : [TotalFuel],
 
+           STEPSEC : 1.0,                     # 3 s would be enough, but needs 1 s for kg/h
+
+           fuel : nil,
            tanks : nil,
+
            nb_tanks : 0
          };
 
@@ -1132,15 +1728,19 @@ Totalfuel.new = func {
    return obj;
 };
 
-Totalfuel.init = func {
+TotalFuel.init = func {
+   me.fuel = props.globals.getNode("/instrumentation/fuel");
    me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
+
    me.nb_tanks = size(me.tanks);
 }
 
 # total of fuel in kg
-Totalfuel.schedule = func( pumppmin ) {
+TotalFuel.schedule = func {
+   speedup = getprop("/sim/speed-up");
+
    # last total
-   tanksgalus = getprop("/instrumentation/fuel/total-gal_us");
+   tanksgalus = me.fuel.getChild("total-gal_us").getValue();
    tankskg = tanksgalus * constant.GALUSTOKG;
 
 
@@ -1149,12 +1749,12 @@ Totalfuel.schedule = func( pumppmin ) {
        fuelgalus = fuelgalus + me.tanks[i].getChild("level-gal_us").getValue();
    }
    # not real
-   setprop("/instrumentation/fuel/total-gal_us", fuelgalus);
+   me.fuel.getChild("total-gal_us").setValue(fuelgalus);
 
 
    # real
    fuelkg = fuelgalus * constant.GALUSTOKG;
-   setprop("/instrumentation/fuel/total-kg", fuelkg);
+   me.fuel.getChild("total-kg").setValue(fuelkg);
 
 
    # ==========================================================
@@ -1162,8 +1762,140 @@ Totalfuel.schedule = func( pumppmin ) {
    # - not real, used to check errors in pumping.
    # ==========================================================
    stepkg = tankskg - fuelkg;
-   fuelkgpmin = stepkg * pumppmin;
+   fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC * speedup );
    fuelkgph = fuelkgpmin * constant.HOURTOMINUTE;
 
-   setprop("/instrumentation/fuel/fuel-flow-kg_ph", fuelkgph);
+   # not real
+   me.fuel.getChild("fuel-flow-kg_ph").setValue(fuelkgph);
+}
+
+
+# =============
+# FUEL CONSUMED
+# =============
+FuelConsumed = {};
+
+FuelConsumed.new = func {
+   obj = { parents : [FuelConsumed,System],
+
+           STEPSEC : 3.0,
+
+           fuel : nil,
+
+           RESETKG : 0
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+FuelConsumed.init = func {
+   me.fuel = props.globals.getNode("/instrumentation").getChildren("fuel-consumed");
+
+   me.init_ancestor("/instrumentation/fuel-consumed");
+}
+
+FuelConsumed.schedule = func {
+   speedup = getprop("/sim/speed-up");
+
+   for( i = 0; i <= 3; i = i+1 ) {
+        totalkg = me.fuel[i].getChild("total-kg").getValue();
+
+        # flow meter inside engine
+        flowlbph = me.slave["engine"][i].getChild("fuel-flow_pph").getValue();
+        flowkgps = flowlbph * constant.LBTOKG / constant.HOURTOSECOND;
+        stepkg = flowkgps * me.STEPSEC * speedup;
+
+        totalkg = totalkg + stepkg;
+        me.fuel[i].getChild("total-kg").setValue( totalkg );
+   }
+}
+
+FuelConsumed.reset = func {
+   for( i = 0; i <= 3; i = i+1 ) {
+        me.fuel[i].getChild("total-kg").setValue( me.RESETKG );
+        me.fuel[i].getChild("reset").setValue( constant.FALSE );
+   }
+}
+
+
+# ===============
+# AIRCRAFT WEIGHT
+# ===============
+AircraftWeight = {};
+
+AircraftWeight.new = func {
+   obj = { parents : [AircraftWeight,System],
+
+           acweight : nil,
+
+           clear : constant.TRUE,
+
+           weightdatumlb : 0.0,
+
+           NOFUELKG : -9999,
+
+           fueldatumkg : 0.0
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+AircraftWeight.init = func {
+   me.acweight = props.globals.getNode("/instrumentation/ac-weight");
+
+   me.init_ancestor("/instrumentation/ac-weight");
+}
+
+AircraftWeight.schedule = func {
+   # set manually by engineer
+   me.fueldatumkg = me.acweight.getChild("fuel-datum-kg").getValue();
+   me.weightdatumlb = me.acweight.getChild("weight-datum-lb").getValue();
+
+   # substract fuel flow consumed from the manually set datum,
+   # to cross check with fuel gauge reading (leaks)
+   consumedkg = 0;
+   for( i = 0; i <= 3; i = i+1 ) {
+        consumedkg = consumedkg + me.slave["fuel-consumed"][i].getChild("total-kg").getValue();
+   }
+
+   fuelkg = me.fueldatumkg - consumedkg;
+   me.acweight.getChild("fuel-remaining-kg").setValue( fuelkg );
+
+   # add the remaining fuel to the manually set datum
+   me.setweightdatum();
+   if( !me.clear ) {
+       weightlb = me.weightdatumlb + ( fuelkg * constant.KGTOLB );
+       me.acweight.getChild("weight-lb").setValue( weightlb );
+   }
+}
+
+AircraftWeight.setdatum = func( fuelkg ) {
+   me.fueldatumkg = fuelkg;
+   me.acweight.getChild("fuel-datum-kg").setValue( me.fueldatumkg );
+
+   # compute weight datum at the next iteration, once FDM is refreshed with the fuel
+   me.clear = constant.TRUE;
+
+   # feedback for display
+   me.acweight.getChild("fuel-remaining-kg").setValue( me.NOFUELKG );
+}
+
+# TODO : replace by manual input (engineer)
+AircraftWeight.setweightdatum = func {
+   if( me.clear ) {
+       me.weightdatumlb = me.acweight.getChild("weight-real-lb").getValue();
+       
+       # substract fuel datum
+       if( me.weightdatumlb != nil ) {
+           if( me.weightdatumlb > 0.0 ) {
+               me.weightdatumlb = me.weightdatumlb - ( me.fueldatumkg * constant.KGTOLB );
+               me.acweight.getChild("weight-datum-lb").setValue( me.weightdatumlb );
+               me.clear = constant.FALSE;
+           }
+       }
+   }
 }

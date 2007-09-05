@@ -24,16 +24,7 @@
       <and>
        <or include="concorde-cond-test-eng-aft.xml"/> <!-- bug -->
        <not>
-        <property>/controls/electric/ac/emergency/essential1</property>
-       </not>
-       <not>
-        <property>/controls/electric/ac/emergency/essential2</property>
-       </not>
-       <not>
-        <property>/controls/electric/ac/emergency/essential3</property>
-       </not>
-       <not>
-        <property>/controls/electric/ac/emergency/essential4</property>
+        <property>/controls/electric/ac/emergency/generator/selected</property>
        </not>
       </and>
      </or>
@@ -62,6 +53,7 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-eng-aft.xml"/>
      <w>104</w>
      <h>20</h>
     </layer>

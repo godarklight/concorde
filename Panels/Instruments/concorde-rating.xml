@@ -23,41 +23,18 @@
    <name>Engine rating switch</name>
    <type>switch</type>
 
-   <layer>
+   <layer include="concorde-switch-on.xml">
+    <name>takeoff</name>
     <condition>
      <equals>
       <property alias="../../../../../../params/rating-switch"/>
       <value>takeoff</value>
      </equals>
     </condition>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
-    <transformations>
-     <transformation>
-      <type>y-shift</type>
-      <offset>2.75</offset>
-     </transformation>
-    </transformations>
    </layer>
-   <layer>
-    <name>off</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.0</y1>
-     <x2>0.25</x2>
-     <y2>0.31</y2>
-    </texture>
-    <w>40</w>
-    <h>47</h>
+
+   <layer include="concorde-switch-off.xml">
+    <name>flight</name>
    </layer>
   </layer>
 

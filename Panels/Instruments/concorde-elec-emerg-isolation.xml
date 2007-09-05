@@ -14,49 +14,26 @@
   <layer>
    <name>Isolation switch</name>
    <type>switch</type>
-   <layer>
-    <name>off</name>
+
+   <layer include="concorde-switch-on.xml">
+    <name>norm</name>
     <condition>
-     <not>
-      <property>/controls/electric/ac/emergency/arm</property>
-     </not>
+     <property>/controls/electric/ac/emergency/generator/arm</property>
     </condition>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.47</y1>
-     <x2>0.25</x2>
-     <y2>0.745</y2>
-    </texture>
-    <w>40</w>
-    <h>42</h>
-    <transformations>
-     <transformation>
-      <type>x-shift</type>
-      <offset>0</offset>
-     </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-1</offset>
-    </transformation>
-    </transformations>
    </layer>
-   <layer>
-    <name>on</name>
-    <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/switches.rgb</path>
-     <x1>0.0</x1>
-     <y1>0.74</y1>
-     <x2>0.25</x2>
-     <y2>1.0</y2>
-    </texture>
-    <w>40</w>
-    <h>40</h>
+
+   <layer include="concorde-switch-3rd.xml">
+    <name>isolate</name>
    </layer>
+
    <transformations>
     <transformation>
      <type>x-shift</type>
      <offset>-34</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-1.5</offset>
     </transformation>
    </transformations>
   </layer>
@@ -68,7 +45,7 @@
    <layer>
     <name>guard on</name>
     <condition>
-     <property>/controls/electric/ac/emergency/arm-guard</property>
+     <property>/controls/electric/ac/emergency/generator/arm-guard</property>
     </condition>
     <texture>
      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-guard.rgb</path>
@@ -176,10 +153,10 @@
    <condition>
     <and>
      <not>
-      <property>/controls/electric/ac/emergency/arm</property>
+      <property>/controls/electric/ac/emergency/generator/arm</property>
      </not>
      <not>
-      <property>/controls/electric/ac/emergency/arm-guard</property>
+      <property>/controls/electric/ac/emergency/generator/arm-guard</property>
      </not>
     </and>
    </condition>
@@ -190,7 +167,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/electric/ac/emergency/arm</property>
+    <property>/controls/electric/ac/emergency/generator/arm</property>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -202,9 +179,9 @@
    <name>isolate</name>
    <condition>
     <and>
-     <property>/controls/electric/ac/emergency/arm</property>
+     <property>/controls/electric/ac/emergency/generator/arm</property>
      <not>
-      <property>/controls/electric/ac/emergency/arm-guard</property>
+      <property>/controls/electric/ac/emergency/generator/arm-guard</property>
      </not>
     </and>
    </condition>
@@ -215,11 +192,11 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/electric/ac/emergency/arm</property>
+    <property>/controls/electric/ac/emergency/generator/arm</property>
    </binding>
    <binding>
     <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/generator</property>
+    <property>/controls/electric/ac/emergency/generator/selected</property>
     <value type="bool">false</value>
    </binding>
    <binding>
@@ -231,7 +208,7 @@
   <action>
    <name>guard</name>
    <condition>
-    <property>/controls/electric/ac/emergency/arm</property>
+    <property>/controls/electric/ac/emergency/generator/arm</property>
    </condition>
    <button>0</button>
    <x>-55</x>
@@ -240,7 +217,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/electric/ac/emergency/arm-guard</property>
+    <property>/controls/electric/ac/emergency/generator/arm-guard</property>
    </binding>
    <binding>
     <command>property-toggle</command>

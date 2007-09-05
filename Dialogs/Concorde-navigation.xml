@@ -1,22 +1,29 @@
 <?xml version="1.0"?>
 
+<!-- Computations supposed to be done by the flight engineer. Also needed for debug :
+
+     - fuel at waypoint checks FDM, when it reaches 50000 ft : no need to go until KJFK.
+     - kg/h checks fuel pumping : should not change during a fuel transfer.
+-->
+
+
 <PropertyList>
   <name>Concorde-navigation</name>
   <layout>vbox</layout>
   <width>450</width>
 
   <text>
-    <label>Concorde navigation (debug)</label>
+    <label>Concorde navigation</label>
   </text>
 
-  <hrule/>
+  <hrule><dummy/></hrule>
 
   <group>
     <layout>vbox</layout>
     <halign>center</halign>
 
     <text>
-      <label>Estimated fuel at waypoint (kg)</label>
+      <label>Fuel at waypoint (kg)</label>
     </text>
 
     <group>
@@ -26,11 +33,21 @@
        <halign>left</halign>
        <live>true</live>
        <property>/autopilot/route-manager/wp[0]/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
 
       <text>
        <live>true</live>
-       <property>/systems/crew/engineer/route/wp[0]/fuel-kg</property>
+       <property>/systems/crew/engineer/navigation/wp[0]/fuel-kg</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
     </group>
 
@@ -41,11 +58,21 @@
        <halign>left</halign>
        <live>true</live>
        <property>/autopilot/route-manager/wp[1]/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
 
       <text>
        <live>true</live>
-       <property>/systems/crew/engineer/route/wp[1]/fuel-kg</property>
+       <property>/systems/crew/engineer/navigation/wp[1]/fuel-kg</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
     </group>
 
@@ -56,13 +83,150 @@
        <halign>left</halign>
        <live>true</live>
        <property>/autopilot/route-manager/wp-last/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
 
       <text>
        <live>true</live>
-       <property>/systems/crew/engineer/route/wp[2]/fuel-kg</property>
+       <property>/systems/crew/engineer/navigation/wp[2]/fuel-kg</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
       </text>
     </group>
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+     <label>Fuel consumption (kg/h)</label>
+    </text>
+
+    <text>
+     <live>true</live>
+     <property>/instrumentation/fuel/fuel-flow-kg_ph</property>
+     <color>
+      <red>0.2</red>
+      <green>0.8</green>
+      <blue>0.2</blue>
+     </color>
+    </text>
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+     <label>Rate (ft/minute) to reach</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp[0]/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/navigation/wp[0]/speed-fpm</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+    </group>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp[1]/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/navigation/wp[1]/speed-fpm</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+    </group>
+
+    <group>
+      <layout>hbox</layout>
+
+      <text>
+       <live>true</live>
+       <property>/autopilot/route-manager/wp-last/id</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+
+      <text>
+       <live>true</live>
+       <property>/systems/crew/engineer/navigation/wp[2]/speed-fpm</property>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+    </group>
+
+    <text>
+     <label>at acquired altitude (ft) (0 ft for last)</label>
+     <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.5</blue>
+     </color>
+    </text>
+
+    <text>
+     <live>true</live>
+     <property>/controls/autoflight/altitude-select</property>
+     <color>
+      <red>0.2</red>
+      <green>0.8</green>
+      <blue>0.2</blue>
+     </color>
+    </text>
   </group>
 
   <text>

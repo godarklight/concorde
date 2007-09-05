@@ -23,7 +23,10 @@
       <or include="concorde-cond-voltage-bulb.xml">
        <and>
         <or include="concorde-cond-test-eng-forward.xml"/> <!-- bug -->
-        <or include="concorde-cond-pressure-under.xml"/>
+        <less-than>
+         <property>instrumentation/cabin-altitude/indicated-altitude-ft</property>
+         <value>10000.0</value>
+        </less-than>
        </and>
       </or>
      </condition>
@@ -51,6 +54,7 @@
      <type>group</type>
 
      <layer include="concorde-bulb-on.xml">
+      <condition include="concorde-cond-light-eng-forward.xml"/>
       <w>104</w>
       <h>52</h>
      </layer>

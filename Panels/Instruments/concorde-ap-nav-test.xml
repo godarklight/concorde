@@ -34,6 +34,25 @@
   </layer>
 
   <layer>
+   <name>selector</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>10</w>
+   <h>38</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>15</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
    <name>Title knob</name>
    <type>text</type>
    <point-size>7</point-size>
@@ -45,17 +64,17 @@
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>TEST</text>
+     <text>TESTS</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>5</offset>
+     <offset>2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-35</offset>
+     <offset>-33</offset>
     </transformation>
    </transformations>
   </layer>
@@ -67,9 +86,9 @@
   <action>
    <name>Minus 1/10</name>
    <button>0</button>
-   <x>2</x>
+   <x>-3</x>
    <y>-19</y>
-   <w>14</w>
+   <w>18</w>
    <h>18</h>
    <binding>
     <command>property-adjust</command>
@@ -88,9 +107,9 @@
   <action>
    <name>Plus 1/10</name>
    <button>0</button>
-   <x>2</x>
+   <x>-3</x>
    <y>1</y>
-   <w>14</w>
+   <w>18</w>
    <h>18</h>
    <binding>
     <command>property-adjust</command>
@@ -111,7 +130,7 @@
    <button>0</button>
    <x>16</x>
    <y>-19</y>
-   <w>14</w>
+   <w>18</w>
    <h>18</h>
    <binding>
     <command>property-adjust</command>
@@ -132,7 +151,7 @@
    <button>0</button>
    <x>16</x>
    <y>1</y>
-   <w>14</w>
+   <w>18</w>
    <h>18</h>
    <binding>
     <command>property-adjust</command>

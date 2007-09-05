@@ -5,7 +5,7 @@
 
 <PropertyList>
  <name>Ground relief Valve</name>
- <w-base>140</w-base>
+ <w-base>84</w-base>
  <h-base>168</h-base>
 
 
@@ -14,6 +14,20 @@
   <layer>
    <name>valve</name>
    <type>switch</type>
+
+   <layer>
+    <name>undefined</name>
+    <condition>
+     <not>
+      <property>/systems/electrical/power/specific</property>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>28</w>
+    <h>28</h>
+   </layer>
 
    <layer>
     <name>shut</name>
@@ -45,6 +59,12 @@
     <w>28</w>
     <h>28</h>
    </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>25</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -65,7 +85,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-60</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -92,7 +112,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-60</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -119,7 +139,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-60</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -146,7 +166,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-60</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

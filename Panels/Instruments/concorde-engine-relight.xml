@@ -243,18 +243,12 @@
  <actions>
 
   <action>
-   <name>selector left (off)</name>
+   <name>selector left</name>
    <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>1.0</value>
-    </equals>
-   </condition>
    <x>-50</x>
-   <y>-22</y>
+   <y>-50</y>
    <w>50</w>
-   <h>50</h>
+   <h>100</h>
    <binding>
     <command>property-adjust</command>
     <property>/controls/electric/ac/emergency/relight-selector</property>
@@ -264,14 +258,8 @@
     <wrap>0</wrap>
    </binding>
    <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight2</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight2</property>
-    <value>true</value>
+    <command>nasal</command>
+    <script>globals.Concorde.electricalsystem.emergencyrelightexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -280,161 +268,12 @@
   </action>
 
   <action>
-   <name>selector left (engine 2)</name>
+   <name>selector right</name>
    <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>2.0</value>
-    </equals>
-   </condition>
-   <x>-50</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>-1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight4</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight4</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight2</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight2</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>selector left (engine 4)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>3.0</value>
-    </equals>
-   </condition>
-   <x>-50</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>-1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight3</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight3</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight4</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight4</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>selector left (engine 3)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>4.0</value>
-    </equals>
-   </condition>
-   <x>-50</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>-1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight1</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight1</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight3</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight3</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-<!-- selector right -->
-
-  <action>
-   <name>selector right (engine 2)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>0.0</value>
-    </equals>
-   </condition>
    <x>0</x>
-   <y>-22</y>
+   <y>-50</y>
    <w>50</w>
-   <h>50</h>
+   <h>100</h>
    <binding>
     <command>property-adjust</command>
     <property>/controls/electric/ac/emergency/relight-selector</property>
@@ -444,155 +283,8 @@
     <wrap>0</wrap>
    </binding>
    <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight2</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight2</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>selector right (engine 4)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>1.0</value>
-    </equals>
-   </condition>
-   <x>0</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight2</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight2</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight4</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight4</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>selector right (engine 3)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>2.0</value>
-    </equals>
-   </condition>
-   <x>0</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight4</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight4</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight3</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight3</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>selector right (engine 1)</name>
-   <button>0</button>
-   <condition>
-    <equals>
-     <property>/controls/electric/ac/emergency/relight-selector</property>
-     <value>3.0</value>
-    </equals>
-   </condition>
-   <x>0</x>
-   <y>-22</y>
-   <w>50</w>
-   <h>50</h>
-   <binding>
-    <command>property-adjust</command>
-    <property>/controls/electric/ac/emergency/relight-selector</property>
-    <step>1</step>
-    <min>0</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight3</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight3</property>
-    <value>true</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/relight1</property>
-    <value>false</value>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/relight1</property>
-    <value>true</value>
+    <command>nasal</command>
+    <script>globals.Concorde.electricalsystem.emergencyrelightexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

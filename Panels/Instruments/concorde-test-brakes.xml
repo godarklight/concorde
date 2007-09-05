@@ -2,7 +2,7 @@
 
 <!-- Test of brakes temperature warning lights :
 
-     - sends highest brakes temperature.
+     - adds 270 to the highest brakes temperature.
 -->
 
 <PropertyList>
@@ -65,25 +65,15 @@
    <h>25</h>
    <binding>
     <command>property-assign</command>
-    <property>/controls/gear/brake-test</property>
+    <property>/controls/hydraulic/brake-test</property>
     <value>true</value>
     <repeatable>true</repeatable>
-   </binding>
-   <binding>
-    <command>property-assign</command>
-    <property>/systems/gear/brake-test-degc</property>
-    <property n="1">/systems/gear/brake-degc</property>
    </binding>
    <mod-up>
     <binding>
      <command>property-assign</command>
-     <property>/controls/gear/brake-test</property>
+     <property>/controls/hydraulic/brake-test</property>
      <value>false</value>
-    </binding>
-    <binding>
-     <command>property-assign</command>
-     <property>/systems/gear/brake-test-degc</property>
-     <value>0.0</value>
     </binding>
     <binding>
      <command>property-toggle</command>

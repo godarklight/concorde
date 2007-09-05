@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- INS 2 button
-
-supposed to be previous waypoint.
-
- -->
+<!-- INS 2 button -->
 
 <PropertyList>
  <name>INS 5</name>
@@ -12,7 +8,7 @@ supposed to be previous waypoint.
  <h-base>26</h-base>
 
  <params>
-  <wpt-ctrl>/instrumentation/ins/waypoint</wpt-ctrl>
+  <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
  </params>
 
 
@@ -29,57 +25,39 @@ supposed to be previous waypoint.
    </texture>
    <w>52</w>
    <h>26</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
   </layer>
 
   <layer>
-   <name>Title</name>
-   <type>text</type>
-   <point-size>32</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>literal</type>
-     <text>2</text>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-7</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-5</offset>
-    </transformation>
-   </transformations>
+   <name>number</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-2-black.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>52</w>
+   <h>26</h>
   </layer>
+
  </layers>
  
  <actions>
   <action>
-   <desc>5</desc>
+   <desc>2</desc>
    <button>0</button>
    <x>-26</x>
    <y>-13</y>
    <w>52</w>
    <h>26</h>
    <binding>
-    <command>property-adjust</command>
+    <command>property-assign</command>
     <property alias="../../../../params/wpt-ctrl"/>
-    <step>-1</step>
-    <min>0</min>
-    <max>2</max>
-    <wrap>0</wrap>
+    <value>2</value>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.INSinstrument.computeexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

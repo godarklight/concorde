@@ -7,8 +7,8 @@
  <h-base>128</h-base>
 
  <params>
-  <pressure-psi>/systems/hydraulic/circuits/circuit[0]/pressure-psi</pressure-psi>
-  <circuit-abbreviation>/systems/hydraulic/circuits/circuit[0]/abbreviation</circuit-abbreviation>
+  <pressure-psi>/systems/hydraulic/sensors/green</pressure-psi>
+  <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
  </params>
 
  <layers>
@@ -28,19 +28,71 @@
 
   <layer>
    <name>Abbreviation</name>
-   <type>text</type>
-   <point-size>14</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>text-value</type>
-     <property alias="../../../../../params/circuit-abbreviation"/>
-    </chunk>
-   </chunks>
+   <type>switch</type>
+
+   <layer>
+    <name>Green</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/engine-num"/>
+      <value>1</value>
+     </equals>
+    </condition>
+    <type>text</type>
+    <point-size>14</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>G</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Yellow</name>
+    <condition>
+     <equals>
+      <property alias="../../../../../../params/engine-num"/>
+      <value>2</value>
+     </equals>
+    </condition>
+    <type>text</type>
+    <point-size>14</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>Y</text>
+     </chunk>
+    </chunks>
+   </layer>
+
+   <layer>
+    <name>Blue</name>
+    <type>text</type>
+    <point-size>14</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>literal</type>
+      <text>B</text>
+     </chunk>
+    </chunks>
+   </layer>
+
    <transformations>
     <transformation>
      <type>x-shift</type>

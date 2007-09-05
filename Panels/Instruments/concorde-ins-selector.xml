@@ -11,9 +11,10 @@
  <h-base>50</h-base>
 
  <params>
-  <on-ctrl>/instrumentation/ins/on</on-ctrl>
-  <selector-ctrl>/instrumentation/ins/selector</selector-ctrl>
-  <wpt-ctrl>/instrumentation/ins/waypoint</wpt-ctrl>
+  <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+  <selector-ctrl>/instrumentation/ins[0]/control/selector</selector-ctrl>
+  <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
+  <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
  </params>
 
 
@@ -33,130 +34,37 @@
   </layer>
 
   <layer>
-   <name>selector</name>
-   <type>switch</type>
+   <name>Title waypoint</name>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
-     <property alias="../../../../../params/on-ctrl"/>
+     <not-equals>
+      <property alias="../../../../../../params/mode-ctrl"/>
+      <value>-2</value>
+     </not-equals>
+     <greater-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value>1</value>
+     </greater-than-equals>
+     <less-than-equals>
+      <property alias="../../../../../../params/selector-ctrl"/>
+      <value>2</value>
+     </less-than-equals>
     </and>
    </condition>
-
-<!-- WAYPOINT -->
-
-<!-- even if no waypoint and no selection -->
-
-   <layer>
-    <name>Title waypoint</name>
-    <condition>
-     <and>
-      <greater-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>1</value>
-      </greater-than-equals>
-      <less-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>2</value>
-      </less-than-equals>
-      <not-equals>
-       <property alias="../../../../../../../params/wpt-ctrl"/>
-       <value type="double">1</value>
-      </not-equals>
-      <not-equals>
-       <property alias="../../../../../../../params/wpt-ctrl"/>
-       <value type="double">2</value>
-      </not-equals>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>12</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>literal</type>
-      <text>1</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-<!-- NEXT WAYPOINT -->
-
-   <layer>
-    <name>Title next waypoint</name>
-    <condition>
-     <and>
-      <greater-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>1</value>
-      </greater-than-equals>
-      <less-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>2</value>
-      </less-than-equals>
-      <equals>
-       <property alias="../../../../../../../params/wpt-ctrl"/>
-       <value type="double">1</value>
-      </equals>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>12</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>literal</type>
-      <text>2</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-<!-- DESTINATION -->
-
-   <layer>
-    <name>Title destination</name>
-    <condition>
-     <and>
-      <greater-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>1</value>
-      </greater-than-equals>
-      <less-than-equals>
-       <property alias="../../../../../../../params/selector-ctrl"/>
-       <value>2</value>
-      </less-than-equals>
-      <equals>
-       <property alias="../../../../../../../params/wpt-ctrl"/>
-       <value type="double">2</value>
-      </equals>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>12</point-size>
-    <color>
-     <red>0.0</red>
-     <green>0.85</green>
-     <blue>0.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-      <type>literal</type>
-      <text>L</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-<!-- END INS -->
-
+   <type>text</type>
+   <font>led</font>
+   <point-size>12</point-size>
+   <color>
+    <red>0.0</red>
+    <green>0.85</green>
+    <blue>0.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>text-value</type>
+     <property alias="../../../../../params/wpt-ctrl"/>
+    </chunk>
+   </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>

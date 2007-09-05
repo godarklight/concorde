@@ -53,6 +53,11 @@
     <type>group</type>
 
     <layer include="concorde-bulb-on.xml">
+     <condition>
+      <not>
+       <property>/controls/lighting/crew/engineer/forward/low</property>
+      </not>
+     </condition>
      <w>104</w>
      <h>20</h>
     </layer>

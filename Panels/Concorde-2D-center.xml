@@ -52,6 +52,14 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
+  <instrument include="Instruments/concorde-speed-up.xml">
+   <name>Speed up</name>
+   <x>120</x>
+   <y>550</y>
+   <w>100</w>
+   <h>80</h>
+  </instrument>
+
 <!-- CENTER left -->
 
   <instrument include="Instruments/concorde-kg.xml">
@@ -226,8 +234,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>57</x>
    <y>166</y>
-   <w>105</w>
-   <h>105</h>
+   <w>100</w>
+   <h>100</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -238,8 +246,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>159</x>
    <y>166</y>
-   <w>105</w>
-   <h>105</h>
+   <w>100</w>
+   <h>100</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -250,8 +258,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>261</x>
    <y>166</y>
-   <w>105</w>
-   <h>105</h>
+   <w>100</w>
+   <h>100</h>
   </instrument>
 
   <instrument include="Instruments/concorde-engine-fuel.xml">
@@ -262,8 +270,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>363</x>
    <y>166</y>
-   <w>105</w>
-   <h>105</h>
+   <w>100</w>
+   <h>100</h>
   </instrument>
 
 <!-- Nozzle -->
@@ -272,7 +280,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 1 Nozzle</name>
    <params>
     <nozzle-select>engines/engine[0]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[0]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[0]/reheat</reheat-select>
    </params>
    <x>54</x>
    <y>58</y>
@@ -284,7 +292,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 2 Nozzle</name>
    <params>
     <nozzle-select>engines/engine[1]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[1]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[1]/reheat</reheat-select>
    </params>
    <x>156</x>
    <y>58</y>
@@ -296,7 +304,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 3 Nozzle</name>
    <params>
     <nozzle-select>engines/engine[2]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[2]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[2]/reheat</reheat-select>
    </params>
    <x>258</x>
    <y>58</y>
@@ -308,7 +316,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 4 Nozzle</name>
    <params>
     <nozzle-select>engines/engine[3]/nozzle-pos-norm</nozzle-select>
-    <reheat-select>/controls/engines/engine[3]/augmentation</reheat-select>
+    <reheat-select>/controls/engines/engine[3]/reheat</reheat-select>
+    <engine-num>/systems/engines/engine[3]/engine-num</engine-num>
    </params>
    <x>360</x>
    <y>58</y>
@@ -435,7 +444,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 0 reheat quadrant</name>
    <params>
-    <engine-reheat-select>/controls/engines/engine[0]/augmentation</engine-reheat-select>
+    <engine-reheat-select>/controls/engines/engine[0]/reheat</engine-reheat-select>
    </params>
    <x>860</x>
    <y>485</y>
@@ -446,7 +455,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 1 reheat quadrant</name>
    <params>
-    <engine-reheat-select>/controls/engines/engine[1]/augmentation</engine-reheat-select>
+    <engine-reheat-select>/controls/engines/engine[1]/reheat</engine-reheat-select>
    </params>
    <x>890</x>
    <y>485</y>
@@ -457,7 +466,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 2 reheat quadrant</name>
    <params>
-    <engine-reheat-select>/controls/engines/engine[2]/augmentation</engine-reheat-select>
+    <engine-reheat-select>/controls/engines/engine[2]/reheat</engine-reheat-select>
    </params>
    <x>920</x>
    <y>485</y>
@@ -468,7 +477,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   <instrument include="Instruments/concorde-throttle-reheat.xml">
    <name>Engine 3 reheat quadrant</name>
    <params>
-    <engine-reheat-select>/controls/engines/engine[3]/augmentation</engine-reheat-select>
+    <engine-reheat-select>/controls/engines/engine[3]/reheat</engine-reheat-select>
    </params>
    <x>950</x>
    <y>485</y>
