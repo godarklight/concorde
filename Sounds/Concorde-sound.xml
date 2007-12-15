@@ -23,7 +23,8 @@
  
 <PropertyList>
 
-<!-- position x/y/z = width/height/depth, from pilot seat -->
+<!-- position x/y/z = depth/width/height, from nose (because of VRP) -->
+
 
  <fx>
 
@@ -84,6 +85,11 @@
     <factor>0.09</factor>
     <offset>0.0</offset>
    </volume>    
+   <position>
+    <x>8.0</x>                                                   <!-- cockpit -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
   </engine>
 
   <engine>
@@ -189,6 +195,11 @@
     <factor>0.20</factor>
     <offset>0.10</offset>
    </pitch>   
+   <position>
+    <x>8.0</x>                                                   <!-- cockpit -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
   </engine>
 
   <wind>
@@ -226,6 +237,11 @@
     <factor>0.01</factor>
     <offset>1.25</offset>
    </pitch>
+   <position>
+    <x>8.0</x>                                                   <!-- cockpit -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
   </wind>
 
   <engine>
@@ -285,6 +301,11 @@
     <factor>0.07</factor>
     <offset>0.0</offset>
    </volume>    
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
   </engine>
 
 <!-- ENGINE EXTERNAL -->
@@ -370,6 +391,109 @@
     <factor>0.13</factor>
     <offset>0.0</offset>
    </volume>    
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
+   <reference-dist>500.0</reference-dist>
+   <max-dist>8000.0</max-dist>
+  </engine>
+
+  <engine>
+   <name>engine nozzle cone</name>
+   <path>Sounds/jet.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <and>
+     <not>
+      <property>/sim/current-view/internal</property>
+     </not>
+     <or>
+      <property>/engines/engine[0]/running</property>
+      <property>/engines/engine[1]/running</property>     
+      <property>/engines/engine[2]/running</property>     
+      <property>/engines/engine[3]/running</property>     
+     </or>
+     <less-than>
+      <property>/engines/engine[0]/n1</property>
+      <value>70.0</value>     
+     </less-than>
+     <less-than>
+      <property>/engines/engine[1]/n1</property>
+      <value>70.0</value>     
+     </less-than>
+     <less-than>
+      <property>/engines/engine[2]/n1</property>
+      <value>70.0</value>     
+     </less-than>
+     <less-than>
+      <property>/engines/engine[3]/n1</property>
+      <value>70.0</value>     
+     </less-than>
+     <not>
+      <or>
+       <property>/engines/engine[0]/augmentation</property>
+       <property>/engines/engine[1]/augmentation</property>
+       <property>/engines/engine[2]/augmentation</property>
+       <property>/engines/engine[3]/augmentation</property>
+      </or>
+     </not>     
+     <less-than>
+      <property>/systems/engines/engine[0]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[1]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[2]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[3]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/engines/engine[0]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.13</factor>
+    <offset>0.0</offset>
+   </volume>
+   <volume>
+    <property>/engines/engine[1]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.13</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[2]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.13</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <volume>
+    <property>/engines/engine[3]/thrust_lb[0]</property>
+    <type>ln</type>
+    <factor>0.13</factor>
+    <offset>0.0</offset>
+   </volume>    
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
+   <orientation>
+    <x>1.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+    <inner-angle>0</inner-angle>
+    <outer-angle>60</outer-angle>
+    <outer-gain>0.0</outer-gain>
+   </orientation>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </engine>
@@ -479,6 +603,11 @@
     <factor>0.20</factor>
     <offset>0.10</offset>
    </pitch>   
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </engine>
@@ -546,6 +675,11 @@
     <factor>0.07</factor>
     <offset>0.0</offset>
    </volume>    
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </engine>
@@ -609,6 +743,11 @@
     <factor>0.1</factor>
     <offset>0.0</offset>
    </volume>    
+   <position>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </reverse>
@@ -640,9 +779,9 @@
      </or>
    </condition>
    <position>
-    <x>-5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>-5.0</y>                                                  <!-- left -->
+    <z>0.0</z>
    </position>
    <volume>
     <max>0.3</max>
@@ -676,9 +815,9 @@
      </or>
    </condition>
    <position>
-    <x>5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>5.0</y>                                                   <!-- right -->
+    <z>0.0</z>
    </position>
    <volume>
     <max>0.3</max>
@@ -712,9 +851,9 @@
      </or>
    </condition>
    <position>
-    <x>-5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>-5.0</y>                                                  <!-- left -->
+    <z>0.0</z>
    </position>
    <volume>
     <max>0.5</max>
@@ -746,9 +885,9 @@
      </or>
    </condition>
    <position>
-    <x>5.0</x>
-    <y>0.0</y>
-    <z>-40.0</z>
+    <x>40.0</x>                                                  <!-- behind -->
+    <y>5.0</y>                                                   <!-- right -->
+    <z>0.0</z>
    </position>
    <volume>
     <max>0.5</max>
@@ -875,6 +1014,11 @@
    <volume>
     <factor>0.2</factor>
    </volume>
+   <position>
+    <x>12.0</x>                                                  <!-- door -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
   </door>
 
 <!-- cannot disable click in external views, otherwise heard when ctrl-V -->

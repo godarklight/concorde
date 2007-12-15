@@ -111,6 +111,15 @@
     </binding>
    </key>
 
+   <key n="9">
+    <name>Ctrl-I</name>
+    <desc>Menu</desc>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+   </key>
+
    <key n="10">
     <name>Ctrl-J</name>
     <desc>Toggle copilot view.</desc>
@@ -126,15 +135,6 @@
     <binding>
      <command>nasal</command>
      <script>globals.Concorde.seatsystem.viewexport("observer");</script>
-    </binding>
-   </key>
-
-   <key n="13">
-    <name>Ctrl-M</name>
-    <desc>Menu</desc>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
     </binding>
    </key>
 

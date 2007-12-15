@@ -101,7 +101,7 @@ A mouse with 3rd (middle) button, or its emulation (left + right button), is req
 Fuel load
 ---------
 - default is maximum landing weight, 245000 lb (19000 kg fuel).
-- for alternate load, press "ctrl-M f" (saved on exit in aircraft-data).
+- for alternate load, press "ctrl-I f" (saved on exit in aircraft-data).
 
 Sounds
 ------
@@ -129,7 +129,6 @@ Keyboard
 ========
 - "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
 - "ctrl-F" : a"F"terburner.
-- "ctrl-M" : "M"enu.
 - "f"      : "f"ull cockpit (all instruments).
 - "q"      : "q"uit speed up.
 
@@ -178,6 +177,7 @@ Improved behaviour
 Alternate behaviour
 -------------------
 - "ctrl-B" : reverse thrust used as speedbrake (FDM not implemented).
+- "ctrl-I" : menu.
 - "ctrl-T" : altitude hold.
 - "[ / ]"  : nose used as flaps.
 - "left / right" : move floating view in width.
@@ -235,7 +235,7 @@ Hydraulics
 
 Radio
 -----
-- only "ctrl-R" or "ctrl-M r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
+- only "ctrl-R" or "ctrl-I r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
 
 
 2D panel
@@ -257,14 +257,14 @@ Fuel
 
 Virtual crew
 ============
-- to enable only 1 crew member, press "ctrl-M c".
+- to enable only 1 crew member, press "ctrl-I c".
 - the virtual crew is independent of the voice callouts.
 - a green crew member is performing his checklist.
 - a yellow crew member is not performing his checklist.
 
 3D
 --
-- to activate 3D, press "ctrl-M c".
+- to activate 3D, press "ctrl-I c".
 - a crew member without headset is not performing his checklist.
 
 Captain
@@ -482,7 +482,7 @@ Example
 EGLL 27L - KJFK 22L, 3400 NM :
 - load --flight-plan from Doc.
 - acceleration 30 NM before MERLY.
-- stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "ctrl-M n").
+- stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "ctrl-I n").
 - warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57600 ft (60 ft/min 2h07).
 - deceleration 250 NM (13 minutes) before LINND : INS indicates 20900 kg at LINND,
   and 15700 kg at KJFK (590 NM).
@@ -550,11 +550,28 @@ Known problems
  (it seems to trim over the runway).
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
-Known problems 0.9.11
----------------------
-If nasal error, try to rename in Systems/Concorde-init-instrumentation.xml
-<cg-x-in alias="/fdm/jsbsim/inertia/cg-x-ft"/> into
-<cg-x-in alias="/fdm/jsbsim/inertia/cg-x-in"/>.
+Known problems autopilot
+------------------------
+- heading hold is a little slow to converge.
+- if deviation is enough large (supersonic speed), close waypoint may not pop for the next one,
+  to avoid a strong bank.
+
+Known problems autoland
+-----------------------
+- nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
+  but EGLL 27R, KJFK 22L are wrong : to land at these airports,
+  set /controls/autoflight/real-nav to false, by "ctrl-I g".
+
+Known problems sound
+--------------------
+- ATIS volume (VHF) changed only at the frequency swap.
+- exception through OpenAL errors (low hardware ?) means too many sounds :
+  remove for example engine start/shutdown or external sounds.
+  This is why engine shutdown/start sound is the same for all views.
+
+Known problems keyboard
+-----------------------
+- because of ctrl-I overriding, TAB altimeter menu is not available with GLUT.
 
 Known problems OSG
 ------------------
@@ -566,25 +583,6 @@ The following artefacts are supposed to be solved by OSG (works with 0.9.11 / Pl
 - transparency order of blinking anti-collision light over wing.
 - dark external lights.
 - engineer 3D seat/crew doesn't rotate forwards at takeoff (reset by ctrl-E).
-
-Known problems autopilot
-------------------------
-- heading hold is a little slow to converge.
-- if deviation is enough large (supersonic speed), close waypoint may not pop for the next one,
-  to avoid a strong bank.
-
-Known problems autoland
------------------------
-- nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
-  but EGLL 27R, KJFK 22L are wrong : to land at these airports,
-  set /controls/autoflight/real-nav to false, by "ctrl-M g".
-
-Known problems sound
---------------------
-- ATIS volume (VHF) changed only at the frequency swap.
-- exception through OpenAL errors (low hardware ?) means too many sounds :
-  remove for example engine start/shutdown or external sounds.
-  This is why engine shutdown/start sound is the same for all views.
 
 
 Secondary problems
@@ -642,4 +640,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-2 September 2007.
+9 December 2007.
