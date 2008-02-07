@@ -778,7 +778,7 @@ Crewbox.crewtext = func {
 }
 
 Crewbox.checklisttext = func {
-    var text = me.voice.getChild("checklist").getValue();
+    var text = me.crew.getChild("checklist").getValue();
     var green = me.crew.getChild("serviceable").getValue();
     var index = me.lineindex["checklist"];
 
