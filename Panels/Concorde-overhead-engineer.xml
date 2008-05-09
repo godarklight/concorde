@@ -244,9 +244,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>585</x>
+   <x>575</x>
    <y>481</y>
-   <w>75</w>
+   <w>50</w>
    <h>50</h>
   </instrument>
 
@@ -373,6 +373,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>60</h>
   </instrument>
 
+<!-- DRAIN MAST HEATERS -->
+
+  <instrument include="Instruments/concorde-icing-mast.xml">
+   <name>Drain mast heaters</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>25</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>530</x>
+   <y>375</y>
+   <w>150</w>
+   <h>75</h>
+  </instrument>
+
 <!-- THROTTLE MASTER -->
 
   <instrument include="Instruments/concorde-title-throttle-master.xml">
@@ -412,10 +435,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <main-select>/controls/engines/engine[0]/throttle-master</main-select>
-    <off-select>/controls/engines/engine[0]/throttle-off</off-select>
-    <main-select2>/controls/engines/engine[1]/throttle-master</main-select2>
-    <off-select2>/controls/engines/engine[1]/throttle-off</off-select2>
+    <main-select>/controls/throttles/throttle[0]/master</main-select>
+    <off-select>/controls/throttles/throttle[0]/off</off-select>
+    <main-select2>/controls/throttles/throttle[1]/master</main-select2>
+    <off-select2>/controls/throttles/throttle[1]/off</off-select2>
    </params>
    <x>450</x>
    <y>305</y>
@@ -439,10 +462,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <main-select>/controls/engines/engine[2]/throttle-master</main-select>
-    <off-select>/controls/engines/engine[2]/throttle-off</off-select>
-    <main-select2>/controls/engines/engine[3]/throttle-master</main-select2>
-    <off-select2>/controls/engines/engine[3]/throttle-off</off-select2>
+    <main-select>/controls/throttles/throttle[2]/master</main-select>
+    <off-select>/controls/throttles/throttle[2]/off</off-select>
+    <main-select2>/controls/throttles/throttle[3]/master</main-select2>
+    <off-select2>/controls/throttles/throttle[3]/off</off-select2>
    </params>
    <x>530</x>
    <y>305</y>
@@ -1053,6 +1076,29 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 <!-- ======== -->
 <!-- COLUMN 3 -->
 <!-- ======== -->
+
+<!-- PRESSURE STATIC HEATERS -->
+
+  <instrument include="Instruments/concorde-icing-static.xml">
+   <name>Pressure static heaters</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/overhead</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>35</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>620</x>
+   <y>490</y>
+   <w>70</w>
+   <h>70</h>
+  </instrument>
 
 <!-- DRAIN MAST HEATER -->
 

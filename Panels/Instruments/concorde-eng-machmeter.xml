@@ -53,7 +53,11 @@
    <layer>
     <name>Mach display</name>
     <type>switch</type>
-    <condition include="concorde-cond-voltage-inst.xml"/>
+    <condition>
+     <and include="concorde-cond-voltage-inst.xml">
+      <property>/instrumentation/mach-indicator[2]/serviceable</property>
+     </and>
+    </condition>
 
 <!-- the Mach 0.45 limitation is to match the Captain's machmeter -->
 
@@ -61,7 +65,7 @@
      <name>Mach</name>
      <condition>
       <greater-than-equals>
-       <property>/velocities/mach</property>
+       <property>/instrumentation/mach-indicator[2]/indicated-mach</property>
        <value>0.45</value>
       </greater-than-equals>
      </condition>

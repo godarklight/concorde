@@ -107,9 +107,8 @@
    <warning type="bool">false</warning>
   </anti-icing>
 
-  <autopilot>
-   <serviceable n="0" type="bool" archive="y">true</serviceable>
-   <serviceable n="1" type="bool" archive="y">true</serviceable>
+  <autopilot n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
 
    <altimeter>
     <light-min-ft type="double">999.0</light-min-ft>
@@ -126,32 +125,63 @@
    </noinstrument>
 
    <slave>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
-    <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <altimeter>
+     <component>/instrumentation</component>
+     <subcomponent>altimeter</subcomponent>
+    </altimeter>
+    <aoa>
+     <component>/instrumentation</component>
+     <subcomponent>accelerometer-aoa</subcomponent>
+    </aoa>
+    <attitude>
+     <component>/instrumentation</component>
+     <subcomponent>attitude-indicator</subcomponent>
+    </attitude>
     <dme>/instrumentation/dme[0]</dme>
     <electric>/systems/electrical/power</electric>
-    <ins>/instrumentation/ins[0]/computed</ins>
-    <ivsi>/instrumentation/inst-vertical-speed-indicator[0]</ivsi>
-    <mach>/instrumentation/mach-indicator[0]</mach>
+    <hsi>
+      <component>/instrumentation</component>
+      <subcomponent>hsi</subcomponent>
+    </hsi>
+    <ins>
+      <component>/instrumentation</component>
+      <subcomponent>ins</subcomponent>
+    </ins>
+    <ivsi>
+     <component>/instrumentation</component>
+     <subcomponent>inst-vertical-speed-indicator</subcomponent>
+    </ivsi>
+    <mach>
+     <component>/instrumentation</component>
+     <subcomponent>mach-indicator</subcomponent>
+    </mach>
     <nav>
       <component>/instrumentation</component>
       <subcomponent>nav</subcomponent>
     </nav>
-    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    <radio-altimeter>
+     <component>/instrumentation</component>
+     <subcomponent>radio-altimeter</subcomponent>
+    </radio-altimeter>
     <weight>/instrumentation/ac-weight</weight>
    </slave>
 
    <state>
+    <failure n="0" type="bool">false</failure>
+    <failure n="1" type="bool">false</failure>
     <land2 type="bool">false</land2>
     <land3 type="bool">false</land3>
     <virtual type="bool">false</virtual>                                     <!-- no copilot -->
-    <waypoint></waypoint>
+    <waypoint-nm type="double">0.0</waypoint-nm>
    </state>
   </autopilot>
 
-  <autothrottle>
-   <serviceable n="0" type="bool" archive="y">true</serviceable>
-   <serviceable n="1" type="bool" archive="y">true</serviceable>
+  <autopilot n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+  </autopilot>
+
+  <autothrottle n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
 
    <airspeed>
     <light-min-kt type="double">999.0</light-min-kt>
@@ -160,15 +190,28 @@
 
    <slave>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
-    <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <asi>
+     <component>/instrumentation</component>
+     <subcomponent>airspeed-indicator</subcomponent>
+    </asi>
     <electric>/systems/electrical/power</electric>
-    <mach>/instrumentation/mach-indicator[0]</mach>
+    <mach>
+     <component>/instrumentation</component>
+     <subcomponent>mach-indicator</subcomponent>
+    </mach>
+    <throttle>
+     <component>/systems/throttles</component>
+     <subcomponent>throttle</subcomponent>
+    </throttle>
    </slave>
+  </autothrottle>
+
+  <autothrottle n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
   </autothrottle>
 
   <crew>
    <serviceable type="bool">true</serviceable>
-   <checklist></checklist>
 
    <copilot>
     <activ type="bool">false</activ>                                         <!-- yellow -->
@@ -181,7 +224,14 @@
     </noinstrument>
 
     <slave>
-     <asi>/instrumentation/airspeed-indicator[0]</asi>
+     <anti-icing>/controls/anti-ice</anti-icing>
+     <flaps>/sim/flaps</flaps>
+     <gear>/gear/gear[0]/position-norm</gear>
+     <gear-ctrl>/controls/gear</gear-ctrl>
+     <lighting>/controls/lighting/external</lighting>
+     <mws>/controls/mws</mws>
+     <to-monitor>/instrumentation/takeoff-monitor</to-monitor>
+     <voice>/systems/voice</voice>
     </slave>
 
     <state></state>
@@ -220,7 +270,6 @@
     </noinstrument>
 
     <slave>
-     <altimeter>/instrumentation/altimeter</altimeter>
      <cg>/instrumentation/cg</cg>
      <fuel>/instrumentation/fuel</fuel>
      <fuel2>/systems/fuel</fuel2>
@@ -229,6 +278,7 @@
       <subcomponent>fuel-consumed</subcomponent>
      </fuel-consumed>
      <ins>/instrumentation/ins/computed</ins>
+     <voice>/systems/voice</voice>
     </slave>
 
     <state></state>
@@ -236,34 +286,6 @@
    </engineer>
 
    <minimized type="bool">true</minimized>
-
-   <voice include="Concorde-checklists.xml">
-    <noinstrument>
-     <weight>/instrumentation/ac-weight/weight-lb</weight>
-    </noinstrument>
-
-    <slave>
-     <asi>/instrumentation/airspeed-indicator</asi>
-     <altimeter>/instrumentation/altimeter</altimeter>
-     <attitude>/instrumentation/attitude-indicator</attitude>
-     <autopilot>/systems/autopilot/state</autopilot>
-     <copilot2>/systems/human/copilot</copilot2>
-     <engine>
-      <component>/engines</component>
-      <subcomponent>engine</subcomponent>
-     </engine>
-     <engineer>/systems/crew/engineer</engineer>
-     <engineer2>/systems/human/engineer</engineer2>
-     <gear>/gear/gear[0]</gear>
-     <ins>/instrumentation/ins[0]/computed</ins>                            <!-- HSI -->
-     <ivsi>/instrumentation/inst-vertical-speed-indicator</ivsi>
-     <nav>/instrumentation/nav[0]</nav>
-     <nose>/instrumentation/nose-visor</nose>
-     <radio-altimeter>/instrumentation/radio-altimeter</radio-altimeter>
-    </slave>
-
-    <text></text>
-   </voice>
   </crew>
 
   <electrical>
@@ -334,6 +356,7 @@
     <ramp-percent type="double">0.0</ramp-percent>
     <rating></rating>
     <relight type="bool">false</relight>
+    <schedule>low</schedule>
     <secondary-air-door type="bool">false</secondary-air-door>
     <spill-percent type="double">0.0</spill-percent>
    </engine>
@@ -355,6 +378,7 @@
     <ramp-percent type="double">0.0</ramp-percent>
     <rating></rating>
     <relight type="bool">false</relight>
+    <schedule>low</schedule>
     <secondary-air-door type="bool">false</secondary-air-door>
     <spill-percent type="double">0.0</spill-percent>
    </engine>
@@ -376,6 +400,7 @@
     <ramp-percent type="double">0.0</ramp-percent>
     <rating></rating>
     <relight type="bool">false</relight>
+    <schedule>low</schedule>
     <secondary-air-door type="bool">false</secondary-air-door>
     <spill-percent type="double">0.0</spill-percent>
    </engine>
@@ -397,17 +422,29 @@
     <ramp-percent type="double">0.0</ramp-percent>
     <rating></rating>
     <relight type="bool">false</relight>
+    <schedule>low</schedule>
     <secondary-air-door type="bool">false</secondary-air-door>
     <spill-percent type="double">0.0</spill-percent>
    </engine>
 
    <intake-subsonic alias="/fdm/jsbsim/fcs/intake-subsonic-pos"/>
+   <ground-idle alias="/fdm/jsbsim/fcs/ground-idle"/>
  
    <slave>
     <asi>/instrumentation/airspeed-indicator[0]</asi>
+    <gear>/gear/gear[0]</gear>
     <hydraulic>/systems/hydraulic/power</hydraulic>
     <mach>/instrumentation/mach-indicator[0]</mach>
     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    <throttle>
+     <component>/systems/throttles</component>
+     <subcomponent>throttle</subcomponent>
+    </throttle>
+    <throttle-ctrl>
+     <component>/controls/throttles</component>
+     <subcomponent>throttle</subcomponent>
+    </throttle-ctrl>
+    <weight>/instrumentation/weight-switch</weight>
    </slave>
   </engines>
 
@@ -419,6 +456,8 @@
  
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
+
+   <presets type="int">0</presets>                                           <!-- max landing load -->
 
    <slave>
     <electric>/systems/electrical/power</electric>
@@ -434,21 +473,38 @@
    <bogie-right-deg type="double">0.0</bogie-right-deg>
 
    <noinstrument>
+    <agl>/position/altitude-agl-ft</agl>
     <pitch>/orientation/pitch-deg</pitch>
    </noinstrument>
+
+   <slave>
+    <electric>/systems/electrical/power/specific</electric>
+    <gear>/controls/gear</gear>
+    <hydraulic>/systems/hydraulic/power</hydraulic>
+   </slave>
   </gear>
 
   <gpws>
    <serviceable type="bool" archive="y">true</serviceable>
-   <decision-height type="bool">true</decision-height>                       <!-- enable warning light -->
 
    <slave>
-    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    <gear>/gear/gear[0]/position-norm</gear>
+    <ivsi>
+     <component>/instrumentation</component>
+     <subcomponent>inst-vertical-speed-indicator</subcomponent>
+    </ivsi>
+    <nose>/instrumentation/nose-visor/pos-norm</nose>
+    <radio-altimeter>
+     <component>/instrumentation</component>
+     <subcomponent>radio-altimeter</subcomponent>
+    </radio-altimeter>
    </slave>
+
+   <terrain type="bool">false</terrain>
   </gpws>
 
   <human>
-   <serviceable userarchive="y" type="bool" archive="y">false</serviceable>  <!-- no 3D -->
+   <serviceable type="bool" archive="y">false</serviceable>  <!-- no 3D -->
 
    <captain>
     <stowe-norm type="double">0.0</stowe-norm>
@@ -470,9 +526,17 @@
     <teeth type="bool">false</teeth>
    </engineer>
 
+   <noinstrument>
+    <sun>/sim/time/sun-angle-rad</sun>
+   </noinstrument>
+
    <slave>
+    <lighting>/controls/lighting/crew</lighting>
+    <lighting-copilot>/controls/lighting/crew/copilot</lighting-copilot>
+    <lighting-engineer>/controls/lighting/crew/engineer</lighting-engineer>
     <engineer>/systems/seat/position/engineer</engineer>
     <seat>/systems/seat</seat>
+    <voice>/systems/voice</voice>
    </slave>
   </human>
 
@@ -484,6 +548,7 @@
     <emerg-right-psi>0.0</emerg-right-psi>
     <green-accu-psi>0.0</green-accu-psi>
     <left-psi>0.0</left-psi>
+    <pedals type="bool">false</pedals>
     <right-psi>0.0</right-psi>
     <temperature-degc>15.0</temperature-degc>
     <temp-max-degc>15.0</temp-max-degc>
@@ -507,6 +572,7 @@
 
    <power>
     <blue type="bool">false</blue>
+    <gear type="bool">false</gear>
     <green type="bool">false</green>
     <yellow type="bool">false</yellow>
    </power>
@@ -546,7 +612,11 @@
   </lighting>
 
   <mws>
+   <serviceable type="bool" archive="y">true</serviceable>
+
    <amber>
+    <adc type="bool">false</adc>
+    <adc-recall type="bool">true</adc-recall>
     <air type="bool">false</air>
     <air-recall type="bool">true</air-recall>
     <electrical type="bool">false</electrical>
@@ -564,7 +634,14 @@
     <intake-recall n="2" type="bool">true</intake-recall>
     <intake-recall n="3" type="bool">true</intake-recall>
    </amber>
+
+   <auxiliary type="bool">false</auxiliary>
+   <cavalry type="bool">false</cavalry>
+   <overspeed type="bool">false</overspeed>
+
    <red>
+    <ads type="bool">false</ads>
+    <ads-recall type="bool">true</ads-recall>
     <cg type="bool">false</cg>
     <cg-recall type="bool">true</cg-recall>
     <doors type="bool">false</doors>
@@ -581,6 +658,8 @@
     <engine-recall n="3" type="bool">true</engine-recall>
     <ice type="bool">false</ice>
     <ice-recall type="bool">true</ice-recall>
+    <ins type="bool">false</ins>
+    <ins-recall type="bool">true</ins-recall>
     <intake n="0" type="bool">false</intake>
     <intake n="1" type="bool">false</intake>
     <intake n="2" type="bool">false</intake>
@@ -595,11 +674,42 @@
     <pfc-recall type="bool">true</pfc-recall>
     <pressure type="bool">false</pressure>
     <pressure-recall type="bool">true</pressure-recall>
+    <throttle type="bool">false</throttle>
+    <throttle-recall type="bool">true</throttle-recall>
    </red>
+
+   <single-gong type="bool">false</single-gong>
+
+   <slave>
+    <adc>
+     <component>/controls</component>
+     <subcomponent>adc</subcomponent>
+    </adc>
+    <altimeter>
+     <component>/instrumentation</component>
+     <subcomponent>altimeter</subcomponent>
+    </altimeter>
+    <asi>
+     <component>/instrumentation</component>
+     <subcomponent>airspeed-indicator</subcomponent>
+    </asi>
+    <attitude>
+     <component>/instrumentation</component>
+     <subcomponent>attitude-indicator</subcomponent>
+    </attitude>
+    <audio>/controls/audio</audio>
+    <autopilot>/systems/autopilot/state</autopilot>
+    <cg>/instrumentation/cg</cg>
+    <mach>/instrumentation/mach-indicator[0]</mach>
+    <nose>/instrumentation/nose-visor/pos-norm</nose>
+   </slave>
+
+   <stall type="bool">false</stall>
   </mws>
 
   <pressurization>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <internal>
     <altitude-sea-ft>0.0</altitude-sea-ft>                                   <!-- sea level ISA -->
     <atmosphere-inhg>29.92</atmosphere-inhg>
@@ -628,6 +738,8 @@
     <cabin-alt-ft>8000.0</cabin-alt-ft>
     <datum-inhg>0.0</datum-inhg>
     <datum-mbar>1013.21</datum-mbar>
+    <discharge-aft-percent>0.0</discharge-aft-percent>
+    <discharge-fwd-percent>0.0</discharge-fwd-percent>
     <inhg-per-min>0.0</inhg-per-min>
     <max-diff-ft>29000.0</max-diff-ft>
     <mbar-per-min>18.0</mbar-per-min>
@@ -638,6 +750,8 @@
     <cabin-alt-ft>8000.0</cabin-alt-ft>
     <datum-inhg>0.0</datum-inhg>
     <datum-mbar>1013.21</datum-mbar>
+    <discharge-aft-percent>0.0</discharge-aft-percent>
+    <discharge-fwd-percent>0.0</discharge-fwd-percent>
     <inhg-per-min>0.0</inhg-per-min>
     <max-diff-ft>29000.0</max-diff-ft>
     <mbar-per-min>18.0</mbar-per-min>
@@ -665,10 +779,16 @@
     </engineer>
     <observer>
      <move type="bool">false</move>
-     <x-m userarchive="y" type="double">0.0</x-m>
-     <y-m userarchive="y" type="double">0.0</y-m>
-     <z-m userarchive="y" type="double">0.0</z-m>
+     <x-m type="double">0.0</x-m>
+     <y-m type="double">0.0</y-m>
+     <z-m type="double">0.0</z-m>
     </observer>
+    <steward>
+     <move type="bool">false</move>
+     <x-m type="double">0.0</x-m>
+     <y-m type="double">0.0</y-m>
+     <z-m type="double">0.0</z-m>
+    </steward>
    </position>
    <overhead type="bool">false</overhead>
    <steward type="bool">false</steward>
@@ -729,5 +849,71 @@
     <temperature>/environment/temperature-degc</temperature>
    </noinstrument>
   </temperature>
+
+  <throttles>
+   <throttle n="0">
+    <serviceable type="bool" archive="y">true</serviceable>
+
+    <available type="bool">true</available>
+    <failure type="bool">false</failure>                                     <!-- because of 3D material -->
+    <failure-texture>Textures/concorde-red-off-throt.rgb</failure-texture>
+   </throttle>
+   <throttle n="1">
+    <serviceable type="bool" archive="y">true</serviceable>
+
+    <available type="bool">true</available>
+    <failure type="bool">false</failure>
+    <failure-texture>Textures/concorde-red-off-throt.rgb</failure-texture>
+   </throttle>
+   <throttle n="2">
+    <serviceable type="bool" archive="y">true</serviceable>
+
+    <available type="bool">true</available>
+    <failure type="bool">false</failure>
+    <failure-texture>Textures/concorde-red-off-throt.rgb</failure-texture>
+   </throttle>
+   <throttle n="3">
+    <serviceable type="bool" archive="y">true</serviceable>
+
+    <available type="bool">true</available>
+    <failure type="bool">false</failure>
+    <failure-texture>Textures/concorde-red-off-throt.rgb</failure-texture>
+   </throttle>
+  </throttles>
+
+  <voice include="Concorde-checklists.xml">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <automata n="0"></automata>
+   <automata n="1"></automata>
+   <checklist></checklist>
+
+   <noinstrument>
+    <weight>/instrumentation/ac-weight/weight-lb</weight>
+   </noinstrument>
+
+   <slave>
+    <asi>/instrumentation/airspeed-indicator[1]</asi>
+    <altimeter>/instrumentation/altimeter[1]</altimeter>
+    <attitude>/instrumentation/attitude-indicator[1]</attitude>
+    <autopilot>/systems/autopilot/state</autopilot>
+    <copilot2>/systems/human/copilot</copilot2>
+    <crew>/systems/crew</crew>
+    <engine>
+     <component>/engines</component>
+     <subcomponent>engine</subcomponent>
+    </engine>
+    <engineer>/systems/crew/engineer</engineer>
+    <engineer2>/systems/human/engineer</engineer2>
+    <gear>/gear/gear[0]</gear>
+    <ins>/instrumentation/ins[0]/computed</ins>                             <!-- HSI -->
+    <ivsi>/instrumentation/inst-vertical-speed-indicator[0]</ivsi>
+    <nav>/instrumentation/nav[0]</nav>
+    <nose>/instrumentation/nose-visor</nose>
+    <radio-altimeter>/instrumentation/radio-altimeter[1]</radio-altimeter>
+   </slave>
+
+   <text></text>
+  </voice>
 
 </PropertyList>

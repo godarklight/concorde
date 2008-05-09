@@ -11,7 +11,19 @@
 Gpws = {};
 
 Gpws.new = func {
-   obj = { parents : [Gpws,System]
+   var obj = { parents : [Gpws,System],
+
+               autopilot : nil,
+               gpws : nil,
+
+               RADIOFT : 2500,
+               TAKEOFFFT : 700,
+               GEARFT : 500,
+               NOSEFT : 200,
+
+               OVERFTPS : -50,                          # 3000 ft / min
+               TOUCHFTPS : -15,                         # touch-down below 900 ft / min
+               TAXIFTPS : -5                            # not null on taxi
          };
 
    obj.init();
@@ -22,24 +34,117 @@ Gpws.new = func {
 Gpws.init = func {
    me.init_ancestor("/systems/gpws");
 
-   # reads the user customization, JSBSim has an offset of 11 ft
-   decisionft = me.slave["radio-altimeter"].getChild("dial-decision-ft").getValue();
-   decisionft = decisionft + constantaero.AGLFT;
-   me.slave["radio-altimeter"].getChild("decision-ft").setValue(decisionft);
+   me.autopilot = props.globals.getNode("/controls/autoflight");
+   me.gpws = props.globals.getNode("/systems/gpws");
+
+   me.decision_init();
 }
 
 Gpws.schedule = func {
-    if( getprop("/systems/gpws/serviceable") ) {
-        if( !getprop("/systems/gpws/decision-height") ) {
-            decisionft = me.slave["radio-altimeter"].getChild("decision-ft").getValue();
-            aglft = me.slave["radio-altimeter"].getChild("indicated-altitude-ft").getValue();
+   me.sound_terrain();
+}
 
-            # reset the DH light
-            if( aglft > decisionft ) {
-                setprop("/systems/gpws/decision-height",constant.TRUE);
+Gpws.slowschedule = func {
+   if( me.gpws.getChild("serviceable").getValue() ) {
+       me.decision_reset();
+   }
+}
+
+Gpws.decision_init = func {
+   var decisionft = 0.0;
+
+   # reads the user customization, JSBSim has an offset of 11 ft
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        decisionft = me.slave["radio-altimeter"][i].getChild("dial-decision-ft").getValue();
+        decisionft = decisionft + constantaero.AGLFT;
+        me.slave["radio-altimeter"][i].getChild("decision-ft").setValue(decisionft);
+   }
+}
+
+Gpws.sound_terrain = func {
+   var alarm = constant.FALSE;
+
+   if( me.gpws.getChild("serviceable").getValue() ) {
+       var aglft = 0.0;
+       var speedftps = 0.0;
+
+       for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+            aglft = me.slave["radio-altimeter"][i].getChild("indicated-altitude-ft").getValue();
+            speedftps = me.slave["ivsi"][i].getChild("indicated-speed-fps").getValue();
+
+            # excessive rate of descent below 2500 ft.
+            if( aglft < me.RADIOFT ) {
+                if( speedftps < me.OVERFTPS ) {
+                    alarm = constant.TRUE;
+                    break;
+                }
+
+                # excessive closure rate with ground.
+                if( aglft < me.NOSEFT ) {
+                    if( speedftps < me.TOUCHFTPS ) {
+                        alarm = constant.TRUE;
+                        break;
+                    }
+                }
+            }
+
+            # loss of altitude
+            if( speedftps < me.TAXIFTPS ) {
+                if( aglft < me.TAKEOFFFT ) {
+  
+                    # loss of altitude below 700 ft,after takeoff.
+                    if( me.slave["nose"].getValue() < constantaero.NOSEDOWN ) {
+                        alarm = constant.TRUE;
+                        break;
+                    }
+
+                    # loss of altitude below 700 ft, after goaround.
+                    if( me.autopilot.getChild("vertical").getValue() == "goaround" ) {
+                        alarm = constant.TRUE;
+                        break;
+                    }
+
+                    # gear not locked below 500 ft.
+                    if( aglft < me.GEARFT ) {
+                        if( me.slave["gear"].getValue() < constantaero.GEARDOWN ) {
+                            alarm = constant.TRUE;
+                            break;
+                        }
+
+                        # nose not down below 200 ft on approach.
+                        if( aglft < me.NOSEFT ) {
+                            if( me.slave["nose"].getValue() < constantaero.NOSEDOWN ) {
+                                alarm = constant.TRUE;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+       }
+   }
+
+   me.gpws.getChild("terrain").setValue(alarm);
+}
+
+Gpws.decision_reset = func {
+   var decisionft = 0.0;
+   var aglft = 0.0;
+
+   # GPWS depends of radio-altimeter 1
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        if( me.slave["radio-altimeter"][i].getChild("serviceable").getValue() ) {
+            if( !me.slave["radio-altimeter"][i].getChild("decision-height").getValue() ) {
+                decisionft = me.slave["radio-altimeter"][i].getChild("decision-ft").getValue();
+                aglft = me.slave["radio-altimeter"][i].getChild("indicated-altitude-ft").getValue();
+
+                # reset the DH light
+                if( aglft > decisionft ) {
+                    me.slave["radio-altimeter"][i].getChild("decision-height").setValue( constant.TRUE );
+                }
             }
         }
-    }
+   }
 }
 
 
@@ -50,7 +155,7 @@ Gpws.schedule = func {
 Icedetection = {};
 
 Icedetection.new = func {
-   obj = { parents : [Icedetection,System],
+   var obj = { parents : [Icedetection,System],
 
            antiicing : nil,
            detection : nil,
@@ -89,7 +194,7 @@ Icedetection.schedule = func {
 }
 
 Icedetection.loadmodel = func {
-   child = me.model.getNode("temperature"); 
+   var child = me.model.getNode("temperature"); 
 
    me.temperaturedegc["max"] = child.getChild("max-degc").getValue();
    me.temperaturedegc["min"] = child.getChild("min-degc").getValue();
@@ -104,7 +209,12 @@ Icedetection.loadmodel = func {
 }
 
 Icedetection.runmodel = func {
-   found = constant.FALSE;
+   var airdegc = 0.0;
+   var altft = 0.0;
+   var elevationft = 0.0;
+   var thicknessft = 0.0;
+   var coverage = "";
+   var found = constant.FALSE;
 
    if( me.antiicing.getChild("serviceable").getValue() and
        me.slave["electric"].getChild("specific").getValue() ) {
@@ -114,7 +224,7 @@ Icedetection.runmodel = func {
        if( airdegc >= me.temperaturedegc["min"] and airdegc <= me.temperaturedegc["max"] ) {
            altft = me.noinstrument["altitude"].getValue();
 
-           for( i = 0; i < me.maxclouds; i = i+1 ) {
+           for( var i = 0; i < me.maxclouds; i = i+1 ) {
                 coverage = me.noinstrument["cloud"][i].getChild("coverage").getValue();
 
                 # ignores the kind of cloud
@@ -170,9 +280,11 @@ Icedetection.runmodel = func {
 Mws = {};
 
 Mws.new = func {
-   obj = { parents : [Mws],
+   var obj = { parents : [Mws,System],
 
+           adcinstrument : nil,
            cginstrument : nil,
+           insinstrument : nil,
 
            airbleedsystem : nil,
            electricalsystem : nil,
@@ -183,18 +295,42 @@ Mws.new = func {
            pressuresystem : nil,
            tankpressuresystem : nil,
 
+           AUXILIARYSEC : 10,
+
+           STALLDEG : 16.5,
+           OVERSPEEDDEG : -5.5,
+
+           FL41FT : 41000,
+           FL15FT : 15000,
+
+           SOUNDMACH : 1.0,
+           SUBSONICMACH : 0.95,
+           OVERSPEEDMACH : 0.04,
+
+           VLA41KT : 300,
+           VLA15KT : 250,
+           STALLKT : 20,
+           OVERSPEEDKT : 10,
+
+           NOSEDOWN : 1.0,
+           NOSEUP : 0.0,
+
            nbambers : 0,
-           amberwords : [ "air", "electrical", "fuel", "hydraulics" ],
+           amberwords : [ "adc", "air", "electrical", "fuel", "hydraulics" ],
            nbamber4s : 0,
            amber4words : [ "intake" ],
 
            nbreds : 0,
-           redwords : [ "cg", "doors", "electrical", "feel", "ice", "pfc", "pressure" ],
+           redwords : [ "ads", "cg", "doors", "electrical", "feel", "ice", "ins", "pfc", "pressure", "throttle" ],
            nbred4s : 0,
            red4words : [ "engine", "intake" ],
 
+           class1 : constant.FALSE,
+           class2 : constant.FALSE,
+
            ambers : nil,
            mwscontrol : nil,
+           mws : nil,
            reds : nil
          };
 
@@ -204,8 +340,11 @@ Mws.new = func {
 };
 
 Mws.init = func {
+   me.init_ancestor("/systems/mws");
+
    me.ambers = props.globals.getNode("/systems/mws/amber");
    me.mwscontrol = props.globals.getNode("/controls/mws");
+   me.mws = props.globals.getNode("/systems/mws");
    me.reds = props.globals.getNode("/systems/mws/red");
 
    me.nbambers = size( me.amberwords );
@@ -215,9 +354,11 @@ Mws.init = func {
    me.nbred4s = size( me.red4words );
 }
 
-Mws.set_relation = func( cg, airbleed, electrical, engine, flight, fuel, hydraulical, ice,
+Mws.set_relation = func( adc, cg, ins, airbleed, electrical, engine, flight, fuel, hydraulical, ice,
                          pressure, tankpressure ) {
+   me.adcinstrument = adc;
    me.cginstrument = cg;
+   me.insinstrument = ins;
 
    me.airbleedsystem = airbleed;
    me.electricalsystem = electrical;
@@ -241,21 +382,200 @@ Mws.recallexport = func {
    me.cancel();
    me.recall();
    me.instantiate();
+
+   me.slave["audio"].getChild("cancel").setValue( constant.FALSE );
 }
 
 Mws.schedule = func {
-   # avoid false warning caused by FDM or system initialization
-   if( constant.system_ready() ) {
-       me.instantiate();
-   }
-   else {
-       me.cancelexport();
+   if( me.mws.getChild("serviceable").getValue() ) {
+       # avoid false warning caused by FDM or system initialization
+       if( constant.system_ready() ) {
+           me.sound_cavalry();
+           me.sound_singlegong();
+           me.sound_overspeed();
+           me.sound_stall();
+       }
+       else {
+           me.cancelexport();
+       }
    }
 }
 
+Mws.slowschedule = func {
+   if( me.mws.getChild("serviceable").getValue() ) {
+       me.sound_auxiliary();
+   }
+}
+
+Mws.sound_cavalry = func {
+   var cavalry = constant.FALSE;
+
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        if( me.slave["autopilot"].getChild("failure",i).getValue() ) {
+            cavalry = constant.TRUE;
+            break;
+        }
+   }
+
+   me.mws.getChild("cavalry").setValue( cavalry );
+}
+
+Mws.sound_auxiliary = func {
+   var auxiliary = constant.FALSE;
+
+   if( me.class1_check() ) {
+       # single gong every 10 s, if class 1 red light remains illuminated.
+       auxiliary = constant.TRUE;
+   }
+
+   me.mws.getChild("auxiliary").setValue( auxiliary );
+
+   # must clear to repeat.
+   settimer(func { me.auxiliarycron(); }, me.AUXILIARYSEC / 2);
+}
+
+Mws.auxiliarycron = func {
+   me.mws.getChild("auxiliary").setValue( constant.FALSE );
+}
+
+Mws.sound_overspeed = func {
+   var speedkt = 0.0;
+   var speedmach = 0.0;
+   var overspeed = constant.FALSE;
+   var nose = me.slave["nose"].getValue();
+
+
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        if( me.slave["asi"][i].getChild("serviceable").getValue() ) {
+            speedkt = me.slave["asi"][i].getChild("indicated-speed-kt").getValue();
+
+            # VMO exceeded.
+            if( speedkt > me.slave["asi"][i].getChild("vmo-kt").getValue() + me.OVERSPEEDKT ) {
+                overspeed = constant.TRUE;
+                break;
+            }
+
+            # nose down above 270 kt.
+            else if( speedkt > constantaero.NOSEKT and nose == me.NOSEDOWN ) {
+                overspeed = constant.TRUE;
+                break;
+            }
+        }
+
+        # pitch below -6 deg above Mach 1.0.
+        if( me.slave["attitude"][i].getChild("serviceable").getValue() ) {
+            if( me.slave["attitude"][i].getChild("indicated-pitch-deg").getValue() < me.OVERSPEEDDEG ) {
+                if( me.slave["mach"].getChild("serviceable").getValue() ) {
+                    if( me.slave["mach"].getChild("indicated-mach").getValue() > me.SOUNDMACH ) {
+                        overspeed = constant.TRUE;
+                        break;
+                    }
+                }
+            }
+        }
+
+        # test of ADC
+        if( me.slave["adc"][i].getChild("selector").getValue() == -3 ) {
+            overspeed = constant.TRUE;
+            break;
+        }
+   }
+
+   if( me.slave["mach"].getChild("serviceable").getValue() ) {
+       speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+
+       # MMO exceeded.
+       if( speedmach > me.slave["mach"].getChild("mmo-mach").getValue() + me.OVERSPEEDMACH ) {
+           overspeed = constant.TRUE;
+       }
+
+       # visor not locked up at speed above Mach 0.95.
+       else if( ( speedmach > me.SUBSONICMACH ) and ( nose < me.NOSEUP ) ) {
+           overspeed = constant.TRUE;
+       }
+   }
+
+   me.mws.getChild("overspeed").setValue( overspeed );
+}
+
+Mws.sound_stall = func {
+   var speedkt = 0.0;
+   var altft = 0.0;
+   var stall = constant.FALSE;
+
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        # pitch above 16.5 deg.
+        if( me.slave["attitude"][i].getChild("serviceable").getValue() ) {
+            if( me.slave["attitude"][i].getChild("indicated-pitch-deg").getValue() > me.STALLDEG ) {
+                stall = constant.TRUE;
+                break;
+            }
+        }
+
+        # Vc less than Vla minus 20 kt.
+        if( me.slave["asi"][i].getChild("serviceable").getValue() ) {
+            speedkt = me.slave["asi"][i].getChild("indicated-speed-kt").getValue();
+
+            if( me.slave["altimeter"][i].getChild("serviceable").getValue() ) {
+                altft = me.slave["altimeter"][i].getChild("indicated-altitude-ft").getValue();
+
+                if( speedkt < me.VLA15KT - me.STALLKT ) {
+                    if( altft > me.FL15FT and altft <= me.FL41FT ) {
+                        stall = constant.TRUE;
+                        break;
+                    }
+                }
+
+                elsif( speedkt < me.VLA41KT - me.STALLKT ) {
+                    if( altft > me.FL41FT ) {
+                        stall = constant.TRUE;
+                        break;
+                    }
+                }
+            }
+        }
+
+        # test of ADC
+        if( me.slave["adc"][i].getChild("selector").getValue() == -2 ) {
+            stall = constant.TRUE;
+            break;
+        }
+   }
+
+   # extreme AFT M/CG warning.
+   if( me.slave["cg"].getChild("percent").getValue() >
+       me.slave["cg"].getChild("max-extreme-percent").getValue() ) {
+       stall = constant.TRUE;
+   }
+
+   me.mws.getChild("stall").setValue( stall );
+}
+
+Mws.sound_singlegong = func {
+   var singlegong = constant.FALSE;
+
+   me.instantiate();
+
+   if( me.class1 or me.class2 ) {
+       singlegong = constant.TRUE;
+   }
+
+   me.mws.getChild("single-gong").setValue( singlegong );
+}
+
 Mws.instantiate = func {
+   me.class1 = constant.FALSE;
+   me.class2 = constant.FALSE;
+
+   if( me.mws.getChild("serviceable").getValue() ) {
+       me.class1_instantiate();
+       me.class2_instantiate();
+   }
+}
+
+Mws.class1_instantiate = func {
    # 4
-   for( i = 0; i <= 3; i = i+1 ) {
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         if( me.reds.getChild( me.recallpath( "engine" ), i ).getValue() ) {
             if( me.enginesystem.red_engine( i ) ) {
                 me.setred( "engine", i );
@@ -267,16 +587,15 @@ Mws.instantiate = func {
                 me.setred( "intake", i );
             }
         }
-
-        # amber
-        if( me.ambers.getChild( me.recallpath( "intake" ), i ).getValue() ) {
-            if( me.enginesystem.amber_intake( i ) ) {
-                me.setamber( "intake", i );
-            }
-        }
    }
 
    # red
+   if( me.reds.getChild( me.recallpath( "ads" ) ).getValue() ) {
+       if( me.adcinstrument.red_ads() ) {
+           me.setred( "ads" );
+       }
+   }
+
    if( me.reds.getChild( me.recallpath( "cg" ) ).getValue() ) {
        if( me.cginstrument.red_cg() ) {
            me.setred( "cg" );
@@ -307,6 +626,12 @@ Mws.instantiate = func {
        }
    }
 
+   if( me.reds.getChild( me.recallpath( "ins" ) ).getValue() ) {
+       if( me.insinstrument.red_ins() ) {
+           me.setred( "ins" );
+       }
+   }
+
    if( me.reds.getChild( me.recallpath( "pfc" ) ).getValue() ) {
        if( me.flightsystem.red_pfc() ) {
            me.setred( "pfc" );
@@ -319,7 +644,30 @@ Mws.instantiate = func {
        }
    }
 
+   if( me.reds.getChild( me.recallpath( "throttle" ) ).getValue() ) {
+       if( me.enginesystem.red_throttle() ) {
+           me.setred( "throttle" );
+       }
+   }
+}
+
+Mws.class2_instantiate = func {
+   # 4
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+        if( me.ambers.getChild( me.recallpath( "intake" ), i ).getValue() ) {
+            if( me.enginesystem.amber_intake( i ) ) {
+                me.setamber( "intake", i );
+            }
+        }
+   }
+
    # amber
+   if( me.ambers.getChild( me.recallpath( "adc" ) ).getValue() ) {
+       if( me.adcinstrument.amber_adc() ) {
+           me.setamber( "adc" );
+       }
+   }
+
    if( me.ambers.getChild( me.recallpath( "air" ) ).getValue() ) {
        if( me.airbleedsystem.amber_air() ) {
            me.setamber( "air" );
@@ -346,61 +694,101 @@ Mws.instantiate = func {
 }
 
 Mws.cancel = func {
-   for( i = 0; i < me.nbred4s ; i = i+1 ) {
-        for( j = 0; j < 4 ; j = j+1 ) {
+   me.class1_cancel();
+   me.class2_cancel();
+}
+
+Mws.class1_cancel = func {
+   for( var i = 0; i < me.nbred4s ; i = i+1 ) {
+        for( var j = 0; j < constantaero.NBENGINES ; j = j+1 ) {
              me.reds.getChild( me.red4words[i], j ).setValue( constant.FALSE );
         }
    }
 
-   for( i = 0; i < me.nbamber4s ; i = i+1 ) {
-        for( j = 0; j < 4 ; j = j+1 ) {
+   for( var i = 0; i < me.nbreds ; i = i+1 ) {
+        me.reds.getChild( me.redwords[i] ).setValue( constant.FALSE );
+   }
+}
+
+Mws.class2_cancel = func {
+   for( var i = 0; i < me.nbamber4s ; i = i+1 ) {
+        for( var j = 0; j < constantaero.NBENGINES ; j = j+1 ) {
              me.ambers.getChild( me.amber4words[i], j ).setValue( constant.FALSE );
         }
    }
 
-   for( i = 0; i < me.nbreds ; i = i+1 ) {
-        me.reds.getChild( me.redwords[i] ).setValue( constant.FALSE );
-   }
-
-   for( i = 0; i < me.nbambers ; i = i+1 ) {
+   for( var i = 0; i < me.nbambers ; i = i+1 ) {
         me.ambers.getChild( me.amberwords[i] ).setValue( constant.FALSE );
    }
 }
 
 Mws.recall = func {
-   for( i = 0; i < me.nbred4s ; i = i+1 ) {
-        for( j = 0; j < 4 ; j = j+1 ) {
+   me.class1_recall();
+   me.class2_recall();
+}
+
+Mws.class1_recall = func {
+   for( var i = 0; i < me.nbred4s ; i = i+1 ) {
+        for( var j = 0; j < constantaero.NBENGINES ; j = j+1 ) {
              me.reds.getChild( me.recallpath( me.red4words[i] ), j ).setValue( constant.TRUE );
         }
    }
 
-   for( i = 0; i < me.nbamber4s ; i = i+1 ) {
-        for( j = 0; j < 4 ; j = j+1 ) {
+   for( var i = 0; i < me.nbreds ; i = i+1 ) {
+        me.reds.getChild( me.recallpath( me.redwords[i] ) ).setValue( constant.TRUE );
+   }
+}
+
+Mws.class2_recall = func {
+   for( var i = 0; i < me.nbamber4s ; i = i+1 ) {
+        for( var j = 0; j < constantaero.NBENGINES ; j = j+1 ) {
              me.ambers.getChild( me.recallpath( me.amber4words[i] ), j ).setValue( constant.TRUE );
         }
    }
 
-   for( i = 0; i < me.nbreds ; i = i+1 ) {
-        me.reds.getChild( me.recallpath( me.redwords[i] ) ).setValue( constant.TRUE );
-   }
-
-   for( i = 0; i < me.nbambers ; i = i+1 ) {
+   for( var i = 0; i < me.nbambers ; i = i+1 ) {
         me.ambers.getChild( me.recallpath( me.amberwords[i] ) ).setValue( constant.TRUE );
    }
+}
+
+Mws.class1_check = func {
+   var result = constant.FALSE;
+
+   for( var i = 0; i < me.nbred4s ; i = i+1 ) {
+        for( var j = 0; j < constantaero.NBENGINES ; j = j+1 ) {
+             if( !me.reds.getChild( me.recallpath( me.red4words[i] ), j ).getValue() and
+                 me.reds.getChild( me.red4words[i], j ).getValue() ) {
+                 result = constant.TRUE;
+                 break;
+             }
+        }
+   }
+
+   for( var i = 0; i < me.nbreds ; i = i+1 ) {
+        if( !me.reds.getChild( me.recallpath( me.redwords[i] ) ).getValue() and
+            me.reds.getChild( me.redwords[i] ).getValue() ) {
+            result = constant.TRUE;
+            break;
+        }
+   }
+
+   return result;
 }
 
 Mws.setred = func( name, index = 0 ) {
    me.reds.getChild( name, index ).setValue( constant.TRUE );
    me.reds.getChild( me.recallpath( name ), index ).setValue( constant.FALSE );
+   me.class1 = constant.TRUE;
 }
 
 Mws.setamber = func( name, index = 0 ) {
    me.ambers.getChild( name, index ).setValue( constant.TRUE );
    me.ambers.getChild( me.recallpath( name ), index ).setValue( constant.FALSE );
+   me.class2 = constant.TRUE;
 }
 
 Mws.recallpath = func( name ) {
-   result = name ~ "-recall";
+   var result = name ~ "-recall";
 
    return result;
 }

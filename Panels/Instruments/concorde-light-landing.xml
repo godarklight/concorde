@@ -35,6 +35,13 @@
    <layer include="concorde-switch-on.xml">
     <name>on</name>
    </layer>
+
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -55,7 +62,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>20</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -82,7 +89,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>16</offset>
+     <offset>11</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -123,7 +130,7 @@
   <action>
    <name>toggle light</name>
    <button>0</button>
-   <x>-22</x>
+   <x>-32</x>
    <y>-19</y>
    <w>44</w>
    <h>44</h>

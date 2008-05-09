@@ -52,7 +52,11 @@
 
    <layer>
     <name>Altitude display</name>
-    <condition include="concorde-cond-voltage-inst.xml"/>
+    <condition>
+     <and include="concorde-cond-voltage-inst.xml">
+      <property>/instrumentation/altimeter[2]/serviceable</property>
+     </and>
+    </condition>
     <type>text</type>
     <font>led</font>
     <point-size>8</point-size>
@@ -64,7 +68,7 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+      <property>/instrumentation/altimeter[2]/indicated-altitude-ft</property>
       <scale>0.01</scale>
       <format>%03.0f</format>
      </chunk>

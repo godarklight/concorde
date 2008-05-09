@@ -1736,6 +1736,32 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>36</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-speed-up.xml">
+   <name>Speed up</name>
+   <condition>
+    <and>
+     <property>/sim/current-view/internal</property>
+     <property>/systems/seat/engineer</property>
+     <less-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>330</value>
+     </less-than>
+     <greater-than>
+      <property>/sim/current-view/goal-heading-offset-deg</property>
+      <value>260</value>
+     </greater-than>
+     <less-than>
+      <property>/sim/current-view/goal-pitch-offset-deg</property>
+      <value>5</value>
+     </less-than>
+    </and>
+   </condition>
+   <x>555</x>
+   <y>560</y>
+   <w>75</w>
+   <h>60</h>
+  </instrument>
+
 <!-- oil pressure -->
 
   <instrument include="Instruments/concorde-engine-oilpressure.xml">

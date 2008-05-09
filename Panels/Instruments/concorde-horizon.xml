@@ -36,6 +36,7 @@ properties' values.
  <h-base>128</h-base>
 
  <params>
+  <serviceable>/instrumentation/attitude-indicator[0]/serviceable</serviceable>
   <roll-deg>/instrumentation/attitude-indicator[0]/indicated-roll-deg</roll-deg>
   <pitch-deg>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</pitch-deg>
   <offset-deg>/instrumentation/attitude-indicator[0]/horizon-offset-deg</offset-deg>
@@ -55,7 +56,9 @@ properties' values.
    </texture>
    <transformations>
     <transformation>
-     <condition include="concorde-cond-voltage-horizon.xml"/>
+     <condition include="concorde-cond-voltage-horizon.xml">
+      <property alias="../../../../../../params/serviceable"/>
+     </condition>
      <type>rotation</type>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
@@ -78,7 +81,9 @@ properties' values.
    <h>62</h>
    <transformations>
     <transformation>
-     <condition include="concorde-cond-voltage-horizon.xml"/>
+     <condition include="concorde-cond-voltage-horizon.xml">
+      <property alias="../../../../../../params/serviceable"/>
+     </condition>
      <type>rotation</type>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
@@ -86,7 +91,9 @@ properties' values.
      <scale>-1</scale>
     </transformation>
     <transformation>
-     <condition include="concorde-cond-voltage-horizon.xml"/>
+     <condition include="concorde-cond-voltage-horizon.xml">
+      <property alias="../../../../../../params/serviceable"/>
+     </condition>
      <type>y-shift</type>
      <property alias="../../../../../params/pitch-deg"/>
      <min>-20.0</min>
@@ -108,7 +115,9 @@ properties' values.
    </texture>
    <transformations>
     <transformation>
-     <condition include="concorde-cond-voltage-horizon.xml"/>
+     <condition include="concorde-cond-voltage-horizon.xml">
+      <property alias="../../../../../../params/serviceable"/>
+     </condition>
      <type>rotation</type>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
@@ -155,6 +164,7 @@ properties' values.
    <name>VOR needle</name>
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
+     <property alias="../../../../../params/serviceable"/>
      <or>
       <and>
        <not>
@@ -222,6 +232,7 @@ properties' values.
    <name>GS needle left</name>
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
+     <property alias="../../../../../params/serviceable"/>
      <or>
       <and>
        <not>
@@ -283,6 +294,7 @@ properties' values.
    <name>GS needle right</name>
    <condition>
     <and include="concorde-cond-voltage-horizon.xml">
+     <property alias="../../../../../params/serviceable"/>
      <or>
       <and>
        <not>
@@ -347,6 +359,9 @@ properties' values.
    <condition>
     <or>
      <not include="concorde-cond-voltage-horizon.xml"/>
+     <not>
+      <property alias="../../../../../../params/serviceable"/>
+     </not>
      <and>
       <not>
        <property alias="../../../../../../../params/fd2"/>

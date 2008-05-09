@@ -8,6 +8,14 @@
 
 <PropertyList>
 
+  <adc n="0">
+   <selector type="int">0</selector>                          <!-- normal -->
+  </adc>
+
+  <adc n="1">
+   <selector type="int">0</selector>                          <!-- normal -->
+  </adc>
+
   <anti-ice>
    <engine n="0">
     <inlet-vane type="bool">false</inlet-vane>
@@ -23,17 +31,43 @@
    </engine>
    <icing-model>
     <duration>
-     <few-min userarchive="y" type="int">8</few-min>
-     <scattered-min userarchive="y" type="int">4</scattered-min>
-     <broken-min userarchive="y" type="int">2</broken-min>
-     <overcast-min userarchive="y" type="int">1</overcast-min>
-     <clear-min userarchive="y" type="int">999</clear-min>    <!-- icing rain -->
+     <few-min type="int">8</few-min>
+     <scattered-min type="int">4</scattered-min>
+     <broken-min type="int">2</broken-min>
+     <overcast-min type="int">1</overcast-min>
+     <clear-min type="int">999</clear-min>                    <!-- icing rain -->
     </duration>
     <temperature>                                             <!-- usually between 0 and -15/-20 -->
-     <max-degc userarchive="y" type="double">0.0</max-degc>
-     <min-degc userarchive="y" type="double">-20.0</min-degc>
+     <max-degc type="double">0.0</max-degc>
+     <min-degc type="double">-20.0</min-degc>
     </temperature>
    </icing-model>
+   <mast>
+    <heater n="0" type="bool">true</heater>
+    <heater n="1" type="bool">true</heater>
+    <heater n="2" type="bool">true</heater>
+    <standby n="0" type="bool">false</standby>
+    <standby n="1" type="bool">false</standby>
+    <standby n="2" type="bool">false</standby>
+   </mast>
+   <static>
+    <heater n="0" type="bool">true</heater>
+    <heater n="1" type="bool">true</heater>
+   </static>
+   <visor>
+    <de-ice n="0" type="bool">false</de-ice>
+    <de-ice n="1" type="bool">false</de-ice>
+   </visor>
+   <window>
+    <demist n="0" type="bool">false</demist>
+    <demist n="1" type="bool">false</demist>
+   </window>
+   <windshield>
+    <de-ice n="0" type="bool">false</de-ice>
+    <de-ice n="1" type="bool">false</de-ice>
+    <high n="0" type="bool">false</high>
+    <high n="1" type="bool">false</high>
+   </windshield>
    <wing>
     <alternate-selector type="int">0</alternate-selector>
     <main-selector type="int">0</main-selector>
@@ -41,6 +75,7 @@
   </anti-ice>
 
   <audio>
+   <cancel type="bool">false</cancel>
    <comm n="0">
     <selected type="bool">true</selected>
     <standby type="bool">false</standby>
@@ -173,11 +208,11 @@
   <crew>
    <copilot type="bool">false</copilot>
    <engineer type="bool">false</engineer>
-   <timeout userarchive="y" type="bool">true</timeout>                        <!-- of 10 seconds -->
+   <timeout type="bool">true</timeout>                        <!-- of 10 seconds -->
    <timeout-s type="double">10.0</timeout-s>
    <voice>
-    <sound userarchive="y" type="bool">true</sound>
-    <text userarchive="y" type="bool">false</text>                            <!-- debug without Festival -->
+    <sound type="bool">true</sound>
+    <text type="bool">false</text>                            <!-- debug without Festival -->
    </voice>
   </crew>
 
@@ -274,8 +309,6 @@
     <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>                    <!-- differentiate autothrottle -->
-    <throttle-master type="bool">true</throttle-master>
-    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="1">
     <autoignition type="bool">false</autoignition>
@@ -293,8 +326,6 @@
     <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
-    <throttle-master type="bool">true</throttle-master>
-    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="2">
     <autoignition type="bool">false</autoignition>
@@ -312,8 +343,6 @@
     <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
-    <throttle-master type="bool">true</throttle-master>
-    <throttle-off type="bool">false</throttle-off>
    </engine>
    <engine n="3">
     <autoignition type="bool">false</autoignition>
@@ -333,12 +362,20 @@
     <reheat type="bool">false</reheat>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
-    <throttle-master type="bool">true</throttle-master>
-    <throttle-off type="bool">false</throttle-off>
    </engine>
+
+   <ground-idle14 type="bool">false</ground-idle14>
+   <ground-idle23 type="bool">false</ground-idle23>
+   <schedule type="int">0</schedule>                          <!-- normal -->
+   <schedule-auto type="bool">true</schedule-auto>
+   <schedule-low type="bool">true</schedule-low>
   </engines>
 
   <flight>
+   <anti-stall>
+    <system n="0" type="bool">false</system>
+    <system n="1" type="bool">false</system>
+   </anti-stall>
    <channel>
     <inner-blue type="bool">true</inner-blue>
     <inner-mechanical type="bool">false</inner-mechanical>
@@ -368,6 +405,8 @@
    <tank n="0">
     <aft-trim type="bool">false</aft-trim>
     <cross-feed-valve type="bool">false</cross-feed-valve>
+    <heater type="bool">true</heater>
+    <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
     <lp-valve type="bool">true</lp-valve>                     <!-- engine on -->
     <lp-valve-motor type="bool">true</lp-valve-motor>         <!-- motor 1 -->
@@ -375,10 +414,13 @@
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
+    <recirculation-valve type="bool">true</recirculation-valve>
    </tank>
    <tank n="1">
     <aft-trim type="bool">false</aft-trim>                    <!-- always -->
     <cross-feed-valve type="bool">false</cross-feed-valve>
+    <heater type="bool">true</heater>
+    <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
@@ -386,10 +428,13 @@
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
+    <recirculation-valve type="bool">true</recirculation-valve>
    </tank>
    <tank n="2">
     <aft-trim type="bool">false</aft-trim>                    <!-- always -->
     <cross-feed-valve type="bool">false</cross-feed-valve>
+    <heater type="bool">true</heater>
+    <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
@@ -397,10 +442,13 @@
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
+    <recirculation-valve type="bool">true</recirculation-valve>
    </tank>
    <tank n="3">
     <aft-trim type="bool">false</aft-trim>
     <cross-feed-valve type="bool">false</cross-feed-valve>
+    <heater type="bool">true</heater>
+    <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
@@ -408,6 +456,7 @@
     <pump n="0" type="bool">true</pump>
     <pump n="1" type="bool">true</pump>
     <pump n="2" type="bool">true</pump>
+    <recirculation-valve type="bool">true</recirculation-valve>
    </tank>
    <tank n="4">
     <inlet-auto type="bool">false</inlet-auto>
@@ -518,7 +567,8 @@
   <gear>
    <brake-emergency type="bool">false</brake-emergency>       <!-- normal brakes -->
    <brake-parking-lever type="bool">false</brake-parking-lever>
-   <neutral type="bool">false</neutral>
+   <brake-pos-norm type="double">0.0</brake-pos-norm>         <!-- 3D lever position -->
+   <hydraulic type="bool">true</hydraulic>                    <!-- not neutral -->
    <time>
     <main>    
      <door-opened>0.17</door-opened>
@@ -538,7 +588,7 @@
    <lighting>                                                 <!-- night lighting -->
     <copilot type="double">0.6</copilot>
     <engineer type="double">0.6</engineer>
-    <night userarchive="y" type="bool">true</night>
+    <night type="bool">true</night>
    </lighting>
   </human>
 
@@ -685,6 +735,7 @@
 
   <nose-visor>
    <pos-norm alias="/controls/flight/flaps"/>                 <!-- FDM uses flaps as nose -->
+   <wiper-override type="bool">false</wiper-override>
   </nose-visor>
 
   <pneumatic>
@@ -723,12 +774,25 @@
     <depressurization type="bool">false</depressurization>
     <guard type="bool">true</guard>
    </emergency>
-   <system1 type="bool">true</system1>
+   <system n="0">
+    <discharge-fwd type="bool">true</discharge-fwd>
+    <discharge-normal type="bool">true</discharge-normal>
+    <ditching type="bool">false</ditching>
+    <ditching-guard type="bool">true</ditching-guard>
+    <select type="bool">true</select>
+   </system>
+   <system n="1">
+    <discharge-fwd type="bool">true</discharge-fwd>
+    <discharge-normal type="bool">true</discharge-normal>
+    <ditching type="bool">false</ditching>
+    <ditching-guard type="bool">true</ditching-guard>
+   </system>
   </pressurization>
 
   <seat>
    <all type="bool">false</all>
-   <recover userarchive="y" type="bool">false</recover>
+   <recover type="bool">false</recover>
+   <yoke type="bool">false</yoke>                             <!-- makes INS visible, by default -->
   </seat>
 
   <temperature>
@@ -751,5 +815,39 @@
     <temperature-selector>1.5</temperature-selector>
    </group>
   </temperature>
+
+  <throttles>
+   <throttle n="0">
+    <master type="bool">true</master>
+    <off type="bool">false</off>
+   </throttle>
+   <throttle n="1">
+    <master type="bool">true</master>
+    <off type="bool">false</off>
+   </throttle>
+   <throttle n="2">
+    <master type="bool">true</master>
+    <off type="bool">false</off>
+   </throttle>
+   <throttle n="3">
+    <master type="bool">true</master>
+    <off type="bool">false</off>
+   </throttle>
+  </throttles>
+
+  <transponder>
+   <test type="bool">false</test>
+  </transponder>
+
+  <wiper>
+   <motor n="0">
+    <position-norm type="double">0.0</position-norm>
+    <selector type="int">0</selector>                         <!-- off -->
+   </motor>
+   <motor n="1">
+    <position-norm type="double">0.0</position-norm>
+    <selector type="int">0</selector>
+   </motor>
+  </wiper>
 
 </PropertyList>

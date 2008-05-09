@@ -15,6 +15,11 @@
 
  <params>
   <voltage>/systems/electrical/outputs/standby-radio-alt</voltage>
+  <serviceable>/instrumentation/radio-altimeter[0]/serviceable</serviceable>
+  <dial-ft>/instrumentation/radio-altimeter[0]/dial-decision-ft</dial-ft>
+  <decision-ft>/instrumentation/radio-altimeter[0]/decision-ft</decision-ft>
+  <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
+  <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
  </params>
 
 
@@ -49,7 +54,7 @@
       <value>20.0</value>
      </less-than-equals>
      <not>
-      <property>/instrumentation/radio-altimeter/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or>
    </condition>
@@ -100,7 +105,7 @@
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
+     <property alias="../../../../../params/dial-ft"/>
      <scale>0.36</scale>
     </transformation>
     <transformation>
@@ -137,11 +142,11 @@
         <property alias="../../../../../../../../params/voltage"/>
         <value>20.0</value>
        </greater-than>
-       <property>/instrumentation/radio-altimeter/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>rotation</type>
-     <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property>
+     <property alias="../../../../../params/ft-sel"/>
      <min>11.0</min>
      <max>2511.0</max>
      <scale>1.0</scale>
@@ -206,7 +211,7 @@
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
+     <property alias="../../../../../params/dial-ft"/>
      <scale>-5</scale>
     </transformation>
    </transformations>
@@ -225,14 +230,14 @@
    <h>26</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/decision-ft</property>
+    <property alias="../../../../params/decision-ft"/>
     <step>-10</step>
     <min>11</min>
     <max>511</max>
    </binding>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
+    <property alias="../../../../params/dial-ft"/>
     <step>-10</step>
     <min>0</min>
     <max>500</max>
@@ -248,14 +253,14 @@
    <h>26</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/decision-ft</property>
+    <property alias="../../../../params/decision-ft"/>
     <step>10</step>
     <min>11</min>
     <max>511</max>
    </binding>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/radio-altimeter/dial-decision-ft</property>
+    <property alias="../../../../params/dial-ft"/>
     <step>10</step>
     <min>0</min>
     <max>500</max>
@@ -264,12 +269,6 @@
 
   <action>
    <name>Cancel Decision Height warning</name>
-   <condition>
-    <less-than>
-     <property>/instrumentation/radio-altimeter/indicated-altitude-ft</property>
-     <value>20</value>              <!-- don't disable in flight, because the reset is slow -->
-    </less-than>
-   </condition>
    <button>1</button>
    <x>22</x>
    <y>-62</y>
@@ -277,7 +276,7 @@
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property>/systems/gpws/decision-height</property>
+    <property alias="../../../../params/decision-ctrl"/>
     <value>false</value>
    </binding>
    <binding>

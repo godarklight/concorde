@@ -5,7 +5,24 @@
 Constantaero = {};
 
 Constantaero.new = func {
-   obj = { parents : [Constantaero],
+   var obj = { parents : [Constantaero],
+
+           NBENGINES : 4,
+           NBINS : 3,
+           NBAUTOPILOTS : 2,                                 # and any system in double
+
+           THROTTLEMAX : 1.0,
+           THROTTLEIDLE : 0.0,
+
+           GEARDOWN : 1.0,
+           GEARUP : 0.0,
+
+           NOSEDOWN : 1.0,
+           NOSEUP : 0.0,
+
+           BRAKEPARKING : 1.0,
+           BRAKEEMERGENCY : 0.5,
+           BRAKENORMAL : 0.0,
 
            FULLLB : 408000,
            LANDINGLB : 245000,
@@ -13,6 +30,7 @@ Constantaero.new = func {
 
            MAXFPM : 7000.0,                                  # max descent rate
 
+           NOSEKT : 270,
            APPROACHKT : 250,
            V2FULLKT : 220,
            V2EMPTYKT : 205,                                  # guess
@@ -37,13 +55,127 @@ Constantaero.new = func {
 
 # AGL altitude when on ground : radio altimeter is above gear
 # (Z height of center of gravity minus Z height of main landing gear)
-           AGLFT : 11
+           AGLFT : 11,
+
+# Center of gravity
+           CGMAXTON : 165,
+           CGMINTON : 105,
+
+           CGMLAXLB : 0,
+           CGMINLB : 0,
+
+           T105mach :    [ 0.82, 0.92, 1.15, 1.50, 2.20 ],
+           Tcgmin105 :    [ 52.00, 53.50, 55.00, 56.50, 57.25 ],
+           Tcgmin105ext : [ 51.30, 53.00, 54.50, 56.00, 56.70 ],
+
+           T165mach :    [ 0.00, 0.80, 0.92, 1.15, 1.50, 2.20 ],
+           Tcgmin165 :    [ 51.80, 51.80, 54.00, 55.50, 57.00, 57.70 ],
+
+           Tmaxmach :    [ 0.00, 0.27, 0.50, 0.94, 1.65 ],
+           Tcgmax :       [ 53.80, 53.80, 54.00, 57.00, 59.30 ],
+
+           Tmaxperf :   [ 0.00, 0.10, 0.45 ],
+           Tcgperf :      [ 54.20, 54.20, 54.50 ],
+
+           Tmaxextmach : [ 0.45, 0.50, 0.94, 1.60 ],
+           Tcgmaxext :    [ 54.25, 54.40, 57.25, 59.50 ],
+
+           CG165 : 5,
+           CGMAX : 4,
+           CG105 : 4,
+           CGMAXEXT : 3,
+           CGPERF : 2,
+           CGFLY : 1,                                        # in flight
+           CGREST : 0                                        # on ground
          };
+
+   obj.init();
 
    return obj;
 }
 
+Constantaero.init = func {
+   me.CGMINLB = me.CGMINTON * constant.TONTOLB;
+   me.CGMLAXLB = me.CGMAXTON * constant.TONTOLB;
+}
+
+Constantaero.weight_inside = func( weightlb ) {
+   var result = constant.FALSE;
+
+   if( weightlb > me.CGMINLB and weightlb < me.CGMLAXLB ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Constantaero.weight_below = func( weightlb ) {
+   var result = constant.FALSE;
+
+   if( weightlb <= me.CGMINLB ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Constantaero.weight_above = func( weightlb ) {
+   var result = constant.FALSE;
+
+   if( weightlb >= me.CGMLAXLB ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Constantaero.interpolate_weight = func( weightlb, min, min0 ) {
+   var offset = min - min0;
+   var stepweight = weightlb - me.CGMINLB;
+   var offsetweight = me.CGMLAXLB - me.CGMINLB;
+   var ratio = stepweight / offsetweight;
+   var step = offset * ratio;
+
+   min = min0 + step;
+
+   return min;
+}
+
+# interpolate between 105 and 165 t
+Constantaero.interpolateweight = func( weightlb, vmokt, vmokt0 ) {
+   if( me.weight_inside( weightlb ) ) {
+       vmokt = me.interpolate_weight( weightlb, vmokt, vmokt0 );
+   }
+   elsif( me.weight_below( weightlb ) ) {
+       vmokt = vmokt0;
+   }
+
+   return vmokt;
+}
+
+Constantaero.interpolate = func( find, vmokt, vmaxkt, vminkt, altmaxft, altminft, altitudeft ) {
+   if( find ) {
+       var offsetkt = vmaxkt - vminkt;
+       var offsetft = altmaxft - altminft;
+       var stepft = altitudeft - altminft;
+       var ratio = stepft / offsetft;
+       var stepkt = offsetkt * ratio;
+
+       vmokt = vminkt + stepkt;
+   }
+
+   # vmokt in argument
+   else
+   {
+   }
+
+   return vmokt;
+}
+
 Constantaero.Vkt = func( weightlb, minkt, maxkt ) {
+    var valuekt = 0.0;
+    var ratio = 0.0;
+
     if( weightlb > me.FULLLB ) {
         valuekt = maxkt;
     }
@@ -59,6 +191,9 @@ Constantaero.Vkt = func( weightlb, minkt, maxkt ) {
 }
 
 Constantaero.Vrefkt = func( weightlb ) {
+    var valuekt = 0.0;
+    var ratio = 0.0;
+
     if( weightlb > me.LANDINGLB ) {
         valuekt = me.VREFFULLKT;
     }
@@ -78,7 +213,7 @@ Constantaero.Vrefkt = func( weightlb ) {
 Constant = {};
 
 Constant.new = func {
-   obj = { parents : [Constant],
+   var obj = { parents : [Constant],
 
            ready : 0.0,                            # waits for end of initialization
 
@@ -119,6 +254,7 @@ Constant.new = func {
            HOURTOMINUTE : 60,
            HOURTOSECOND : 3600,
            MINUTETOSECOND : 60,
+           MINUTETODECIMAL : 0.01,
 # velocity
            FPSTOKT : 0.592483801296,
            MPSTOKT : 1.943844,
@@ -129,10 +265,6 @@ Constant.new = func {
            LBTOGALUS : 0.0,
            LBTOKG : 0.453592,
            TONTOLB : 2204.62,
-
-# International Standard Atmosphere
-           P0_inhg : 29.92,
-           T0_degc : 15.0,
 
 # --------
 # physical
@@ -162,9 +294,20 @@ Constant.abs = func( value ) {
 }
 
 Constant.rates = func( steps ) {
-   speedup = getprop("/sim/speed-up");
+   var speedup = getprop("/sim/speed-up");
+
    if( speedup > 1 ) {
        steps = steps / speedup;
+   }
+
+   return steps;
+}
+
+Constant.times = func( steps ) {
+   var speedup = getprop("/sim/speed-up");
+
+   if( speedup > 1 ) {
+       steps = steps * speedup;
    }
 
    return steps;
@@ -181,6 +324,16 @@ Constant.clip = func( min, max, value ) {
    return value;
 }
 
+Constant.within = func( value, limit, margin ) {
+   var result = constant.TRUE;
+
+   if( ( value > ( limit + margin ) ) or ( value < ( limit - margin ) ) ) {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 # north crossing
 Constant.crossnorth = func( offsetdeg ) {
    if( offsetdeg > me.DEG180 ) {
@@ -194,7 +347,7 @@ Constant.crossnorth = func( offsetdeg ) {
 }
 
 Constant.fahrenheit_to_celsius = func ( degf ) {
-   degc = me.FTOCELSIUS * degf + me.F0TOCELSIUS;
+   var degc = me.FTOCELSIUS * degf + me.F0TOCELSIUS;
 
    return degc;
 }
@@ -206,10 +359,10 @@ Constant.fahrenheit_to_celsius = func ( degf ) {
 # R = absolute gas constant
 # T = temperature
 Constant.newtonsoundmps= func( temperaturedegc ) {
-    TK = temperaturedegc + me.CELSIUSTOK;
-    dPdRoNewton = me.Rpm2ps2pK * TK;
-    dPdRo = me.gammaairstp * dPdRoNewton;
-    speedmps = math.sqrt(dPdRo);
+    var TK = temperaturedegc + me.CELSIUSTOK;
+    var dPdRoNewton = me.Rpm2ps2pK * TK;
+    var dPdRo = me.gammaairstp * dPdRoNewton;
+    var speedmps = math.sqrt(dPdRo);
 
     return speedmps;
 }
@@ -224,164 +377,88 @@ Constant.system_ready = func {
 }
 
 
-# ---------------------------------
-# International Standard Atmosphere
-# ---------------------------------
+# =================================
+# INTERNATIONAL STANDARD ATMOSPHERE
+# =================================
 
-Constant.altitude_ft = func( pressureinhg, datuminhg ) {
+ConstantISA = {};
+
+ConstantISA.new = func {
+   var obj = { parents : [ConstantISA],
+
+           Talt : [ -900, 0, 900, 1800, 2700, 3600, 4500, 5400, 6300, 7200,
+                    8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200,
+                    17100, 18000, 18900 ],
+           Tpfactor : [ 1.09, 1.0, 0.898, 0.804, 0.719, 0.641, 0.570, 0.506, 0.447, 0.394,
+                        0.347, 0.304, 0.266, 0.231, 0.201, 0.174, 0.151, 0.131, 0.114, 0.099,
+                        0.086, 0.075, 0.065 ],
+           Ttfactor : [ 1.02, 1.0, 0.98, 0.96, 0.94, 0.92, 0.90, 0.88, 0.86, 0.84,
+                        0.82, 0.80, 0.78, 0.76, 0.75 ],
+
+           SEA_inhg : 29.92,
+
+           STRATODEGC : -57,
+           SEA_degc : 15.0,
+
+           CEILING : 22,
+           STRATOSPHERE : 14,
+           SLICE : 2,
+           UNDERSEA : 0
+         };
+
+   return obj;
+}
+
+ConstantISA.altitude_ft = func( pressureinhg, datuminhg ) {
+   var found = constant.FALSE;
+   var altmaxm = 0;
+   var altminm = 0;
+   var minfactor = 0.0;
+   var maxfactor = 0.0;
+   var step = 0.0;
+   var delta = 0.0;
+   var coeff = 0.0;
+   var cabinaltm = 0.0;
+   var altitudeft = 0.0;
+
    # calibrated by standard atmosphere
-   ratio = pressureinhg / datuminhg;
+   var ratio = pressureinhg / datuminhg;
 
    # guess below sea level
-   found = me.TRUE;
-   if( ratio > 1.09 ) {
-       found = me.FALSE;
-   }
-   elsif( ratio > 1.0 and ratio <= 1.09 ) {
-       altmaxm = 0;
-       altminm = -900;
-       minfactor = 1.0;
-       maxfactor = 1.09;
+   found = constant.TRUE;
+   if( ratio > me.Tpfactor[me.UNDERSEA] ) {
+       found = constant.FALSE;
    }
 
-   # standard atmosphere
-   elsif( ratio > 0.898 and ratio <= 1.0 ) {
-       altmaxm = 900;
-       altminm = 0;
-       minfactor = 0.898;
-       maxfactor = 1.0;
-   }
-   elsif( ratio > 0.804 and ratio <= 0.898 ) {
-       altmaxm = 1800;
-       altminm = 900;
-       minfactor = 0.804;
-       maxfactor = 0.898;
-   }
-   elsif( ratio > 0.719 and ratio <= 0.804 ) {
-       altmaxm = 2700;
-       altminm = 1800;
-       minfactor = 0.719;
-       maxfactor = 0.804;
-   }
-   elsif( ratio > 0.641 and ratio <= 0.719 ) {
-       altmaxm = 3600;
-       altminm = 2700;
-       minfactor = 0.641;
-       maxfactor = 0.719;
-   }
-   elsif( ratio > 0.570 and ratio <= 0.641 ) {
-       altmaxm = 4500;
-       altminm = 3600;
-       minfactor = 0.570;
-       maxfactor = 0.641;
-   }
-   elsif( ratio > 0.506 and ratio <= 0.570 ) {
-       altmaxm = 5400;
-       altminm = 4500;
-       minfactor = 0.506;
-       maxfactor = 0.570;
-   }
-   elsif( ratio > 0.447 and ratio <= 0.506 ) {
-       altmaxm = 6300;
-       altminm = 5400;
-       minfactor = 0.447;
-       maxfactor = 0.506;
-   }
-   elsif( ratio > 0.394 and ratio <= 0.447 ) {
-       altmaxm = 7200;
-       altminm = 6300;
-       minfactor = 0.394;
-       maxfactor = 0.447;
-   }
-   elsif( ratio > 0.347 and ratio <= 0.394 ) {
-       altmaxm = 8100;
-       altminm = 7200;
-       minfactor = 0.347;
-       maxfactor = 0.394;
-   }
-   elsif( ratio > 0.304 and ratio <= 0.347 ) {
-       altmaxm = 9000;
-       altminm = 8100;
-       minfactor = 0.304;
-       maxfactor = 0.347;
-   }
-   elsif( ratio > 0.266 and ratio <= 0.304 ) {
-       altmaxm = 9900;
-       altminm = 9000;
-       minfactor = 0.266;
-       maxfactor = 0.304;
-   }
-   elsif( ratio > 0.231 and ratio <= 0.266 ) {
-       altmaxm = 10800;
-       altminm = 9900;
-       minfactor = 0.231;
-       maxfactor = 0.266;
-   }
-   elsif( ratio > 0.201 and ratio <= 0.231 ) {
-       altmaxm = 11700;
-       altminm = 10800;
-       minfactor = 0.201;
-       maxfactor = 0.231;
-   }
-   elsif( ratio > 0.174 and ratio <= 0.201 ) {
-       altmaxm = 12600;
-       altminm = 11700;
-       minfactor = 0.174;
-       maxfactor = 0.201;
-   }
-   elsif( ratio > 0.151 and ratio <= 0.174 ) {
-       altmaxm = 13500;
-       altminm = 12600;
-       minfactor = 0.151;
-       maxfactor = 0.174;
-   }
-   elsif( ratio > 0.131 and ratio <= 0.151 ) {
-       altmaxm = 14400;
-       altminm = 13500;
-       minfactor = 0.131;
-       maxfactor = 0.151;
-   }
-   elsif( ratio > 0.114 and ratio <= 0.131 ) {
-       altmaxm = 15300;
-       altminm = 14400;
-       minfactor = 0.114;
-       maxfactor = 0.131;
-   }
-   elsif( ratio > 0.099 and ratio <= 0.114 ) {
-       altmaxm = 16200;
-       altminm = 15300;
-       minfactor = 0.099;
-       maxfactor = 0.114;
-   }
-   elsif( ratio > 0.086 and ratio <= 0.099 ) {
-       altmaxm = 17100;
-       altminm = 16200;
-       minfactor = 0.086;
-       maxfactor = 0.099;
-   }
-   elsif( ratio > 0.075 and ratio <= 0.086 ) {
-       altmaxm = 18000;
-       altminm = 17100;
-       minfactor = 0.075;
-       maxfactor = 0.086;
-   }
-   elsif( ratio > 0.065 and ratio <= 0.075 ) {
-       altmaxm = 18900;
-       altminm = 18000;
-       minfactor = 0.065;
-       maxfactor = 0.075;
-   }
+   # standard atmosphere from 0 m
    else {
-       found = me.FALSE;
+       var j = 0;
+
+       found = constant.FALSE;
+
+       for( var i = 0; i < me.CEILING; i = i+1 ) {
+            j = i+1;
+
+            if( ratio > me.Tpfactor[j] and ratio <= me.Tpfactor[i] ) {
+                altmaxm = me.Talt[j];
+                altminm = me.Talt[i];
+                minfactor = me.Tpfactor[j];
+                maxfactor = me.Tpfactor[i];
+
+                found = constant.TRUE;
+                break;
+            }
+       }
    }
 
    if( found ) {
        step = maxfactor - ratio;
        delta = maxfactor - minfactor;
        coeff = step / delta ;
-       cabinaltm = altminm + 900 * coeff;
-       altitudeft = cabinaltm * me.METERTOFEET;
+       cabinaltm = altminm + me.Talt[me.SLICE] * coeff;
+       altitudeft = cabinaltm * constant.METERTOFEET;
    }
+
    # out of range
    else {
        pressureinhg = datuminhg;
@@ -392,270 +469,115 @@ Constant.altitude_ft = func( pressureinhg, datuminhg ) {
    return altitudeft;
 }
 
-Constant.pressure_inhg = func( altitudeft ) {
-   altitudem = altitudeft * me.FEETTOMETER;
+ConstantISA.pressure_inhg = func( altitudeft ) {
+   var altitudem = altitudeft * constant.FEETTOMETER;
+   var found = constant.TRUE;
+   var altmaxm = 0;
+   var altminm = 0;
+   var minfactor = 0.0;
+   var maxfactor = 0.0;
+   var step = 0.0;
+   var delta = 0.0;
+   var coeff = 0.0;
+   var pressureinhg = 0.0;
 
    # guess below sea level
-   found = me.TRUE;
-   if( altitudem < -900 ) {
-       found = me.FALSE;
-   }
-   elsif( altitudem < 0 and altitudem >= -900 ) {
-       altmaxm = 0;
-       altminm = -900;
-       minfactor = 1.0;
-       maxfactor = 1.09;
+   if( altitudem < me.Talt[me.UNDERSEA] ) {
+       found = constant.FALSE;
    }
 
-   # standard atmosphere
-   elsif( altitudem < 900.0 and altitudem >= 0 ) {
-       altmaxm = 900;
-       altminm = 0;
-       minfactor = 0.898;
-       maxfactor = 1.0;
-   }
-   elsif( altitudem < 1800.0 and altitudem >= 900 ) {
-       altmaxm = 1800;
-       altminm = 900;
-       minfactor = 0.804;
-       maxfactor = 0.898;
-   }
-   elsif( altitudem < 2700.0 and altitudem >= 1800 ) {
-       altmaxm = 2700;
-       altminm = 1800;
-       minfactor = 0.719;
-       maxfactor = 0.804;
-   }
-   elsif( altitudem < 3600.0 and altitudem >= 2700 ) {
-       altmaxm = 3600;
-       altminm = 2700;
-       minfactor = 0.641;
-       maxfactor = 0.719;
-   }
-   elsif( altitudem < 4500.0 and altitudem >= 3600 ) {
-       altmaxm = 4500;
-       altminm = 3600;
-       minfactor = 0.570;
-       maxfactor = 0.641;
-   }
-   elsif( altitudem < 5400.0 and altitudem >= 4500 ) {
-       altmaxm = 5400;
-       altminm = 4500;
-       minfactor = 0.506;
-       maxfactor = 0.570;
-   }
-   elsif( altitudem < 6300.0 and altitudem >= 5400 ) {
-       altmaxm = 6300;
-       altminm = 5400;
-       minfactor = 0.447;
-       maxfactor = 0.506;
-   }
-   elsif( altitudem < 7200.0 and altitudem >= 6300 ) {
-       altmaxm = 7200;
-       altminm = 6300;
-       minfactor = 0.394;
-       maxfactor = 0.447;
-   }
-   elsif( altitudem < 8100.0 and altitudem >= 7200 ) {
-       altmaxm = 8100;
-       altminm = 7200;
-       minfactor = 0.347;
-       maxfactor = 0.394;
-   }
-   elsif( altitudem < 9000.0 and altitudem >= 8100 ) {
-       altmaxm = 9000;
-       altminm = 8100;
-       minfactor = 0.304;
-       maxfactor = 0.347;
-   }
-   elsif( altitudem < 9900.0 and altitudem >= 9000 ) {
-       altmaxm = 9900;
-       altminm = 9000;
-       minfactor = 0.266;
-       maxfactor = 0.304;
-   }
-   elsif( altitudem < 10800.0 and altitudem >= 9900 ) {
-       altmaxm = 10800;
-       altminm = 9900;
-       minfactor = 0.231;
-       maxfactor = 0.266;
-   }
-   elsif( altitudem < 11700.0 and altitudem >= 10800 ) {
-       altmaxm = 11700;
-       altminm = 10800;
-       minfactor = 0.201;
-       maxfactor = 0.231;
-   }
-   elsif( altitudem < 12600.0 and altitudem >= 11700 ) {
-       altmaxm = 12600;
-       altminm = 11700;
-       minfactor = 0.174;
-       maxfactor = 0.201;
-   }
-   elsif( altitudem < 13500.0 and altitudem >= 12600 ) {
-       altmaxm = 13500;
-       altminm = 12600;
-       minfactor = 0.151;
-       maxfactor = 0.174;
-   }
-   elsif( altitudem < 14400.0 and altitudem >= 13500 ) {
-       altmaxm = 14400;
-       altminm = 13500;
-       minfactor = 0.131;
-       maxfactor = 0.151;
-   }
-   elsif( altitudem < 15300.0 and altitudem >= 14400 ) {
-       altmaxm = 15300;
-       altminm = 14400;
-       minfactor = 0.114;
-       maxfactor = 0.131;
-   }
-   elsif( altitudem < 16200.0 and altitudem >= 15300 ) {
-       altmaxm = 16200;
-       altminm = 15300;
-       minfactor = 0.099;
-       maxfactor = 0.114;
-   }
-   elsif( altitudem < 17100.0 and altitudem >= 16200 ) {
-       altmaxm = 17100;
-       altminm = 16200;
-       minfactor = 0.086;
-       maxfactor = 0.099;
-   }
-   elsif( altitudem < 18000.0 and altitudem >= 17100 ) {
-       altmaxm = 18000;
-       altminm = 17100;
-       minfactor = 0.075;
-       maxfactor = 0.086;
-   }
-   elsif( altitudem < 18900.0 and altitudem >= 18000 ) {
-       altmaxm = 18900;
-       altminm = 18000;
-       minfactor = 0.065;
-       maxfactor = 0.075;
-   }
+   # standard atmosphere from 0 m
    else {
-       found = me.FALSE;
+       var j = 0;
+
+       found = constant.FALSE;
+
+       for( var i = 0; i < me.CEILING; i = i+1 ) {
+            j = i+1;
+
+            if( altitudem < me.Talt[j] and altitudem >= me.Talt[i] ) {
+                altmaxm = me.Talt[j];
+                altminm = me.Talt[i];
+                minfactor = me.Tpfactor[j];
+                maxfactor = me.Tpfactor[i];
+
+                found = constant.TRUE;
+                break;
+            }
+       }
    }
 
    if( found ) {
        step = altmaxm - altitudem;
        delta = maxfactor - minfactor;
-       coeff = step / 900 ;
-       pressureinhg = me.P0_inhg * ( minfactor + delta * coeff );
+       coeff = step / me.Talt[me.SLICE] ;
+       pressureinhg = me.SEA_inhg * ( minfactor + delta * coeff );
    }
+
    # out of range
    else {
-       pressureinhg = me.P0_inhg;
+       pressureinhg = me.SEA_inhg;
    }
 
 
    return pressureinhg;
 }
 
-Constant.temperature_degc = func( altitudeft ) {
-   altmeter = altitudeft * me.FEETTOMETER;
-
-
-   found = me.TRUE;
+ConstantISA.temperature_degc = func( altitudeft ) {
+   var altmeter = altitudeft * constant.FEETTOMETER;
+   var found = constant.FALSE;
+   var isadegc = 0.0;
+   var isadegk = 0.0;
+   var minfactor = 0.0;
+   var maxfactor = 0.0;
+   var minmeter = 0;
+   var delta = 0.0;
+   var deltameter = 0.0;
+   var coeff = 0.0;
+   var factor = 0.0;
 
    # guess below sea level
-   if( altmeter <= -900 ) {
-      found = me.FALSE;
-      isadegc = me.T0_degc;
-   }
-   elsif( altmeter > -900 and altmeter <= 0 ) {
-       maxfactor = 1.02;
-       minfactor = 1.0;
-       minmeter = -900;
+   if( altmeter < me.Talt[me.UNDERSEA] ) {
+       isadegc = me.SEA_degc;
    }
 
-   # standard atmosphere
-   elsif( altmeter > 0 and altmeter <= 900 ) {
-       maxfactor = 1.0;
-       minfactor = 0.98;
-       minmeter = 0;
+   # factor 0.75 (stratosphere)
+   elsif( altmeter > me.Talt[me.STRATOSPHERE] and altmeter <= me.Talt[me.CEILING] ) {
+       isadegc = me.STRATODEGC;
    }
-   elsif( altmeter > 900 and altmeter <= 1800 ) {
-       maxfactor = 0.98;
-       minfactor = 0.96;
-       minmeter = 900;
+
+   # overflow
+   elsif( altmeter > me.Talt[me.CEILING] ) {
+       isadegc = me.STRATODEGC;
    }
-   elsif( altmeter > 1800 and altmeter <= 2700 ) {
-       maxfactor = 0.96;
-       minfactor = 0.94;
-       minmeter = 1800;
-   }
-   elsif( altmeter > 2700 and altmeter <= 3600 ) {
-       maxfactor = 0.94;
-       minfactor = 0.92;
-       minmeter = 2700;
-   }
-   elsif( altmeter > 3600 and altmeter <= 4500 ) {
-       maxfactor = 0.92;
-       minfactor = 0.90;
-       minmeter = 3600;
-   }
-   elsif( altmeter > 4500 and altmeter <= 5400 ) {
-       maxfactor = 0.90;
-       minfactor = 0.88;
-       minmeter = 4500;
-   }
-   elsif( altmeter > 5400 and altmeter <= 6300 ) {
-       maxfactor = 0.88;
-       minfactor = 0.86;
-       minmeter = 5400;
-   }
-   elsif( altmeter > 6300 and altmeter <= 7200 ) {
-       maxfactor = 0.86;
-       minfactor = 0.84;
-       minmeter = 6300;
-   }
-   elsif( altmeter > 7200 and altmeter <= 8100 ) {
-       maxfactor = 0.84;
-       minfactor = 0.82;
-       minmeter = 7200;
-   }
-   elsif( altmeter > 8100 and altmeter <= 9000 ) {
-       maxfactor = 0.82;
-       minfactor = 0.80;
-       minmeter = 8100;
-   }
-   elsif( altmeter > 9000 and altmeter <= 9900 ) {
-       maxfactor = 0.80;
-       minfactor = 0.78;
-       minmeter = 9000;
-   }
-   elsif( altmeter > 9900 and altmeter <= 10800 ) {
-       maxfactor = 0.78;
-       minfactor = 0.76;
-       minmeter = 9900;
-   }
-   elsif( altmeter > 10800 and altmeter <= 11700 ) {
-       maxfactor = 0.76;
-       minfactor = 0.75;
-       minmeter = 10800;
-   }
-   elsif( altmeter > 10800 and altmeter <= 18900 ) {
-       found = me.FALSE;
-       # factor 0.75 (stratosphere)
-       isadegc = -57.0;
-   }
+
+   # standard atmosphere from 0 m
    else {
-       found = me.FALSE;
-       # overflow
-       isadegc = -57.0;
+       var j = 0;
+
+       for( var i = 0; i < me.STRATOSPHERE; i = i+1 ) {
+            j = i+1;
+
+            if( altmeter > me.Talt[i] and altmeter <= me.Talt[j] ) {
+                minmeter = me.Talt[i];
+                maxfactor = me.Ttfactor[i];
+                minfactor = me.Ttfactor[j];
+
+                found = constant.TRUE;
+                break;
+            }
+       }
    }
 
    if( found ) {
        delta = minfactor - maxfactor;
        deltameter = altmeter - minmeter;
-       coeff = deltameter / 900 ;
+       coeff = deltameter / me.Talt[me.SLICE] ;
        factor = maxfactor + delta * coeff;
 
        # 15 degc at sea level
-       isadegk = (me.CELSIUSTOK + me.T0_degc) * factor;
-       isadegc = isadegk - me.CELSIUSTOK;
+       isadegk = (constant.CELSIUSTOK + me.SEA_degc) * factor;
+       isadegc = isadegk - constant.CELSIUSTOK;
    }
 
 
@@ -672,7 +594,7 @@ System = {};
 
 # not called by child classes !!!
 System.new = func {
-   obj = { parents : [System],
+   var obj = { parents : [System],
 
            SYSSEC : 0.0,                               # to be defined !
 
@@ -688,7 +610,7 @@ System.new = func {
 };
 
 System.init_ancestor = func( path ) {
-   obj = System.new();
+   var obj = System.new();
 
    me.SYSSEC = obj.SYSSEC;
    me.RELOCATIONFT = obj.RELOCATIONFT;
@@ -708,9 +630,16 @@ System.set_rate_ancestor = func( rates ) {
 
 # property access is faster through its node, than parsing its string
 System.loadtree = func( path ) {
+   var children = nil;
+   var subchildren = nil;
+   var name = "";
+   var component = "";
+   var subcomponent = "";
+   var value = "";
+
    if( props.globals.getNode(path) != nil ) {
        children = props.globals.getNode(path).getChildren();
-       foreach( c; children ) {
+       foreach( var c; children ) {
           name = c.getName();
           subchildren = c.getChildren();
 
@@ -736,9 +665,16 @@ System.loadtree = func( path ) {
 }
 
 System.loadprop = func( path ) {
+   var children = nil;
+   var subchildren = nil;
+   var name = "";
+   var component = "";
+   var subcomponent = "";
+   var value = "";
+
    if( props.globals.getNode(path) != nil ) {
        children = props.globals.getNode(path).getChildren();
-       foreach( c; children ) {
+       foreach( var c; children ) {
           name = c.getName();
           subchildren = c.getChildren();
 
@@ -764,31 +700,30 @@ System.loadprop = func( path ) {
 }
 
 System.is_moving = func {
+   var result = constant.FALSE;
+
    # must exist in XML
-   aglft = me.noinstrument["agl"].getValue();
-   speedkt = me.noinstrument["airspeed"].getValue();
+   var aglft = me.noinstrument["agl"].getValue();
+   var speedkt = me.noinstrument["airspeed"].getValue();
 
    if( aglft >=  constantaero.AGLTOUCHFT or speedkt >= constantaero.TAXIKT ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 System.is_relocating = func {
+   var result = constant.FALSE;
+   var variationftpm = 0.0;
+
    # must exist in XML
-   altft = me.noinstrument["altitude"].getValue();
+   var altft = me.noinstrument["altitude"].getValue();
 
    # relocation in flight, or at another airport
    variationftpm = altft - me.altseaft;
    if( variationftpm < - me.RELOCATIONFT or variationftpm > me.RELOCATIONFT ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    me.altseaft = altft;

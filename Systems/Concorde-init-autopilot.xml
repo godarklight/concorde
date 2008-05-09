@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!-- - a few PID depend of Mach.
+     - PID depends of captain or copilot instrument (altimeter, IVSI).
      - to compare fast properties.
      - see /sytems/autopilot for the "slow" properties.
 -->
@@ -19,6 +20,7 @@
    <sonic>                                           <!-- 1 PID for subsonic, 1 PID for supersonic -->
     <altitude></altitude>
     <heading></heading>
+    <speed></speed>
    </sonic>
   </locks>
 

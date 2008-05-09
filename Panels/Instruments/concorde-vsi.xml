@@ -15,6 +15,8 @@
 
  <params>
   <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
+  <speed-sel>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</speed-sel>
+  <serviceable>/instrumentation/inst-vertical-speed-indicator[0]/serviceable</serviceable>
  </params>
 
 
@@ -52,7 +54,7 @@
     <transformation>
      <condition include="concorde-cond-voltage-inst.xml"/>
      <type>y-shift</type>
-     <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+     <property alias="../../../../../params/speed-sel"/>
      <min>-100.0</min>
      <max>100.0</max>
      <scale>1.0</scale>
@@ -81,7 +83,7 @@
     <type>group</type>
     <condition>
      <greater-than>
-      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <property alias="../../../../../../params/speed-sel"/>
       <value>100</value>
      </greater-than>
     </condition>
@@ -94,7 +96,7 @@
       <name>8000 ft/min</name>
       <condition>
        <less-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>141.7</value>
        </less-than>
       </condition>
@@ -113,7 +115,7 @@
       <name>9000 ft/min</name>
       <condition>
        <less-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>158.3</value>
        </less-than>
       </condition>
@@ -161,7 +163,7 @@
     <type>group</type>
     <condition>
      <less-than>
-      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <property alias="../../../../../../params/speed-sel"/>
       <value>-100</value>
      </less-than>
     </condition>
@@ -174,7 +176,7 @@
       <name>-8000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-141.7</value>
        </greater-than>
       </condition>
@@ -193,7 +195,7 @@
       <name>-9000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-158.3</value>
        </greater-than>
       </condition>
@@ -212,7 +214,7 @@
       <name>-10000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-208.3</value>
        </greater-than>
       </condition>
@@ -231,7 +233,7 @@
       <name>-15000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-291.7</value>
        </greater-than>
       </condition>
@@ -250,7 +252,7 @@
       <name>-20000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-375.0</value>
        </greater-than>
       </condition>
@@ -269,7 +271,7 @@
       <name>-25000 ft/min</name>
       <condition>
        <greater-than>
-        <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+        <property alias="../../../../../../../../params/speed-sel"/>
         <value>-458.3</value>
        </greater-than>
       </condition>
@@ -319,7 +321,7 @@
     <or> 
      <not include="concorde-cond-voltage-inst.xml"/>
      <not>
-      <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or> 
    </condition>
@@ -354,7 +356,7 @@
     <or> 
      <not include="concorde-cond-voltage-inst.xml"/>
      <not>
-      <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or> 
    </condition>
@@ -415,7 +417,7 @@
      <transformation>
       <condition include="concorde-cond-voltage-inst.xml"/>
       <type>x-shift</type>
-      <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+      <property alias="../../../../../../params/speed-sel"/>
       <min>-100.0</min>
       <max>100.0</max>
       <scale>1.0</scale>

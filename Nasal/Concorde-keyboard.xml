@@ -64,24 +64,8 @@
     <name>Ctrl-F</name>
     <desc>Reheat</desc>
     <binding>
-     <command>property-toggle</command>
-     <property>/controls/engines/engine[0]/reheat</property>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/controls/engines/engine[1]/reheat</property>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/controls/engines/engine[2]/reheat</property>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/controls/engines/engine[3]/reheat</property>
-    </binding>
-    <binding>
-     <command>property-toggle</command>
-     <property>/instrumentation/generic/click</property>
+     <command>nasal</command>
+     <script>globals.Concorde.engineercrew.reheatexport();</script>
     </binding>
    </key>
 
@@ -278,6 +262,17 @@
     </binding>
    </key>
 
+   <key n="98">
+    <name>b</name>
+    <desc>Toggle emergency brake on or off</desc>
+    <mod-alt>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.hydraulicsystem.brakesemergencyexport();</script>
+     </binding>
+    </mod-alt>
+   </key>
+
    <key n="102">
     <name>f</name>
     <desc>full cockpit</desc>
@@ -285,6 +280,28 @@
      <command>nasal</command>
      <script>globals.Concorde.seatsystem.fullexport();</script>
     </binding>
+   </key>
+
+   <key n="103">
+    <name>g</name>
+    <desc>Gear standby</desc>
+    <mod-alt>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.gearsystem.standbyexport();</script>
+     </binding>
+    </mod-alt>
+   </key>
+
+   <key n="110">
+    <name>n</name>
+    <desc>Nose standby</desc>
+    <mod-alt>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.noseinstrument.standbyexport();</script>
+     </binding>
+    </mod-alt>
    </key>
 
    <key n="113">
@@ -300,10 +317,18 @@
    <key n="118">
     <name>v</name>
     <desc>Cycle view</desc>
-    <desc>Scroll through views.</desc>
     <binding>
      <command>nasal</command>
      <script>globals.Concorde.seatsystem.scrollexport();</script>
+    </binding>
+   </key>
+
+   <key n="121">
+    <name>y</name>
+    <desc>Toggle yoke</desc>
+    <binding>
+     <command>property-toggle</command>
+     <property>/controls/seat/yoke</property>
     </binding>
    </key>
 

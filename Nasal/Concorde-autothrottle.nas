@@ -15,11 +15,11 @@
 Autothrottle = {};
 
 Autothrottle.new = func {
-   obj = { parents : [Autothrottle,System],
+   var obj = { parents : [Autothrottle,System],
 
            airspeed : nil,
            ap : nil,
-           auto : nil,
+           autos : nil,
            autothrottles : nil,
            engines : nil,
            channels : nil,
@@ -32,7 +32,9 @@ Autothrottle.new = func {
            MAXMACH : 2.02,
            CRUISEMACH : 2.0,
            CLIMBMACH : 1.7,
-           LIGHTKT : 10.0
+           LIGHTKT : 10.0,
+
+           engaged_channel : -1
          };
 
 # autopilot initialization
@@ -44,7 +46,7 @@ Autothrottle.new = func {
 Autothrottle.init = func {
    me.airspeed = props.globals.getNode("/systems/autothrottle/airspeed");
    me.ap = props.globals.getNode("/controls/autoflight");
-   me.auto = props.globals.getNode("/systems/autothrottle");
+   me.autos = props.globals.getNode("/systems").getChildren("autothrottle");
    me.autothrottles = props.globals.getNode("/autopilot/locks/autothrottle").getChildren("engine");
    me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
    me.channels = props.globals.getNode("/controls/autoflight").getChildren("autothrottle");
@@ -65,11 +67,12 @@ Autothrottle.schedule = func {
 }
 
 Autothrottle.autothrottleswitch = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var mode = "";
 
-   for( i = 0; i <= 3; i = i+1 ) {
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         if( me.engines[i].getChild("autothrottle").getValue() and
-            !me.engines[i].getChild("throttle-off").getValue() ) {
+            me.slave["throttle"][i].getChild("available").getValue() ) {
             mode = speedmode;
         }
         else {
@@ -84,8 +87,49 @@ Autothrottle.slowschedule = func {
    me.releasedatum();
 }
 
+Autothrottle.get_component = func( name ) {
+    return me.slave[name][me.engaged_channel];
+}
+
+Autothrottle.get_asi = func {
+    return me.get_component("asi");
+}
+
+Autothrottle.get_mach = func {
+    return me.get_component("mach");
+}
+
+Autothrottle.engagechannel = func( index, value ) {
+    me.channels[index].getChild("engage").setValue(value);
+
+    me.whichchannel();
+}
+
+Autothrottle.whichchannel = func {
+    # records the 1st channel of autoland; otherwise must disengage to swap.
+    if( me.channels[0].getChild("engage").getValue() ) {
+        if( !me.channels[1].getChild("engage").getValue() ) {
+            me.engaged_channel = 0;
+        }
+    }
+    elsif( me.channels[1].getChild("engage").getValue() ) {
+        if( !me.channels[0].getChild("engage").getValue() ) {
+            me.engaged_channel = 1;
+        }
+    }
+
+    # crash if channel access !
+    else {
+        me.engaged_channel = -1;
+    }
+}
+
 # ias light, when discrepancy with the autothrottle
 Autothrottle.iaslight = func {
+   var speedkt = 0.0;
+   var minkt = 0.0;
+   var maxkt = 0.0;
+
    if( me.is_engaged() ) {
        if( me.is_speed_throttle() ) {
            speedkt = me.settings.getChild("target-speed-kt").getValue();
@@ -100,24 +144,22 @@ Autothrottle.iaslight = func {
 }
 
 Autothrottle.is_maxcruise = func {
-    speed2 = me.ap.getChild("speed2").getValue();
+    var speed2 = me.ap.getChild("speed2").getValue();
+    var result = constant.FALSE;
+
     if( speed2 == "maxcruise" ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Autothrottle.is_maxclimb = func {
-    speed2 = me.ap.getChild("speed2").getValue();
+    var speed2 = me.ap.getChild("speed2").getValue();
+    var result = constant.FALSE;
+
     if( speed2 == "maxclimb" or speed2 == "maxcruise" ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
@@ -132,40 +174,42 @@ Autothrottle.discmaxclimb = func {
 
 # max climb mode
 Autothrottle.maxclimb = func {
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   if( me.is_engaged() ) {
+       var speedmach = me.get_mach().getChild("indicated-mach").getValue();
 
-   # climb
-   if( speedmach < me.CLIMBMACH ) {
-       vmokt = me.slave["asi"].getChild("vmo-kt").getValue();
+       # climb
+       if( speedmach < me.CLIMBMACH ) {
+           var vmokt = me.get_asi().getChild("vmo-kt").getValue();
 
-       # catches the VMO with autothrottle
-       me.speed(vmokt);
-       me.atactivatemode("speed","speed-with-throttle");
+           # catches the VMO with autothrottle
+           me.speed(vmokt);
+           me.atactivatemode("speed","speed-with-throttle");
 
-       if( me.is_maxcruise() ) {
-           me.atactivatemode("speed2","maxclimb");
-       }
-   }
-
-   # cruise
-   else {
-       mmomach = me.slave["mach"].getChild("mmo-mach").getValue();
-
-       # cruise at Mach 2.0-2.02 (reduce fuel consumption)          
-       if( mmomach > me.MAXMACH ) {
-           mmomach = me.MAXMACH;
+           if( me.is_maxcruise() ) {
+               me.atactivatemode("speed2","maxclimb");
+           }
        }
 
-       # TO DO : control TMO over 128C
-       # catches the MMO with autothrottle
-       me.mach(mmomach);
-
-       altft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
-       if( speedmach > me.CRUISEMACH or altft > constantaero.MAXCRUISEFT ) {
-           me.atactivatemode2("speed","mach-with-throttle","maxcruise");
-       }
+       # cruise
        else {
-           me.atactivatemode2("speed","mach-with-throttle","maxclimb");
+           var altft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+           var mmomach = me.get_mach().getChild("mmo-mach").getValue();
+
+           # cruise at Mach 2.0-2.02 (reduce fuel consumption)          
+           if( mmomach > me.MAXMACH ) {
+               mmomach = me.MAXMACH;
+           }
+
+           # TO DO : control TMO over 128C
+           # catches the MMO with autothrottle
+           me.mach(mmomach);
+
+           if( speedmach > me.CRUISEMACH or altft > constantaero.MAXCRUISEFT ) {
+               me.atactivatemode2("speed","mach-with-throttle","maxcruise");
+           }
+           else {
+               me.atactivatemode2("speed","mach-with-throttle","maxclimb");
+           }
        }
    }
 
@@ -173,14 +217,13 @@ Autothrottle.maxclimb = func {
 }
 
 Autothrottle.no_voltage = func {
+   var result = constant.FALSE;
+
    if( ( !me.slave["electric"].getChild("autopilot", 0).getValue() and
          !me.slave["electric"].getChild("autopilot", 1).getValue() ) or
-       ( !me.auto.getChild("serviceable", 0).getValue() and
-         !me.auto.getChild("serviceable", 1).getValue() ) ) {
+       ( !me.autos[0].getChild("serviceable").getValue() and
+         !me.autos[1].getChild("serviceable").getValue() ) ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -188,14 +231,15 @@ Autothrottle.no_voltage = func {
 
 # disconnect if no voltage (cannot disable the autopilot !)
 Autothrottle.voltage = func() {
-   voltage1 = me.slave["electric"].getChild("autopilot", 0).getValue();
-   voltage2 = me.slave["electric"].getChild("autopilot", 1).getValue();
+   var voltage1 = me.slave["electric"].getChild("autopilot", 0).getValue();
+   var voltage2 = me.slave["electric"].getChild("autopilot", 1).getValue();
+   var channel = constant.FALSE;
 
    if( voltage1 ) {
-       voltage1 = me.auto.getChild("serviceable", 0).getValue();
+       voltage1 = me.autos[0].getChild("serviceable").getValue();
    }
    if( voltage2 ) {
-       voltage2 = me.auto.getChild("serviceable", 1).getValue();
+       voltage2 = me.autos[1].getChild("serviceable").getValue();
    }
 
    if( !voltage1 or !voltage2 ) {
@@ -203,7 +247,7 @@ Autothrottle.voltage = func() {
        if( !voltage1 ) {
            channel = me.channels[0].getChild("engage").getValue();
            if( channel ) {
-               me.channels[0].getChild("engage").setValue(constant.FALSE);
+               me.engagechannel(0, constant.FALSE);
                channel = me.channels[1].getChild("engage").getValue();
                if( !channel ) {
                    me.atdiscexport();
@@ -215,7 +259,7 @@ Autothrottle.voltage = func() {
        if( !voltage2 ) {
            channel = me.channels[1].getChild("engage").getValue();
            if( channel ) {
-               me.channels[1].getChild("engage").setValue(constant.FALSE);
+               me.engagechannel(1, constant.FALSE);
                channel = me.channels[0].getChild("engage").getValue();
                if( !channel ) {
                    me.atdiscexport();
@@ -228,23 +272,25 @@ Autothrottle.voltage = func() {
 # idle throttle
 Autothrottle.idle = func {
    if( me.is_engaged() ) {
-       for(i=0; i<=3; i=i+1) {
-           me.engines[i].getChild("throttle").setValue(0);
+       for(var i=0; i<constantaero.NBENGINES; i=i+1) {
+           me.engines[i].getChild("throttle").setValue(constantaero.THROTTLEIDLE);
        }
    }
 }
 
 # full foward throttle
 Autothrottle.full = func {
-  for(i=0; i<=3; i=i+1) {
-      me.engines[i].getChild("throttle").setValue(1);
+  for(var i=0; i<constantaero.NBENGINES; i=i+1) {
+      me.engines[i].getChild("throttle").setValue(constantaero.THROTTLEMAX);
    }
 }
 
 Autothrottle.goaround = func {
-   count = 0;
-   for( i=0; i<=3; i=i+1 ) {
-        if( me.engines[i].getChild("throttle-manual").getValue() == 1.0 ) {
+   var count = 0;
+   var result = constant.FALSE;
+
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+        if( me.engines[i].getChild("throttle-manual").getValue() == constantaero.THROTTLEMAX ) {
             count = count + 1;
         }
    }
@@ -253,9 +299,6 @@ Autothrottle.goaround = func {
    if( count >= 2 ) {
        result = constant.TRUE;
    }
-   else {
-       result = constant.FALSE;
-   }
 
    return result;
 }
@@ -263,9 +306,9 @@ Autothrottle.goaround = func {
 # check compatibility
 # - autopilot channel 1
 # - autopilot channel 2
-Autothrottle.atdiscincompatible = func {
-    apchannel1 = arg[0];
-    apchannel2 = arg[1];
+Autothrottle.atdiscincompatible = func( apchannel1, apchannel2 ) {
+    var channel1 = constant.FALSE;
+    var channel2 = constant.FALSE;
 
     # disconnect autothrottle, if not compatible
     if( me.is_maxclimb() ) {
@@ -299,21 +342,19 @@ Autothrottle.atdiscspeedmode2 = func {
 Autothrottle.atdiscexport = func {
    me.atdiscspeedmode2();
 
-   me.channels[0].getChild("engage").setValue(constant.FALSE);
-   me.channels[1].getChild("engage").setValue(constant.FALSE);
+   me.engagechannel(0, constant.FALSE);
+   me.engagechannel(1, constant.FALSE);
 
    me.atengage();
 }
 
 Autothrottle.is_disc = func {
-   speedmode = me.ap.getChild("speed").getValue();
-   speedmode2 = me.ap.getChild("speed2").getValue();
+   var speedmode = me.ap.getChild("speed").getValue();
+   var speedmode2 = me.ap.getChild("speed2").getValue();
+   var result = constant.FALSE;
 
    if( speedmode == "" and speedmode2 == "" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -332,23 +373,21 @@ Autothrottle.atactivatemode = func( property, value ) {
 }
 
 Autothrottle.is_engaged = func {
+   var result = constant.FALSE;
+
    if( me.channels[0].getChild("engage").getValue() or
        me.channels[1].getChild("engage").getValue() ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.atengage = func {
+   var mode = "";
+
    if( me.is_engaged() ) {
        mode = me.ap.getChild("speed").getValue();
-   }
-   else {
-      mode = "";
    }
 
    me.locks.getChild("speed").setValue(mode);
@@ -358,19 +397,22 @@ Autothrottle.atengage = func {
 
 Autothrottle.atenable = func {
    if( !me.is_engaged() ) {
-        me.channels[0].getChild("engage").setValue(constant.TRUE);
+        me.engagechannel(0, constant.TRUE);
    }
 }
 
 # activate autothrottle
 Autothrottle.atexport = func {
-   channel1 = me.channels[0].getChild("engage").getValue();
-   channel2 = me.channels[1].getChild("engage").getValue();
+   var channel1 = me.channels[0].getChild("engage").getValue();
+   var channel2 = me.channels[1].getChild("engage").getValue();
+
+   # channel engaged by XML
+   me.whichchannel();
 
    # only 1 channel in max climb or max cruise mode
    if( channel1 and channel2 ) {
        if( me.is_maxclimb() ) {
-           me.channels[1].getChild("engage").setValue(constant.FALSE);
+           me.engagechannel(1, constant.FALSE);
        }
    }
 
@@ -390,11 +432,14 @@ Autothrottle.atexport = func {
 }
 
 Autothrottle.speedacquire = func {
+   var minkt = 0.0;
+   var maxkt = 0.0;
+
    if( me.is_engaged() ) {
        if( me.is_speed_acquire() ) {
            minkt = me.airspeed.getChild("light-min-kt").getValue();
            maxkt = me.airspeed.getChild("light-max-kt").getValue();
-           speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+           speedkt = me.get_asi().getChild("indicated-speed-kt").getValue();
 
            # swaps to speed hold
            if( speedkt > minkt and speedkt < maxkt ) {
@@ -412,19 +457,33 @@ Autothrottle.speed = func( speedkt ) {
 }
 
 Autothrottle.atspeedselectexport = func {
+   var speedkt = 0.0;
+
    if( me.is_speed_acquire() ) {
        speedkt = me.ap.getChild("speed-select").getValue();
        me.speed(speedkt);
    }
 }
 
+Autothrottle.sonicspeedmode = func {
+   var mode = "";
+
+   if( me.is_lock_glide() ) {
+       mode = "gs1-with-throttle";
+   }
+   elsif( me.is_lock_vertical() ) {
+       mode = "vertical-speed-with-throttle";
+   }
+
+   return mode;
+}
+
 Autothrottle.is_speed_acquire = func {
-   speed2mode = me.ap.getChild("speed2").getValue();
+   var speed2mode = me.ap.getChild("speed2").getValue();
+   var result = constant.FALSE;
+
    if( speed2mode == "speed-acquire" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -446,48 +505,44 @@ Autothrottle.atspeedexport = func {
 }
 
 Autothrottle.has_lock = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode != "" and speedmode != nil ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.is_lock_vertical = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "vertical-speed-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.is_lock_glide = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "gs1-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.is_lock_speed = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "speed-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -513,29 +568,28 @@ Autothrottle.mach = func( speedmach ) {
 
 # hold mach
 Autothrottle.holdmach = func {
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   var speedmach = me.get_mach().getChild("indicated-mach").getValue();
+
    me.mach(speedmach);
 }
 
 Autothrottle.is_lock_mach = func {
-   speedmode = me.locks.getChild("speed").getValue();
+   var speedmode = me.locks.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "mach-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.is_mach_throttle = func {
-   speedmode = me.ap.getChild("speed").getValue();
+   var speedmode = me.ap.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "mach-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -556,29 +610,28 @@ Autothrottle.atmachexport = func {
 
 # hold speed
 Autothrottle.holdspeed = func {
-   speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+   var speedkt = me.get_asi().getChild("indicated-speed-kt").getValue();
+
    me.speed(speedkt);
 }
 
 Autothrottle.is_speed_throttle = func {
-   speedmode = me.ap.getChild("speed").getValue();
+   var speedmode = me.ap.getChild("speed").getValue();
+   var result = constant.FALSE;
+
    if( speedmode == "speed-with-throttle" ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
 }
 
 Autothrottle.is_speed_hold = func {
-   speed2mode = me.ap.getChild("speed2").getValue();
+   var speed2mode = me.ap.getChild("speed2").getValue();
+   var result = constant.FALSE;
+
    if( speed2mode == "" and me.is_speed_throttle() ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -610,6 +663,16 @@ Autothrottle.releasedatum = func {
 # datum adjust of autothrottle, argument :
 # - step : plus/minus 1
 Autothrottle.datumatexport = func( sign ) {
+   var result = constant.FALSE;
+   var value = 0.0;
+   var step = 0.0;
+   var datum = 0.0;
+   var datumold = 0.0;
+   var maxstep = 0.0;
+   var ratio = 0.0;
+   var targetmach = 0.0;
+   var targetkt = 0.0;
+
    if( me.has_lock() ) {
        result = constant.TRUE;
 
@@ -671,9 +734,6 @@ Autothrottle.datumatexport = func( sign ) {
        }
    }
 
-   else {
-       result = constant.FALSE;
-   }
 
    return result;
 }

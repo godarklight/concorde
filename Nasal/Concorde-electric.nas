@@ -11,7 +11,7 @@
 Electrical = {};
 
 Electrical.new = func {
-   obj = { parents : [Electrical,System],
+   var obj = { parents : [Electrical,System],
 
            relight : EmergencyRelight.new(),
            parser : ElectricalXML.new(),
@@ -62,10 +62,10 @@ Electrical.set_rate = func( rates ) {
 }
 
 Electrical.amber_electrical = func {
-   result = me.csd.amber_electrical();
+   var result = me.csd.amber_electrical();
 
    if( !result ) {
-       for( i = 0; i < 4; i = i+1 ) {
+       for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
             if( !me.engines[i].getChild("master-alt").getValue() ) {
                 result = constant.TRUE;
                 break;
@@ -98,25 +98,23 @@ Electrical.amber_electrical = func {
 }
 
 Electrical.red_electrical = func {
+   var result = constant.FALSE;
+
    if( me.probes.getChild("dc-main-a").getValue() <= me.SPECIFICVOLT or
        me.probes.getChild("dc-main-b").getValue() <= me.SPECIFICVOLT or
        me.probes.getChild("dc-essential-a").getValue() <= me.SPECIFICVOLT or
        me.probes.getChild("dc-essential-b").getValue() <= me.SPECIFICVOLT ) {
        result = constant.TRUE;
    }
-   else {
-       result = constant.FALSE;
-   }
 
    return result;
 }
 
 Electrical.red_doors = func {
+    var result = constant.FALSE;
+
     if( me.ground.getChild("door").getValue() ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
@@ -136,7 +134,7 @@ Electrical.schedule = func {
     }
 
     # flags for other systems
-    for( i = 0; i < 2; i = i+1 ) {
+    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
          me.power.getChild("autopilot", i).setValue( me.has_autopilot(i) );
     }
     me.power.getChild("ground-service").setValue( me.has_ground_power() );
@@ -149,8 +147,9 @@ Electrical.slowschedule = func {
 }
 
 Electrical.groundserviceexport = func {
-    aglft = me.noinstrument["agl"].getValue();
-    speedkt = me.noinstrument["airspeed"].getValue();
+    var aglft = me.noinstrument["agl"].getValue();
+    var speedkt = me.noinstrument["airspeed"].getValue();
+    var powervolt = 0;
 
     if( aglft <  15 and speedkt < 15 ) {
         supply = me.ground.getChild("door").getValue();
@@ -168,13 +167,17 @@ Electrical.groundserviceexport = func {
 }
 
 Electrical.emergency_generation = func {
+    var engine12 = constant.TRUE;
+    var auto = constant.FALSE;
+    var bypass = constant.FALSE;
+    var wow = constant.FALSE;
+    var check = constant.FALSE;
+    var status = constant.FALSE;
+
     # loss of green hydraulics for emergency generator
     if( !me.slave["engine"][0].getChild("running").getValue() and
         !me.slave["engine"][1].getChild("running").getValue() ) {
         engine12 = constant.FALSE;
-    }
-    else {
-        engine12 = constant.TRUE;
     }
 
     # disconnect 17 X, because RAT can provide power only for 16 X
@@ -221,7 +224,7 @@ Electrical.emergency_generation = func {
 
         # fail of an AC Main busbar
         if( check ) {
-            for( i = 0; i < 4; i = i+1 ) {
+            for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
                  if( me.probes.getChild( "ac-main", i ).getValue() <= me.SPECIFICVOLT ) {
                      me.generator.getChild( "selected" ).setValue( constant.TRUE );
                      break;
@@ -232,7 +235,7 @@ Electrical.emergency_generation = func {
 
 
     # automatic connection of a dead busbar
-    for( i = 0; i < 4; i = i+1 ) {
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
          if( me.probes.getChild( "ac-main", i ).getValue() > me.SPECIFICVOLT ) {
              status = constant.FALSE;
          }
@@ -253,23 +256,24 @@ Electrical.door = func {
 }
 
 Electrical.has_specific = func {
-    volts =  me.outputs.getChild("specific").getValue();
+    var result = constant.FALSE;
+    var volts =  me.outputs.getChild("specific").getValue();
+
     if( volts == nil ) {
         result = constant.FALSE;
     }
     elsif( volts > me.SPECIFICVOLT ) {
         result = constant.TRUE;
     }
-    else {
-        result = constant.FALSE;
-    }
 
     return result;
 }
 
 Electrical.has_autopilot = func( index ) {
+    var result = constant.FALSE;
+
     # autopilot[0] reserved for FG autopilot
-    index = index + 1;
+    var index = index + 1;
 
     volts =  me.outputs.getChild("autopilot", index).getValue();
     if( volts == nil ) {
@@ -278,23 +282,19 @@ Electrical.has_autopilot = func( index ) {
     elsif( volts > 0 ) {
         result = constant.TRUE;
     }
-    else {
-        result = constant.FALSE;
-    }
 
     return result;
 }
 
 Electrical.has_ground_power = func {
-    volts =  me.outputs.getNode("probe").getChild("ac-gpb").getValue();
+    var result = constant.FALSE;
+    var volts =  me.outputs.getNode("probe").getChild("ac-gpb").getValue();
+
     if( volts == nil ) {
         result = constant.FALSE;
     }
     elsif( volts > me.GROUNDVOLT ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
@@ -308,7 +308,7 @@ Electrical.has_ground_power = func {
 ConstantSpeedDrive = {};
 
 ConstantSpeedDrive.new = func {
-   obj = { parents : [ConstantSpeedDrive,System],
+   var obj = { parents : [ConstantSpeedDrive,System],
 
            ELECSEC : 1.0,                                 # refresh rate
 
@@ -333,9 +333,9 @@ ConstantSpeedDrive.set_rate = func( rates ) {
 }
 
 ConstantSpeedDrive.amber_electrical = func {
-   result = constant.FALSE;
+   var result = constant.FALSE;
 
-   for( i = 0; i < 4; i = i+1 ) {
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         if( me.slave["engine2"][i].getChild("csd-oil-psi").getValue() <= me.LOWPSI ) {
             result = constant.TRUE;
             break;
@@ -347,7 +347,15 @@ ConstantSpeedDrive.amber_electrical = func {
 
 # oil temperature
 ConstantSpeedDrive.schedule = func {
-   for( i=0; i<4; i=i+1 ) {
+   var csd = constant.FALSE;
+   var csdpressurepsi = 0.0;
+   var oatdegc = 0.0;
+   var egtdegc = 0.0;
+   var egtdegf = 0.0;
+   var inletdegc = 0.0;
+   var diffdegc = 0.0;
+
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        csd = me.engines[i].getChild("csd").getValue();
        if( csd ) {
            csdpressurepsi = me.slave["engine"][i].getChild("oil-pressure-psi").getValue();
@@ -357,10 +365,7 @@ ConstantSpeedDrive.schedule = func {
        }
 
        # not real
-       result = me.slave["engine2"][i].getChild("csd-oil-psi").getValue();
-       if( result != csdpressurepsi ) {
-           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-oil-psi",csdpressurepsi,me.ELECSEC);
-       }
+       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-oil-psi",csdpressurepsi,me.ELECSEC);
 
        oatdegc = me.noinstrument["temperature"].getValue();
 
@@ -371,33 +376,29 @@ ConstantSpeedDrive.schedule = func {
        }
 
        # not real
-       result = me.slave["engine2"][i].getChild("csd-inlet-degc").getValue();
+       inletdegc = me.slave["engine2"][i].getChild("csd-inlet-degc").getValue();
        if( csd ) {
            inletdegc = egtdegc / 3.3;
        }
        # scale until 0 deg C
        else {
-           inletdegc = result * 0.95;
+           inletdegc = inletdegc * 0.95;
        }
        if( inletdegc < oatdegc ) {
            inletdegc = oatdegc;
        }
-       if( result != inletdegc ) {
-           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-inlet-degc",inletdegc,me.ELECSEC);
-       }
+       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-inlet-degc",inletdegc,me.ELECSEC);
 
        # not real
-       result = me.slave["engine2"][i].getChild("csd-diff-degc").getValue();
+       diffdegc = me.slave["engine2"][i].getChild("csd-diff-degc").getValue();
        if( csd ) {
            diffdegc = egtdegc / 17.0;
        }
        # scale until 0 deg C
        else {
-           diffdegc = result * 0.95;
+           diffdegc = diffdegc * 0.95;
        }
-       if( result != diffdegc ) {
-           interpolate("/systems/engines/engine[" ~ i ~ "]/csd-diff-degc",diffdegc,me.ELECSEC);
-       }
+       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-diff-degc",diffdegc,me.ELECSEC);
    }
 }
 
@@ -409,7 +410,7 @@ ConstantSpeedDrive.schedule = func {
 EmergencyRelight = {};
 
 EmergencyRelight.new = func {
-   obj = { parents : [EmergencyRelight],
+   var obj = { parents : [EmergencyRelight],
 
            switches : [ -1, 1, 3, 2, 0 ],                     # maps selector to relight (-1 is off)
 
@@ -428,9 +429,10 @@ EmergencyRelight.init = func {
 }
 
 EmergencyRelight.selectorexport = func {
-   selector = getprop("controls/electric/ac/emergency/relight-selector");
+   var switch = 0;
+   var selector = getprop("controls/electric/ac/emergency/relight-selector");
 
-   for( i = 0; i <= 3; i = i+1 ) {
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         switch = me.switches[selector];
 
         # only 1 emergency relight has voltage, if selector not at 0
@@ -448,6 +450,98 @@ EmergencyRelight.selectorexport = func {
 }
 
 
+# =====
+# WIPER
+# =====
+
+Wiper = {};
+
+Wiper.new = func {
+   var obj = { parents : [Wiper, System],
+
+               noseinstrument : nil,
+
+               wiper : nil,
+               motors : nil,
+
+               RAINSEC : 1.0,
+
+               MOVEMENTSEC : [ 1.8, 0.8 ],
+
+               ratesec : [ 0.0, 0.0 ],
+
+               WIPERUP : 1.0,
+               WIPERDELTA : 0.1,                            # interpolate may not completely reach its target
+               WIPERDOWN : 0.0,
+
+               WIPEROFF : 0
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+Wiper.init = func {
+   me.init_ancestor("/instrumentation/wiper");
+
+   me.wiper = props.globals.getNode("instrumentation/wiper");
+   me.motors = props.globals.getNode("controls/wiper").getChildren("motor");
+}
+
+Wiper.set_relation = func( nose ) {
+   me.noseinstrument = nose;
+}
+
+Wiper.schedule = func {
+   if( me.slave["electric"].getChild("specific").getValue() ) {
+       # disables wiper with visor up, since one cannot raise the visor with the wiper running.
+       if( me.noseinstrument.is_visor_down() ) {
+           me.motor();
+       }
+   }
+}
+
+Wiper.motor = func {
+   var power = constant.FALSE;
+   var stopped = constant.TRUE;
+   var selector = 0;
+   var pos = 0.0;
+
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        selector =  me.motors[i].getChild("selector").getValue();
+
+        if( selector > me.WIPEROFF ) {
+            stopped = constant.FALSE;
+            power = constant.TRUE;
+
+            # returns to rest at the same speed.
+            me.ratesec[i] = me.MOVEMENTSEC[selector-1]; 
+        }
+        else {
+            stopped = constant.TRUE;
+        }
+
+        pos = me.motors[i].getChild("position-norm").getValue();
+
+        # starts a new sweep.
+        if( pos <= ( me.WIPERDOWN + me.WIPERDELTA ) ) {
+            if( !stopped ) {
+               interpolate("controls/wiper/motor[" ~ i ~ "]/position-norm",me.WIPERUP,me.ratesec[i]);
+            }
+        }
+
+        # ends its sweep, even if off.
+        elsif( pos >= ( me.WIPERUP - me.WIPERDELTA ) ) {
+            power = constant.TRUE;
+            interpolate("controls/wiper/motor[" ~ i ~ "]/position-norm",me.WIPERDOWN,me.ratesec[i]);
+        }
+   }
+
+   me.wiper.getChild("power").setValue( power );
+}
+
+
 # ========
 # LIGHTING
 # ========
@@ -455,7 +549,7 @@ EmergencyRelight.selectorexport = func {
 Lighting = {};
 
 Lighting.new = func {
-   obj = { parents : [Lighting],
+   var obj = { parents : [Lighting],
 
            compass : CompassLight.new(),
            internal : LightLevel.new(),
@@ -468,7 +562,7 @@ Lighting.new = func {
 };
 
 Lighting.init = func {
-   strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
+   var strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
    aircraft.light.new("controls/lighting/external/strobe", [ 0.03, 1.20 ], strobe_switch);
 }
 
@@ -502,7 +596,7 @@ Lighting.roofexport = func {
 CompassLight = {};
 
 CompassLight.new = func {
-   obj = { parents : [CompassLight, System],
+   var obj = { parents : [CompassLight, System],
 
            overhead : nil,
 
@@ -527,11 +621,10 @@ CompassLight.init = func {
 }
 
 CompassLight.schedule = func {
+   var level = me.norm;
+
    if( !me.slave["electric"].getChild("specific").getValue() ) {
        level = me.OFFNORM;
-   }
-   else {
-       level = me.norm;
    }
 
    me.overhead.getChild("compass-light").setValue( level );
@@ -558,7 +651,7 @@ CompassLight.illuminateexport = func( level ) {
 LandingLight = {};
 
 LandingLight.new = func {
-   obj = { parents : [LandingLight,System],
+   var obj = { parents : [LandingLight,System],
 
            lightsystem : nil,
            mainlanding : nil,
@@ -597,10 +690,10 @@ LandingLight.schedule = func {
 }
 
 LandingLight.landingextended = func {
-   extension = constant.FALSE;
+   var extension = constant.FALSE;
 
    # because of motor failure, may be extended with switch off, or switch on and not yet extended
-   for( i=0; i < 2; i=i+1) {
+   for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1) {
         if( me.mainlanding[i].getChild("norm").getValue() > 0 or
             me.mainlanding[i].getChild("extend").getValue() ) {
             extension = constant.TRUE;
@@ -619,7 +712,7 @@ LandingLight.landingextended = func {
 # automatic blowback
 LandingLight.landingblowback = func {
    if( me.slave["asi"].getChild("indicated-speed-kt").getValue() > me.MAXKT ) {
-       for( i=0; i < 2; i=i+1) {
+       for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1) {
             if( me.mainlanding[i].getChild("extend").getValue() ) {
                 me.mainlanding[i].getChild("extend").setValue(constant.FALSE);
             }
@@ -632,20 +725,20 @@ LandingLight.landingblowback = func {
 
 # compensate approach attitude
 LandingLight.landingrotate = func {
+   # ground taxi
+   var target = me.EXTENDNORM;
+
    # pitch at approach
    if( me.slave["radio-altimeter"].getChild("indicated-altitude-ft").getValue() > constantaero.AGLTOUCHFT ) {
        target = me.ROTATIONNORM;
-   }
-
-   # ground taxi
-   else {
-       target = me.EXTENDNORM;
    }
 
    return target;
 }
 
 LandingLight.landingmotor = func( light, present, target ) {
+   var durationsec = 0.0;
+
    if( present < me.RETRACTNORM + me.ERRORNORM ) {
        if( target == me.EXTENDNORM ) {
            durationsec = me.EXTENDSEC;
@@ -693,6 +786,11 @@ LandingLight.landingmotor = func( light, present, target ) {
 }
 
 LandingLight.extendexport = func {
+   var target = 0.0;
+   var value = 0.0;
+   var result = 0.0;
+   var light = "";
+
    if( me.slave["electric"].getChild("specific").getValue() ) {
 
        # automatic blowback
@@ -701,7 +799,7 @@ LandingLight.extendexport = func {
        # activate electric motors
        target = me.landingrotate();
 
-       for( i=0; i < 2; i=i+1 ) {
+       for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
             if( me.mainlanding[i].getChild("extend").getValue() ) {
                 value = target;
             }
@@ -742,7 +840,7 @@ LandingLight.extendexport = func {
 LightLevel = {};
 
 LightLevel.new = func {
-   obj = { parents : [LightLevel,System],
+   var obj = { parents : [LightLevel,System],
 
            lightcontrol : nil,
            lightsystem : nil,
@@ -815,7 +913,7 @@ LightLevel.fluofailure = func {
 }
 
 LightLevel.floodfailure = func {
-   for( i=0; i < me.nbfloods; i=i+1 ) {
+   for( var i=0; i < me.nbfloods; i=i+1 ) {
         me.lightcontrol.getNode(me.floods[i]).setValue(me.LIGHTNO);
    }
 }
@@ -833,7 +931,7 @@ LightLevel.fluorecover = func {
 
 LightLevel.floodrecover = func {
    if( !me.lightcontrol.getChild("roof").getValue() and !me.powerfailure ) {
-       for( i=0; i < me.nbfloods; i=i+1 ) {
+       for( var i=0; i < me.nbfloods; i=i+1 ) {
             # may change a flood light, during a fluo lighting
             me.failurerecover(me.floodnorms[i],me.floods[i],me.invisible);
        }
@@ -842,7 +940,8 @@ LightLevel.floodrecover = func {
 
 # was no light, because of failure, or the knob has changed
 LightLevel.failurerecover = func( propnorm, proplight, offset ) {
-   norm = me.lightcontrol.getNode(propnorm).getValue();
+   var norm = me.lightcontrol.getNode(propnorm).getValue();
+
    if( norm != me.lightcontrol.getNode(proplight).getValue() ) {
 
        # flood cannot recover from fluorescent light without a change
@@ -861,6 +960,8 @@ LightLevel.floodexport = func {
 }
 
 LightLevel.roofexport = func {
+   var value = 0.0;
+
    if( me.lightcontrol.getChild("roof").getValue() ) {
        value = me.LIGHTFULL;
 
@@ -892,7 +993,7 @@ LightLevel.roofexport = func {
 Antiicing = {};
 
 Antiicing.new = func {
-   obj = { parents : [Antiicing,System],
+   var obj = { parents : [Antiicing,System],
 
            detector : Icedetection.new(),
 
@@ -917,7 +1018,7 @@ Antiicing.init = func {
 }
 
 Antiicing.red_ice = func {
-    result = constant.FALSE;
+    var result = constant.FALSE;
 
     if( me.icingsystem.getChild("warning").getValue() ) {
         if( !me.outputs.getChild("wing").getValue() ) {
@@ -925,7 +1026,7 @@ Antiicing.red_ice = func {
         }
        
         else {
-            for( i = 0; i < 4; i=i+1 ) {
+            for( i = 0; i < constantaero.NBENGINES; i=i+1 ) {
                  if( !me.outputs.getChild("engine",i).getValue() ) {
                      result = constant.TRUE;
                      break;
@@ -938,21 +1039,19 @@ Antiicing.red_ice = func {
 }
 
 Antiicing.schedule = func {
-    serviceable = me.icingsystem.getChild("serviceable").getValue();
-    power = me.slave["electric"].getChild("specific").getValue();
+    var serviceable = me.icingsystem.getChild("serviceable").getValue();
+    var power = me.slave["electric"].getChild("specific").getValue();
+    var value = constant.FALSE;
 
     if( ( me.wing.getChild("main-selector").getValue() > 0 or
           me.wing.getChild("alternate-selector").getValue() > 0 ) and
           power and serviceable ) {
         value = constant.TRUE;
     }
-    else {
-        value = constant.FALSE;
-    }
 
     me.outputs.getChild("wing").setValue( value );
 
-    for( i = 0; i < 4; i = i+1 ) {
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
          if( me.engines[i].getChild("inlet-vane").getValue() and
              power and serviceable ) {
              value = constant.TRUE;

@@ -43,6 +43,9 @@ properties' values.
  
  <params>
   <test>/controls/lighting/crew/captain/test</test>
+  <serviceable>/instrumentation/airspeed-indicator[0]/serviceable</serviceable>
+  <speed-sel>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</speed-sel>
+  <vmo-sel>/instrumentation/airspeed-indicator[0]/vmo-kt</vmo-sel>
  </params>
   
  
@@ -68,7 +71,7 @@ properties' values.
     <name>Digital airspeed</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <type>text</type>
@@ -139,11 +142,11 @@ properties' values.
      <transformation>
       <condition>
        <and include="concorde-cond-voltage-inst.xml">
-        <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+        <property alias="../../../../../../../params/serviceable"/>
        </and>
       </condition>
       <type>rotation</type>
-      <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+      <property alias="../../../../../params/speed-sel"/>
       <min>50.0</min>
       <max>590.0</max>
       <scale>1.0</scale>
@@ -172,7 +175,7 @@ properties' values.
      <name>VMO needle</name>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+       <property alias="../../../../../../params/serviceable"/>
       </and>
      </condition>
      <texture>
@@ -187,7 +190,7 @@ properties' values.
      <transformations>
       <transformation>
        <type>rotation</type>
-       <property>/instrumentation/airspeed-indicator[0]/vmo-kt</property>
+       <property alias="../../../../../../params/vmo-sel"/>
        <min>50.0</min>
        <max>590.0</max>
        <scale>1.0</scale>
@@ -288,11 +291,11 @@ properties' values.
          </not-equals>
          <and>
           <greater-than-equals>
-           <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+           <property alias="../../../../../../../../../../params/speed-sel"/>
            <property n="1">/systems/autothrottle/airspeed/light-min-kt</property>
           </greater-than-equals>
           <less-than-equals>
-           <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+           <property alias="../../../../../../../../../../params/speed-sel"/>
            <property n="1">/systems/autothrottle/airspeed/light-max-kt</property>
           </less-than-equals>
          </and>

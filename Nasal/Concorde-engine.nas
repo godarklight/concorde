@@ -11,12 +11,14 @@
 Engine = {};
 
 Engine.new = func {
-   obj = { parents : [Engine],
+   var obj = { parents : [Engine],
 
+           enginecontrol : EngineControl.new(),
            airdoor : AirDoor.new(),
            bucket : Bucket.new(),
            intake : Intake.new(),
            rating : Rating.new(),
+           throttles : EngineThrottle.new(),
 
            engines : nil,
            engcontrols : nil,
@@ -40,12 +42,32 @@ Engine.amber_intake = func( index ) {
     return me.intake.amber_intake( index );
 }
 
+Engine.red_engine = func( index ) {
+    var result = constant.TRUE;
+
+    if( me.engines[index].getChild("oil-pressure-psi").getValue() > me.OILPSI ) {
+        result = constant.FALSE;
+    }
+
+    return result;
+}
+
+Engine.red_throttle = func {
+    return me.throttles.red_throttle();
+}
+
 Engine.set_rate = func( rates ) {
-   me.bucket.set_rate( rates );
+    me.bucket.set_rate( rates );
 }
 
 Engine.set_throttle = func( position ) {
-   return me.rating.set_throttle( position );
+    return me.rating.set_throttle( position );
+}
+
+# simplified engine start (2D panel)
+Engine.cutoffexport = func {
+   # delay for starter
+   settimer(func { me.cutoffcron(); }, me.CUTOFFSEC);
 }
 
 Engine.laneexport = func {
@@ -53,28 +75,19 @@ Engine.laneexport = func {
 }
 
 Engine.schedule = func {
+    me.throttles.schedule();
     me.bucket.schedule();
     me.airdoor.schedule();
     me.rating.schedule();
+    me.enginecontrol.schedule();
 }
 
 Engine.slowschedule = func {
     me.intake.schedule();
 }
 
-Engine.red_engine = func( index ) {
-    if( me.engines[index].getChild("oil-pressure-psi").getValue() > me.OILPSI ) {
-        result = constant.FALSE;
-    }
-    else {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
 Engine.cutoffcron = func {
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        # engine start by user
        if( me.engines[i].getChild("starter").getValue() ) {
            if( me.engcontrols[i].getChild("cutoff").getValue() ) {
@@ -84,10 +97,263 @@ Engine.cutoffcron = func {
    }
 }
 
-# simplified engine start (2D panel)
-Engine.cutoffexport = func {
-   # delay for starter
-   settimer(func { me.cutoffcron(); }, me.CUTOFFSEC);
+
+# ===============
+# ENGINE THROTTLE
+# ===============
+
+EngineThrottle = {};
+
+EngineThrottle.new = func {
+   var obj = { parents : [EngineThrottle,System],
+
+               texpath : "Textures/"
+             };
+
+   obj.init();
+
+   return obj;
+}
+
+EngineThrottle.init = func {
+    me.init_ancestor("/systems/engines");
+}
+
+EngineThrottle.red_throttle = func {
+    var result = constant.FALSE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+         if( me.slave["throttle"][i].getChild("failure").getValue() ) {
+             result = constant.TRUE;
+             break;
+         }
+    }
+
+    return result;
+}
+
+EngineThrottle.schedule = func {
+    var result = constant.FALSE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+         if( !me.slave["throttle"][i].getChild("serviceable").getValue() or
+             me.slave["throttle-ctrl"][i].getChild("off").getValue() ) {
+             result = constant.FALSE;
+         }
+         else {
+             result = constant.TRUE;
+         }
+
+         me.slave["throttle"][i].getChild("available").setValue( result );
+
+         if( !me.slave["throttle"][i].getChild("serviceable").getValue() ) {
+             result = constant.TRUE;
+         }
+         else {
+             result = constant.FALSE;
+         }
+
+         if( me.slave["throttle"][i].getChild("failure").getValue() != result ) {
+             me.slave["throttle"][i].getChild("failure").setValue( result );
+
+             me.failuretexture( i, result );
+         }
+    }
+}
+
+EngineThrottle.failuretexture = func( index, failure ) {
+    var texture = "concorde-red-off-throt.rgb";
+
+    if( failure ) {
+        texture = "concorde-red-throt.rgb";
+    }
+
+    texture = me.texpath ~ texture;
+
+    me.slave["throttle"][index].getChild("failure-texture").setValue( texture );
+}
+
+
+# =======================
+# ENGINE CONTROL SCHEDULE
+# =======================
+
+EngineControl = {};
+
+EngineControl.new = func {
+   var obj = { parents : [EngineControl,System],
+
+           rating : Rating.new(),
+
+           engcontrols : nil,
+           engines : nil,
+           thecontrol : nil,
+           theengines : nil,
+
+           LOWKT : 220,
+
+           speekt : 0,
+
+           HIGHMACH : 1.0,
+
+           speedmach : 0,
+
+           wow : constant.FALSE,
+           takeoff : constant.FALSE,
+           climb : constant.FALSE,
+           reaheat : constant.FALSE,
+
+           FLYOVER : "flyover",
+           HIGH : "high",
+           MID : "mid",
+           LOW : "low",
+
+           value : ""
+         };
+
+   obj.init();
+
+   return obj;
+}
+
+EngineControl.init = func {
+    me.init_ancestor("/systems/engines");
+
+    me.engines = props.globals.getNode("/engines").getChildren("engine");
+    me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
+    me.thecontrol = props.globals.getNode("/controls/engines");
+    me.theengines = props.globals.getNode("/systems/engines").getChildren("engine");
+}
+
+EngineControl.schedule = func {
+    var selector = 0;
+
+    me.speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+    me.speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+    me.wow = me.slave["weight"].getChild("wow").getValue();
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+         me.reheat = me.engcontrols[i].getChild("reheat").getValue();
+         me.takeoff = me.rating.is_takeoff( i );
+         me.climb = me.rating.is_climb( i );
+
+         # auto
+         if( me.thecontrol.getChild("schedule-auto").getValue() ) {
+             selector = me.thecontrol.getChild("schedule").getValue();
+
+             # detects bugs
+             me.value = "";
+
+             # normal
+             if( selector == 0 ) {
+                 if( me.setlow() ) {
+                 }
+
+                 elsif( !me.is_speedlow() and !me.reheat ) {
+                     me.value = me.HIGH;
+                 }
+
+                 elsif( !me.is_speedlow() and me.climb ) {
+                     me.value = me.MID;
+                 }
+             }
+
+             # flyover
+             elsif( selector < 0 ) {
+                 if( me.setlow() ) {
+                 }
+
+                 elsif( !me.is_speedlow() and !me.is_speedhigh() and !me.reheat ) {
+                     me.value = me.FLYOVER;
+                 }
+
+                 elsif( me.is_speedhigh() and !me.reheat ) {
+                     me.value = me.HIGH;
+                 }
+             }
+
+             # approach
+             else {
+                 if( me.wow ) {
+                     me.value = me.LOW;
+                 }
+
+                 else {
+                     me.value = me.MID;
+                 }
+             }
+         }
+
+         else {
+             # force low
+             if( me.thecontrol.getChild("schedule-low").getValue() ) {
+                 me.value = me.LOW;
+             }
+
+             else {
+                 if( me.slave["gear"].getChild("position-norm").getValue() == constantaero.GEARDOWN ) {
+                     me.value = me.LOW
+                 }
+
+                 else {
+                     if( me.takeoff and me.reheat ) {
+                         me.value = me.LOW;
+                     }
+
+                     elsif( !me.takeoff and me.reheat ) {
+                         me.value = me.MID;
+                     }
+
+                     # force high
+                     else {
+                         me.value = me.HIGH;
+                     }
+                 }
+             }
+         }
+
+         me.theengines[i].getChild("schedule").setValue( me.value );
+    }
+}
+
+EngineControl.setlow = func {
+    var result = constant.TRUE;
+
+    if( me.wow ) {
+        me.value = me.LOW;
+    }
+
+    elsif( me.is_speedlow() ) {
+        me.value = me.LOW;
+    }
+
+    elsif( me.takeoff and me.reheat ) {
+        me.value = me.LOW;
+    }
+
+    else {
+        result = constant.FALSE;
+    }
+}
+
+EngineControl.is_speedlow = func {
+    var result = constant.FALSE;
+
+    if( me.speedkt <= me.LOWKT ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+EngineControl.is_speedhigh = func {
+    var result = constant.FALSE;
+
+    if( me.speedmach >= me.HIGHMACH ) {
+        result = constant.TRUE;
+    }
+
+    return result;
 }
 
 
@@ -98,21 +364,24 @@ Engine.cutoffexport = func {
 EngineN1 = {};
 
 EngineN1.new = func {
-   obj = { parents : [EngineN1,System],
+   var obj = { parents : [EngineN1,System],
 
+           engall : nil,
            engcontrols : nil,
            engines : nil,
+           enginesystem : nil,
            theengines : nil,
 
-           THROTTLEMAX : 1.0,
            THROTTLE88N1 : 0.806,                          # doesn't depend of temperature
            THROTTLEREHEAT : 0.10,
 
            N1REHEAT : 81,
+           N1EXHAUST : 60,
 
            reheat : [ constant.FALSE, constant.FALSE, constant.FALSE, constant.FALSE ],
 
            texpath : "Textures",
+           exhaust : [ 0.0, 0.0, 0.0, 0.0 ],
 
            engine4limiter : constant.FALSE,
 
@@ -127,17 +396,18 @@ EngineN1.new = func {
 EngineN1.init = func {
     me.init_ancestor("/systems/engines");
 
-    me.engines = props.globals.getNode("/engines").getChildren("engine");
+    me.engall = props.globals.getNode("/controls/engines");
     me.engcontrols = props.globals.getNode("/controls/engines").getChildren("engine");
+    me.engines = props.globals.getNode("/engines").getChildren("engine");
+    me.enginesystem = props.globals.getNode("/systems/engines");
     me.theengines = props.globals.getNode("/systems/engines").getChildren("engine");
 }
 
 EngineN1.get_throttle = func( position ) {
+    var maxthrottle = constantaero.THROTTLEMAX;
+
     if( me.engine4limiter ) {
         maxthrottle = me.THROTTLE88N1;
-    }
-    else {
-        maxthrottle = me.THROTTLEMAX;
     }
 
     if( position > maxthrottle ) {
@@ -148,13 +418,36 @@ EngineN1.get_throttle = func( position ) {
 }
 
 EngineN1.schedule = func {
-    me.engine4();
+    var speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+
+    me.groundidle( speedkt );
+    me.engine4( speedkt );
     me.reheatcontrol();
+    me.exhausttexture();
+}
+
+EngineN1.groundidle = func( speedkt ) {
+    var idle = constant.FALSE;
+
+    if( me.engall.getChild("ground-idle14").getValue() or
+        me.engall.getChild("ground-idle23").getValue() ) {
+        idle = constant.TRUE;
+
+        # only below 60 kt
+        if( speedkt > me.ENGINE4KT ) {
+            me.engall.getChild("ground-idle14").setValue( constant.FALSE );
+            me.engall.getChild("ground-idle23").setValue( constant.FALSE );
+            idle = constant.FALSE;
+        }
+    }
+
+   # JSBSim can idle only 4 engines at once
+   me.enginesystem.getChild("ground-idle").setValue(idle);
 }
 
 # Engine 4 N1 takeoff limiter
-EngineN1.engine4 = func {
-    speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+EngineN1.engine4 = func( speedkt ) {
+    var throttle = 0.0;
 
     # avoids engine 4 vibration because of turbulences
     if( speedkt != nil ) {
@@ -178,25 +471,43 @@ EngineN1.engine4 = func {
 }
 
 EngineN1.reheatcontrol = func {
-   for( i = 0; i < 4; i = i+1 ) {
+   var augmentation = constant.FALSE;
+
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         if( me.engcontrols[i].getChild("reheat").getValue() and
             me.engcontrols[i].getChild("throttle").getValue() > me.THROTTLEREHEAT and
             me.engines[i].getChild("n1").getValue() > me.N1REHEAT ) {
             augmentation = constant.TRUE;
+        }
+        else {
+            augmentation = constant.FALSE;
+        }
+
+        if( me.reheat[i] != augmentation ) {
+            me.reheat[i] = augmentation;
+            me.engcontrols[i].getChild("augmentation").setValue( me.reheat[i] );
+        }
+   }
+}
+
+EngineN1.exhausttexture = func {
+   var factor = 0.0;
+   var texture = "";
+
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+        if( me.engines[i].getChild("n1").getValue() > me.N1EXHAUST ) {
             factor = 1.0;
             texture = "concorde.rgb";
         }
         else {
-            augmentation = constant.FALSE;
             factor = 0.0;
             texture = me.texpath ~ "/concorde-nozzle.rgb";
         }
 
-        if( me.reheat[i] != augmentation ) {
-            me.engcontrols[i].getChild("augmentation").setValue( augmentation );
-            me.theengines[i].getChild("nozzle-factor").setValue(factor);
+        if( me.exhaust[i] != factor ) {
+            me.exhaust[i] = factor;
+            me.theengines[i].getChild("nozzle-factor").setValue(me.exhaust[i]);
             me.theengines[i].getChild("nozzle-texture").setValue(texture);
-            me.reheat[i] = augmentation;
         }
    }
 }
@@ -209,7 +520,7 @@ EngineN1.reheatcontrol = func {
 Rating = {};
 
 Rating.new = func {
-   obj = { parents : [Rating],
+   var obj = { parents : [Rating],
 
            enginen1 : EngineN1.new(),
 
@@ -240,8 +551,13 @@ Rating.init = func {
 }
 
 Rating.set_throttle = func( position ) {
+   var rating = "";
+   var maxthrottle = 0.0;
+   var position_new = 0.0;
+
    # faster to process here
-   for( i = 0; i < 4; i = i+1 ) {
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+        position_new = position;
         rating = me.engcontrols[i].getChild("rating").getValue();
 
         # autoland first
@@ -263,30 +579,36 @@ Rating.set_throttle = func( position ) {
             }
         }
 
-        if( position > maxthrottle ) {
-            position = maxthrottle;
+        if( position_new > maxthrottle ) {
+            position_new = maxthrottle;
         }
 
         # engine N1 limiter
         if( i == 3 ) {
-            position = me.enginen1.get_throttle( position );
+            position_new = me.enginen1.get_throttle( position_new );
         }
 
         # default, except autothrottle
         if( me.autothrottles[i].getValue() == "" ) {
-            me.engcontrols[i].getChild("throttle").setValue( position );
+            me.engcontrols[i].getChild("throttle").setValue( position_new );
         }
 
-         # last human operation
+         # last human operation (to detect goaround).
         me.engcontrols[i].getChild("throttle-manual").setValue( position );
    }
 }
 
 Rating.schedule = func {
+   var ratingnow = "";
+   var j = 0;
+   var rating = constant.FALSE;
+   var reheat = constant.FALSE;
+   var monitor = getprop("/instrumentation/takeoff-monitor/armed");
+
    me.enginen1.schedule();
 
    # arm takeoff rating
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         ratingnow = me.engcontrols[i].getChild("rating").getValue();
         if( ratingnow != "takeoff" ) {
             # engines 2 and 3 by right gear
@@ -299,15 +621,13 @@ Rating.schedule = func {
                 j = me.GEARLEFT;
             }
 
-            if( me.gears[j].getChild("position-norm").getValue() == 1.0 ) {
+            if( me.gears[j].getChild("position-norm").getValue() == constantaero.GEARDOWN ) {
                 me.engcontrols[i].getChild("rating").setValue("takeoff");
             }
         }
    }
 
-   monitor = getprop("/instrumentation/takeoff-monitor/armed");
-
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        rating = me.engcontrols[i].getChild("rating").getValue();
        reheat = me.engcontrols[i].getChild("reheat").getValue();
 
@@ -323,13 +643,34 @@ Rating.schedule = func {
    }
 
    # apply to engines
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         rating = me.engcontrols[i].getChild("rating").getValue();
         if( rating != "takeoff" ) {
             rating = me.engcontrols[i].getChild("rating-flight").getValue();
         }
         me.theengines[i].getChild("rating").setValue(rating);
    }
+}
+
+Rating.is_takeoff = func( index ) {
+    var result = constant.FALSE;
+
+    if( me.engcontrols[index].getChild("rating").getValue() == "takeoff" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Rating.is_climb = func( index ) {
+    var result = constant.FALSE;
+
+    if( !me.is_takeoff( index ) and
+        me.engcontrols[index].getChild("rating-flight").getValue() == "climb" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
 }
 
 
@@ -340,7 +681,7 @@ Rating.schedule = func {
 Bucket = {};
 
 Bucket.new = func {
-   obj = { parents : [Bucket,System],
+   var obj = { parents : [Bucket,System],
 
            TRANSITSEC : 6.0,                                   # reverser transit in 6 s
            BUCKETSEC : 1.0,                                    # refresh rate
@@ -363,14 +704,17 @@ Bucket.new = func {
 };
 
 Bucket.set_rate = func( rates ) {
+   var offsetdeg = me.REVERSERDEG - me.TAKEOFFDEG;
+
    me.BUCKETSEC = rates;
 
-   offsetdeg = me.REVERSERDEG - me.TAKEOFFDEG;
    me.RATEDEG = offsetdeg * ( me.BUCKETSEC / me.TRANSITSEC );
 }
 
 Bucket.init = func {
    me.init_ancestor("/systems/engines");
+
+   var denom = me.SUPERSONICMACH - me.SUBSONICMACH;
 
    me.propulsions = props.globals.getNode("/fdm/jsbsim/propulsion").getChildren("engine");
 
@@ -379,7 +723,6 @@ Bucket.init = func {
 
    me.set_rate( me.BUCKETSEC );
 
-   denom = me.SUPERSONICMACH - me.SUBSONICMACH;
    me.COEF = me.TAKEOFFDEG / denom;
 }
 
@@ -406,6 +749,9 @@ Bucket.decrease = func( angledeg, mindeg ) {
 }
 
 Bucket.apply = func( property, angledeg, targetdeg ) {
+   var offsetdeg = 0.0;
+   var valuedeg = 0.0;
+
    if( angledeg != targetdeg ) {
        offsetdeg = targetdeg - angledeg;
        if( offsetdeg > 0 ) {
@@ -420,7 +766,15 @@ Bucket.apply = func( property, angledeg, targetdeg ) {
 
 # bucket position
 Bucket.position = func {
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   var step = 0.0;
+   var angledeg = 0.0;
+   var valuedeg = 0.0;
+   var result = 0.0;
+   var speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+
+   # supersonic : 0 deg
+   var bucketdeg = me.SUPERSONICDEG;
+
    # takeoff : 21 deg
    if( speedmach < me.SUBSONICMACH ) {
        bucketdeg = me.TAKEOFFDEG;
@@ -430,12 +784,8 @@ Bucket.position = func {
        step = speedmach - me.SUBSONICMACH;
        bucketdeg = me.TAKEOFFDEG - me.COEF * step;
    }
-   # supersonic : 0 deg
-   else {
-       bucketdeg = me.SUPERSONICDEG;
-   }
 
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        # CAUTION : use controls, because there is a delay by /engines/engine[0]/reversed !
        if( me.engcontrols[i].getChild("reverser").getValue() ) {
            # reversed : 73 deg
@@ -463,7 +813,7 @@ Bucket.position = func {
 AirDoor = {};
 
 AirDoor.new = func {
-   obj = { parents : [AirDoor,System],
+   var obj = { parents : [AirDoor,System],
 
            ENGINESMACH : 0.26,
            ENGINE4KT : 220.0,
@@ -486,13 +836,14 @@ AirDoor.init = func {
 
 # air door position
 AirDoor.schedule = func {
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
-   speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
-
-   touchdown = getprop("/instrumentation/weight-switch/wow");
+   var value = constant.FALSE;
+   var speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   var speedkt = me.slave["asi"].getChild("indicated-speed-kt").getValue();
+   var touchdown = getprop("/instrumentation/weight-switch/wow");
+   var gearpos = getprop("/gear/gear[1]/position-norm");
 
    # engines 1 to 3 :
-   for( i=0; i<3; i=i+1 ) {
+   for( var i=0; i<3; i=i+1 ) {
        if( me.engcontrols[i].getChild("secondary-air-door").getValue() ) {
            value = me.engines[i].getChild("secondary-air-door").getValue();
            # opens above Mach 0.26
@@ -511,8 +862,6 @@ AirDoor.schedule = func {
 
    # engine 4
    if( me.engcontrols[3].getChild("secondary-air-door").getValue() ) {
-       gearpos = getprop("/gear/gear[1]/position-norm");
-
        value = me.engines[3].getChild("secondary-air-door").getValue();
        # opens above 220 kt
        if( !value ) {
@@ -521,7 +870,7 @@ AirDoor.schedule = func {
            }
        } 
        # shuts below Mach 0.26, gear down
-       elsif( speedmach < me.ENGINESMACH and gearpos == 1.0 ) {
+       elsif( speedmach < me.ENGINESMACH and gearpos == constantaero.GEARDOWN ) {
            value = constant.FALSE;
        }
        me.engines[3].getChild("secondary-air-door").setValue(value);
@@ -536,7 +885,7 @@ AirDoor.schedule = func {
 Intake = {};
 
 Intake.new = func {
-   obj = { parents : [Intake,System],
+   var obj = { parents : [Intake,System],
 
            MAXRAMP : 50.0,
            MINRAMP : 0.0,
@@ -577,6 +926,8 @@ Intake.init = func {
 
 # main system failure
 Intake.amber_intake = func( index ) {
+    var result = constant.FALSE;
+
     # auto or green / blue selected
     if( !me.slave["hydraulic"].getChild(me.hydmain[index]).getValue() and
         me.engines[index].getChild("intake-main").getValue() ) {
@@ -589,15 +940,13 @@ Intake.amber_intake = func( index ) {
         result = constant.TRUE;
     }
 
-    else {
-        result = constant.FALSE;
-    }
-
     return result;
 }
 
 Intake.laneexport = func {
-   for( i=0; i<4; i=i+1 ) {
+   var selector = 0;
+
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         selector = me.enginecontrol[i].getChild("intake-selector").getValue();
 
         if( selector == me.LANEAUTOA or selector == me.LANEA ) {
@@ -609,14 +958,14 @@ Intake.laneexport = func {
             me.lane[1] = constant.TRUE;
         }
 
-        for( j=0; j<2; j=j+1 ) {
+        for( var j=0; j<constantaero.NBAUTOPILOTS; j=j+1 ) {
              me.engines[i].getChild("intake-lane", j).setValue(me.lane[j]);
         }
    }
 }
 
 Intake.schedule = func {
-   speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   var speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
 
    me.auxilliaryinlet( speedmach );
    me.ramphydraulic();
@@ -624,20 +973,22 @@ Intake.schedule = func {
 }
 
 Intake.auxilliaryinlet = func( speedmach ) {
+   var pos = constant.FALSE;
+
    if( speedmach < me.INLETMACH ) {
        pos = constant.TRUE;
    }
-   else {
-       pos = constant.FALSE;
-   }
 
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         me.engines[i].getChild("intake-aux-inlet").setValue(pos);
    }
 }
 
 Intake.ramphydraulic = func {
-   for( i=0; i<4; i=i+1 ) {
+   var main = constant.FALSE;
+   var standby  = constant.FALSE;
+
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         if( me.enginecontrol[i].getChild("intake-auto").getValue() ) {
             main = constant.TRUE;
             standby = !me.slave["hydraulic"].getChild(me.hydmain[i]).getValue();
@@ -653,6 +1004,15 @@ Intake.ramphydraulic = func {
 }
 
 Intake.rampposition = func( speedmach ) {
+   var stepmach = 0.0;
+   var coef = 0.0;
+   var pospercent = 0.0;
+   var ratio = 0.0;
+   var ratiopercent = 0.0;
+   var ramppercent = me.MAXRAMP;
+   var rampsubsonic = me.POSSUPERSONIC;
+   var hydfailure = constant.FALSE;
+
    if( speedmach <= me.MINMACH ) {
        ramppercent = me.MINRAMP;
        rampsubsonic = me.POSSUBSONIC;
@@ -663,13 +1023,8 @@ Intake.rampposition = func( speedmach ) {
        ramppercent = me.MAXRAMP * coef;
        rampsubsonic = me.POSSUPERSONIC;
    }
-   else {
-       ramppercent = me.MAXRAMP;
-       rampsubsonic = me.POSSUPERSONIC;
-   }
 
-   hydfailure = constant.FALSE;
-   for( i=0; i<4; i=i+1 ) {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
         if( me.amber_intake(i) ) {
             hydfailure = constant.TRUE;
             break;
@@ -680,7 +1035,7 @@ Intake.rampposition = func( speedmach ) {
 
    # engineer moves ramp manually
    if( hydfailure ) {
-       for( i=0; i<4; i=i+1 ) {
+       for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
             pospercent = me.engines[i].getChild("ramp-percent").getValue();
 
             # to the left (negativ), if throttle lever must be retarded
@@ -713,7 +1068,7 @@ Intake.rampposition = func( speedmach ) {
 
    # hydraulics moves intake ramp
    else {
-       for( i=0; i<4; i=i+1 ) {
+       for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
             me.engines[i].getChild("ramp-percent").setValue(ramppercent);
             me.engines[i].getChild("intake-ratio-error").setValue(0.0);
        }
@@ -724,13 +1079,13 @@ Intake.rampposition = func( speedmach ) {
 }
 
 Intake.superramp = func( ratio, target, present ) {
-   result = present - ( target - present ) * ratio;
+   var result = present - ( target - present ) * ratio;
 
    return result;
 }
 
 Intake.subramp = func( ratio, target, present ) {
-   result = present + ( target - present ) * ratio;
+   var result = present + ( target - present ) * ratio;
 
    return result;
 }

@@ -119,8 +119,6 @@
     </config>
   </pid-controller>
 
-  <!-- Stage #1 sets target roll based on diff between current heading -->
-  <!-- and heading bug (supersonic). -->
   <pid-controller>
     <name>Heading Bug Hold (FDM mag heading based) Stage 1 (supersonic)</name>
     <debug>false</debug>
@@ -210,7 +208,6 @@
     </config>
   </pid-controller>
 
-  <!-- Stage #3 drives the rudder to unlock roll at Mach speeds (supersonic). -->
   <pid-controller>
     <name>Heading Bug Hold (DG based) Stage 3 (supersonic)</name>
     <debug>false</debug>
@@ -275,8 +272,6 @@
     </config>
   </pid-controller>
 
-  <!-- Stage #1 sets target roll based on diff between current heading -->
-  <!-- and target heading (supersonic). -->
   <pid-controller>
     <name>True Heading Hold (DG based) Stage 1 (supersonic)</name>
     <debug>false</debug>
@@ -367,7 +362,6 @@
     </config>
   </pid-controller>
 
-  <!-- Stage #3 drives the rudder to unlock roll at Mach speeds (supersonic). -->
   <pid-controller>
     <name>True Heading Hold (DG based) Stage 3 (supersonic)</name>
     <debug>false</debug>
@@ -539,11 +533,35 @@
     <name>Altitude Hold (Altimeter based) Stage 1</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/altitude</prop>
+      <prop>/autopilot/locks/sonic/altitude</prop>
       <value>altitude-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/altimeter/indicated-altitude-ft</prop>
+      <prop>/instrumentation/altimeter[0]/indicated-altitude-ft</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/target-altitude-ft</prop>
+    </reference>
+    <output>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>          <!-- proportional gain -->
+      <Ki>0.0</Ki>          <!-- integral gain -->
+      <u_min>-16.67</u_min> <!-- minimum output clamp -->
+      <u_max>33.33</u_max>   <!-- maximum output clamp -->
+    </config>
+  </pi-simple-controller>
+
+  <pi-simple-controller>
+    <name>Altitude Hold (Altimeter based) Stage 1 (AP 2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>altitude-hold-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/altimeter[1]/indicated-altitude-ft</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-altitude-ft</prop>
@@ -564,11 +582,40 @@
     <name>Altitude Hold (Altimeter based) Stage 2</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/altitude</prop>
+      <prop>/autopilot/locks/sonic/altitude</prop>
       <value>altitude-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
+    </reference>
+    <output>
+      <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Altitude Hold (Altimeter based) Stage 2 (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>altitude-hold-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/internal/target-climb-rate-fps</prop>
@@ -597,11 +644,40 @@
     <name>Glideslop Hold</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/altitude</prop>
+      <prop>/autopilot/locks/sonic/altitude</prop>
       <value>gs1-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
+    </reference>
+     <output>
+      <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Glideslop Hold (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>gs1-hold-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
@@ -630,11 +706,43 @@
     <name>Glideslop with throttle</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/sonic/speed</prop>
       <value>gs1-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
+    </reference>
+     <output>
+      <prop>/controls/engines/engine[0]/throttle</prop>
+      <prop>/controls/engines/engine[1]/throttle</prop>
+      <prop>/controls/engines/engine[2]/throttle</prop>
+      <prop>/controls/engines/engine[3]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.05</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Glideslop with throttle (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/speed</prop>
+      <value>gs1-with-throttle-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
@@ -669,7 +777,7 @@
       <value>vertical-speed-hold-sub</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -691,7 +799,35 @@
     </config>
   </pid-controller>
 
-  <!-- supersonic -->
+  <pid-controller>
+    <name>Vertical Speed Hold (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>vertical-speed-hold-sub-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
+    </reference>
+    <output>
+      <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
 
   <pid-controller>
     <name>Vertical Speed Hold (supersonic)</name>
@@ -701,7 +837,37 @@
       <value>vertical-speed-hold-super</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
+    </reference>
+    <output>
+      <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-0.02</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Vertical Speed Hold (supersonic) (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/altitude</prop>
+      <value>vertical-speed-hold-super</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -730,11 +896,44 @@
     <name>Vertical Speed with Throttle</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/speed</prop>
+      <prop>/autopilot/locks/sonic/speed</prop>
       <value>vertical-speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</prop>
+      <prop>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
+    </reference>
+    <output>
+      <prop>/controls/engines/engine[0]/throttle</prop>
+      <prop>/controls/engines/engine[1]/throttle</prop>
+      <prop>/controls/engines/engine[2]/throttle</prop>
+      <prop>/controls/engines/engine[3]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.05</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Vertical Speed with Throttle (AP2)</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/sonic/speed</prop>
+      <value>vertical-speed-with-throttle-2</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/inst-vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>

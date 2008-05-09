@@ -10,7 +10,7 @@
 ElectricalXML = {};
 
 ElectricalXML.new = func {
-   obj = { parents : [ElectricalXML],
+   var obj = { parents : [ElectricalXML],
 
            config : nil,
            electrical : nil,
@@ -27,55 +27,65 @@ ElectricalXML.new = func {
 
 # creates all propagate variables
 ElectricalXML.init = func {
+   var children = nil;
+   var nb_children = 0;
+   var component = nil;
+
    me.config = props.globals.getNode("/systems/electrical/internal/config");
    me.electrical = props.globals.getNode("/systems/electrical");
    me.forced = props.globals.getNode("/systems/electrical/internal/iterations-forced").getValue();
    me.iterations = props.globals.getNode("/systems/electrical/internal/iterations");
 
-   suppliers = me.config.getChildren("supplier");
-   nb_suppliers = size( suppliers );
-   for( i = 0; i < nb_suppliers; i = i+1 ) {
-        me.components.add_supplier( suppliers[i] );
+   children = me.config.getChildren("supplier");
+   nb_children = size( children );
+   for( var i = 0; i < nb_children; i = i+1 ) {
+        me.components.add_supplier( children[i] );
         component = me.components.get_supplier( i );
         component.charge();
    }
 
-   buses = me.config.getChildren("bus");
-   nb_buses = size( buses );
-   for( i = 0; i < nb_buses; i = i+1 ) {
-        me.components.add_bus( buses[i] );
+   children = me.config.getChildren("bus");
+   nb_children = size( children );
+   for( var i = 0; i < nb_children; i = i+1 ) {
+        me.components.add_bus( children[i] );
         component = me.components.get_bus( i );
         component.charge();
    }
 
-   outputs = me.config.getChildren("output");
-   nb_outputs = size( outputs );
-   for( i = 0; i < nb_outputs; i = i+1 ) {
-        me.components.add_output( outputs[i] );
+   children = me.config.getChildren("output");
+   nb_children = size( children );
+   for( var i = 0; i < nb_children; i = i+1 ) {
+        me.components.add_output( children[i] );
         component = me.components.get_output( i );
         component.charge();
    }
 
-   connectors = me.config.getChildren("connector");
-   nb_connectors = size( connectors );
-   for( i = 0; i < nb_connectors; i = i+1 ) {
-        me.connectors.add( connectors[i] );
+   children = me.config.getChildren("connector");
+   nb_children = size( children );
+   for( var i = 0; i < nb_children; i = i+1 ) {
+        me.connectors.add( children[i] );
    }
 }
 
 # battery discharge
 ElectricalXML.slowschedule = func {
-   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+   var component = nil;
+
+   for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
         component = me.components.get_supplier( i );
         component.discharge();
    }
 }
 
 ElectricalXML.schedule = func {
+   var component = nil;
+   var iter = 0;
+   var remain = constant.FALSE;
+
    me.clear();
 
    # suppliers, not real, always works
-   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+   for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
         component = me.components.get_supplier( i );
         component.supply();
    }
@@ -85,9 +95,9 @@ ElectricalXML.schedule = func {
         remain = constant.TRUE;
         while( remain ) {
             remain = constant.FALSE;
-            for( i = 0; i < me.connectors.count(); i = i+1 ) {
-                 connector = me.connectors.get( i );
-                 if( !me.supply( connector ) ) {
+            for( var i = 0; i < me.connectors.count(); i = i+1 ) {
+                 component = me.connectors.get( i );
+                 if( !me.supply( component ) ) {
                      remain = constant.TRUE;
                  }
             }
@@ -95,10 +105,10 @@ ElectricalXML.schedule = func {
        }
 
        # makes last iterations for voltages in parallel
-       for( j = 0; j < me.forced; j = j+1 ) {
-            for( i = 0; i < me.connectors.count(); i = i+1 ) {
-                 connector = me.connectors.get( i );
-                 me.supply( connector );
+       for( var j = 0; j < me.forced; j = j+1 ) {
+            for( var i = 0; i < me.connectors.count(); i = i+1 ) {
+                 component = me.connectors.get( i );
+                 me.supply( component );
             }
             iter = iter + 1;
        }
@@ -108,12 +118,12 @@ ElectricalXML.schedule = func {
 
    # failure : no voltage
    else {
-       for( i = 0; i < me.components.count_bus(); i = i+1 ) {
+       for( var i = 0; i < me.components.count_bus(); i = i+1 ) {
             component = me.components.get_bus( i );
             component.propagate();
        }
 
-       for( i = 0; i < me.components.count_output(); i = i+1 ) {
+       for( var i = 0; i < me.components.count_output(); i = i+1 ) {
             component = me.components.get_output( i );
             component.propagate();
        }
@@ -123,7 +133,13 @@ ElectricalXML.schedule = func {
 }
 
 ElectricalXML.supply = func( connector ) {
-   found = constant.FALSE;
+   var volts = 0.0;
+   var found = constant.FALSE;
+   var switch = constant.FALSE;
+   var input = nil;
+   var component = nil;
+   var component2 = nil;
+   var output = nil;
 
    output = connector.get_output();
 
@@ -181,34 +197,38 @@ ElectricalXML.supply = func( connector ) {
 }
 
 ElectricalXML.apply = func {
-   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+   var component = nil;
+
+   for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
         component = me.components.get_supplier( i );
         component.apply();
    }
 
-   for( i = 0; i < me.components.count_bus(); i = i+1 ) {
+   for( var i = 0; i < me.components.count_bus(); i = i+1 ) {
         component = me.components.get_bus( i );
         component.apply();
    }
 
-   for( i = 0; i < me.components.count_output(); i = i+1 ) {
+   for( var i = 0; i < me.components.count_output(); i = i+1 ) {
         component = me.components.get_output( i );
         component.apply();
    }
 }
 
 ElectricalXML.clear = func {
-   for( i = 0; i < me.components.count_supplier(); i = i+1 ) {
+   var component = nil;
+
+   for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
         component = me.components.get_supplier( i );
         component.clear();
    }
 
-   for( i = 0; i < me.components.count_bus(); i = i+1 ) {
+   for( var i = 0; i < me.components.count_bus(); i = i+1 ) {
         component = me.components.get_bus( i );
         component.clear();
    }
 
-   for( i = 0; i < me.components.count_output(); i = i+1 ) {
+   for( var i = 0; i < me.components.count_output(); i = i+1 ) {
         component = me.components.get_output( i );
         component.clear();
    }
@@ -222,7 +242,7 @@ ElectricalXML.clear = func {
 ElecComponentArray = {};
 
 ElecComponentArray.new = func {
-   obj = { parents : [ElecComponentArray],
+   var obj = { parents : [ElecComponentArray],
 
            supplier_name : [],
            bus_name :      [],
@@ -243,15 +263,16 @@ ElecComponentArray.new = func {
 };
 
 ElecComponentArray.add_supplier = func( node ) {
-   name = node.getChild("name").getValue();
+   var state = "";
+   var rpm = "";
+   var charge = "";
+   var amps = 0;
+   var result = nil;
+   var name = node.getChild("name").getValue();
+   var kind = node.getChild("kind").getValue();
+   var volts = node.getChild("volts").getValue();
+
    append(me.supplier_name, name);
-
-   kind = node.getChild("kind").getValue();
-
-   state = "";
-   rpm = "";
-   charge = "";
-   amps = 0;
 
    if( kind == "alternator" ) {
        state = node.getChild("prop").getValue();
@@ -269,8 +290,6 @@ ElecComponentArray.add_supplier = func( node ) {
        amps = node.getChild("amps").getValue();
    }
 
-   volts = node.getChild("volts").getValue();
-
    result = ElecSupplier.new( kind, state, rpm, volts, charge, amps );
    append(me.suppliers, result);
 
@@ -278,10 +297,11 @@ ElecComponentArray.add_supplier = func( node ) {
 }
 
 ElecComponentArray.add_bus = func( node ) {
-   name = node.getChild("name").getValue();
-   append(me.bus_name, name);
+   var result = nil;
+   var name = node.getChild("name").getValue();
+   var allprops = node.getChildren("prop");
 
-   allprops = node.getChildren("prop");
+   append(me.bus_name, name);
 
    result = ElecBus.new( allprops );
    append(me.buses, result);
@@ -290,10 +310,11 @@ ElecComponentArray.add_bus = func( node ) {
 }
 
 ElecComponentArray.add_output = func( node ) {
-   name = node.getChild("name").getValue();
-   append(me.output_name, name);
+   var result = nil;
+   var name = node.getChild("name").getValue();
+   var prop = node.getChild("prop").getValue();
 
-   prop = node.getChild("prop").getValue();
+   append(me.output_name, name);
 
    result = ElecOutput.new( prop );
    append(me.outputs, result);
@@ -302,9 +323,9 @@ ElecComponentArray.add_output = func( node ) {
 }
 
 ElecComponentArray.find_supplier = func( ident ) {
-    result = nil;
+    var result = nil;
 
-    for( i = 0; i < me.nb_suppliers; i = i+1 ) {
+    for( var i = 0; i < me.nb_suppliers; i = i+1 ) {
          if( me.supplier_name[i] == ident ) {
              result = me.get_supplier( i );
              break;
@@ -315,9 +336,9 @@ ElecComponentArray.find_supplier = func( ident ) {
 }
 
 ElecComponentArray.find_bus = func( ident ) {
-    result = nil;
+    var result = nil;
 
-    for( i = 0; i < me.nb_buses; i = i+1 ) {
+    for( var i = 0; i < me.nb_buses; i = i+1 ) {
          if( me.bus_name[i] == ident ) {
              result = me.get_bus( i );
              break;
@@ -328,9 +349,9 @@ ElecComponentArray.find_bus = func( ident ) {
 }
 
 ElecComponentArray.find_output = func( ident ) {
-    result = nil;
+    var result = nil;
 
-    for( i = 0; i < me.nb_outputs; i = i+1 ) {
+    for( var i = 0; i < me.nb_outputs; i = i+1 ) {
          if( me.output_name[i] == ident ) {
              result = me.get_output( i );
              break;
@@ -342,8 +363,8 @@ ElecComponentArray.find_output = func( ident ) {
 
 # lookup tables accelerates the search !!!
 ElecComponentArray.find = func( ident ) {
-   found = constant.FALSE;
-   result = me.find_supplier( ident );
+   var found = constant.FALSE;
+   var result = me.find_supplier( ident );
 
    if( result == nil ) {
        result = me.find_bus( ident );
@@ -398,7 +419,7 @@ ElecComponent = {};
 
 # not called by child classes !!!
 ElecComponent.new = func {
-   obj = { parents : [ElecComponent],
+   var obj = { parents : [ElecComponent],
 
            NOVOLT : 0.0,
 
@@ -409,7 +430,7 @@ ElecComponent.new = func {
 };
 
 ElecComponent.init_ancestor = func {
-   obj = ElecComponent.new();
+   var obj = ElecComponent.new();
 
    me.NOVOLT = obj.NOVOLT;
    me.done = obj.done;
@@ -465,7 +486,7 @@ ElecComponent.apply = func {
 ElecSupplier = {};
 
 ElecSupplier.new = func( kind, prop, rpm, volts, state, amps ) {
-   obj = { parents : [ElecSupplier,ElecComponent],
+   var obj = { parents : [ElecSupplier,ElecComponent],
 
            value : 0.0,
 
@@ -485,7 +506,7 @@ ElecSupplier.new = func( kind, prop, rpm, volts, state, amps ) {
 
 # present voltage
 ElecSupplier.get_volts = func {
-   value = getprop(me.props);
+   var value = getprop(me.props);
 
    if( value == nil ) {
        value = me.NOVOLT;
@@ -567,16 +588,12 @@ ElecSupplier.apply = func {
 ElecBus = {};
 
 ElecBus.new = func( allprops ) {
-   obj = { parents : [ElecBus,ElecComponent],
+   var obj = { parents : [ElecBus,ElecComponent],
 
-           values : [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                     0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
-
-           MAXPROPS : 20,
+           values : [],
 
            nb_props : 0,
-           props : ["","","","","","","","","","",
-                    "","","","","","","","","",""]
+           props : []
          };
 
    obj.init( allprops );
@@ -588,24 +605,19 @@ ElecBus.init = func( allprops ) {
    me.init_ancestor();
 
    me.nb_props = size( allprops );
-   if( me.nb_props > me.MAXPROPS ) {
-       me.log( "number of properties exceeded !", me.nb_props );
-       me.nb_props = me.MAXPROPS;
-   }
 
-   for( i = 0; i < me.nb_props; i = i+1 ) {
-        me.props[ i ] = allprops[i].getValue();
+   for( var i = 0; i < me.nb_props; i = i+1 ) {
+        append( me.props, allprops[i].getValue() );
+        append( me.values, me.NOVOLT );
    }
 }
 
 # present voltage
 ElecBus.get_volts = func {
-   if( me.nb_props == 0 ) {
-       value = me.NOVOLT;
-   }
+   var value = me.NOVOLT;
 
    # takes the 1st property
-   else {
+   if( me.nb_props > 0 ) {
        value = me.values[0];
    }
 
@@ -618,14 +630,13 @@ ElecBus.get_volts = func {
 
 # propagates voltage to all properties
 ElecBus.propagate = func( component = nil ) {
-   if( component == nil ) {
-       volts = me.NOVOLT;
-   }
-   else {
+   var volts = me.NOVOLT;
+
+   if( component != nil ) {
        volts = component.get_volts();
    }
 
-   for( i = 0; i < me.nb_props; i = i+1 ) {
+   for( var i = 0; i < me.nb_props; i = i+1 ) {
         me.values[i] = volts;
    }
 
@@ -638,7 +649,9 @@ ElecBus.clear = func() {
 }
 
 ElecBus.apply = func {
-   for( i = 0; i < me.nb_props; i = i+1 ) {
+   var state = "";
+
+   for( var i = 0; i < me.nb_props; i = i+1 ) {
         state = me.props[i];
         setprop(state, me.values[i]);
    }
@@ -652,7 +665,7 @@ ElecBus.apply = func {
 ElecOutput = {};
 
 ElecOutput.new = func( prop ) {
-   obj = { parents : [ElecOutput,ElecComponent],
+   var obj = { parents : [ElecOutput,ElecComponent],
 
            value : 0.0,
 
@@ -671,10 +684,9 @@ ElecOutput.get_volts = func {
 
 # propagates voltage to all properties
 ElecOutput.propagate = func( component = nil ) {
-   if( component == nil ) {
-       volts = me.NOVOLT;
-   }
-   else {
+   var volts = me.NOVOLT;
+
+   if( component != nil ) {
        volts = component.get_volts();
    }
 
@@ -700,7 +712,7 @@ ElecOutput.apply = func {
 ElecConnectorArray = {};
 
 ElecConnectorArray.new = func {
-   obj = { parents : [ElecConnectorArray],
+   var obj = { parents : [ElecConnectorArray],
 
            connectors      :  [],
            nb_connectors : 0
@@ -710,12 +722,13 @@ ElecConnectorArray.new = func {
 };
 
 ElecConnectorArray.add = func( node ) {
-   input = node.getChild("input").getValue();
-   output = node.getChild("output").getValue();
+   var prop = "";
+   var child = nil;
+   var result = nil;
+   var input = node.getChild("input").getValue();
+   var output = node.getChild("output").getValue();
+   var switch = node.getNode("switch");
 
-   prop = "";
-
-   switch = node.getNode("switch");
    if( switch != nil ) {
        child = switch.getChild("prop");
        # switch should always have a property !
@@ -746,7 +759,7 @@ ElecConnectorArray.get = func( index ) {
 ElecConnector = {};
 
 ElecConnector.new = func( input, output, prop ) {
-   obj = { parents : [ElecConnector],
+   var obj = { parents : [ElecConnector],
 
            input : input,
            output : output,
@@ -765,11 +778,10 @@ ElecConnector.get_output = func {
 }
 
 ElecConnector.get_switch = func {
+    var switch = constant.TRUE;
+
     # switch is optional, on by default
-    if( me.prop == "" ) {
-        switch = constant.TRUE;
-    }
-    else {
+    if( me.prop != "" ) {
         switch = getprop(me.prop);
     }
 

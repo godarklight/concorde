@@ -52,6 +52,92 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
+<!-- TRANSPONDER -->
+
+  <instrument include="Instruments/concorde-atc-transponder.xml">
+   <name>Transponder</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>105</x>
+   <y>330</y>
+   <w>70</w>
+   <h>35</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-atc-identification.xml">
+   <name>Transponder identification</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>47</x>
+   <y>290</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-green-atc-reply.xml">
+   <name>Transponder reply</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>105</x>
+   <y>293</y>
+   <w>22</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-atc-test.xml">
+   <name>Transponder test</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>143</x>
+   <y>290</y>
+   <w>40</w>
+   <h>40</h>
+  </instrument>
+
 <!-- INS 3 -->
 
   <instrument include="Instruments/concorde-ins.xml">
@@ -96,7 +182,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <data-ident>/instrumentation/ins[2]/data/ident</data-ident>
     <data-left>/instrumentation/ins[2]/data/left</data-left>
     <data-right>/instrumentation/ins[2]/data/right</data-right>
     <mode-ctrl>/instrumentation/ins[2]/msu/mode</mode-ctrl>
@@ -428,9 +513,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <mode-ctrl>/instrumentation/ins[2]/msu/mode</mode-ctrl>
+    <warning-select>/instrumentation/ins[2]/light/warning</warning-select>
+    <mode-select>/instrumentation/ins[2]/msu/mode</mode-select>
     <test-ctrl>/instrumentation/ins[2]/control/test</test-ctrl>
-    <service-select>/instrumentation/ins[2]/serviceable</service-select>
    </params>
    <x>495</x>
    <y>435</y>
@@ -461,9 +546,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[2]/control/waypoint</wpt-ctrl>
-   </params>
    <x>435</x>
    <y>405</y>
    <w>25</w>
@@ -497,9 +579,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[2]/control/waypoint</wpt-ctrl>
-   </params>
    <x>465</x>
    <y>405</y>
    <w>25</w>
@@ -533,11 +612,40 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
+   <x>495</x>
+   <y>405</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-waypoint.xml">
+   <name>INS3 waypoint change</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>300</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>195</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
    <params>
     <wpt-ctrl>/instrumentation/ins[2]/control/waypoint</wpt-ctrl>
    </params>
-   <x>495</x>
-   <y>405</y>
+   <x>405</x>
+   <y>375</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -804,23 +912,15 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/sim/current-view/internal</property>
       <property>/systems/seat/captain</property>
       <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>170</value>
-      </greater-than>
-      <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
+       <value>-25</value>
       </less-than>
      </and>
      <property>/controls/seat/all</property>
     </or>
    </condition>
    <x>20</x>
-   <y>235</y>
+   <y>220</y>
    <w>75</w>
    <h>75</h>
   </instrument>
@@ -842,7 +942,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
+       <value>-25</value>
       </less-than>
      </and>
      <property>/controls/seat/all</property>
@@ -852,8 +952,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <frq-disp>/instrumentation/adf[1]/frequencies/selected-khz</frq-disp>
     <num>/systems/engines/engine[1]/engine-num</num>
    </params>
-   <x>155</x>
-   <y>235</y>
+   <x>185</x>
+   <y>220</y>
    <w>75</w>
    <h>75</h>
   </instrument>
@@ -866,14 +966,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/sim/current-view/internal</property>
       <property>/systems/seat/captain</property>
       <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>175</value>
-      </greater-than>
-      <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
        <value>-25</value>
       </less-than>
@@ -882,7 +974,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>12</x>
-   <y>185</y>
+   <y>170</y>
    <w>40</w>
    <h>40</h>
   </instrument>
@@ -904,7 +996,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </greater-than>
       <less-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
+       <value>-25</value>
       </less-than>
      </and>
      <property>/controls/seat/all</property>
@@ -913,10 +1005,256 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <frq-ctrl>/instrumentation/adf[1]/frequencies/selected-khz</frq-ctrl>
    </params>
-   <x>148</x>
-   <y>185</y>
+   <x>178</x>
+   <y>170</y>
    <w>40</w>
    <h>40</h>
+  </instrument>
+
+<!-- HF -->
+
+  <instrument include="Instruments/concorde-hf.xml">
+   <name>HF 1 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>275</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>320</x>
+   <y>220</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-hf.xml">
+   <name>HF 2 dial</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>280</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>185</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-65</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <frq-disp>/instrumentation/hf[1]/frequencies/selected-khz</frq-disp>
+    <num>/systems/engines/engine[1]/engine-num</num>
+   </params>
+   <x>465</x>
+   <y>220</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+<!-- ADC -->
+
+  <instrument include="Instruments/concorde-amber-adc-fault.xml">
+   <name>Fault on ADC 1</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>170</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-75</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>160</x>
+   <y>85</y>
+   <w>50</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-blue-adc-test.xml">
+   <name>Test on ADC 1</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>170</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>220</x>
+   <y>85</y>
+   <w>50</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-blue-adc-test.xml">
+   <name>Test on ADC 2</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>175</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <selector>/controls/adc[1]/selector</selector>
+   </params>
+   <x>280</x>
+   <y>85</y>
+   <w>50</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-amber-adc-fault.xml">
+   <name>Fault on ADC 2</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>180</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>340</x>
+   <y>85</y>
+   <w>50</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-adc-selector.xml">
+   <name>ADC 1 selector</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>170</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>210</x>
+   <y>40</y>
+   <w>90</w>
+   <h>60</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-adc-selector.xml">
+   <name>ADC 2 selector</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>265</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>170</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-70</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <selector>/controls/adc[1]/selector</selector>
+   </params>
+   <x>290</x>
+   <y>40</y>
+   <w>90</w>
+   <h>60</h>
   </instrument>
 
 <!-- TESTS -->
@@ -945,7 +1283,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>440</x>
-   <y>90</y>
+   <y>40</y>
    <w>40</w>
    <h>60</h>
   </instrument>
@@ -974,7 +1312,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>500</x>
-   <y>90</y>
+   <y>40</y>
    <w>50</w>
    <h>50</h>
   </instrument>

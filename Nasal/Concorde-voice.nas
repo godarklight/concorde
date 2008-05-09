@@ -10,7 +10,7 @@
 Callout = {};
 
 Callout.new = func {
-   obj = { parents : [Callout,System],
+   var obj = { parents : [Callout,System],
 
            autopilotsystem : nil,
 
@@ -19,8 +19,9 @@ Callout.new = func {
            crewvoice : Crewvoice.new(),
 
            ap : nil,
-           crew : nil,
+           automatas : nil,
            presets : nil,
+           voice : nil,
 
            MODIFYSEC : 15.0,                                 # to modify something
            ABSENTSEC : 15.0,                                 # less attention
@@ -88,7 +89,7 @@ Callout.new = func {
            engineerlanding : {},
            engineerflight : {},
 
-           checklist : "",
+           checklist : "holding",                 # otherwise startup is a long time without checklist
            automata : "",
            automata2 : ""
          };
@@ -100,10 +101,11 @@ Callout.new = func {
 
 Callout.init = func {
    me.ap = props.globals.getNode("/controls/autoflight");
-   me.crew = props.globals.getNode("/systems/crew");
+   me.automatas = props.globals.getNode("/systems/voice").getChildren("automata");
    me.presets = props.globals.getNode("/sim/presets");
+   me.voice = props.globals.getNode("/systems/voice");
 
-   me.init_ancestor("/systems/crew/voice");
+   me.init_ancestor("/systems/voice");
 
    me.selectft = me.ap.getChild("altitude-select").getValue();
 
@@ -113,8 +115,11 @@ Callout.init = func {
 }
 
 Callout.inittable = func( path, table ) {
-   node = props.globals.getNode(path).getChildren("message");
-   for( i=0; i < size(node); i=i+1 ) {
+   var key = "";
+   var text = "";
+   var node = props.globals.getNode(path).getChildren("message");
+
+   for( var i=0; i < size(node); i=i+1 ) {
         key = node[i].getChild("action").getValue();
         text = node[i].getChild("text").getValue();
         table[key] = text;
@@ -122,21 +127,21 @@ Callout.inittable = func( path, table ) {
 }
 
 Callout.inittext = func {
-   me.inittable("/systems/crew/voice/checklists/takeoff/pilot[0]", me.pilottakeoff );
-   me.inittable("/systems/crew/voice/checklists/takeoff/pilot[1]", me.pilotclimb );
-   me.inittable("/systems/crew/voice/checklists/takeoff/pilot[2]", me.allwaystakeoff );
-   me.inittable("/systems/crew/voice/checklists/takeoff/engineer[0]", me.engineertakeoff );
+   me.inittable("/systems/voice/checklists/takeoff/pilot[0]", me.pilottakeoff );
+   me.inittable("/systems/voice/checklists/takeoff/pilot[1]", me.pilotclimb );
+   me.inittable("/systems/voice/checklists/takeoff/pilot[2]", me.allwaystakeoff );
+   me.inittable("/systems/voice/checklists/takeoff/engineer[0]", me.engineertakeoff );
 
-   me.inittable("/systems/crew/voice/checklists/landing/pilot[0]", me.pilotlanding );
-   me.inittable("/systems/crew/voice/checklists/landing/pilot[1]", me.allwayslanding );
-   me.inittable("/systems/crew/voice/checklists/landing/engineer[0]", me.engineerlanding );
+   me.inittable("/systems/voice/checklists/landing/pilot[0]", me.pilotlanding );
+   me.inittable("/systems/voice/checklists/landing/pilot[1]", me.allwayslanding );
+   me.inittable("/systems/voice/checklists/landing/engineer[0]", me.engineerlanding );
 
-   me.inittable("/systems/crew/voice/checklists/goaround/pilot[0]", me.pilotgoaround );
+   me.inittable("/systems/voice/checklists/goaround/pilot[0]", me.pilotgoaround );
 
-   me.inittable("/systems/crew/voice/checklists/flight/pilot[0]", me.allwaysflight );
-   me.inittable("/systems/crew/voice/checklists/flight/engineer[0]", me.engineerflight );
+   me.inittable("/systems/voice/checklists/flight/pilot[0]", me.allwaysflight );
+   me.inittable("/systems/voice/checklists/flight/engineer[0]", me.engineerflight );
 
-   me.inittable("/systems/crew/voice/checklists/all/pilot[0]", me.allways );
+   me.inittable("/systems/voice/checklists/all/pilot[0]", me.allways );
 }
 
 Callout.set_relation = func( autopilot ) {
@@ -155,7 +160,7 @@ Callout.crewtextexport = func {
 }
 
 Callout.schedule = func {
-   if( me.crew.getChild("serviceable").getValue() ) {
+   if( me.voice.getChild("serviceable").getValue() ) {
        me.set_rates( me.ABSENTSEC );
 
        me.vertical = me.ap.getChild("vertical").getValue();
@@ -198,15 +203,15 @@ Callout.schedule = func {
 
    else {
        me.rates = me.ABSENTSEC;
-       me.crew.getChild("checklist").setValue("no crew");
+       me.voice.getChild("checklist").setValue("no crew");
    }
 
    settimer( func { me.schedule(); }, me.rates );
 }
 
 Callout.whichchecklist = func {
-   curairport = me.presets.getChild("airport-id").getValue();
-   currunway = me.presets.getChild("runway").getValue();
+   var curairport = me.presets.getChild("airport-id").getValue();
+   var currunway = me.presets.getChild("runway").getValue();
 
 
    # ground speed, because wind distorts asi
@@ -290,7 +295,9 @@ Callout.whichchecklist = func {
    me.airport = curairport;
    me.runway = currunway;
 
-   me.crew.getChild("checklist").setValue(me.checklist);
+   me.voice.getChild("checklist").setValue(me.checklist);
+   me.automatas[0].setValue( me.automata );
+   me.automatas[1].setValue( me.automata2 );
 }
 
 Callout.snapshot = func {
@@ -308,9 +315,8 @@ Callout.playvoices = func {
 }
 
 Callout.Vkt = func( minkt, maxkt ) {
-    weightlb = me.noinstrument["weight"].getValue();
-
-    valuekt = constantaero.Vkt( weightlb, minkt, maxkt );
+    var weightlb = me.noinstrument["weight"].getValue();
+    var valuekt = constantaero.Vkt( weightlb, minkt, maxkt );
 
     return valuekt;
 }
@@ -500,7 +506,7 @@ Callout.flight = func {
 }
 
 Callout.flightallways = func {
-   if( !me.crew.getChild("emergency").getValue() ) {
+   if( !me.slave["crew"].getChild("emergency").getValue() ) {
        altitudeft = me.ap.getChild("altitude-select").getValue();
        if( me.selectft != altitudeft ) {
            me.selectft = altitudeft;
@@ -744,7 +750,8 @@ Callout.landingtouchdown = func( limitft ) {
 }
 
 Callout.landingallways = func {
-   altitudeft = me.ap.getChild("altitude-select").getValue();
+   var altitudeft = me.ap.getChild("altitude-select").getValue();
+
    if( me.selectft != altitudeft ) {
        me.selectft = altitudeft;
        me.delayselectftsec = me.rates;
@@ -854,9 +861,11 @@ Callout.goaround = func {
 # ALWAYS 
 # ------
 Callout.checkallways = func {
+   var change = constant.FALSE;
+
    if( me.nose != me.lastnose or me.gear != me.lastgear ) {
        change = constant.TRUE;
-       if( me.nose == 1.0 and me.gear == 1.0 ) {
+       if( me.nose == constantaero.NOSEDOWN and me.gear == constantaero.GEARDOWN ) {
            if( !me.crewvoice.stepallways( "5greens", me.allways ) ) {
                change = constant.FALSE;
            }
@@ -870,7 +879,7 @@ Callout.checkallways = func {
    if( me.gear != me.lastgear ) {
        change = constant.TRUE;
        # on pull of lever
-       if( me.lastgear == 1.0 and me.gear < 1.0 ) {
+       if( me.lastgear == constantaero.GEARDOWN and me.gear < constantaero.GEARDOWN ) {
            if( !me.crewvoice.stepallways( "gearup", me.allways ) ) {
                change = constant.FALSE;
            }
@@ -890,7 +899,7 @@ Callout.checkallways = func {
 Crewvoice = {};
 
 Crewvoice.new = func {
-   obj = { parents : [Crewvoice,System],
+   var obj = { parents : [Crewvoice,System],
 
            voicebox : Voicebox.new(),
 
@@ -921,7 +930,7 @@ Crewvoice.new = func {
 }
 
 Crewvoice.init = func {
-   me.init_ancestor("/systems/crew/voice");
+   me.init_ancestor("/systems/voice");
 
    me.voicecontrol = props.globals.getNode("/controls/crew/voice");
    me.sound = props.globals.getNode("/sim/sound/voices");
@@ -930,7 +939,7 @@ Crewvoice.init = func {
 }
 
 Crewvoice.textexport = func {
-   feedback = me.voicebox.textexport();
+   var feedback = me.voicebox.textexport();
 
    # also to test sound
    if( me.voicebox.is_on() ) {
@@ -950,6 +959,8 @@ Crewvoice.schedule = func {
 }
 
 Crewvoice.stepallways = func( state, table, repeat = 0 ) {
+   var result = constant.FALSE;
+
    if( !me.asynchronous ) {
        if( me.nextsec <= 0 ) {
            me.phrase = table[state];
@@ -966,12 +977,6 @@ Crewvoice.stepallways = func( state, table, repeat = 0 ) {
            me.asynchronous = constant.TRUE;
            result = constant.TRUE;
        }
-       else {
-           result = constant.FALSE;
-       }
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -1010,13 +1015,11 @@ Crewvoice.talkengineer = func( phrase ) {
 }
 
 Crewvoice.willplay = func {
+   var result = constant.FALSE;
+
    if( me.phrase != "" or me.phraseengineer != "" ) {
        result = constant.TRUE;
    }
-   else {
-       result = constant.FALSE;
-   }
-
 
    return result;
 }
@@ -1076,7 +1079,7 @@ Crewvoice.playvoices = func( rates ) {
 Speedperception = {};
 
 Speedperception.new = func {
-   obj = { parents : [Speedperception],
+   var obj = { parents : [Speedperception],
 
            ratiostep : 0.0,                                  # rates
 
@@ -1109,29 +1112,27 @@ Speedperception.schedule = func( speedkt, lastspeedkt ) {
 }
 
 Speedperception.approachdecrease = func {
+    var result = constant.FALSE;
+
     if( me.reactionkt < me.DECAYKT ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Speedperception.finaldecrease = func {
+    var result = constant.FALSE;
+
     if( me.reactionkt < me.FINALKT ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Speedperception.velocitykt = func( speedkt ) {
-    valuekt = speedkt - me.reactionkt * me.ratiostep;
+    var valuekt = speedkt - me.reactionkt * me.ratiostep;
 
     return valuekt;
 }
@@ -1144,7 +1145,7 @@ Speedperception.velocitykt = func( speedkt ) {
 Altitudeperception = {};
 
 Altitudeperception.new = func {
-   obj = { parents : [Altitudeperception],
+   var obj = { parents : [Altitudeperception],
 
            ratio1s : 0.0,                                    # 1 s
            ratiostep : 0.0,                                  # rates
@@ -1184,60 +1185,58 @@ Altitudeperception.schedule = func( speedfpm ) {
 
 Altitudeperception.climbft = func( altitudeft ) {
    # adds 1 seconds for better matching
-   valueft = altitudeft - me.reactionft * ( me.ratiostep + me.ratio1s );
+   var valueft = altitudeft - me.reactionft * ( me.ratiostep + me.ratio1s );
 
    return valueft;
 }
 
 Altitudeperception.insideft = func( altitudeft, targetft ) {
+    var result = constant.FALSE;
+
     if( altitudeft >= targetft - me.MAXFT and altitudeft <= targetft + me.MAXFT  ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Altitudeperception.inside = func {
+    var result = constant.FALSE;
+
     if( !me.levelabove and !me.levelbelow ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Altitudeperception.aboveft = func( altitudeft, targetft, marginft ) {
+    var result = constant.FALSE;
+
     if( altitudeft > targetft + marginft  ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Altitudeperception.belowft = func( altitudeft, targetft, marginft ) {
+    var result = constant.FALSE;
+
     if( altitudeft < targetft - marginft  ) {
         result = constant.TRUE;
-    }
-    else {
-        result = constant.FALSE;
     }
 
     return result;
 }
 
 Altitudeperception.setlevel = func( altitudeft ) {
-   if( altitudeft < 10000 ) {
-       level = 0;
-   }
-   elsif( altitudeft >= 10000 and altitudeft < 20000 ) {
+   var levelft = 0.0;
+
+   # default
+   var level = 0;
+
+   if( altitudeft >= 10000 and altitudeft < 20000 ) {
        level = 1;
    }
    elsif( altitudeft >= 20000 and altitudeft < 30000 ) {
@@ -1268,9 +1267,15 @@ Altitudeperception.setlevel = func( altitudeft ) {
 }
 
 Altitudeperception.levelchange = func( altitudeft ) {
-   result = constant.FALSE;
+   var level = 0;
+   var previousft = 0.0;
+   var nextft = 0.0;
+   var currentft = 0.0;
+   var below = constant.FALSE;
+   var above = constant.FALSE;
+   var result = constant.FALSE;
 
-   # below current flight level
+   # reaches lower flight level
    if( me.level10000 > 0 ) {
        level = me.level10000 - 1;
        previousft = me.climbft( level * me.FLIGHTLEVELFT );
@@ -1282,7 +1287,7 @@ Altitudeperception.levelchange = func( altitudeft ) {
        }
    }
 
-   # above current flight level
+   # reaches higher flight level
    if( !result ) {
        level = me.level10000 + 1;
        nextft = me.climbft( level * me.FLIGHTLEVELFT );
@@ -1294,27 +1299,25 @@ Altitudeperception.levelchange = func( altitudeft ) {
        }
    }
 
-   # returns to current flight level
+   # crosses current flight level
    if( !result and me.level10000 > 0 ) {
        currentft = me.climbft( me.level10000 * me.FLIGHTLEVELFT );
 
        below = me.belowft( altitudeft, currentft, me.MARGINFT );
        above = me.aboveft( altitudeft, currentft, me.MARGINFT );
 
-       if( ( me.levelabove or me.inside() ) and below ) {
+       if( me.levelabove and below ) {
            result = constant.TRUE;
            me.levelabove= constant.FALSE;
            me.levelbelow = constant.TRUE;
        }
-       elsif( ( me.levelbelow or me.inside() ) and above ) {
+       elsif( me.levelbelow and above ) {
            result = constant.TRUE;
            me.levelabove = constant.TRUE;
            me.levelbelow = constant.FALSE;
        }
        else {
            result = constant.FALSE;
-           me.levelabove = above;
-           me.levelbelow = below;
        }
    }
 
@@ -1322,15 +1325,13 @@ Altitudeperception.levelchange = func( altitudeft ) {
 }
 
 Altitudeperception.transitionchange = func( altitudeft ) {
-   levelft = me.climbft( me.TRANSITIONFT );
+   var result = constant.FALSE;
+   var levelft = me.climbft( me.TRANSITIONFT );
 
    if( ( !me.transition and me.aboveft( altitudeft, levelft, me.MARGINFT ) ) or
        ( me.transition and me.belowft( altitudeft, levelft, me.MARGINFT ) ) ) {
        me.transition = !me.transition;
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;

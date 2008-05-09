@@ -23,22 +23,16 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <and include="concorde-cond-test-center.xml">
+      <and>
+       <or include="concorde-cond-test-center.xml"/>      <!-- bug -->
        <or>
         <greater-than>
          <property>/systems/hydraulic/brakes/green-accu-psi</property>
          <value>400.0</value>
         </greater-than>
-        <and>
-         <equals>
-          <property>/controls/gear/brake-left</property>
-          <value>0.0</value>
-         </equals>
-         <equals>
-          <property>/controls/gear/brake-right</property>
-          <value>0.0</value>
-         </equals>
-        </and>
+        <not>
+         <property>/systems/hydraulic/brakes/pedals</property>
+        </not>
        </or>
       </and>
      </or>

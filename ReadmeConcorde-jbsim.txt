@@ -122,15 +122,19 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 0.9.11 : minimal version.
+- 1.0.0 : minimal version.
 
 
 Keyboard
 ========
+- "alt-b"  : emergency "b"rakes.
 - "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
 - "ctrl-F" : a"F"terburner.
 - "f"      : "f"ull cockpit (all instruments).
+- "alt-g"  : "g"ear standby.
+- "alt-n"  : "n"ose standby.
 - "q"      : "q"uit speed up.
+- "y"      : toggle "y"oke.
 
 Views
 -----
@@ -138,7 +142,7 @@ Views
 - "ctrl-J" : Copilot view.
 - "ctrl-K" : Observer view (floating).
 - "ctrl-O" : "O"verhead view.
-- "ctrl-W" : Ste"W"ard view.
+- "ctrl-W" : Ste"W"ard view (floating).
 - "shift-ctrl-X" : restore floating view.
 
 Virtual crew
@@ -153,9 +157,9 @@ Unchanged behaviour
 
 Same behaviour
 --------------
-- "b / B"  : parking brake.
+- "b / B"  : brakes / parking brakes.
 - "g / G"  : gear.
-- "s"      : swaps between Captain and Center 2D panels.
+- "S"      : swaps between Captain and Center 2D panels.
 - "ctrl-A" : "A"ltitude acquire.
 - "ctrl-G" : "G"lide slope.
 - "ctrl-N" : "N"av 1 hold.
@@ -230,7 +234,7 @@ Use virtual engineer (or to 2D panel) to start :
 
 Hydraulics
 ----------
-- nose, gear, brakes depend of green (up only) and yellow circuits.
+- nose, gear, brakes depend of green and yellow (standby) circuits.
 - ground pumps require ground electrical power.
 
 Radio
@@ -279,7 +283,7 @@ Copilot
 
 Engineer
 --------
-- center of gravity, tanks and engine rating (not supported by FDM).
+- center of gravity, tanks and engine rating / schedule (not supported by FDM).
 - taxi with 2 engines, after landing.
 
 
@@ -289,9 +293,13 @@ Not listed warning lights are not yet implemented.
 
 Sound
 -----
+- beep    : amber or red warning.
+- beep (continuous) : loss of MWS.
+- beep (repeated)   : press the red warnings on MWS.
 - horn    : too low speed.
 - pull-up : excessive descent speed; too low gear at approach, nose not down at touch down.
 - rattle  : overspeed.
+- siren   : loss of autopilot.
 - whistle : JSBSim stall (rare), aft center of gravity warning, underspeed.
 
 Red
@@ -299,20 +307,23 @@ Red
 - "AP"    : instrument failure, abnormal pitch, abnormal AoA.
 - "AT"    : instrument failure, autothrottle expected.
 - "AUTO LAND" : autothrottle expected, ILS missing, outside path at touch down.
+- "INS"   : INS not aligned, or in failure.
 - "M/CG"  : center of gravity outside of corridor.
 - "TERRAIN"   : excessive descent speed; too low gear at approach, nose not down at touch down.
-- "TYRE"  : tyre pressure.
 
 Overhead
 ........
+- "ADS"   : ADC failure.
 - "DOORS" : ground supply.
 - "ELEC"  : electrical failure.
 - "ENG"   : engine stopped.
 - "FEEL"  : no green and blue hydraulics.
 - "ICE"   : engine and wing anti-icing expected.
+- "INS"   : INS not aligned, or in failure.
 - "INT"   : intake without hydraulics.
 - "PFC"   : flight control channel on green or mechanical.
 - "PRESS" : pressurization failure, no air conditioning.
+- "THROT" : throttle failure.
 
 Brakes
 ......
@@ -332,6 +343,12 @@ Electrical
 Engines
 .......
 - "INTAKE" : no hydraulics.
+- "THROT"  : throttle failure.
+
+Gear
+....
+- "TYRE"  : tyre pressure.
+- "NOSE WHEEL"   : nose steering without hydraulics.
 
 Hydraulics
 ..........
@@ -339,7 +356,7 @@ Hydraulics
 
 INS
 ...
-- "WARN"   : INS failure.
+- "WARN"   : not aligned, or in failure.
 
 Pressurization
 ..............
@@ -354,11 +371,16 @@ Amber
 
 Overhead
 ........
+- "ADC"  : electrical failure.
 - "ELEC" : electrical failure.
 - "FUEL" : fuel failure.
 - "HYD"  : hydraulical failure.
 - "INHIBIT" : all MWS lights inhibited, except red PFC and ENG.
 - "INT"  : intake lost its main hydraulics.
+
+ADC
+...
+- "ADC"  : electrical failure.
 
 Electrical
 ..........
@@ -386,7 +408,7 @@ Hydraulics
 INS
 ...
 - "ALERT"  : 1 minute until next waypoint.
-- "BAT"    : no voltage.
+- "BAT"    : no AC voltage.
 - "REMOTE" : waypoint insert to all INS.
 
 Yellow
@@ -410,6 +432,10 @@ Fuel
 - "ACC"  : no fuel pump.
 - "LOW PRESSURE" : engine fuel pump stopped, empty tank.
 
+INS
+...
+- "R NAV" : update by DME.
+
 Blue
 ----
 - "REV"  : reverse thrust.
@@ -418,6 +444,10 @@ Overhead
 ........
 - "EXTENDED" : landing light not retracted.
 - "ICE " : ice condition detected.
+
+ADC
+...
+- "TEST" : test completed.
 
 Hydraulics
 ..........
@@ -437,11 +467,16 @@ Overhead
 Engines
 .......
 - "LH IGN" : engine ignition.
+- "LO"     : low schedule.
 - "RH IGN" : engine ignition.
 
 Hydraulics
 ..........
 - "R.A.T." : RAM Air Turbine deployed.
+
+INS
+...
+- READY/NAV" : aligned.
 
 White
 -----
@@ -452,6 +487,12 @@ White
 Electrical
 ..........
 - "GROUND PWR AVAILABLE" : electrical power from ground service.
+
+Engines
+.......
+- "F/O" : flyover schedule.
+- "HI"  : high schedule.
+- "MID" : mid schedule.
 
 
 Consumption
@@ -512,6 +553,7 @@ JSBSim
 - climb Mach 0.95 - 1.7 in 10 minutes.
 - fuel around 20500 kg/h at Mach 2.02 (E).
 - intake failure (4 at once).
+- weaker supersonic lift.
 
 
 TO DO
@@ -527,7 +569,6 @@ TO DO instruments
 
 TO FDM
 -------
-- weaker supersonic lift (no negativ AOA).
 - inertia of surfaces.
 - move autopilot PID inside the FDM ?
 - additional drag when RAT.
@@ -547,14 +588,13 @@ TO DO JSBSim
 Known problems
 ==============
 - the file in application-data (saved configuration) causes the bounce at loading
- (it seems to trim over the runway).
+ (it seems to trim over the runway) : in case of FDM crash, remove this file
+ at each launch.
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
 ------------------------
 - heading hold is a little slow to converge.
-- if deviation is enough large (supersonic speed), close waypoint may not pop for the next one,
-  to avoid a strong bank.
 
 Known problems autoland
 -----------------------
@@ -564,10 +604,10 @@ Known problems autoland
 
 Known problems sound
 --------------------
+- once one of engines is shutdown, Concorde-sound.xml engines are mute, if not idle.
 - ATIS volume (VHF) changed only at the frequency swap.
 - exception through OpenAL errors (low hardware ?) means too many sounds :
   remove for example engine start/shutdown or external sounds.
-  This is why engine shutdown/start sound is the same for all views.
 
 Known problems keyboard
 -----------------------
@@ -575,13 +615,14 @@ Known problems keyboard
 
 Known problems OSG
 ------------------
-The following artefacts are supposed to be solved by OSG (works with 0.9.11 / Plib) :
+The following artefacts are supposed to be solved by OSG (works with 1.0.0 / Plib) :
 - missing hotspots.
 - panels swaping too early.
 - instrument transparent through layer with alpha (steward view).
 - blurr on texture crop (example : left edge of artificial horizon). 
 - transparency order of blinking anti-collision light over wing.
 - dark external lights.
+- no cockpit lighting.
 - engineer 3D seat/crew doesn't rotate forwards at takeoff (reset by ctrl-E).
 
 
@@ -593,7 +634,6 @@ Secondary problems FDM
 - very light waddling at mach 2 (autopilot rudder trim, to solve roll of autopilot heading
   at Mach speeds).
 - disable yaw damper, when turbulence ?
-- fuel consumption too low at idle (ground).
 - oil pressure too high.
 
 Secondary problems JSBSim
@@ -603,6 +643,7 @@ Secondary problems JSBSim
 Secondary problems autopilot
 ----------------------------
 - confirm autoland landing speed, whatever the wind.
+- to substitute the IVSI, see Systems/Concorde-init-instrumentation.xml.
 
 Secondary problems instruments
 ----------------------------
@@ -640,4 +681,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-9 December 2007.
+8 May 2008.

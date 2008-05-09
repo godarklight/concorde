@@ -87,7 +87,9 @@
     <transformation>
      <type>y-shift</type>
      <condition>
-      <property>/controls/gear/neutral</property>
+      <not>
+       <property>/controls/gear/hydraulic</property>
+      </not>
      </condition>
      <offset>-25</offset>
     </transformation>
@@ -96,9 +98,7 @@
      <condition>
       <and>
        <property>/controls/gear/gear-down</property>
-       <not>
-        <property>/controls/gear/neutral</property>
-       </not>
+       <property>/controls/gear/hydraulic</property>
       </and>
      </condition>
      <offset>-55</offset>
@@ -170,13 +170,22 @@
 
  </layers>
 
-<!-- on the ground, up selection is inhibited -->
-
  <actions>
+
+<!-- - green hydraulics.
+     - not neutral.
+-->
 
   <action>
    <name>extend</name>
-   <condition include="concorde-cond-gear-down.xml"/>
+   <condition>
+    <and include="concorde-cond-voltage-gear.xml">
+     <property>/systems/hydraulic/power/gear</property>
+     <not>
+      <property>/controls/gear/gear-down</property>
+     </not>
+    </and>
+   </condition>
    <button>0</button>
    <x>-7</x>
    <y>-50</y>
@@ -188,9 +197,23 @@
    </binding>
   </action> 
 
+<!-- - green hydraulics.
+     - prevents retract on ground.
+     - not neutral.
+-->
+
   <action>
    <name>retract</name>
-   <condition include="concorde-cond-gear-up.xml"/>
+   <condition>
+    <and include="concorde-cond-voltage-gear.xml">
+     <property>/systems/hydraulic/power/gear</property>
+     <greater-than>
+      <property>/position/altitude-agl-ft</property>
+      <value>20.0</value>
+     </greater-than>
+     <property>/controls/gear/gear-down</property>
+    </and>
+   </condition>
    <button>0</button>
    <x>-7</x>
    <y>-50</y>
@@ -216,7 +239,7 @@
    <h>96</h>
    <binding>
     <command>property-toggle</command>
-    <property>/controls/gear/neutral</property>
+    <property>/controls/gear/hydraulic</property>
    </binding>
   </action> 
 

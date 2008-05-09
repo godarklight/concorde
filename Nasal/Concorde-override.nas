@@ -23,10 +23,10 @@ controls.throttleAxis = func {
         override_throttleAxis();
     }
     else {
-        val = cmdarg().getNode("setting").getValue();
+        var val = cmdarg().getNode("setting").getValue();
         if(size(arg) > 0) { val = -val; }
 
-        position = (1 - val)/2;
+        var position = (1 - val)/2;
 
         globals.Concorde.enginesystem.set_throttle( position );
     }
@@ -38,20 +38,20 @@ override_gearDown = controls.gearDown;
 
 controls.gearDown = func( sign ) {
     if( sign < 0 ) {
-        if( globals.Concorde.hydraulicsystem.gear_up() ) {
+        if( globals.Concorde.gearsystem.can_up() ) {
             override_gearDown( sign );
         }
 
-        # neutral, once retracted
-        if( getprop("/gear/gear[0]/position-norm") == 0.0 ) {
-            setprop("/controls/gear/neutral",globals.Concorde.constant.TRUE);
+        # 2) neutral, once retracted
+        if( getprop("/gear/gear[0]/position-norm") == globals.Concorde.constantaero.GEARUP ) {
+            setprop("/controls/gear/hydraulic",globals.Concorde.constant.FALSE);
         }
     }
     elsif( sign > 0 ) {
         # remove neutral to get hydraulics
-        setprop("/controls/gear/neutral",globals.Concorde.constant.FALSE);
+        setprop("/controls/gear/hydraulic",globals.Concorde.constant.TRUE);
 
-        if( globals.Concorde.hydraulicsystem.gear_down() ) {
+        if( globals.Concorde.gearsystem.can_down() ) {
             override_gearDown( sign );
         }
     }
@@ -63,12 +63,12 @@ override_flapsDown = controls.flapsDown;
 
 controls.flapsDown = func( sign ) {
     if( sign < 0 ) {
-        if( globals.Concorde.hydraulicsystem.nose_up() ) {
+        if( globals.Concorde.noseinstrument.can_up() ) {
             override_flapsDown( sign );
         }
     }
     elsif( sign > 0 ) {
-        if( globals.Concorde.hydraulicsystem.nose_down() ) {
+        if( globals.Concorde.noseinstrument.can_down() ) {
             override_flapsDown( sign );
         }
     }
@@ -79,7 +79,7 @@ controls.flapsDown = func( sign ) {
 override_applyBrakes = controls.applyBrakes;
 
 controls.applyBrakes = func(v, which = 0) {
-    if( globals.Concorde.hydraulicsystem.has_brakes() ) {
+    if( globals.Concorde.hydraulicsystem.brakes_pedals( v ) ) {
         # default
         override_applyBrakes( v, which );
     }
@@ -91,7 +91,8 @@ override_applyParkingBrake = controls.applyParkingBrake;
 
 controls.applyParkingBrake = func(v) {
     if (!v) { return; }
+    globals.Concorde.hydraulicsystem.brakesparkingexport();
     var p = "/controls/gear/brake-parking-lever";
-    setprop(p, var i = !getprop(p));
+    var i = getprop(p);
     return i;
 }

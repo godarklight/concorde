@@ -7,6 +7,12 @@
  <w-base>104</w-base>
  <h-base>26</h-base>
 
+ <params>
+  <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
+  <decision-ft>/instrumentation/radio-altimeter[0]/decision-ft</decision-ft>
+  <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
+ </params>
+
 
  <layers>
 <!-- translucent lens -->  
@@ -21,14 +27,11 @@
      <or>
       <not include="concorde-cond-voltage-horizon.xml"/>
       <not>
-       <property>/systems/gpws/serviceable</property>
-      </not>
-      <not>
-       <property>/systems/gpws/decision-height</property>
+       <property alias="../../../../../../../params/decision-ctrl"/>
       </not>
       <greater-than-equals>
-       <property>/position/altitude-agl-ft</property>
-       <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
+       <property alias="../../../../../../../params/ft-sel"/>
+       <property n="1" alias="../../../../../../../params/decision-ft"/>
       </greater-than-equals>
      </or>
     </condition>

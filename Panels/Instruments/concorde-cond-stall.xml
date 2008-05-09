@@ -20,40 +20,12 @@
      <value>20</value>
     </greater-than>
    </and>
-   <greater-than>
-    <property>/orientation/pitch-deg</property>
-    <value>16.5</value>
-   </greater-than>
-   <greater-than>
-    <property>instrumentation/cg/percent</property>
-    <property n="1">instrumentation/cg/max-extreme-percent</property>
-   </greater-than>
-   <and>
-    <greater-than-equals>
-     <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-     <value>41000</value>
-    </greater-than-equals>
-    <less-than>
-     <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-     <value>280</value> <!-- Vla 300 kt -->
-    </less-than>
-   </and>
-   <and>
-    <less-than>
-     <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-     <value>41000</value>
-    </less-than>
-    <greater-than>
-     <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
-     <value>15000</value>
-    </greater-than>
-    <less-than>
-     <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-     <value>230</value> <!-- Vla 250 kt -->
-    </less-than>
-   </and>
+   <property>/systems/mws/stall</property>
   </or>
   <not include="concorde-cond-voltage-bulb.xml"/>
+  <not>
+   <property>/controls/audio/cancel</property>
+  </not>
  </and>
 
 </PropertyList>

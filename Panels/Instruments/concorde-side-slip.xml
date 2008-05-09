@@ -11,6 +11,12 @@
  <w-base>100</w-base>
  <h-base>20</h-base>
 
+ <params>
+  <serviceable>/instrumentation/side-slip[0]/serviceable</serviceable>
+  <angle-sel>/instrumentation/side-slip[0]/angle-deg</angle-sel>
+ </params>
+
+
  <layers>
 
   <layer>
@@ -49,11 +55,11 @@
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>instrumentation/side-slip/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>x-shift</type>
-     <property>instrumentation/side-slip/angle-deg</property>
+     <property alias="../../../../../params/angle-sel"/>
      <min>-15.0</min>
      <max>15.0</max>
      <scale>1.0</scale>
@@ -74,7 +80,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not> 
-      <property>instrumentation/side-slip/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not> 
     </or>
    </condition>
@@ -105,7 +111,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not> 
-      <property>instrumentation/side-slip/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not> 
     </or>
    </condition>

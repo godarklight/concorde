@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+
+<!-- ADC light :
+
+     - power supply interrupted more than 1 s.
+-->
+
+
+<PropertyList>
+ <name>Fault on Air Data Computer</name>
+ <w-base>104</w-base>
+ <h-base>26</h-base>
+
+ <params>
+  <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
+ </params>
+
+
+ <layers>
+<!-- translucent lens -->  
+  <layer>
+   <name>fault light</name>
+   <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <or include="concorde-cond-voltage-bulb.xml">
+      <and>
+       <or include="concorde-cond-test-center.xml"/>      <!-- bug -->
+       <or include="concorde-cond-voltage-inst.xml"/>
+      </and>
+     </or>
+    </condition>
+
+    <layer include="concorde-bulb-off.xml">
+     <w>104</w>
+     <h>26</h>
+    </layer>
+
+    <layer>
+     <name>Background off</name>
+     <type>switch</type>
+
+     <layer>
+      <name>ADC 1</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>1</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-adc1.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+
+     <layer>
+      <name>ADC 2</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-adc2.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+     </layer>
+
+    </layer>
+   </layer>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+
+    <layer include="concorde-bulb-on.xml">
+     <condition include="concorde-cond-light-center.xml"/>
+     <w>104</w>
+     <h>26</h>
+    </layer>
+
+    <layer>
+     <name>Background on</name>
+     <type>switch</type>
+
+     <layer>
+      <name>ADC 1</name>
+      <condition>
+       <equals>
+        <property alias="../../../../../../../../params/eng-num"/>
+        <value>1</value>
+       </equals>
+      </condition>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-adc1.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
+
+     <layer>
+      <name>ADC 2</name>
+      <texture>
+       <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-adc2.rgb</path>
+       <x1>0.0</x1>
+       <y1>0.25</y1>
+       <x2>1.0</x2>
+       <y2>0.75</y2>
+      </texture>
+      <w>104</w>
+      <h>26</h>
+      <emissive>true</emissive>
+     </layer>
+
+    </layer>
+   </layer>
+  </layer>
+
+ </layers>
+
+</PropertyList>

@@ -57,7 +57,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
+       <value>0</value>
       </greater-than>
      </and>
      <property>/controls/seat/all</property>
@@ -67,8 +67,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <left-extended>/controls/lighting/external/main-landing[0]/norm</left-extended>
     <right-extended>/controls/lighting/external/main-landing[1]/norm</right-extended>
    </params>
-   <x>100</x>
-   <y>70</y>
+   <x>110</x>
+   <y>75</y>
    <w>44</w>
    <h>22</h>
   </instrument>
@@ -82,7 +82,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       <property>/systems/seat/captain</property>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
+       <value>0</value>
       </greater-than>
      </and>
      <property>/controls/seat/all</property>
@@ -92,7 +92,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <light-extend>/controls/lighting/external/main-landing[0]/extend</light-extend>
     <light-extend2>/controls/lighting/external/main-landing[1]/extend</light-extend2>
    </params>
-   <x>50</x>
+   <x>70</x>
    <y>30</y>
    <w>90</w>
    <h>45</h>
@@ -113,7 +113,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>140</x>
+   <x>190</x>
    <y>80</y>
    <w>50</w>
    <h>25</h>
@@ -134,7 +134,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>130</x>
+   <x>180</x>
    <y>65</y>
    <w>100</w>
    <h>25</h>
@@ -159,10 +159,205 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <light-on>/controls/lighting/external/main-landing[0]/on</light-on>
     <light-on2>/controls/lighting/external/main-landing[1]/on</light-on2>
    </params>
-   <x>130</x>
+   <x>187</x>
    <y>30</y>
    <w>90</w>
    <h>45</h>
+  </instrument>
+
+<!-- WINDSHIELD DE-ICE -->
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Left windshield overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>280</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Right windshield overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>350</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-icing-windshield.xml">
+   <name>Windshield de-ice</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>303</x>
+   <y>25</y>
+   <w>90</w>
+   <h>60</h>
+  </instrument>
+
+<!-- VISOR DE-ICE -->
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Left visor overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>420</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Right visor overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>490</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-icing-visor.xml">
+   <name>Visor de-ice</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>443</x>
+   <y>25</y>
+   <w>90</w>
+   <h>60</h>
+  </instrument>
+
+<!-- WINDOW DEMIST -->
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Left window overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>560</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-yellow-icing-o-heat.xml">
+   <name>Right window overheat</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>630</x>
+   <y>75</y>
+   <w>44</w>
+   <h>22</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-icing-window.xml">
+   <name>Sliding side window demist</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>583</x>
+   <y>25</y>
+   <w>90</w>
+   <h>60</h>
   </instrument>
 
 <!-- LANDING TAXI LIGHTS -->
@@ -186,8 +381,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <left-extended>/controls/lighting/external/landing-taxi[0]/norm</left-extended>
     <right-extended>/controls/lighting/external/landing-taxi[0]/norm</right-extended>
    </params>
-   <x>715</x>
-   <y>70</y>
+   <x>695</x>
+   <y>75</y>
    <w>44</w>
    <h>22</h>
   </instrument>
@@ -211,7 +406,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <light-extend>/controls/lighting/external/landing-taxi[0]/extend</light-extend>
     <light-extend2>/controls/lighting/external/landing-taxi[1]/extend</light-extend2>
    </params>
-   <x>710</x>
+   <x>682</x>
    <y>30</y>
    <w>90</w>
    <h>45</h>
@@ -232,7 +427,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>780</x>
+   <x>775</x>
    <y>65</y>
    <w>100</w>
    <h>25</h>
@@ -257,7 +452,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <light-on>/controls/lighting/external/landing-taxi[0]/on</light-on>
     <light-on2>/controls/lighting/external/landing-taxi[1]/on</light-on2>
    </params>
-   <x>790</x>
+   <x>782</x>
    <y>30</y>
    <w>90</w>
    <h>45</h>
@@ -280,7 +475,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>820</x>
+   <x>875</x>
    <y>80</y>
    <w>50</w>
    <h>25</h>
@@ -301,7 +496,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>855</x>
+   <x>910</x>
    <y>65</y>
    <w>75</w>
    <h>25</h>
@@ -322,7 +517,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>860</x>
+   <x>912</x>
    <y>30</y>
    <w>90</w>
    <h>60</h>

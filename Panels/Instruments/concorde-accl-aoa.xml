@@ -3,7 +3,6 @@
 <!-- Accelorometer and AOA :
 
      - TODO : the real AoA is a white moving tape.
-     - TODO : serviceable ?
 -->
 
 <PropertyList>
@@ -11,6 +10,13 @@
  <name>G and AOA display</name>
  <w-base>50</w-base>
  <h-base>200</h-base>
+
+ <params>
+  <serviceable>/instrumentation/accelerometer-aoa[0]/serviceable</serviceable>
+  <g-sel>/instrumentation/accelerometer-aoa[0]/g</g-sel>
+  <aoa-sel>/instrumentation/accelerometer-aoa[0]/alpha-deg</aoa-sel>
+ </params>
+
 
  <layers>
 
@@ -58,9 +64,13 @@
      <offset>-9</offset> <!-- 1 g -->
     </transformation> 
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <type>x-shift</type>
-     <property>/instrumentation/accelerometer-aoa/g</property>
+     <property alias="../../../../../params/g"/>
      <min>-1.0</min>
      <max>3.5</max>
      <scale>1.0</scale>
@@ -94,9 +104,13 @@
      <offset>21</offset> <!-- aligned right -->
     </transformation> 
     <transformation>
-     <condition include="concorde-cond-voltage-inst.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-inst.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <type>x-shift</type>
-     <property>/instrumentation/accelerometer-aoa/alpha-deg</property>
+     <property alias="../../../../../params/alpha-deg"/>
      <min>-5.0</min>
      <max>25.0</max>
      <scale>1.0</scale>
@@ -112,7 +126,12 @@
   <layer>
    <name>OFF flag</name>
    <condition>
-    <not include="concorde-cond-voltage-inst.xml"/>
+    <or>
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not>
+      <property alias="../../../../../../params/serviceable"/>
+     </not>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -142,7 +161,12 @@
   <layer>
    <name>OFF flag 2</name>
    <condition>
-    <not include="concorde-cond-voltage-inst.xml"/>
+    <or>
+     <not include="concorde-cond-voltage-inst.xml"/>
+     <not>
+      <property alias="../../../../../../params/serviceable"/>
+     </not>
+    </or>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>

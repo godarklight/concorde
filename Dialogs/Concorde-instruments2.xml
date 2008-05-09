@@ -1,24 +1,23 @@
 <?xml version="1.0"?>
 
-<!-- - attitude indicator is not yet serviceable.
-     - many instruments are common with engineer or copilot.
+<!-- - many instruments are common with engineer or copilot.
  -->
 
 <PropertyList>
 
  <name>Concorde-instruments2</name>
  <width>700</width>
- <height>570</height>
+ <height>600</height>
  <modal>false</modal>
 
  <text>
   <x>10</x>
-  <y>540</y>
+  <y>570</y>
   <label>Concorde Instruments</label>
  </text>
 
  <group>
-  <y>510</y>
+  <y>540</y>
 
   <text>
    <x>100</x>
@@ -32,7 +31,7 @@
 
   <text>
    <x>400</x>
-   <label>Press p/P for next/previous page</label>
+   <label>Press p for next page</label>
    <color>
      <red>0.5</red>
      <green>0.5</green>
@@ -47,9 +46,42 @@
 
  <text>
   <x>30</x>
-  <y>440</y>
+  <y>470</y>
   <label>Copilot</label>
  </text>
+
+ <group>
+  <y>430</y>
+
+  <checkbox>
+   <x>10</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Accelerometer 2</label>
+   <property>/instrumentation/accelerometer-aoa[1]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>240</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>ADC 2</label>
+   <property>/instrumentation/adc[1]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>470</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>ADF 2</label>
+   <property>/instrumentation/adf[1]/serviceable</property>
+  </checkbox>
+
+ </group>
+
 
  <group>
   <y>400</y>
@@ -59,8 +91,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>ADF 2</label>
-   <property>/instrumentation/adf[1]/serviceable</property>
+   <label>Airspeed 2</label>
+   <property>/instrumentation/airspeed-indicator[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -68,8 +100,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Airspeed</label>
-   <property>/instrumentation/airspeed-indicator/serviceable</property>
+   <label>Airspeed standby</label>
+   <property>/instrumentation/airspeed-standby/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -77,8 +109,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Airspeed standby</label>
-   <property>/instrumentation/airspeed-standby/serviceable</property>
+   <label>Altimeter 2</label>
+   <property>/instrumentation/altimeter[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -92,8 +124,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Altimeter</label>
-   <property>/instrumentation/altimeter/serviceable</property>
+   <label>Altimeter standby</label>
+   <property>/instrumentation/altimeter-standby/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -101,20 +133,18 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Altimeter standby</label>
-   <property>/instrumentation/altimeter-standby/serviceable</property>
+   <label>Attitude 2</label>
+   <property>/instrumentation/attitude-indicator[1]/serviceable</property>
   </checkbox>
 
-<!--
   <checkbox>
    <x>470</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Attitude</label>
-   <property>/instrumentation/attitude-indicator[1]/serviceable</property>
+   <label>Attitude standby</label>
+   <property>/instrumentation/attitude-standby/serviceable</property>
   </checkbox>
--->
 
  </group>
 
@@ -122,24 +152,22 @@
  <group>
   <y>340</y>
 
-<!--
   <checkbox>
    <x>10</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Attitude standby</label>
-   <property>/instrumentation/attitude-standby/serviceable</property>
+   <label>Center of Gravity 1</label>
+   <property>/instrumentation/cg/serviceable</property>
   </checkbox>
--->
 
   <checkbox>
    <x>240</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Center of Gravity</label>
-   <property>/instrumentation/cg/serviceable</property>
+   <label>Clock</label>
+   <property>/instrumentation/clock/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -147,8 +175,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Clock</label>
-   <property>/instrumentation/clock/serviceable</property>
+   <label>COM 2</label>
+   <property>/instrumentation/comm[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -162,8 +190,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>COM 2</label>
-   <property>/instrumentation/comm[1]/serviceable</property>
+   <label>DME 2</label>
+   <property>/instrumentation/dme[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -171,8 +199,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>DME 2</label>
-   <property>/instrumentation/dme[1]/serviceable</property>
+   <label>Fuel weight</label>
+   <property>/instrumentation/fuel/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -180,8 +208,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Fuel weight</label>
-   <property>/instrumentation/fuel/serviceable</property>
+   <label>Heading</label>
+   <property>/instrumentation/heading-indicator/serviceable</property>
   </checkbox>
 
  </group>
@@ -195,8 +223,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Heading</label>
-   <property>/instrumentation/heading-indicator/serviceable</property>
+   <label>HSI 2</label>
+   <property>/instrumentation/hsi[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -204,8 +232,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>HSI 2</label>
-   <property>/instrumentation/hsi[1]/serviceable</property>
+   <label>INS 2</label>
+   <property>/instrumentation/ins[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -213,8 +241,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>INS 2</label>
-   <property>/instrumentation/ins[1]/serviceable</property>
+   <label>Mach 2</label>
+   <property>/instrumentation/mach-indicator[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -228,8 +256,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Mach</label>
-   <property>/instrumentation/mach-indicator/serviceable</property>
+   <label>Magnetic compass</label>
+   <property>/instrumentation/magnetic-compass/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -237,8 +265,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Magnetic compass</label>
-   <property>/instrumentation/magnetic-compass/serviceable</property>
+   <label>Marker beacon</label>
+   <property>/instrumentation/marker-beacon/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -246,8 +274,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Marker beacon</label>
-   <property>/instrumentation/marker-beacon/serviceable</property>
+   <label>NAV 2</label>
+   <property>/instrumentation/nav[2]/serviceable</property>
   </checkbox>
 
  </group>
@@ -261,8 +289,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>NAV 2</label>
-   <property>/instrumentation/nav[2]/serviceable</property>
+   <label>Radio altimeter 2</label>
+   <property>/instrumentation/radio-altimeter[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -270,8 +298,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Radio altimeter</label>
-   <property>/instrumentation/radio-altimeter/serviceable</property>
+   <label>Sideslip 2</label>
+   <property>/instrumentation/side-slip[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -279,12 +307,11 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Sideslip</label>
-   <property>/instrumentation/side-slip/serviceable</property>
+   <label>TAS</label>
+   <property>/instrumentation/tas-indicator/serviceable</property>
   </checkbox>
 
  </group>
-
 
  <group>
   <y>190</y>
@@ -294,8 +321,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>TAS</label>
-   <property>/instrumentation/tas-indicator/serviceable</property>
+   <label>Temperature 2</label>
+   <property>/instrumentation/temperature[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -303,8 +330,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Temperature</label>
-   <property>/instrumentation/temperature/serviceable</property>
+   <label>Transponder</label>
+   <property>/instrumentation/transponder/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -326,8 +353,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Vertical Speed</label>
-   <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
+   <label>Vertical Speed 2</label>
+   <property>/instrumentation/inst-vertical-speed-indicator[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -342,6 +369,7 @@
    <x>50</x>
    <y>0</y>
    <legend>Apply</legend>
+    <key>a</key>
    <equal>true</equal>
    <binding>
     <command>dialog-apply</command>
@@ -366,14 +394,14 @@
   <button>
    <x>500</x>
    <y>0</y>
-   <legend>Page 1</legend>
-   <key>P</key>
+   <legend>Page 3</legend>
+   <key>p</key>
    <binding>
     <command>dialog-apply</command>
    </binding>
    <binding>
     <command>dialog-show</command>
-    <dialog-name>Concorde-instruments</dialog-name>
+    <dialog-name>Concorde-instruments3</dialog-name>
    </binding>
    <binding>
     <command>dialog-close</command>
@@ -383,14 +411,11 @@
   <button>
    <x>600</x>
    <y>0</y>
-   <legend>Page 3</legend>
-   <key>p</key>
+   <legend>Menu</legend>
+   <key>m</key>
    <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>dialog-show</command>
-    <dialog-name>Concorde-instruments3</dialog-name>
+   <command>dialog-show</command>
+    <dialog-name>Concorde-menu</dialog-name>
    </binding>
    <binding>
     <command>dialog-close</command>

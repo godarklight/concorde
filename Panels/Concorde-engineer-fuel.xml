@@ -73,6 +73,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <test>/controls/lighting/crew/engineer/center/test</test>
+    <serviceable>/instrumentation/cg[1]/serviceable</serviceable>
+    <cg-sel>/instrumentation/cg[1]/percent</cg-sel>
+    <min-sel>/instrumentation/cg[1]/min-percent</min-sel>
+    <max-sel>/instrumentation/cg[1]/max-percent</max-sel>
    </params>
    <x>145</x>
    <y>542</y>

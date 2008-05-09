@@ -11,6 +11,14 @@
  <w-base>140</w-base>
  <h-base>140</h-base>
 
+ <params>
+  <serviceable>/instrumentation/temperature[0]/serviceable</serviceable>
+  <tmo-sel>/instrumentation/temperature[0]/indicated-tmo-degc</tmo-sel>
+  <static-sel>/instrumentation/temperature[0]/indicated-static-degc</static-sel>
+  <isa-sel>/instrumentation/temperature[0]/isa-degc</isa-sel>
+ </params>
+
+
  <layers>
 
   <layer>
@@ -32,7 +40,7 @@
    <name>TMO display</name>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
-     <property>/instrumentation/temperature/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <type>text</type>
@@ -46,7 +54,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/temperature/indicated-tmo-degc</property>
+     <property alias="../../../../../params/tmo-sel"/>
      <format>%+02.0f</format>
     </chunk>
    </chunks>
@@ -70,7 +78,7 @@
     <name>Total Title</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/temperature/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <type>text</type>
@@ -187,7 +195,7 @@
    <name>OAT display</name>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
-     <property>/instrumentation/temperature/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <type>text</type>
@@ -201,7 +209,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/temperature/indicated-static-degc</property>
+     <property alias="../../../../../params/static-sel"/>
      <format>%+02.0f</format>
     </chunk>
    </chunks>
@@ -225,7 +233,7 @@
     <name>OAT Title</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/temperature/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <type>text</type>
@@ -342,8 +350,7 @@
    <name>ISA display</name>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
-     <property>/instrumentation/temperature/serviceable</property>
-     <property>/instrumentation/altimeter[0]/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <type>text</type>
@@ -357,7 +364,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/temperature/isa-degc</property>
+     <property alias="../../../../../params/isa-sel"/>
      <format>%+02.0f</format>
     </chunk>
    </chunks>
@@ -381,8 +388,7 @@
     <name>ISA Title</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/altimeter[0]/serviceable</property>
-      <property>/instrumentation/temperature/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <type>text</type>

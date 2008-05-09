@@ -26,7 +26,8 @@
      <type>group</type>
      <condition>
       <or include="concorde-cond-voltage-bulb.xml">
-       <and include="concorde-cond-test-brakes.xml">
+       <and>
+        <or include="concorde-cond-test-brakes.xml"/>      <!-- bug ? -->
         <less-than>
          <property alias="../../../../../../../../params/temp-degc"/>
          <value>220</value>

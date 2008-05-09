@@ -18,6 +18,7 @@ Seats.new = func {
            theviews : nil,
 
            audio : AudioPanel.new(),
+           rail : SeatRail.new(),
 
            lookup : {},
            names : {},
@@ -73,6 +74,7 @@ Seats.init = func {
             }
             elsif( name == "Steward View" ) {
                  me.save_lookup("steward", i);
+                 me.save_initial( "steward", me.theviews[i] );
             }
             elsif( name == "Observer View" ) {
                  me.save_lookup("observer", i);
@@ -84,6 +86,10 @@ Seats.init = func {
    # default
    me.recoverfloating = me.controls.getChild("recover").getValue();
    me.fullcockpit = me.controls.getChild("all").getValue();
+}
+
+Seats.railexport = func( name ) {
+   me.rail.toggle( name );
 }
 
 Seats.fullexport = func {
@@ -490,12 +496,10 @@ Doors = {};
 Doors.new = func {
    var obj = { parents : [Doors],
 
-           rail : SeatRail.new(),
-
            engineertable : nil,
            cockpitdoor : nil,
 
-           INSIDEDECKZM : 11.10,
+           INSIDEDECKZM : 10.60,
 
            DOORCLOSED : 0.0,
 
@@ -521,10 +525,6 @@ Doors.init = func {
    if( !me.engineertable.getChild("out").getValue() ) {
        me.engineerdeck.toggle();
    }
-}
-
-Doors.railexport = func( name ) {
-   me.rail.toggle( name );
 }
 
 Doors.flightdeckexport = func {
@@ -778,7 +778,7 @@ Crewbox.crewtext = func {
 }
 
 Crewbox.checklisttext = func {
-    var text = me.crew.getChild("checklist").getValue();
+    var text = me.voice.getChild("checklist").getValue();
     var green = me.crew.getChild("serviceable").getValue();
     var index = me.lineindex["checklist"];
 

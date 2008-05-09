@@ -36,8 +36,9 @@ properties' values.
  <h-base>128</h-base>
 
  <params>
-  <roll-deg>/instrumentation/attitude-indicator[0]/indicated-roll-deg</roll-deg>
-  <pitch-deg>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</pitch-deg>
+  <serviceable>/instrumentation/attitude-standby/serviceable</serviceable>
+  <roll-deg>/instrumentation/attitude-standby/indicated-roll-deg</roll-deg>
+  <pitch-deg>/instrumentation/attitude-standby/indicated-pitch-deg</pitch-deg>
   <offset-deg>/instrumentation/attitude-standby/horizon-offset-deg</offset-deg>
  </params>
 
@@ -55,7 +56,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>rotation</type>
-     <condition include="concorde-cond-voltage-standby.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-standby.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
@@ -78,7 +83,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>rotation</type>
-     <condition include="concorde-cond-voltage-standby.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-standby.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
@@ -86,7 +95,11 @@ properties' values.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <condition include="concorde-cond-voltage-standby.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-standby.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <property alias="../../../../../params/pitch-deg"/>
      <min>-20.0</min>
      <max>20.0</max>
@@ -108,7 +121,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>rotation</type>
-     <condition include="concorde-cond-voltage-standby.xml"/>
+     <condition>
+      <and include="concorde-cond-voltage-standby.xml">
+       <property alias="../../../../../../../params/serviceable"/>
+      </and>
+     </condition>
      <property alias="../../../../../params/roll-deg"/>
      <min>-360.0</min>
      <max>360.0</max>
@@ -151,7 +168,12 @@ properties' values.
   <layer>
    <name>NAV OFF</name>
    <condition>
-    <not include="concorde-cond-voltage-standby.xml"/>
+    <or>
+     <not include="concorde-cond-voltage-standby.xml"/>
+     <not>
+      <property alias="../../../../../../params/serviceable"/>
+     </not>
+    </or>
    </condition>
    <w>26</w>
    <h>15</h>

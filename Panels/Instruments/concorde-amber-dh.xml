@@ -9,6 +9,9 @@
 
  <params>
   <test>/controls/autoflight/autopilot[0]/test-land</test>
+  <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
+  <decision-ft>/instrumentation/radio-altimeter[0]/decision-ft</decision-ft>
+  <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
  </params>
 
 
@@ -23,20 +26,17 @@
      <type>group</type>
      <condition>
       <or include="concorde-cond-voltage-bulb.xml">
-       <not>
-        <property>/systems/gpws/serviceable</property>
-       </not>
        <and>
         <not>
          <property alias="../../../../../../../../params/test"/>
         </not>
         <or>
          <not>
-          <property>/systems/gpws/decision-height</property>
+          <property alias="../../../../../../../../../params/decision-ctrl"/>
          </not>
          <greater-than-equals>
-          <property>/position/altitude-agl-ft</property>
-          <property n="1">/instrumentation/radio-altimeter/decision-ft</property>
+          <property alias="../../../../../../../../../params/ft-sel"/>
+          <property n="1" alias="../../../../../../../../../params/decision-ft"/>
          </greater-than-equals>
         </or>
        </and>

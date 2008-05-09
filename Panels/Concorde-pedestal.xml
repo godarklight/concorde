@@ -72,7 +72,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <data-ident>/instrumentation/ins[0]/data/ident</data-ident>
     <data-left>/instrumentation/ins[0]/data/left</data-left>
     <data-right>/instrumentation/ins[0]/data/right</data-right>
     <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
@@ -312,9 +311,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+    <warning-select>/instrumentation/ins[0]/light/warning</warning-select>
+    <mode-select>/instrumentation/ins[0]/msu/mode</mode-select>
     <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
-    <service-select>/instrumentation/ins[0]/serviceable</service-select>
    </params>
    <x>225</x>
    <y>735</y>
@@ -341,9 +340,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
-   </params>
    <x>165</x>
    <y>705</y>
    <w>25</w>
@@ -369,9 +365,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
-   </params>
    <x>195</x>
    <y>705</y>
    <w>25</w>
@@ -397,11 +390,36 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
+   <x>225</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-waypoint.xml">
+   <name>INS waypoint change</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-80</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
    <params>
     <wpt-ctrl>/instrumentation/ins[0]/control/waypoint</wpt-ctrl>
    </params>
-   <x>225</x>
-   <y>705</y>
+   <x>135</x>
+   <y>675</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -636,7 +654,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <data-ident>/instrumentation/ins[1]/data/ident</data-ident>
     <data-left>/instrumentation/ins[1]/data/left</data-left>
     <data-right>/instrumentation/ins[1]/data/right</data-right>
     <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
@@ -940,9 +957,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <mode-ctrl>/instrumentation/ins[1]/msu/mode</mode-ctrl>
+    <warning-select>/instrumentation/ins[1]/light/warning</warning-select>
+    <mode-select>/instrumentation/ins[1]/msu/mode</mode-select>
     <test-ctrl>/instrumentation/ins[1]/control/test</test-ctrl>
-    <service-select>/instrumentation/ins[1]/serviceable</service-select>
    </params>
    <x>640</x>
    <y>735</y>
@@ -977,9 +994,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
-   </params>
    <x>580</x>
    <y>705</y>
    <w>25</w>
@@ -1013,9 +1027,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
-   </params>
    <x>610</x>
    <y>705</y>
    <w>25</w>
@@ -1049,11 +1060,44 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
+   <x>640</x>
+   <y>705</y>
+   <w>25</w>
+   <h>25</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-ins-waypoint.xml">
+   <name>INS2 waypoint change</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <or>
+       <less-than>
+        <property>/sim/current-view/goal-pitch-offset-deg</property>
+        <value>-20</value>
+       </less-than>
+       <and include="Concorde-optimize-captain.xml">
+        <less-than>
+         <property>/sim/current-view/goal-pitch-offset-deg</property>
+         <value>-15</value>
+        </less-than>
+       </and>
+      </or>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-75</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
    <params>
     <wpt-ctrl>/instrumentation/ins[1]/control/waypoint</wpt-ctrl>
    </params>
-   <x>640</x>
-   <y>705</y>
+   <x>550</x>
+   <y>675</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -1365,6 +1409,12 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
+   <params>
+    <serviceable>/instrumentation/temperature[1]/serviceable</serviceable>
+    <tmo-sel>/instrumentation/temperature[1]/indicated-tmo-degc</tmo-sel>
+    <static-sel>/instrumentation/temperature[1]/indicated-static-degc</static-sel>
+    <isa-sel>/instrumentation/temperature[1]/isa-degc</isa-sel>
+   </params>
    <x>580</x>
    <y>495</y>
    <w>130</w>

@@ -8,6 +8,8 @@ The black holes below the front doors are the pressure discharge valves (A).
 
 The anti-collision lights are red (G).
 
+G-BOAC rests at Manchester airport.
+
 Cockpit
 -------
 - blue (instrument panels), white beige (walls) and black (window pillars and sills).
@@ -81,8 +83,10 @@ TO DO
 - visor well.
 - compression of gear spring.
 - afterburner smoke.
+- levers.
 - probes on nose, RAT.
-- yokes, levers.
+- bore the doors.
+- passenger seats.
 
 
 Known problems
@@ -93,16 +97,15 @@ Known problems
 
 Known problems outside
 ----------------------
-- avionics racks are not enough long, because the textured doors and portholes are too forwards :
-  left aft door should be more below the vertical fin, and front doors more aft (B).
+- too many portholes.
 - the tail wheel door seems too long : one part of tail gear hole is closed by the small left and
   right doors.
 - the water deflector of main gear crosses the fuselage at retraction.
 
 Known problems cockpit
 ----------------------
+- top left of engineer panel should reach cockpit ceiling.
 - overhead slightly too large ?
-- joint of engineer panel with cockpit ceiling too large ?
 
 
 References
@@ -152,9 +155,11 @@ Updates (-) and additions (+) to the original model                             
 - horizontal fuselage, without pitch (flat cockpit).                                    2.3
 - centered axis of front window (to match overhead).                                    2.4
 - split of primary nozzles (reheat off texture).                                        2.4
++ windshield wipers.                                                                    2.5 
+- shift aft the texture of front doors.                                                 2.5
 
 
-Made with Blender 2.43.
+Made with Blender 2.45.
 
 
-6 April 2007.
+30 March 2008.

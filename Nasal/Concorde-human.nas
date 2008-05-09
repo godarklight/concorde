@@ -19,15 +19,13 @@ Crewhuman = {};
 
 # not called by child classes !!!
 Crewhuman.new = func {
-   obj = { parents : [Crewhuman],
+   var obj = { parents : [Crewhuman],
 
            crew : nil,
            crewcontrol : nil,
            human : nil,
            humancontrol : nil,
            voices : nil,
-
-           nightlighting : Nightlighting.new("engineer"),
 
            HEADSEC : 45.0,
            EYEMAXSEC : 7.0,                              # human eye blinks every 3 - 7 s
@@ -61,11 +59,8 @@ Crewhuman.new = func {
    return obj;
 }
 
-Crewhuman.init_ancestor = func( path, member, panel, voice ) {
-   obj = Crewhuman.new();
-
-   me.nightlighting = obj.nightlighting;
-   me.nightlighting.set_member( panel );
+Crewhuman.init_ancestor = func( path, member, voice ) {
+   var obj = Crewhuman.new();
 
    me.HEADSEC  = obj.HEADSEC;
    me.EYEMAXSEC = obj.EYEMAXSEC;
@@ -101,10 +96,6 @@ Crewhuman.init_ancestor = func( path, member, panel, voice ) {
    settimer(func { me.headcron(); }, 0);
 }
 
-Crewhuman.set_relation = func( lighting ) {
-    me.nightlighting.set_relation( lighting );
-}
-
 Crewhuman.wakeup = func {
    if( me.sleepeye ) {
        me.eyescron();
@@ -121,15 +112,12 @@ Crewhuman.wakeupexport = func {
 }
 
 Crewhuman.schedule = func {
-   if( me.crewcontrol.getChild(me.crewmember).getValue() ) {
-       me.nightlighting.schedule();
-   }
 }
 
 Crewhuman.talkrates = func {
    # opens the mooth according to phrase length
-   phrase = me.voices.getChild(me.crewvoice).getValue();
-   steps = size( phrase ) * me.CHARACTERSEC;
+   var phrase = me.voices.getChild(me.crewvoice).getValue();
+   var steps = size( phrase ) * me.CHARACTERSEC;
 
    return steps;
 }
@@ -139,6 +127,9 @@ Crewhuman.endtalk = func {
 }
 
 Crewhuman.eyesrates = func {
+   var steps = 0.0;
+   var factor = 0.0;
+
    if( me.crewcontrol.getChild(me.crewmember).getValue() and
        me.human.getChild("serviceable").getValue() ) {
        me.sleepeye = constant.FALSE;
@@ -167,6 +158,10 @@ Crewhuman.eyesrates = func {
 }
 
 Crewhuman.headrates = func {
+   var headingdeg = 0.0;
+   var pitchdeg = 0.0;
+   var steps = 0.0;
+
    if( me.crewcontrol.getChild(me.crewmember).getValue() and
        me.human.getChild("serviceable").getValue() ) {
        me.sleephead = constant.FALSE;
@@ -203,19 +198,22 @@ Crewhuman.headrates = func {
 }
 
 Crewhuman.moothcron = func {
-   steps = me.talkrates();
+   var steps = me.talkrates();
+
    settimer(func { me.endtalk(); }, steps);
 }
 
 Crewhuman.eyescron = func {
-   steps = me.eyesrates();
+   var steps = me.eyesrates();
+
    if( steps > 0 ) {
        settimer(func { me.eyescron(); }, steps);
    }
 }
 
 Crewhuman.headcron = func {
-   steps = me.headrates();
+   var steps = me.headrates();
+
    if( steps > 0 ) {
        settimer(func { me.headcron(); }, steps);
    }
@@ -241,7 +239,7 @@ Crewhuman.removemooth = func {
 Copilothuman = {};
 
 Copilothuman.new = func {
-   obj = { parents : [Copilothuman,Crewhuman]
+   var obj = { parents : [Copilothuman,Crewhuman]
          };
 
    obj.init();
@@ -250,7 +248,7 @@ Copilothuman.new = func {
 }
 
 Copilothuman.init = func {
-   me.init_ancestor( "/systems/human/copilot", "copilot", "copilot", "copilot" );
+   me.init_ancestor( "/systems/human/copilot", "copilot", "copilot" );
 }
 
 
@@ -260,7 +258,7 @@ Copilothuman.init = func {
 Engineerhuman = {};
 
 Engineerhuman.new = func {
-   obj = { parents : [Engineerhuman,Crewhuman],
+   var obj = { parents : [Engineerhuman,Crewhuman],
 
            seat : Engineerseat.new()
          };
@@ -271,7 +269,7 @@ Engineerhuman.new = func {
 }
 
 Engineerhuman.init = func {
-   me.init_ancestor( "/systems/human/engineer", "engineer", "engineer", "pilot" );
+   me.init_ancestor( "/systems/human/engineer", "engineer", "pilot" );
 }
 
 Engineerhuman.wakeupexport = func {
@@ -296,21 +294,20 @@ Engineerhuman.slowschedule = func {
 Nightlighting = {};
 
 Nightlighting.new = func {
-   obj = { parents : [Nightlighting],
+   var obj = { parents : [Nightlighting,System],
 
            lightingsystem : nil,
 
-           crew : nil,
            human : nil,
-           lighting : nil,
 
-           NIGHTNORM : 0.0,
            DAYNORM : 0.0,
 
-           crewmember : "",
+           lightlevel : 0.0,
+           lightlow : constant.FALSE,
 
            NIGHTRAD : 1.57,                        # sun below horizon
 
+           completed : constant.TRUE,
            night : constant.FALSE
          };
 
@@ -320,59 +317,121 @@ Nightlighting.new = func {
 }
 
 Nightlighting.init = func {
-    me.crew = props.globals.getNode("/controls/lighting/crew");
+    me.init_ancestor("/systems/human");
+
     me.human = props.globals.getNode("/controls/human/lighting");
-}
-
-Nightlighting.set_member = func( path ) {
-    me.crewmember = path;
-
-    me.lighting = props.globals.getNode("/controls/lighting/crew").getChild(me.crewmember);
-
-    me.NIGHTNORM = me.human.getChild(path).getValue();
 }
 
 Nightlighting.set_relation = func( lighting ) {
     me.lightingsystem = lighting;
 }
 
-Nightlighting.schedule = func {
+Nightlighting.copilot = func( task ) {
    # optional
    if( me.human.getChild("night").getValue() ) {
 
        # only once, can be customized by user
-       if( me.is_change() ) {
-           if( me.night ) {
-               lightlevel = me.NIGHTNORM;
-               lightlow = constant.TRUE;
-           }
-           else {
-               lightlevel = me.DAYNORM;
-               lightlow = constant.FALSE;
-           }
+       if( me.has_task() ) {
+           me.light( "copilot" );
+
+           me.completed = constant.FALSE;
 
            # flood lights
-           me.lighting.getChild("flood-norm").setValue( lightlevel );
-           me.lightingsystem.floodexport();
+           if( task.can() ) {
+               if( me.slave["lighting-copilot"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.slave["lighting-copilot"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("flood-light");
+               }
+           }
 
            # level of warning lights
-           if( me.crewmember == "engineer" ) {
-               me.lighting.getNode("forward").getChild("low").setValue( lightlow );
-               me.lighting.getNode("center").getChild("low").setValue( lightlow );
-               me.lighting.getNode("aft").getChild("low").setValue( lightlow );
+           if( task.can() ) {
+               if( me.slave["lighting-copilot"].getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting-copilot"].getChild("low").setValue( me.lightlow );
+                   task.toggleclick("panel-light");
+               }
            }
-           elsif( me.crewmember == "copilot" ) {
-               me.lighting.getChild("low").setValue( lightlow );
-               me.crew.getNode("center").getChild("low").setValue( lightlow );
-               me.crew.getNode("afcs").getChild("low").setValue( lightlow );
+           if( task.can() ) {
+               if( me.slave["lighting"].getNode("center").getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting"].getNode("center").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("center-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.slave["lighting"].getNode("afcs").getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting"].getNode("afcs").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("afcs-light");
+                   me.completed = constant.TRUE;
+               }
            }
        }
    }
 }
 
+Nightlighting.engineer = func( task ) {
+   # optional
+   if( me.human.getChild("night").getValue() ) {
+
+       # only once, can be customized by user
+       if( me.has_task() ) {
+           me.light( "engineer" );
+
+           me.completed = constant.FALSE;
+
+           # flood lights
+           if( task.can() ) {
+               if( me.slave["lighting-engineer"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.slave["lighting-engineer"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("flood-light");
+               }
+           }
+
+           # level of warning lights
+           if( task.can() ) {
+               if( me.slave["lighting-engineer"].getNode("forward").getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting-engineer"].getNode("forward").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("forward-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.slave["lighting-engineer"].getNode("center").getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting-engineer"].getNode("center").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("center-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.slave["lighting-engineer"].getNode("aft").getChild("low").getValue() != me.lightlow ) {
+                   me.slave["lighting-engineer"].getNode("aft").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("aft-light");
+                   me.completed = constant.TRUE;
+               }
+           }
+       }
+   }
+}
+
+Nightlighting.light = func( path ) {
+   var NIGHTNORM = me.human.getChild(path).getValue();
+
+   me.lightlevel = me.DAYNORM;
+   me.lightlow = constant.FALSE;
+
+   if( me.night ) {
+       me.lightlevel = NIGHTNORM;
+       me.lightlow = constant.TRUE;
+   }
+   else {
+       me.lightlevel = me.DAYNORM;
+       me.lightlow = constant.FALSE;
+   }
+}
+
 Nightlighting.is_change = func {
-   change = constant.FALSE;
-   if( getprop("/sim/time/sun-angle-rad") > me.NIGHTRAD ) {
+   var change = constant.FALSE;
+
+   if( me.noinstrument["sun"].getValue() > me.NIGHTRAD ) {
        if( !me.night ) {
            me.night = constant.TRUE;
            change = constant.TRUE;
@@ -388,6 +447,19 @@ Nightlighting.is_change = func {
    return change;
 }
 
+Nightlighting.has_task = func {
+   var result = constant.FALSE;
+
+   if( me.is_change() or !me.completed ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
 
 # =============
 # ENGINEER SEAT
@@ -396,12 +468,11 @@ Nightlighting.is_change = func {
 Engineerseat = {};
 
 Engineerseat.new = func {
-   obj = { parents : [Engineerseat,System],
+   var obj = { parents : [Engineerseat,System],
 
            SEATDEGPSEC : 25.0,
            BOGGIESEC : 5.0,
 
-           crew : nil,
            movement : nil,
 
            TAKEOFFDEG : 360,                                        # towards pedestal
@@ -427,17 +498,21 @@ Engineerseat.new = func {
 Engineerseat.init = func {
    me.init_ancestor("/systems/human");
 
-   me.crew = props.globals.getNode("/systems/crew");
    me.movement = props.globals.getNode("/systems/human/engineer");
 
    me.headdeg = me.slave["engineer"].getChild("heading-deg").getValue();
 }
 
 Engineerseat.schedule = func {
+   var takeoff = constant.FALSE;
+   var targetdeg = 0.0;
+   var targetm = 0.0;
+   var checklist = "";
+
    # restores seat position after a swap to the engineer view,
    # where the seat rotates with view
    if( !me.slave["seat"].getChild("engineer").getValue() ) {
-       checklist = me.crew.getChild("checklist").getValue();
+       checklist = me.slave["voice"].getChild("checklist").getValue();
        if( checklist == "holding" or checklist == "takeoff" or checklist == "landing" ) {
            takeoff = constant.TRUE;
        }
@@ -488,9 +563,13 @@ Engineerseat.reset = func {
 }
 
 Engineerseat.rotate = func( targetdeg ) {
+    var viewdeg = 0.0;
+    var movementdeg = 0.0;
+    var movementsec = 0.0;
+    var seatdeg = me.movement.getChild("seat-deg").getValue();
+
     me.headdeg = targetdeg;
 
-    seatdeg = me.movement.getChild("seat-deg").getValue();
     if( seatdeg == me.STATICDEG ) {
         viewdeg = me.slave["engineer"].getChild("heading-deg").getValue();
 
@@ -523,7 +602,7 @@ Engineerseat.rotateclear = func {
 }
 
 Engineerseat.translateclear = func {
-   seatm = me.movement.getChild("seat-x-m").getValue();
+   var seatm = me.movement.getChild("seat-x-m").getValue();
 
    # except during translation
    if( seatm == me.FLIGHTM or seatm == me.TAKEOFFM ) {
@@ -540,7 +619,7 @@ Engineerseat.translateclear = func {
 SeatRail = {};
 
 SeatRail.new = func {
-   obj = { parents : [SeatRail,System],
+   var obj = { parents : [SeatRail,System],
 
            RAILSEC : 5.0,
 
@@ -566,10 +645,10 @@ SeatRail.init = func {
 }
 
 SeatRail.toggle = func( seat ) {
-   canstowe = constant.TRUE;
+   var canstowe = constant.TRUE;
 
    if( seat == "engineer" ) {
-       if( me.engineer.getChild("stowe-norm").getValue() == 0 ) {
+       if( me.engineer.getChild("stowe-norm").getValue() == me.FLIGHT ) {
            # except if seat has moved
            if( me.engineer.getChild("seat-deg").getValue() > 0 or
                me.engineer.getChild("seat-x-m").getValue() > 0 or
@@ -585,11 +664,10 @@ SeatRail.toggle = func( seat ) {
 }
 
 SeatRail.is_stowed = func( seat ) {
-   if( me.human.getNode(seat).getChild("stowe-norm").getValue() == 1.0 ) {
+   var result = constant.FALSE;
+
+   if( me.human.getNode(seat).getChild("stowe-norm").getValue() == me.PARK ) {
        result = constant.TRUE;
-   }
-   else {
-       result = constant.FALSE;
    }
 
    return result;
@@ -597,7 +675,8 @@ SeatRail.is_stowed = func( seat ) {
 
 # roll on rail
 SeatRail.roll = func( path ) {
-   pos = getprop(path);
+   var pos = getprop(path);
+
    if( pos == me.FLIGHT ) {
        interpolate( path, me.PARK, me.RAILSEC );
    }

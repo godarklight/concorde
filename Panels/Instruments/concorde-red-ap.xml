@@ -18,7 +18,7 @@
 
  <params>
   <test>/controls/autoflight/autopilot[0]/test-land</test>
-  <serviceable-sel>/systems/autopilot/serviceable[0]</serviceable-sel>
+  <failure-sel>/systems/autopilot/state/failure[0]</failure-sel>
  </params>
 
 
@@ -42,59 +42,7 @@
        </and>
        <and>
         <not include="concorde-cond-flashing-light.xml"/>
-        <or>
-         <not>
-          <property alias="../../../../../../../../../../params/serviceable-sel"/>
-         </not>
-         <and>
-          <or>
-           <not>
-            <property>/instrumentation/altimeter[0]/serviceable</property>
-           </not>
-           <not>
-            <property>/instrumentation/inst-vertical-speed-indicator/serviceable</property>
-           </not>
-          </or>
-          <not-equals>
-           <property>/autopilot/locks/altitude</property>
-           <value></value>
-          </not-equals>
-         </and>
-         <and>
-          <not>
-           <property>/instrumentation/heading-indicator/serviceable</property>
-          </not>
-          <not-equals>
-           <property>/autopilot/locks/heading</property>
-           <value></value>
-          </not-equals>
-         </and>
-         <and include="concorde-cond-land.xml">
-          <not>
-           <property>/instrumentation/radio-altimeter/serviceable</property>
-          </not>
-         </and>
-         <and>
-          <or>
-           <greater-than>
-            <property>/orientation/alpha-deg</property>
-            <value>17.5</value>
-           </greater-than>
-           <greater-than>
-            <property>/orientation/pitch-deg</property>
-            <value>20.0</value>
-           </greater-than>
-          </or>
-          <not-equals>
-           <property>/autopilot/locks/altitude</property>
-           <value></value>
-          </not-equals>
-          <equals>
-           <property>/controls/autoflight/vertical</property>
-           <value></value>
-          </equals>
-         </and>
-        </or>
+        <property alias="../../../../../../../../params/failure-sel"/>
        </and>
        <not include="concorde-cond-voltage-autopilot.xml"/>
       </or>

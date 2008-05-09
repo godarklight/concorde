@@ -2,6 +2,8 @@
 
 <!-- Alarm on INS :
 
+     - not aligned.
+     - not servicable.
 -->
 
 <PropertyList>
@@ -21,7 +23,12 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <or include="concorde-cond-test-mws.xml"/>
+      <and>
+       <or include="concorde-cond-test-mws.xml"/>           <!-- bug -->
+       <not>
+        <property>/systems/mws/red/ins</property>
+       </not>
+      </and>
      </or>
     </condition>
 
@@ -68,5 +75,24 @@
   </layer>
 
  </layers>
+
+ <actions>
+
+  <action>
+   <name>Cancel</name>
+   <button>0</button>
+   <x>-52</x>
+   <y>-15</y>
+   <w>104</w>
+   <h>26</h>
+   <binding>
+    <command>property-assign</command>
+    <property>/systems/mws/red/ins</property>
+    <value>false</value>
+   </binding>
+  </action>
+
+ </actions>
+
 
 </PropertyList>

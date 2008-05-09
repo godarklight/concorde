@@ -4,7 +4,6 @@
 
      - 2 DME (always visible) to bypass the limitation of switching frequencies.
      - 3 NAV, because only NAV 0 can drive FG autopilot.
-     - 1 instrument for both Captain and Copilot.
      - the cabin altitude is a specific altimeter.
      - the cabin rate of climb is a specific vertical speed indicator.
 -->
@@ -49,6 +48,13 @@ file, these values will be used (they are hardcoded).
     <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
+  <airspeed-indicator>
+    <name>airspeed-indicator</name>
+    <number>1</number>
+    <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </airspeed-indicator>
+
   <airspeed-indicator>                                                       <!-- standby -->
     <name>airspeed-standby</name>
     <number>0</number>
@@ -59,6 +65,18 @@ file, these values will be used (they are hardcoded).
   <altimeter>
     <name>altimeter</name>
     <number>0</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </altimeter>
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>1</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </altimeter>
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>2</number>
     <static-pressure>/systems/static/pressure-inhg</static-pressure>
   </altimeter>
 
@@ -89,13 +107,11 @@ file, these values will be used (they are hardcoded).
     <number>1</number>
   </dme>
 
-<!--
   <encoder>
     <name>encoder</name>
     <number>0</number>
     <static-port>/systems/static</static-port>
   </encoder>
--->
 
   <gps>                                                                      <!-- required by autopilot -->
     <name>gps</name>
@@ -112,6 +128,13 @@ file, these values will be used (they are hardcoded).
     <name>inst-vertical-speed-indicator</name>
     <number>0</number>
   </inst-vertical-speed-indicator>
+
+<!-- only 1 IVSI for 1.0.0
+  <inst-vertical-speed-indicator>
+    <name>inst-vertical-speed-indicator</name>
+    <number>1</number>
+  </inst-vertical-speed-indicator>
+-->
 
 <!--
   <KT-70>
@@ -146,12 +169,17 @@ file, these values will be used (they are hardcoded).
   </nav-radio>
 
 <!--
+  <radar>
+    <name>weather-radar</name>
+    <number>0</number>
+  </radar>
+-->
+
   <transponder>
     <name>transponder</name>
     <number>0</number>
     <mode-c-altitude>/instrumentation/encoder/mode-c-alt-ft</mode-c-altitude>
   </transponder>
--->
 
   <turn-indicator>
     <name>turn-indicator</name>

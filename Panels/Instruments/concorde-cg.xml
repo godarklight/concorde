@@ -14,6 +14,10 @@
 
  <params>
   <test>/controls/lighting/crew/captain/test</test>
+  <serviceable>/instrumentation/cg[0]/serviceable</serviceable>
+  <cg-sel>/instrumentation/cg[0]/percent</cg-sel>
+  <min-sel>/instrumentation/cg[0]/min-percent</min-sel>
+  <max-sel>/instrumentation/cg[0]/max-percent</max-sel>
  </params>
 
 
@@ -59,11 +63,11 @@
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/cg/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>x-shift</type>
-     <property>/instrumentation/cg/min-percent</property>
+     <property alias="../../../../../params/min-sel"/>
      <min>50.0</min>
      <max>60.5</max>
      <scale>1.0</scale>
@@ -102,11 +106,11 @@
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/cg/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>x-shift</type>
-     <property>/instrumentation/cg/percent</property>
+     <property alias="../../../../../params/cg-sel"/>
      <min>50.0</min>
      <max>60.5</max>
      <scale>1.0</scale>
@@ -146,11 +150,11 @@
     <transformation>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/cg/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
      <type>x-shift</type>
-     <property>/instrumentation/cg/max-percent</property>
+     <property alias="../../../../../params/max-sel"/>
      <min>50.5</min>
      <max>61.0</max>
      <scale>1.0</scale>
@@ -168,7 +172,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not>
-      <property>/instrumentation/cg/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or>
    </condition>
@@ -217,7 +221,7 @@
       </and>
       <not include="concorde-cond-voltage-inst.xml"/>
       <not>
-       <property>/instrumentation/cg/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </not>
      </or>
     </condition>

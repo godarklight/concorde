@@ -666,7 +666,8 @@ extended/retracted in three steps.
    <name>Flap Extend</name>
    <button>0</button>
    <condition>
-    <and include="concorde-cond-nose-down.xml">
+    <and>
+     <property>/systems/hydraulic/power/green</property>
      <not-equals>
       <property>/controls/nose-visor/pos-norm</property>
       <property n="1">/sim/flaps/setting[3]</property>
@@ -691,7 +692,8 @@ extended/retracted in three steps.
    <name>Flap Retract</name>
    <button>0</button>
    <condition>
-    <and include="concorde-cond-nose-up.xml">
+    <and>
+     <property>/systems/hydraulic/power/green</property>
      <not-equals>
       <property>/controls/nose-visor/pos-norm</property>
       <property n="1">/sim/flaps/setting[0]</property>

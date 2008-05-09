@@ -8,6 +8,15 @@
  <w-base>128</w-base>
  <h-base>128</h-base>
 
+ <params>
+  <serviceable>/instrumentation/mach-indicator[0]/serviceable</serviceable>
+  <mach-sel>/instrumentation/mach-indicator[0]/indicated-mach</mach-sel>
+  <mmo-sel>/instrumentation/mach-indicator[0]/mmo-mach</mmo-sel>
+  <min-sel>/instrumentation/mach-indicator[0]/min</min-sel>
+  <max-sel>/instrumentation/mach-indicator[0]/max</max-sel>
+ </params>
+
+
  <layers>
 
   <layer>
@@ -25,7 +34,7 @@
     <or>
      <not include="concorde-cond-voltage-inst.xml"/>
      <not>
-      <property>/instrumentation/mach-indicator[0]/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </not>
     </or>
    </condition>
@@ -64,7 +73,7 @@
     <name>needle</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/mach-indicator[0]/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <texture>
@@ -79,7 +88,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
+      <property alias="../../../../../../params/mach-sel"/>
       <min>0.20</min>
       <max>2.4</max>
       <scale>1.0</scale>
@@ -126,10 +135,10 @@
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <greater-than-equals>
-      <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
+      <property alias="../../../../../../params/mach-sel"/>
       <value>0.45</value>
      </greater-than-equals>
-     <property>/instrumentation/mach-indicator[0]/serviceable</property>
+     <property alias="../../../../../params/serviceable"/>
     </and>
    </condition>
    <type>text</type>
@@ -143,7 +152,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/mach-indicator[0]/indicated-mach</property>
+     <property alias="../../../../../params/mach-sel"/>
      <format>%1.2f</format>
     </chunk>
    </chunks>
@@ -177,10 +186,10 @@
      <type>rotation</type>
      <condition>
       <and include="concorde-cond-voltage-inst.xml">
-       <property>/instrumentation/mach-indicator[0]/serviceable</property>
+       <property alias="../../../../../../../params/serviceable"/>
       </and>
      </condition>
-     <property>/instrumentation/mach-indicator/mmo-mach</property>
+     <property alias="../../../../../params/mmo-sel"/>
      <min>0.45</min>
      <max>2.4</max>
       <scale>1.0</scale>
@@ -208,7 +217,7 @@
     <name>Mach Min display</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/mach-indicator[0]/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <texture>
@@ -223,7 +232,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/mach-indicator/min</property>
+      <property alias="../../../../../../params/min-sel"/>
       <min>0.0</min>
       <max>2.4</max>
       <scale>1.0</scale>
@@ -291,7 +300,7 @@
     <name>Mach Max display</name>
     <condition>
      <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/mach-indicator[0]/serviceable</property>
+      <property alias="../../../../../../params/serviceable"/>
      </and>
     </condition>
     <texture>
@@ -306,7 +315,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/instrumentation/mach-indicator/max</property>
+      <property alias="../../../../../../params/max-sel"/>
       <min>0.0</min>
       <max>2.4</max>
       <scale>1.0</scale>

@@ -7,53 +7,14 @@
      - visor not locked up at speed above Mach 0.95.
      - pitch below minus 6 deg above Mach 1.0.
      - enough voltage.
+     - no audio cancel.
 -->
 
 <PropertyList>
 
  <and>
-  <or>
-   <greater-than>
-    <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-    <property n="1">/instrumentation/airspeed-indicator[0]/overspeed-kt</property>
-   </greater-than>
-   <greater-than>
-    <property>/velocities/mach</property>
-    <property n="1">/instrumentation/mach-indicator/overspeed-mach</property>
-   </greater-than>
-   <and>
-    <equals>
-     <property>/controls/flight/flaps</property>
-     <value>1.0</value>
-    </equals>
-    <greater-than>
-     <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
-     <value>270</value>
-    </greater-than>
-   </and>
-   <and>
-    <greater-than>
-     <property>/controls/flight/flaps</property>
-     <value>0.0</value>
-    </greater-than>
-    <greater-than>
-     <property>/velocities/mach</property>
-     <value>0.95</value>
-    </greater-than>
-   </and>
-   <and>
-    <less-than>
-     <property>/orientation/pitch-deg</property>
-     <value>-5.5</value>
-    </less-than>
-    <greater-than>
-     <property>/velocities/mach</property>
-     <value>1.0</value>
-    </greater-than>
-   </and>
-  </or>
+  <property>/systems/mws/overspeed</property>
   <not include="concorde-cond-voltage-bulb.xml"/>
  </and>
-
 
 </PropertyList>

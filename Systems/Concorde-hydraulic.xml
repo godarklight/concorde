@@ -188,6 +188,11 @@
     <prop>/systems/hydraulic/sensors/intake[3]</prop>
   </circuit>
 
+  <circuit>
+    <name>Gear</name>
+    <prop>/systems/hydraulic/sensors/gear</prop>
+  </circuit>
+
   <!-- ======================== -->
   <!-- connect in power sources -->
   <!-- ======================== -->
@@ -439,6 +444,16 @@
     <output>Intake 4</output>
     <switch>
       <prop>/systems/engines/engine[3]/intake-standby</prop>
+    </switch>
+  </connection>
+
+<!-- Gear not neutral -->
+
+  <connection>
+    <input>Green</input>
+    <output>Gear</output>
+    <switch>
+      <prop>/controls/gear/hydraulic</prop>
     </switch>
   </connection>
 

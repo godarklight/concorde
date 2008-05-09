@@ -11,7 +11,7 @@
  <h-base>80</h-base>
 
  <params>
-  <mode-ctrl>/instrumentation/ins[0]/msu/mode</mode-ctrl>
+  <ready-select>/instrumentation/ins[0]/msu/ready</ready-select>
   <test-ctrl>/instrumentation/ins[0]/control/test</test-ctrl>
   <service-select>/instrumentation/ins[0]/serviceable</service-select>
  </params>
@@ -29,15 +29,16 @@
     <condition>
      <or>
       <not include="concorde-cond-voltage-inst.xml"/>
-      <equals>
-       <property alias="../../../../../../../params/mode-ctrl"/>
-       <value>-2</value>
-      </equals>
+      <not>
+       <property alias="../../../../../../../params/service-select"/>
+      </not>
       <and>
        <not>
         <property alias="../../../../../../../../params/test-ctrl"/>
        </not>
-       <property alias="../../../../../../../params/service-select"/>
+       <not>
+        <property alias="../../../../../../../../params/ready-select"/>
+       </not>
       </and>
      </or>
     </condition>

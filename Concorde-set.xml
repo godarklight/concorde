@@ -37,6 +37,11 @@
                                           Tank and engine valves (crossfeed).
                                           2nd pressurization system, anti-icing.
                                           Engine rating, hydraulics (XML), brake temperature.
+ 2.5           May 2008                   3D yokes and pedestal.
+                                          Ground idle (only 4 engines at once).
+                                          Each autopilot has its own instruments.
+                                          INS alignment and failure, discharge valves.
+                                          Virtual crew space out his tasks.
  ==============================================================================================
 -->
 
@@ -46,7 +51,7 @@
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.4</aircraft-version>
+  <aircraft-version>2.5</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
@@ -85,16 +90,26 @@
   <model>
    <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
   </model>
+
+<!-- compensates the shift of VRP at nose -->
+
+  <airport>
+   <runways>
+    <start-offset-m>33.64</start-offset-m>
+   </runways>
+  </airport>
+
+<!-- see all fuselage -->
   
-  <chase-distance-m type="double" archive="y">-67.0</chase-distance-m> <!-- see all fuselage -->
-
-<!-- fuel load saved on exit -->
-
-  <presets>
-   <fuel type="int">0</fuel>
-  </presets>
+  <chase-distance-m type="double" archive="y">-67.0</chase-distance-m>
 
   <help include="help.xml"/>
+
+<!-- British Airways flight number -->
+
+  <user>
+   <callsign type="string">Bravo Alpha 001</callsign>
+  </user>
 
  </sim>
 
@@ -114,6 +129,7 @@
    <file>Aircraft/Concorde/Nasal/Concorde-autopilot.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-engine.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-navigation.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-warning.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-crew.nas</file>
@@ -144,7 +160,7 @@
   <audio>
    <captain>
     <adf n="0">
-     <volume type="double">0.0</volume>                                    <!-- only by volume -->
+     <volume type="double">0.0</volume>
     </adf>
     <adf n="1">
      <volume type="double">0.0</volume>
@@ -264,6 +280,10 @@
 <!-- decision altitude -->
 
   <radio-altimeter n="0">
+   <dial-decision-ft>200</dial-decision-ft>
+  </radio-altimeter>
+
+  <radio-altimeter n="1">
    <dial-decision-ft>200</dial-decision-ft>
   </radio-altimeter>
 

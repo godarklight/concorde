@@ -20,14 +20,16 @@
      <name>off</name>
      <type>group</type>
      <condition>
-      <and>
-       <or include="concorde-cond-test-copilot.xml"/>
-       <or include="concorde-cond-test-brakes.xml"/>
-       <less-than>
-        <property>/systems/hydraulic/brakes/temperature-degc</property>
-        <value>220</value>
-       </less-than>
-      </and>
+      <or include="concorde-cond-voltage-bulb.xml">
+       <and>
+        <or include="concorde-cond-test-copilot.xml"/>
+        <or include="concorde-cond-test-brakes.xml"/>
+        <less-than>
+         <property>/systems/hydraulic/brakes/temperature-degc</property>
+         <value>220</value>
+        </less-than>
+       </and>
+      </or>
      </condition>
 
      <layer include="concorde-bulb-off.xml">

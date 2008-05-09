@@ -6,13 +6,15 @@
      - avoids nasal nil values or non-member error.
      - nasal instruments are also serviceable.
 
-     - 1 instrument for both Captain and Copilot.
      - <slave> is a real dependancy on instruments.
      - <noinstrument> is to built the instrument.
 
 
-     IMPORTANT : by default Concorde comes with the C++ IVSI.
-     =========
+
+     Instantaneous Vertical Speed Indicator :
+     ======================================
+     By default Concorde comes with the C++ IVSI.
+
      Because near Mach 2, when setting vertical speed at +60 ft/min, an IVSI built with
      /velocities/vertical-speed-fps doesn't match the altimeter, which may even go down.
      While /velocities/vertical-speed-fps, controlled by autopilot, is correct :
@@ -23,20 +25,39 @@
      the real climb rate (50 ft/min = 3000 ft in 1 hour), and adjust the autopilot, because
      /velocities/vertical-speed-fps is slowly varying.
 
+
      /velocities/vertical-speed-fps is also barely usable with AI (virtual crew).
      Example : it may indicate -100 ft/min, while the autopilot is locked at 26000 ft.
 
 
-     To avoid this annoyance, the C++ IVSI (Instantaneous VSI) works by pressure to match
-     the altimeter reading. It doesn't make measure, when the pressure rate of change is
-     too strong (external weather).
+     To avoid this drawback, the C++ IVSI works by pressure to match the altimeter reading.
+     It doesn't make measure, when the pressure rate of change is too strong (external weather).
 
-     To restore /velocities/vertical-speed-fps :
+
+     To substitute /velocities/vertical-speed-fps :
+     ............................................
+     In flight, the IVSI should be steady; a wrong order of FG systems (instruments vs. environment)
+     can create needle vibrations, making the IVSI unusable on some hardware :
+     
      a) set serviceable to false;
      b) remove the comment around the alias of /velocities/vertical-speed-fps.
 -->
 
 <PropertyList>
+
+  <accelerometer-aoa n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <alpha-deg alias="/orientation/alpha-deg"/>
+   <g alias="/accelerations/nlf"/>
+  </accelerometer-aoa>
+
+  <accelerometer-aoa n="1">
+   <serviceable type="bool">true</serviceable>
+
+   <alpha-deg alias="/orientation/alpha-deg"/>
+   <g alias="/accelerations/nlf"/>
+  </accelerometer-aoa>
 
   <ac-weight>
    <fuel-datum-kg type="double">0.0</fuel-datum-kg>                        <!-- initial load -->
@@ -54,6 +75,18 @@
    <weight-lb type="double">0.0</weight-lb>
   </ac-weight>
 
+  <adc n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <slave>
+    <electric>/systems/electrical/power</electric>
+   </slave>
+  </adc>
+
+  <adc n="1">
+   <serviceable type="bool">true</serviceable>
+  </adc>
+
   <adf n="0">
    <ident-audible type="bool">true</ident-audible>                         <!-- only by volume -->
    <volume-norm type="double">0.0</volume-norm>
@@ -66,47 +99,69 @@
    <volume-norm type="double">0.0</volume-norm>
   </adf>
 
-  <airspeed-indicator>
+  <airspeed-indicator n="0">
    <vmo-kt type="double">999.0</vmo-kt>
-   <overspeed-kt type="double">999.0</overspeed-kt>
+
+   <noinstrument>
+    <altitude>/position/altitude-ft</altitude>
+   </noinstrument>
 
    <slave>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
     <weight>/instrumentation/ac-weight</weight>
    </slave>
   </airspeed-indicator>
 
+  <airspeed-indicator n="1">
+   <serviceable type="bool">true</serviceable>
+
+   <vmo-kt alias="/instrumentation/airspeed-indicator[0]/vmo-kt"/>
+  </airspeed-indicator>
+
   <airspeed-standby>
    <serviceable type="bool">true</serviceable>
+
+   <vmo-kt alias="/instrumentation/airspeed-indicator[0]/vmo-kt"/>
   </airspeed-standby>
+
+  <altimeter n="1">
+   <serviceable type="bool">true</serviceable>
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter>
+
+  <altimeter n="2">
+   <serviceable type="bool">true</serviceable>
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter>
 
   <altimeter-standby>
    <serviceable type="bool">true</serviceable>
    <setting-inhg>29.92</setting-inhg>
   </altimeter-standby>
 
-  <accelerometer-aoa>
-   <alpha-deg alias="/orientation/alpha-deg"/>
-   <g alias="/accelerations/nlf"/>
-  </accelerometer-aoa>
-
   <attitude-indicator n="0">
    <serviceable type="bool">true</serviceable>
+
    <fd2 type="bool">false</fd2>
+   <horizon-offset-deg type="double">0.0</horizon-offset-deg>
    <indicated-pitch-deg alias="/orientation/pitch-deg"/>
    <indicated-roll-deg alias="/orientation/roll-deg"/>
-   <horizon-offset-deg type="double">0.0</horizon-offset-deg>
   </attitude-indicator>
 
   <attitude-indicator n="1">
    <serviceable type="bool">true</serviceable>
+
    <fd2 type="bool">true</fd2>
    <horizon-offset-deg type="double">0.0</horizon-offset-deg>
+   <indicated-pitch-deg alias="/orientation/pitch-deg"/>
+   <indicated-roll-deg alias="/orientation/roll-deg"/>
   </attitude-indicator>
 
   <attitude-standby>
    <serviceable type="bool">true</serviceable>
+
    <horizon-offset-deg type="double">0.0</horizon-offset-deg>
+   <indicated-pitch-deg alias="/orientation/pitch-deg"/>
+   <indicated-roll-deg alias="/orientation/roll-deg"/>
   </attitude-standby>
 
   <cabin-altitude>
@@ -118,20 +173,32 @@
    <serviceable type="bool" archive="y">true</serviceable>
   </cabin-rate-climb>
 
-  <cg>
+  <cg n="0">
    <serviceable type="bool" archive="y">true</serviceable>
 
    <cg-x-in alias="/fdm/jsbsim/inertia/cg-x-in"/>
    <cg-c0-in type="double">0.0</cg-c0-in>
+   <max-extreme-percent type="double">100.0</max-extreme-percent>
    <max-percent type="double">100.0</max-percent>
    <max-performance-to type="bool">false</max-performance-to>
+   <min-extreme-percent type="double">0.0</min-extreme-percent>
    <min-percent type="double">0.0</min-percent>
    <percent type="double">50.0</percent>
 
    <slave>
-    <mach>/instrumentation/mach-indicator</mach>
+    <mach>/instrumentation/mach-indicator[0]</mach>
     <weight>/instrumentation/ac-weight</weight>
    </slave>
+  </cg>
+
+  <cg n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <max-extreme-percent alias="/instrumentation/cg[0]/max-extreme-percent"/>
+   <max-percent alias="/instrumentation/cg[0]/max-percent"/>
+   <min-extreme-percent alias="/instrumentation/cg[0]/min-extreme-percent"/>
+   <min-percent alias="/instrumentation/cg[0]/min-percent"/>
+   <percent alias="/instrumentation/cg[0]/percent"/>
   </cg>
 
   <clock>
@@ -177,6 +244,10 @@
    <selector type="int">0</selector>                                       <!-- normal -->
   </dme>
 
+  <encoder>
+   <serviceable type="bool">true</serviceable>
+  </encoder>
+
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
    <fuel-flow-kg_ph type="double">0.0</fuel-flow-kg_ph>
@@ -211,8 +282,21 @@
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
 
+  <hf n="0">
+   <frequencies>
+    <selected-khz type="double">2.0000</selected-khz>
+   </frequencies>
+  </hf>
+
+  <hf n="1">
+   <frequencies>
+    <selected-khz type="double">2.0000</selected-khz>
+   </frequencies>
+  </hf>
+
   <hsi n="0">
    <serviceable type="bool" archive="y">true</serviceable>
+
    <compass2 type="bool">false</compass2>
    <dev-nav2 type="bool">false</dev-nav2>
    <ins-source type="bool">false</ins-source>
@@ -221,6 +305,7 @@
 
   <hsi n="1">
    <serviceable type="bool" archive="y">true</serviceable>
+
    <compass2 type="bool">true</compass2>
    <dev-nav2 type="bool">true</dev-nav2>
    <ins-source type="bool">false</ins-source>
@@ -247,21 +332,41 @@
    </computed>
 
    <data>
-    <ident></ident>                                                        <!-- string -->
     <left></left>
     <right></right>
    </data>
 
+   <ins-num type="int">1</ins-num>
+
    <light>
     <alert type="bool">false</alert>
+    <warning type="bool">false</warning>
    </light>
 
    <msu>
+    <aligned type="bool">true</aligned>
+    <alignment-s type="int">0</alignment-s>
     <mode type="int">1</mode>                                              <!-- nav -->
+    <ready type="bool">true</ready>
+
+    <status type="int" n="0">1</status>
+    <status type="int" n="1">0</status>
+    <status type="int" n="2">0</status>
+    <status type="int" n="3">0</status>
+    <status type="int" n="4">1</status>
+    <status type="int" n="5">5</status>
    </msu>
 
+   <noinstrument>
+    <position>/position</position>
+    <track>/autopilot/settings/true-heading-deg</track>
+    <true>/orientation/heading-deg</true>
+   </noinstrument>
+
    <slave>
+    <autopilot>/autopilot/route-manager</autopilot>
     <electric>/systems/electrical/power</electric>
+    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
    </slave>
   </ins>
 
@@ -275,18 +380,39 @@
     <waypoint type="int">1</waypoint>
    </control>
 
+   <computed>
+    <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
+    <leg-course-error-nm>0.0</leg-course-error-nm>
+    <leg-true-course-deg>0.0</leg-true-course-deg>
+    <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
+    <wind-speed-kt alias="/environment/wind-speed-kt"/>
+   </computed>
+
    <data>
-    <ident></ident>
     <left></left>
     <right></right>
    </data>
 
+   <ins-num type="int">2</ins-num>
+
    <light>
     <alert type="bool">false</alert>
+    <warning type="bool">false</warning>
    </light>
 
    <msu>
+    <aligned type="bool">true</aligned>
+    <alignment-s type="int">0</alignment-s>
     <mode type="int">1</mode>
+    <ready type="bool">true</ready>
+
+    <status type="int" n="0">1</status>
+    <status type="int" n="1">0</status>
+    <status type="int" n="2">0</status>
+    <status type="int" n="3">0</status>
+    <status type="int" n="4">1</status>
+    <status type="int" n="5">5</status>
    </msu>
   </ins>
 
@@ -300,31 +426,68 @@
     <waypoint type="int">1</waypoint>
    </control>
 
+   <computed>
+    <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
+    <leg-course-error-nm>0.0</leg-course-error-nm>
+    <leg-true-course-deg>0.0</leg-true-course-deg>
+    <wind-from-heading-deg alias="/environment/wind-from-heading-deg"/>
+    <wind-speed-kt alias="/environment/wind-speed-kt"/>
+   </computed>
+
    <data>
-    <ident></ident>
     <left></left>
     <right></right>
    </data>
 
+   <ins-num type="int">3</ins-num>
+
    <light>
     <alert type="bool">false</alert>
+    <warning type="bool">false</warning>
    </light>
 
    <msu>
+    <aligned type="bool">true</aligned>
+    <alignment-s type="int">0</alignment-s>
     <mode type="int">1</mode>
+    <ready type="bool">true</ready>
+
+    <status type="int" n="0">1</status>
+    <status type="int" n="1">0</status>
+    <status type="int" n="2">0</status>
+    <status type="int" n="3">0</status>
+    <status type="int" n="4">1</status>
+    <status type="int" n="5">5</status>
    </msu>
   </ins>
 
-  <inst-vertical-speed-indicator>
+  <inst-vertical-speed-indicator n="0">
    <serviceable type="bool" archive="y">true</serviceable>
 <!--
    <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
 -->
   </inst-vertical-speed-indicator>
 
-  <mach-indicator>
+  <inst-vertical-speed-indicator n="1">
+<!--
    <serviceable type="bool" archive="y">true</serviceable>
+-->
+<!--
+   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
+-->
+<!-- only 1 IVSI for 1.0.0 -->
+   <serviceable alias="/instrumentation/inst-vertical-speed-indicator[0]/serviceable"/>
+   <indicated-speed-fps alias="/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps"/>
+   <indicated-speed-fpm alias="/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fpm"/>
+  </inst-vertical-speed-indicator>
+
+  <mach-indicator n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
+
    <indicated-mach alias="/velocities/mach"/>
+   <min type="double">0.45</min>
+   <max type="double">0.95</max>
    <mmo-mach type="double">999.0</mmo-mach>
 
    <noinstrument>
@@ -338,6 +501,21 @@
     <cg>/instrumentation/cg[0]</cg>
     <weight>/instrumentation/ac-weight</weight>
    </slave>
+  </mach-indicator>
+
+  <mach-indicator n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-mach alias="/velocities/mach"/>
+   <max alias="/instrumentation/mach-indicator[0]/max"/>
+   <min alias="/instrumentation/mach-indicator[0]/min"/>
+   <mmo-mach alias="/instrumentation/mach-indicator[0]/mmo-mach"/>
+  </mach-indicator>
+
+  <mach-indicator n="2">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-mach alias="/velocities/mach"/>
   </mach-indicator>
 
   <marker-beacon>
@@ -379,18 +557,41 @@
 
   <nose-visor>
    <pos-norm alias="/surface-positions/flap-pos-norm"/>
+
+   <slave>
+    <hydraulic>/systems/hydraulic/power</hydraulic>
+    <wiper>/instrumentation/wiper/power</wiper>
+   </slave>
   </nose-visor>
 
   <radar>                                                                  <!-- TCAS 1) required by AI -->
    <range type="int" archive="y">40</range>
   </radar>
 
-  <radio-altimeter>
+  <radio-altimeter n="0">
    <serviceable type="bool" archive="y">true</serviceable>
+
+   <decision-ft type="double">211</decision-ft>
+   <decision-height type="bool">true</decision-height>                     <!-- enable warning light -->
+   <dial-decision-ft type="double">200</dial-decision-ft>
    <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
   </radio-altimeter>
 
-  <side-slip>
+  <radio-altimeter n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <decision-ft type="double">211</decision-ft>
+   <decision-height type="bool">true</decision-height>
+   <dial-decision-ft type="double">200</dial-decision-ft>
+   <indicated-altitude-ft alias="/position/altitude-agl-ft"/>
+  </radio-altimeter>
+
+  <side-slip n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
+   <angle-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+  </side-slip>
+
+  <side-slip n="1">
    <serviceable type="bool" archive="y">true</serviceable>
    <angle-deg alias="/fdm/jsbsim/aero/beta-deg"/>
   </side-slip>
@@ -415,6 +616,7 @@
    <range type="int" archive="y">45</range>                                <!-- maximum range -->
 
    <slave>
+    <ai>/ai/models</ai>
     <altimeter>/instrumentation/altimeter[0]</altimeter>
     <electric>/systems/electrical/power</electric>
    </slave>
@@ -450,16 +652,55 @@
    </traffics>
   </tcas>
 
-  <temperature>
+  <temperature n="0">
    <serviceable type="bool" archive="y">true</serviceable>
+
    <indicated-tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
    <indicated-static-degc alias="/environment/temperature-degc"/>
+   <isa-degc type="double">20.0</isa-degc>
 
    <slave>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
+    <altimeter>
+     <component>/instrumentation</component>
+     <subcomponent>altimeter</subcomponent>
+    </altimeter>
     <electric>/systems/electrical/power</electric>
    </slave>
   </temperature>
+
+  <temperature n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+   <indicated-static-degc alias="/environment/temperature-degc"/>
+   <isa-degc type="double">20.0</isa-degc>
+  </temperature>
+
+  <temperature n="2">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+  </temperature>
+
+  <transponder>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <id-code type="int">1200</id-code>
+  </transponder>
+
+<!--
+  <weather-radar>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <display-controls>
+    <WX type="bool">true</WX>
+   </display-controls>
+
+   <display-mode>arc</display-mode>
+   <range>40</range>
+   <switch>on</switch>
+  </weather-radar>
+-->
 
   <weight-switch>
    <wow type="bool">true</wow>
@@ -475,5 +716,13 @@
     </gear>
    </slave>
   </weight-switch>
+
+  <wiper>
+   <power type="bool">false</power>
+
+   <slave>
+    <electric>/systems/electrical/power</electric>
+   </slave>
+  </wiper>
 
 </PropertyList>
