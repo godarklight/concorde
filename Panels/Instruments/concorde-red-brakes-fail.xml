@@ -27,11 +27,11 @@
        <or include="concorde-cond-test-center.xml"/>      <!-- bug -->
        <or>
         <greater-than>
-         <property>/systems/hydraulic/brakes/green-accu-psi</property>
+         <property>/systems/brakes/green-accu-psi</property>
          <value>400.0</value>
         </greater-than>
         <not>
-         <property>/systems/hydraulic/brakes/pedals</property>
+         <property>/systems/brakes/pedals</property>
         </not>
        </or>
       </and>

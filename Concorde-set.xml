@@ -16,7 +16,7 @@
  2.1           November 2005              Copilot and steward views.
                                           Text in alarm textures, 1st instrument textures.
                                           Electrical system (JSBSim), hydraulics, fuel pumps.
-                                          Virtual copilot (only 4 engines flame out).
+                                          Virtual copilot during 4 engines flame out.
  2.2           April 2006                 Lighting (internal and external).
                                           Cockpit textures.
                                           Full cockpit (3D vibrations at subsonic speed
@@ -30,18 +30,23 @@
                                           Each autopilot has its own NAV frequency.
                                           VRP at nose, longer front gear.
                                           Air conditioning, depressurization.
-                                          Virtual crew, voice callouts, menu.
+                                          Virtual crew performs the essential tasks.
+                                          Voice callouts.
+                                          Menu.
  2.4           September 2007             3D seats and crew.
                                           Warning lights have 2 light levels.
                                           Intake failure (only 4 engines at once).
                                           Tank and engine valves (crossfeed).
                                           2nd pressurization system, anti-icing.
                                           Engine rating, hydraulics (XML), brake temperature.
- 2.5           May 2008                   3D yokes and pedestal.
+ 2.5           May 2008                   3D wipers, yokes and throttle cylinder.
                                           Ground idle (only 4 engines at once).
                                           Each autopilot has its own instruments.
                                           INS alignment and failure, discharge valves.
-                                          Virtual crew space out his tasks.
+                                          Virtual crew spaces out his tasks.
+ 2.6           January 2009               Transformers (26 volts), fuel pumps (XML).
+                                          Flight control system failure.
+                                          Virtual crew completes the normal checklists.
  ==============================================================================================
 -->
 
@@ -51,7 +56,7 @@
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.5</aircraft-version>
+  <aircraft-version>2.6</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
@@ -105,10 +110,12 @@
 
   <help include="help.xml"/>
 
-<!-- British Airways flight number -->
+  <menubar include="Dialogs/Concorde-menubar.xml"/>
+
+<!-- http://en.wikipedia.org/wiki/Concorde -->
 
   <user>
-   <callsign type="string">Bravo Alpha 001</callsign>
+   <callsign type="string">Speedbird Concorde 1</callsign>
   </user>
 
  </sim>
@@ -117,8 +124,11 @@
   <fuel include="Systems/Concorde-init-fuel.xml"/>                  <!-- required by nasal -->
  </consumables>
 
+ <limits include="Nasal/Concorde-limits.xml"/>
+
  <nasal>
   <Concorde>
+   <file>Aircraft/Generic/limits.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-constants.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-electricXML.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-electric.nas</file>
@@ -127,12 +137,15 @@
    <file>Aircraft/Concorde/Nasal/Concorde-hydraulic.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-autothrottle.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-autopilot.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-fuelXML.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-engine.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-navigation.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-warning.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-crew.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-copilot.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-engineer.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-voice.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-human.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-interface.nas</file>
@@ -189,12 +202,6 @@
    </autopilot>
    <real-nav type="bool">true</real-nav>                                    <!-- nav is accurate until ground -->
   </autoflight>
-
-<!-- crew + voice -->
-
-  <crew>
-   <timeout-s type="double">10.0</timeout-s>
-  </crew>
 
 <!-- takeoff monitor bug -->
  

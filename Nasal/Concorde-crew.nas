@@ -15,42 +15,79 @@
 Virtualcrew = {};
 
 Virtualcrew.new = func {
-   var obj = { parents : [Virtualcrew], 
+   var obj = { parents : [Virtualcrew,Checklist,System], 
 
-           generic : Generic.new(),
+               generic : Generic.new(),
 
-           TASKSEC : 2.0,
-           DELAYSEC : 1.0,
+               GROUNDSEC : 15.0,                               # to reach the ground
+               CREWSEC : 10.0,                                 # to complete the task
+               TASKSEC : 2.0,                                  # between 2 tasks
+               DELAYSEC : 1.0,                                 # random delay
 
-           task : constant.FALSE,
-           taskend : constant.TRUE,
+               task : constant.FALSE,
+               taskend : constant.TRUE,
+               taskground : constant.FALSE,
+               taskcrew : constant.FALSE,
+  
+               activ : constant.FALSE,
+               running : constant.FALSE,
 
-           state : ""
+               state : ""
          };
 
     return obj;
 }
 
-Virtualcrew.init_ancestor2 = func {
+Virtualcrew.inherit_virtualcrew = func( path ) {
+    me.inherit_checklist( path );
+    me.inherit_system( path );
+
     var obj = Virtualcrew.new();
 
     me.generic = obj.generic;
+
+    me.GROUNDSEC = obj.GROUNDSEC;
+    me.CREWSEC = obj.CREWSEC;
     me.TASKSEC = obj.TASKSEC;
     me.DELAYSEC = obj.DELAYSEC;
+
     me.task = obj.task;
     me.taskend = obj.taskend;
+    me.taskground = obj.taskground;
+    me.taskcrew = obj.taskcrew;
+
+    me.activ = obj.activ;
+    me.running = obj.running;
     me.state = obj.state;
 }
 
 Virtualcrew.toggleclick = func( message = "" ) {
+    me.done( message );
+
+    me.generic.toggleclick();
+}
+
+Virtualcrew.done = func( message = "" ) {
     if( message != "" ) {
         me.log( message );
     }
 
     # first task to do.
     me.task = constant.TRUE;
+}
 
-    me.generic.toggleclick();
+Virtualcrew.done_ground = func( message = "" ) {
+    # procedure to execute with delay
+    me.taskground = constant.TRUE;
+
+    me.done( message );
+}
+
+Virtualcrew.done_crew = func( message = "" ) {
+    # procedure to execute with delay
+    me.taskcrew = constant.TRUE;
+
+    me.done( message );
 }
 
 Virtualcrew.log = func( message ) {
@@ -63,9 +100,43 @@ Virtualcrew.getlog = func {
 
 Virtualcrew.reset = func {
     me.state = "";
+    me.activ = constant.FALSE;
+    me.running = constant.FALSE;
 
     me.task = constant.FALSE;
     me.taskend = constant.TRUE;
+}
+
+Virtualcrew.set_activ = func {
+    me.activ = constant.TRUE;
+}
+
+Virtualcrew.is_activ = func {
+    return me.activ;
+}
+
+Virtualcrew.set_running = func {
+    me.running = constant.TRUE;
+}
+
+Virtualcrew.is_running = func {
+    return me.running;
+}
+
+Virtualcrew.wait_ground = func {
+    return me.taskground;
+}
+
+Virtualcrew.reset_ground = func {
+    me.taskground = constant.FALSE;
+}
+
+Virtualcrew.wait_crew = func {
+    return me.taskcrew;
+}
+
+Virtualcrew.reset_crew = func {
+    me.taskcrew = constant.FALSE;
 }
 
 Virtualcrew.can = func {
@@ -78,1204 +149,666 @@ Virtualcrew.can = func {
 }
 
 Virtualcrew.randoms = func( steps ) {
+    # doesn't overwrite, if no task to do
     if( !me.taskend ) {
-        steps = me.TASKSEC + rand() * me.DELAYSEC;
+        var margins  = rand() * me.DELAYSEC;
+
+        if( me.taskground ) {
+            steps = me.GROUNDSEC;
+        }
+
+        elsif( me.taskcrew ) {
+            steps = me.CREWSEC;
+        }
+
+        else {
+            steps = me.TASKSEC;
+        }
+
+        steps = steps + margins;
     }
 
     return steps;
 } 
 
+Virtualcrew.timestamp = func {
+    var action = me.itself["root"].getChild("state").getValue();
 
-# ================
-# VIRTUAL ENGINEER
-# ================
-
-Virtualengineer = {};
-
-Virtualengineer.new = func {
-   var obj = { parents : [Virtualengineer,Virtualcrew,System], 
-
-           autopilotsystem : nil,
-           fuelsystem : nil,
-
-           navigation : Navigation.new(),
-           nightlighting : Nightlighting.new(),
-
-           GROUNDSEC : 30.0,
-           CRUISESEC : 15.0,
-           REHEATSEC : 4.0,
-
-           rates : 0.0,
-
-           crew : nil,
-           crewcontrol : nil,
-           engineer : nil,
-           engines : nil,
-           allengines : nil,
-
-           SAFEFT : 1500.0,
-
-           aglft : 0.0,
-
-           CLIMBMACH : 0.7,
-           CRUISEMACH : 1.95,
-
-           speedmach : 0.0,
-
-           SCHEDULEAPPROACH : 1,
-           SCHEDULENORMAL : 0,
-
-           MAXPERCENT : 53.6,                                # maximum on ground
-           CGPERCENT : 0.3,
-
-           activ : constant.FALSE,
-           running : constant.FALSE,
-           checklist : ""
-         };
-
-    obj.init();
-
-    return obj;
-}
-
-Virtualengineer.init = func {
-    me.init_ancestor("/systems/crew/engineer");
-    me.init_ancestor2();
-
-    me.crew = props.globals.getNode("/systems/crew");
-    me.crewcontrol = props.globals.getNode("/controls/crew");
-    me.engineer = props.globals.getNode("/systems/crew/engineer");
-    me.engines = props.globals.getNode("/controls/engines").getChildren("engine");
-    me.allengines = props.globals.getNode("/controls/engines");
-
-    settimer( func { me.setweighthuman(); }, me.CRUISESEC );
-}
-
-Virtualengineer.set_relation = func( autopilot, fuel, lighting ) {
-    me.autopilotsystem = autopilot;
-    me.fuelsystem = fuel;
-    me.nightlighting.set_relation( lighting );
-}
-
-Virtualengineer.toggleexport = func {
-    var launch = constant.FALSE;
-
-    if( !me.crewcontrol.getChild("engineer").getValue() ) {
-        launch = constant.TRUE;
-    }
- 
-    me.crewcontrol.getChild("engineer").setValue(launch);
-
-    if( launch and !me.running ) {
-        me.schedule();
-    }
-}
-
-Virtualengineer.reheatexport = func {
-    # at first engine 2 3.
-    if( !me.has_reheat() ) {
-        for( var i = 1; i <= 2 ; i = i+1 ) {
-             me.engines[i].getChild("reheat").setValue( constant.TRUE );
-        }
- 
-        me.toggleclick("reheat-2-3");
-
-        # then, engineer sets engines 1 4.
-        settimer(func { me.reheatcron(); }, me.REHEATSEC);
+    # save last real action
+    if( action != "" ) {
+        me.itself["root"].getChild("state-last").setValue(action);
     }
 
-    else {
-        for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-             me.engines[i].getChild("reheat").setValue( constant.FALSE );
-        }
- 
-        me.toggleclick("reheat-off");
-    }
+    me.itself["root"].getChild("state").setValue(me.getlog());
+    me.itself["root"].getChild("time").setValue(getprop("/sim/time/gmt-string"));
 }
 
-Virtualengineer.reheatcron = func {
-    if( me.has_reheat() ) {
-        me.engines[0].getChild("reheat").setValue( constant.TRUE );
-        me.engines[3].getChild("reheat").setValue( constant.TRUE );
- 
-        me.toggleclick("reheat-1-4");
-    }
-}
-
-Virtualengineer.has_reheat = func {
-    var augmentation = constant.FALSE;
-
-    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-         if( me.engines[i].getChild("reheat").getValue() ) {
-             augmentation = constant.TRUE;
-             break;
-         }
-    }
-
-    return augmentation;
-}
-
-Virtualengineer.slowschedule = func {
-    me.navigation.schedule();
-}
-
-Virtualengineer.schedule = func {
-    me.reset();
-
-    if( me.crew.getChild("serviceable").getValue() ) {
-        me.supervisor();
-    }
-    else {
-        me.rates = me.GROUNDSEC;
-        me.engineer.getChild("activ").setValue(constant.FALSE);
-    }
-
-    me.run();
-}
-
-Virtualengineer.run = func {
-    if( me.crewcontrol.getChild("engineer").getValue() ) {
-        me.running = constant.TRUE;
-        me.rates = constant.rates( me.rates );
-        settimer( func { me.schedule(); }, me.rates );
-    }
-    else {
-        me.running = constant.FALSE;
-    }
-}
-
-Virtualengineer.supervisor = func {
-    me.activ = constant.FALSE;
-    me.rates = me.GROUNDSEC;
-
-
-    if( me.crewcontrol.getChild("engineer").getValue() ) {
-        me.speedmach = me.noinstrument["mach"].getValue();
-
-        me.aglft = me.noinstrument["agl"].getValue();
-
-        if( me.aglft > constantaero.APPROACHFT ) {
-            me.rates = me.CRUISESEC;
-        }
-
-        me.checklist = me.slave["voice"].getChild("checklist").getValue();
-
-        if( me.checklist == "gate" or me.checklist == "parking" ) {
-        }
-
-        elsif( me.checklist == "taxi" ) {
-            me.activ = constant.TRUE;
-            me.afterlanding();
-        }
-
-        else {
-            me.activ = constant.TRUE;
-            me.flight();
-        }
-
-        me.allways();
-
-        me.rates = me.randoms( me.rates );
-
-        me.engineer.getChild("state").setValue(me.getlog());
-        me.engineer.getChild("time").setValue(getprop("/sim/time/gmt-string"));
-    }
-
-    me.engineer.getChild("activ").setValue(me.activ);
-}
-
-Virtualengineer.allways = func {
-    me.setweight();
-    me.enginecontrol();
-    me.nightlighting.engineer( me );
-}
-
-Virtualengineer.flight = func {
-    me.fuel();
-    me.enginerating();
-    me.groundidle( constant.FALSE );
-}
-
-Virtualengineer.afterlanding = func {
-    me.fuel();
-    me.enginerating();
-    me.groundidle( constant.TRUE );
-    me.taxioutboard();
-}
-
-Virtualengineer.groundidle = func( set ) {
+Virtualcrew.completed = func {
     if( me.can() ) {
-        var path = "";
-
-        path = "ground-idle14";
-
-        if( me.allengines.getChild(path).getValue() != set ) {
-            me.allengines.getChild(path).setValue( set );
-        }
-
-        path = "ground-idle23";
-
-        if( me.allengines.getChild(path).getValue() != set ) {
-            me.allengines.getChild(path).setValue( set );
-        }
+        me.set_completed();
     }
 }
 
-Virtualengineer.taxioutboard = func {
-    for( i=1; i<=2; i=i+1 ) {
-         if( me.can() ) {
-             # taxi with outboard engines
-             if( !me.engines[i].getChild("cutoff").getValue() ) {
-                 me.engines[i].getChild("cutoff").setValue(constant.TRUE);
-                 me.toggleclick("stop-engine-" ~ i);
-             }
-         }
-    }
-}
+Virtualcrew.has_completed = func {
+    var result = constant.FALSE;
 
-Virtualengineer.enginerating = func {
     if( me.can() ) {
-        var rating = "takeoff";
-        var flight = "climb";
-
-        if( me.aglft > me.SAFEFT ) {
-            rating = "flight";
-        }
-
-        if( me.autopilotsystem.has_altitude_hold() ) {
-            flight = "cruise";
-        }
-
-        else {
-            # see check-list
-            if( me.speedmach > me.CRUISEMACH ) {
-                flight = "cruise";
-            }
-        }
-
-        me.applyrating( flight, rating );
-    }
-}
-
-Virtualengineer.applyrating = func( flight, rating ) {
-    var flightnow = "";
-    var ratingnow = "";
-
-    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-         if( me.can() ) {
-             flightnow = me.engines[i].getChild("rating-flight").getValue();
-             if( flightnow != flight ) {
-                 me.engines[i].getChild("rating-flight").setValue(flight);
-                 me.toggleclick("rating-" ~ i ~ "-" ~ flight);
-             }
-         }
-
-         # flight once safe
-         if( me.can() ) {
-             ratingnow = me.engines[i].getChild("rating").getValue();
-             if( ratingnow != rating and rating == "flight" ) {
-                 if( !getprop("/controls/gear/gear-down") ) {
-                     me.engines[i].getChild("rating").setValue(rating);
-                     me.toggleclick("rating-" ~ i ~ "-" ~ rating);
-                 }
-             }
-         }
-    }
-}
-
-Virtualengineer.enginecontrol = func {
-    if( me.can() ) {
-        var result = 0;
-        var present = 0;
-
-        me.allengines.getChild("schedule-auto").setValue( constant.TRUE );
-
-        # see check-list
-        if( me.speedmach > me.CLIMBMACH ) {
-            result = me.SCHEDULENORMAL;
-        }
-
-        # approach
-        elsif( me.checklist == "landing" ) {
-            result = me.SCHEDULEAPPROACH;
-        }
-
-        # normal or flyover at takeoff
-        else {
-            result = me.allengines.getChild("schedule").getValue();
-            if( result > me.SCHEDULENORMAL ) {
-                result = me.SCHEDULENORMAL;
-            }
-        }
-
-        if( me.allengines.getChild("schedule").getValue() != result ) {
-            me.allengines.getChild("schedule").setValue( result );
-            me.toggleclick("engine-schedule");
-        }
-   }
-}
-
-# set weight datum
-Virtualengineer.setweight = func {
-    if( me.can() ) {
-
-        # after fuel loading
-        var reset = me.slave["fuel2"].getChild("reset").getValue();
-
-        # after 1 reset of fuel consumed
-        if( !reset ) {
-            for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-                 if( me.slave["fuel-consumed"][i].getChild("reset").getValue() ) {
-                     reset = constant.TRUE;
-                     break;
-                 }
-            }
-        }
-
-        if( reset ) {
-            me.setweighthuman();
-            me.toggleclick("set-weight");
-        }
-    }
-}
-
-Virtualengineer.setweighthuman = func {
-    var totalkg = me.slave["fuel"].getChild("total-kg").getValue();
-
-    me.fuelsystem.setweighthuman( totalkg );
-}
-
-Virtualengineer.fuel = func {
-    if( me.can() ) {
-        var engine = constant.FALSE;
-        var forward = constant.FALSE;
-        var aft = constant.FALSE;
-        var afttrim = constant.FALSE;
-        var max = 0.0;
-        var min = 0.0;
-        var cg = 0.0;
-        var mean = 0.0;
-
-        if( me.slave["cg"].getChild("serviceable").getValue() ) {
-            max = me.slave["cg"].getChild("max-percent").getValue();
-            min = me.slave["cg"].getChild("min-percent").getValue();
-            cg = me.slave["cg"].getChild("percent").getValue();
-
-            engine = constant.FALSE;
-            afttrim = constant.FALSE;
-
-            # emergency
-            if( cg < min ) {
-                me.log("below-min");
-                aft = constant.TRUE;
-                engine = constant.TRUE;
-                afttrim = constant.TRUE;
-            }
-            elsif( cg > max ) {
-                me.log("above-max");
-                forward = constant.TRUE;
-                engine = constant.TRUE;
-            }
-
-            # above 250 kt beyond 10000 ft
-            elsif( me.noinstrument["altitude"].getValue() > constantaero.APPROACHFT ) {
-                mean = min + ( max - min ) / 2;
-
-                if( cg < mean - me.CGPERCENT ) {
-                    me.log("aft");
-                    aft = constant.TRUE;
-                    engine = constant.TRUE;
-                }
-
-                # don't move on ground, if within limits
-                elsif( cg > mean + me.CGPERCENT and cg > me.MAXPERCENT ) {
-                    me.log("forward");
-                    forward = constant.TRUE;
-                    engine = constant.TRUE;
-                }
-           }
-
-           me.applyfuel( forward, aft, engine, afttrim );
-       }
-
-
-       if( me.engineer.getNode("cg/aft").getValue() != aft or
-           me.engineer.getNode("cg/forward").getValue() != forward ) {
-           me.engineer.getNode("cg/aft").setValue(aft);
-           me.engineer.getNode("cg/forward").setValue(forward);
-
-           me.toggleclick();
-       }
-    }
-}
-
-Virtualengineer.applyfuel = func( forward, aft, engine, afttrim) {
-    var pump6 = constant.FALSE;
-    var pump8 = constant.FALSE;
-    var auxilliary = constant.FALSE;
-
-    # pumps
-    var empty5 = me.fuelsystem.empty("5");
-    var empty5A = me.fuelsystem.empty("5A");
-    var empty6 = me.fuelsystem.empty("6");
-    var empty7 = me.fuelsystem.empty("7");
-    var empty7A = me.fuelsystem.empty("7A");
-    var empty8 = me.fuelsystem.empty("8");
-    var empty9 = me.fuelsystem.empty("9");
-    var empty10 = me.fuelsystem.empty("10");
-    var empty11 = me.fuelsystem.empty("11");
-
-    # no 2D panel
-    me.fuelsystem.aft2Dhuman( constant.FALSE );
-
-
-    # shut all unused pumps
-    me.fuelsystem.pumphuman( "5", !empty5 );
-    me.fuelsystem.pumphuman( "7", !empty7 );
-    me.fuelsystem.pumphuman( "5A", constant.FALSE );
-    me.fuelsystem.pumphuman( "7A", constant.FALSE );
-
-    if( empty5 and !empty6 ) {
-        pump6 = constant.TRUE;
-    }
-    me.fuelsystem.pumphuman( "6", pump6 );
-
-    if( empty7 and !empty8 ) {
-        pump8 = constant.TRUE;
-    }
-    me.fuelsystem.pumphuman( "8", pump8 );
-
-    # engineer normally uses auto trim
-    me.fuelsystem.pumphuman( "9", constant.FALSE );
-    me.fuelsystem.pumphuman( "10", constant.FALSE );
-    me.fuelsystem.pumphuman( "11", constant.FALSE );
-
-    me.fuelsystem.shutstandbyhuman();
-
-
-    # aft trim
-    me.fuelsystem.afttrimhuman( afttrim );
-
-
-    # transfers auxilliary tanks
-    if( empty5 and empty6 ) {
-        if( !empty5A ) {
-            auxilliary = constant.TRUE;
-            me.fuelsystem.transvalvehuman( "5A", constant.TRUE );
-            me.fuelsystem.pumphuman( "5A", constant.TRUE );
-        }
-    }
-    if( empty7 and empty8 ) {
-        if( !empty7A ) {
-            auxilliary = constant.TRUE;
-            me.fuelsystem.transvalvehuman( "7A", constant.TRUE );
-            me.fuelsystem.pumphuman( "7A", constant.TRUE );
-        }
-    }
-    if( auxilliary ) {
-        me.log("auxilliary");
+        result = me.is_completed();
     }
 
-
-    # low level (emergency)
-    if( me.fuelsystem.lowlevel() ) {
-        me.fuelsystem.offautohuman();
-
-        # avoid aft CG  
-        if( ( forward or !aft ) and !empty11 ) {
-            me.log("low-level");
-            me.fuelsystem.pumphuman( "11", constant.TRUE );
-            me.fuelsystem.enginehuman( constant.TRUE );
-            me.fuelsystem.forwardhuman( constant.TRUE );
-        }
-        elsif( !empty9 or !empty10 ) {
-            me.log("low-level");
-            me.fuelsystem.pumphuman( "9", !empty9 );
-            me.fuelsystem.pumphuman( "10", !empty10 );
-            me.fuelsystem.enginehuman( constant.TRUE );
-            me.fuelsystem.afthuman( constant.TRUE );
-        }
-        # last fuel
-        elsif( !empty11 ) {
-            me.log("low-level");
-            me.fuelsystem.pumphuman( "11", constant.TRUE );
-            me.fuelsystem.enginehuman( constant.TRUE );
-            me.fuelsystem.forwardhuman( constant.TRUE );
-        }
-        else {
-            me.fuelsystem.enginehuman( constant.FALSE );
-        }
-    }
-
-    # aft transfert
-    elsif( aft ) {
-        me.fuelsystem.forwardautohuman( constant.FALSE );
-    }
-
-    # forward transfert
-    elsif( forward ) {
-        me.fuelsystem.forwardautohuman( constant.TRUE );
-    }
-
-    # no transfert
-    else {
-        me.fuelsystem.offautohuman();
-        me.fuelsystem.enginehuman( constant.FALSE );
-    }
+    return result;
 }
 
 
-# ===============
-# VIRTUAL COPILOT
-# ===============
+# =======
+# CALLOUT
+# =======
 
-Virtualcopilot = {};
+Callout = {};
 
-Virtualcopilot.new = func {
-   var obj = { parents : [Virtualcopilot,Virtualcrew,System],
+Callout.new = func {
+   var obj = { parents : [Callout], 
 
-           autopilotsystem : nil,
-           mwssystem : nil,
- 
-           nightlighting : Nightlighting.new(),
-
-           copilot : nil,
-           crew : nil,
-           crewcontrol : nil,
-
-           CRUISESEC : 30.0,
-           TAKEOFFSEC : 5.0,
-
-           rates : 0.0,
-
-           SOUNDMACH : 1.0,
-           VLA41KT : 300.0,
-           VLA15KT : 250.0,
-           GEARKT : 220.0,
-           MARGINKT : 25.0,
-
-           speedkt : 0.0,
-
-           FL41FT : 41000.0,
-           FL15FT : 15000.0,
-           NOSEFT : 600.0,                                # nose retraction
-           MARGINFT : 100.0,
-
-           aglft : 0.0,
-           altitudeft : 0.0,
-
-           STEPFTPM : 100.0,
-           GLIDEFTPM : -1500.0,                           # best glide (guess)
-
-           descentftpm : 0.0,
-
-           activ : constant.FALSE,
-           emergency : constant.FALSE,
-           running : constant.FALSE,
-           checklist : ""
-         };
-
-   obj.init();
-
-   return obj;
-};
-
-Virtualcopilot.init = func {
-   me.copilot = props.globals.getNode("/systems/crew/copilot");
-   me.crew = props.globals.getNode("/systems/crew");
-   me.crewcontrol = props.globals.getNode("/controls/crew");
-
-   me.init_ancestor("/systems/crew/copilot");
-   me.init_ancestor2();
-
-   me.rates = me.TAKEOFFSEC;
-   me.run();
-}
-
-Virtualcopilot.set_relation = func( autopilot, lighting, mws ) {
-   me.autopilotsystem = autopilot;
-   me.mwssystem = mws;
-   me.nightlighting.set_relation( lighting );
-}
-
-
-Virtualcopilot.toggleexport = func {
-   var launch = constant.FALSE;
-
-   if( !me.crewcontrol.getChild("copilot").getValue() ) {
-       launch = constant.TRUE;
-   }
-
-   me.crewcontrol.getChild("copilot").setValue(launch);
-       
-   if( launch and !me.running ) {
-       me.slowschedule();
-   }
-}
-
-Virtualcopilot.schedule = func {
-   if( me.crew.getChild("serviceable").getValue() ) {
-       me.unexpected();
-   }
-}
-
-Virtualcopilot.slowschedule = func {
-   me.reset();
-
-   if( me.crew.getChild("serviceable").getValue() ) {
-       me.routine();
-   }
-   else {
-       me.rates = me.CRUISESEC;
-       me.copilot.getChild("activ").setValue(constant.FALSE);
-   }
-
-   me.run();
-}
-
-Virtualcopilot.run = func {
-   if( me.crewcontrol.getChild("copilot").getValue() ) {
-       me.running = constant.TRUE;
-       me.rates = constant.rates( me.rates );
-       settimer( func { me.slowschedule(); }, me.rates );
-   }
-
-   else {
-       me.running = constant.FALSE;
-   }
-}
-
-Virtualcopilot.unexpected = func {
-   me.emergency = constant.FALSE;
-
-   if( me.crewcontrol.getChild("copilot").getValue() ) {
-       me.checklist = me.slave["voice"].getChild("checklist").getValue();
-
-       me.speedkt = me.noinstrument["airspeed"].getValue();
-       me.altitudeft = me.noinstrument["altitude"].getValue();
-
-       # 4 engines flame out
-       me.engine4flameout();
-
-       me.timestamp();
-   }
-
-   else {
-       me.autopilotsystem.realhuman();
-   }
-
-   me.crew.getChild("emergency").setValue(me.emergency);
-}
-
-Virtualcopilot.routine = func {
-   me.activ = constant.FALSE;
-   me.rates = me.CRUISESEC;
-
-   if( !me.crew.getChild("emergency").getValue() ) {
-       if( me.crewcontrol.getChild("copilot").getValue() ) {
-           me.checklist = me.slave["voice"].getChild("checklist").getValue();
-
-           # normal procedures
-           if ( me.normal() ) {
-                me.rates = me.randoms( me.rates );
-           }
-
-           else {
-               me.autopilotsystem.realhuman();
-           }
-
-           me.timestamp();
-       }
-
-       else {
-           me.autopilotsystem.realhuman();
-       }
-   }
-
-   me.copilot.getChild("activ").setValue(me.activ);
-}
-
-Virtualcopilot.engine4flameout = func {
-   # hold heading and speed, during engine start
-   if( me.altitudeft > constantaero.APPROACHFT and me.checklist == "flight" ) {
-       if( me.autopilotsystem.no_voltage() ) {
-           me.emergency = constant.TRUE;
-           me.log("no-autopilot");
-
-           me.autopilotsystem.virtualhuman();
-
-           me.keepheading();
-
-           me.keepspeed();
-       }
-   }
-}
-
-# instrument failures ignored
-Virtualcopilot.normal = func {
-   if( me.checklist != "gate" and me.checklist != "parking" ) {
-       if( me.noinstrument["mach"].getValue() < me.SOUNDMACH ) {
-           me.activ = constant.TRUE;
-
-           me.speedkt = me.noinstrument["airspeed"].getValue();
-           me.altitudeft = me.noinstrument["altitude"].getValue();
-           me.aglft = me.noinstrument["agl"].getValue();
-
-           if( me.checklist == "landing" ) {
-               me.beforelanding();
-               me.rates = me.TAKEOFFSEC;
-           }
-           elsif( me.checklist == "taxi" ) {
-               me.afterlanding();
-           }
-           else {
-               if( me.checklist == "holding" ) {
-                   me.holding();
-               }
-
-               if( me.aglft <= constantaero.APPROACHFT ) {
-                   me.rates = me.TAKEOFFSEC;
-               }
-
-               if( me.aglft <= constantaero.GEARFT  ) {
-                   me.beforetakeoff();
-               }
-               else {
-                   me.aftertakeoff();
-               }
-           }
-
-           me.allways();
-       }
-   }
-
-   return me.activ;
-}
-
-Virtualcopilot.holding = func {
-}
-
-Virtualcopilot.beforetakeoff = func {
-   me.nosevisor( constant.FALSE, constant.FALSE );
-   me.landinglights( constant.FALSE );
-
-   me.takeoffmonitor( constant.TRUE );
-   me.antiicing( constant.TRUE );
-}
-
-Virtualcopilot.aftertakeoff = func {
-   me.landinggear( constant.FALSE );
-   me.nosevisor( constant.FALSE, constant.FALSE );
-   me.landinglights( constant.FALSE );
-
-   me.takeoffmonitor( constant.FALSE );
-}
-
-Virtualcopilot.beforelanding = func {
-   me.landinggear( constant.TRUE );
-   me.nosevisor( constant.TRUE, constant.FALSE );
-   me.landinglights( constant.TRUE );
-   me.brakelever();
-
-   # relocation in flight
-   me.takeoffmonitor( constant.FALSE );
-}
-
-Virtualcopilot.afterlanding = func {
-   me.nosevisor( constant.TRUE, constant.TRUE );
-   me.antiicing( constant.FALSE );
-}
-
-Virtualcopilot.allways = func {
-    me.nightlighting.copilot( me );
-}
-
-Virtualcopilot.antiicing = func( set ) {
-    var path = "";
-
-    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-         path = "static/heater[" ~ i ~ "]";
-
-         if( me.slave["anti-icing"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["anti-icing"].getNode(path).setValue( set );
-                 me.toggleclick("icing-static-" ~ i);
-             }
-         }
-    }
-
-    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-         path = "mast/heater[" ~ i ~ "]";
-
-         if( me.slave["anti-icing"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["anti-icing"].getNode(path).setValue( set );
-                 me.toggleclick("icing-mast-" ~ i);
-             }
-         }
-    }
-}
-
-Virtualcopilot.brakelever = func {
-    if( me.can() ) {
-        # disable
-        if( me.slave["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
-            controls.applyParkingBrake(1);
-            me.toggleclick("brake-parking");
-        }
-    }
-}
-
-Virtualcopilot.takeoffmonitor = func( set ) {
-    if( me.can() ) {
-        var path = "armed";
-
-        if( me.slave["to-monitor"].getChild(path).getValue() != set ) {
-            me.slave["to-monitor"].getChild(path).setValue( set );
-            me.toggleclick("to-monitor");
-        }
-    }
-}
-
-Virtualcopilot.keepspeed = func {
-    if( !me.autopilotsystem.is_vertical_speed() ) {
-        me.log("vertical-speed");
-        me.autopilotsystem.apverticalexport();
-        me.descentftpm = me.GLIDEFTPM;
-    }
-
-    # the copilot follows the best glide
-    me.adjustglide();  
-    me.autopilotsystem.verticalspeed( me.descentftpm );
-}
-
-Virtualcopilot.adjustglide = func {
-    var minkt = 0;
-
-    if( me.altitudeft > me.FL41FT ) {
-        minkt = me.VLA41KT;
-    }
-    elsif( me.altitudeft > me.FL15FT and me.altitudeft <= me.FL41FT ) {
-        minkt = me.VLA15KT;
-    }
-    else {
-        minkt = constantaero.V2FULLKT;
-    }
-
-    # stay above VLA (lowest allowed speed)
-    minkt = minkt + me.MARGINKT;
-
-    if( me.speedkt < minkt ) {
-        me.descentftpm = me.descentftpm - me.STEPFTPM;
-    }
-}
-
-Virtualcopilot.keepheading = func {
-    if( !me.autopilotsystem.is_lock_magnetic() ) {
-        me.log("magnetic");
-        me.autopilotsystem.apheadingholdexport();
-    }
-}
-
-Virtualcopilot.landinggear = func( landing ) {
-    if( me.can() ) {
-        if( !landing and me.aglft > constantaero.GEARFT ) {
-            if( me.speedkt > me.GEARKT ) {
-                if( me.slave["gear-ctrl"].getChild("gear-down").getValue() ) {
-                    controls.gearDown(-1);
-                    me.toggleclick("gear");
-                }
-                elsif( me.slave["gear-ctrl"].getChild("hydraulic").getValue() and
-                    me.slave["gear"].getValue() == globals.Concorde.constantaero.GEARUP ) {
-                    controls.gearDown(-1);
-                    me.toggleclick("gear-neutral");
-                }
-            }
-        }
-        elsif( landing and me.aglft < constantaero.LANDINGFT ) {
-            if( me.speedkt < me.GEARKT ) {
-                if( !me.slave["gear-ctrl"].getChild("gear-down").getValue() ) {
-                    controls.gearDown(1);
-                    me.toggleclick("gear");
-                }
-            }
-        }
-    }
-}
-
-Virtualcopilot.nosevisor = func( landing, taxi ) {
-    if( me.can() ) {
-        var targetpos = 0;
-        var currentpos = 0;
-        var child = nil;
-
-        # nose 5 degrees
-        if( taxi ) {
-            targetpos = 2;
-        }
-
-        elsif( !landing ) {
-            if( me.aglft > me.NOSEFT ) {
-                # visor up
-                if( me.altitudeft > ( constantaero.APPROACHFT + me.MARGINFT ) ) {
-                    targetpos = 0;
-                }
-                # visor down
-                elsif( me.altitudeft < ( constantaero.APPROACHFT - me.MARGINFT ) ) {
-                    targetpos = 1;
-                }
-            }
-
-            # nose 5 degrees
-            else {
-                targetpos = 2;
-            }
-        }
-
-        elsif( landing ) {
-            # nose 12 degress
-            if( me.aglft < constantaero.LANDINGFT ) {
-                targetpos = 3;
-            }
-            # visor down
-            elsif( me.altitudeft < constantaero.APPROACHFT ) {
-                targetpos = 1;
-            }
-        }
-
-        # must be up above 270 kt
-        if( me.speedkt > constantaero.NOSEKT ) {
-            targetpos = 0;
-        }
-
-        # not to us to create the property
-        child = me.slave["flaps"].getChild("current-setting");
-        if( child == nil ) {
-            currentpos = 0;
-        }
-        else {
-            currentpos = child.getValue();
-        }
-
-        if( targetpos <= 1 or ( targetpos > 1 and me.speedkt < me.GEARKT ) ) {
-            pos = targetpos - currentpos;
-            if( pos != 0 ) {
-                controls.flapsDown( pos );
-                me.toggleclick("nose");
-            }
-        }
-    }
-}
-
-Virtualcopilot.landinglights = func( landing ) {
-    if( !landing and me.aglft > me.NOSEFT ) {
-        me.landingtaxi( constant.FALSE );
-        me.mainlanding( constant.FALSE );
-    }
-
-    # terminal area
-    if( me.altitudeft <= constantaero.APPROACHFT ) {
-        me.taxiturn( constant.TRUE );
-    }
-    else {
-        me.taxiturn( constant.FALSE );
-    }
-}
-
-Virtualcopilot.mainlanding = func( set ) {
-    var path = "";
-
-    for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
-         path = "main-landing[" ~ i ~ "]/extend";
-
-         if( me.slave["lighting"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["lighting"].getNode(path).setValue( set );
-                 me.toggleclick("landing-extend-" ~ i);
-             }
-         }
-
-         path = "main-landing[" ~ i ~ "]/on";
-
-         if( me.slave["lighting"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["lighting"].getNode(path).setValue( set );
-                 me.toggleclick("landing-on-" ~ i);
-             }
-         }
-    }
-}
-
-Virtualcopilot.landingtaxi = func( set ) {
-    var path = "";
-
-    for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
-         path = "landing-taxi[" ~ i ~ "]/extend";
-
-         if( me.slave["lighting"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["lighting"].getNode(path).setValue( set );
-                 me.toggleclick("taxi-extend-" ~ i);
-             }
-         }
-
-         path = "landing-taxi[" ~ i ~ "]/on";
-
-         if( me.slave["lighting"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["lighting"].getNode(path).setValue( set );
-                 me.toggleclick("taxi-on-" ~ i);
-             }
-         }
-    }
-}
-
-Virtualcopilot.taxiturn = func( set ) {
-    var path = "";
-
-    for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
-         path = "taxi-turn[" ~ i ~ "]/on";
-
-         if( me.slave["lighting"].getNode(path).getValue() != set ) {
-             if( me.can() ) {
-                 me.slave["lighting"].getNode(path).setValue( set );
-                 me.toggleclick("taxi-turn-" ~ i);
-             }
-         }
-    }
-}
-
-Virtualcopilot.timestamp = func {
-    me.copilot.getChild("state").setValue(me.getlog());
-    me.copilot.getChild("time").setValue(getprop("/sim/time/gmt-string"));
-}
-
-
-# ==========
-# NAVIGATION
-# ==========
-
-Navigation = {};
-
-Navigation.new = func {
-   var obj = { parents : [Navigation,System], 
-
-           ap : nil,
-           engineer : nil,
-           navigation : nil,
-           waypoints : nil,
-
-           DESTINATIONFT : 0.0,
-
-           altitudeft : 0.0,
-
-           NOSPEEDFPM : 0.0,
-
-           SUBSONICKT : 480,                                 # estimated ground speed
-           FLIGHTKT : 150,                                   # minimum ground speed
-
-           groundkt : 0,
-
-           SUBSONICKGPH : 20000,                             # subsonic consumption
-
-           kgph : 0,
-
-           NOFUELKG : -999,
-
-           totalkg : 0
-         };
-
-   obj.init();
+               callout : "holding"                   # otherwise startup is a long time without callout
+             };
 
    return obj;
 }
 
-Navigation.init = func {
-    me.init_ancestor("/systems/crew/engineer");
+Callout.inherit_callout = func {
+    var obj = Callout.new();
 
-    me.ap = props.globals.getNode("/controls/autoflight");
-    me.engineer = props.globals.getNode("/systems/crew/engineer");
-    me.navigation = props.globals.getNode("/systems/crew/engineer/navigation").getChildren("wp");
-    me.waypoints = props.globals.getNode("/autopilot/route-manager").getChildren("wp");
+    me.callout = obj.callout;
 }
 
-Navigation.schedule = func {
-   var groundfps = me.slave["ins"].getNode("ground-speed-fps").getValue();
-   var id = "";
-   var distnm = 0.0;
-   var targetft = 0;
-   var selectft = 0.0;
-   var fuelkg = 0.0;
-   var speedfpm = 0.0;
+Callout.is_flight = func {
+    var result = constant.FALSE;
 
-   if( groundfps != nil ) {
-       me.groundkt = groundfps * constant.FPSTOKT;
+    if( me.callout == "flight" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_landing = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "landing" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_goaround = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "goaround" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_taxiway = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "taxiway" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_terminal = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "terminal" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_gate = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "gate" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_holding = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "holding" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Callout.is_takeoff = func {
+    var result = constant.FALSE;
+
+    if( me.callout == "takeoff" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+
+# =========
+# CHECKLIST
+# =========
+
+Checklist = {};
+
+Checklist.new = func {
+   var obj = { parents : [Checklist,System], 
+
+               checklist : ""
+             };
+
+   return obj;
+}
+
+Checklist.inherit_checklist = func( path ) {
+    var obj = Checklist.new();
+
+    me.checklist = obj.checklist;
+
+    me.inherit_system( path );
+}
+
+Checklist.is_nochecklist = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_aftertakeoff = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "aftertakeoff" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_climb = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "climb" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_transsonic = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "transsonic" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_cruiseclimb = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "cruiseclimb" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_descent = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "descent" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_approach = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "approach" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_beforelanding = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "beforelanding" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_afterlanding = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "afterlanding" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_parking = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "parking" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_stopover = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "stopover" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_external = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "external" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_preliminary = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "preliminary" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_cockpit = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "cockpit" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_beforestart = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "beforestart" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_enginestart = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "enginestart" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_started = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "started" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_afterstart = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "afterstart" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_taxi = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "taxi" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_runway = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "runway" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_beforetakeoff = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "beforetakeoff" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.set_completed = func {
+    me.dependency["crew"].getChild("completed").setValue( constant.TRUE );
+}
+
+Checklist.not_completed = func {
+    me.dependency["crew"].getChild("completed").setValue( constant.FALSE );
+
+    # reset keyboard detection
+    me.dependency["crew-ctrl"].getChild("recall").setValue( constant.FALSE );
+}
+
+Checklist.is_completed = func {
+    var result = constant.FALSE;
+
+    if( me.dependency["crew"].getChild("completed").getValue() ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_busy = func {
+    var result = constant.FALSE;
+
+    if( me.dependency["crew-ctrl"].getChild("captain-busy").getValue() ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Checklist.is_recall = func {
+    var result = constant.FALSE;
+
+    if( me.dependency["crew-ctrl"].getChild("recall").getValue() ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+
+# ==============
+# NIGHT LIGHTING
+# ==============
+
+Nightlighting = {};
+
+Nightlighting.new = func {
+   var obj = { parents : [Nightlighting,System],
+
+               lightingsystem : nil,
+
+               COMPASSDIM : 0.5,
+               DAYNORM : 0.0,
+   
+               lightlevel : 0.0,
+               lightcompass : 0.0,
+               lightlow : constant.FALSE,
+
+               NIGHTRAD : 1.57,                        # sun below horizon
+
+               completed : constant.TRUE,
+               night : constant.FALSE
+         };
+
+  obj.init();
+
+  return obj;
+}
+
+Nightlighting.init = func {
+    me.inherit_system("/systems/human");
+}
+
+Nightlighting.set_relation = func( lighting ) {
+    me.lightingsystem = lighting;
+}
+
+Nightlighting.copilot = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
+
+       # only once, can be customized by user
+       if( me.has_task() ) {
+           me.light( "copilot" );
+
+           me.set_task();
+
+           # flood lights
+           if( task.can() ) {
+               if( me.dependency["lighting-copilot"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.dependency["lighting-copilot"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("flood-light");
+               }
+           }
+
+           # level of warning lights
+           if( task.can() ) {
+               if( me.dependency["lighting-copilot"].getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting-copilot"].getChild("low").setValue( me.lightlow );
+                   task.toggleclick("panel-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.dependency["lighting"].getNode("center").getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting"].getNode("center").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("center-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.dependency["lighting"].getNode("afcs").getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting"].getNode("afcs").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("afcs-light");
+               }
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
    }
+}
 
-   me.totalkg = me.slave["fuel"].getChild("total-kg").getValue();
+Nightlighting.captain = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
 
-   # on ground
-   if( me.groundkt < me.FLIGHTKT ) {
-       me.groundkt = me.SUBSONICKT;
-       me.kgph = me.SUBSONICKGPH;
+       # only once, can be customized by user
+       if( me.has_task() ) {
+           me.light( "captain" );
+
+           me.set_task();
+
+           # flood lights
+           if( task.can() ) {
+               if( me.dependency["lighting-captain"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.dependency["lighting-captain"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("flood-light");
+               }
+           }
+
+           # level of warning lights
+           if( task.can() ) {
+               if( me.dependency["lighting-captain"].getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting-captain"].getChild("low").setValue( me.lightlow );
+                   task.toggleclick("panel-light");
+               }
+           }
+
+           # compass light
+           if( task.can() ) {
+               if( me.dependency["lighting"].getNode("overhead").getChild("compass-norm").getValue() != me.lightcompass ) {
+                   me.dependency["lighting"].getNode("overhead").getChild("compass-norm").setValue( me.lightcompass );
+                   me.lightingsystem.compassexport( me.lightcompass );
+                   task.toggleclick("compass-light");
+               }
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
+   }
+}
+
+Nightlighting.engineer = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
+
+       # only once, can be customized by user
+       if( me.has_task() ) {
+           me.light( "engineer" );
+
+           me.set_task();
+
+           # flood lights
+           if( task.can() ) {
+               if( me.dependency["lighting-engineer"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.dependency["lighting-engineer"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("flood-light");
+               }
+           }
+
+           # level of warning lights
+           if( task.can() ) {
+               if( me.dependency["lighting-engineer"].getNode("forward").getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting-engineer"].getNode("forward").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("forward-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.dependency["lighting-engineer"].getNode("center").getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting-engineer"].getNode("center").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("center-light");
+               }
+           }
+           if( task.can() ) {
+               if( me.dependency["lighting-engineer"].getNode("aft").getChild("low").getValue() != me.lightlow ) {
+                   me.dependency["lighting-engineer"].getNode("aft").getChild("low").setValue( me.lightlow );
+                   task.toggleclick("aft-light");
+               }
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
+   }
+}
+
+Nightlighting.light = func( path ) {
+   if( me.night ) {
+       me.lightlevel = me.itself["lighting"].getChild(path).getValue();
+       me.lightlow = constant.TRUE;
+       me.lightcompass = me.COMPASSDIM;
    }
    else {
-       # gauge is NOT REAL
-       me.kgph = me.slave["fuel"].getNode("fuel-flow-kg_ph").getValue();
-   }
-
-   me.altitudeft = me.noinstrument["altitude"].getValue();
-   selectft = me.ap.getChild("altitude-select").getValue();
-
-
-   # waypoint
-   for( var i = 0; i < 3; i = i+1 ) {
-        if( i < 2 ) {
-            id = me.waypoints[i].getChild("id").getValue();
-            distnm = me.waypoints[i].getChild("dist").getValue();
-            targetft = selectft;
-        }
-
-        # last
-        else {
-            id = getprop("/autopilot/route-manager/wp-last/id"); 
-            distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
-            targetft = me.DESTINATIONFT;
-        }
-
-        fuelkg = me.estimatefuelkg( id, distnm );
-        speedfpm = me.estimatespeedfpm( id, distnm, targetft );
-
-        # display for FDM debug, or navigation
-        me.navigation[i].getChild("fuel-kg").setValue(fuelkg);
-        me.navigation[i].getChild("speed-fpm").setValue(speedfpm);
+       me.lightlevel = me.DAYNORM;
+       me.lightlow = constant.FALSE;
+       me.lightcompass = me.DAYNORM;
    }
 }
 
-Navigation.estimatespeedfpm = func( id, distnm, targetft ) {
-   var speedfpm = me.NOSPEEDFPM;
-   var minutes = 0.0;
+Nightlighting.is_change = func {
+   var change = constant.FALSE;
 
-   if( id != "" and distnm != nil ) {
-       minutes = ( distnm / me.groundkt ) * constant.HOURTOMINUTE;
-       speedfpm = ( targetft - me.altitudeft ) / minutes;
+   if( me.is_night() ) {
+       if( !me.night ) {
+           me.night = constant.TRUE;
+           change = constant.TRUE;
+       }
    }
-
-   return speedfpm;
-}
-
-Navigation.estimatefuelkg = func( id, distnm ) {
-   var fuelkg = me.NOFUELKG;
-   var ratio = 0.0;
-
-   if( id != "" and distnm != nil ) {
-       ratio = distnm / me.groundkt;
-       fuelkg = me.kgph * ratio;
-       fuelkg = me.totalkg - fuelkg;
-       if( fuelkg < 0 ) {
-           fuelkg = 0;
+   else {
+       if( me.night ) {
+           me.night = constant.FALSE;
+           change = constant.TRUE;
        }
    }
 
-   return fuelkg;
+   return change;
+}
+
+Nightlighting.is_night = func {
+   var result = constant.FALSE;
+
+   if( me.noinstrument["sun"].getValue() > me.NIGHTRAD ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# once night lighting, virtual crew must switch again lights.
+Nightlighting.set_task = func {
+   me.completed = constant.FALSE;
+}
+
+Nightlighting.has_task = func {
+   var result = constant.FALSE;
+
+   if( me.is_change() or !me.completed ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Nightlighting.set_completed = func {
+   me.completed = constant.TRUE;
 }

@@ -2,7 +2,6 @@
 
 <!-- Battery ammeter :
 
-     - emulates kilowatts with Volts.
      - scale plus/minus 200 A.
 -->
 
@@ -13,7 +12,7 @@
  <h-base>80</h-base>
 
  <params>
-  <load-volts>/systems/electrical/outputs/probe/ac-main[0]</load-volts>
+  <load-amps>/systems/electrical/suppliers/battery-amps[0]</load-amps>
  </params>
 
 
@@ -41,7 +40,7 @@
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property alias="../../../../../params/load-volts"/>
+     <property alias="../../../../../params/load-amps"/>
      <format>%2.f</format> <!-- 160 A -->
     </chunk>
    </chunks>

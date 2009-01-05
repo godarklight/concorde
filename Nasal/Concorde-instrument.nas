@@ -160,9 +160,7 @@ Airspeed = {};
 Airspeed.new = func {
    var obj = { parents : [Airspeed,System],
 
-           vmo : VMO.new(),
-
-           instrument : nil
+               vmo : VMO.new()
          };
 
    obj.init();
@@ -171,9 +169,7 @@ Airspeed.new = func {
 };
 
 Airspeed.init = func {
-   me.init_ancestor("/instrumentation/airspeed-indicator[0]");
-
-   me.instrument = props.globals.getNode("/instrumentation/airspeed-indicator[0]");
+   me.inherit_system("/instrumentation/airspeed-indicator[0]");
 }
 
 # maximum operating speed (kt)
@@ -183,11 +179,11 @@ Airspeed.schedule = func {
    var altitudeft = me.noinstrument["altitude"].getValue();
 
    if( altitudeft != nil ) {
-       weightlb = me.slave["weight"].getChild("weight-lb").getValue();
+       weightlb = me.dependency["weight"].getChild("weight-lb").getValue();
        vmokt = me.vmo.getvmokt( altitudeft, weightlb ) ;
 
        # captain
-       me.instrument.getChild("vmo-kt").setValue(vmokt);
+       me.itself["root"].getChild("vmo-kt").setValue(vmokt);
    }
 }  
 
@@ -200,8 +196,6 @@ Centergravity= {};
 
 Centergravity.new = func {
    var obj = { parents : [Centergravity,System],
-
-           instrument : nil,
 
            C0stationin : 736.22,                   # 18.7 m from nose
            C0in : 1089,                            # C0  90'9"
@@ -235,17 +229,15 @@ Centergravity.new = func {
 };
 
 Centergravity.init = func {
-   me.init_ancestor("/instrumentation/cg[0]");
-
-   me.instrument = props.globals.getNode("/instrumentation/cg");
+   me.inherit_system("/instrumentation/cg[0]");
 }
 
 Centergravity.red_cg = func {
    var result = constant.FALSE;
-   var percent = me.instrument.getChild("percent").getValue();
+   var percent = me.itself["root"].getChild("percent").getValue();
 
-   if( percent <= me.instrument.getChild("min-percent").getValue() or
-       percent >= me.instrument.getChild("max-percent").getValue() ) {
+   if( percent <= me.itself["root"].getChild("min-percent").getValue() or
+       percent >= me.itself["root"].getChild("max-percent").getValue() ) {
        result = constant.TRUE;
    }
 
@@ -259,16 +251,16 @@ Centergravity.takeoffexport = func {
 Centergravity.schedule = func {
    var cgfraction = 0.0;
    var cgpercent = 0.0;
-   var cgxin = me.instrument.getChild("cg-x-in").getValue();
+   var cgxin = me.itself["root"].getChild("cg-x-in").getValue();
 
    # % of aerodynamic chord C0 (18.7 m from nose).
    cgxin = cgxin - me.C0stationin;
-   me.instrument.getChild("cg-c0-in").setValue(cgxin);
+   me.itself["root"].getChild("cg-c0-in").setValue(cgxin);
 
    # C0 = 90'9".
    cgfraction = cgxin / me.C0in;
    cgpercent = cgfraction * 100;
-   me.instrument.getChild("percent").setValue(cgpercent);
+   me.itself["root"].getChild("percent").setValue(cgpercent);
 
    me.corridorcg();
 }  
@@ -277,8 +269,8 @@ Centergravity.schedule = func {
 Centergravity.corridorcg = func {
    var cgmin = 0.0;
    var cgmax = 0.0;
-   var weightlb = me.slave["weight"].getChild("weight-lb").getValue();
-   var speedmach = me.slave["mach"].getChild("indicated-mach").getValue();
+   var weightlb = me.dependency["weight"].getChild("weight-lb").getValue();
+   var speedmach = me.dependency["mach"].getChild("indicated-mach").getValue();
 
    # ===============
    # normal corridor
@@ -297,8 +289,8 @@ Centergravity.corridorcg = func {
    # ------------------------
    cgmax = me.max( speedmach );
 
-   me.instrument.getChild("min-percent").setValue(cgmin);
-   me.instrument.getChild("max-percent").setValue(cgmax);
+   me.itself["root"].getChild("min-percent").setValue(cgmin);
+   me.itself["root"].getChild("max-percent").setValue(cgmax);
 
 
    # ================
@@ -319,8 +311,8 @@ Centergravity.corridorcg = func {
    # ------------------------
    cgmax = me.extrememax( speedmach );
 
-   me.instrument.getChild("min-extreme-percent").setValue(cgmin);
-   me.instrument.getChild("max-extreme-percent").setValue(cgmax);
+   me.itself["root"].getChild("min-extreme-percent").setValue(cgmin);
+   me.itself["root"].getChild("max-extreme-percent").setValue(cgmax);
 }  
 
 # normal below 105 t, extreme above 165 t
@@ -488,8 +480,8 @@ Centergravity.max = func( speedmach ) {
    }
 
    # Max performance Takeoff
-   if( me.instrument.getChild("max-performance-to" ).getValue() ) {
-       if( speedmach <= constantaero.Tmaxperf[constantaero.CGREST] ) {
+   if( me.itself["root"].getChild("max-performance-to" ).getValue() ) {
+       if( speedmach <= constantaero.Tperfmach[constantaero.CGREST] ) {
            me.find = constant.FALSE;
            me.cgmax = constantaero.Tcgperf[constantaero.CGREST];
        }
@@ -500,11 +492,11 @@ Centergravity.max = func( speedmach ) {
            for( var i = 0; i < constantaero.CGPERF; i = i+1 ) {
                 j = i+1;
 
-                if( speedmach > constantaero.Tmaxperf[i] and speedmach <= constantaero.Tmaxperf[j] ) {
+                if( speedmach > constantaero.Tperfmach[i] and speedmach <= constantaero.Tperfmach[j] ) {
                     me.corrmin = constantaero.Tcgperf[i];
                     me.corrmax = constantaero.Tcgperf[j];
-                    me.machmin = constantaero.Tmaxperf[i];
-                    me.machmax = constantaero.Tmaxperf[j];
+                    me.machmin = constantaero.Tperfmach[i];
+                    me.machmax = constantaero.Tperfmach[j];
 
                     break;
                 }
@@ -604,8 +596,6 @@ Machmeter.new = func {
 
            vmo : VMO.new(),
 
-           instrument : nil,
-
            MAXMMO : 2.04,
            GROUNDKT : 50.0,
 
@@ -633,9 +623,7 @@ Machmeter.new = func {
 };
 
 Machmeter.init = func {
-   me.init_ancestor("/instrumentation/mach-indicator");
-
-   me.instrument = props.globals.getNode("/instrumentation/mach-indicator");
+   me.inherit_system("/instrumentation/mach-indicator");
 }
 
 # Mach corridor
@@ -647,8 +635,8 @@ Machmeter.schedule = func {
    var machmax = 0.0;
    var machmax0 = 0.0;
    var machmin = 0.0;
-   var weightlb = me.slave["weight"].getChild("weight-lb").getValue();
-   var altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+   var weightlb = me.dependency["weight"].getChild("weight-lb").getValue();
+   var altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue();
 
    # ===
    # MMO
@@ -671,14 +659,14 @@ Machmeter.schedule = func {
            vmokt = mmomach * soundkt;
        }
 
-       me.instrument.getChild("mmo-mach").setValue(mmomach);
+       me.itself["root"].getChild("mmo-mach").setValue(mmomach);
    }
 
 
    # ================
    # corridor maximum
    # ================
-   cgpercent = me.slave["cg"].getChild("percent").getValue();
+   cgpercent = me.dependency["cg"].getChild("percent").getValue();
 
    me.max105t( weightlb, cgpercent );
    me.max165t( weightlb, cgpercent );
@@ -697,8 +685,8 @@ Machmeter.schedule = func {
 
    machmin = constantaero.interpolate( me.find, me.machmin, me.corrmax, me.corrmin, me.cgmax, me.cgmin, cgpercent );
 
-   me.instrument.getChild("min").setValue(machmin);
-   me.instrument.getChild("max").setValue(machmax);
+   me.itself["root"].getChild("min").setValue(machmin);
+   me.itself["root"].getChild("max").setValue(machmax);
 }
 
 # normal corridor below 105 t
@@ -805,10 +793,10 @@ Machmeter.min = func( cgpercent ) {
    }
 
    # Max performance Takeoff
-   if( me.slave["cg"].getChild("max-performance-to").getValue() ) {
+   if( me.dependency["cg"].getChild("max-performance-to").getValue() ) {
        if( cgpercent <= constantaero.Tcgperf[constantaero.CGREST] ) {
            me.find = constant.FALSE;
-           me.machmin = constantaero.Tmaxperf[constantaero.CGREST];
+           me.machmin = constantaero.Tperfmach[constantaero.CGREST];
        }
 
        else {
@@ -821,8 +809,8 @@ Machmeter.min = func( cgpercent ) {
                     me.find = constant.TRUE;
                     me.cgmin = constantaero.Tcgperf[i];
                     me.cgmax = constantaero.Tcgperf[j];
-                    me.corrmin = constantaero.Tmaxperf[i];
-                    me.corrmax = constantaero.Tmaxperf[j];
+                    me.corrmin = constantaero.Tperfmach[i];
+                    me.corrmax = constantaero.Tperfmach[j];
 
                     break;
                 }
@@ -862,9 +850,7 @@ Machmeter.getsoundkt = func {
 Temperature = {};
 
 Temperature.new = func {
-   var obj = { parents : [Temperature,System],
-
-           instruments : nil
+   var obj = { parents : [Temperature,System]
          };
 
    obj.init();
@@ -873,9 +859,7 @@ Temperature.new = func {
 };
 
 Temperature.init = func {
-   me.init_ancestor("/instrumentation/temperature");
-
-   me.instruments = props.globals.getNode("/instrumentation").getChildren("temperature");
+   me.inherit_system("/instrumentation", "temperature");
 }
 
 # International Standard Atmosphere temperature
@@ -884,16 +868,16 @@ Temperature.isa = func {
    var isadegc = 0.0;
 
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
-        altft = me.slave["altimeter"][i].getChild("indicated-altitude-ft").getValue(); 
+        altft = me.dependency["altimeter"][i].getChild("indicated-altitude-ft").getValue(); 
 
         isadegc = constantISA.temperature_degc( altft );
 
-        me.instruments[i].getChild("isa-degc").setValue(isadegc);
+        me.itself["root"][i].getChild("isa-degc").setValue(isadegc);
    }
 }
 
 Temperature.schedule = func {
-   if( me.slave["electric"].getChild("specific").getValue() ) {
+   if( me.dependency["electric"].getChild("specific").getValue() ) {
        me.isa();
    }
 }
@@ -1034,8 +1018,6 @@ Traffic.new = func {
    var obj = { parents : [Traffic,System],
 
            aircrafts : nil,
-           instrument : nil,
-           traffics : nil,
 
            nbtraffics : 0,
 
@@ -1055,17 +1037,14 @@ Traffic.new = func {
 };
 
 Traffic.init = func {
-   me.init_ancestor("/instrumentation/tcas");
-
-   me.instrument = props.globals.getNode("/instrumentation/tcas");
-   me.traffics = props.globals.getNode("/instrumentation/tcas/traffics").getChildren("traffic");
+   me.inherit_system("/instrumentation/tcas");
 
    me.clear();
 }
 
 Traffic.clear = func {
-   for( var i=me.nbtraffics; i < size(me.traffics); i=i+1 ) {
-        me.traffics[i].getNode("distance-nm").setValue(me.NOTRAFFIC);
+   for( var i=me.nbtraffics; i < size(me.itself["traffic"]); i=i+1 ) {
+        me.itself["traffic"][i].getNode("distance-nm").setValue(me.NOTRAFFIC);
    }
 }
 
@@ -1080,15 +1059,15 @@ Traffic.schedule = func {
 
    me.nbtraffics = 0;
 
-   if( me.slave["electric"].getChild("specific").getValue() ) {
-       if( me.instrument.getChild("serviceable").getValue() ) {
-           altitudeft = me.slave["altimeter"].getChild("indicated-altitude-ft").getValue();
+   if( me.dependency["electric"].getChild("specific").getValue() ) {
+       if( me.itself["root"].getChild("serviceable").getValue() ) {
+           altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue();
            if( altitudeft == nil ) {
                altitudeft = 0.0;
            }
 
            # missing nodes, if not refreshed
-           me.aircrafts = me.slave["ai"].getChildren("aircraft");
+           me.aircrafts = me.dependency["ai"].getChildren("aircraft");
 
            # sort the nearest aircrafts
            for( var i=0; i < size(me.aircrafts); i=i+1 ) {
@@ -1127,19 +1106,19 @@ Traffic.schedule = func {
                 yshift = me.aircrafts[j].getNode("radar/y-shift").getValue();
                 rotation = me.aircrafts[j].getNode("radar/rotation").getValue();
 
-                me.traffics[i].getNode("distance-nm").setValue(rangenm);
-                me.traffics[i].getNode("level-ft",1).setValue(levelft);
-                me.traffics[i].getNode("x-shift",1).setValue(xshift);
-                me.traffics[i].getNode("y-shift",1).setValue(yshift);
-                me.traffics[i].getNode("rotation",1).setValue(rotation);
-                me.traffics[i].getNode("index",1).setValue(j);
+                me.itself["traffic"][i].getNode("distance-nm").setValue(rangenm);
+                me.itself["traffic"][i].getNode("level-ft",1).setValue(levelft);
+                me.itself["traffic"][i].getNode("x-shift",1).setValue(xshift);
+                me.itself["traffic"][i].getNode("y-shift",1).setValue(yshift);
+                me.itself["traffic"][i].getNode("rotation",1).setValue(rotation);
+                me.itself["traffic"][i].getNode("index",1).setValue(j);
            }
        }
    }
 
    # no traffic
    me.clear();
-   me.instrument.getChild("nb-traffics").setValue(me.nbtraffics);
+   me.itself["root"].getChild("nb-traffics").setValue(me.nbtraffics);
 }
 
 Traffic.add = func( index, distancenm ) {
@@ -1251,15 +1230,12 @@ Daytime = {};
 Daytime.new = func {
    var obj = { parents : [Daytime,System],
 
-           thesim : nil,
-           warpnode : nil,
+               SPEEDUPSEC : 1.0,
 
-           SPEEDUPSEC : 1.0,
+               CLIMBFTPMIN : 3500,                                           # max climb rate
+               MAXSTEPFT : 0.0,                                              # altitude change for step
 
-           CLIMBFTPMIN : 3500,                                           # max climb rate
-           MAXSTEPFT : 0.0,                                              # altitude change for step
-
-           lastft : 0.0
+               lastft : 0.0
          };
 
    obj.init();
@@ -1268,32 +1244,30 @@ Daytime.new = func {
 }
 
 Daytime.init = func {
+    me.inherit_system("/instrumentation/clock");
+
     var climbftpsec = me.CLIMBFTPMIN / constant.MINUTETOSECOND;
 
     me.MAXSTEPFT = climbftpsec * me.SPEEDUPSEC;
-
-    me.thesim = props.globals.getNode("/sim");
-    me.warpnode = props.globals.getNode("/sim/time/warp");
-
-    me.init_ancestor("/instrumentation/clock");
 }
 
 Daytime.schedule = func {
-   var multiplier = 0.0;
-   var offsetsec = 0.0;
-   var warp = 0.0;
-   var stepft = 0.0;
-   var maxft = 0.0;
-   var minft = 0.0;
    var altitudeft = me.noinstrument["altitude"].getValue();
-   var speedup = me.thesim.getChild("speed-up").getValue();
+   var speedup = me.noinstrument["speed-up"].getValue();
 
    if( speedup > 1 ) {
+       var multiplier = 0.0;
+       var offsetsec = 0.0;
+       var warp = 0.0;
+       var stepft = 0.0;
+       var maxft = 0.0;
+       var minft = 0.0;
+
        # accelerate day time
        multiplier = speedup - 1;
        offsetsec = me.SPEEDUPSEC * multiplier;
-       warp = me.warpnode.getValue() + offsetsec; 
-       me.warpnode.setValue(warp);
+       warp = me.noinstrument["warp"].getValue() + offsetsec; 
+       me.noinstrument["warp"].setValue(warp);
 
        # safety
        stepft = me.MAXSTEPFT * speedup;
@@ -1302,7 +1276,7 @@ Daytime.schedule = func {
 
        # too fast
        if( altitudeft > maxft or altitudeft < minft ) {
-           me.thesim.getChild("speed-up").setValue(1);
+           me.noinstrument["speed-up"].setValue(1);
        }
    }
 

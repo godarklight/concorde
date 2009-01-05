@@ -811,7 +811,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/dc-main-a</load-volts> <!-- parallel bus -->
+    <load-volts>/systems/electrical/outputs/probe/ac-main[1]</load-volts>
    </params>
    <x>140</x>
    <y>510</y>
@@ -843,7 +843,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/outputs/probe/dc-main-b</load-volts> <!-- parallel bus -->
+    <load-volts>/systems/electrical/outputs/probe/ac-main[2]</load-volts>
    </params>
    <x>255</x>
    <y>510</y>
@@ -1438,7 +1438,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/engines/engine[0]/master-bat</connect-status> <!-- hard coded -->
+    <connect-status>/controls/electric/dc/master-bat[0]</connect-status>
    </params>
    <x>35</x>
    <y>385</y>
@@ -1470,7 +1470,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <connect-status>/controls/electric/dc/master-bat</connect-status>
+    <connect-status>/controls/electric/dc/master-bat[1]</connect-status>
    </params>
    <x>365</x>
    <y>385</y>
@@ -1504,7 +1504,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <master-bat>/controls/engines/engine[0]/master-bat</master-bat> <!-- hard coded -->
+    <master-bat>/controls/electric/dc/master-bat[0]</master-bat>
     <ess-main-split>/controls/electric/dc/ems-a</ess-main-split>
    </params>
    <x>80</x>
@@ -1537,7 +1537,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/suppliers/battery[0]</load-volts>
+    <load-amps>/systems/electrical/suppliers/battery-amps[0]</load-amps>
    </params>
    <x>140</x>
    <y>370</y>
@@ -1569,7 +1569,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <load-volts>/systems/electrical/suppliers/battery[1]</load-volts>
+    <load-amps>/systems/electrical/suppliers/battery-amps[1]</load-amps>
    </params>
    <x>260</x>
    <y>370</y>
@@ -1601,7 +1601,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <master-bat>/controls/electric/dc/master-bat</master-bat>
+    <master-bat>/controls/electric/dc/master-bat[1]</master-bat>
     <ess-main-split>/controls/electric/dc/ems-b</ess-main-split>
    </params>
    <x>330</x>
@@ -1636,7 +1636,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <master-bat>/controls/engines/engine[0]/master-bat</master-bat> <!-- hard coded -->
+    <master-bat>/controls/electric/dc/master-bat[0]</master-bat>
    </params>
    <x>35</x>
    <y>335</y>
@@ -1668,7 +1668,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <master-bat>/controls/electric/dc/master-bat</master-bat>
+    <master-bat>/controls/electric/dc/master-bat[1]</master-bat>
    </params>
    <x>400</x>
    <y>335</y>

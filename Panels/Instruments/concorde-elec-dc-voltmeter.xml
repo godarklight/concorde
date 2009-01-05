@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
 
-<!-- DC voltmeter :
-
-     - electrical systems only provides amps.
--->
-
 <PropertyList>
 
  <name>DC voltmeter</name>
@@ -25,206 +20,24 @@
 
   <layer>
    <name>Voltage</name>
-   <type>switch</type>
-
-   <layer>
-    <name>Battery A</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>-2.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/suppliers/battery[0]</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>Essential A</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>-1.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/outputs/probe/dc-essential-a</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>Main A</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>0.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/outputs/probe/dc-main-a</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>Main B</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>1.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/outputs/probe/dc-main-b</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>Essential B</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>2.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/outputs/probe/dc-essential-b</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>Battery B</name>
-    <condition>
-     <and>
-      <equals>
-       <property>/controls/electric/dc/voltmeter</property> 
-       <value>3.0</value>
-      </equals>
-      <greater-than>
-       <property>/systems/electrical/suppliers/battery[1]</property>
-       <value>0.0</value>
-      </greater-than>
-     </and>
-    </condition>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>26</text>
-     </chunk>
-    </chunks>
-   </layer>
-
-   <layer>
-    <name>No voltage</name>
-    <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
-    <color>
-     <red>1.0</red>
-     <green>1.0</green>
-     <blue>1.0</blue>
-    </color>
-    <chunks>
-     <chunk>
-     <type>literal</type>
-     <text>0</text>
-     </chunk>
-    </chunks>
-   </layer>
-
+   <condition>
+    <property>/instrumentation/voltmeter-dc/serviceable</property>
+   </condition>
+   <type>text</type>
+   <font>led</font>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property>/instrumentation/voltmeter-dc/indicated-volt</property>
+     <format>%2.f</format>
+    </chunk>
+   </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>

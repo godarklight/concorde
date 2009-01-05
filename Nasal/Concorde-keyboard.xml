@@ -168,7 +168,7 @@
     <desc>Toggle crew text.</desc>
      <binding>
       <command>nasal</command>
-      <script>globals.Concorde.calloutcrew.crewtextexport();</script>
+      <script>globals.Concorde.voicecrew.crewtextexport();</script>
      </binding>
     </mod-shift>
    </key>
@@ -250,6 +250,10 @@
     <binding>
      <command>nasal</command>
      <script>globals.Concorde.crewscreen.toggleexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.voicecrew.toggleexport();</script>
     </binding>
    </key>
 

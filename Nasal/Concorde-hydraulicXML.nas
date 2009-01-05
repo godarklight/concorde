@@ -348,7 +348,7 @@ HydComponent.new = func {
    return obj;
 };
 
-HydComponent.init_ancestor = func {
+HydComponent.inherit_hydcomponent = func {
    var obj = HydComponent.new();
 
    me.NOGALUS = obj.NOGALUS;
@@ -424,7 +424,7 @@ HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) 
 };
 
 HydSupplier.init = func( rates ) {
-   me.init_ancestor();
+   me.inherit_hydcomponent();
 
    me.set_rate( rates );
 }
@@ -545,7 +545,7 @@ HydCircuit.new = func( contentnode, allprops, rates ) {
 };
 
 HydCircuit.init = func( contentnode, allprops, rates ) {
-   me.init_ancestor();
+   me.inherit_hydcomponent();
 
    me.set_rate( rates );
 

@@ -46,9 +46,95 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
+<!-- INVERTERS -->
+
+  <instrument include="Instruments/concorde-flight-inverter-blue.xml">
+   <name>Blue inverter selector</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>10</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>45</x>
+   <y>0</y>
+   <w>62</w>
+   <h>62</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-flight-fail-blue.xml">
+   <name>Blue inverter failure</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>100</x>
+   <y>-2</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-red-flight-fail-green.xml">
+   <name>Green inverter failure</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>165</x>
+   <y>-2</y>
+   <w>55</w>
+   <h>55</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-flight-inverter-green.xml">
+   <name>Green inverter selector</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>0</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>230</x>
+   <y>0</y>
+   <w>62</w>
+   <h>62</h>
+  </instrument>
+
 <!-- FLIGHT CHANNELS -->
 
-<!-- OUTER ELEVONS -->
+<!-- outer elevons -->
 
   <instrument include="Instruments/concorde-title-flight-channel-outer.xml">
    <name>Title</name>
@@ -65,8 +151,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>295</x>
-   <y>20</y>
+   <x>275</x>
+   <y>25</y>
    <w>160</w>
    <h>40</h>
   </instrument>
@@ -90,8 +176,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <blue-sel>/controls/flight/channel/outer-blue</blue-sel>
     <mechanical-sel>/controls/flight/channel/outer-mechanical</mechanical-sel>
    </params>
-   <x>310</x>
-   <y>-5</y>
+   <x>290</x>
+   <y>0</y>
    <w>65</w>
    <h>65</h>
   </instrument>
@@ -115,8 +201,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <blue-sel>/controls/flight/channel/outer-blue</blue-sel>
     <mechanical-sel>/controls/flight/channel/outer-mechanical</mechanical-sel>
    </params>
-   <x>375</x>
-   <y>-5</y>
+   <x>355</x>
+   <y>0</y>
    <w>22</w>
    <h>44</h>
   </instrument>
@@ -136,13 +222,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>420</x>
-   <y>0</y>
+   <x>410</x>
+   <y>5</y>
    <w>25</w>
    <h>50</h>
   </instrument>
 
-<!-- INNER ELEVONS -->
+<!-- inner elevons -->
 
   <instrument include="Instruments/concorde-title-flight-channel-inner.xml">
    <name>Title</name>
@@ -159,8 +245,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>475</x>
-   <y>20</y>
+   <x>495</x>
+   <y>25</y>
    <w>160</w>
    <h>40</h>
   </instrument>
@@ -185,7 +271,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <mechanical-sel>/controls/flight/channel/inner-mechanical</mechanical-sel>
    </params>
    <x>480</x>
-   <y>-5</y>
+   <y>0</y>
    <w>65</w>
    <h>65</h>
   </instrument>
@@ -209,13 +295,13 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <blue-sel>/controls/flight/channel/inner-blue</blue-sel>
     <mechanical-sel>/controls/flight/channel/inner-mechanical</mechanical-sel>
    </params>
-   <x>545</x>
-   <y>-5</y>
+   <x>565</x>
+   <y>0</y>
    <w>22</w>
    <h>44</h>
   </instrument>
 
-<!-- RUDDER -->
+<!-- rudder -->
 
   <instrument include="Instruments/concorde-title-flight-channel-rudder.xml">
    <name>Title</name>
@@ -232,8 +318,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>660</x>
-   <y>20</y>
+   <x>670</x>
+   <y>25</y>
    <w>80</w>
    <h>40</h>
   </instrument>
@@ -257,8 +343,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <blue-sel>/controls/flight/channel/rudder-blue</blue-sel>
     <mechanical-sel>/controls/flight/channel/rudder-mechanical</mechanical-sel>
    </params>
-   <x>650</x>
-   <y>-5</y>
+   <x>660</x>
+   <y>0</y>
    <w>65</w>
    <h>65</h>
   </instrument>
@@ -282,8 +368,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <blue-sel>/controls/flight/channel/rudder-blue</blue-sel>
     <mechanical-sel>/controls/flight/channel/rudder-mechanical</mechanical-sel>
    </params>
-   <x>715</x>
-   <y>-5</y>
+   <x>725</x>
+   <y>0</y>
    <w>22</w>
    <h>44</h>
   </instrument>
@@ -305,8 +391,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>840</x>
-   <y>20</y>
+   <x>810</x>
+   <y>25</y>
    <w>240</w>
    <h>40</h>
   </instrument>
@@ -330,8 +416,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <system-sel>/controls/flight/anti-stall/system[0]</system-sel>
     <num>/systems/engines/engine[0]/engine-num</num>
    </params>
-   <x>840</x>
-   <y>-5</y>
+   <x>810</x>
+   <y>0</y>
    <w>65</w>
    <h>65</h>
   </instrument>
@@ -354,8 +440,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <num>/systems/engines/engine[0]/engine-num</num>
    </params>
-   <x>875</x>
-   <y>-7</y>
+   <x>845</x>
+   <y>-2</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -378,8 +464,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <params>
     <num>/systems/engines/engine[1]/engine-num</num>
    </params>
-   <x>905</x>
-   <y>-7</y>
+   <x>875</x>
+   <y>-2</y>
    <w>25</w>
    <h>25</h>
   </instrument>
@@ -403,8 +489,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <system-sel>/controls/flight/anti-stall/system[1]</system-sel>
     <num>/systems/engines/engine[1]/engine-num</num>
    </params>
-   <x>940</x>
-   <y>-5</y>
+   <x>910</x>
+   <y>0</y>
    <w>65</w>
    <h>65</h>
   </instrument>

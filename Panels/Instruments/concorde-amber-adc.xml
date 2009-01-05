@@ -23,12 +23,9 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
        <or include="concorde-cond-test-mws.xml"/>       <!-- bug -->
-       <or>
-        <not>
-         <property>/systems/mws/amber/adc</property>
-        </not>
-        <property>/controls/mws/inhibit</property>
-       </or>
+       <not>
+        <property>/systems/mws/amber/adc</property>
+       </not>
       </and>
      </or>
     </condition>
@@ -90,6 +87,10 @@
     <command>property-assign</command>
     <property>/systems/mws/amber/adc</property>
     <value>false</value>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

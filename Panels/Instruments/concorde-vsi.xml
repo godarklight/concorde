@@ -480,15 +480,19 @@
   <layer>
    <name>Unit</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi-bg.rgb</path>
-    <x1>0.0</x1>
-    <y1>0.375</y1>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
+    <x1>0.75</x1>
+    <y1>0.46875</y1>
     <x2>1.0</x2>
-    <y2>0.625</y2>
+    <y2>0.53125</y2>
    </texture>
-    <w>36</w>
-    <h>9</h>
+    <w>44</w>
+    <h>11</h>
    <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>4</offset>
+    </transformation>
     <transformation>
      <type>y-shift</type>
      <offset>-85</offset>

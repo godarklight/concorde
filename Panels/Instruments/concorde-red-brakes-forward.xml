@@ -11,11 +11,6 @@
  <w-base>52</w-base>
  <h-base>104</h-base>
 
- <params>
-  <engine-num>/systems/engines/engine[0]/engine-num</engine-num>
-  <temp-degc>/systems/hydraulic/brakes/temperature-degc</temp-degc>
- </params>
-
 
  <layers>
 <!-- translucent lens -->  
@@ -30,7 +25,7 @@
        <and>
         <or include="concorde-cond-test-brakes.xml"/>        <!-- bug ? -->
         <less-than>
-         <property alias="../../../../../../../../params/temp-degc"/>
+         <property>/systems/brakes/temperature-degc</property>
          <value>220</value>
         </less-than>
        </and>
@@ -100,22 +95,22 @@
    <h>104</h>
    <binding>
     <command>property-assign</command>
-    <property>/systems/hydraulic/brakes/test-degc</property>
-    <property alias="../../../../params/temp-degc"/>
+    <property>/systems/brakes/test-degc</property>
+    <property>/systems/brakes/temperature-degc</property>
    </binding>
    <binding>
     <command>property-toggle</command>
-    <property>/systems/hydraulic/brakes/test</property>
+    <property>/systems/brakes/test</property>
    </binding>
    <mod-up>
     <binding>
      <command>property-assign</command>
-     <property>/systems/hydraulic/brakes/test-degc</property>
-     <property>/systems/hydraulic/brakes/temp-max-degc</property>
+     <property>/systems/brakes/test-degc</property>
+     <property>/systems/brakes/temp-max-degc</property>
     </binding>
     <binding>
      <command>property-toggle</command>
-     <property>/systems/hydraulic/brakes/test</property>
+     <property>/systems/brakes/test</property>
     </binding>
     <binding>
      <command>property-toggle</command>

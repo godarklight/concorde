@@ -26,7 +26,7 @@
     </text>
 
     <combo>
-      <pref-width>200</pref-width>
+      <pref-width>300</pref-width>
       <property>/systems/fuel/tanks/dialog</property>
       <value>max landing</value>
       <value>max takeoff</value>
@@ -34,8 +34,8 @@
       <value>max fuel</value>
       <value>supersonic climb</value>
       <value>supersonic cruise</value>
-      <value>supersonic descent</value>
-      <value>low level</value>
+      <value>supersonic descent (auxiliary)</value>
+      <value>low level (trim)</value>
     </combo>
   </group>
 
@@ -84,31 +84,45 @@
 
   <group>
     <layout>hbox</layout>
-    <empty><stretch>true</stretch></empty>
+
+    <group>
+      <layout>hbox</layout>
+      <empty><stretch>true</stretch></empty>
+
+      <button>
+        <legend>OK</legend>
+        <binding>
+          <command>dialog-apply</command>
+        </binding>
+        <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.fuelsystem.menuexport();</script>
+        </binding>
+        <binding>
+          <command>dialog-close</command>
+        </binding>
+      </button>
+
+      <button>
+        <legend>Cancel</legend>
+        <default>true</default>
+        <key>Esc</key>
+        <binding>
+          <command>dialog-close</command>
+        </binding>
+      </button>
+    </group>
 
     <button>
-      <legend>OK</legend>
+      <legend>Menu</legend>
+      <key>m</key>
       <binding>
-        <command>dialog-apply</command>
-      </binding>
-      <binding>
-        <command>nasal</command>
-        <script>globals.Concorde.fuelsystem.menuexport();</script>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-menu</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>
       </binding>
     </button>
-
-    <button>
-      <legend>Cancel</legend>
-      <default>true</default>
-      <key>Esc</key>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-
-    <empty><stretch>true</stretch></empty>
   </group>
 </PropertyList>

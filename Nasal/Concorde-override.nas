@@ -96,3 +96,13 @@ controls.applyParkingBrake = func(v) {
     var i = getprop(p);
     return i;
 }
+
+
+# overrides engine start
+override_startEngine = controls.startEngine;
+
+controls.startEngine = func {
+    override_startEngine();
+
+    globals.Concorde.enginesystem.cutoffexport();
+}

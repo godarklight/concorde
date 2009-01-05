@@ -46,6 +46,56 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
+<!-- WINDSHIELD DE-ICE (VALVES) -->
+
+  <instrument include="Instruments/concorde-connection.xml">
+   <name>Left windshield valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <connect-status>/controls/anti-ice/windshield/de-ice[0]</connect-status>
+   </params>
+   <x>-5</x>
+   <y>45</y>
+   <w>18</w>
+   <h>18</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-connection.xml">
+   <name>Right windshield valve</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <params>
+    <connect-status>/controls/anti-ice/windshield/de-ice[1]</connect-status>
+   </params>
+   <x>-5</x>
+   <y>20</y>
+   <w>18</w>
+   <h>18</h>
+  </instrument>
+
 <!-- MAIN LANDING LIGHTS -->
 
   <instrument include="Instruments/concorde-blue-light-extended.xml">
@@ -427,7 +477,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>775</x>
+   <x>795</x>
    <y>65</y>
    <w>100</w>
    <h>25</h>
@@ -452,7 +502,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <light-on>/controls/lighting/external/landing-taxi[0]/on</light-on>
     <light-on2>/controls/lighting/external/landing-taxi[1]/on</light-on2>
    </params>
-   <x>782</x>
+   <x>802</x>
    <y>30</y>
    <w>90</w>
    <h>45</h>
@@ -475,7 +525,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>875</x>
+   <x>855</x>
    <y>80</y>
    <w>50</w>
    <h>25</h>

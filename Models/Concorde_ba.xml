@@ -112,6 +112,19 @@
 
   </offsets>
 
+<!-- livery support -->
+  <nasal>
+   <load>
+    var livery_update = aircraft.livery_update.new(
+    "Aircraft/Concorde/Models/Liveries", 10,
+    func { print("Concorde livery update") });
+   </load>
+
+   <unload>
+    livery_update.stop();
+   </unload>
+  </nasal>
+
 
  <!-- ======================================= -->
  <!-- panel models (X/Y/Z depth/width/height) -->
@@ -183,93 +196,93 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead.xml</path>
    <bottom-left>
-    <x-m>-23.586</x-m>
+    <x-m>-23.588</x-m>
     <y-m>-0.332</y-m>
-    <z-m> 1.613</z-m>       <!-- keep slope ! -->
+    <z-m> 1.622</z-m>       <!-- keep slope ! -->
    </bottom-left>
    <bottom-right>
-    <x-m>-23.586</x-m>
+    <x-m>-23.588</x-m>
     <y-m> 0.208</y-m>
-    <z-m> 1.613</z-m>
+    <z-m> 1.622</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.324</x-m>
+    <x-m>-23.318</x-m>
     <y-m>-0.332</y-m>
-    <z-m> 1.790</z-m>
+    <z-m> 1.750</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-lighting.xml</path>
    <bottom-left>
-    <x-m>-23.476</x-m>
+    <x-m>-23.481</x-m>
     <y-m>-0.242</y-m>
-    <z-m> 1.678</z-m>
+    <z-m> 1.670</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.476</x-m>
+    <x-m>-23.481</x-m>
     <y-m> 0.282</y-m>
-    <z-m> 1.678</z-m>
+    <z-m> 1.670</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.214</x-m>
+    <x-m>-23.219</x-m>
     <y-m>-0.242</y-m>
-    <z-m> 1.683</z-m>
+    <z-m> 1.775</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-channel.xml</path>
    <bottom-left>
-    <x-m>-23.397</x-m>
+    <x-m>-23.410</x-m>
     <y-m>-0.242</y-m>
-    <z-m> 1.685</z-m>
+    <z-m> 1.700</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.397</x-m>
+    <x-m>-23.410</x-m>
     <y-m> 0.282</y-m>
-    <z-m> 1.685</z-m>
+    <z-m> 1.700</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.134</x-m>
+    <x-m>-23.157</x-m>
     <y-m>-0.242</y-m>
-    <z-m> 1.885</z-m>
+    <z-m> 1.910</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-shutdown.xml</path>
    <bottom-left>
-    <x-m>-23.287</x-m>
+    <x-m>-23.320</x-m>
     <y-m>-0.242</y-m>
     <z-m> 1.730</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.287</x-m>
+    <x-m>-23.320</x-m>
     <y-m> 0.282</y-m>
     <z-m> 1.730</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-23.024</x-m>
+    <x-m>-23.057</x-m>
     <y-m>-0.242</y-m>
-    <z-m> 1.980</z-m>
+    <z-m> 2.010</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-overhead-engineer.xml</path>
    <bottom-left>
-    <x-m>-23.215</x-m>
+    <x-m>-23.225</x-m>
     <y-m>-0.422</y-m>
-    <z-m> 1.765</z-m>
+    <z-m> 1.755</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-23.215</x-m>
+    <x-m>-23.225</x-m>
     <y-m> 0.438</y-m>
-    <z-m> 1.765</z-m>
+    <z-m> 1.755</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.785</x-m>
+    <x-m>-22.795</x-m>
     <y-m>-0.422</y-m>
     <z-m> 1.765</z-m>
    </top-left>
@@ -417,76 +430,76 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-pressure.xml</path>
    <bottom-left>
-    <x-m>-22.375</x-m>
+    <x-m>-22.405</x-m>
     <y-m> 0.506</y-m>
-    <z-m> 1.276</z-m>
+    <z-m> 1.326</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.825</x-m>
+    <x-m>-21.855</x-m>
     <y-m> 0.559</y-m>
-    <z-m> 1.276</z-m>
+    <z-m> 1.326</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.375</x-m>
+    <x-m>-22.405</x-m>
     <y-m> 0.381</y-m>
-    <z-m> 1.551</z-m>
+    <z-m> 1.601</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-intake.xml</path>
    <bottom-left>
-    <x-m>-22.380</x-m>
+    <x-m>-22.410</x-m>
     <y-m> 0.510</y-m>
-    <z-m> 0.839</z-m>
+    <z-m> 0.869</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.732</x-m>
+    <x-m>-21.762</x-m>
     <y-m> 0.566</y-m>
-    <z-m> 0.839</z-m>
+    <z-m> 0.869</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.380</x-m>
+    <x-m>-22.410</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 1.173</z-m>
+    <z-m> 1.203</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-lighting.xml</path>
    <bottom-left>
-    <x-m>-22.532</x-m>
+    <x-m>-22.572</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 0.703</z-m>
+    <z-m> 0.743</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.498</x-m>
+    <x-m>-21.538</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 0.703</z-m>
+    <z-m> 0.743</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.532</x-m>
+    <x-m>-22.572</x-m>
     <y-m> 0.514</y-m>
-    <z-m> 1.218</z-m>
+    <z-m> 1.258</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-engine.xml</path>
    <bottom-left>
-    <x-m>-22.400</x-m>
+    <x-m>-22.430</x-m>
     <y-m> 0.490</y-m>
-    <z-m> 0.431</z-m>
+    <z-m> 0.441</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.470</x-m>
+    <x-m>-21.500</x-m>
     <y-m> 0.580</y-m>
-    <z-m> 0.431</z-m>
+    <z-m> 0.441</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-22.400</x-m>
+    <x-m>-22.430</x-m>
     <y-m> 0.502</y-m>
-    <z-m> 0.894</z-m>
+    <z-m> 0.904</z-m>
    </top-left>
   </panel>
 
@@ -497,17 +510,17 @@
    <bottom-left>
     <x-m>-21.950</x-m>
     <y-m> 0.445</y-m>
-    <z-m> 1.502</z-m>
+    <z-m> 1.552</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-21.400</x-m>
     <y-m> 0.445</y-m>
-    <z-m> 1.502</z-m>
+    <z-m> 1.552</z-m>
    </bottom-right>
    <top-left>
     <x-m>-21.950</x-m>
     <y-m> 0.32</y-m>
-    <z-m> 1.768</z-m>
+    <z-m> 1.818</z-m>
    </top-left>
   </panel>
 
@@ -516,17 +529,17 @@
    <bottom-left>
     <x-m>-21.710</x-m>
     <y-m> 0.455</y-m>
-    <z-m> 1.467</z-m>
+    <z-m> 1.517</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-21.160</x-m>
     <y-m> 0.455</y-m>
-    <z-m> 1.467</z-m>
+    <z-m> 1.517</z-m>
    </bottom-right>
    <top-left>
     <x-m>-21.710</x-m>
     <y-m> 0.33</y-m>
-    <z-m> 1.733</z-m>
+    <z-m> 1.783</z-m>
    </top-left>
   </panel>
 
@@ -535,36 +548,36 @@
    <bottom-left>
     <x-m>-21.945</x-m>
     <y-m> 0.54</y-m>
-    <z-m> 1.288</z-m>
+    <z-m> 1.338</z-m>
    </bottom-left>
    <bottom-right>
     <x-m>-21.245</x-m>
     <y-m> 0.54</y-m>
-    <z-m> 1.288</z-m>
+    <z-m> 1.338</z-m>
    </bottom-right>
    <top-left>
     <x-m>-21.945</x-m>
     <y-m> 0.38</y-m>
-    <z-m> 1.648</z-m>
+    <z-m> 1.698</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel.xml</path>
    <bottom-left>
-    <x-m>-21.957</x-m>
+    <x-m>-21.977</x-m>
     <y-m> 0.542</y-m>
-    <z-m> 0.688</z-m>
+    <z-m> 0.728</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-21.017</x-m>
+    <x-m>-21.037</x-m>
     <y-m> 0.542</y-m>
-    <z-m> 0.688</z-m>
+    <z-m> 0.728</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.947</x-m>
+    <x-m>-21.967</x-m>
     <y-m> 0.552</y-m>
-    <z-m> 1.158</z-m>
+    <z-m> 1.198</z-m>
    </top-left>
   </panel>
 
@@ -573,57 +586,57 @@
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-hydraulic.xml</path>
    <bottom-left>
-    <x-m>-21.470</x-m>
+    <x-m>-21.480</x-m>
     <y-m> 0.458</y-m>
-    <z-m> 1.468</z-m>
+    <z-m> 1.518</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.800</x-m>
+    <x-m>-20.810</x-m>
     <y-m> 0.390</y-m>
-    <z-m> 1.468</z-m>
+    <z-m> 1.518</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.470</x-m>
+    <x-m>-21.480</x-m>
     <y-m> 0.307</y-m>
-    <z-m> 1.783</z-m>
+    <z-m> 1.833</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-electric-top.xml</path>
    <bottom-left>
-    <x-m>-21.475</x-m>
+    <x-m>-21.485</x-m>
     <y-m> 0.535</y-m>
-    <z-m> 1.288</z-m>
+    <z-m> 1.338</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.925</x-m>
+    <x-m>-20.935</x-m>
     <y-m> 0.456</y-m>
-    <z-m> 1.288</z-m>
+    <z-m> 1.338</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.475</x-m>
+    <x-m>-21.485</x-m>
     <y-m> 0.400</y-m>
-    <z-m> 1.583</z-m>
+    <z-m> 1.633</z-m>
    </top-left>
   </panel>
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-engineer-electric.xml</path>
    <bottom-left>
-    <x-m>-21.485</x-m>
+    <x-m>-21.495</x-m>
     <y-m> 0.546</y-m>
-    <z-m> 0.822</z-m>
+    <z-m> 0.872</z-m>
    </bottom-left>
    <bottom-right>
-    <x-m>-20.832</x-m>
+    <x-m>-20.842</x-m>
     <y-m> 0.458</y-m>
-    <z-m> 0.822</z-m>
+    <z-m> 0.872</z-m>
    </bottom-right>
    <top-left>
-    <x-m>-21.485</x-m>
+    <x-m>-21.495</x-m>
     <y-m> 0.546</y-m>
-    <z-m> 1.1485</z-m>
+    <z-m> 1.1985</z-m>
    </top-left>
   </panel>
 
@@ -828,7 +841,7 @@
     <or>
      <and>
       <property>systems/human/serviceable</property>
-      <property>controls/crew/copilot</property>
+      <property>controls/copilot/activ</property>
      </and>
      <and>
       <property>sim/current-view/internal</property>
@@ -888,6 +901,8 @@
    </condition>
   </animation>
 
+<!-- seat is visible in engineer view, except if moved. -->
+
   <animation>
    <type>select</type>
    <object-name>AllSeatEngineer</object-name>
@@ -895,11 +910,31 @@
     <or>
      <and>
       <property>systems/human/serviceable</property>
-      <property>controls/crew/engineer</property>
+      <property>controls/engineer/activ</property>
+      <or>
+       <not>
+        <property>sim/current-view/internal</property>
+       </not>
+       <not>
+        <property>systems/seat/engineer</property>
+       </not>
+      </or>
      </and>
      <and>
       <property>sim/current-view/internal</property>
       <property>systems/seat/engineer</property>
+      <equals>
+       <property>systems/human/engineer/stowe-norm</property>
+       <value>0</value>
+      </equals>
+      <equals>
+       <property>systems/human/engineer/seat-deg</property>
+       <value>0</value>
+      </equals>
+      <equals>
+       <property>systems/human/engineer/seat-x-m</property>
+       <value>0</value>
+      </equals>
      </and>
      <property>controls/seat/all</property>
     </or>
@@ -965,7 +1000,7 @@
    <name>Engineer human</name>
    <path>Aircraft/Concorde/Instruments/crew/engineer.xml</path>
    <offsets>
-    <x-m>-21.75</x-m>
+    <x-m>-21.788</x-m>
     <y-m>-0.10</y-m>
     <z-m> 1.02</z-m>
     <heading-deg>270</heading-deg>
@@ -993,22 +1028,6 @@
   <name>NoseVisor</name>
   <object-name>Nose</object-name>
   <object-name>Screen</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>NoseVisor</object-name>
-   <condition>
-    <or>
-     <not>
-      <property>sim/current-view/internal</property>
-     </not>
-     <less-than>
-      <property>surface-positions/flap-pos-norm</property>
-      <value>1.0</value> <!-- not visible when down -->
-     </less-than>
-    </or>
-   </condition>
   </animation>
 
   <animation>
@@ -2534,9 +2553,9 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>systems/engines/engine[0]/nozzle-factor</factor-prop>
   </emission> 
-  <factor-prop>/systems/engines/engine[0]/nozzle-factor</factor-prop>
-  <texture-prop>/systems/engines/engine[0]/nozzle-texture</texture-prop>
+  <texture-prop>systems/engines/engine[0]/nozzle-texture</texture-prop>
  </animation> 
 
  <animation>
@@ -2546,9 +2565,9 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>systems/engines/engine[1]/nozzle-factor</factor-prop>
   </emission> 
-  <factor-prop>/systems/engines/engine[1]/nozzle-factor</factor-prop>
-  <texture-prop>/systems/engines/engine[1]/nozzle-texture</texture-prop>
+  <texture-prop>systems/engines/engine[1]/nozzle-texture</texture-prop>
  </animation> 
 
  <animation>
@@ -2558,9 +2577,9 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>systems/engines/engine[2]/nozzle-factor</factor-prop>
   </emission> 
-  <factor-prop>/systems/engines/engine[2]/nozzle-factor</factor-prop>
-  <texture-prop>/systems/engines/engine[2]/nozzle-texture</texture-prop>
+  <texture-prop>systems/engines/engine[2]/nozzle-texture</texture-prop>
  </animation> 
 
  <animation>
@@ -2570,9 +2589,9 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>systems/engines/engine[3]/nozzle-factor</factor-prop>
   </emission> 
-  <factor-prop>/systems/engines/engine[3]/nozzle-factor</factor-prop>
-  <texture-prop>/systems/engines/engine[3]/nozzle-texture</texture-prop>
+  <texture-prop>systems/engines/engine[3]/nozzle-texture</texture-prop>
  </animation> 
 
 <!-- SECONDARY NOZZLES -->
@@ -2713,33 +2732,118 @@
   </axis>
  </animation>
 
-<!-- FLUORESCENT LIGHTS -->
+<!-- OSG lighting :
 
-<!-- illuminates cockpit childs -->
+     - only 1 material per object (child included).
+     - group are allowed.
+-->
+
+<!-- FLUORESCENT LIGHTS -->
 
  <animation>
   <type>material</type>
-  <object-name>Cockpit</object-name>
-  <object-name>Copilot human</object-name>
-  <object-name>Engineer human</object-name>
+  <object-name>Pillar</object-name>
+  <object-name>SteeringCaptain</object-name>
+  <object-name>SteeringCopilot</object-name>
+  <object-name>CeilingEdge</object-name>
+  <object-name>Dashboard</object-name>
+  <object-name>RoofLight1</object-name>
+  <object-name>RoofLight2</object-name>
+  <object-name>AvionicsLRack</object-name>
+  <object-name>AvionicsRRack</object-name>
+  <object-name>AvionicsRack</object-name>
   <emission>
    <red>0.66</red>
    <green>0.68</green>
    <blue>0.64</blue>
-   <factor-prop>controls/lighting/crew/roof-light</factor-prop>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
   </emission> 
  </animation> 
 
-<!-- change the color after, because cockpit is parent -->
+<!-- isolated from a group -->
+
+ <animation>
+  <type>material</type>
+  <object-name>AllSeatCaptain</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>AllSeatCopilot</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>AllSeatEngineer</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>engineer</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>observer</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>AllYokeCaptain</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>material</type>
+  <object-name>AllYokeCopilot</object-name>
+  <emission>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
+  </emission> 
+ </animation> 
 
  <animation>
   <type>material</type>
   <object-name>RoofLight1</object-name>
   <object-name>RoofLight2</object-name>
-  <object-name>MainPanel</object-name>
   <object-name>UpperPanel</object-name>
-  <object-name>ConsoleForward</object-name>
-  <object-name>ConsoleAft</object-name>
   <object-name>LeftPedestal</object-name>
   <object-name>RightPedestal</object-name>
   <object-name>ConsoleLeft</object-name>
@@ -2747,16 +2851,34 @@
   <object-name>TopConsoleLeft</object-name>
   <object-name>TopConsoleRight</object-name>
   <object-name>TrimCylinder</object-name>
+  <object-name>PitchCylinder</object-name>
+  <object-name>PitchTrimIndex</object-name>
+  <object-name>PitchTrimWheel</object-name>
+  <object-name>RollTrimWheel</object-name>
+  <object-name>YawTrimWheel</object-name>
   <object-name>ThrottleBase</object-name>
+  <object-name>Throttle1</object-name>
+  <object-name>Throttle2</object-name>
+  <object-name>Throttle3</object-name>
+  <object-name>Throttle4</object-name>
+  <object-name>ThrottleIndexLeft</object-name>
+  <object-name>ThrottleIndexRight</object-name>
+  <object-name>Reverse1</object-name>
+  <object-name>Reverse2</object-name>
+  <object-name>Reverse3</object-name>
+  <object-name>Reverse4</object-name>
+  <object-name>ReheatSelector1</object-name>
+  <object-name>ReheatSelector2</object-name>
+  <object-name>ReheatSelector3</object-name>
+  <object-name>ReheatSelector4</object-name>
   <object-name>BrakeCylinder</object-name>
+  <object-name>BrakeLever</object-name>
   <object-name>CeilingPanel</object-name>
-  <object-name>EngineerPanel</object-name>
-  <object-name>EngineerDeck</object-name>
   <emission>
    <red>0.71</red>
    <green>0.79</green>
    <blue>0.87</blue>
-   <factor-prop>controls/lighting/crew/roof-light</factor-prop>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
   </emission> 
  </animation> 
 
@@ -2771,7 +2893,7 @@
    <red>0.46</red>
    <green>0.46</green>
    <blue>0.44</blue>
-   <factor-prop>controls/lighting/crew/roof-light</factor-prop>
+   <factor-prop>systems/lighting/level/roof</factor-prop>
   </emission> 
  </animation> 
 
@@ -2780,237 +2902,88 @@
  <animation>
   <type>material</type>
   <object-name>CaptainFlood</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/captain/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <factor-prop>controls/lighting/crew/captain/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/flood/captain</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>MainPanel</object-name>
-  <condition>
-   <and>
-    <greater-than-equals>
-     <property>controls/lighting/crew/captain/flood-light</property>
-     <property n="1">controls/lighting/crew/roof-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/captain/flood-light</property>
-     <property n="1">controls/lighting/crew/center/flood-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/captain/flood-light</property>
-     <property n="1">controls/lighting/crew/copilot/flood-light</property>
-    </greater-than-equals>
-   </and>
-  </condition>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
    <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/captain/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/panel/main</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>CopilotFlood</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/copilot/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <factor-prop>controls/lighting/crew/copilot/flood-light</factor-prop>
-  </emission> 
- </animation> 
-
- <animation>
-  <type>material</type>
-  <object-name>MainPanel</object-name>
-  <condition>
-   <and>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/roof-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/center/flood-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/captain/flood-light</property>
-    </greater-than-equals>
-   </and>
-  </condition>
-  <emission>
-   <red>0.83</red>
-   <green>0.74</green>
-   <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/copilot/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/flood/copilot</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>Copilot human</object-name>
-  <condition>
-   <and>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/roof-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/center/flood-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/copilot/flood-light</property>
-     <property n="1">controls/lighting/crew/captain/flood-light</property>
-    </greater-than-equals>
-   </and>
-  </condition>
   <emission>
    <red>0.53</red>
    <green>0.44</green>
    <blue>0.08</blue>
-   <factor-prop>controls/lighting/crew/copilot/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/human/copilot</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>EngineerPanel</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/engineer/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
    <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/engineer/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/engineer/panel</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>EngineerDeck</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/engineer/spot-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
    <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/engineer/spot-light</factor-prop>
+   <factor-prop>systems/lighting/level/engineer/deck</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>Engineer human</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/engineer/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>0.53</red>
    <green>0.44</green>
    <blue>0.08</blue>
-   <factor-prop>controls/lighting/crew/engineer/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/human/engineer</factor-prop>
   </emission> 
  </animation> 
 
  <animation>
   <type>material</type>
   <object-name>CenterFlood</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/center/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
-  </emission> 
- </animation> 
-
- <animation>
-  <type>material</type>
-  <object-name>MainPanel</object-name>
-  <condition>
-   <and>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/roof-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/captain/flood-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/copilot/flood-light</property>
-    </greater-than-equals>
-   </and>
-  </condition>
-  <emission>
-   <red>0.83</red>
-   <green>0.74</green>
-   <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
-  </emission> 
- </animation> 
-
- <animation>
-  <type>material</type>
-  <object-name>Copilot human</object-name>
-  <condition>
-   <and>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/roof-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/captain/flood-light</property>
-    </greater-than-equals>
-    <greater-than-equals>
-     <property>controls/lighting/crew/center/flood-light</property>
-     <property n="1">controls/lighting/crew/copilot/flood-light</property>
-    </greater-than-equals>
-   </and>
-  </condition>
-  <emission>
-   <red>0.53</red>
-   <green>0.44</green>
-   <blue>0.08</blue>
-   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/flood/center</factor-prop>
   </emission> 
  </animation> 
 
@@ -3018,17 +2991,11 @@
   <type>material</type>
   <object-name>ConsoleForward</object-name>
   <object-name>ConsoleAft</object-name>
-  <condition>
-   <greater-than-equals>
-    <property>controls/lighting/crew/center/flood-light</property>
-    <property n="1">controls/lighting/crew/roof-light</property>
-   </greater-than-equals>
-  </condition>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
    <blue>0.38</blue>
-   <factor-prop>controls/lighting/crew/center/flood-light</factor-prop>
+   <factor-prop>systems/lighting/level/panel/console</factor-prop>
   </emission> 
  </animation> 
 
@@ -3551,7 +3518,7 @@
    <emission>
     <red>1.0</red>
     <green>1.0</green>
-    <blue>1.0</blue>
+    <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[0]/failure</factor-prop>
    </emission> 
    <texture-prop>systems/throttles/throttle[0]/failure-texture</texture-prop>
@@ -3563,7 +3530,7 @@
    <emission>
     <red>1.0</red>
     <green>1.0</green>
-    <blue>1.0</blue>
+    <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[1]/failure</factor-prop>
    </emission> 
    <texture-prop>systems/throttles/throttle[1]/failure-texture</texture-prop>
@@ -3575,7 +3542,7 @@
    <emission>
     <red>1.0</red>
     <green>1.0</green>
-    <blue>1.0</blue>
+    <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[2]/failure</factor-prop>
    </emission> 
    <texture-prop>systems/throttles/throttle[2]/failure-texture</texture-prop>
@@ -3587,7 +3554,7 @@
    <emission>
     <red>1.0</red>
     <green>1.0</green>
-    <blue>1.0</blue>
+    <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[3]/failure</factor-prop>
    </emission> 
    <texture-prop>systems/throttles/throttle[3]/failure-texture</texture-prop>
@@ -3929,7 +3896,7 @@
    </and>
   </condition>
   <center>
-   <x-m>-21.780</x-m>
+   <x-m>-21.788</x-m>
    <y-m>0.0</y-m>
    <z-m>0.0</z-m>
   </center>
@@ -3974,7 +3941,7 @@
   <object-name>TopSeatEngineer</object-name>
   <property>systems/human/engineer/seat-deg</property>
   <center>
-   <x-m>-21.780</x-m>
+   <x-m>-21.788</x-m>
    <y-m>0.0</y-m>
    <z-m>0.0</z-m>
   </center>
@@ -4063,11 +4030,11 @@
    </entry>
    <entry>
      <ind>0.7</ind>
-     <dep>0.28</dep>
+     <dep>0.22</dep>
    </entry>
    <entry>
      <ind>1.0</ind>
-     <dep>0.28</dep>
+     <dep>0.22</dep>
    </entry>
   </interpolation>   
   <axis>
@@ -4149,7 +4116,7 @@
    </and>
   </condition>
   <center>
-   <x-m>-21.75</x-m>
+   <x-m>-21.788</x-m>
    <y-m>0.0</y-m>
    <z-m>0.0</z-m>
   </center>
@@ -4165,7 +4132,7 @@
   <object-name>Engineer human</object-name>
   <property>systems/human/engineer/seat-deg</property>
   <center>
-   <x-m>-21.75</x-m>
+   <x-m>-21.788</x-m>
    <y-m>0.0</y-m>
    <z-m>0.0</z-m>
   </center>
@@ -4193,9 +4160,12 @@
   <condition>
    <and>
     <property>systems/human/serviceable</property>
-    <property>controls/crew/engineer</property>
+    <property>controls/engineer/activ</property>
     <not>
      <property>systems/seat/engineer</property>
+    </not>
+    <not>
+     <property>systems/seat/overhead</property>
     </not>
     <equals>
      <property>systems/human/engineer/stowe-norm</property>
@@ -4222,7 +4192,7 @@
   <condition>
    <and>
     <property>systems/human/serviceable</property>
-    <property>controls/crew/copilot</property>
+    <property>controls/copilot/activ</property>
     <not>
      <property>systems/seat/copilot</property>
     </not>
@@ -4295,6 +4265,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -4305,6 +4276,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -4487,6 +4459,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -4735,6 +4708,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -4808,6 +4782,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -5223,6 +5198,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
+   <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
  </animation>
 
@@ -5551,5 +5527,20 @@
    <z>0</z>
   </axis>
  </animation>
+
+
+ <!-- ============== -->
+ <!-- livery support -->
+ <!-- ============== -->
+
+<!--
+  <animation>
+   <type>material</type>
+   <object-name>external</object-name>
+   <property-base>sim/model/livery/</property-base>
+   <texture-prop>texture</texture-prop>
+  </animation>
+-->
+
 
 </PropertyList>

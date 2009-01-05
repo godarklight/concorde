@@ -4678,37 +4678,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>53</h>
   </instrument>
 
-<!-- ENGINEER DECK -->
-
-  <instrument include="Instruments/concorde-eng-deck.xml">
-   <name>Engineer deck</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>340</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>245</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </less-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>-60</x>
-   <y>180</y>
-   <w>30</w>
-   <h>30</h>
-  </instrument>
-
  </instruments>
 
 </PropertyList>

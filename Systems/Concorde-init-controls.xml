@@ -4,6 +4,11 @@
      - makes more readable the initialization state.
 
      - see model animation for gear times.
+
+
+     Known problems :
+     ==============
+     - /controls/engines/engine[0]/master-bat seems (?) required by FG.
 -->
 
 <PropertyList>
@@ -190,6 +195,7 @@
     <altitude type="double">0.0</altitude>
     <speed type="double">0.0</speed>
    </datum>
+   <fg-waypoint type="bool">true</fg-waypoint>                <!-- default FG behaviour -->
    <flight-director n="0">
     <engage type="bool">false</engage>
    </flight-director>
@@ -205,15 +211,23 @@
    <vertical2></vertical2>
   </autoflight>
 
+  <captain>
+   <countdown type="bool">false</countdown>                   <!-- optional in practice -->
+  </captain>
+
+  <copilot>
+   <activ type="bool">false</activ>
+   <landing-lights type="bool">true</landing-lights>          <!-- optional in checklist -->
+  </copilot>
+
   <crew>
-   <copilot type="bool">false</copilot>
-   <engineer type="bool">false</engineer>
+   <captain-busy type="bool">true</captain-busy>              <!-- crew performs Captain checks -->
+   <checklist type="bool">true</checklist>                    <!-- flight checklists triggers automatically -->
+   <ins-alignment type="bool">true</ins-alignment>            <!-- quick alignment of INS (not real) -->
+   <night-lighting type="bool">true</night-lighting>
+   <recall type="bool">false</recall>                         <!-- recall detection -->
    <timeout type="bool">true</timeout>                        <!-- of 10 seconds -->
    <timeout-s type="double">10.0</timeout-s>
-   <voice>
-    <sound type="bool">true</sound>
-    <text type="bool">false</text>                            <!-- debug without Festival -->
-   </voice>
   </crew>
 
   <doors>
@@ -247,6 +261,8 @@
     <essential n="1" type="bool">true</essential>
     <essential n="2" type="bool">true</essential>
     <essential n="3" type="bool">true</essential>
+    <inverter-blue type="bool">true</inverter-blue>           <!-- inverter on -->
+    <inverter-green type="bool">true</inverter-green>
     <relight n="0" type="bool">true</relight>                 <!-- relight to main bus -->
     <relight n="1" type="bool">true</relight>
     <relight n="2" type="bool">true</relight>
@@ -280,7 +296,10 @@
     </emergency>
    </ac>
    <dc>
-    <master-bat type="bool">true</master-bat>                 <!-- battery B -->
+    <inverter-blue type="bool">true</inverter-blue>           <!-- inverter powered -->
+    <inverter-green type="bool">true</inverter-green>
+    <master-bat n="0" alias="/controls/engines/engine[0]/master-bat"/>
+    <master-bat n="1" type="bool">true</master-bat>           <!-- battery B -->
     <main-a type="bool">true</main-a>                         <!-- AC essential to DC main (TRU) -->
     <main-b type="bool">true</main-b>
     <essential-a type="bool">true</essential-a>               <!-- AC essential to DC essential (TRU) -->
@@ -290,6 +309,10 @@
     <voltmeter type="int">0</voltmeter>                       <!-- vertical -->
    </dc>
   </electric>
+
+  <engineer>
+   <activ type="bool">false</activ>
+  </engineer>
 
   <engines>
    <engine n="0">
@@ -307,6 +330,7 @@
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
     <reheat type="bool">false</reheat>
+    <reverser-angle-rad alias="/fdm/jsbsim/propulsion/engine[0]/reverser-angle-rad"/>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>                    <!-- differentiate autothrottle -->
    </engine>
@@ -324,6 +348,7 @@
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
     <reheat type="bool">false</reheat>
+    <reverser-angle-rad alias="/fdm/jsbsim/propulsion/engine[1]/reverser-angle-rad"/>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
    </engine>
@@ -341,6 +366,7 @@
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
     <reheat type="bool">false</reheat>
+    <reverser-angle-rad alias="/fdm/jsbsim/propulsion/engine[2]/reverser-angle-rad"/>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
    </engine>
@@ -360,6 +386,7 @@
     <rating>takeoff</rating>
     <rating-flight>climb</rating-flight>
     <reheat type="bool">false</reheat>
+    <reverser-angle-rad alias="/fdm/jsbsim/propulsion/engine[3]/reverser-angle-rad"/>
     <secondary-air-door type="bool">true</secondary-air-door>
     <throttle-manual>0.0</throttle-manual>
    </engine>
@@ -387,6 +414,19 @@
   </flight>
 
   <fuel>
+   <jettison>
+    <valve n="0">
+     <flow type="bool">false</flow>
+     <on type="bool">false</on>
+     <shut type="bool">false</shut>
+    </valve>
+    <valve n="1">
+     <flow type="bool">false</flow>
+     <on type="bool">false</on>
+     <shut type="bool">false</shut>
+    </valve>
+   </jettison>
+
    <pumps>
     <aft type="bool">false</aft>
     <aft-2D type="bool">false</aft-2D>                        <!-- 2D panel -->
@@ -404,10 +444,12 @@
 
    <tank n="0">
     <aft-trim type="bool">false</aft-trim>
+    <aft-trim-disabled type="bool">true</aft-trim-disabled>
     <cross-feed-valve type="bool">false</cross-feed-valve>
     <heater type="bool">true</heater>
     <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
+    <jettison type="bool">false</jettison>
     <lp-valve type="bool">true</lp-valve>                     <!-- engine on -->
     <lp-valve-motor type="bool">true</lp-valve-motor>         <!-- motor 1 -->
     <lp-valve-guard type="bool">true</lp-valve-guard>
@@ -422,6 +464,7 @@
     <heater type="bool">true</heater>
     <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
+    <jettison type="bool">false</jettison>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
     <lp-valve-guard type="bool">true</lp-valve-guard>
@@ -436,6 +479,7 @@
     <heater type="bool">true</heater>
     <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
+    <jettison type="bool">false</jettison>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
     <lp-valve-guard type="bool">true</lp-valve-guard>
@@ -446,10 +490,12 @@
    </tank>
    <tank n="3">
     <aft-trim type="bool">false</aft-trim>
+    <aft-trim-disabled type="bool">true</aft-trim-disabled>
     <cross-feed-valve type="bool">false</cross-feed-valve>
     <heater type="bool">true</heater>
     <heater-auto type="bool">true</heater-auto>
     <inlet-standby type="bool">false</inlet-standby>
+    <jettison type="bool">false</jettison>
     <lp-valve type="bool">true</lp-valve>
     <lp-valve-motor type="bool">true</lp-valve-motor>
     <lp-valve-guard type="bool">true</lp-valve-guard>
@@ -586,9 +632,9 @@
 
   <human>
    <lighting>                                                 <!-- night lighting -->
+    <captain type="double">0.6</captain>
     <copilot type="double">0.6</copilot>
     <engineer type="double">0.6</engineer>
-    <night type="bool">true</night>
    </lighting>
   </human>
 
@@ -838,6 +884,11 @@
   <transponder>
    <test type="bool">false</test>
   </transponder>
+
+  <voice>
+   <sound type="bool">true</sound>
+   <text type="bool">false</text>                             <!-- debug without Festival -->
+  </voice>
 
   <wiper>
    <motor n="0">

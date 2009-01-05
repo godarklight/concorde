@@ -18,14 +18,9 @@ Hydraulic.new = func {
            rat : Rat.new(),
            brakes : Brakes.new(),
 
-           sensors : nil,
-           power : nil,
-
            HYDSEC : 1.0,                                  # refresh rate
 
-           HYDFAILUREPSI : 3400.0,
-
-           color : { "green" : 0, "yellow" : 1, "blue" : 2 }
+           HYDFAILUREPSI : 3400
          };
 
     obj.init();
@@ -34,10 +29,7 @@ Hydraulic.new = func {
 }
 
 Hydraulic.init = func() {
-    me.init_ancestor("/systems/hydraulic");
-
-    me.sensors = props.globals.getNode("/systems/hydraulic/sensors");
-    me.power = props.globals.getNode("/systems/hydraulic/power");
+    me.inherit_system("/systems/hydraulic");
 
     me.brakes.set_rate( me.HYDSEC );
 }
@@ -64,12 +56,12 @@ Hydraulic.brakesemergencyexport = func {
 Hydraulic.amber_hydraulics = func {
     var result = constant.FALSE;
 
-    if( me.sensors.getChild("green-left").getValue() < me.HYDFAILUREPSI or
-        me.sensors.getChild("green-right").getValue() < me.HYDFAILUREPSI or
-        me.sensors.getChild("yellow-left").getValue() < me.HYDFAILUREPSI or
-        me.sensors.getChild("yellow-right").getValue() < me.HYDFAILUREPSI or
-        me.sensors.getChild("blue-left").getValue() < me.HYDFAILUREPSI or
-        me.sensors.getChild("blue-right").getValue() < me.HYDFAILUREPSI ) {
+    if( me.itself["sensors"].getChild("green-left").getValue() < me.HYDFAILUREPSI or
+        me.itself["sensors"].getChild("green-right").getValue() < me.HYDFAILUREPSI or
+        me.itself["sensors"].getChild("yellow-left").getValue() < me.HYDFAILUREPSI or
+        me.itself["sensors"].getChild("yellow-right").getValue() < me.HYDFAILUREPSI or
+        me.itself["sensors"].getChild("blue-left").getValue() < me.HYDFAILUREPSI or
+        me.itself["sensors"].getChild("blue-right").getValue() < me.HYDFAILUREPSI ) {
         result = constant.TRUE;
     }
 
@@ -79,7 +71,7 @@ Hydraulic.amber_hydraulics = func {
 Hydraulic.red_intake = func( index ) {
     var result = constant.FALSE;
 
-    if( me.sensors.getChild("intake", index).getValue() < me.HYDFAILUREPSI ) {
+    if( me.itself["sensors"].getChild("intake", index).getValue() < me.HYDFAILUREPSI ) {
         result = constant.TRUE;
     }
 
@@ -99,7 +91,7 @@ Hydraulic.red_feel = func {
 Hydraulic.has_green = func {
    var result = constant.FALSE;
 
-   if( me.sensors.getChild("green").getValue() >= me.HYDFAILUREPSI ) {
+   if( me.itself["sensors"].getChild("green").getValue() >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -109,7 +101,7 @@ Hydraulic.has_green = func {
 Hydraulic.has_yellow = func {
    var result = constant.FALSE;
 
-   if( me.sensors.getChild("yellow").getValue() >= me.HYDFAILUREPSI ) {
+   if( me.itself["sensors"].getChild("yellow").getValue() >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -119,7 +111,7 @@ Hydraulic.has_yellow = func {
 Hydraulic.has_blue = func {
    var result = constant.FALSE;
 
-   if( me.sensors.getChild("blue").getValue() >= me.HYDFAILUREPSI ) {
+   if( me.itself["sensors"].getChild("blue").getValue() >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -129,7 +121,7 @@ Hydraulic.has_blue = func {
 Hydraulic.has_gear = func {
    var result = constant.FALSE;
 
-   if( me.sensors.getChild("gear").getValue() >= me.HYDFAILUREPSI ) {
+   if( me.itself["sensors"].getChild("gear").getValue() >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -144,16 +136,16 @@ Hydraulic.schedule = func {
    me.ground.schedule();
    me.parser.schedule();
 
-   var greenpsi = me.sensors.getChild("green").getValue();
-   var yellowpsi = me.sensors.getChild("yellow").getValue();
+   var greenpsi = me.itself["sensors"].getChild("green").getValue();
+   var yellowpsi = me.itself["sensors"].getChild("yellow").getValue();
 
    me.brakes.schedule( greenpsi, yellowpsi );
 
-   me.power.getChild("blue").setValue( me.has_blue() );
-   me.power.getChild("green").setValue( me.has_green() );
-   me.power.getChild("yellow").setValue( me.has_yellow() );
+   me.itself["power"].getChild("blue").setValue( me.has_blue() );
+   me.itself["power"].getChild("green").setValue( me.has_green() );
+   me.itself["power"].getChild("yellow").setValue( me.has_yellow() );
 
-   me.power.getChild("gear").setValue( me.has_gear() );
+   me.itself["power"].getChild("gear").setValue( me.has_gear() );
 }
 
 
@@ -165,16 +157,12 @@ HydGround = {};
 HydGround.new = func {
    var obj = { parents : [HydGround,System], 
 
-           circuits : nil,
-           ground : nil,
-           hydpumps : nil,
-
-           pumps : [ [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ],     # Y-Y
-                     [ constant.TRUE , constant.FALSE, constant.FALSE, constant.TRUE  ],     # G-B
-                     [ constant.FALSE, constant.TRUE , constant.FALSE, constant.TRUE  ],     # B-Y
-                     [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ],     # Y-Y
-                     [ constant.TRUE , constant.FALSE, constant.TRUE , constant.FALSE ],     # G-Y
-                     [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ] ]    # Y-Y
+               pumps : [ [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ],     # Y-Y
+                         [ constant.TRUE , constant.FALSE, constant.FALSE, constant.TRUE  ],     # G-B
+                         [ constant.FALSE, constant.TRUE , constant.FALSE, constant.TRUE  ],     # B-Y
+                         [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ],     # Y-Y
+                         [ constant.TRUE , constant.FALSE, constant.TRUE , constant.FALSE ],     # G-Y
+                         [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ] ]    # Y-Y
          };
 
     obj.init();
@@ -183,44 +171,40 @@ HydGround.new = func {
 }
 
 HydGround.init = func() {
-    me.init_ancestor("/systems/hydraulic");
-
-    me.circuits = props.globals.getNode("/controls/hydraulic").getChildren("circuit");
-    me.ground = props.globals.getNode("/controls/hydraulic/ground");
-    me.hydpumps = props.globals.getNode("/controls/hydraulic/ground/").getChildren("pump");
+    me.inherit_system("/systems/hydraulic");
 }
 
 HydGround.schedule = func {
-   var selector = me.ground.getChild("selector").getValue();
+   var selector = me.itself["ground"].getChild("selector").getValue();
 
    # magnetic release of the switch
-   if( !me.slave["electric"].getChild("ground-service").getValue() ) {
+   if( !me.dependency["electric"].getChild("ground-service").getValue() ) {
        for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-            me.hydpumps[i].getChild("switch").setValue(constant.FALSE);
+            me.itself["pump"][i].getChild("switch").setValue(constant.FALSE);
        }
 
-       me.circuits[0].getChild("ground").setValue( constant.FALSE );
-       me.circuits[1].getChild("ground", 0).setValue( constant.FALSE );
-       me.circuits[1].getChild("ground", 1).setValue( constant.FALSE );
-       me.circuits[2].getChild("ground").setValue( constant.FALSE );
+       me.itself["circuit"][0].getChild("ground").setValue( constant.FALSE );
+       me.itself["circuit"][1].getChild("ground", 0).setValue( constant.FALSE );
+       me.itself["circuit"][1].getChild("ground", 1).setValue( constant.FALSE );
+       me.itself["circuit"][2].getChild("ground").setValue( constant.FALSE );
    }
 
-   if( me.hydpumps[0].getChild("switch").getValue() ) {
-       me.circuits[0].getChild("ground").setValue( me.pumps[selector][0] );
-       me.circuits[1].getChild("ground", 0).setValue( me.pumps[selector][1] );
+   if( me.itself["pump"][0].getChild("switch").getValue() ) {
+       me.itself["circuit"][0].getChild("ground").setValue( me.pumps[selector][0] );
+       me.itself["circuit"][1].getChild("ground", 0).setValue( me.pumps[selector][1] );
    }
    else {
-       me.circuits[0].getChild("ground").setValue( constant.FALSE );
-       me.circuits[1].getChild("ground", 0).setValue( constant.FALSE );
+       me.itself["circuit"][0].getChild("ground").setValue( constant.FALSE );
+       me.itself["circuit"][1].getChild("ground", 0).setValue( constant.FALSE );
    }
 
-   if( me.hydpumps[1].getChild("switch").getValue() ) {
-       me.circuits[1].getChild("ground", 1).setValue( me.pumps[selector][2] );
-       me.circuits[2].getChild("ground").setValue( me.pumps[selector][3] );
+   if( me.itself["pump"][1].getChild("switch").getValue() ) {
+       me.itself["circuit"][1].getChild("ground", 1).setValue( me.pumps[selector][2] );
+       me.itself["circuit"][2].getChild("ground").setValue( me.pumps[selector][3] );
    }
    else {
-       me.circuits[1].getChild("ground", 1).setValue( constant.FALSE );
-       me.circuits[2].getChild("ground").setValue( constant.FALSE );
+       me.itself["circuit"][1].getChild("ground", 1).setValue( constant.FALSE );
+       me.itself["circuit"][2].getChild("ground").setValue( constant.FALSE );
    }
 }
 
@@ -233,8 +217,6 @@ Brakes = {};
 
 Brakes.new = func {
    var obj = { parents : [Brakes,System], 
-
-           brakes : nil,
 
            heat : BrakesHeat.new(),
 
@@ -265,9 +247,7 @@ Brakes.new = func {
 }
 
 Brakes.init = func {
-    me.brakes = props.globals.getNode("/systems/hydraulic/brakes");
-
-    me.init_ancestor("/systems/hydraulic");
+    me.inherit_system("/systems/brakes");
 
     me.set_rate( me.HYDSEC );
 
@@ -287,31 +267,31 @@ Brakes.lever = func {
     var pos = constantaero.BRAKENORMAL;
 
     # parking brake
-    if( me.slave["gear"].getChild("brake-parking-lever").getValue() ) {
+    if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
         pos = constantaero.BRAKEPARKING;
     }
 
     # emergency (must be set by Captain)
-    elsif( me.slave["gear"].getChild("brake-emergency").getValue() ) {
+    elsif( me.dependency["gear"].getChild("brake-emergency").getValue() ) {
         pos = constantaero.BRAKEEMERGENCY;
     }
 
     # for 3D lever
-    me.slave["gear"].getChild("brake-pos-norm").setValue(pos);
+    me.dependency["gear"].getChild("brake-pos-norm").setValue(pos);
 }
 
 Brakes.emergencyexport = func {
     var value = constant.TRUE;
     var value2 = constant.FALSE;
 
-    if( me.slave["gear"].getChild("brake-emergency").getValue() ) {
+    if( me.dependency["gear"].getChild("brake-emergency").getValue() ) {
         value = constant.FALSE;
         value2 = constant.TRUE;
     }
 
     # toggles between parking and emergency
-    me.slave["gear"].getChild("brake-emergency").setValue(value);
-    me.slave["gear"].getChild("brake-parking-lever").setValue(value2);
+    me.dependency["gear"].getChild("brake-emergency").setValue(value);
+    me.dependency["gear"].getChild("brake-parking-lever").setValue(value2);
 
     me.lever();
 }
@@ -319,13 +299,13 @@ Brakes.emergencyexport = func {
 Brakes.parkingexport = func {
     var value = constant.TRUE;
 
-    if( me.slave["gear"].getChild("brake-parking-lever").getValue() ) {
+    if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
         value = constant.FALSE;
     }
 
     # toggles between parking and normal
-    me.slave["gear"].getChild("brake-emergency").setValue(constant.FALSE);
-    me.slave["gear"].getChild("brake-parking-lever").setValue(value);
+    me.dependency["gear"].getChild("brake-emergency").setValue(constant.FALSE);
+    me.dependency["gear"].getChild("brake-parking-lever").setValue(value);
 
     me.lever();
 }
@@ -339,7 +319,7 @@ Brakes.pedals = func( pressure ) {
         action = constant.FALSE;
     }
 
-    me.brakes.getChild("pedals").setValue(action);
+    me.itself["root"].getChild("pedals").setValue(action);
 
     return depress;
 }
@@ -348,7 +328,7 @@ Brakes.has_emergency = func {
     var result = constant.TRUE;
 
     # TO DO : failure only on left or right
-    if( me.brakes.getChild("yellow-accu-psi").getValue() < me.BRAKEACCUPSI ) {
+    if( me.itself["root"].getChild("yellow-accu-psi").getValue() < me.BRAKEACCUPSI ) {
         result = constant.FALSE;
     }
 
@@ -359,7 +339,7 @@ Brakes.has_normal = func {
     var result = constant.TRUE;
 
     # TO DO : failure only on left or right
-    if( me.brakes.getChild("green-accu-psi").getValue() < me.BRAKEACCUPSI ) {
+    if( me.itself["root"].getChild("green-accu-psi").getValue() < me.BRAKEACCUPSI ) {
         result = constant.FALSE;
     }
 
@@ -368,7 +348,7 @@ Brakes.has_normal = func {
 
 Brakes.has = func {
     var result = constant.TRUE;
-    var emergency = me.slave["gear"].getChild("brake-emergency").getValue();
+    var emergency = me.dependency["gear"].getChild("brake-emergency").getValue();
 
     # TO DO : failure only on left or right
     if( ( !me.has_normal() and !emergency ) or
@@ -388,20 +368,20 @@ Brakes.schedule = func( greenpsi, yellowpsi ) {
 }
 
 Brakes.accumulator = func {
-   interpolate("/systems/hydraulic/brakes/green-accu-psi",me.normalaccupsi,me.HYDSEC);
-   interpolate("/systems/hydraulic/brakes/left-psi",me.leftbrakepsi,me.HYDSEC);
-   interpolate("/systems/hydraulic/brakes/right-psi",me.rightbrakepsi,me.HYDSEC);
+   interpolate("/systems/brakes/green-accu-psi",me.normalaccupsi,me.HYDSEC);
+   interpolate("/systems/brakes/left-psi",me.leftbrakepsi,me.HYDSEC);
+   interpolate("/systems/brakes/right-psi",me.rightbrakepsi,me.HYDSEC);
 
-   interpolate("/systems/hydraulic/brakes/yellow-accu-psi",me.emergaccupsi,me.HYDSEC);
-   interpolate("/systems/hydraulic/brakes/emerg-left-psi",me.leftemergpsi,me.HYDSEC);
-   interpolate("/systems/hydraulic/brakes/emerg-right-psi",me.rightemergpsi,me.HYDSEC);
+   interpolate("/systems/brakes/yellow-accu-psi",me.emergaccupsi,me.HYDSEC);
+   interpolate("/systems/brakes/emerg-left-psi",me.leftemergpsi,me.HYDSEC);
+   interpolate("/systems/brakes/emerg-right-psi",me.rightemergpsi,me.HYDSEC);
 }
 
 Brakes.normal = func( greenpsi, yellowpsi ) {
    var targetbrakepsi = 0.0;
 
    # brake failure
-   if( !me.slave["gear"].getChild("brake-emergency").getValue() ) {
+   if( !me.dependency["gear"].getChild("brake-emergency").getValue() ) {
        targetbrakepsi = me.normalpsi( greenpsi );
 
        # disable normal brake (joystick)
@@ -436,17 +416,17 @@ Brakes.emergency = func( yellowpsi ) {
    var targetbrakepsi = me.emergencypsi( yellowpsi );
 
    # brake parking failure
-   if( me.slave["gear"].getChild("brake-parking-lever").getValue() ) {
+   if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
        # stays in the green area
        targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEGREENPSI );
        if( me.emergfailure( targetbrakepsi ) ) {
            # disable brake parking (keyboard)
-           me.slave["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
+           me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
        }
 
        # visualize apply of parking brake
        else {
-           me.slave["gear"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
+           me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
 
            me.parkingapply( targetbrakepsi );
        }
@@ -454,7 +434,7 @@ Brakes.emergency = func( yellowpsi ) {
 
    # unused emergency/parking brakes have a weaker pressure
    else {
-       me.slave["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
+       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
 
        if( me.normalaccupsi >= me.BRAKEACCUPSI ) {
            targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEMAXPSI );
@@ -479,8 +459,8 @@ Brakes.normalpsi = func( pressurepsi ) {
    # green has same action than yellow
    var targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEGREENPSI );
 
-   me.leftbrakepsi = me.brakes.getChild("left-psi").getValue();
-   me.rightbrakepsi = me.brakes.getChild("right-psi").getValue();
+   me.leftbrakepsi = me.itself["root"].getChild("left-psi").getValue();
+   me.rightbrakepsi = me.itself["root"].getChild("right-psi").getValue();
 
    return targetbrakepsi;
 }
@@ -492,8 +472,8 @@ Brakes.emergencypsi = func( pressurepsi ) {
    # divide by 2 : left and right
    var targetbrakepsi = me.emergaccupsi / 2.0;
 
-   me.leftemergpsi = me.brakes.getChild("emerg-left-psi").getValue();
-   me.rightemergpsi = me.brakes.getChild("emerg-right-psi").getValue();
+   me.leftemergpsi = me.itself["root"].getChild("emerg-left-psi").getValue();
+   me.rightemergpsi = me.itself["root"].getChild("emerg-right-psi").getValue();
 
    return targetbrakepsi;
 }
@@ -620,9 +600,6 @@ BrakesHeat.new = func {
 
            timesec : 0.0,
 
-           brakes : nil,
-           gear : nil,
-
            WARMKT2TODEGCPSEC : 0.0184,                 # (500 - 15 ) degc / ( 160 kt x 160 kt )
 
            lastspeedkt : 0.0,
@@ -641,15 +618,12 @@ BrakesHeat.new = func {
 }
 
 BrakesHeat.init = func {
-    me.brakes = props.globals.getNode("/systems/hydraulic/brakes");
-    me.gear = props.globals.getNode("/controls/gear");
-
-    me.init_ancestor("/systems/hydraulic");
+    me.inherit_system("/systems/brakes");
 
     me.set_rate( me.HYDSEC );
 
-    me.tempdegc = me.brakes.getChild("temperature-degc").getValue();
-    me.tempmaxdegc = me.brakes.getChild("temp-max-degc").getValue();
+    me.tempdegc = me.itself["root"].getChild("temperature-degc").getValue();
+    me.tempmaxdegc = me.itself["root"].getChild("temp-max-degc").getValue();
     me.lastoatdegc = me.tempdegc;
     me.peak();
 }
@@ -667,15 +641,15 @@ BrakesHeat.schedule = func {
        me.cooling();
    }
 
-   me.brakes.getChild("temperature-degc").setValue(me.tempdegc);
+   me.itself["root"].getChild("temperature-degc").setValue(me.tempdegc);
 
    if( me.tempdegc > me.tempmaxdegc ) {
        me.tempmaxdegc = me.tempdegc;
-       me.brakes.getChild("temp-max-degc").setValue(me.tempmaxdegc);
+       me.itself["root"].getChild("temp-max-degc").setValue(me.tempmaxdegc);
 
        # gauge
-       if( !me.brakes.getChild("test").getValue() ) {
-           me.brakes.getChild("test-degc").setValue(me.tempmaxdegc);
+       if( !me.itself["root"].getChild("test").getValue() ) {
+           me.itself["root"].getChild("test-degc").setValue(me.tempmaxdegc);
        }
    }
 }
@@ -692,8 +666,8 @@ BrakesHeat.warming = func {
            var stepkt2 = 0.0;
            var stepdegc = 0.0;
 
-           left = me.gear.getChild("brake-left").getValue();
-           right = me.gear.getChild("brake-right").getValue();
+           left = me.dependency["gear"].getChild("brake-left").getValue();
+           right = me.dependency["gear"].getChild("brake-right").getValue();
            allbrakes = left + right;
 
            if( allbrakes > 0.0 ) {
@@ -742,12 +716,12 @@ BrakesHeat.peak = func {
 }
 
 BrakesHeat.curvestep = func( oatdegc ) {
-   # cooling curve is supposed applicable within a stable environment;
+   # cooling curve within a stable environment.
    if( constant.within( oatdegc, me.lastoatdegc, me.ABRUPTDEGC ) ) {  
-       me.timesec = me.timesec + constant.times( me.HYDSEC );
+       me.timesec = me.timesec + me.speed_timesec( me.HYDSEC );
    }
 
-   # otherwise, one starts a new cooling curve, with the new boundary conditions.
+   # new cooling curve, with new boundary conditions, imposed by external air mass.
    else {
        me.curvereset();
    }
@@ -824,11 +798,9 @@ Gear = {};
 Gear.new = func {
    var obj = { parents : [Gear, System],
 
-           damper : PitchDamper.new(),
+               damper : PitchDamper.new(),
 
-           GEARSEC : 5.0,
-
-           thegear : nil
+               GEARSEC : 5.0
          };
 
    obj.init();
@@ -837,9 +809,7 @@ Gear.new = func {
 }
 
 Gear.init = func {
-    me.init_ancestor("/systems/gear");
-
-    me.thegear = props.globals.getNode("/controls/gear");
+    me.inherit_system("/systems/gear");
 
     settimer( func { me.schedule(); }, me.GEARSEC );
 }
@@ -853,11 +823,11 @@ Gear.schedule = func {
 Gear.can_up = func {
    var result = constant.FALSE;
 
-   if( me.slave["electric"].getValue() ) {
-       if( me.slave["hydraulic"].getChild("gear").getValue() ) {
+   if( me.dependency["electric"].getValue() ) {
+       if( me.dependency["hydraulic"].getChild("gear").getValue() ) {
            # prevents retract on ground
            if( me.noinstrument["agl"].getValue() > constantaero.GEARFT ) {
-               if( me.thegear.getChild("gear-down").getValue() ) {
+               if( me.itself["gear"].getChild("gear-down").getValue() ) {
                    result = constant.TRUE;
                }
            }
@@ -870,9 +840,9 @@ Gear.can_up = func {
 Gear.can_down = func {
    var result = constant.FALSE;
 
-   if( me.slave["electric"].getValue() ) {
-       if( me.slave["hydraulic"].getChild("gear").getValue() ) {
-           if( !me.thegear.getChild("gear-down").getValue() ) {
+   if( me.dependency["electric"].getValue() ) {
+       if( me.dependency["hydraulic"].getChild("gear").getValue() ) {
+           if( !me.itself["gear"].getChild("gear-down").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -884,9 +854,9 @@ Gear.can_down = func {
 Gear.can_standby = func {
    var result = constant.FALSE;
 
-   if( me.slave["electric"].getValue() ) {
-       if( me.slave["hydraulic"].getChild("yellow").getValue() ) {
-           if( !me.thegear.getChild("gear-down").getValue() ) {
+   if( me.dependency["electric"].getValue() ) {
+       if( me.dependency["hydraulic"].getChild("yellow").getValue() ) {
+           if( !me.itself["gear"].getChild("gear-down").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -897,8 +867,8 @@ Gear.can_standby = func {
 
 Gear.standbyexport = func {
    if( me.can_standby() ) {
-       if( !me.thegear.getChild("gear-down").getValue() ) {
-           me.thegear.getChild("gear-down").setValue( constant.TRUE );
+       if( !me.itself["gear"].getChild("gear-down").getValue() ) {
+           me.itself["gear"].getChild("gear-down").setValue( constant.TRUE );
        }
    }
 }
@@ -914,8 +884,6 @@ PitchDamper.new = func {
    var obj = { parents : [PitchDamper,System],
 
            wow : WeightSwitch.new(),
-
-           thegear : nil,
 
            DAMPERSEC : 1.0,
            TOUCHSEC : 0.2,                                      # to detect touch down
@@ -938,9 +906,7 @@ PitchDamper.new = func {
 }
 
 PitchDamper.init = func {
-    me.thegear = props.globals.getNode(me.gearpath);
-
-    me.init_ancestor(me.gearpath);
+    me.inherit_system(me.gearpath);
 }
 
 PitchDamper.schedule = func {
@@ -961,7 +927,7 @@ PitchDamper.set_rate = func( rates ) {
 PitchDamper.damper = func( name ) {
     var target = 0.0;
     var path = "";
-    var result = me.thegear.getChild(me.field[name]).getValue();
+    var result = me.itself["root"].getChild(me.field[name]).getValue();
 
     # shock at touch down
     if( me.wow.bogie(name) ) {
@@ -970,14 +936,14 @@ PitchDamper.damper = func( name ) {
         # aft tyre rebounds over runway
         if( result == 0.0 ) {
             target = target + me.TOUCHDEG;
-            me.thegear.getChild(me.field[name]).setValue(target);
+            me.itself["root"].getChild(me.field[name]).setValue(target);
             me.rebound = constant.TRUE;
             me.set_rate( me.TOUCHSEC );
         }
 
         # end of rebound
         elsif( me.rebound ) {
-            me.thegear.getChild(me.field[name]).setValue(target);
+            me.itself["root"].getChild(me.field[name]).setValue(target);
             me.rebound = constant.FALSE;
             me.set_rate( me.TOUCHSEC );
         }
@@ -1014,8 +980,6 @@ WeightSwitch = {};
 WeightSwitch.new = func {
   var  obj = { parents : [WeightSwitch,System],
 
-           switch : nil,
-
            AIRSEC : 15.0,
            TOUCHSEC : 0.2,                                      # to detect touch down
 
@@ -1034,9 +998,7 @@ WeightSwitch.new = func {
 }
 
 WeightSwitch.init = func {
-    me.switch = props.globals.getNode("/instrumentation/weight-switch");
-
-    me.init_ancestor("/instrumentation/weight-switch");
+    me.inherit_system("/instrumentation/weight-switch");
 }
 
 WeightSwitch.schedule = func {
@@ -1052,14 +1014,14 @@ WeightSwitch.schedule = func {
         result = constant.TRUE;
     }
 
-    me.switch.getChild("wow").setValue(result);
+    me.itself["root"].getChild("wow").setValue(result);
 
     return me.rates;
 }
 
 WeightSwitch.gear = func( name, aglft ) {
     # touch down
-    if( me.slave["gear"][me.tyre[name]].getChild("wow").getValue() ) {
+    if( me.dependency["gear"][me.tyre[name]].getChild("wow").getValue() ) {
         if( aglft < me.AIRFT ) {
             me.ground[name] = constant.TRUE;
         }
@@ -1098,9 +1060,6 @@ NoseVisor = {};
 NoseVisor.new = func {
    var obj = { parents : [NoseVisor, System],
 
-               nose : nil,
-               nosectrl : nil,
-
                VISORDOWN : 0.0
          };
 
@@ -1110,10 +1069,7 @@ NoseVisor.new = func {
 };
 
 NoseVisor.init = func() {
-    me.init_ancestor("/instrumentation/nose-visor");
-
-    me.nose = props.globals.getNode("/instrumentation/nose-visor");
-    me.nosectrl = props.globals.getNode("/controls/nose-visor");
+    me.inherit_system("/instrumentation/nose-visor");
 
     me.VISORDOWN = getprop("/sim/flaps/setting[1]");
 }
@@ -1121,7 +1077,7 @@ NoseVisor.init = func() {
 NoseVisor.has_nose_down = func {
    var result = constant.FALSE;
 
-   if( me.nosectrl.getChild("pos-norm").getValue() > me.VISORDOWN ) {
+   if( me.itself["nose"].getChild("pos-norm").getValue() > me.VISORDOWN ) {
        result = constant.TRUE;
    }
 
@@ -1131,7 +1087,7 @@ NoseVisor.has_nose_down = func {
 NoseVisor.is_visor_down = func {
    var result = constant.FALSE;
 
-   if( me.nose.getChild("pos-norm").getValue() >= me.VISORDOWN ) {
+   if( me.itself["root"].getChild("pos-norm").getValue() >= me.VISORDOWN ) {
        result = constant.TRUE;
    }
 
@@ -1141,13 +1097,13 @@ NoseVisor.is_visor_down = func {
 NoseVisor.can_up = func {
    var result = constant.FALSE;
 
-   if( me.slave["hydraulic"].getChild("green").getValue() ) {
+   if( me.dependency["hydraulic"].getChild("green").getValue() ) {
        # raising of visor is not allowed, if wiper is not parked
-       if( me.slave["wiper"].getValue() ) {
+       if( me.dependency["wiper"].getValue() ) {
            if( me.has_nose_down() ) {
                result = constant.TRUE;
            }
-           elsif( me.nosectrl.getChild("wiper-override").getValue() ) {
+           elsif( me.itself["nose"].getChild("wiper-override").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -1162,7 +1118,7 @@ NoseVisor.can_up = func {
 NoseVisor.can_down = func {
    var result = constant.FALSE;
 
-   if( me.slave["hydraulic"].getChild("green").getValue() ) {
+   if( me.dependency["hydraulic"].getChild("green").getValue() ) {
        result = constant.TRUE;
    }
 
@@ -1172,7 +1128,7 @@ NoseVisor.can_down = func {
 NoseVisor.can_standby = func {
    var result = constant.FALSE;
 
-   if( me.slave["hydraulic"].getChild("yellow").getValue() ) {
+   if( me.dependency["hydraulic"].getChild("yellow").getValue() ) {
        result = constant.TRUE;
    }
 
@@ -1196,9 +1152,7 @@ Flight = {};
 Flight.new = func {
    var obj = { parents : [Flight,System], 
 
-           FLIGHTSEC : 3.0,                               # refresh rate
-
-           channels : nil
+               FLIGHTSEC : 3.0                               # refresh rate
          };
 
     obj.init();
@@ -1207,55 +1161,69 @@ Flight.new = func {
 }
 
 Flight.init = func() {
-    me.channels = props.globals.getNode("/controls/flight/channel");
-
-    me.init_ancestor("/systems/flight");
+    me.inherit_system("/systems/flight");
 }
 
 Flight.resetexport = func {
-   var green = constant.FALSE;
+   var result = constant.FALSE;
 
-   if( !me.slave["hydraulic"].getChild("blue").getValue() ) {
-       green = me.slave["hydraulic"].getChild("green").getValue();
+   # at least an inverter
+   if( me.dependency["electric"].getChild("flight-control-monitoring").getValue() ) {
+       var blue = constant.FALSE;
+       var green = constant.FALSE;
 
-       if( !me.channels.getChild("inner-mechanical").getValue() ) {
-           if( !green ) {
-               me.channels.getChild("inner-mechanical").setValue( constant.TRUE );
+       blue = me.dependency["electric"].getChild("channel-blue").getValue();
+       if( blue ) {
+           blue = me.dependency["hydraulic"].getChild("blue").getValue();
+       }
+
+       if( !blue ) {
+           green = me.dependency["electric"].getChild("channel-green").getValue();
+           if( green ) {
+               green = me.dependency["hydraulic"].getChild("green").getValue();
            }
-           elsif( me.channels.getChild("inner-blue").getValue() ) {
-               me.channels.getChild("inner-blue").setValue( constant.FALSE );
+
+           if( !me.itself["channel"].getChild("inner-mechanical").getValue() ) {
+               if( !green ) {
+                   me.itself["channel"].getChild("inner-mechanical").setValue( constant.TRUE );
+               }
+               elsif( me.itself["channel"].getChild("inner-blue").getValue() ) {
+                   me.itself["channel"].getChild("inner-blue").setValue( constant.FALSE );
+               }
+           }
+
+           if( !me.itself["channel"].getChild("outer-mechanical").getValue() ) {
+               if( !green ) {
+                   me.itself["channel"].getChild("outer-mechanical").setValue( constant.TRUE );
+               }
+               elsif( me.itself["channel"].getChild("outer-blue").getValue() ) {
+                   me.itself["channel"].getChild("outer-blue").setValue( constant.FALSE );
+               }
+           }
+
+           if( !me.itself["channel"].getChild("rudder-mechanical").getValue() ) {
+               if( !green ) {
+                   me.itself["channel"].getChild("rudder-mechanical").setValue( constant.TRUE );
+               }
+               elsif( me.itself["channel"].getChild("rudder-blue").getValue() ) {
+                   me.itself["channel"].getChild("rudder-blue").setValue( constant.FALSE );
+               }
            }
        }
 
-       if( !me.channels.getChild("outer-mechanical").getValue() ) {
-           if( !green ) {
-               me.channels.getChild("outer-mechanical").setValue( constant.TRUE );
-           }
-           elsif( me.channels.getChild("outer-blue").getValue() ) {
-               me.channels.getChild("outer-blue").setValue( constant.FALSE );
-           }
-       }
-
-       if( !me.channels.getChild("rudder-mechanical").getValue() ) {
-           if( !green ) {
-               me.channels.getChild("rudder-mechanical").setValue( constant.TRUE );
-           }
-           elsif( me.channels.getChild("rudder-blue").getValue() ) {
-               me.channels.getChild("rudder-blue").setValue( constant.FALSE );
-           }
-       }
+       result = constant.TRUE;
    } 
+
+   return result;
 }
 
 Flight.red_pfc = func {
    var result = constant.FALSE;
 
-   if( !me.channels.getChild("inner-blue").getValue() or
-       me.channels.getChild("inner-mechanical").getValue() or
-       !me.channels.getChild("outer-blue").getValue() or
-       me.channels.getChild("outer-mechanical").getValue() or
-       !me.channels.getChild("rudder-blue").getValue() or
-       me.channels.getChild("rudder-mechanical").getValue() ) {
+   if( !me.dependency["electric"].getChild("inverter-blue").getValue() or
+       !me.dependency["hydraulic"].getChild("blue").getValue() or
+       !me.dependency["hydraulic"].getChild("green").getValue() or
+       !me.dependency["electric"].getChild("inverter-green").getValue() ) {
        result = constant.TRUE;
    }
 
@@ -1264,7 +1232,100 @@ Flight.red_pfc = func {
 
 Flight.schedule = func {
    # avoid reset by FDM or system initialization
-   if( constant.system_ready() ) {
-       me.resetexport();
+   if( me.is_ready() ) {
+       me.control_monitoring();
    }
+}
+
+Flight.control_monitoring = func {
+   var pfcu_inner = constant.FALSE;
+   var pfcu_outer = constant.FALSE;
+   var pfcu_rudder = constant.FALSE;
+
+   # automatic swap to mechanical channel, only with flight control monitoring;
+   # otherwise surfaces freely floats into the wind, until crew swap manually to mechanical channel.
+   if( !me.resetexport() ) {
+       if( !me.itself["channel"].getChild("inner-mechanical").getValue() ) {
+           pfcu_inner = constant.TRUE;
+       }
+
+       if( !me.itself["channel"].getChild("outer-mechanical").getValue() ) {
+           pfcu_outer = constant.TRUE;
+       }
+
+       if( !me.itself["channel"].getChild("rudder-mechanical").getValue() ) {
+           pfcu_rudder = constant.TRUE;
+       }
+   }
+
+   me.itself["pfcu"].getChild("inner-zero").setValue( pfcu_inner );
+   me.itself["pfcu"].getChild("outer-zero").setValue( pfcu_outer );
+   me.itself["pfcu"].getChild("rudder-zero").setValue( pfcu_rudder );
+}
+
+
+# =====
+# DOORS
+# =====
+
+Doors = {};
+
+Doors.new = func {
+   var obj = { parents : [Doors,System],
+
+               INSIDEDECKZM : 10.60,
+
+               DOORCLOSED : 0.0,
+
+# 10 s, door closed
+               flightdeck : aircraft.door.new("controls/doors/flight-deck", 10.0),
+# 4 s, deck out
+               engineerdeck : aircraft.door.new("controls/doors/engineer-deck", 4.0)
+         };
+
+# user customization
+   obj.init();
+
+   return obj;
+};
+
+Doors.init = func {
+   me.inherit_system( "/systems/doors" );
+
+   if( me.itself["doors"].getNode("flight-deck").getChild("opened").getValue() ) {
+       me.flightdeck.toggle();
+   }
+   if( !me.itself["doors"].getNode("engineer-deck").getChild("out").getValue() ) {
+       me.engineerdeck.toggle();
+   }
+}
+
+Doors.flightdeckexport = func {
+   var allowed = constant.TRUE;
+
+   if( me.itself["doors"].getNode("flight-deck").getChild("position-norm").getValue() == me.DOORCLOSED ) {
+       # locked in flight
+       if( me.itself["doors"].getNode("flight-deck").getChild("normal").getValue() ) {
+           # can open only from inside
+           if( getprop("/sim/current-view/z-offset-m") > me.INSIDEDECKZM ) {
+               allowed = constant.FALSE;
+           }
+       }
+   }
+
+   if( allowed ) {
+       me.flightdeck.toggle();
+   }
+}
+
+Doors.engineerdeckexport = func {
+   var state = constant.TRUE;
+
+   me.engineerdeck.toggle();
+
+   if( me.itself["doors"].getNode("engineer-deck").getChild("out").getValue() ) {
+       state = constant.FALSE;
+   }
+
+   me.itself["doors"].getNode("engineer-deck").getChild("out").setValue(state);
 }

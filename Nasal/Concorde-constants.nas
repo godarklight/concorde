@@ -11,6 +11,19 @@ Constantaero.new = func {
            NBINS : 3,
            NBAUTOPILOTS : 2,                                 # and any system in double
 
+           ENGINE4 : 3,
+           ENGINE3 : 2,
+           ENGINE2 : 1,
+           ENGINE1 : 0,
+
+           INS3 : 2,
+           INS2 : 1,
+           INS1 : 0,
+
+           INSOFF : -2,
+           INSSTANDBY : -1,
+           INSALIGN : 0,
+
            THROTTLEMAX : 1.0,
            THROTTLEIDLE : 0.0,
 
@@ -24,14 +37,28 @@ Constantaero.new = func {
            BRAKEEMERGENCY : 0.5,
            BRAKENORMAL : 0.0,
 
+           RATINGTAKEOFF : "takeoff",
+           RATINGFLIGHT : "flight",
+           RATINGCLIMB : "climb",
+           RATINGCRUISE : "cruise",
+
+           SCHEDULEAPPROACH : 1,
+           SCHEDULENORMAL : 0,
+
            FULLLB : 408000,
            LANDINGLB : 245000,
            EMPTYLB : 203000,
 
            MAXFPM : 7000.0,                                  # max descent rate
 
+           REHEATMACH : 1.7,
+           SOUNDMACH : 1.0,
+           SUBSONICMACH : 0.95,
+           CLIMBMACH : 0.7,
+
            NOSEKT : 270,
            APPROACHKT : 250,
+           GEARKT : 220,
            V2FULLKT : 220,
            V2EMPTYKT : 205,                                  # guess
            VRFULLKT : 195,
@@ -44,6 +71,8 @@ Constantaero.new = func {
            TAXIKT : 10,
 
            MAXCRUISEFT : 50190,                              # max cruise mode 
+           CRUISEFT : 50000,
+           TRANSITIONFT : 18000,
            APPROACHFT : 10000,                               # 250 kt
            LANDINGFT : 3000,                                 # 190 kt
            CLIMBFT : 1000,
@@ -67,24 +96,24 @@ Constantaero.new = func {
            T105mach :    [ 0.82, 0.92, 1.15, 1.50, 2.20 ],
            Tcgmin105 :    [ 52.00, 53.50, 55.00, 56.50, 57.25 ],
            Tcgmin105ext : [ 51.30, 53.00, 54.50, 56.00, 56.70 ],
+           CG105 : 0,
 
            T165mach :    [ 0.00, 0.80, 0.92, 1.15, 1.50, 2.20 ],
            Tcgmin165 :    [ 51.80, 51.80, 54.00, 55.50, 57.00, 57.70 ],
+           CG165 : 0,
 
            Tmaxmach :    [ 0.00, 0.27, 0.50, 0.94, 1.65 ],
            Tcgmax :       [ 53.80, 53.80, 54.00, 57.00, 59.30 ],
+           CGMAX : 0,
 
-           Tmaxperf :   [ 0.00, 0.10, 0.45 ],
+           Tperfmach :   [ 0.00, 0.10, 0.45 ],
            Tcgperf :      [ 54.20, 54.20, 54.50 ],
+           CGPERF : 0,
 
            Tmaxextmach : [ 0.45, 0.50, 0.94, 1.60 ],
            Tcgmaxext :    [ 54.25, 54.40, 57.25, 59.50 ],
+           CGMAXEXT : 0,
 
-           CG165 : 5,
-           CGMAX : 4,
-           CG105 : 4,
-           CGMAXEXT : 3,
-           CGPERF : 2,
            CGFLY : 1,                                        # in flight
            CGREST : 0                                        # on ground
          };
@@ -97,6 +126,12 @@ Constantaero.new = func {
 Constantaero.init = func {
    me.CGMINLB = me.CGMINTON * constant.TONTOLB;
    me.CGMLAXLB = me.CGMAXTON * constant.TONTOLB;
+
+   me.CG165 = size(me.T165mach) - 1;
+   me.CGMAX = size(me.Tmaxmach) - 1;
+   me.CG105 = size(me.T105mach) - 1;
+   me.CGMAXEXT = size(me.Tmaxextmach) - 1;
+   me.CGPERF = size(me.Tperfmach) - 1;
 }
 
 Constantaero.weight_inside = func( weightlb ) {
@@ -215,8 +250,6 @@ Constant = {};
 Constant.new = func {
    var obj = { parents : [Constant],
 
-           ready : 0.0,                            # waits for end of initialization
-
 # artificial intelligence
            HUMANSEC : 1.0,                         # human reaction time
 
@@ -234,7 +267,8 @@ Constant.new = func {
 # ---------------
 
 # angle
-           DEGTORAD : 0.0174532925199,
+           DEGTORAD : 0.01745329,
+           RADTODEG : 57.2957795,
 # length
            FEETTOMETER : 0.3048,
            METERTOFEET : 3.28083989501,
@@ -293,31 +327,19 @@ Constant.abs = func( value ) {
    return value;
 }
 
-Constant.rates = func( steps ) {
-   var speedup = getprop("/sim/speed-up");
-
-   if( speedup > 1 ) {
-       steps = steps / speedup;
-   }
-
-   return steps;
-}
-
-Constant.times = func( steps ) {
-   var speedup = getprop("/sim/speed-up");
-
-   if( speedup > 1 ) {
-       steps = steps * speedup;
-   }
-
-   return steps;
-}
-
 Constant.clip = func( min, max, value ) {
    if( value < min ) {
        value = min;
    }
    elsif( value > max ) {
+       value = max;
+   }
+
+   return value;
+}
+
+Constant.intensity = func( value, max ) {
+   if( value < max ) {
        value = max;
    }
 
@@ -367,15 +389,6 @@ Constant.newtonsoundmps= func( temperaturedegc ) {
     return speedmps;
 }
 
-Constant.system_ready = func {
-    # if there is electrical power, there should be also hydraulics
-    if( !me.ready ) {
-        me.ready = getprop("/systems/electrical/power/specific");
-    }
-
-    return me.ready;
-}
-
 
 # =================================
 # INTERNATIONAL STANDARD ATMOSPHERE
@@ -386,27 +399,33 @@ ConstantISA = {};
 ConstantISA.new = func {
    var obj = { parents : [ConstantISA],
 
-           Talt : [ -900, 0, 900, 1800, 2700, 3600, 4500, 5400, 6300, 7200,
-                    8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200,
-                    17100, 18000, 18900 ],
+           Taltm : [ -900, 0, 900, 1800, 2700, 3600, 4500, 5400, 6300, 7200,
+                     8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200,
+                     17100, 18000, 18900 ],
            Tpfactor : [ 1.09, 1.0, 0.898, 0.804, 0.719, 0.641, 0.570, 0.506, 0.447, 0.394,
                         0.347, 0.304, 0.266, 0.231, 0.201, 0.174, 0.151, 0.131, 0.114, 0.099,
                         0.086, 0.075, 0.065 ],
            Ttfactor : [ 1.02, 1.0, 0.98, 0.96, 0.94, 0.92, 0.90, 0.88, 0.86, 0.84,
                         0.82, 0.80, 0.78, 0.76, 0.75 ],
+           CEILING : 0,
 
            SEA_inhg : 29.92,
 
            STRATODEGC : -57,
            SEA_degc : 15.0,
 
-           CEILING : 22,
            STRATOSPHERE : 14,
-           SLICE : 2,
-           UNDERSEA : 0
+           SLICE : 2,                         # 900 m steps
+           UNDERSEA : 0                       # below sea level is extrapolated
          };
 
+   obj.init();
+
    return obj;
+}
+
+ConstantISA.init = func {
+   me.CEILING = size(me.Taltm) - 1;
 }
 
 ConstantISA.altitude_ft = func( pressureinhg, datuminhg ) {
@@ -440,8 +459,8 @@ ConstantISA.altitude_ft = func( pressureinhg, datuminhg ) {
             j = i+1;
 
             if( ratio > me.Tpfactor[j] and ratio <= me.Tpfactor[i] ) {
-                altmaxm = me.Talt[j];
-                altminm = me.Talt[i];
+                altmaxm = me.Taltm[j];
+                altminm = me.Taltm[i];
                 minfactor = me.Tpfactor[j];
                 maxfactor = me.Tpfactor[i];
 
@@ -455,7 +474,7 @@ ConstantISA.altitude_ft = func( pressureinhg, datuminhg ) {
        step = maxfactor - ratio;
        delta = maxfactor - minfactor;
        coeff = step / delta ;
-       cabinaltm = altminm + me.Talt[me.SLICE] * coeff;
+       cabinaltm = altminm + me.Taltm[me.SLICE] * coeff;
        altitudeft = cabinaltm * constant.METERTOFEET;
    }
 
@@ -482,7 +501,7 @@ ConstantISA.pressure_inhg = func( altitudeft ) {
    var pressureinhg = 0.0;
 
    # guess below sea level
-   if( altitudem < me.Talt[me.UNDERSEA] ) {
+   if( altitudem < me.Taltm[me.UNDERSEA] ) {
        found = constant.FALSE;
    }
 
@@ -495,9 +514,9 @@ ConstantISA.pressure_inhg = func( altitudeft ) {
        for( var i = 0; i < me.CEILING; i = i+1 ) {
             j = i+1;
 
-            if( altitudem < me.Talt[j] and altitudem >= me.Talt[i] ) {
-                altmaxm = me.Talt[j];
-                altminm = me.Talt[i];
+            if( altitudem < me.Taltm[j] and altitudem >= me.Taltm[i] ) {
+                altmaxm = me.Taltm[j];
+                altminm = me.Taltm[i];
                 minfactor = me.Tpfactor[j];
                 maxfactor = me.Tpfactor[i];
 
@@ -510,7 +529,7 @@ ConstantISA.pressure_inhg = func( altitudeft ) {
    if( found ) {
        step = altmaxm - altitudem;
        delta = maxfactor - minfactor;
-       coeff = step / me.Talt[me.SLICE] ;
+       coeff = step / me.Taltm[me.SLICE] ;
        pressureinhg = me.SEA_inhg * ( minfactor + delta * coeff );
    }
 
@@ -537,17 +556,17 @@ ConstantISA.temperature_degc = func( altitudeft ) {
    var factor = 0.0;
 
    # guess below sea level
-   if( altmeter < me.Talt[me.UNDERSEA] ) {
+   if( altmeter < me.Taltm[me.UNDERSEA] ) {
        isadegc = me.SEA_degc;
    }
 
    # factor 0.75 (stratosphere)
-   elsif( altmeter > me.Talt[me.STRATOSPHERE] and altmeter <= me.Talt[me.CEILING] ) {
+   elsif( altmeter > me.Taltm[me.STRATOSPHERE] and altmeter <= me.Taltm[me.CEILING] ) {
        isadegc = me.STRATODEGC;
    }
 
    # overflow
-   elsif( altmeter > me.Talt[me.CEILING] ) {
+   elsif( altmeter > me.Taltm[me.CEILING] ) {
        isadegc = me.STRATODEGC;
    }
 
@@ -558,8 +577,8 @@ ConstantISA.temperature_degc = func( altitudeft ) {
        for( var i = 0; i < me.STRATOSPHERE; i = i+1 ) {
             j = i+1;
 
-            if( altmeter > me.Talt[i] and altmeter <= me.Talt[j] ) {
-                minmeter = me.Talt[i];
+            if( altmeter > me.Taltm[i] and altmeter <= me.Taltm[j] ) {
+                minmeter = me.Taltm[i];
                 maxfactor = me.Ttfactor[i];
                 minfactor = me.Ttfactor[j];
 
@@ -572,7 +591,7 @@ ConstantISA.temperature_degc = func( altitudeft ) {
    if( found ) {
        delta = minfactor - maxfactor;
        deltameter = altmeter - minmeter;
-       coeff = deltameter / me.Talt[me.SLICE] ;
+       coeff = deltameter / me.Taltm[me.SLICE] ;
        factor = maxfactor + delta * coeff;
 
        # 15 degc at sea level
@@ -598,28 +617,52 @@ System.new = func {
 
            SYSSEC : 0.0,                               # to be defined !
 
+           ready : constant.FALSE,                     # waits for end of initialization
+
            RELOCATIONFT : 0.0,                         # max descent speed around 6000 feet/minute.
 
            altseaft : 0.0,
 
-           noinstrument : {},
-           slave : {}
+           dependency : {},
+           itself : {},
+           noinstrument : {}
          };
 
    return obj;
 };
 
-System.init_ancestor = func( path ) {
+System.inherit_system = func( path, subpath = "" ) {
+   var fullpath = path;
+
    var obj = System.new();
 
    me.SYSSEC = obj.SYSSEC;
+   me.ready = obj.ready;
    me.RELOCATIONFT = obj.RELOCATIONFT;
    me.altseaft = obj.altseaft;
+   me.dependency = obj.dependency;
+   me.itself = obj.itself;
    me.noinstrument = obj.noinstrument;
-   me.slave = obj.slave;
 
-   me.loadtree( path ~ "/slave" );
-   me.loadprop( path ~ "/noinstrument" );
+   # reserved entry
+   if( subpath == "" ) {
+       # instrumentation/fuel
+       me.itself["root"] = props.globals.getNode(path);
+   }
+   else {
+       fullpath = fullpath ~ "/" ~ subpath;
+
+       # instrumentation/fuel-consumed[0]
+       # instrumentation/fuel-consumed[1]
+       # instrumentation/fuel-consumed[2]
+       me.itself["root"] = props.globals.getNode(path).getChildren(subpath);
+   }
+
+   fullpath = fullpath ~ "/relations";
+
+   me.loadtree( fullpath ~ "/dependency", me.dependency );
+   me.loadtree( fullpath ~ "/itself", me.itself );
+   me.loadtree( fullpath ~ "/noinstrument", me.noinstrument );
 }
 
 System.set_rate_ancestor = func( rates ) {
@@ -629,7 +672,7 @@ System.set_rate_ancestor = func( rates ) {
 }
 
 # property access is faster through its node, than parsing its string
-System.loadtree = func( path ) {
+System.loadtree = func( path, table ) {
    var children = nil;
    var subchildren = nil;
    var name = "";
@@ -651,58 +694,23 @@ System.loadtree = func( path ) {
           if( size(subchildren) > 0 ) {
               component = c.getChild("component").getValue();
               subcomponent = c.getChild("subcomponent").getValue();
-              me.slave[name] = props.globals.getNode(component).getChildren(subcomponent);
+              table[name] = props.globals.getNode(component).getChildren(subcomponent);
           }
 
           #  <altimeter>/instrumentation/altimeter[0]</altimeter>
           # </slave>
           else {
               value = c.getValue();
-              me.slave[name] = props.globals.getNode(value);
+              table[name] = props.globals.getNode(value);
           }
       }
-   }
-}
-
-System.loadprop = func( path ) {
-   var children = nil;
-   var subchildren = nil;
-   var name = "";
-   var component = "";
-   var subcomponent = "";
-   var value = "";
-
-   if( props.globals.getNode(path) != nil ) {
-       children = props.globals.getNode(path).getChildren();
-       foreach( var c; children ) {
-          name = c.getName();
-          subchildren = c.getChildren();
-
-          # <noinstrument>
-          #  <cloud>
-          #   <component>/environment/clouds</component>
-          #   <subcomponent>layer</subcomponent>
-          #  </cloud>
-          if( size(subchildren) > 0 ) {
-              component = c.getChild("component").getValue();
-              subcomponent = c.getChild("subcomponent").getValue();
-              me.noinstrument[name] = props.globals.getNode(component).getChildren(subcomponent);
-          }
-
-          #  <agl>/position/altitude-agl-ft</agl>
-          # </noinstrument>
-          else {
-              value = c.getValue();
-              me.noinstrument[name] = props.globals.getNode(value);
-          }
-       }
    }
 }
 
 System.is_moving = func {
    var result = constant.FALSE;
 
-   # must exist in XML
+   # must exist in XML !
    var aglft = me.noinstrument["agl"].getValue();
    var speedkt = me.noinstrument["airspeed"].getValue();
 
@@ -717,7 +725,7 @@ System.is_relocating = func {
    var result = constant.FALSE;
    var variationftpm = 0.0;
 
-   # must exist in XML
+   # must exist in XML !
    var altft = me.noinstrument["altitude"].getValue();
 
    # relocation in flight, or at another airport
@@ -729,4 +737,38 @@ System.is_relocating = func {
    me.altseaft = altft;
 
    return result;
+}
+
+# ready to enter the system loop
+System.is_ready = func {
+    if( !me.ready ) {
+        # must exist in XML !
+        if( me.noinstrument["electric"].getChild("specific").getValue() and
+            me.noinstrument["hydraulic"].getChild("green").getValue() and
+            me.noinstrument["hydraulic"].getChild("blue").getValue() ) {
+            me.ready = constant.TRUE;
+        }
+    }
+
+    return me.ready;
+}
+
+System.speed_ratesec = func( steps ) {
+   var speedup = me.noinstrument["speed-up"].getValue();
+
+   if( speedup > 1 ) {
+       steps = steps / speedup;
+   }
+
+   return steps;
+}
+
+System.speed_timesec = func( steps ) {
+   var speedup = me.noinstrument["speed-up"].getValue();
+
+   if( speedup > 1 ) {
+       steps = steps * speedup;
+   }
+
+   return steps;
 }

@@ -25,7 +25,7 @@
         <or include="concorde-cond-test-copilot.xml"/>
         <or include="concorde-cond-test-brakes.xml"/>
         <less-than>
-         <property>/systems/hydraulic/brakes/temperature-degc</property>
+         <property>/systems/brakes/temperature-degc</property>
          <value>220</value>
         </less-than>
        </and>

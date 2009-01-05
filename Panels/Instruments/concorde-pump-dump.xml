@@ -104,6 +104,10 @@
     <property alias="../../../../params/dump-ctrl"/>
    </binding>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.fuelsystem.dumpexport();</script>
+   </binding>
+   <binding>
     <command>property-toggle</command>
     <property>/instrumentation/generic/click</property>
    </binding>

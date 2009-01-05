@@ -69,16 +69,16 @@
     </text>
 
     <text>
-      <label>Autoland</label>
+      <label>INS</label>
     </text>
 
     <checkbox>
+      <label>Fast alignment of INS (not real)  ~</label>
       <halign>left</halign>
-      <label>Real nav (accurate until 0 ft AGL)</label>
-      <property>/controls/autoflight/real-nav</property>
+      <property>/controls/crew/ins-alignment</property>
       <binding>
        <command>property-toggle</command>
-       <property>/controls/autoflight/real-nav</property>
+       <property>/controls/crew/ins-alignment</property>
       </binding>
     </checkbox>
 

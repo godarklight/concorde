@@ -33,6 +33,30 @@
   </layer>
 
   <layer>
+   <name>selector</name>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+   </texture>
+   <w>14</w>
+   <h>52</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>14</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <property>/controls/autoflight/altitude-select</property>
+     <scale>0.01</scale>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
    <name>Title knob</name>
    <type>text</type>
    <point-size>7</point-size>

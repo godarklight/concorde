@@ -13,6 +13,7 @@ Seats.new = func {
    var obj = { parents : [Seats],
 
            controls : nil,
+           engineer : nil,
            positions : nil,
            theseats : nil,
            theviews : nil,
@@ -48,6 +49,7 @@ Seats.init = func {
 
 
    me.controls = props.globals.getNode("/controls/seat");
+   me.engineer = props.globals.getNode("/systems/human/engineer");
    me.positions = props.globals.getNode("/systems/seat/position");
    me.theseats = props.globals.getNode("/systems/seat");
    me.theviews = props.globals.getNode("/sim").getChildren("view");
@@ -64,7 +66,6 @@ Seats.init = func {
             name = child.getValue();
             if( name == "Engineer View" ) {
                 me.save_lookup("engineer", i);
-                me.engineerheadinit( me.theviews[i] );
             }
             elsif( name == "Overhead View" ) {
                 me.save_lookup("overhead", i);
@@ -167,20 +168,14 @@ Seats.recoverexport = func {
    me.controls.getChild("recover").setValue(me.recoverfloating);
 }
 
-Seats.engineerheadinit = func( view ) {
-   # initial orientation
-   var headdeg = view.getNode("config").getChild("heading-offset-deg").getValue();
-
-   me.positions.getNode("engineer").getChild("heading-deg").setValue(headdeg);
-}
-
 Seats.engineerhead = func {
-   var headdeg = 0.0;
-
    # current orientation, before leaving view
    if( me.theseats.getChild("engineer").getValue() ) {
-       headdeg = getprop("/sim/current-view/goal-heading-offset-deg");
-       me.positions.getNode("engineer").getChild("heading-deg").setValue(headdeg);
+       # except, when 3D engineer is rotating the seat
+       if( me.engineer.getChild("seat-deg").getValue() == 0.0 ) {
+           var headdeg = getprop("/sim/current-view/goal-heading-offset-deg");
+           me.positions.getNode("engineer").getChild("heading-deg").setValue(headdeg);
+       }
    }
 }
 
@@ -487,77 +482,6 @@ Seats.audioexport = func {
 }
 
 
-# =====
-# DOORS
-# =====
-
-Doors = {};
-
-Doors.new = func {
-   var obj = { parents : [Doors],
-
-           engineertable : nil,
-           cockpitdoor : nil,
-
-           INSIDEDECKZM : 10.60,
-
-           DOORCLOSED : 0.0,
-
-# 10 s, door closed
-           flightdeck : aircraft.door.new("controls/doors/flight-deck", 10.0),
-# 4 s, deck out
-           engineerdeck : aircraft.door.new("controls/doors/engineer-deck", 4.0)
-         };
-
-# user customization
-   obj.init();
-
-   return obj;
-};
-
-Doors.init = func {
-   me.engineertable = props.globals.getNode("/controls/doors/engineer-deck");
-   me.cockpitdoor = props.globals.getNode("/controls/doors/flight-deck");
-
-   if( me.cockpitdoor.getChild("opened").getValue() ) {
-       me.flightdeck.toggle();
-   }
-   if( !me.engineertable.getChild("out").getValue() ) {
-       me.engineerdeck.toggle();
-   }
-}
-
-Doors.flightdeckexport = func {
-   var allowed = constant.TRUE;
-
-   if( me.cockpitdoor.getChild("position-norm").getValue() == me.DOORCLOSED ) {
-       # locked in flight
-       if( me.cockpitdoor.getChild("normal").getValue() ) {
-           # can open only from inside
-           if( getprop("/sim/current-view/z-offset-m") > me.INSIDEDECKZM ) {
-               allowed = constant.FALSE;
-           }
-       }
-   }
-
-   if( allowed ) {
-       me.flightdeck.toggle();
-   }
-}
-
-Doors.engineerdeckexport = func {
-   var state = constant.TRUE;
-
-   me.engineerdeck.toggle();
-
-   if( me.engineertable.getChild("out").getValue() ) {
-       state = constant.FALSE;
-   }
-
-   me.engineertable.getChild("out").setValue(state);
-}
-
-
 # ====
 # MENU
 # ====
@@ -568,14 +492,17 @@ Menu.new = func {
    var obj = { parents : [Menu],
 
 # menu handles
+           autopilot : nil,
            crew : nil,
            environment : nil,
            fuel : nil,
            ground : nil,
-           instruments : [ nil, nil, nil ],
+           instruments : {},
            navigation : nil,
+           procedures : {},
            radios : nil,
            systems : nil,
+           voice : {},
            menu : nil
          };
 
@@ -585,11 +512,10 @@ Menu.new = func {
 };
 
 Menu.init = func {
-    var j = 0;
-
-
     me.menu = gui.Dialog.new("/sim/gui/dialogs/Concorde/menu/dialog",
                              "Aircraft/Concorde/Dialogs/Concorde-menu.xml");
+    me.autopilot = gui.Dialog.new("/sim/gui/dialogs/Concorde/autopilot/dialog",
+                                  "Aircraft/Concorde/Dialogs/Concorde-autopilot.xml");
     me.crew = gui.Dialog.new("/sim/gui/dialogs/Concorde/crew/dialog",
                              "Aircraft/Concorde/Dialogs/Concorde-crew.xml");
     me.environment = gui.Dialog.new("/sim/gui/dialogs/Concorde/environment/dialog",
@@ -599,21 +525,35 @@ Menu.init = func {
     me.ground = gui.Dialog.new("/sim/gui/dialogs/Concorde/ground/dialog",
                                "Aircraft/Concorde/Dialogs/Concorde-ground.xml");
 
-    me.instruments[0] = gui.Dialog.new("/sim/gui/dialogs/Concorde/instruments[0]/dialog",
-                                       "Aircraft/Concorde/Dialogs/Concorde-instruments.xml");
-    for( var i = 1; i <= 2; i=i+1 ) {
-       j = i + 1;
-       me.instruments[i] = gui.Dialog.new("/sim/gui/dialogs/Concorde/instruments[" ~ i ~ "]/dialog",
-                                          "Aircraft/Concorde/Dialogs/Concorde-instruments" ~ j ~ ".xml");
-    }
+    me.array( me.instruments, 3, "instruments" );
 
     me.navigation = gui.Dialog.new("/sim/gui/dialogs/Concorde/navigation/dialog",
                                    "Aircraft/Concorde/Dialogs/Concorde-navigation.xml");
+
+    me.array( me.procedures, 3, "procedures" );
 
     me.radios = gui.Dialog.new("/sim/gui/dialogs/Concorde/radios/dialog",
                                 "Aircraft/Concorde/Dialogs/Concorde-radios.xml");
     me.systems = gui.Dialog.new("/sim/gui/dialogs/Concorde/systems/dialog",
                                 "Aircraft/Concorde/Dialogs/Concorde-systems.xml");
+
+    me.array( me.voice, 2, "voice" );
+}
+
+Menu.array = func( table, max, name ) {
+    var j = 0;
+
+    for( var i = 0; i < max; i=i+1 ) {
+       if( j == 0 ) {
+           j = "";
+       }
+       else {
+           j = i + 1;
+       }
+
+       table[i] = gui.Dialog.new("/sim/gui/dialogs/Concorde/" ~ name ~ "[" ~ i ~ "]/dialog",
+                                 "Aircraft/Concorde/Dialogs/Concorde-" ~ name ~ j ~ ".xml");
+    }
 }
 
 
@@ -626,15 +566,15 @@ Crewbox = {};
 Crewbox.new = func {
    var obj = { parents : [Crewbox],
 
-           MINIMIZESEC : 0.0,
            MENUSEC : 3.0,
 
            timers : 0.0,
 
            copilot : nil,
+           copilotcontrol : nil,
            crew : nil,
            crewcontrols : nil,
-           engineer : nil,
+           engineercontrol : nil,
            voice : nil,
 
 # left bottom, 1 line, 10 seconds.
@@ -655,17 +595,14 @@ Crewbox.new = func {
 };
 
 Crewbox.init = func {
-    me.copilot = props.globals.getNode("/systems/crew/copilot");
+    me.copilot = props.globals.getNode("/systems/copilot");
+    me.copilotcontrol = props.globals.getNode("/controls/copilot");
     me.crew = props.globals.getNode("/systems/crew");
     me.crewcontrols = props.globals.getNode("/controls/crew");
-    me.engineer = props.globals.getNode("/systems/crew/engineer");
+    me.engineer = props.globals.getNode("/systems/engineer");
+    me.engineercontrol = props.globals.getNode("/controls/engineer");
     me.voice = props.globals.getNode("/systems/voice");
  
-
-    me.MINIMIZESEC = me.crewcontrols.getChild("timeout-s").getValue();
-    if( me.MINIMIZESEC < me.MENUSEC ) {
-       print( "/controls/crew/timeout-s should be above ", me.MENUSEC, " seconds : ", me.MINIMIZESEC );
-    }
 
     me.resize();
 
@@ -694,7 +631,7 @@ Crewbox.resize = func {
              me.textbox[i].close();
          }
 
-         # CAUTION : duration is 0 (infinite), or one must wait that the text vanishes itself;
+         # CAUTION : duration is 0 (infinite), or one must wait that the text vanishes device;
          # otherwise, overwriting the text makes the view popup tip always visible !!!
          me.textbox[i] = screen.window.new( me.BOXX, y, 1, 0 );
     }
@@ -745,18 +682,31 @@ Crewbox.toggleexport = func {
         me.crew.getChild("minimized").setValue(constant.FALSE);
         me.resettimer();
     }
+
+    # to accelerate display
+    me.crewtext();
 }
 
 Crewbox.schedule = func {
     # timeout on text box
     if( me.crewcontrols.getChild("timeout").getValue() ) {
         me.timers = me.timers + me.MENUSEC;
-        if( me.timers >= me.MINIMIZESEC ) {
+        if( me.timers >= me.timeoutsec() ) {
             me.crew.getChild("minimized").setValue(constant.TRUE);
         }
     }
 
     me.crewtext();
+}
+
+Crewbox.timeoutsec = func {
+    var result = me.crewcontrols.getChild("timeout-s").getValue();
+
+    if( result < me.MENUSEC ) {
+        result = me.MENUSEC;
+    }
+
+    return result;
 }
 
 Crewbox.resettimer = func {
@@ -778,11 +728,18 @@ Crewbox.crewtext = func {
 }
 
 Crewbox.checklisttext = func {
-    var text = me.voice.getChild("checklist").getValue();
-    var green = me.crew.getChild("serviceable").getValue();
+    var white = constant.FALSE;
+    var text = me.voice.getChild("callout").getValue();
+    var text2 = me.voice.getChild("checklist").getValue();
     var index = me.lineindex["checklist"];
 
-    me.sendtext( index, green, text );
+    if( text2 != "" ) {
+        text = text2 ~ " " ~ text;
+        white = me.voice.getChild("real").getValue();
+    }
+
+    # real checklist is white
+    me.sendtext( index, constant.TRUE, white, text );
 }
 
 Crewbox.copilottext = func {
@@ -791,7 +748,7 @@ Crewbox.copilottext = func {
     var index = me.lineindex["copilot"];
 
     if( text == "" ) {
-        if( me.crewcontrols.getChild("copilot").getValue() ) {
+        if( me.copilotcontrol.getChild("activ").getValue() ) {
             text = "copilot";
         }
     }
@@ -801,7 +758,7 @@ Crewbox.copilottext = func {
         green = constant.TRUE;
     }
 
-    me.sendtext( index, green, text );
+    me.sendtext( index, green, constant.FALSE, text );
 }
 
 Crewbox.engineertext = func {
@@ -810,23 +767,29 @@ Crewbox.engineertext = func {
     var index = me.lineindex["engineer"];
 
     if( text == "" ) {
-        if( me.crewcontrols.getChild("engineer").getValue() ) {
+        if( me.engineercontrol.getChild("activ").getValue() ) {
             text = "engineer";
         }
     }
 
-    me.sendtext( index, green, text );
+    me.sendtext( index, green, constant.FALSE, text );
 }
 
-Crewbox.sendtext = func( index, green, text ) {
+Crewbox.sendtext = func( index, green, white, text ) {
     var box = me.textbox[index];
 
     me.lasttext[index] = text;
 
+    # bright white
+    if( white ) {
+        box.write( text, 1.0, 1.0, 1.0 );
+    }
+
     # dark green
-    if( green ) {
+    elsif( green ) {
         box.write( text, 0, 0.7, 0 );
     }
+
     # dark yellow
     else {
         box.write( text, 0.7, 0.7, 0 );
@@ -874,14 +837,12 @@ Crewbox.clear = func {
 Voicebox = {};
 
 Voicebox.new = func {
-   var obj = { parents : [Voicebox],
+   var obj = { parents : [Voicebox,System],
 
-           voicecontrol : nil,
-
-           seetext : constant.TRUE,
+               seetext : constant.TRUE,
 
 # centered in the vision field, 1 line, 10 seconds.
-           textbox : screen.window.new( nil, -200, 1, 10 )
+               textbox : screen.window.new( nil, -200, 1, 10 )
    };
 
    obj.init();
@@ -890,11 +851,11 @@ Voicebox.new = func {
 }
 
 Voicebox.init = func {
-   me.voicecontrol = props.globals.getNode("/controls/crew/voice");
+   me.inherit_system("/systems/voice");
 }
 
 Voicebox.schedule = func {
-   me.seetext = me.voicecontrol.getChild("text").getValue();
+   me.seetext = me.itself["voice-ctrl"].getChild("text").getValue();
 }
 
 Voicebox.textexport = func {
@@ -909,8 +870,8 @@ Voicebox.textexport = func {
        me.seetext = constant.TRUE;
    }
 
-   me.sendtext( feedback, !me.seetext, constant.TRUE );
-   me.voicecontrol.getChild("text").setValue(me.seetext);
+   me.sendtext( feedback, !me.seetext, constant.FALSE, constant.TRUE );
+   me.itself["voice-ctrl"].getChild("text").setValue(me.seetext);
 
    return feedback;
 }
@@ -919,11 +880,16 @@ Voicebox.is_on = func {
    return me.seetext;
 }
 
-Voicebox.sendtext = func( text, engineer = 0, force = 0 ) {
+Voicebox.sendtext = func( text, engineer = 0, captain = 0, force = 0 ) {
    if( me.seetext or force ) {
        # bright blue
        if( engineer ) {
            me.textbox.write( text, 0, 1, 1 );
+       }
+
+       # bright yellow
+       elsif( captain ) {
+           me.textbox.write( text, 1, 1, 0 );
        }
 
        # bright green

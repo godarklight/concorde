@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 
-<!-- checklists :
+<!-- to make reading easier.
 
-     - to make reading easier.
-     - CG calls are a guess.
+
+     What is guessed :
+     ===============
+     - CG callout.
+     - checklists.
 
 
      References :
@@ -17,7 +20,8 @@
 
 <PropertyList>
 
-    <checklists>
+    <callouts>
+
      <all>
       <pilot>
        <description>controls in flight</description>
@@ -215,7 +219,7 @@
        </message>
       </engineer>
  
-      <pilot>
+      <captain>
        <description>main check</description>
        <message>
         <action>brakes3</action>
@@ -233,6 +237,10 @@
         <action>brakes</action>
         <text>now</text>
        </message>
+      </captain>
+ 
+      <pilot>
+       <description>main check</description>
        <message>
         <action>airspeed</action>
         <text>airspeed</text>                                      <!-- airspeed building -->
@@ -279,6 +287,200 @@
        </message>
       </pilot>
      </takeoff>
+
+    </callouts>
+
+
+    <checklists>
+
+     <aftertakeoff>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>recall</action>
+        <text>master warning recall</text>                         <!-- captain task -->
+       </message>
+       <message>
+        <action>completed</action>
+        <text>after takeoff checklist completed</text>
+       </message>
+      </engineer>
+     </aftertakeoff>
+
+     <climb>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>climb checklist completed</text>
+       </message>
+      </engineer>
+     </climb>
+
+     <transsonic>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>transsonic checklist completed</text>
+       </message>
+      </engineer>
+     </transsonic>
+
+     <descent>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>descent checklist completed</text>
+       </message>
+      </engineer>
+     </descent>
+
+     <approach>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>approach checklist completed</text>
+       </message>
+      </engineer>
+     </approach>
+
+     <beforelanding>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>landing checklist completed</text>
+       </message>
+      </engineer>
+     </beforelanding>
+
+     <afterlanding>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>after landing checklist completed</text>
+       </message>
+      </engineer>
+     </afterlanding>
+
+     <parking>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>ground power</action>
+        <text>ground, connect electrical power</text>
+       </message>
+       <message>
+        <action>air conditioning</action>
+        <text>ground, connect air conditioning</text>
+       </message>
+       <message>
+        <action>completed</action>
+        <text>parking checklist completed</text>
+       </message>
+      </engineer>
+     </parking>
+
+     <stopover>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>stopover checklist completed</text>
+       </message>
+      </engineer>
+     </stopover>
+
+     <cockpit>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>ground power</action>
+        <text>ground, connect electrical power</text>
+       </message>
+       <message>
+        <action>air conditioning</action>
+        <text>ground, connect air conditioning</text>
+       </message>
+      </engineer>
+     </cockpit>
+
+     <beforestart>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>clearance</action>
+        <text>ground, requesting clearance to start</text>
+       </message>
+       <message>
+        <action>clear</action>
+        <text>clear to start</text>
+       </message>
+      </engineer>
+
+      <pilot>
+       <description>checklist</description>
+       <message>
+        <action>clearance</action>
+        <text>ground control, requesting clearance to start</text>
+       </message>
+       <message>
+        <action>clear</action>
+        <text>clear to start</text>
+       </message>
+      </pilot>
+     </beforestart>
+
+     <afterstart>
+      <pilot>
+       <description>checklist</description>
+       <message>
+        <action>disconnect</action>
+        <text>ground, requesting disconnect</text>
+       </message>
+       <message>
+        <action>channel</action>
+        <text>reset channels to blue</text>                        <!-- captain task -->
+       </message>
+       <message>
+        <action>completed</action>
+        <text>after start checklist completed</text>
+       </message>
+      </pilot>
+     </afterstart>
+
+     <taxi>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>completed</action>
+        <text>taxi checklist completed</text>
+       </message>
+      </engineer>
+     </taxi>
+
+     <beforetakeoff>
+      <engineer>
+       <description>checklist</description>
+       <message>
+        <action>recall</action>
+        <text>master warning recall</text>                         <!-- captain task -->
+       </message>
+       <message>
+        <action>inhibit</action>
+        <text>master warning inhibit</text>                        <!-- captain task -->
+       </message>
+       <message>
+        <action>completed</action>
+        <text>before takeoff checklist completed</text>
+       </message>
+      </engineer>
+     </beforetakeoff>
+
     </checklists>
 
 </PropertyList>

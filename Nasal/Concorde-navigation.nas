@@ -13,50 +13,53 @@ Inertial = {};
 Inertial.new = func {
    var obj = { parents : [Inertial,System],
 
-           inss : nil,
-           last : nil,
-           route : nil,
-           waypoints : nil,
+               last : nil,
+               route : nil,
+               waypoints : nil,
 
-           SELECTORGROUND : -3,
-           SELECTORHEADING : -2,
-           SELECTORTRACK : -1,
-           SELECTORPOS : 0,
-           SELECTORWPTPOS : 1,
-           SELECTORWPTTIME : 2,
-           SELECTORWIND : 3,
-           SELECTORSTATUS : 4,
+               SELECTORGROUND : -3,
+               SELECTORHEADING : -2,
+               SELECTORTRACK : -1,
+               SELECTORPOS : 0,
+               SELECTORWPTPOS : 1,
+               SELECTORWPTTIME : 2,
+               SELECTORWIND : 3,
+               SELECTORSTATUS : 4,
 
-           MODEOFF : -2,
-           MODEALIGN : 0,
-           MODENAV : 1,
-           MODEATT : 2,
+               MODEOFF : -2,
+               MODEALIGN : 0,
+               MODENAV : 1,
+               MODEATT : 2,
 
-           QUALITYPOOR : 9,
-           QUALITYREADY : 5,
-           QUALITYGOOD : 1,
+               QUALITYPOOR : 9,
+               QUALITYREADY : 5,
+               QUALITYGOOD : 1,
 
-           ACTIONGROUND : 4,
-           ACTIONATT : 2,
-           ACTIONOFF : 0,
+               ACTIONGROUND : 4,
+               ACTIONATT : 2,
+               ACTIONOFF : 0,
 
-           ALIGNEDSEC : 900,                                # 15 minutes
-           QUALITYSEC : 225,
-           INSSEC : 3,
+               ALIGNEDSEC : 900,                                # 15 minutes
+               QUALITYSEC : 225,
+               INSSEC : 3,
 
-           GROUNDFT : 20,
+               QUICK : 15,                                      # factor for quick alignment (not real)
 
-           GROUNDKT : 75,
+               GROUNDFT : 20,
 
-           MAXWPTNM : 9999.0,
-           MAXXTKNM : 999.99,
+               GROUNDKT : 75,
 
-           UNKNOWN : -999,
+               MAXWPTNM : 9999.0,
+               MAXXTKNM : 999.99,
 
-           bearingdeg : 0.0,
-           trackdeg : 0.0,
+               UNKNOWN : -999,
 
-           waypoint : ""
+               bearingdeg : 0.0,
+               trackdeg : 0.0,
+
+               left : 0.0,
+               right : 0.0,
+               waypoint : ""
          };
 
    obj.init();
@@ -65,19 +68,17 @@ Inertial.new = func {
 };
 
 Inertial.init = func {
-   me.inss = props.globals.getNode("/instrumentation").getChildren("ins");
+   me.inherit_system("/instrumentation","ins");
 
-   me.init_ancestor("/instrumentation/ins[0]");
-
-   me.last = me.slave["autopilot"].getChild("wp-last");
-   me.waypoints = me.slave["autopilot"].getChildren("wp");
+   me.last = me.dependency["autopilot"].getChild("wp-last");
+   me.waypoints = me.dependency["autopilot"].getChildren("wp");
 }
 
 Inertial.red_ins = func {
    var result = constant.FALSE;
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-        if( me.inss[i].getNode("light/warning").getValue() ) {
+        if( me.itself["root"][i].getNode("light/warning").getValue() ) {
             result = constant.TRUE;
             break;
         }
@@ -87,7 +88,7 @@ Inertial.red_ins = func {
 }
 
 Inertial.schedule = func {
-   var ACvoltage = me.slave["electric"].getChild("specific").getValue();
+   var ACvoltage = me.dependency["electric"].getChild("specific").getValue();
 
    if( ACvoltage ) {
        me.track();
@@ -101,7 +102,7 @@ Inertial.schedule = func {
 }
 
 Inertial.computeexport = func {
-   if( me.slave["electric"].getChild("specific").getValue() ) {
+   if( me.dependency["electric"].getChild("specific").getValue() ) {
        me.display();
    } 
 }
@@ -115,7 +116,7 @@ Inertial.alertlight = func {
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
         value = me.waypoints[0].getChild("dist").getValue();
         if( value != nil and value != "" ) {
-            speedfps = me.inss[i].getNode("computed/ground-speed-fps").getValue();
+            speedfps = me.itself["root"][i].getNode("computed/ground-speed-fps").getValue();
             rangenm = speedfps * constant.MINUTETOSECOND * constant.FEETTONM;
 
             # alert 1 minute before track change
@@ -125,163 +126,166 @@ Inertial.alertlight = func {
         } 
 
         # send to all remote INS
-        me.inss[i].getNode("light/alert").setValue(alert);
+        me.itself["root"][i].getNode("light/alert").setValue(alert);
    }
 }
 
 Inertial.display = func {
    var aligned = constant.FALSE;
    var selector = 0;
-   var nbwaypoints = 0;
-   var j = 0;
    var digit = 0;
-   var pos = 0;
-   var left = 0.0;
-   var right = 0.0;
    var value = 0.0;
-   var value_str = "";
-   var last_ident = "";
-   var node = nil;
-   var latdeg = me.noinstrument["position"].getChild("latitude-deg").getValue();
-   var londeg = me.noinstrument["position"].getChild("longitude-deg").getValue();
 
+   me.left = 0.0;
+   me.right = 0.0;
 
    # may input waypoints
-   me.route = me.slave["autopilot"].getNode("route").getChildren("wp");
-   nbwaypoints = me.slave["autopilot"].getNode("route/num").getValue();
+   me.route = me.dependency["autopilot"].getNode("route").getChildren("wp");
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-        selector = me.inss[i].getNode("control/selector").getValue();
-        aligned = me.inss[i].getNode("msu/aligned").getValue();
+        selector = me.itself["root"][i].getNode("control/selector").getValue();
+        aligned = me.itself["root"][i].getNode("msu/aligned").getValue();
 
-        left = me.UNKNOWN;
-        right = me.UNKNOWN;
+        me.left = me.UNKNOWN;
+        me.right = me.UNKNOWN;
 
         # present track
         if( selector == me.SELECTORGROUND ) {
-            right = me.inss[i].getNode("computed/ground-speed-fps").getValue() * constant.FPSTOKT;
+            me.right = me.itself["root"][i].getNode("computed/ground-speed-fps").getValue() * constant.FPSTOKT;
 
-            if( right < me.GROUNDKT ) {
-                left = me.noinstrument["true"].getValue();
+            if( me.right < me.GROUNDKT ) {
+                me.left = me.noinstrument["true"].getValue();
             }
             else {
-                left = me.trackdeg;
+                me.left = me.trackdeg;
             }
         }
 
         # cross track distance
         elsif( selector == me.SELECTORHEADING ) {
-            left = me.noinstrument["true"].getValue();
+            me.left = me.noinstrument["true"].getValue();
         }
 
         # cross track distance
         elsif( selector == me.SELECTORTRACK ) {
-            left = me.inss[i].getNode("computed/leg-course-error-nm").getValue();
-            right = me.inss[i].getNode("computed/leg-course-deviation-deg").getValue();
+            me.left = me.itself["root"][i].getNode("computed/leg-course-error-nm").getValue();
+            me.right = me.itself["root"][i].getNode("computed/leg-course-deviation-deg").getValue();
         }
 
         # current position
         elsif( selector == me.SELECTORPOS ) {
             if( aligned ) {
-                left = latdeg;
-                right = londeg;
+                me.left = me.noinstrument["position"].getChild("latitude-deg").getValue();
+                me.right = me.noinstrument["position"].getChild("longitude-deg").getValue();
             }
         }
 
         # waypoint
         elsif( selector >= me.SELECTORWPTPOS and selector <= me.SELECTORWPTTIME ) {
-            j = me.inss[i].getNode("control/waypoint").getValue();
-  
-            if( j <= nbwaypoints ) {
-                j = j - 1;
-                node = me.route[j];
-
-                # position
-                if( selector == me.SELECTORWPTPOS ) {
-                    left = node.getChild("latitude-deg").getValue();
-                    right = node.getChild("longitude-deg").getValue();
-                }
-
-                # distance and time.
-                elsif( aligned ) {
-                    node = nil;
-
-                    # only the first 2 waypoints.
-                    if( j < 2 ) {
-                        node = me.waypoints[j];
-                    }
-
-                    # search for last one.
-                    else {
-                        last_ident = me.last.getChild("id").getValue();
-
-                        for( var k = 0; k < nbwaypoints; k = k+1 ) {
-                             if( me.route[k].getChild("id").getValue() == last_ident ) {
-                                 # only if displays the last one.
-                                 if( k == j ) {
-                                     node = me.last;
-                                 }
-                                 break;
-                             }
-                        }
-                    }
-
-                    if( node != nil ) {
-                        value = node.getChild("dist").getValue();
-
-                        # node doesn't exist, if no waypoint yet.
-                        if( value !=  nil ) {
-                            if( value > me.MAXWPTNM ) {
-                                value = me.MAXWPTNM;
-                            }
-
-                            left = value;
-
-                            # replace 99:59 by 99.59, because the right display is a double.
-                            value_str = node.getChild("eta").getValue();
-
-                            pos = find(":",value_str);
-                            if( pos >= 0 ) {
-                                value = num(substr( value_str, 0, pos ));
-                                pos = pos + 1;
-                                value_str = substr( value_str, pos, size( value_str ) - pos );
-                                value = value + num(value_str) * constant.MINUTETODECIMAL;
-                            }
-                            else {
-                                value = 0.0;
-                            }
-
-                            right = value;
-                        }
-                    }
-                }
-            }
+            me.display_waypoint( i, selector, aligned );
         }
 
         # wind
         elsif( selector == me.SELECTORWIND ) {
-            if( me.slave["radio-altimeter"].getChild("indicated-altitude-ft").getValue() > me.GROUNDFT ) {
-                left = me.inss[i].getNode("computed/wind-from-heading-deg").getValue();
-                right = me.inss[i].getNode("computed/wind-speed-kt").getValue();
+            if( me.dependency["radio-altimeter"].getChild("indicated-altitude-ft").getValue() > me.GROUNDFT ) {
+                me.left = me.itself["root"][i].getNode("computed/wind-from-heading-deg").getValue();
+                me.right = me.itself["root"][i].getNode("computed/wind-speed-kt").getValue();
             }
         }
 
         # desired track & status
         elsif( selector == me.SELECTORSTATUS ) {
-            left = me.inss[i].getNode("computed/leg-true-course-deg").getValue();
+            me.left = me.itself["root"][i].getNode("computed/leg-true-course-deg").getValue();
 
-            right = 0;
+            me.right = 0;
             digit = 1;
 
             for( var k = 5; k >= 0; k = k-1 ) {
-                 value = me.inss[i].getNode("msu/status[" ~ k ~ "]").getValue() * digit;
-                 right += value;
+                 value = me.itself["root"][i].getNode("msu/status[" ~ k ~ "]").getValue() * digit;
+                 me.right += value;
                  digit *= 10;
             }
         }
 
-        me.inss[i].getNode("data/left").setValue(left);
-        me.inss[i].getNode("data/right").setValue(right);
+        me.itself["root"][i].getNode("data/left").setValue(me.left);
+        me.itself["root"][i].getNode("data/right").setValue(me.right);
+   }
+}
+
+Inertial.display_waypoint = func( i, selector, aligned ) {
+   var pos = 0;
+   var value = 0.0;
+   var value_str = "";
+   var last_ident = "";
+   var node = nil;
+
+   var j = me.itself["root"][i].getNode("control/waypoint").getValue();
+   var nbwaypoints = me.dependency["autopilot"].getNode("route/num").getValue();
+
+  
+   if( j <= nbwaypoints ) {
+       j = j - 1;
+       node = me.route[j];
+
+       # position
+       if( selector == me.SELECTORWPTPOS ) {
+           me.left = node.getChild("latitude-deg").getValue();
+           me.right = node.getChild("longitude-deg").getValue();
+       }
+
+       # distance and time.
+       elsif( aligned ) {
+           node = nil;
+
+           # only the first 2 waypoints.
+           if( j < 2 ) {
+               node = me.waypoints[j];
+           }
+
+           # search for last one.
+           else {
+               last_ident = me.last.getChild("id").getValue();
+
+               for( var k = 0; k < nbwaypoints; k = k+1 ) {
+                    if( me.route[k].getChild("id").getValue() == last_ident ) {
+                        # only if displays the last one.
+                        if( k == j ) {
+                            node = me.last;
+                        }
+                        break;
+                    }
+               }
+           }
+
+           if( node != nil ) {
+               value = node.getChild("dist").getValue();
+
+               # node doesn't exist, if no waypoint yet.
+               if( value !=  nil ) {
+                   if( value > me.MAXWPTNM ) {
+                       value = me.MAXWPTNM;
+                   }
+
+                   me.left = value;
+
+                   # replace 99:59 by 99.59, because the right display is a double.
+                   value_str = node.getChild("eta").getValue();
+
+                   pos = find(":",value_str);
+                   if( pos >= 0 ) {
+                       value = num(substr( value_str, 0, pos ));
+                       pos = pos + 1;
+                       value_str = substr( value_str, pos, size( value_str ) - pos );
+                       value = value + num(value_str) * constant.MINUTETODECIMAL;
+                   }
+                   else {
+                       value = 0.0;
+                   }
+
+                   me.right = value;
+               }
+           }
+       }
    }
 }
 
@@ -299,7 +303,7 @@ Inertial.track = func {
        # initial track
        me.bearingdeg = me.noinstrument["track"].getValue();
        for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-            me.inss[i].getNode("computed/leg-true-course-deg").setValue(me.bearingdeg);
+            me.itself["root"][i].getNode("computed/leg-true-course-deg").setValue(me.bearingdeg);
        }
    }
 
@@ -321,8 +325,8 @@ Inertial.track = func {
        }
 
        for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-            me.inss[i].getNode("computed/leg-course-deviation-deg").setValue(offsetdeg);
-            me.inss[i].getNode("computed/leg-course-error-nm").setValue(offsetnm);
+            me.itself["root"][i].getNode("computed/leg-course-deviation-deg").setValue(offsetdeg);
+            me.itself["root"][i].getNode("computed/leg-course-error-nm").setValue(offsetnm);
        }
    }
 }
@@ -331,15 +335,15 @@ Inertial.failure = func {
    var warning = constant.FALSE;
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-        if( !me.inss[i].getChild("serviceable").getValue() or
-            !me.inss[i].getNode("msu/aligned").getValue() ) {
+        if( !me.itself["root"][i].getChild("serviceable").getValue() or
+            !me.itself["root"][i].getNode("msu/aligned").getValue() ) {
             warning = constant.TRUE;
         }
         else {
             warning = constant.FALSE;
         }
 
-        me.inss[i].getNode("light/warning").setValue( warning );
+        me.itself["root"][i].getNode("light/warning").setValue( warning );
    }
 }
 
@@ -348,15 +352,16 @@ Inertial.alignment = func {
    var aligned = constant.FALSE;
    var ready = constant.FALSE;
    var alignmentsec = 0.0;
+   var thresholdsec = 0.0;
    var step = 0.0;
    var quality = 0.0;
    var speedup = 0.0;
 
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-        mode = me.inss[i].getNode("msu/mode").getValue();
-        aligned = me.inss[i].getNode("msu/aligned").getValue();
-        ready = me.inss[i].getNode("msu/ready").getValue();
+        mode = me.itself["root"][i].getNode("msu/mode").getValue();
+        aligned = me.itself["root"][i].getNode("msu/aligned").getValue();
+        ready = me.itself["root"][i].getNode("msu/ready").getValue();
 
         if( mode == me.MODEALIGN or mode == me.MODENAV ) {
             # start new alignment
@@ -376,10 +381,11 @@ Inertial.alignment = func {
 
             # alignment in ALIGN or NAV mode.
             if( !aligned or ( aligned and mode == me.MODEALIGN ) ) {
-                alignmentsec = me.inss[i].getNode("msu/alignment-s").getValue();
+                alignmentsec = me.itself["root"][i].getNode("msu/alignment-s").getValue();
 
                 # ready
-                if( alignmentsec >= me.ALIGNEDSEC ) {
+                thresholdsec = me.quicksec( me.ALIGNEDSEC );
+                if( alignmentsec >= thresholdsec ) {
                    aligned = constant.TRUE;
                    me.reach_alignment( i );
                 }
@@ -388,7 +394,8 @@ Inertial.alignment = func {
                 }
 
                 # quality measured only during alignment
-                step = ( alignmentsec - math.mod( alignmentsec, me.QUALITYSEC ) ) / me.QUALITYSEC; 
+                thresholdsec = me.quicksec( me.QUALITYSEC );
+                step = ( alignmentsec - math.mod( alignmentsec, thresholdsec ) ) / thresholdsec; 
                 quality = me.QUALITYPOOR - step;
                 if( quality < me.QUALITYGOOD ) {
                     quality = me.QUALITYGOOD;
@@ -396,9 +403,9 @@ Inertial.alignment = func {
 
                 me.set_quality( i, quality );
 
-                speedup = getprop("/sim/speed-up");
+                speedup = me.noinstrument["speed-up"].getValue();
                 alignmentsec = alignmentsec + speedup * me.INSSEC;
-                me.inss[i].getNode("msu/alignment-s").setValue( alignmentsec );
+                me.itself["root"][i].getNode("msu/alignment-s").setValue( alignmentsec );
             }
         }
 
@@ -409,8 +416,19 @@ Inertial.alignment = func {
    }
 }
 
+Inertial.quicksec = func( thresholdsec ) {
+   var result = thresholdsec;
+
+   # quick alignment of INS (not real)
+   if( me.dependency["quick"].getValue() ) {
+       result = result / me.QUICK;
+   }
+
+   return result;
+}
+
 Inertial.reach_ready = func( index ) {
-   me.inss[index].getNode("msu/ready").setValue( constant.FALSE );
+   me.itself["root"][index].getNode("msu/ready").setValue( constant.FALSE );
 }
 
 Inertial.aligning = func( index ) {
@@ -419,16 +437,16 @@ Inertial.aligning = func( index ) {
 }
 
 Inertial.reach_alignment = func( index ) {
-   me.inss[index].getNode("msu/aligned").setValue( constant.TRUE );
-   me.inss[index].getNode("msu/ready").setValue( constant.TRUE );
+   me.itself["root"][index].getNode("msu/aligned").setValue( constant.TRUE );
+   me.itself["root"][index].getNode("msu/ready").setValue( constant.TRUE );
 
    me.set_mode( index, me.MODENAV );
 }
 
 Inertial.lose_alignment = func( index, mode ) {
-   me.inss[index].getNode("msu/alignment-s").setValue( 0 );
-   me.inss[index].getNode("msu/aligned").setValue( constant.FALSE );
-   me.inss[index].getNode("msu/ready").setValue( constant.FALSE );
+   me.itself["root"][index].getNode("msu/alignment-s").setValue( 0 );
+   me.itself["root"][index].getNode("msu/aligned").setValue( constant.FALSE );
+   me.itself["root"][index].getNode("msu/ready").setValue( constant.FALSE );
 
    me.set_mode( index, me.MODEALIGN );
    if( mode == me.MODEATT ) {
@@ -442,24 +460,24 @@ Inertial.lose_alignment = func( index, mode ) {
 }
 
 Inertial.set_mode = func( index, mode ) {
-   me.inss[index].getNode("msu/status[0]").setValue( mode );
+   me.itself["root"][index].getNode("msu/status[0]").setValue( mode );
 }
 
 Inertial.set_action = func( index, action ) {
    var digit = int( action / 10 );
 
-   me.inss[index].getNode("msu/status[1]").setValue( digit );
+   me.itself["root"][index].getNode("msu/status[1]").setValue( digit );
 
    digit = math.mod( action, 10 );
-   me.inss[index].getNode("msu/status[2]").setValue( digit );
+   me.itself["root"][index].getNode("msu/status[2]").setValue( digit );
 }
 
 Inertial.set_quality = func( index, quality ) {
-   me.inss[index].getNode("msu/status[4]").setValue( quality );
+   me.itself["root"][index].getNode("msu/status[4]").setValue( quality );
 }
 
 Inertial.set_index = func( index, modeindex ) {
-   me.inss[index].getNode("msu/status[5]").setValue( modeindex );
+   me.itself["root"][index].getNode("msu/status[5]").setValue( modeindex );
 }
 
 
@@ -470,9 +488,7 @@ Inertial.set_index = func( index, modeindex ) {
 AirDataComputer = {};
 
 AirDataComputer.new = func {
-   var obj = { parents : [AirDataComputer,System],
-
-               adcs : nil
+   var obj = { parents : [AirDataComputer,System]
              };
 
    obj.init();
@@ -481,15 +497,13 @@ AirDataComputer.new = func {
 };
 
 AirDataComputer.init = func {
-   me.init_ancestor("/instrumentation/adc[0]");
-
-   me.adcs = props.globals.getNode("/instrumentation").getChildren("adc");
+   me.inherit_system("/instrumentation","adc");
 }
 
 AirDataComputer.amber_adc = func {
     var result = constant.FALSE;
 
-    if( !me.slave["electric"].getChild("specific").getValue() ) {
+    if( !me.dependency["electric"].getChild("specific").getValue() ) {
         result = constant.TRUE;
     }
 
@@ -500,7 +514,7 @@ AirDataComputer.red_ads = func {
     var result = constant.FALSE;
 
     for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-         if( !me.adcs[i].getChild("serviceable").getValue() ) {
+         if( !me.itself["root"][i].getChild("serviceable").getValue() ) {
              result = constant.TRUE;
          }
     }

@@ -21,7 +21,8 @@
 
    N1 :
    - 40 % inside, passenger almost hears the same sound.
-   - 70 % outside, a delay to swap between whistle and exhaust noise.
+   - 50 % outside, a delay to swap between whistle and exhaust noise.
+   - landing (noisy) is above 50 %, except touch down.
 
 
    Positions of engines (estimated) :
@@ -35,6 +36,12 @@
    TO DO :
    =====
    - one cannot include sounds in a common file.
+
+
+   Known problems :
+   ==============
+   - interpolated property /systems/engines/transit is not used on its all range,
+   because nasal might not reach 0.0 or 1.0.
 
 
    References :
@@ -402,6 +409,16 @@
       <property>/sim/current-view/internal</property>
      </not>
      <or>
+      <less-than>
+       <property>/systems/engines/transit</property>
+       <value>0.05</value>
+      </less-than>
+      <greater-than>
+       <property>/systems/engines/transit</property>
+       <value>0.95</value>
+      </greater-than>
+     </or>
+     <or>
       <property>/engines/engine[0]/running</property>
       <property>/engines/engine[1]/running</property>     
       <property>/engines/engine[2]/running</property>     
@@ -409,19 +426,19 @@
      </or>
      <less-than>
       <property>/engines/engine[0]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[1]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[2]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[3]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <not>
       <or>
@@ -492,6 +509,16 @@
       <property>/sim/current-view/internal</property>
      </not>
      <or>
+      <less-than>
+       <property>/systems/engines/transit</property>
+       <value>0.05</value>
+      </less-than>
+      <greater-than>
+       <property>/systems/engines/transit</property>
+       <value>0.95</value>
+      </greater-than>
+     </or>
+     <or>
       <property>/engines/engine[0]/running</property>
       <property>/engines/engine[1]/running</property>     
       <property>/engines/engine[2]/running</property>     
@@ -499,19 +526,19 @@
      </or>
      <less-than>
       <property>/engines/engine[0]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[1]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[2]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[3]/n1</property>
-      <value>60.0</value>     
+      <value>50.0</value>     
      </less-than>
      <not>
       <or>
@@ -581,7 +608,7 @@
   </engine>
 
   <engine>
-   <name>external power</name>
+   <name>external transit</name>
    <path>Aircraft/Concorde/Sounds/con2.wav</path>
    <mode>looped</mode>
    <condition>
@@ -589,54 +616,20 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <greater-than-equals>
+      <property>/systems/engines/transit</property>
+      <value>0.05</value>
+     </greater-than-equals>
+     <less-than-equals>
+      <property>/systems/engines/transit</property>
+      <value>0.95</value>
+     </less-than-equals>
      <or>
       <property>/engines/engine[0]/running</property>
       <property>/engines/engine[1]/running</property>     
       <property>/engines/engine[2]/running</property>     
       <property>/engines/engine[3]/running</property>     
      </or>
-     <or>
-      <greater-than-equals>
-       <property>/engines/engine[0]/n1</property>
-       <value>60.0</value>     
-      </greater-than-equals>
-      <greater-than-equals>
-       <property>/engines/engine[1]/n1</property>
-       <value>60.0</value>     
-      </greater-than-equals>
-      <greater-than-equals>
-       <property>/engines/engine[2]/n1</property>
-       <value>60.0</value>     
-      </greater-than-equals>
-      <greater-than-equals>
-       <property>/engines/engine[3]/n1</property>
-       <value>60.0</value>     
-      </greater-than-equals>
-     </or>
-     <less-than>
-      <property>/engines/engine[0]/n1</property>
-      <value>70.0</value>     
-     </less-than>
-     <less-than>
-      <property>/engines/engine[1]/n1</property>
-      <value>70.0</value>     
-     </less-than>
-     <less-than>
-      <property>/engines/engine[2]/n1</property>
-      <value>70.0</value>     
-     </less-than>
-     <less-than>
-      <property>/engines/engine[3]/n1</property>
-      <value>70.0</value>     
-     </less-than>
-     <not>
-      <or>
-       <property>/engines/engine[0]/augmentation</property>
-       <property>/engines/engine[1]/augmentation</property>
-       <property>/engines/engine[2]/augmentation</property>
-       <property>/engines/engine[3]/augmentation</property>
-      </or>
-     </not>     
      <less-than>
       <property>/systems/engines/engine[0]/bucket-deg</property>
       <value>40</value>
@@ -698,6 +691,16 @@
       <property>/sim/current-view/internal</property>
      </not>
      <or>
+      <less-than>
+       <property>/systems/engines/transit</property>
+       <value>0.05</value>
+      </less-than>
+      <greater-than>
+       <property>/systems/engines/transit</property>
+       <value>0.95</value>
+      </greater-than>
+     </or>
+     <or>
       <property>/engines/engine[0]/running</property>
       <property>/engines/engine[1]/running</property>     
       <property>/engines/engine[2]/running</property>     
@@ -706,19 +709,19 @@
      <or>
       <greater-than-equals>
        <property>/engines/engine[0]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[1]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[2]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[3]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <property>/engines/engine[0]/augmentation</property>
       <property>/engines/engine[1]/augmentation</property>

@@ -13,7 +13,18 @@
 
   <group>
     <layout>hbox</layout>
-    <empty><stretch>true</stretch></empty>
+
+    <button>
+      <legend>Autopilot</legend>
+      <key>a</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-autopilot</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
 
     <button>
       <legend>Crew</legend>
@@ -76,9 +87,12 @@
     </button>
   </group>
 
+  <text>
+    <label></label>
+  </text>
+
   <group>
     <layout>hbox</layout>
-    <empty><stretch>true</stretch></empty>
 
     <button>
       <legend>Navigation</legend>
@@ -86,6 +100,18 @@
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-navigation</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Procedures</legend>
+      <key>p</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-procedures</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>
@@ -110,6 +136,18 @@
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-systems</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Voice</legend>
+      <key>v</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-voice</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>

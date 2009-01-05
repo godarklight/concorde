@@ -13,9 +13,9 @@
 
  <params>
   <control-starter>/controls/engines/engine[0]/starter</control-starter>
-  <control-relight>/controls/engines/engine[0]/relight</control-relight>
-  <engine-relight>/systems/electrical/outputs/probe/ac-relight1</engine-relight>
-  <air-pressure>/systems/air-bleed/engine[0]/cross-psi</air-pressure>
+  <control-relight>/systems/engines/engine[0]/relight</control-relight>
+  <engine-relight>/systems/electrical/power/relight[0]</engine-relight>
+  <air-pressure>/systems/air-bleed/power/cross[0]</air-pressure>
   <num>/systems/engines/engine[0]/engine-num</num>
  </params>
 
@@ -185,10 +185,7 @@
      <not>
       <property alias="../../../../../../params/control-starter"/>
      </not>
-     <greater-than>
-      <property alias="../../../../../../params/engine-relight"/>
-      <value>110.0</value>
-     </greater-than>
+     <property alias="../../../../../params/engine-relight"/>
     </and>
    </condition>
    <x>-5</x>
@@ -213,14 +210,8 @@
      <not>
       <property alias="../../../../../../params/control-relight"/>
      </not>
-     <greater-than>
-      <property alias="../../../../../../params/engine-relight"/>
-      <value>110.0</value>
-     </greater-than>
-     <greater-than-equals>
-      <property alias="../../../../../../params/air-pressure"/>
-      <value>35.0</value>
-     </greater-than-equals>
+     <property alias="../../../../../params/engine-relight"/>
+     <property alias="../../../../../params/air-pressure"/>
     </and>
    </condition>
    <x>-5</x>

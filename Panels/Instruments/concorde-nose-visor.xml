@@ -31,7 +31,7 @@ extended/retracted in three steps.
 <PropertyList>
 
  <name>Nose/visor quadrant</name>
- <w-base>150</w-base>
+ <w-base>130</w-base>
  <h-base>150</h-base>
 
 
@@ -46,8 +46,8 @@ extended/retracted in three steps.
     <y1>0.0</y1>
     <y2>1.0</y2>
    </texture>
-   <w>110</w>
-   <h>110</h>
+   <w>130</w>
+   <h>125</h>
   </layer>
 
   <layer>
@@ -91,7 +91,7 @@ extended/retracted in three steps.
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>10</point-size>
+   <point-size>11</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -100,17 +100,17 @@ extended/retracted in three steps.
    <chunks>
     <chunk>
      <type>literal</type>
-     <text>VISOR/NOSE</text>
+     <text>VISOR / NOSE</text>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-33</offset>
+     <offset>-43</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-70</offset>
+     <offset>-75</offset>
     </transformation>
    </transformations>
   </layer>
@@ -120,6 +120,33 @@ extended/retracted in three steps.
 <!-- === -->
 
 <!-- visor up left -->
+
+  <layer>
+   <name>Title up</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-55</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>37</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
  <layer>
   <name>visor up left led</name>
@@ -189,6 +216,33 @@ extended/retracted in three steps.
 
 <!-- visor up right -->
 
+  <layer>
+   <name>Title up</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>UP</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>45</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>37</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  <layer>
   <name>visor up right led</name>
   <type>switch</type>
@@ -256,6 +310,33 @@ extended/retracted in three steps.
  </layer>
 
 <!-- visor down left -->
+
+  <layer>
+   <name>Title visor 0 deg</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>VIS/0</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
  <layer>
   <name>visor down left led</name>
@@ -325,6 +406,33 @@ extended/retracted in three steps.
 
 <!-- visor down right -->
 
+  <layer>
+   <name>Title visor 0 deg</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>VIS/0</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  <layer>
   <name>visor down right led</name>
   <type>switch</type>
@@ -392,6 +500,33 @@ extended/retracted in three steps.
  </layer>
 
 <!-- 5 deg left -->
+
+  <layer>
+   <name>Title 5 deg</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>5</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-52</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-17</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
  <layer>
   <name>5 deg left led</name>
@@ -461,6 +596,33 @@ extended/retracted in three steps.
 
 <!-- 5 deg right -->
 
+  <layer>
+   <name>Title 5 deg</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>5</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>47</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-17</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  <layer>
   <name>5 deg right led</name>
   <type>switch</type>
@@ -529,6 +691,33 @@ extended/retracted in three steps.
 
 <!-- nose down left -->
 
+  <layer>
+   <name>Title down</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DOWN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-60</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-45</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
  <layer>
   <name>nose down left led</name>
   <type>switch</type>
@@ -593,6 +782,33 @@ extended/retracted in three steps.
  </layer>
 
 <!-- nose down right -->
+
+  <layer>
+   <name>Title down</name>
+   <type>text</type>
+   <point-size>6</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>DOWN</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>40</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-45</offset>
+    </transformation>
+   </transformations>
+  </layer>
 
  <layer>
   <name>nose down right led</name>

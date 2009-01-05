@@ -24,13 +24,15 @@ ConcordeMain.new = func {
 }
 
 # the possible relations :
+# ----------------------
+
 # - pumpsystem : Pump.new(),
 #   inside another system / instrument, to synchronize the objects.
 
 # - me.electricalsystem = electrical;
 #   local pointer to the global object, to call its nasal code.
 
-# - <slave>/instrumentation/altimeter[0]</slave>
+# - <dependency>/systems/electrical</dependency>
 #   tag in the instrumentation / system initialization, to read the properties.
 
 # - <static-port>/systems/static</static-port>
@@ -48,9 +50,11 @@ ConcordeMain.putinrelation = func {
 
    wiperinstrument.set_relation( noseinstrument );
 
-   copilotcrew.set_relation( autopilotsystem, lightingsystem, MWSsystem );
-   engineercrew.set_relation( autopilotsystem, fuelsystem, lightingsystem );
-   calloutcrew.set_relation( autopilotsystem );
+   copilotcrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, flightsystem, lightingsystem, MWSsystem, voicecrew );
+   engineercrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem, fuelsystem, lightingsystem, voicecrew );
+   voicecrew.set_relation( autopilotsystem );
+
+   engineerhuman.set_relation( seatsystem );
 }
 
 ConcordeMain.synchronize = func {
@@ -101,7 +105,7 @@ ConcordeMain.sec5cron = func {
    autothrottlesystem.slowschedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
-   copilotcrew.schedule();
+   copilotcrew.fastschedule();
    copilothuman.schedule();
    engineerhuman.schedule();
 
@@ -140,34 +144,46 @@ ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
-   engineercrew.slowschedule();
+   engineercrew.veryslowschedule();
 
    # schedule the next call
    settimer(func { me.sec60cron(); },60);
 }
 
 ConcordeMain.savedata = func {
-   aircraft.data.add("/controls/anti-ice/icing-model/duration/few-min");
-   aircraft.data.add("/controls/anti-ice/icing-model/duration/scattered-min");
-   aircraft.data.add("/controls/anti-ice/icing-model/duration/broken-min");
-   aircraft.data.add("/controls/anti-ice/icing-model/duration/overcast-min");
-   aircraft.data.add("/controls/anti-ice/icing-model/duration/clear-min");
-   aircraft.data.add("/controls/anti-ice/icing-model/temperature/max-degc");
-   aircraft.data.add("/controls/anti-ice/icing-model/temperature/min-degc");
-   aircraft.data.add("/controls/crew/timeout");
-   aircraft.data.add("/controls/crew/voice/sound");
-   aircraft.data.add("/controls/crew/voice/text");
-   aircraft.data.add("/controls/human/lighting/night");
-   aircraft.data.add("/controls/seat/recover");
-   aircraft.data.add("/controls/seat/yoke");
-   aircraft.data.add("/systems/fuel/presets");
-   aircraft.data.add("/systems/human/serviceable");
-   aircraft.data.add("/systems/seat/position/observer/x-m");
-   aircraft.data.add("/systems/seat/position/observer/y-m");
-   aircraft.data.add("/systems/seat/position/observer/z-m");
-   aircraft.data.add("/systems/seat/position/steward/x-m");
-   aircraft.data.add("/systems/seat/position/steward/y-m");
-   aircraft.data.add("/systems/seat/position/steward/z-m");
+   var saved_props = [ "/controls/anti-ice/icing-model/duration/few-min",
+                       "/controls/anti-ice/icing-model/duration/scattered-min",
+                       "/controls/anti-ice/icing-model/duration/broken-min",
+                       "/controls/anti-ice/icing-model/duration/overcast-min",
+                       "/controls/anti-ice/icing-model/duration/clear-min",
+                       "/controls/anti-ice/icing-model/temperature/max-degc",
+                       "/controls/anti-ice/icing-model/temperature/min-degc",
+                       "/controls/autoflight/fg-waypoint",
+                       "/controls/autoflight/real-nav",
+                       "/controls/captain/countdown",
+                       "/controls/copilot/landing-lights",
+                       "/controls/crew/captain-busy",
+                       "/controls/crew/checklist",
+                       "/controls/crew/ins-alignment",
+                       "/controls/crew/night-lighting",
+                       "/controls/crew/timeout",
+                       "/controls/crew/timeout-s",
+                       "/controls/seat/recover",
+                       "/controls/seat/yoke",
+                       "/controls/voice/sound",
+                       "/controls/voice/text",
+                       "/systems/fuel/presets",
+                       "/systems/human/serviceable",
+                       "/systems/seat/position/observer/x-m",
+                       "/systems/seat/position/observer/y-m",
+                       "/systems/seat/position/observer/z-m",
+                       "/systems/seat/position/steward/x-m",
+                       "/systems/seat/position/steward/y-m",
+                       "/systems/seat/position/steward/z-m" ];
+
+   for( var i = 0; i < size(saved_props); i = i + 1 ) {
+        aircraft.data.add(saved_props[i]);
+   }
 }
 
 # global variables in Concorde namespace, for call by XML
@@ -215,7 +231,7 @@ ConcordeMain.instantiate = func {
 
    globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
    globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
-   globals.Concorde.calloutcrew = Concorde.Callout.new();
+   globals.Concorde.voicecrew = Concorde.Voice.new();
 
    globals.Concorde.copilothuman = Concorde.Copilothuman.new();
    globals.Concorde.engineerhuman = Concorde.Engineerhuman.new();
@@ -223,6 +239,8 @@ ConcordeMain.instantiate = func {
 
 # general initialization
 ConcordeMain.init = func {
+   aircraft.livery.init("Aircraft/Concorde/Models/Liveries", "sim/model/livery/name", "sim/model/livery/index");
+
    me.instantiate();
    me.putinrelation();
    me.synchronize();

@@ -28,15 +28,15 @@ Speeds :
     Vmcg (ground)                                : 116 kt.
 
 Procedures :
-    Takeoff (408000 lb) : nose 5°, afterburner, V1 165 kt, VR 195 kt, pitch 13.5° at rotation,
+    Takeoff (408000 lb) : nose 5 deg, afterburner, V1 165 kt, VR 195 kt, pitch 13.5 deg at rotation,
                           V2 220 kt.
     Subsonic cruise : Mach 0.95.
     Acceleration : afterburner at Mach 0.93; air intakes starts closing at Mach 1.3;
                    stop afterburner at Mach 1.7.
     Supersonic cruise : Mach 2.0 at FL500.
     Supersonic descent : decelerate at 350 kt, 250 NM before the subsonic level.
-    Landing (245000 lb) : nose 12.5°, VREF 162 kt, pitch 10° at touch down.
-    Taxi : nose 5°, only 2 engines (B).
+    Landing (245000 lb) : nose 12.5 deg, VREF 162 kt, pitch 10 deg at touch down.
+    Taxi : nose 5 deg, only 2 engines (G).
     Parking : nose and visor up, as weather seal (A1).
 
 Runway : 11200 ft takeoff, 7300 ft landing (C).
@@ -47,7 +47,7 @@ Range :
     6228 km [3360 nm] with FAR fuel reserves and maximum payload (F).
 Duration : Paris / New York 3h45 (D), London Heathrow / New York 3h50 (E).
 Maximum operating altitude : 60000 ft (C).
-Maximum total temperature (TMO) : 127°C on nose.
+Maximum total temperature (TMO) : 127 degC on nose.
 
 
 Concorde ops
@@ -55,7 +55,7 @@ Concorde ops
 Takeoff
 -------
 - the visor is raised not long after takeoff, to make cockpit quieter (A1).
-- the visor protects the windscreen from the 125°C temperature at Mach 2 (A1).
+- the visor protects the windscreen from the 125 degC temperature at Mach 2 (A1).
 
 Subsonic cruise
 ---------------
@@ -122,7 +122,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 1.0.0 : minimal version.
+- 1.9.0 : minimal version.
 
 
 Keyboard
@@ -138,27 +138,29 @@ Keyboard
 
 Views
 -----
-- "ctrl-E" : "E"ngineer view.
-- "ctrl-J" : Copilot view.
-- "ctrl-K" : Observer view (floating).
-- "ctrl-O" : "O"verhead view.
-- "ctrl-W" : Ste"W"ard view (floating).
+- "ctrl-E"       : "E"ngineer view.
+- "ctrl-J"       : Copilot view.
+- "ctrl-K"       : Observer view (floating).
+- "ctrl-O"       : "O"verhead view.
+- "ctrl-W"       : Ste"W"ard view (floating).
 - "shift-ctrl-X" : restore floating view.
 
 Virtual crew
 ------------
 - "shift-ctrl-R" : show c"R"ew text.
-- "ctrl-Z" : virtual crew.
+- "ctrl-Z"       : virtual crew.
 
 Unchanged behaviour
 -------------------
-- "left / right : changes autopilot heading.
-- "x / X"  : zooms in the small fonts; reset with "ctrl-X".
+- "left / : changes autopilot heading.
+   right"
+- "x / X" : zooms in the small fonts; reset with "ctrl-X".
 
 Same behaviour
 --------------
 - "b / B"  : brakes / parking brakes.
 - "g / G"  : gear.
+- "s"      : engine start.
 - "S"      : swaps between Captain and Center 2D panels.
 - "ctrl-A" : "A"ltitude acquire.
 - "ctrl-G" : "G"lide slope.
@@ -169,25 +171,30 @@ Same behaviour
 
 Improved behaviour
 ------------------
-- "a / A" : speeds up BOTH speed and time. Until X 5 subsonic, X 7 supersonic;
-            automatically resets to 1, when above 3500 ft/min.
-- "ctrl-H" : "H"eading hold.
-- "page up / page down" : increases / decreases speed hold, Mach hold.
-- "up / down"  : increases / decreases (fast) altitude hold, vertical speed hold, pitch hold,
-                 speed hold with pitch, Mach hold with pitch.
-- "home / end" : increases / decreases (slow) altitude hold, vertical speed hold, pitch hold,
-                 speed hold with pitch, Mach hold with pitch.
+- "a / A"     : speeds up BOTH speed and time. Until X 5 subsonic, X 7 supersonic;
+                automatically resets to 1, when above 3500 ft/min.
+- "ctrl-H"    : "H"eading hold.
+- "page up /  : increases / decreases speed hold, Mach hold.
+   page down"
+- "up /       : increases / decreases (fast) altitude hold, vertical speed hold, pitch hold,
+   down"        speed hold with pitch, Mach hold with pitch.
+- "home /     : increases / decreases (slow) altitude hold, vertical speed hold, pitch hold,
+   end"         speed hold with pitch, Mach hold with pitch.
 
 Alternate behaviour
 -------------------
-- "ctrl-B" : reverse thrust used as speedbrake (FDM not implemented).
-- "ctrl-I" : menu.
-- "ctrl-T" : altitude hold.
-- "[ / ]"  : nose used as flaps.
-- "left / right" : move floating view in width.
-- "up / down"  : move floating view in length.
-- "home / end" : move floating view in length (fast).
-- "page up / page down" : move floating view in height.
+- "ctrl-B"    : reverse thrust used as speedbrake (FDM not implemented).
+- "ctrl-I"    : menu.
+- "ctrl-T"    : altitude hold.
+- "[ / ]"     : nose used as flaps.
+- "left /     : move floating view in width.
+   right"
+- "up /       : move floating view in length.
+   down"
+- "home /     : move floating view in length (fast).
+   end"
+- "page up /  : move floating view in height.
+   page down"
 
 
 Mouse
@@ -198,6 +205,7 @@ The 3rd button of mouse :
 
 Autopilot
 ---------
+- avoid default autopilot setting (F10 key), use 2D panel or 3D cockpit.
 - before pressing "TH" (track/heading), select "HDG" magnetic heading, or "TRK" true heading,
   with mouse 3rd button.
 - "HH" (heading hold) is always magnetic.
@@ -216,7 +224,7 @@ Engine
   The starter requires air bleed, either from the ground service (open 1 cross bleed valve),
   or by its adjacent running engine (open 2 cross bleed valve).
   The starter is not required in flight (relight), if enough speed.
-- the 1st engine start requires AC voltage, either from the ground service (steward view),
+- the 1st engine start requires AC voltage, either from the ground supply ("ctrl-I g"),
   or in flight (4 engines flame out) by the emergency generator :
   * activate the virtual copilot.
   * deploy the RAM Air Turbine : standby instruments work.
@@ -251,7 +259,7 @@ The 2D Panel has simplified buttons for :
 Fuel
 ----
 - "Aft" transfers forwards trim tanks (9, 10) to aft trim tanks (11).
-  "Forward" does the reverse transfer (only to 9).
+- "Forward" does the reverse transfer (only to 9).
 - "Engine" transfers trim tanks to the main tanks (5, 7) : choose the direction "Aft" or "Forw".
 - the transfert valve feeds a main tank (5, 7) by its auxilliary tank (5A, 7A);
 - "Jettison" (2 buttons for confirmation) dumps the trim (9, 10, 11) and collector tanks
@@ -261,30 +269,26 @@ Fuel
 
 Virtual crew
 ============
-- to enable only 1 crew member, press "ctrl-I c".
-- the virtual crew is independent of the voice callouts.
+- the virtual crew operates parallely to the voice callouts.
 - a green crew member is performing his checklist.
 - a yellow crew member is not performing his checklist.
+- a checklist in process is white.
+- by default, virtual crew triggers checklists, if in flight :
+  for manual operation, press "ctrl-I p s".
 
 3D
 --
 - to activate 3D, press "ctrl-I c".
-- a crew member without headset is not performing his checklist.
 
 Captain
 -------
-- brake release triggers the count down before takeoff.
+- by default, Captain tasks are performed by other crew members :
+  for call by the crew member reading the checklist, press "ctrl-I p s".
 
 Copilot
 -------
-- is never the pilot in command; except 4 engines flameout : holds the aircraft during
-  engine start.
-- gear, nose and lightning (subsonic only).
-
-Engineer
---------
-- center of gravity, tanks and engine rating / schedule (not supported by FDM).
-- taxi with 2 engines, after landing.
+- the copilot is never the pilot in command;
+  except 4 engines flameout, where he holds the aircraft during engine start.
 
 
 Alarms
@@ -295,7 +299,7 @@ Sound
 -----
 - beep    : amber or red warning.
 - beep (continuous) : loss of MWS.
-- beep (repeated)   : press the red warnings on MWS.
+- beep (repeated)   : press red warnings on MWS, or press cancel audio.
 - horn    : too low speed.
 - pull-up : excessive descent speed; too low gear at approach, nose not down at touch down.
 - rattle  : overspeed.
@@ -321,7 +325,7 @@ Overhead
 - "ICE"   : engine and wing anti-icing expected.
 - "INS"   : INS not aligned, or in failure.
 - "INT"   : intake without hydraulics.
-- "PFC"   : flight control channel on green or mechanical.
+- "PFC"   : electrical failure, or no green or blue hydraulics.
 - "PRESS" : pressurization failure, no air conditioning.
 - "THROT" : throttle failure.
 
@@ -339,6 +343,7 @@ Electrical
 ..........
 - "DC ESS BUS"   : no voltage from AC essential bus and battery.
 - "DC MAIN BUS"  : no voltage from AC main bus.
+- "FAIL"   : electrical failure.
 
 Engines
 .......
@@ -486,7 +491,7 @@ White
 
 Electrical
 ..........
-- "GROUND PWR AVAILABLE" : electrical power from ground service.
+- "GROUND PWR AVAILABLE" : electrical power from ground supply.
 
 Engines
 .......
@@ -559,8 +564,6 @@ JSBSim
 TO DO
 =====
 - battery discharge.
-- control max cruise mode with TMO temperature (B).
-- move a few procedures to tutorials.
 
 TO DO instruments
 -----------------
@@ -569,6 +572,8 @@ TO DO instruments
 
 TO FDM
 -------
+- fix negativ elevator drag.
+- gear wedge, when no hydraulics.
 - inertia of surfaces.
 - move autopilot PID inside the FDM ?
 - additional drag when RAT.
@@ -581,15 +586,11 @@ and always a complete test (autoland, subsonic, supersonic).
 
 TO DO JSBSim
 ------------
-- reverse thrust is not implemented : ctrl-B only animates the lights and nozzles.
 - failure on only 1 intake at once.
 
 
 Known problems
 ==============
-- the file in application-data (saved configuration) causes the bounce at loading
- (it seems to trim over the runway) : in case of FDM crash, remove this file
- at each launch.
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
@@ -600,34 +601,27 @@ Known problems autoland
 -----------------------
 - nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
   but EGLL 27R, KJFK 22L are wrong : to land at these airports,
-  set /controls/autoflight/real-nav to false, by "ctrl-I g".
+  set /controls/autoflight/real-nav to false, by "ctrl-I a".
 
 Known problems sound
 --------------------
-- once one of engines is shutdown, Concorde-sound.xml engines are mute, if not idle.
+- once 1 engine is shutdown, Concorde-sound.xml engines are mute, if not idle.
 - ATIS volume (VHF) changed only at the frequency swap.
 - exception through OpenAL errors (low hardware ?) means too many sounds :
   remove for example engine start/shutdown or external sounds.
 
-Known problems keyboard
------------------------
-- because of ctrl-I overriding, TAB altimeter menu is not available with GLUT.
-
 Known problems OSG
 ------------------
-The following artefacts are supposed to be solved by OSG (works with 1.0.0 / Plib) :
+The following artefacts are supposed to be solved by OSG :
 - missing hotspots.
 - panels swaping too early.
 - instrument transparent through layer with alpha (steward view).
-- blurr on texture crop (example : left edge of artificial horizon). 
 - transparency order of blinking anti-collision light over wing.
-- dark external lights.
-- no cockpit lighting.
-- engineer 3D seat/crew doesn't rotate forwards at takeoff (reset by ctrl-E).
 
 
 Secondary problems
 ==================
+- electrical system may have 1 s failure during checklist of engine start.
 
 Secondary problems FDM
 -----------------------
@@ -638,16 +632,15 @@ Secondary problems FDM
 
 Secondary problems JSBSim
 -------------------------
-- AoA at 180°, when one breaks strongly (empty tanks).
+- AoA at 180 deg, when one breaks strongly (empty tanks).
 
 Secondary problems autopilot
 ----------------------------
-- confirm autoland landing speed, whatever the wind.
 - to substitute the IVSI, see Systems/Concorde-init-instrumentation.xml.
 
 Secondary problems instruments
 ----------------------------
-- see Panels/Instruments/ReadmeInstruments.txt
+- red brake warnings may light abnormally (XML bug ?).
 
 Secondary problems sound
 ------------------------
@@ -665,8 +658,7 @@ References
 
 (A4) http://www.airliners.net/discussions/tech_ops/read.main/60137/ :
 
-(B) http://sebby2.free.fr/pm2/PM2C_V2_MANUAL.exe/ :
-    http://www.fsfrance.com/Projets/Mach2/Download.htm/ :
+(B) http://denis-camus.club.fr/Concorde/PM2C_V2_MANUAL.exe :
     scan of an Air France ops manual (in French).
 
 (C) http://www.titanic.com/story/159/Concorde/ :
@@ -677,8 +669,10 @@ References
 
 (F) http://www.aeroflight.co.uk/types/international/aerospat-bac/concorde/concorde.htm :
 
+(G) http://concorde.docs.free.fr/ :
+
     http://www.flight-manuals-on-cd.com/Concorde.html/ :
     British Airways flight manual 1979, 1600 pages. 
 
 
-8 May 2008.
+4 January 2009.

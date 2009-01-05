@@ -6,7 +6,11 @@
      - avoids nasal nil values or non-member error.
      - nasal instruments are also serviceable.
 
-     - <slave> is a real dependancy on instruments.
+
+     Relations :
+     =========
+     - <dependency> is a real dependency.
+     - <itself> is the instrument.
      - <noinstrument> is to built the instrument.
 
 
@@ -63,12 +67,14 @@
    <fuel-datum-kg type="double">0.0</fuel-datum-kg>                        <!-- initial load -->
    <fuel-remaining-kg type="double">0.0</fuel-remaining-kg>
 
-   <slave>
-    <fuel-consumed>
-     <component>/instrumentation</component>
-     <subcomponent>fuel-consumed</subcomponent>
-    </fuel-consumed>
-   </slave>
+   <relations>
+    <dependency>
+     <fuel-consumed>
+      <component>/instrumentation</component>
+      <subcomponent>fuel-consumed</subcomponent>
+     </fuel-consumed>
+    </dependency>
+   </relations>
 
    <weight-datum-lb type="double">0.0</weight-datum-lb>                    <!-- without fuel -->
    <weight-real-lb alias="/fdm/jsbsim/inertia/weight-lbs"/>
@@ -78,9 +84,11 @@
   <adc n="0">
    <serviceable type="bool">true</serviceable>
 
-   <slave>
-    <electric>/systems/electrical/power</electric>
-   </slave>
+   <relations>
+    <dependency>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+   </relations>
   </adc>
 
   <adc n="1">
@@ -100,15 +108,17 @@
   </adf>
 
   <airspeed-indicator n="0">
+   <relations>
+    <dependency>
+     <weight>/instrumentation/ac-weight</weight>
+    </dependency>
+
+    <noinstrument>
+     <altitude>/position/altitude-ft</altitude>
+    </noinstrument>
+   </relations>
+
    <vmo-kt type="double">999.0</vmo-kt>
-
-   <noinstrument>
-    <altitude>/position/altitude-ft</altitude>
-   </noinstrument>
-
-   <slave>
-    <weight>/instrumentation/ac-weight</weight>
-   </slave>
   </airspeed-indicator>
 
   <airspeed-indicator n="1">
@@ -185,10 +195,12 @@
    <min-percent type="double">0.0</min-percent>
    <percent type="double">50.0</percent>
 
-   <slave>
-    <mach>/instrumentation/mach-indicator[0]</mach>
-    <weight>/instrumentation/ac-weight</weight>
-   </slave>
+   <relations>
+    <dependency>
+     <mach>/instrumentation/mach-indicator[0]</mach>
+     <weight>/instrumentation/ac-weight</weight>
+    </dependency>
+   </relations>
   </cg>
 
   <cg n="1">
@@ -202,9 +214,13 @@
   </cg>
 
   <clock>
-   <noinstrument>
-    <altitude>/position/altitude-ft</altitude>
-   </noinstrument>
+   <relations>
+    <noinstrument>
+     <altitude>/position/altitude-ft</altitude>
+     <speed-up>/sim/speed-up</speed-up>
+     <warp>/sim/time/warp</warp>
+    </noinstrument>
+   </relations>
   </clock>
 
   <compass n="0">
@@ -225,8 +241,18 @@
 
   <differential-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <differential-psi>0.0</differential-psi>
-   <static-pressure>/systems/static/pressure-inhg</static-pressure>        <!-- outside pressure -->
+
+   <relations>
+    <dependency>
+     <static-pressure>/systems/static/pressure-inhg</static-pressure>      <!-- outside pressure -->
+    </dependency>
+
+    <noinstrument>
+     <pressure>/systems/pressurization/pressure-inhg</pressure>
+    </noinstrument>
+   </relations>
   </differential-pressure>
 
   <dme n="0">                                                              <!-- specific DME -->
@@ -248,23 +274,50 @@
    <serviceable type="bool">true</serviceable>
   </encoder>
 
+  <frequencymeter>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-hz type="double">0.0</indicated-hz>
+  </frequencymeter>
+
   <fuel>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <fuel-flow-kg_ph type="double">0.0</fuel-flow-kg_ph>
+
+   <relations>
+    <dependency>
+     <tank>
+      <component>/consumables/fuel</component>
+      <subcomponent>tank</subcomponent>
+     </tank>
+    </dependency>
+
+    <noinstrument>
+     <speed-up>/sim/speed-up</speed-up>
+    </noinstrument>
+   </relations>
+
    <total-gal_us type="double">0.0</total-gal_us>
    <total-kg type="double">0.0</total-kg>
   </fuel>
 
   <fuel-consumed n="0">
+   <relations>
+    <dependency>
+     <engine>
+      <component>/engines</component>
+      <subcomponent>engine</subcomponent>
+     </engine>
+    </dependency>
+
+    <noinstrument>
+     <speed-up>/sim/speed-up</speed-up>
+    </noinstrument>
+   </relations>
+
    <reset type="bool">false</reset>                                        <!-- by virtual engineer -->
    <total-kg type="double">0.0</total-kg>
-
-   <slave>
-    <engine>
-     <component>/engines</component>
-     <subcomponent>engine</subcomponent>
-    </engine>
-   </slave>
   </fuel-consumed>
 
   <fuel-consumed n="1">
@@ -281,6 +334,10 @@
    <reset type="bool">false</reset>
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
+
+  <generic>
+   <factor type="double">1.0</factor>                                      <!-- otherwise material doesn't work with OSG -->
+  </generic>
 
   <hf n="0">
    <frequencies>
@@ -357,17 +414,21 @@
     <status type="int" n="5">5</status>
    </msu>
 
-   <noinstrument>
-    <position>/position</position>
-    <track>/autopilot/settings/true-heading-deg</track>
-    <true>/orientation/heading-deg</true>
-   </noinstrument>
+   <relations>
+    <dependency>
+     <autopilot>/autopilot/route-manager</autopilot>
+     <electric>/systems/electrical/power</electric>
+     <quick>/controls/crew/ins-alignment</quick>
+     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+    </dependency>
 
-   <slave>
-    <autopilot>/autopilot/route-manager</autopilot>
-    <electric>/systems/electrical/power</electric>
-    <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
-   </slave>
+    <noinstrument>
+     <speed-up>/sim/speed-up</speed-up>
+     <position>/position</position>
+     <track>/autopilot/settings/true-heading-deg</track>
+     <true>/orientation/heading-deg</true>
+    </noinstrument>
+   </relations>
   </ins>
 
   <ins n="1">
@@ -490,17 +551,19 @@
    <max type="double">0.95</max>
    <mmo-mach type="double">999.0</mmo-mach>
 
-   <noinstrument>
-    <airspeed>/velocities/airspeed-kt</airspeed>
-    <mach>/velocities/mach</mach>
-    <temperature>/environment/temperature-degc</temperature>
-   </noinstrument>
+   <relations>
+    <dependency>
+     <altimeter>/instrumentation/altimeter[0]</altimeter>
+     <cg>/instrumentation/cg[0]</cg>
+     <weight>/instrumentation/ac-weight</weight>
+    </dependency>
 
-   <slave>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
-    <cg>/instrumentation/cg[0]</cg>
-    <weight>/instrumentation/ac-weight</weight>
-   </slave>
+    <noinstrument>
+     <airspeed>/velocities/airspeed-kt</airspeed>
+     <mach>/velocities/mach</mach>
+     <temperature>/environment/temperature-degc</temperature>
+    </noinstrument>
+   </relations>
   </mach-indicator>
 
   <mach-indicator n="1">
@@ -551,17 +614,23 @@
    <to-from>
     <serviceable>true</serviceable>
    </to-from>
-   <slaved-to-gps type="bool">false</slaved-to-gps>
+   <dependencyd-to-gps type="bool">false</dependencyd-to-gps>
    <volume type="double">0.0</volume>
   </nav>
 
   <nose-visor>
    <pos-norm alias="/surface-positions/flap-pos-norm"/>
 
-   <slave>
-    <hydraulic>/systems/hydraulic/power</hydraulic>
-    <wiper>/instrumentation/wiper/power</wiper>
-   </slave>
+   <relations>
+    <dependency>
+     <hydraulic>/systems/hydraulic/power</hydraulic>
+     <wiper>/instrumentation/wiper/power</wiper>
+    </dependency>
+
+    <itself>
+     <nose>/controls/nose-visor</nose>
+    </itself>
+   </relations>
   </nose-visor>
 
   <radar>                                                                  <!-- TCAS 1) required by AI -->
@@ -598,10 +667,17 @@
 
   <tank-pressure>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <differential-psi>0.0</differential-psi>
    <falling type="bool" >false</falling>
    <raising type="bool" >false</raising>
-   <static-port>/systems/static</static-port>                              <!-- outside pressure -->
+
+   <relations>
+    <dependency>
+     <static-port>/systems/static/pressure-inhg</static-port>              <!-- outside pressure -->
+     <tank>/systems/tank/pressure-inhg</tank>
+    </dependency>
+   </relations>
   </tank-pressure>
 
   <tas-indicator>
@@ -615,11 +691,20 @@
    <nb-traffics type="int">0</nb-traffics>
    <range type="int" archive="y">45</range>                                <!-- maximum range -->
 
-   <slave>
-    <ai>/ai/models</ai>
-    <altimeter>/instrumentation/altimeter[0]</altimeter>
-    <electric>/systems/electrical/power</electric>
-   </slave>
+   <relations>
+    <dependency>
+     <ai>/ai/models</ai>
+     <altimeter>/instrumentation/altimeter[0]</altimeter>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+
+    <itself>
+     <traffic>
+      <component>/instrumentation/tcas/traffics</component>
+      <subcomponent>traffic</subcomponent>
+     </traffic>
+    </itself>
+   </relations>
 
    <traffics>
     <traffic n="0">
@@ -659,13 +744,15 @@
    <indicated-static-degc alias="/environment/temperature-degc"/>
    <isa-degc type="double">20.0</isa-degc>
 
-   <slave>
-    <altimeter>
-     <component>/instrumentation</component>
-     <subcomponent>altimeter</subcomponent>
-    </altimeter>
-    <electric>/systems/electrical/power</electric>
-   </slave>
+   <relations>
+    <dependency>
+     <altimeter>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter</subcomponent>
+     </altimeter>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+   </relations>
   </temperature>
 
   <temperature n="1">
@@ -688,6 +775,18 @@
    <id-code type="int">1200</id-code>
   </transponder>
 
+  <voltmeter-ac>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-volt type="double">0.0</indicated-volt>
+  </voltmeter-ac>
+
+  <voltmeter-dc>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <indicated-volt type="double">0.0</indicated-volt>
+  </voltmeter-dc>
+
 <!--
   <weather-radar>
    <serviceable type="bool" archive="y">true</serviceable>
@@ -703,26 +802,37 @@
 -->
 
   <weight-switch>
+   <relations>
+    <dependency>
+     <gear>
+      <component>/gear</component>
+      <subcomponent>gear</subcomponent>
+     </gear>
+    </dependency>
+
+    <noinstrument>
+     <agl>/position/altitude-agl-ft</agl>
+    </noinstrument>
+   </relations>
+
    <wow type="bool">true</wow>
-
-   <noinstrument>
-    <agl>/position/altitude-agl-ft</agl>
-   </noinstrument>
-
-   <slave>
-    <gear>
-     <component>/gear</component>
-     <subcomponent>gear</subcomponent>
-    </gear>
-   </slave>
   </weight-switch>
 
   <wiper>
    <power type="bool">false</power>
 
-   <slave>
-    <electric>/systems/electrical/power</electric>
-   </slave>
+   <relations>
+    <dependency>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+
+    <itself>
+     <motor>
+      <component>/controls/wiper</component>
+      <subcomponent>motor</subcomponent>
+     </motor>
+    </itself>
+   </relations>
   </wiper>
 
 </PropertyList>

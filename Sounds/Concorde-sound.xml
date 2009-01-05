@@ -15,6 +15,7 @@
 
    Known problems :
    ==============
+   - once an engine is stopped, engine sound is mute, except idle.
    - the number of sound is limited, because low hardware gets OpenAL errors in
    SGSoundSample::SGSoundSample() : AL_INVALID_VALUE error on alGenSources
    (Device->MaxNoOfSources reached ?).
@@ -327,19 +328,19 @@
      </or>
      <less-than>
       <property>/engines/engine[0]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[1]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[2]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[3]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <not>
       <or>
@@ -417,19 +418,19 @@
      </or>
      <less-than>
       <property>/engines/engine[0]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[1]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[2]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[3]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <not>
       <or>
@@ -515,19 +516,19 @@
      </or>
      <less-than>
       <property>/engines/engine[0]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[1]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[2]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <less-than>
       <property>/engines/engine[3]/n1</property>
-      <value>70.0</value>     
+      <value>50.0</value>     
      </less-than>
      <not>
       <or>
@@ -630,25 +631,41 @@
      <or>
       <greater-than-equals>
        <property>/engines/engine[0]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[1]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[2]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <greater-than-equals>
        <property>/engines/engine[3]/n1</property>
-       <value>70.0</value>     
+       <value>50.0</value>     
       </greater-than-equals>
       <property>/engines/engine[0]/augmentation</property>
       <property>/engines/engine[1]/augmentation</property>
       <property>/engines/engine[2]/augmentation</property>
       <property>/engines/engine[3]/augmentation</property>
      </or>
+     <less-than>
+      <property>/systems/engines/engine[0]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[1]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[2]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
+     <less-than>
+      <property>/systems/engines/engine[3]/bucket-deg</property>
+      <value>40</value>
+     </less-than>
     </and>
    </condition>
    <volume>

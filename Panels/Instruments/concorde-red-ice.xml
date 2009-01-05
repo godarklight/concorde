@@ -10,10 +10,6 @@
  <w-base>104</w-base>
  <h-base>26</h-base>
 
- <params>
-  <ice-select>/systems/mws/red/ice</ice-select>
- </params>
-
 
  <layers>
 <!-- translucent lens -->  
@@ -28,12 +24,9 @@
      <or include="concorde-cond-voltage-bulb.xml">
       <and>
        <or include="concorde-cond-test-mws.xml"/>     <!-- bug -->
-       <or>
-        <not>
-         <property alias="../../../../../../../../../params/ice-select"/>
-        </not>
-        <property>/controls/mws/inhibit</property>
-       </or>
+       <not>
+        <property>/systems/mws/red/ice</property>
+       </not>
       </and>
      </or>
     </condition>
@@ -93,8 +86,12 @@
    <h>26</h>
    <binding>
     <command>property-assign</command>
-    <property alias="../../../../params/ice-select"/>
+    <property>/systems/mws/red/ice</property>
     <value>false</value>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 

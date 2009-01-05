@@ -253,8 +253,25 @@
  <actions>
 
   <action>
-   <name>toggle switch</name>
+   <name>toggle off</name>
    <button>0</button>
+   <x>-32</x>
+   <y>-19</y>
+   <w>44</w>
+   <h>44</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/switch-on"/>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>toggle switch</name>
+   <button>1</button>
    <condition>
     <property alias="../../../../params/switch-on"/>
    </condition>
@@ -273,15 +290,15 @@
   </action>
 
   <action>
-   <name>toggle off</name>
-   <button>1</button>
-   <x>-32</x>
+   <name>toggle off 2</name>
+   <button>0</button>
+   <x>32</x>
    <y>-19</y>
    <w>44</w>
    <h>44</h>
    <binding>
     <command>property-toggle</command>
-    <property alias="../../../../params/switch-on"/>
+    <property alias="../../../../params/switch2-on"/>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -291,7 +308,7 @@
 
   <action>
    <name>toggle switch 2</name>
-   <button>0</button>
+   <button>1</button>
    <condition>
     <property alias="../../../../params/switch2-on"/>
    </condition>
@@ -302,23 +319,6 @@
    <binding>
     <command>property-toggle</command>
     <property alias="../../../../params/high2"/>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
-  <action>
-   <name>toggle off 2</name>
-   <button>1</button>
-   <x>32</x>
-   <y>-19</y>
-   <w>44</w>
-   <h>44</h>
-   <binding>
-    <command>property-toggle</command>
-    <property alias="../../../../params/switch2-on"/>
    </binding>
    <binding>
     <command>property-toggle</command>

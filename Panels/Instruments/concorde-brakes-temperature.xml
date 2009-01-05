@@ -1,6 +1,10 @@
 <!-- Brakes temperature :
 
+     - highest temperature.
+     - brake temperature, by pressing red light.
      - test : highest temperature + 270 deg.
+
+     - heat provides the energy.
 -->
 
 <PropertyList>
@@ -68,21 +72,17 @@
     </transformation>
     <transformation>
      <type>rotation</type>
-     <condition include="concorde-cond-voltage-inst.xml"/>
-     <property>/systems/hydraulic/brakes/test-degc</property>
-     <min>0</min>
-     <max>700</max>
-     <scale>0.36</scale>
+     <condition>
+      <not include="concorde-cond-test-brakes.xml"/>
+     </condition>
+     <offset>97.2</offset>           <!-- + 270 deg C -->
     </transformation>
     <transformation>
      <type>rotation</type>
-     <condition>
-      <and>
-       <or include="concorde-cond-voltage-inst.xml"/>
-       <not include="concorde-cond-test-brakes.xml"/>
-      </and>
-     </condition>
-     <offset>97.2</offset>           <!-- + 270 deg C -->
+     <property>/systems/brakes/test-degc</property>
+     <min>0</min>
+     <max>900</max>
+     <scale>0.36</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>

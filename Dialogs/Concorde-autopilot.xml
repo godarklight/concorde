@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-autopilot</name>
+  <layout>vbox</layout>
+
+  <text>
+    <label>Concorde autopilot</label>
+  </text>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+      <label>INS</label>
+    </text>
+
+    <group>
+     <layout>vbox</layout>
+     <halign>left</halign>
+
+     <checkbox>
+       <halign>left</halign>
+       <label>Waypoint input toggles autopilot (not real)  ~</label>
+       <property>/controls/autoflight/fg-waypoint</property>
+       <binding>
+        <command>property-toggle</command>
+        <property>/controls/autoflight/fg-waypoint</property>
+       </binding>
+     </checkbox>
+    </group>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label>Autoland</label>
+    </text>
+
+    <checkbox>
+      <halign>left</halign>
+      <label>Nav accurate until 0 ft AGL (real)  ~</label>
+      <property>/controls/autoflight/real-nav</property>
+      <binding>
+       <command>property-toggle</command>
+       <property>/controls/autoflight/real-nav</property>
+      </binding>
+    </checkbox>
+
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+   <layout>hbox</layout>
+
+   <button>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Menu</legend>
+    <key>m</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+  </group>
+</PropertyList>

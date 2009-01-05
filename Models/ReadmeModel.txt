@@ -80,7 +80,6 @@ the other texture with alpha is for clipping of 2D instruments.
 
 TO DO
 =====
-- visor well.
 - compression of gear spring.
 - afterburner smoke.
 - levers.
@@ -91,8 +90,6 @@ TO DO
 
 Known problems
 ==============
-- removing polygons (mainly the wings) could increase the frame rate :
-  it will be waited for hardware upgrade.
 - polygons with no area must be removed with Utils/Modeller/ac3d-despeckle, after Blender export.
 
 Known problems outside
@@ -104,7 +101,6 @@ Known problems outside
 
 Known problems cockpit
 ----------------------
-- top left of engineer panel should reach cockpit ceiling.
 - overhead slightly too large ?
 
 
@@ -157,9 +153,10 @@ Updates (-) and additions (+) to the original model                             
 - split of primary nozzles (reheat off texture).                                        2.4
 + windshield wipers.                                                                    2.5 
 - shift aft the texture of front doors.                                                 2.5
++ visor well.                                                                           2.6
 
 
-Made with Blender 2.45.
+Made with Blender 2.48.
 
 
-30 March 2008.
+29 November 2008.
