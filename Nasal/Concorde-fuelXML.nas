@@ -1115,7 +1115,7 @@ Tanks.inittank = func( no, contentlb, overfull, underfull, lowlevel ) {
        me.tanks[no].getChild("under-full-lb").setValue( valuelb );
    }
    if( lowlevel ) {
-       me.tanks[no].getChild("low-level-lbs").setValue( me.LOWLEVELLB[no] );
+       me.tanks[no].getChild("low-level-lb").setValue( me.LOWLEVELLB[no] );
    }
 }
 
