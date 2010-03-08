@@ -980,14 +980,92 @@
 <!-- DEFAULT SOUNDS -->
 
   <shock>
-   <name>shock</name>
+   <name>shock front</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <and>
+     <property>/gear/gear[0]/wow</property>
+     <less-than>
+      <property>/velocities/vertical-speed-fps</property>
+      <value>0</value>
+     </less-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/velocities/speed-down-fps</property>
+    <factor>0.05</factor>
+   </volume>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+   </volume>
+   <volume>
+    <internal>dt_stop</internal>
+    <factor>0.05</factor>
+    <max>1.0</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0025</factor>
+    <offset>1.2</offset>
+   </pitch>
+   <position>
+    <x>19.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <max-dist>20.0</max-dist>
+  </shock>
+
+  <shock>
+   <name>shock left</name>
    <path>Sounds/squeal.wav</path>
    <condition>
     <and>
      <or>
-      <property>/gear/gear[0]/wow</property>
       <property>/gear/gear[1]/wow</property>
       <property>/gear/gear[2]/wow</property>
+     </or>
+     <less-than>
+      <property>/velocities/vertical-speed-fps</property>
+      <value>0</value>
+     </less-than>
+    </and>
+   </condition>
+   <volume>
+    <property>/velocities/speed-down-fps</property>
+    <factor>0.05</factor>
+   </volume>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+   </volume>
+   <volume>
+    <internal>dt_stop</internal>
+    <factor>0.05</factor>
+    <max>1.0</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0025</factor>
+    <offset>1.2</offset>
+   </pitch>
+   <position>
+    <x>37.0</x>
+    <y>-4.0</y>
+    <z>0.0</z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <max-dist>20.0</max-dist>
+  </shock>
+
+  <shock>
+   <name>shock right</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <and>
+     <or>
       <property>/gear/gear[3]/wow</property>
       <property>/gear/gear[4]/wow</property>
      </or>
@@ -1015,6 +1093,11 @@
     <factor>0.0025</factor>
     <offset>1.2</offset>
    </pitch>
+   <position>
+    <x>37.0</x>
+    <y>4.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </shock>
@@ -1027,6 +1110,11 @@
    <volume>
     <factor>0.15</factor>
    </volume>
+   <position>
+    <x>7.0</x>                                                   <!-- nose -->
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>10.0</reference-dist>
    <max-dist>20.0</max-dist>
   </flap>
@@ -1046,6 +1134,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </gear>
@@ -1059,6 +1152,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </stall>
@@ -1072,6 +1170,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </overspeed>
@@ -1085,6 +1188,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </terrain>
@@ -1098,6 +1206,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </cavalry>
@@ -1111,6 +1224,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </single-gong>
@@ -1124,6 +1242,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </repeated-gong>
@@ -1137,6 +1260,11 @@
      <property>/sim/current-view/internal</property>
     </and>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </gong>
@@ -1168,6 +1296,11 @@
    <condition>
     <property>/instrumentation/generic/click</property>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </click>
@@ -1180,6 +1313,11 @@
      <property>/instrumentation/generic/click</property>
     </not>
    </condition>
+   <position>
+    <x>8.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+   </position>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </click>

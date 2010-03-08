@@ -5,10 +5,12 @@
 <PropertyList>
 
  <name>Digital Altimeter display</name>
- <w-base>95</w-base>
- <h-base>45</h-base>
+ <w-base>128</w-base>
+ <h-base>128</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>background</name>
@@ -53,9 +55,9 @@
    <layer>
     <name>Altitude display</name>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/altimeter[2]/serviceable</property>
-     </and>
+     <not>
+      <property>/instrumentation/altimeter[2]/warning-flag</property>
+     </not>
     </condition>
     <type>text</type>
     <font>led</font>

@@ -10,8 +10,8 @@
 <PropertyList>
 
  <name>Radio altimeter</name>
- <w-base>180</w-base>
- <h-base>180</h-base>
+ <w-base>128</w-base>
+ <h-base>128</h-base>
 
  <params>
   <voltage>/systems/electrical/outputs/standby-radio-alt</voltage>
@@ -25,24 +25,15 @@
 
  <layers>
 
-<!-- radio altimeter -->
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>background altimeter</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-radio-alt.rgb</path>
    </texture>
-    <w>128</w>
-    <h>128</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-25</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
-   </transformations>
+   <w>109</w>
+   <h>109</h>
   </layer>
 
   <layer>
@@ -65,16 +56,16 @@
     <x2>1.0</x2>
     <y2>0.546875</y2>
    </texture>
-   <w>30</w>
-   <h>17</h>
+   <w>26</w>
+   <h>15</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>10</offset>
+     <offset>30</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>35</offset>
+     <offset>21</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -85,8 +76,8 @@
   
   <layer>
    <name>DH bug</name>
-   <w>20</w>
-   <h>15</h>
+   <w>17</w>
+   <h>13</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.8515625</x1>
@@ -96,21 +87,13 @@
    </texture>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>-25</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
-    <transformation>
      <type>rotation</type>
      <property alias="../../../../../params/dial-ft"/>
      <scale>0.36</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>52</offset>
+     <offset>44</offset>
     </transformation>
    </transformations>
   </layer>
@@ -124,17 +107,9 @@
     <x2>0.8375</x2>
     <y2>1.0</y2>
    </texture>
-   <w>6</w>
-   <h>30</h>
+   <w>5</w>
+   <h>26</h>
    <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-25</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>10</offset>
-    </transformation>
     <transformation>
      <condition>
       <and>
@@ -159,7 +134,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>34</offset> <!-- needle tail is black -->
+     <offset>29</offset> <!-- needle tail is black -->
     </transformation>
    </transformations>
   </layer> 
@@ -173,16 +148,16 @@
     <x2>1.0</x2>
     <y2>0.5</y2>
    </texture>
-   <w>135</w>
-   <h>135</h>
+   <w>115</w>
+   <h>115</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-23</offset>
+     <offset>2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>8</offset>
+     <offset>-2</offset>
     </transformation>
    </transformations>
   </layer>
@@ -203,11 +178,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>34</offset>
+     <offset>46</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-49</offset>
+     <offset>-46</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -224,10 +199,10 @@
   <action>
    <name>Minus 10</name>
    <button>0</button>
-   <x>22</x>
-   <y>-62</y>
-   <w>13</w>
-   <h>26</h>
+   <x>36</x>
+   <y>-57</y>
+   <w>11</w>
+   <h>22</h>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/decision-ft"/>
@@ -247,10 +222,10 @@
   <action>
    <name>Plus 10</name>
    <button>0</button>
-   <x>35</x>
-   <y>-62</y>
-   <w>13</w>
-   <h>26</h>
+   <x>47</x>
+   <y>-57</y>
+   <w>11</w>
+   <h>22</h>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/decision-ft"/>
@@ -270,10 +245,10 @@
   <action>
    <name>Cancel Decision Height warning</name>
    <button>1</button>
-   <x>22</x>
-   <y>-62</y>
-   <w>26</w>
-   <h>26</h>
+   <x>36</x>
+   <y>-57</y>
+   <w>22</w>
+   <h>22</h>
    <binding>
     <command>property-assign</command>
     <property alias="../../../../params/decision-ctrl"/>

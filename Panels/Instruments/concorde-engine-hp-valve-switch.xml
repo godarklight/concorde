@@ -2,7 +2,7 @@
 
 <!-- engine HP valve switch :
 
-     - requires starter or relight : relight effective only if allowed by JSBSim (enough speed).
+     - requires starter or relight : relight is effective only if allowed by JSBSim (enough speed).
      - no test of light.
 -->
 
@@ -14,10 +14,7 @@
 
  <params>
   <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
-  <cutoff>/engines/engine[0]/cutoff</cutoff>
-  <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-  <relight>/systems/engines/engine[0]/relight</relight>
-  <starter>/engines/engine[0]/starter</starter>
+  <hp-valve>/controls/engines/engine[0]/hp-valve</hp-valve>
  </params>
 
 
@@ -45,9 +42,7 @@
     <name>off</name>
     <type>group</type>
     <condition>
-     <not>
-      <property alias="../../../../../../params/cutoff"/>
-     </not>
+     <property alias="../../../../../params/hp-valve"/>
     </condition>
 
     <layer include="concorde-bulb-white-off.xml">
@@ -217,7 +212,9 @@
     </transformation>
     <transformation>
      <condition>
-      <property alias="../../../../../../params/cutoff"/>
+      <not>
+       <property alias="../../../../../../../params/hp-valve"/>
+      </not>
      </condition>
      <type>y-shift</type>
      <offset>-15</offset>
@@ -316,13 +313,9 @@
   <action>
    <desc>Open valve</desc>
    <condition>
-    <and>
-     <property alias="../../../../../params/cutoff"/>
-     <or>
-      <property alias="../../../../../../params/starter"/>
-      <property alias="../../../../../../params/relight"/>
-     </or>
-    </and>
+    <not>
+     <property alias="../../../../../params/hp-valve"/>
+    </not>
    </condition>
    <button>0</button>
    <x>-13</x>
@@ -331,7 +324,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property alias="../../../../params/control-cutoff"/>
+    <property alias="../../../../params/hp-valve"/>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -342,9 +335,7 @@
   <action>
    <desc>Shut valve</desc>
    <condition>
-    <not>
-     <property alias="../../../../../params/cutoff"/>
-    </not>
+    <property alias="../../../../params/hp-valve"/>
    </condition>
    <button>0</button>
    <x>-13</x>
@@ -353,7 +344,7 @@
    <h>42</h>
    <binding>
     <command>property-toggle</command>
-    <property alias="../../../../params/control-cutoff"/>
+    <property alias="../../../../params/hp-valve"/>
    </binding>
    <binding>
     <command>property-toggle</command>

@@ -7,115 +7,125 @@ Constantaero = {};
 Constantaero.new = func {
    var obj = { parents : [Constantaero],
 
-           NBENGINES : 4,
-           NBINS : 3,
-           NBAUTOPILOTS : 2,                                 # and any system in double
+               NBENGINES : 4,
+               NBINS : 3,
+               NBAUTOPILOTS : 2,                                 # and any system in double
 
-           ENGINE4 : 3,
-           ENGINE3 : 2,
-           ENGINE2 : 1,
-           ENGINE1 : 0,
+               ENGINE4 : 3,
+               ENGINE3 : 2,
+               ENGINE2 : 1,
+               ENGINE1 : 0,
 
-           INS3 : 2,
-           INS2 : 1,
-           INS1 : 0,
+               INS3 : 2,
+               INS2 : 1,
+               INS1 : 0,
 
-           INSOFF : -2,
-           INSSTANDBY : -1,
-           INSALIGN : 0,
+               INSOFF : -2,
+               INSSTANDBY : -1,
+               INSALIGN : 0,
 
-           THROTTLEMAX : 1.0,
-           THROTTLEIDLE : 0.0,
+               AP2 : 1,
+               AP1 : 0,
+               APNONE : -1,
 
-           GEARDOWN : 1.0,
-           GEARUP : 0.0,
+               THROTTLEMAX : 1.0,
+               THROTTLEREV : 0.1,
+               THROTTLEIDLE : 0.0,
 
-           NOSEDOWN : 1.0,
-           NOSEUP : 0.0,
+               GEARDOWN : 1.0,
+               GEARUP : 0.0,
 
-           BRAKEPARKING : 1.0,
-           BRAKEEMERGENCY : 0.5,
-           BRAKENORMAL : 0.0,
+               GEARFRONT : 0,
+               GEARLEFT : 1,
+               GEARRIGHT : 3,
 
-           RATINGTAKEOFF : "takeoff",
-           RATINGFLIGHT : "flight",
-           RATINGCLIMB : "climb",
-           RATINGCRUISE : "cruise",
+               NOSEDOWN : 1.0,
+               NOSEUP : 0.0,
 
-           SCHEDULEAPPROACH : 1,
-           SCHEDULENORMAL : 0,
+               BRAKEPARKING : 1.0,
+               BRAKEEMERGENCY : 0.5,
+               BRAKENORMAL : 0.0,
 
-           FULLLB : 408000,
-           LANDINGLB : 245000,
-           EMPTYLB : 203000,
+               RATINGTAKEOFF : "takeoff",
+               RATINGFLIGHT : "flight",
+               RATINGCLIMB : "climb",
+               RATINGCRUISE : "cruise",
 
-           MAXFPM : 7000.0,                                  # max descent rate
+               SCHEDULEAPPROACH : 1,
+               SCHEDULENORMAL : 0,
 
-           REHEATMACH : 1.7,
-           SOUNDMACH : 1.0,
-           SUBSONICMACH : 0.95,
-           CLIMBMACH : 0.7,
+               FULLLB : 408000,
+               LANDINGLB : 245000,
+               EMPTYLB : 203000,
 
-           NOSEKT : 270,
-           APPROACHKT : 250,
-           GEARKT : 220,
-           V2FULLKT : 220,
-           V2EMPTYKT : 205,                                  # guess
-           VRFULLKT : 195,
-           LANDINGKT : 190,
-           VREMPTYKT : 180,                                  # guess
-           V1FULLKT : 165,
-           VREFFULLKT : 162,
-           VREFEMPTYKT : 152,
-           V1EMPTYKT : 150,                                  # guess
-           TAXIKT : 10,
+               MAXFPM : 7000.0,                                  # max descent rate
 
-           MAXCRUISEFT : 50190,                              # max cruise mode 
-           CRUISEFT : 50000,
-           TRANSITIONFT : 18000,
-           APPROACHFT : 10000,                               # 250 kt
-           LANDINGFT : 3000,                                 # 190 kt
-           CLIMBFT : 1000,
-           REHEATFT : 500,                                   # reheat off
-           GEARFT : 20,                                      # gear retraction
+               REHEATMACH : 1.7,
+               SOUNDMACH : 1.0,
+               SUBSONICMACH : 0.95,
+               CLIMBMACH : 0.7,
+
+               NOSEKT : 270,
+               APPROACHKT : 250,
+               GEARKT : 220,
+               V2FULLKT : 220,
+               V2EMPTYKT : 205,                                  # guess
+               VRFULLKT : 195,
+               LANDINGKT : 190,
+               VREMPTYKT : 180,                                  # guess
+               V1FULLKT : 165,
+               VREFFULLKT : 162,
+               VREFEMPTYKT : 152,
+               V1EMPTYKT : 150,                                  # guess
+               TAXIKT : 10,
+
+               MAXCRUISEFT : 50190,                              # max cruise mode 
+               CRUISEFT : 50000,
+               TRANSITIONFT : 18000,
+               APPROACHFT : 10000,                               # 250 kt
+               LANDINGFT : 3000,                                 # 190 kt
+               CLIMBFT : 1000,
+               REHEATFT : 500,                                   # reheat off
+               GEARFT : 20,                                      # gear retraction
+               LIFTOFFFT : 20,
 
 # AGL altitude, where the gears touch the ground
-           AGLTOUCHFT : 14,
+               AGLTOUCHFT : 14,
 
 # AGL altitude when on ground : radio altimeter is above gear
 # (Z height of center of gravity minus Z height of main landing gear)
-           AGLFT : 11,
+               AGLFT : 11,
 
 # Center of gravity
-           CGMAXTON : 165,
-           CGMINTON : 105,
+               CGMAXTON : 165,
+               CGMINTON : 105,
 
-           CGMLAXLB : 0,
-           CGMINLB : 0,
+               CGMLAXLB : 0,
+               CGMINLB : 0,
 
-           T105mach :    [ 0.82, 0.92, 1.15, 1.50, 2.20 ],
-           Tcgmin105 :    [ 52.00, 53.50, 55.00, 56.50, 57.25 ],
-           Tcgmin105ext : [ 51.30, 53.00, 54.50, 56.00, 56.70 ],
-           CG105 : 0,
+               T105mach :    [ 0.82, 0.92, 1.15, 1.50, 2.20 ],
+               Tcgmin105 :    [ 52.00, 53.50, 55.00, 56.50, 57.25 ],
+               Tcgmin105ext : [ 51.30, 53.00, 54.50, 56.00, 56.70 ],
+               CG105 : 0,
 
-           T165mach :    [ 0.00, 0.80, 0.92, 1.15, 1.50, 2.20 ],
-           Tcgmin165 :    [ 51.80, 51.80, 54.00, 55.50, 57.00, 57.70 ],
-           CG165 : 0,
+               T165mach :    [ 0.00, 0.80, 0.92, 1.15, 1.50, 2.20 ],
+               Tcgmin165 :    [ 51.80, 51.80, 54.00, 55.50, 57.00, 57.70 ],
+               CG165 : 0,
 
-           Tmaxmach :    [ 0.00, 0.27, 0.50, 0.94, 1.65 ],
-           Tcgmax :       [ 53.80, 53.80, 54.00, 57.00, 59.30 ],
-           CGMAX : 0,
+               Tmaxmach :    [ 0.00, 0.27, 0.50, 0.94, 1.65 ],
+               Tcgmax :       [ 53.80, 53.80, 54.00, 57.00, 59.30 ],
+               CGMAX : 0,
 
-           Tperfmach :   [ 0.00, 0.10, 0.45 ],
-           Tcgperf :      [ 54.20, 54.20, 54.50 ],
-           CGPERF : 0,
+               Tperfmach :   [ 0.00, 0.10, 0.45 ],
+               Tcgperf :      [ 54.20, 54.20, 54.50 ],
+               CGPERF : 0,
 
-           Tmaxextmach : [ 0.45, 0.50, 0.94, 1.60 ],
-           Tcgmaxext :    [ 54.25, 54.40, 57.25, 59.50 ],
-           CGMAXEXT : 0,
+               Tmaxextmach : [ 0.45, 0.50, 0.94, 1.60 ],
+               Tcgmaxext :    [ 54.25, 54.40, 57.25, 59.50 ],
+               CGMAXEXT : 0,
 
-           CGFLY : 1,                                        # in flight
-           CGREST : 0                                        # on ground
+               CGFLY : 1,                                        # in flight
+               CGREST : 0                                        # on ground
          };
 
    obj.init();
@@ -199,45 +209,53 @@ Constantaero.interpolate = func( find, vmokt, vmaxkt, vminkt, altmaxft, altminft
        vmokt = vminkt + stepkt;
    }
 
-   # vmokt in argument
-   else
-   {
-   }
+   # otherwise vmokt in argument
 
    return vmokt;
 }
 
 Constantaero.Vkt = func( weightlb, minkt, maxkt ) {
-    var valuekt = 0.0;
+    return me.weightratio( weightlb, minkt, maxkt );
+}
+
+Constantaero.Vrefkt = func( weightlb ) {
+    var valuekt = me.weightratio( weightlb, me.VREFEMPTYKT, me.VREFFULLKT );
     var ratio = 0.0;
 
-    if( weightlb > me.FULLLB ) {
-        valuekt = maxkt;
-    }
-    elsif( weightlb < me.EMPTYLB ) {
-        valuekt = minkt;
-    }
-    else {
-        ratio = ( me.FULLLB - weightlb ) / ( me.FULLLB - me.EMPTYLB );
-        valuekt = maxkt + ( minkt - maxkt ) * ratio;
+    # structural limit
+    if( weightlb > me.LANDINGLB ) {
+        valuekt = me.VREFFULLKT;
     }
 
     return valuekt;
 }
 
-Constantaero.Vrefkt = func( weightlb ) {
-    var valuekt = 0.0;
+Constantaero.weightratio = func( weightlb, empty, full ) {
+    var value = 0.0;
     var ratio = 0.0;
 
-    if( weightlb > me.LANDINGLB ) {
-        valuekt = me.VREFFULLKT;
+    if( weightlb > me.FULLLB ) {
+        valuekt = full;
+    }
+    elsif( weightlb < me.EMPTYLB ) {
+        valuekt = empty;
     }
     else {
         ratio = ( me.FULLLB - weightlb ) / ( me.FULLLB - me.EMPTYLB );
-        valuekt = me.VREFFULLKT + ( me.VREFEMPTYKT - me.VREFFULLKT ) * ratio;
+        value = full + ( empty - full ) * ratio;
     }
 
-   return valuekt;
+    return value;
+}
+
+Constantaero.inboardengine = func( index ) {
+    var result = constant.FALSE;
+
+    if( index == constantaero.ENGINE2 or index == constantaero.ENGINE3 ) {
+        result = constant.TRUE;
+    }
+
+    return result;
 }
 
 
@@ -250,61 +268,63 @@ Constant = {};
 Constant.new = func {
    var obj = { parents : [Constant],
 
+               NIGHTRAD : 1.57,                        # sun below horizon
+
 # artificial intelligence
-           HUMANSEC : 1.0,                         # human reaction time
+               HUMANSEC : 1.0,                         # human reaction time
 
 # angles
-           DEG360 : 360,
-           DEG180 : 180,
-           DEG90 : 90,
+               DEG360 : 360,
+               DEG180 : 180,
+               DEG90 : 90,
 
-# nasal has no boolean                             # faster than "true"/"false"
-           TRUE : 1.0,
-           FALSE : 0.0,
+# nasal has no boolean
+               TRUE : 1.0,                             # faster than "true"/"false"
+               FALSE : 0.0,
 
 # ---------------
 # unit conversion
 # ---------------
 
 # angle
-           DEGTORAD : 0.01745329,
-           RADTODEG : 57.2957795,
+               DEGTORAD : 0.01745329,
+               RADTODEG : 57.2957795,
 # length
-           FEETTOMETER : 0.3048,
-           METERTOFEET : 3.28083989501,
-           NMTOFEET : 6076.11548556,
-           FEETTONM : 0.0001645788,
+               FEETTOMETER : 0.3048,
+               METERTOFEET : 3.28083989501,
+               NMTOFEET : 6076.11548556,
+               FEETTONM : 0.0001645788,
 # pressure
-           INHGTOPSI : 0.491154077497,
-           MBARTOINHG : 0.029529987508,
-           PSITOINHG : 2.03602096738,
+               INHGTOPSI : 0.491154077497,
+               MBARTOINHG : 0.029529987508,
+               PSITOINHG : 2.03602096738,
 # temperature
-           CELSIUSTOK : 273.15,
-           CELSIUSTOF : 1.8,
-           CELSIUS0TOF : 32.0,
-           FTOCELSIUS : 0.0,
-           F0TOCELSIUS : 0.0,
+               CELSIUSTOK : 273.15,
+               CELSIUSTOF : 1.8,
+               CELSIUS0TOF : 32.0,
+               FTOCELSIUS : 0.0,
+               F0TOCELSIUS : 0.0,
 # time
-           HOURTOMINUTE : 60,
-           HOURTOSECOND : 3600,
-           MINUTETOSECOND : 60,
-           MINUTETODECIMAL : 0.01,
+               HOURTOMINUTE : 60,
+               HOURTOSECOND : 3600,
+               MINUTETOSECOND : 60,
+               MINUTETODECIMAL : 0.01,
 # velocity
-           FPSTOKT : 0.592483801296,
-           MPSTOKT : 1.943844,
+               FPSTOKT : 0.592483801296,
+               MPSTOKT : 1.943844,
 # weight
-           GALUSTOKG : 0.0,
-           GALUSTOLB : 6.6,                        # 1 US gallon = 6.6 pound
-           KGTOLB : 2.20462,
-           LBTOGALUS : 0.0,
-           LBTOKG : 0.453592,
-           TONTOLB : 2204.62,
+               GALUSTOKG : 0.0,
+               GALUSTOLB : 6.6,                        # 1 US gallon = 6.6 pound
+               KGTOLB : 2.20462,
+               LBTOGALUS : 0.0,
+               LBTOKG : 0.453592,
+               TONTOLB : 2204.62,
 
 # --------
 # physical
 # --------
-           gammaairstp : 1.4,                      # ratio of specific heats at STP
-           Rpm2ps2pK : 286.0                       # gas constant 286 /m2/s2/K for air
+               gammaairstp : 1.4,                      # ratio of specific heats at STP
+               Rpm2ps2pK : 286.0                       # gas constant 286 /m2/s2/K for air
          };
 
    obj.init();
@@ -317,14 +337,6 @@ Constant.init = func {
    me.LBTOGALUS = 1 / me.GALUSTOLB;
    me.FTOCELSIUS = 1 / me.CELSIUSTOF;
    me.F0TOCELSIUS = - me.CELSIUS0TOF * me.FTOCELSIUS;
-}
-
-Constant.abs = func( value ) {
-   if( value < 0 ) {
-       value = - value;
-   }
-
-   return value;
 }
 
 Constant.clip = func( min, max, value ) {
@@ -351,6 +363,16 @@ Constant.within = func( value, limit, margin ) {
 
    if( ( value > ( limit + margin ) ) or ( value < ( limit - margin ) ) ) {
        result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Constant.not = func( value ) {
+   var result = constant.FALSE;
+
+   if( !value ) {
+       result = constant.TRUE;
    }
 
    return result;
@@ -399,24 +421,24 @@ ConstantISA = {};
 ConstantISA.new = func {
    var obj = { parents : [ConstantISA],
 
-           Taltm : [ -900, 0, 900, 1800, 2700, 3600, 4500, 5400, 6300, 7200,
-                     8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200,
-                     17100, 18000, 18900 ],
-           Tpfactor : [ 1.09, 1.0, 0.898, 0.804, 0.719, 0.641, 0.570, 0.506, 0.447, 0.394,
-                        0.347, 0.304, 0.266, 0.231, 0.201, 0.174, 0.151, 0.131, 0.114, 0.099,
-                        0.086, 0.075, 0.065 ],
-           Ttfactor : [ 1.02, 1.0, 0.98, 0.96, 0.94, 0.92, 0.90, 0.88, 0.86, 0.84,
-                        0.82, 0.80, 0.78, 0.76, 0.75 ],
-           CEILING : 0,
+               Taltm : [ -900, 0, 900, 1800, 2700, 3600, 4500, 5400, 6300, 7200,
+                         8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200,
+                         17100, 18000, 18900 ],
+               Tpfactor : [ 1.09, 1.0, 0.898, 0.804, 0.719, 0.641, 0.570, 0.506, 0.447, 0.394,
+                            0.347, 0.304, 0.266, 0.231, 0.201, 0.174, 0.151, 0.131, 0.114, 0.099,
+                            0.086, 0.075, 0.065 ],
+               Ttfactor : [ 1.02, 1.0, 0.98, 0.96, 0.94, 0.92, 0.90, 0.88, 0.86, 0.84,
+                            0.82, 0.80, 0.78, 0.76, 0.75 ],
+               CEILING : 0,
 
-           SEA_inhg : 29.92,
+               SEA_inhg : 29.92,
+ 
+               STRATODEGC : -57,
+               SEA_degc : 15.0,
 
-           STRATODEGC : -57,
-           SEA_degc : 15.0,
-
-           STRATOSPHERE : 14,
-           SLICE : 2,                         # 900 m steps
-           UNDERSEA : 0                       # below sea level is extrapolated
+               STRATOSPHERE : 14,
+               SLICE : 2,                         # 900 m steps
+               UNDERSEA : 0                       # below sea level is extrapolated
          };
 
    obj.init();
@@ -615,17 +637,17 @@ System = {};
 System.new = func {
    var obj = { parents : [System],
 
-           SYSSEC : 0.0,                               # to be defined !
+               SYSSEC : 0.0,                               # to be defined !
 
-           ready : constant.FALSE,                     # waits for end of initialization
+               ready : constant.FALSE,                     # waits for end of initialization
 
-           RELOCATIONFT : 0.0,                         # max descent speed around 6000 feet/minute.
+               RELOCATIONFT : 0.0,                         # max descent speed around 6000 feet/minute.
 
-           altseaft : 0.0,
+               altseaft : 0.0,
 
-           dependency : {},
-           itself : {},
-           noinstrument : {}
+               dependency : {},
+               itself : {},
+               noinstrument : {}
          };
 
    return obj;
@@ -633,6 +655,7 @@ System.new = func {
 
 System.inherit_system = func( path, subpath = "" ) {
    var fullpath = path;
+   var ctrlpath = string.replace(path,"systems","controls");
 
    var obj = System.new();
 
@@ -644,18 +667,31 @@ System.inherit_system = func( path, subpath = "" ) {
    me.itself = obj.itself;
    me.noinstrument = obj.noinstrument;
 
-   # reserved entry
+   # reserved entries
    if( subpath == "" ) {
        # instrumentation/fuel
        me.itself["root"] = props.globals.getNode(path);
+
+       # controls/fuel
+       me.itself["root-ctrl"] = props.globals.getNode(ctrlpath);
    }
    else {
-       fullpath = fullpath ~ "/" ~ subpath;
-
        # instrumentation/fuel-consumed[0]
        # instrumentation/fuel-consumed[1]
        # instrumentation/fuel-consumed[2]
+       if( find("instrumentation/", fullpath) < 0 and
+           find("systems/", fullpath ) < 0 ) {
+           fullpath = fullpath ~ "/" ~ subpath;
+       }
+
+       # systems/engines/engine[0]
+       # systems/engines/engine[1]
+       # systems/engines/engine[2]
+       # systems/engines/engine[3]
        me.itself["root"] = props.globals.getNode(path).getChildren(subpath);
+
+       # controls/engines/engine
+       me.itself["root-ctrl"] = props.globals.getNode(ctrlpath).getChildren(subpath);
    }
 
    fullpath = fullpath ~ "/relations";

@@ -3,10 +3,12 @@
 <PropertyList>
 
  <name>Discharge valve position indicator</name>
- <w-base>100</w-base>
- <h-base>200</h-base>
+ <w-base>125</w-base>
+ <h-base>250</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge-high.xml"/>
 
   <layer>
    <name>background</name>
@@ -17,14 +19,8 @@
     <x2>0.60</x2>
     <y2>1.0</y2>
    </texture>
-    <w>85</w>
-    <h>187</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>8</offset>
-    </transformation>
-   </transformations>
+   <w>85</w>
+   <h>187</h>
   </layer>
 
 <!-- SYSTEM 1 -->
@@ -47,7 +43,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>23</offset> <!-- aligned left -->
+     <offset>31</offset> <!-- aligned left -->
     </transformation> 
     <transformation>
      <type>x-shift</type>
@@ -87,7 +83,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-4</offset> <!-- aligned right -->
+     <offset>-12</offset> <!-- aligned right -->
     </transformation> 
     <transformation>
      <type>x-shift</type>
@@ -129,7 +125,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-21</offset> <!-- aligned left -->
+     <offset>-13</offset> <!-- aligned left -->
     </transformation> 
     <transformation>
      <type>x-shift</type>
@@ -169,7 +165,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>40</offset> <!-- aligned right -->
+     <offset>32</offset> <!-- aligned right -->
     </transformation> 
     <transformation>
      <type>x-shift</type>
@@ -210,7 +206,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-15</offset>
+     <offset>-23</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -236,7 +232,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>30</offset>
+     <offset>22</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -265,7 +261,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-26</offset>
+     <offset>-34</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -292,7 +288,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>23</offset>
+     <offset>15</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -321,7 +317,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>0</offset>
+     <offset>-8</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -348,7 +344,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -375,7 +371,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -402,7 +398,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -429,7 +425,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -456,7 +452,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -483,7 +479,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -510,7 +506,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -537,7 +533,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -564,7 +560,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>6</offset>
+     <offset>-2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -591,7 +587,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>7</offset>
+     <offset>-1</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -618,7 +614,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>0</offset>
+     <offset>-8</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -647,7 +643,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-29</offset>
+     <offset>-37</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -674,7 +670,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-10</offset>
+     <offset>-18</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -701,7 +697,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>15</offset>
+     <offset>7</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -728,7 +724,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>34</offset>
+     <offset>26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -755,7 +751,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-32</offset>
+     <offset>-40</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

@@ -8,7 +8,7 @@
 
 
      Relations :
-     =========
+
      - <dependency> is a real dependency.
      - <itself> is the instrument.
      - <noinstrument> is to built the instrument.
@@ -19,7 +19,7 @@
      ======================================
      By default Concorde comes with the C++ IVSI.
 
-     Because near Mach 2, when setting vertical speed at +60 ft/min, an IVSI built with
+     Near Mach 2, when setting vertical speed at +60 ft/min, an IVSI built with
      /velocities/vertical-speed-fps doesn't match the altimeter, which may even go down.
      While /velocities/vertical-speed-fps, controlled by autopilot, is correct :
      compare IVSI with /autopilot/internal/vert-speed-fpm.
@@ -41,9 +41,10 @@
      To substitute /velocities/vertical-speed-fps :
      ............................................
      In flight, the IVSI should be steady; a wrong order of FG systems (instruments vs. environment)
-     can create needle vibrations, making the IVSI unusable on some hardware :
+     can create needle vibrations, making the IVSI unusable on some hardware.
      
-     a) set serviceable to false;
+     On each IVSI :
+     a) set servicable to false.
      b) remove the comment around the alias of /velocities/vertical-speed-fps.
 -->
 
@@ -52,14 +53,26 @@
   <accelerometer-aoa n="0">
    <serviceable type="bool">true</serviceable>
 
-   <alpha-deg alias="/orientation/alpha-deg"/>
+   <alpha-deg alias="/instrumentation/adc[0]/output/alpha-deg"/>
+   <failure-flag type="bool">false</failure-flag>
    <g alias="/accelerations/nlf"/>
+
+   <relations>
+    <dependency>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+   </relations>
   </accelerometer-aoa>
 
   <accelerometer-aoa n="1">
    <serviceable type="bool">true</serviceable>
 
-   <alpha-deg alias="/orientation/alpha-deg"/>
+   <alpha-deg alias="/instrumentation/adc[1]/output/alpha-deg"/>
+   <failure-flag type="bool">false</failure-flag>
    <g alias="/accelerations/nlf"/>
   </accelerometer-aoa>
 
@@ -84,15 +97,87 @@
   <adc n="0">
    <serviceable type="bool">true</serviceable>
 
+   <data type="bool">true</data>
+   <fault type="bool">false</fault>
+   <output>
+    <alpha-deg alias="/orientation/alpha-deg"/>
+    <alpha-failure-deg type="double">0.0</alpha-failure-deg>
+    <altitude-ft alias="/instrumentation/altimeter-adc[0]/indicated-altitude-ft"/>
+    <alt-setting-inhg alias="/instrumentation/altimeter-adc[0]/setting-inhg"/>
+    <airspeed-kt alias="/instrumentation/airspeed-adc[0]/indicated-speed-kt"/>
+    <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+    <beta-failure-deg type="double">0.0</beta-failure-deg>
+    <mmo-mach type="double">999.0</mmo-mach>
+    <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+    <tmo-failure-degc type="double">0.0</tmo-failure-degc>
+    <static-degc alias="/environment/temperature-degc"/>
+    <static-failure-degc type="double">0.0</static-failure-degc>
+    <mach alias="/velocities/mach"/>
+    <mach-failure type="double">0.0</mach-failure>
+    <vertical-speed-fps alias="/instrumentation/ivsi-adc[0]/indicated-speed-fps"/>
+    <vmo-kt type="double">999.0</vmo-kt>
+   </output>
+
    <relations>
     <dependency>
      <electric>/systems/electrical/power</electric>
+     <weight>/instrumentation/ac-weight</weight>
     </dependency>
+
+    <itself>
+     <adc-ctrl>
+      <component>/controls/adc</component>
+      <subcomponent>system</subcomponent>
+     </adc-ctrl>
+    </itself>
+
+    <noinstrument>
+     <airspeed>/velocities/airspeed-kt</airspeed>
+     <alpha>/orientation/alpha-deg</alpha>
+     <altimeter>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-adc</subcomponent>
+     </altimeter>
+     <asi>
+      <component>/instrumentation</component>
+      <subcomponent>airspeed-adc</subcomponent>
+     </asi>
+     <altitude>/position/altitude-ft</altitude>
+     <beta>/fdm/jsbsim/aero/beta-deg</beta>
+     <ivsi>
+      <component>/instrumentation</component>
+      <subcomponent>ivsi-adc</subcomponent>
+     </ivsi>
+     <mach>/velocities/mach</mach>
+     <tat>fdm/jsbsim/propulsion/tat-c</tat>
+     <temperature>/environment/temperature-degc</temperature>
+    </noinstrument>
    </relations>
   </adc>
 
   <adc n="1">
    <serviceable type="bool">true</serviceable>
+
+   <data type="bool">true</data>
+   <fault type="bool">false</fault>
+   <output>
+    <alpha-deg alias="/orientation/alpha-deg"/>
+    <alpha-failure-deg type="double">0.0</alpha-failure-deg>
+    <altitude-ft alias="/instrumentation/altimeter-adc[1]/indicated-altitude-ft"/>
+    <alt-setting-inhg alias="/instrumentation/altimeter-adc[1]/setting-inhg"/>
+    <airspeed-kt alias="/instrumentation/airspeed-adc[1]/indicated-speed-kt"/>
+    <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+    <beta-failure-deg type="double">0.0</beta-failure-deg>
+    <mmo-mach type="double">999.0</mmo-mach>
+    <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+    <tmo-failure-degc type="double">0.0</tmo-failure-degc>
+    <static-degc alias="/environment/temperature-degc"/>
+    <static-failure-degc type="double">0.0</static-failure-degc>
+    <mach alias="/velocities/mach"/>
+    <mach-failure type="double">0.0</mach-failure>
+    <vertical-speed-fps alias="/instrumentation/ivsi-adc[1]/indicated-speed-fps"/>
+    <vmo-kt type="double">999.0</vmo-kt>
+   </output>
   </adc>
 
   <adf n="0">
@@ -107,7 +192,69 @@
    <volume-norm type="double">0.0</volume-norm>
   </adf>
 
+  <airspeed-adc n="0">
+   <serviceable type="bool">true</serviceable>
+  </airspeed-adc>
+
+  <airspeed-adc n="1">
+   <serviceable type="bool">true</serviceable>
+  </airspeed-adc>
+
   <airspeed-indicator n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-speed-kt alias="/instrumentation/adc[0]/output/airspeed-kt"/>
+
+   <relations>
+    <dependency>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <electric>/systems/electrical/power</electric>
+     <weight>/instrumentation/ac-weight</weight>
+    </dependency>
+
+    <noinstrument>
+     <altitude>/position/altitude-ft</altitude>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>airspeed-adc</subcomponent>
+     </adc>
+     <sensor>
+      <component>/instrumentation</component>
+      <subcomponent>airspeed-sensor</subcomponent>
+     </sensor>
+    </noinstrument>
+   </relations>
+
+   <standby type="bool">false</standby>
+   <vmo-failure-flag type="bool">false</vmo-failure-flag>
+   <vmo-kt alias="/instrumentation/adc[0]/output/vmo-kt"/>
+  </airspeed-indicator>
+
+  <airspeed-indicator n="1">
+   <serviceable type="bool">true</serviceable>
+
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-speed-kt alias="/instrumentation/adc[1]/output/airspeed-kt"/>
+   <standby type="bool">false</standby>
+   <vmo-failure-flag type="bool">false</vmo-failure-flag>
+   <vmo-kt alias="/instrumentation/adc[1]/output/vmo-kt"/>
+  </airspeed-indicator>
+
+  <airspeed-sensor n="0">
+   <serviceable type="bool">true</serviceable>
+  </airspeed-sensor>
+
+  <airspeed-sensor n="1">
+   <serviceable type="bool">true</serviceable>
+  </airspeed-sensor>
+
+  <airspeed-standby>
+   <serviceable type="bool">true</serviceable>
+
    <relations>
     <dependency>
      <weight>/instrumentation/ac-weight</weight>
@@ -119,32 +266,82 @@
    </relations>
 
    <vmo-kt type="double">999.0</vmo-kt>
-  </airspeed-indicator>
-
-  <airspeed-indicator n="1">
-   <serviceable type="bool">true</serviceable>
-
-   <vmo-kt alias="/instrumentation/airspeed-indicator[0]/vmo-kt"/>
-  </airspeed-indicator>
-
-  <airspeed-standby>
-   <serviceable type="bool">true</serviceable>
-
-   <vmo-kt alias="/instrumentation/airspeed-indicator[0]/vmo-kt"/>
   </airspeed-standby>
+
+  <altimeter n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <indicated-altitude-ft alias="/instrumentation/adc[0]/output/altitude-ft"/>
+   <setting-inhg alias="/instrumentation/adc[0]/output/alt-setting-inhg"/>
+
+   <relations>
+    <dependency>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+
+    <noinstrument>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-adc</subcomponent>
+     </adc>
+     <sensor>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-sensor</subcomponent>
+     </sensor>
+    </noinstrument>
+   </relations>
+
+   <standby type="bool">false</standby>
+   <warning-flag type="bool">false</warning-flag>
+  </altimeter>
 
   <altimeter n="1">
    <serviceable type="bool">true</serviceable>
-   <setting-inhg>29.92</setting-inhg>
+
+   <indicated-altitude-ft alias="/instrumentation/adc[1]/output/altitude-ft"/>
+   <setting-inhg alias="/instrumentation/adc[1]/output/alt-setting-inhg"/>
+   <standby type="bool">false</standby>
+   <warning-flag type="bool">false</warning-flag>
   </altimeter>
 
   <altimeter n="2">
    <serviceable type="bool">true</serviceable>
-   <setting-inhg>29.92</setting-inhg>
+
+   <indicated-altitude-ft alias="/instrumentation/adc[1]/output/altitude-ft"/>
+   <warning-flag type="bool">false</warning-flag>
   </altimeter>
+
+  <altimeter-adc n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter-adc>
+
+  <altimeter-adc n="1">
+   <serviceable type="bool">true</serviceable>
+
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter-adc>
+
+  <altimeter-sensor n="0">
+   <serviceable type="bool">true</serviceable>
+
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter-sensor>
+
+  <altimeter-sensor n="1">
+   <serviceable type="bool">true</serviceable>
+
+   <setting-inhg>29.92</setting-inhg>
+  </altimeter-sensor>
 
   <altimeter-standby>
    <serviceable type="bool">true</serviceable>
+
    <setting-inhg>29.92</setting-inhg>
   </altimeter-standby>
 
@@ -197,7 +394,10 @@
 
    <relations>
     <dependency>
-     <mach>/instrumentation/mach-indicator[0]</mach>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
      <weight>/instrumentation/ac-weight</weight>
     </dependency>
    </relations>
@@ -206,11 +406,11 @@
   <cg n="1">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <max-extreme-percent alias="/instrumentation/cg[0]/max-extreme-percent"/>
-   <max-percent alias="/instrumentation/cg[0]/max-percent"/>
-   <min-extreme-percent alias="/instrumentation/cg[0]/min-extreme-percent"/>
-   <min-percent alias="/instrumentation/cg[0]/min-percent"/>
-   <percent alias="/instrumentation/cg[0]/percent"/>
+   <max-extreme-percent type="double">100.0</max-extreme-percent>
+   <max-percent type="double">100.0</max-percent>
+   <min-extreme-percent type="double">0.0</min-extreme-percent>
+   <min-percent type="double">0.0</min-percent>
+   <percent type="double">50.0</percent>
   </cg>
 
   <clock>
@@ -224,11 +424,34 @@
   </clock>
 
   <compass n="0">
+   <serviceable type="bool">true</serviceable>
+
    <att-ins3 type="bool">false</att-ins3>
+   <heading-deg alias="/orientation/heading-magnetic-deg"/>
+   <heading-failure-deg type="double">0.0</heading-failure-deg>
+   <mode-dg type="bool">false</mode-dg>                                    <!-- magnetic heading -->
+
+   <relations>
+    <dependency>
+     <ins>
+      <component>/instrumentation</component>
+      <subcomponent>ins</subcomponent>
+     </ins>
+    </dependency>
+
+    <noinstrument>
+     <magnetic>/orientation/heading-magnetic-deg</magnetic>
+    </noinstrument>
+   </relations>
   </compass>
 
   <compass n="1">
+   <serviceable type="bool">true</serviceable>
+
    <att-ins3 type="bool">true</att-ins3>
+   <heading-deg alias="/orientation/heading-magnetic-deg"/>
+   <heading-failure-deg type="double">0.0</heading-failure-deg>
+   <mode-dg type="bool">false</mode-dg>                                    <!-- magnetic heading -->
   </compass>
 
   <comm n="0">
@@ -356,8 +579,22 @@
 
    <compass2 type="bool">false</compass2>
    <dev-nav2 type="bool">false</dev-nav2>
+   <heading-deg alias="/instrumentation/compass[0]/heading-deg"/>
    <ins-source type="bool">false</ins-source>
    <nav-ins2 type="bool">false</nav-ins2>
+
+   <relations>
+    <dependency>
+     <compass>
+      <component>/instrumentation</component>
+      <subcomponent>compass</subcomponent>
+     </compass>
+     <ins>
+      <component>/instrumentation</component>
+      <subcomponent>ins</subcomponent>
+     </ins>
+    </dependency>
+   </relations>
   </hsi>
 
   <hsi n="1">
@@ -365,6 +602,7 @@
 
    <compass2 type="bool">true</compass2>
    <dev-nav2 type="bool">true</dev-nav2>
+   <heading-deg alias="/instrumentation/compass[1]/heading-deg"/>
    <ins-source type="bool">false</ins-source>
    <nav-ins2 type="bool">true</nav-ins2>
   </hsi>
@@ -381,6 +619,8 @@
 
    <computed>
     <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <heading-deg alias="/orientation/heading-deg"/>
+    <heading-failure-deg type="double">0.0</heading-failure-deg>
     <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
     <leg-course-error-nm>0.0</leg-course-error-nm>
     <leg-true-course-deg>0.0</leg-true-course-deg>
@@ -443,6 +683,8 @@
 
    <computed>
     <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <heading-deg alias="/orientation/heading-deg"/>
+    <heading-failure-deg type="double">0.0</heading-failure-deg>
     <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
     <leg-course-error-nm>0.0</leg-course-error-nm>
     <leg-true-course-deg>0.0</leg-true-course-deg>
@@ -489,6 +731,8 @@
 
    <computed>
     <ground-speed-fps alias="/fdm/jsbsim/velocities/vg-fps"/>
+    <heading-deg alias="/orientation/heading-deg"/>
+    <heading-failure-deg type="double">0.0</heading-failure-deg>
     <leg-course-deviation-deg>0.0</leg-course-deviation-deg>
     <leg-course-error-nm>0.0</leg-course-error-nm>
     <leg-true-course-deg>0.0</leg-true-course-deg>
@@ -523,62 +767,62 @@
    </msu>
   </ins>
 
-  <inst-vertical-speed-indicator n="0">
+  <ivsi-adc n="0">
    <serviceable type="bool" archive="y">true</serviceable>
-<!--
-   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
--->
-  </inst-vertical-speed-indicator>
 
-  <inst-vertical-speed-indicator n="1">
 <!--
+    <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
+-->
+  </ivsi-adc>
+
+  <ivsi-adc n="1">
    <serviceable type="bool" archive="y">true</serviceable>
--->
+
 <!--
-   <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
+    <indicated-speed-fps alias="/velocities/vertical-speed-fps"/>
 -->
-<!-- only 1 IVSI for 1.0.0 -->
-   <serviceable alias="/instrumentation/inst-vertical-speed-indicator[0]/serviceable"/>
-   <indicated-speed-fps alias="/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps"/>
-   <indicated-speed-fpm alias="/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fpm"/>
-  </inst-vertical-speed-indicator>
+  </ivsi-adc>
 
   <mach-indicator n="0">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <indicated-mach alias="/velocities/mach"/>
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-mach alias="/instrumentation/adc[0]/output/mach"/>
    <min type="double">0.45</min>
    <max type="double">0.95</max>
-   <mmo-mach type="double">999.0</mmo-mach>
+   <mmo-mach alias="/instrumentation/adc[0]/output/mmo-mach"/>
 
    <relations>
     <dependency>
-     <altimeter>/instrumentation/altimeter[0]</altimeter>
-     <cg>/instrumentation/cg[0]</cg>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <cg>
+      <component>/instrumentation</component>
+      <subcomponent>cg</subcomponent>
+     </cg>
+     <electric>/systems/electrical/power</electric>
      <weight>/instrumentation/ac-weight</weight>
     </dependency>
-
-    <noinstrument>
-     <airspeed>/velocities/airspeed-kt</airspeed>
-     <mach>/velocities/mach</mach>
-     <temperature>/environment/temperature-degc</temperature>
-    </noinstrument>
    </relations>
   </mach-indicator>
 
   <mach-indicator n="1">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <indicated-mach alias="/velocities/mach"/>
-   <max alias="/instrumentation/mach-indicator[0]/max"/>
-   <min alias="/instrumentation/mach-indicator[0]/min"/>
-   <mmo-mach alias="/instrumentation/mach-indicator[0]/mmo-mach"/>
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-mach alias="/instrumentation/adc[1]/output/mach"/>
+   <min type="double">0.45</min>
+   <max type="double">0.95</max>
+   <mmo-mach alias="/instrumentation/adc[1]/output/mmo-mach"/>
   </mach-indicator>
 
   <mach-indicator n="2">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <indicated-mach alias="/velocities/mach"/>
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-mach alias="/instrumentation/adc[0]/output/mach"/>
   </mach-indicator>
 
   <marker-beacon>
@@ -626,10 +870,6 @@
      <hydraulic>/systems/hydraulic/power</hydraulic>
      <wiper>/instrumentation/wiper/power</wiper>
     </dependency>
-
-    <itself>
-     <nose>/controls/nose-visor</nose>
-    </itself>
    </relations>
   </nose-visor>
 
@@ -657,12 +897,14 @@
 
   <side-slip n="0">
    <serviceable type="bool" archive="y">true</serviceable>
-   <angle-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+
+   <angle-deg alias="/instrumentation/adc[0]/output/beta-deg"/>
   </side-slip>
 
   <side-slip n="1">
    <serviceable type="bool" archive="y">true</serviceable>
-   <angle-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+
+   <angle-deg alias="/instrumentation/adc[1]/output/beta-deg"/>
   </side-slip>
 
   <tank-pressure>
@@ -682,6 +924,7 @@
 
   <tas-indicator>
    <serviceable type="bool" archive="y">true</serviceable>
+
    <indicated-speed-fps alias="/fdm/jsbsim/velocities/vt-fps"/>
   </tas-indicator>
 
@@ -740,16 +983,18 @@
   <temperature n="0">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <indicated-tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
-   <indicated-static-degc alias="/environment/temperature-degc"/>
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-tmo-degc alias="/instrumentation/adc[0]/output/tmo-degc"/>
+   <indicated-static-degc alias="/instrumentation/adc[0]/output/static-degc"/>
    <isa-degc type="double">20.0</isa-degc>
+   <isa-failure-flag type="bool">false</isa-failure-flag>
 
    <relations>
     <dependency>
-     <altimeter>
+     <adc>
       <component>/instrumentation</component>
-      <subcomponent>altimeter</subcomponent>
-     </altimeter>
+      <subcomponent>adc</subcomponent>
+     </adc>
      <electric>/systems/electrical/power</electric>
     </dependency>
    </relations>
@@ -758,9 +1003,11 @@
   <temperature n="1">
    <serviceable type="bool" archive="y">true</serviceable>
 
-   <indicated-tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
-   <indicated-static-degc alias="/environment/temperature-degc"/>
+   <failure-flag type="bool">false</failure-flag>
+   <indicated-tmo-degc alias="/instrumentation/adc[1]/output/tmo-degc"/>
+   <indicated-static-degc alias="/instrumentation/adc[1]/output/static-degc"/>
    <isa-degc type="double">20.0</isa-degc>
+   <isa-failure-flag type="bool">false</isa-failure-flag>
   </temperature>
 
   <temperature n="2">
@@ -775,16 +1022,56 @@
    <id-code type="int">1200</id-code>
   </transponder>
 
+  <vertical-speed-indicator n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <alarm-flag type="bool">false</alarm-flag>
+   <indicated-speed-fps alias="/instrumentation/adc[0]/output/vertical-speed-fps"/>
+
+   <relations>
+    <dependency>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+   </relations>
+  </vertical-speed-indicator>
+
+  <vertical-speed-indicator n="1">
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <alarm-flag type="bool">false</alarm-flag>
+   <indicated-speed-fps alias="/instrumentation/adc[1]/output/vertical-speed-fps"/>
+  </vertical-speed-indicator>
+
   <voltmeter-ac>
    <serviceable type="bool" archive="y">true</serviceable>
 
    <indicated-volt type="double">0.0</indicated-volt>
+
+   <relations>
+    <dependency>
+     <ac>/controls/electric/ac</ac>
+     <frequency-meter>/instrumentation/frequencymeter</frequency-meter>
+     <probe>/systems/electrical/outputs/probe</probe>
+    </dependency>
+   </relations>
   </voltmeter-ac>
 
   <voltmeter-dc>
    <serviceable type="bool" archive="y">true</serviceable>
 
    <indicated-volt type="double">0.0</indicated-volt>
+
+   <relations>
+    <dependency>
+     <dc>/controls/electric/dc</dc>
+     <probe>/systems/electrical/outputs/probe</probe>
+     <suppliers>/systems/electrical/suppliers</suppliers>
+    </dependency>
+   </relations>
   </voltmeter-dc>
 
 <!--

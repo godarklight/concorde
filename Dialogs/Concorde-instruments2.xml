@@ -180,8 +180,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>DME 2</label>
-   <property>/instrumentation/dme[1]/serviceable</property>
+   <label>Compass 2</label>
+   <property>/instrumentation/compass[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -189,8 +189,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Fuel weight</label>
-   <property>/instrumentation/fuel/serviceable</property>
+   <label>DME 2</label>
+   <property>/instrumentation/dme[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -198,8 +198,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Heading</label>
-   <property>/instrumentation/heading-indicator/serviceable</property>
+   <label>Fuel weight</label>
+   <property>/instrumentation/fuel/serviceable</property>
   </checkbox>
 
  </group>
@@ -213,8 +213,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>HSI 2</label>
-   <property>/instrumentation/hsi[1]/serviceable</property>
+   <label>Heading</label>
+   <property>/instrumentation/heading-indicator/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -222,8 +222,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>INS 2</label>
-   <property>/instrumentation/ins[1]/serviceable</property>
+   <label>HSI 2</label>
+   <property>/instrumentation/hsi[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -231,8 +231,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Mach 2</label>
-   <property>/instrumentation/mach-indicator[1]/serviceable</property>
+   <label>INS 2</label>
+   <property>/instrumentation/ins[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -246,8 +246,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Magnetic compass</label>
-   <property>/instrumentation/magnetic-compass/serviceable</property>
+   <label>Mach 2</label>
+   <property>/instrumentation/mach-indicator[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -255,8 +255,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Marker beacon</label>
-   <property>/instrumentation/marker-beacon/serviceable</property>
+   <label>Magnetic compass</label>
+   <property>/instrumentation/magnetic-compass/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -264,8 +264,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>NAV 2</label>
-   <property>/instrumentation/nav[2]/serviceable</property>
+   <label>Marker beacon</label>
+   <property>/instrumentation/marker-beacon/serviceable</property>
   </checkbox>
 
  </group>
@@ -279,8 +279,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Radio altimeter 2</label>
-   <property>/instrumentation/radio-altimeter[1]/serviceable</property>
+   <label>NAV 2</label>
+   <property>/instrumentation/nav[2]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -288,8 +288,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Sideslip 2</label>
-   <property>/instrumentation/side-slip[1]/serviceable</property>
+   <label>Radio altimeter 2</label>
+   <property>/instrumentation/radio-altimeter[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -297,8 +297,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>TAS</label>
-   <property>/instrumentation/tas-indicator/serviceable</property>
+   <label>Sideslip 2</label>
+   <property>/instrumentation/side-slip[1]/serviceable</property>
   </checkbox>
 
  </group>
@@ -311,8 +311,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Temperature 2</label>
-   <property>/instrumentation/temperature[1]/serviceable</property>
+   <label>TAS</label>
+   <property>/instrumentation/tas-indicator/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -320,8 +320,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Transponder</label>
-   <property>/instrumentation/transponder/serviceable</property>
+   <label>Temperature 2</label>
+   <property>/instrumentation/temperature[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -329,8 +329,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Turn</label>
-   <property>/instrumentation/turn-indicator/serviceable</property>
+   <label>Transponder</label>
+   <property>/instrumentation/transponder/serviceable</property>
   </checkbox>
 
  </group>
@@ -343,8 +343,17 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
+   <label>Turn</label>
+   <property>/instrumentation/turn-indicator/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>240</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
    <label>Vertical Speed 2</label>
-   <property>/instrumentation/inst-vertical-speed-indicator[1]/serviceable</property>
+   <property>/instrumentation/vertical-speed-indicator[1]/serviceable</property>
   </checkbox>
 
  </group>

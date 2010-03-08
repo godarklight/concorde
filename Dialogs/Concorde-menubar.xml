@@ -70,6 +70,13 @@
        </binding>
       </item>
       <item>
+       <label>Pushback</label>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>pushback</dialog-name>
+       </binding>
+      </item>
+      <item>
        <label>Radio</label>
        <binding>
         <command>dialog-show</command>
@@ -88,13 +95,6 @@
        <binding>
         <command>dialog-show</command>
         <dialog-name>Concorde-voice</dialog-name>
-       </binding>
-      </item>
-      <item>
-       <label>Help</label>
-       <binding>
-        <command>nasal</command>
-        <script>gui.showHelpDialog("/sim/help")</script>
        </binding>
       </item>
    </menu>

@@ -6,8 +6,6 @@ The plane bulge at the top of the aft fuselage is the ADF antenna (A).
 The black strip under the wing edge is de-icing (A).
 The black holes below the front doors are the pressure discharge valves (A).
 
-The anti-collision lights are red (G).
-
 G-BOAC rests at Manchester airport.
 
 Cockpit
@@ -25,9 +23,6 @@ Model
 The floor is supposed to be at the same level than the external nose strakes (blade),
 which puts it slightly above the bottom of the (textured) doors.
 
-The seats stop at window bottom, and pilot shoulder (F).
-The engineer seat must match the engineer view (rotation).
-
 These meshes are not smoothed (solid) :
 - overhead.
 - engineer panel.
@@ -42,26 +37,13 @@ The original 3D model had a pitch and a longer front gear :
 - the front gear is longer in flight (piston extended) (E).
 
 
-Transparency
-------------
-The external lights must be the last of the file :
-- all other objects belong to a hull, cockpit group, front or light group;
-  the front window must be after the cockpit; the visor must be after the front window :
-
-      Hull
-      Cockpit
-      Front + nose
-      Visor + lights
-
-- the hull group, not visible, is disabled inside cockpit.
-- a few invisible parents, at origin, help the ordering by 2.42a export script.
-- for selection during design, hull, cockpit, front and lights are in separate layers
-  (one cannot use a group to isolate the cockpit).
-
-The external lights must :
-- be centered at the model origin, where the billboard rotation happen (also required by scaling).
-- have the surface vertical, oriented to the left of aircraft (otherwise billboard makes
-  the object disappear !).
+Groups
+------
+- the hull group is disabled inside cockpit.
+- primary nozzles and cabin don't belong to the hull group (livery, see below).
+- the cockpit is without group, to avoid inheritance of lighting (not allowed by OSG).
+- groups with only 1 mesh : nose, screen, front, side.
+- for selection during design, groups are in separate layers.
 
 
 VRP
@@ -77,12 +59,15 @@ Texturing
 The cockpit texture without alpha makes the 2D instruments visible on a panel;
 the other texture with alpha is for clipping of 2D instruments.
 
+Livery works with only 1 texture per group :
+- screen and front maps a 2nd texture with alpha layer, for their transparent windows;
+- primary nozzles swaps in real time between 2 textures.
+
+
 
 TO DO
 =====
 - compression of gear spring.
-- afterburner smoke.
-- levers.
 - probes on nose, RAT.
 - bore the doors.
 - passenger seats.
@@ -120,11 +105,6 @@ References
 (E) http://www.airliners.net/open.file/0441886/L/ :
     G-BOAE, by Harm Rutten.
 
-(F) http://www.airliners.net/open.file/0024969/L/ :
-    by Richard Paul.
-
-(G) http://fr.wikipedia.org/wiki/Concorde :
-
 
 Credits
 =======
@@ -141,22 +121,19 @@ Updates (-) and additions (+) to the original model                             
 + cockpit.                                                                              1.2
 - visibility of visor and nose from cockpit.                                            2.0
 - split of nozzles (reverser).                                                          2.1
-- transparent windows (texture alpha).                                                  2.1
 - alignment of main gear internal doors with their well.
 - split of main gear wheels (spin).                                                     2.2
-+ external lights.                                                                      2.2
 - alignment to the nose tip, instead of the tail tip (VRP).                             2.3
 - split of main gear pistons (bogie compression and torsion).                           2.3
 - higher side stays and stearing unit (front gear compression).                         2.3
 - horizontal fuselage, without pitch (flat cockpit).                                    2.3
 - centered axis of front window (to match overhead).                                    2.4
 - split of primary nozzles (reheat off texture).                                        2.4
-+ windshield wipers.                                                                    2.5 
 - shift aft the texture of front doors.                                                 2.5
 + visor well.                                                                           2.6
 
 
-Made with Blender 2.48.
+Made with Blender 2.49b.
 
 
-29 November 2008.
+27 September 2009.

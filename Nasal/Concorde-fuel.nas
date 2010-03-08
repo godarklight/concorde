@@ -18,27 +18,27 @@ Fuel = {};
 Fuel.new = func {
    var obj = { parents : [Fuel,System], 
 
-           tanksystem : Tanks.new(),
-           parser : FuelXML.new(),
-           totalfuelinstrument : TotalFuel.new(),
-           fuelconsumedinstrument : FuelConsumed.new(),
-           aircraftweightinstrument : AircraftWeight.new(),
+               tanksystem : Tanks.new(),
+               parser : FuelXML.new(),
+               totalfuelinstrument : TotalFuel.new(),
+               fuelconsumedinstrument : FuelConsumed.new(),
+               aircraftweightinstrument : AircraftWeight.new(),
 
-           PUMPSEC : 1.0,
+               PUMPSEC : 1.0,
 
 # at Mach 2, trim tank 10 only feeds 2 supply tanks 5 and 7 : 45200 lb/h, or 6.3 lb/s per tank.
-           PUMPLBPSEC : 25,                                              # 25 lb/s for 1 pump.
+               PUMPLBPSEC : 25,                                              # 25 lb/s for 1 pump.
 
-           PUMPPMIN0 : 0.0,                                              # time step
-           PUMPPMIN : 0.0,                                               # speed up
+               PUMPPMIN0 : 0.0,                                              # time step
+               PUMPPMIN : 0.0,                                               # speed up
 
-           PUMPLB0 : 0.0,                                                # rate for step
-           PUMPLB : 0.0,                                                 # speed up
+               PUMPLB0 : 0.0,                                                # rate for step
+               PUMPLB : 0.0,                                                 # speed up
 
 # auto trim limits
-           FORWARDKG : 24000,
-           AFTKG : 11000,
-           EMPTYKG : 0
+               FORWARDKG : 24000,
+               AFTKG : 11000,
+               EMPTYKG : 0
          };
 
     obj.init();
@@ -128,7 +128,7 @@ Fuel.pumping = func {
 
        me.hydraulicautotrim();
 
-       me.parser.schedule( me.PUMPLB );
+       me.parser.schedule( me.PUMPLB, me.tanksystem );
    }
 
    # to synchronized with pumping
@@ -693,6 +693,148 @@ Fuel.jettisonvalve = func {
 }
 
 
+# =====
+# TANKS
+# =====
+
+# adds an indirection to convert the tank name into an array index.
+
+Tanks = {};
+
+Tanks.new = func {
+# tank contents, to be initialised from XML
+   var obj = { parents : [Tanks,TankXML], 
+
+               CONTENTLB : { "1" : 0.0, "2" : 0.0, "3" : 0.0, "4" : 0.0, "5" : 0.0, "6" : 0.0, "7" : 0.0,
+                             "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0,
+                            "LP1" : 0.0, "LP2" : 0.0, "LP3" : 0.0, "LP4" : 0.0 },
+               TANKINDEX : { "1" : 0, "2" : 1, "3" : 2, "4" : 3, "5" : 4, "6" : 5, "7" : 6,
+                             "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12,
+                            "LP1" : 13, "LP2" : 14, "LP3" : 15, "LP4" : 16 },
+               TANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A",
+                            "LP1", "LP2", "LP3", "LP4" ],
+
+               OVERFULL : 0.97,
+               OVERFULL : 0.97,
+               UNDERFULL : 0.8,
+               LOWLEVELLB : [ 0.0, 0.0, 0.0, 0.0 ],
+               LOWLEVEL : 0.2,
+
+               AFTTRIMLB : { "1" : 0.0, "4" : 0.0 },
+               AFTTRIM : 0.4,                                                # aft trim at 40 %
+
+               HPVALVELB : 30.0                                              # fuel low pressure
+         };
+
+    obj.init();
+
+    return obj;
+}
+
+Tanks.init = func {
+    me.inherit_tankXML();
+}
+
+Tanks.amber_fuel = func {
+   var result = constant.FALSE;
+
+   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+        if( me.tanks[i].getChild("level-lbs").getValue() <= me.LOWLEVELLB[i] ) {
+            result = constant.TRUE;
+            break;
+        }
+   }
+
+   if( !result ) {
+       # LP valve
+       for( var i = 13; i <= 16; i = i+1 ) {
+            if( me.tanks[i].getChild("level-lbs").getValue() <= me.HPVALVELB ) {
+                result = constant.TRUE;
+                break;
+            }
+       }
+   }
+
+   return result;
+}
+
+# fuel initialization
+Tanks.initcontent = func {
+   me.inherit_initcontent();
+
+   me.AFTTRIMLB["1"] = me.CONTENTLB["1"] * me.AFTTRIM;
+   me.AFTTRIMLB["4"] = me.CONTENTLB["4"] * me.AFTTRIM;
+
+   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
+       me.LOWLEVELLB[i] = me.CONTENTLB[me.TANKNAME[i]] * me.LOWLEVEL;
+   }
+}
+
+# tank initialization
+Tanks.inittank = func( no, contentlb, overfull, underfull, lowlevel ) {
+   var valuelb = 0.0;
+
+   me.inherit_inittank( no, contentlb );
+
+   # optional :  must be created by XML
+   if( overfull ) {
+       valuelb = contentlb * me.OVERFULL;
+       me.tanks[no].getChild("over-full-lb").setValue( valuelb );
+   }
+   if( underfull ) {
+       valuelb = contentlb * me.UNDERFULL;
+       me.tanks[no].getChild("under-full-lb").setValue( valuelb );
+   }
+   if( lowlevel ) {
+       me.tanks[no].getChild("low-level-lbs").setValue( me.LOWLEVELLB[no] );
+   }
+}
+
+Tanks.initinstrument = func {
+   var overfull = constant.FALSE;
+   var underfull = constant.FALSE;
+   var lowlevel = constant.FALSE;
+
+   for( var i=0; i < me.nb_tanks; i=i+1 ) {
+        overfull = constant.FALSE;
+        underfull = constant.FALSE;
+        lowlevel = constant.FALSE;
+
+        if( ( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) or
+            i == me.TANKINDEX["5"] or i == me.TANKINDEX["7"] or
+            i == me.TANKINDEX["9"] or i == me.TANKINDEX["11"] ) {
+            overfull = constant.TRUE;
+        }
+        if( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) {
+            underfull = constant.TRUE;
+        }
+        if( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) {
+            lowlevel = constant.TRUE;
+        }
+
+        me.inittank( i,  me.CONTENTLB[me.TANKNAME[i]],  overfull,  underfull,  lowlevel );
+   }
+}
+
+Tanks.getafttrimlb = func( name ) {
+   return me.AFTTRIMLB[name];
+}
+
+Tanks.lowlevel = func {
+   var result = constant.FALSE;
+
+   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
+      levellb = me.pumpsystem.getlevellb( i ); 
+      if( levellb < me.LOWLEVELLB[i] ) {
+          result = constant.TRUE;
+          break;
+      }
+   }
+
+   return result;
+}
+
+
 # ===================
 # TANK PRESSURIZATION
 # ===================
@@ -820,7 +962,7 @@ TankPressure.schedule = func {
     me.itself["root"].getChild("raising").setValue(raising);
     me.itself["root"].getChild("falling").setValue(falling);
 
-    interpolate("/instrumentation/tank-pressure/differential-psi",diffpsi,me.TANKSEC);
+    interpolate(me.itself["root"].getChild("differential-psi").getPath(),diffpsi,me.TANKSEC);
 }
 
 

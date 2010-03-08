@@ -13,18 +13,18 @@ Electrical = {};
 Electrical.new = func {
    var obj = { parents : [Electrical,System],
 
-           relight : EmergencyRelight.new(),
-           parser : ElectricalXML.new(),
-           csd : ConstantSpeedDrive.new(),
-           voltmeterdc : DCVoltmeter.new(),
-           voltmeterac : ACVoltmeter.new(),
+               relight : EmergencyRelight.new(),
+               parser : ElectricalXML.new(),
+               csd : ConstantSpeedDrive.new(),
+               voltmeterdc : DCVoltmeter.new(),
+               voltmeterac : ACVoltmeter.new(),
 
-           ELECSEC : 1.0,                                 # refresh rate
+               ELECSEC : 1.0,                                 # refresh rate
 
-           SERVICEVOLT : 600.0,
-           GROUNDVOLT : 110.0,                            # AC
-           SPECIFICVOLT : 20.0,                           # DC or low AC
-           NOVOLT : 0.0
+               SERVICEVOLT : 600.0,
+               GROUNDVOLT : 110.0,                            # AC
+               SPECIFICVOLT : 20.0,                           # DC or low AC
+               NOVOLT : 0.0
          };
 
    obj.init();
@@ -115,6 +115,10 @@ Electrical.emergencyrelightexport = func {
    me.relight.selectorexport();
 }
 
+Electrical.enginerelightexport = func( engine ) {
+   me.relight.engineexport( engine );
+}
+
 Electrical.dcvoltmeterexport = func {
    me.voltmeterdc.selectorexport();
 }
@@ -178,8 +182,8 @@ Electrical.emergency_generation = func {
     var check = constant.FALSE;
 
     # loss of green hydraulics for emergency generator
-    if( !me.dependency["engine"][0].getChild("running").getValue() and
-        !me.dependency["engine"][1].getChild("running").getValue() ) {
+    if( !me.dependency["engine"][constantaero.ENGINE1].getChild("running").getValue() and
+        !me.dependency["engine"][constantaero.ENGINE2].getChild("running").getValue() ) {
         engine12 = constant.FALSE;
     }
 
@@ -405,7 +409,7 @@ ConstantSpeedDrive.schedule = func {
        }
 
        # not real
-       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-oil-psi",csdpressurepsi,me.ELECSEC);
+       interpolate(me.dependency["engine-sys"][i].getChild("csd-oil-psi").getPath(),csdpressurepsi,me.ELECSEC);
 
        oatdegc = me.noinstrument["temperature"].getValue();
 
@@ -427,7 +431,7 @@ ConstantSpeedDrive.schedule = func {
        if( inletdegc < oatdegc ) {
            inletdegc = oatdegc;
        }
-       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-inlet-degc",inletdegc,me.ELECSEC);
+       interpolate(me.dependency["engine-sys"][i].getChild("csd-inlet-degc").getPath(),inletdegc,me.ELECSEC);
 
        # not real
        diffdegc = me.dependency["engine-sys"][i].getChild("csd-diff-degc").getValue();
@@ -438,7 +442,7 @@ ConstantSpeedDrive.schedule = func {
        else {
            diffdegc = diffdegc * 0.95;
        }
-       interpolate("/systems/engines/engine[" ~ i ~ "]/csd-diff-degc",diffdegc,me.ELECSEC);
+       interpolate(me.dependency["engine-sys"][i].getChild("csd-diff-degc").getPath(),diffdegc,me.ELECSEC);
    }
 }
 
@@ -464,15 +468,29 @@ EmergencyRelight.init = func {
    me.inherit_system("/systems/electrical");
 }
 
+EmergencyRelight.engineexport = func( engine ) {
+   # switch off
+   var selector = me.switches[0];
+
+   for( var i = 1; i <= constantaero.NBENGINES; i = i+1 ) {
+        # selector on engine
+        if( me.switches[ i ] == engine ) {
+            selector = i;
+            break;
+        }
+   }
+
+   return selector;
+}
+
 EmergencyRelight.selectorexport = func {
-   var switch = 0;
-   var selector = getprop("controls/electric/ac/emergency/relight-selector");
+   var selector = me.itself["emergency"].getChild("relight-selector").getValue();
+   var engine = me.switches[selector];
 
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        switch = me.switches[selector];
 
         # only 1 emergency relight has voltage, if selector not at 0
-        if( i == switch ) {
+        if( i == engine ) {
             me.itself["relight"][i].setValue( constant.FALSE );
             me.itself["relight-emergency"][i].setValue( constant.TRUE );
         }
@@ -508,7 +526,7 @@ DCVoltmeter.new = func {
 };
 
 DCVoltmeter.init = func {
-   me.inherit_system("/systems/electrical");
+   me.inherit_system("/instrumentation/voltmeter-dc");
 }
 
 DCVoltmeter.set_rate = func( rates ) {
@@ -519,29 +537,29 @@ DCVoltmeter.schedule = func {
    var result = me.NOVOLT;
 
    if( me.selector == -2 ) {
-       result = me.itself["suppliers"].getChild("battery",0).getValue();
+       result = me.dependency["suppliers"].getChild("battery",0).getValue();
    }
    elsif( me.selector == -1 ) {
-       result = me.itself["probe"].getChild("dc-essential-a").getValue();
+       result = me.dependency["probe"].getChild("dc-essential-a").getValue();
    }
    elsif( me.selector == 0 ) {
-       result = me.itself["probe"].getChild("dc-main-a").getValue();
+       result = me.dependency["probe"].getChild("dc-main-a").getValue();
    }
    elsif( me.selector == 1 ) {
-       result = me.itself["probe"].getChild("dc-main-b").getValue();
+       result = me.dependency["probe"].getChild("dc-main-b").getValue();
    }
    elsif( me.selector == 2 ) {
-       result = me.itself["probe"].getChild("dc-essential-b").getValue();
+       result = me.dependency["probe"].getChild("dc-essential-b").getValue();
    }
    elsif( me.selector == 3 ) {
-       result = me.itself["suppliers"].getChild("battery",1).getValue();
+       result = me.dependency["suppliers"].getChild("battery",1).getValue();
    }
 
-   interpolate("/instrumentation/voltmeter-dc/indicated-volt", result, me.ELECSEC);
+   interpolate(me.itself["root"].getChild("indicated-volt").getPath(), result, me.ELECSEC);
 }
 
 DCVoltmeter.selectorexport = func {
-   me.selector = me.itself["dc"].getChild("voltmeter").getValue();
+   me.selector = me.dependency["dc"].getChild("voltmeter").getValue();
 
    me.schedule();
 }
@@ -572,7 +590,7 @@ ACVoltmeter.new = func {
 };
 
 ACVoltmeter.init = func {
-   me.inherit_system("/systems/electrical");
+   me.inherit_system("/instrumentation/voltmeter-ac");
 }
 
 ACVoltmeter.set_rate = func( rates ) {
@@ -584,34 +602,34 @@ ACVoltmeter.schedule = func {
    var result = me.NOVOLT;
 
    if( me.selector == -3 ) {
-       result = me.itself["probe"].getChild("ac-gpb").getValue();
+       result = me.dependency["probe"].getChild("ac-gpb").getValue();
    }
    elsif( me.selector == -2 ) {
-       result = me.itself["probe"].getChild("ac-emergency-a").getValue();
+       result = me.dependency["probe"].getChild("ac-emergency-a").getValue();
    }
    elsif( me.selector == -1 ) {
-       result = me.itself["probe"].getChild("ac-generator",0).getValue();
+       result = me.dependency["probe"].getChild("ac-generator",0).getValue();
    }
    elsif( me.selector == 0 ) {
-       result = me.itself["probe"].getChild("ac-generator",1).getValue();
+       result = me.dependency["probe"].getChild("ac-generator",1).getValue();
    }
    elsif( me.selector == 1 ) {
-       result = me.itself["probe"].getChild("ac-generator",2).getValue();
+       result = me.dependency["probe"].getChild("ac-generator",2).getValue();
    }
    elsif( me.selector == 2 ) {
-       result = me.itself["probe"].getChild("ac-generator",3).getValue();
+       result = me.dependency["probe"].getChild("ac-generator",3).getValue();
    }
 
    if( result > me.NOVOLT ) {
        frequencyhz = me.NORMALHZ;
    }
 
-   interpolate("/instrumentation/voltmeter-ac/indicated-volt", result, me.ELECSEC);
-   interpolate("/instrumentation/frequencymeter/indicated-hz", frequencyhz, me.ELECSEC);
+   interpolate(me.itself["root"].getChild("indicated-volt").getPath(), result, me.ELECSEC);
+   interpolate(me.dependency["frequency-meter"].getChild("indicated-hz").getPath(), frequencyhz, me.ELECSEC);
 }
 
 ACVoltmeter.selectorexport = func {
-   me.selector = me.itself["ac"].getChild("voltmeter").getValue();
+   me.selector = me.dependency["ac"].getChild("voltmeter").getValue();
 
    me.schedule();
 }
@@ -688,14 +706,14 @@ Wiper.motor = func {
         # starts a new sweep.
         if( pos <= ( me.WIPERDOWN + me.WIPERDELTA ) ) {
             if( !stopped ) {
-               interpolate("controls/wiper/motor[" ~ i ~ "]/position-norm",me.WIPERUP,me.ratesec[i]);
+               interpolate(me.itself["motor"][i].getChild("position-norm").getPath(),me.WIPERUP,me.ratesec[i]);
             }
         }
 
         # ends its sweep, even if off.
         elsif( pos >= ( me.WIPERUP - me.WIPERDELTA ) ) {
             power = constant.TRUE;
-            interpolate("controls/wiper/motor[" ~ i ~ "]/position-norm",me.WIPERDOWN,me.ratesec[i]);
+            interpolate(me.itself["motor"][i].getChild("position-norm").getPath(),me.WIPERDOWN,me.ratesec[i]);
         }
    }
 
@@ -958,7 +976,7 @@ LandingLight.extendexport = func {
 
             result = me.itself["main-landing"][i].getChild("norm").getValue();
             if( result != value ) {
-                light = "/controls/lighting/external/main-landing[" ~ i ~ "]/norm";
+                light = me.itself["main-landing"][i].getChild("norm").getPath();
                 me.landingmotor( light, result, value );
             }
 
@@ -971,7 +989,7 @@ LandingLight.extendexport = func {
  
             result = me.itself["landing-taxi"][i].getChild("norm").getValue();
             if( result != value ) {
-                light = "/controls/lighting/external/landing-taxi[" ~ i ~ "]/norm";
+                light = me.itself["landing-taxi"][i].getChild("norm").getPath();
                 me.landingmotor( light, result, value );
             }
        }
@@ -994,6 +1012,7 @@ LightLevel.new = func {
 # internal lights
                LIGHTFULL : 1.0,
                LIGHTINVISIBLE : 0.00001,                      # invisible offset
+               LIGHTAMBIENT : 0.3,                            # 3D warning light by night
                LIGHTNO : 0.0,
 
                invisible : constant.TRUE,                     # force a change on 1st recover, then alternate
@@ -1030,6 +1049,31 @@ LightLevel.init = func {
    me.inherit_system("/systems/lighting");
 }
 
+LightLevel.floodexport = func {
+   me.floodrecover();
+}
+
+LightLevel.roofexport = func {
+   var value = 0.0;
+
+   if( me.itself["crew"].getChild("roof").getValue() ) {
+       value = me.LIGHTFULL;
+
+       # no blend with flood
+       me.floodfailure();
+   }
+   else {
+       value = me.LIGHTNO;
+
+       me.invisible = !me.invisible;
+
+       me.floodrecover();
+   }
+
+   me.itself["crew"].getNode(me.fluorescentnorm).setValue(value);
+   me.fluorecover();
+}
+
 LightLevel.schedule = func {
    # clear all lights
    if( !me.dependency["electric"].getChild("specific").getValue() or
@@ -1048,7 +1092,8 @@ LightLevel.schedule = func {
 }
 
 # OSG doesn't accept many material on the same object :
-# one must compute light level.
+# - one must compute light level.
+# - a lighted object cannot belong to a group, if its father is also lighted.
 LightLevel.mixing = func {
    var level = 0.0;
 
@@ -1063,6 +1108,15 @@ LightLevel.mixing = func {
    # computes the highest light
    level = me.lights[me.FLUOROOF];
    me.itself["level"].getNode("roof").setValue( level );
+
+   # makes visible 3D warning lights by night
+   if( me.is_night() ) {
+       level = level * me.LIGHTAMBIENT;
+   }
+   else {
+       level = me.LIGHTNO;
+   }
+   me.itself["level"].getNode("roof-ambient").setValue( level );
 
    level = me.lights[me.FLOODCAPTAIN];
    level = constant.intensity( level, me.lights[me.FLOODCENTER] );
@@ -1147,29 +1201,14 @@ LightLevel.failurerecover = func( propnorm, proplight, offset ) {
    }
 }
 
-LightLevel.floodexport = func {
-   me.floodrecover();
-}
+LightLevel.is_night = func {
+   var result = constant.FALSE;
 
-LightLevel.roofexport = func {
-   var value = 0.0;
-
-   if( me.itself["crew"].getChild("roof").getValue() ) {
-       value = me.LIGHTFULL;
-
-       # no blend with flood
-       me.floodfailure();
-   }
-   else {
-       value = me.LIGHTNO;
-
-       me.invisible = !me.invisible;
-
-       me.floodrecover();
+   if( me.noinstrument["sun"].getValue() > constant.NIGHTRAD ) {
+       result = constant.TRUE;
    }
 
-   me.itself["crew"].getNode(me.fluorescentnorm).setValue(value);
-   me.fluorecover();
+   return result;
 }
 
 

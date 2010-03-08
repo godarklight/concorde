@@ -10,117 +10,124 @@
 Voice = {};
 
 Voice.new = func {
-   var obj = { parents : [Voice,Checklist,Callout,System],
+   var obj = { parents : [Voice,Checklist,Emergency,Callout,System],
 
-           autopilotsystem : nil,
+               autopilotsystem : nil,
 
-           flightlevel : Altitudeperception.new(),
-           acceleration : Speedperception.new(),
-           crewvoice : Crewvoice.new(),
-           lastcheck : Checklist.new(),
+               flightlevel : Altitudeperception.new(),
+               acceleration : Speedperception.new(),
+               crewvoice : Crewvoice.new(),
+               lastcheck : Checklist.new(),
 
-           MODIFYSEC : 15.0,                                 # to modify something
-           ABSENTSEC : 15.0,                                 # less attention
-           HOLDINGSEC : 5.0,
-           CRONSEC : 2.0,
+               MODIFYSEC : 15.0,                                 # to modify something
+               ABSENTSEC : 15.0,                                 # less attention
+               HOLDINGSEC : 5.0,
 
-           rates : 0.0,                                      # variable time step
+               rates : 0.0,                                      # variable time step
 
-           ready : constant.FALSE,
+               ready : constant.FALSE,
 
-           CLIMBFPM : 100,
-           DECAYFPM : -50,                                   # not zero, to avoid false alarm
-           DESCENTFPM : -100,
-           FINALFPM : -1000,
+               CLIMBFPM : 100,
+               DECAYFPM : -50,                                   # not zero, to avoid false alarm
+               DESCENTFPM : -100,
+               FINALFPM : -1000,
 
-           AGL2500FT : 2500,
-           AGL1000FT : 1000,
-           AGL800FT : 800,
-           AGL500FT : 500,
-           AGL400FT : 400,
-           AGL300FT : 300,
-           AGL200FT : 200,
-           AGL100FT : 100,
-           AGL50FT : 50,
-           AGL40FT : 40,
-           AGL30FT : 30,
-           AGL20FT : 20,
-           AGL15FT : 15,
+               AGL2500FT : 2500,
+               AGL1000FT : 1000,
+               AGL800FT : 800,
+               AGL500FT : 500,
+               AGL400FT : 400,
+               AGL300FT : 300,
+               AGL200FT : 200,
+               AGL100FT : 100,
+               AGL50FT : 50,
+               AGL40FT : 40,
+               AGL30FT : 30,
+               AGL20FT : 20,
+               AGL15FT : 15,
 
-           altitudeft : 0.0,
-           lastaltitudeft : 0.0,
-           altitudeselect : constant.FALSE,
-           selectft : 0.0,
-           delayselectftsec : 0,
-           vertical : "",
+               altitudeft : 0.0,
+               lastaltitudeft : 0.0,
+               altitudeselect : constant.FALSE,
+               selectft : 0.0,
+               delayselectftsec : 0,
+               vertical : "",
 
-           aglft : 0.0,
-           category : constant.FALSE,
-           alert : constant.FALSE,
-           decision : constant.FALSE,
-           decisiontogo : constant.FALSE,
+               aglft : 0.0,
+               category : constant.FALSE,
+               alert : constant.FALSE,
+               decision : constant.FALSE,
+               decisiontogo : constant.FALSE,
 
-           mach : 0.0,
+               mach : 0.0,
 
-           V240KT : 240.0,
-           V100KT : 100.0,
-           AIRSPEEDKT : 60.0,
+               V240KT : 240.0,
+               V100KT : 100.0,
+               AIRSPEEDKT : 60.0,
 
-           v1 : constant.FALSE,
-           v2 : constant.FALSE,
+               v1 : constant.FALSE,
+               v2 : constant.FALSE,
 
-           speedkt : 0.0,
-           lastspeedkt : 0.0,
-           groundkt : 0.0,
+               speedkt : 0.0,
+               lastspeedkt : 0.0,
+               groundkt : 0.0,
 
-           FLAREDEG : 12.5,
+               FLAREDEG : 12.5,
 
-           fueltransfert : constant.FALSE,
+               fueltransfert : constant.FALSE,
 
-           gear : 0.0,
-           lastgear : 0.0,
-           nose : 0.0,
-           lastnose : 0.0,
+               gear : 0.0,
+               lastgear : 0.0,
+               nose : 0.0,
+               lastnose : 0.0,
 
-           airport : "",
-           runway : "",
+               airport : "",
+               runway : "",
 
-           # pilot in command
-           captaintakeoff : {},
+               # pilot in command
+               captaintakeoff : {},
+               captainafterstart : {},
+               captaintaxi : {},
+               captainbeforetakeoff : {},
+               captainaftertakeoff : {},
+               captainallways : {},
 
-           # pilot not in command
-           pilottakeoff : {},
-           pilotclimb : {},
-           pilotlanding : {},
-           pilotgoaround : {},
-           pilotbeforestart : {},
-           pilotafterstart : {},
-           allwaystakeoff : {},
-           allwayslanding : {},
-           allwaysflight : {},
-           allways : {},
+               # pilot not in command
+               pilottakeoff : {},
+               pilotclimb : {},
+               pilotlanding : {},
+               pilotgoaround : {},
+               pilotbeforestart : {},
+               pilotpushback : {},
+               pilotafterstart : {},
+               allwaystakeoff : {},
+               allwayslanding : {},
+               allwaysflight : {},
+               allways : {},
 
-           # engineer
-           engineertakeoff : {},
-           engineerflight : {},
-           engineerclimb : {},
-           engineertranssonic : {},
-           engineerdescent : {},
-           engineerapproach : {},
-           engineerlanding : {},
-           engineerbeforelanding : {},
-           engineerafterlanding : {},
-           engineerparking : {},
-           engineerstopover : {},
-           engineercockpit : {},
-           engineerbeforestart : {},
-           engineertaxi : {},
-           engineerbeforetakeoff : {},
-           engineeraftertakeoff : {},
+               # engineer
+               engineertakeoff : {},
+               engineerflight : {},
+               engineerclimb : {},
+               engineertranssonic : {},
+               engineerdescent : {},
+               engineerapproach : {},
+               engineerlanding : {},
+               engineerbeforelanding : {},
+               engineerafterlanding : {},
+               engineerparking : {},
+               engineerstopover : {},
+               engineercockpit : {},
+               engineerbeforestart : {},
+               engineerpushback : {},
+               engineertaxi : {},
+               engineerbeforetakeoff : {},
+               engineeraftertakeoff : {},
 
-           real : constant.FALSE,                            # real checklist
-           automata : "",
-           automata2 : ""
+               aborted : constant.FALSE,
+               real : constant.FALSE,                            # real checklist
+               automata : "",
+               automata2 : ""
          };
 
    obj.init();
@@ -133,11 +140,14 @@ Voice.init = func {
 
    me.inherit_system( path );
    me.inherit_checklist( path );
+   me.inherit_emergency( path );
    me.inherit_callout();
 
    me.selectft = me.dependency["autoflight"].getChild("altitude-select").getValue();
 
    me.inittext();
+
+   me.presetcrew();
 
    me.callout = "holding";
    settimer( func { me.schedule(); }, constant.HUMANSEC );
@@ -157,6 +167,7 @@ Voice.inittable = func( path, table ) {
 
 Voice.inittext = func {
    me.inittable("/systems/voice/checklists/beforetakeoff/engineer[0]", me.engineerbeforetakeoff );
+   me.inittable("/systems/voice/checklists/beforetakeoff/captain[0]", me.captainbeforetakeoff );
 
    me.inittable("/systems/voice/callouts/takeoff/captain", me.captaintakeoff );
 
@@ -166,6 +177,7 @@ Voice.inittext = func {
    me.inittable("/systems/voice/callouts/takeoff/engineer[0]", me.engineertakeoff );
 
    me.inittable("/systems/voice/checklists/aftertakeoff/engineer[0]", me.engineeraftertakeoff );
+   me.inittable("/systems/voice/checklists/aftertakeoff/captain[0]", me.captainaftertakeoff );
 
    me.inittable("/systems/voice/callouts/flight/pilot[0]", me.allwaysflight );
    me.inittable("/systems/voice/callouts/flight/engineer[0]", me.engineerflight );
@@ -197,11 +209,26 @@ Voice.inittext = func {
    me.inittable("/systems/voice/checklists/beforestart/pilot[0]", me.pilotbeforestart );
    me.inittable("/systems/voice/checklists/beforestart/engineer[0]", me.engineerbeforestart );
 
+   me.inittable("/systems/voice/checklists/pushback/pilot[0]", me.pilotpushback );
+   me.inittable("/systems/voice/checklists/pushback/engineer[0]", me.engineerpushback );
+
    me.inittable("/systems/voice/checklists/afterstart/pilot[0]", me.pilotafterstart );
+   me.inittable("/systems/voice/checklists/afterstart/captain[0]", me.captainafterstart );
 
    me.inittable("/systems/voice/checklists/taxi/engineer[0]", me.engineertaxi );
+   me.inittable("/systems/voice/checklists/taxi/captain[0]", me.captaintaxi );
+
+   me.inittable("/systems/voice/checklists/all/captain[0]", me.captainallways );
 
    me.inittable("/systems/voice/callouts/all/pilot[0]", me.allways );
+}
+
+Voice.presetcrew = func {
+   var value = me.dependency["crew-ctrl"].getChild("presets").getValue();
+   var dialog = me.dependency["crew-presets"][value].getValue();
+
+   # copy to dialog
+   me.dependency["crew"].getChild("dialog").setValue(dialog);
 }
 
 Voice.set_relation = func( autopilot ) {
@@ -217,6 +244,20 @@ Voice.set_rates = func( steps ) {
 
 Voice.crewtextexport = func {
     me.crewvoice.textexport();
+}
+
+Voice.menuexport = func {
+   var label = me.dependency["crew"].getChild("dialog").getValue();
+
+   for( var i=0; i < size(me.dependency["crew-presets"]); i=i+1 ) {
+        if( me.dependency["crew-presets"][i].getValue() == label ) {
+
+            # for aicraft-data
+            me.dependency["crew-ctrl"].getChild("presets").setValue(i);
+
+            break;
+        }
+   }
 }
 
 
@@ -263,7 +304,9 @@ Voice.parkingexport = func {
 
 Voice.stopoverexport = func {
    if( me.has_crew() ) {
-       if( me.is_gate() ) {
+       # at FG start, default is holding without checklist.
+       if( me.is_gate() or ( me.is_holding() or me.is_takeoff() ) ) {
+           me.set_startup();
            me.stopoverinit();
        }
    }
@@ -309,6 +352,14 @@ Voice.enginestartexport = func {
    }
 }
 
+Voice.pushbackexport = func {
+   if( me.has_crew() ) {
+       if( me.is_gate() ) {
+           me.pushbackinit();
+       }
+   }
+}
+
 Voice.afterstartexport = func {
    if( me.has_crew() ) {
        if( me.is_started() ) {
@@ -321,6 +372,7 @@ Voice.taxiexport = func {
    if( me.has_crew() ) {
        # at FG start, default is holding without checklist.
        if( me.is_started() or ( me.is_holding() or me.is_takeoff() ) ) {
+           me.set_startup();
            me.taxiinit();
        }
    }
@@ -329,6 +381,7 @@ Voice.taxiexport = func {
 Voice.beforetakeoffexport = func {
    if( me.has_crew() ) {
        if( me.is_holding() or me.is_takeoff() ) {
+           me.set_startup();
            me.beforetakeoffinit();
        }
    }
@@ -336,21 +389,19 @@ Voice.beforetakeoffexport = func {
 
 Voice.toggleexport = func {
    if( me.has_AI() ) {
-       me.taxiexport();
+       var presets = me.dependency["crew-ctrl"].getChild("presets").getValue();
 
-       if( me.is_taxi() ) {
-           me.waitfortaxicron();
+       if( presets == 0 ) {
+           me.beforetakeoffexport();
        }
-   }
-}
 
-Voice.waitfortaxicron = func {
-   if( me.is_taxi() ) {
-       settimer( func { me.waitfortaxicron(); }, me.CRONSEC );
-   }
+       elsif( presets == 1 ) {
+           me.taxiexport();
+       }
 
-   elsif( me.has_AI() ) {
-       me.beforetakeoffexport();
+       elsif( presets == 2 ) {
+           me.stopoverexport();
+       }
    }
 }
 
@@ -395,9 +446,39 @@ Voice.beforelandingexport = func {
 }
 
 
-# -------------------------------
-# to unlock callouts eventual bug
-# -------------------------------
+# --------------------
+# emergency procedures
+# --------------------
+Voice.fourengineflameoutexport = func {
+   if( me.has_crew() ) {
+       me.nochecklistinit();
+       me.fourengineflameoutinit();
+   }
+}
+
+Voice.fourengineflameoutmach1export = func {
+   if( me.has_crew() ) {
+       me.nochecklistinit();
+       me.fourengineflameoutmach1init();
+   }
+}
+
+
+# ------------------------
+# to unlock checklists bug
+# ------------------------
+Voice.abortexport = func {
+   me.nochecklistinit();
+
+   me.captainfeedback("abort");
+
+   me.aborted = constant.TRUE;
+}
+
+
+# ----------------------
+# to unlock callouts bug
+# ----------------------
 Voice.taxiwayexport = func {
    me.taxiwayinit();
 }
@@ -426,9 +507,43 @@ Voice.landingexport = func {
 # ------------
 # voice checks
 # ------------
-Voice.pilotcheck = func( action ) {
+Voice.captainfeedback = func( action ) {
+   me.crewvoice.nowcaptain( action, me.captainallways );
+}
+
+Voice.captaincheck = func( action ) {
+   if( me.is_aftertakeoff() ) {
+       me.crewvoice.nowcaptain( action, me.captainaftertakeoff );
+   }
+
+   elsif( me.is_afterstart() ) {
+       me.crewvoice.nowcaptain( action, me.captainafterstart );
+   }
+
+   elsif( me.is_taxi() ) {
+       me.crewvoice.nowcaptain( action, me.captaintaxi );
+   }
+
+   elsif( me.is_beforetakeoff() ) {
+       me.crewvoice.nowcaptain( action, me.captainbeforetakeoff );
+   }
+
+   else {
+       print("captain check not found : ", action);
+   }
+}
+
+
+
+Voice.pilotcheck = func( action, argument = "" ) {
+   me.itself["root"].getChild("argument").setValue( argument );
+
    if( me.is_beforestart() ) {
        me.crewvoice.nowpilot( action, me.pilotbeforestart );
+   }
+
+   elsif( me.is_pushback() ) {
+       me.crewvoice.nowpilot( action, me.pilotpushback );
    }
 
    elsif( me.is_afterstart() ) {
@@ -483,6 +598,10 @@ Voice.engineercheck = func( action ) {
 
    elsif( me.is_beforestart() ) {
        me.crewvoice.nowengineer( action, me.engineerbeforestart );
+   }
+
+   elsif( me.is_pushback() ) {
+       me.crewvoice.nowengineer( action, me.engineerpushback );
    }
 
    elsif( me.is_taxi() ) {
@@ -567,7 +686,7 @@ Voice.schedule = func {
        me.groundkt = me.dependency["ins"].getChild("ground-speed-fps").getValue() * constant.FPSTOKT;
        me.altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue();
        me.aglft = me.dependency["radio-altimeter"].getChild("indicated-altitude-ft").getValue();
-       me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fpm").getValue();
+       me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
        me.gear = me.dependency["gear"].getChild("position-norm").getValue();
        me.nose = me.dependency["nose"].getChild("pos-norm").getValue();
 
@@ -592,6 +711,7 @@ Voice.schedule = func {
 
        me.nocalloutinit();
        me.nochecklistinit();
+       me.noemergencyinit();
    }
 
    settimer( func { me.schedule(); }, me.rates );
@@ -604,7 +724,8 @@ Voice.nextcallout = func {
    elsif( me.is_takeoff() or me.is_aftertakeoff() ) {
        me.takeoff();
    }
-   elsif( me.is_holding() ) {
+   # not on taxi
+   elsif( me.is_holding() and !me.is_runway() ) {
        me.holding();
    }
    elsif( me.is_goaround() ) {
@@ -638,7 +759,7 @@ Voice.whichcallout = func {
 Voice.whichchecklist = func {
    if( me.has_crew() ) {
        # AI triggers automatically checklists
-       if( me.has_AI() ) {
+       if( me.has_AI() and !me.is_emergency() ) {
 
            # aircraft is climbing
            if( me.is_climbing() ) {
@@ -668,10 +789,7 @@ Voice.userground = func {
 
 
     # user has started all engines
-    if( me.dependency["engine"][0].getChild("running").getValue() and
-        me.dependency["engine"][1].getChild("running").getValue() and
-        me.dependency["engine"][2].getChild("running").getValue() and
-        me.dependency["engine"][3].getChild("running").getValue() ) {
+    if( me.is_allengines() ) {
         if( !me.is_taxiway() and !me.is_holding() ) {
             me.takeoffinit();
         }
@@ -693,10 +811,7 @@ Voice.userground = func {
     }
 
     # user has stopped all engines
-    elsif( !me.dependency["engine"][0].getChild("running").getValue() and
-           !me.dependency["engine"][1].getChild("running").getValue() and
-           !me.dependency["engine"][2].getChild("running").getValue() and
-           !me.dependency["engine"][3].getChild("running").getValue() ) {
+    elsif( me.is_noengines() ) {
         me.gateinit();
     }
 
@@ -849,6 +964,11 @@ Voice.sendchecklist = func {
    me.itself["root"].getChild("real").setValue(me.real);
 }
 
+Voice.sendemergency = func {
+   me.itself["root"].getChild("emergency").setValue(me.emergency);
+   me.itself["root"].getChild("real").setValue(me.real);
+}
+
 Voice.snapshot = func {
    me.lastspeedkt = me.speedkt;
    me.lastaltitudeft = me.altitudeft;
@@ -906,10 +1026,38 @@ Voice.checklistinit = func( state, real ) {
    me.sendchecklist();
 }
 
+Voice.emergencyinit = func( state, real ) {
+   me.emergency = state;
+   me.real = real;
+
+   # red : processing
+   if( me.real ) {
+       me.itself["display"].getChild("processing").setValue(me.emergency);
+   }
+
+   else {
+       var processing = me.itself["display"].getChild("processing").getValue();
+
+       # blue : completed
+       if( processing != "" ) {
+           me.itself["display"].getChild("processing").setValue("");
+           me.itself["display"].getChild("completed").setValue(processing);
+       }
+   }
+
+   me.not_completed();
+
+   me.sendemergency();
+}
+
 
 # -------
 # NOTHING
 # -------
+Voice.noemergencyinit = func {
+   me.emergencyinit( "", constant.FALSE );
+}
+
 Voice.nochecklistinit = func {
    me.checklistinit( "", constant.FALSE );
 }
@@ -1095,6 +1243,22 @@ Voice.enginestartinit = func {
 }
 
 
+# --------
+# PUSHBACK
+# --------
+Voice.pushbackinit = func {
+   var result = constant.TRUE;
+
+   if( me.is_pushback() ) {
+       result = constant.FALSE;
+   }
+
+   if( result ) {
+       me.checklistinit( "pushback", constant.TRUE );
+   }
+}
+
+
 # -------
 # STARTED
 # -------
@@ -1273,7 +1437,7 @@ Voice.takeoffallways = func {
        }
 
        elsif( me.speedkt < constantaero.APPROACHKT and
-              (  me.acceleration.approachdecrease() or
+              (  me.acceleration.climbdecrease() or
                  ( me.v2 and
                    me.speedkt < me.acceleration.velocitykt( me.Vkt( constantaero.V2EMPTYKT,
                                                                     constantaero.V2FULLKT ) ) ) ) ) {
@@ -1284,7 +1448,7 @@ Voice.takeoffallways = func {
 
 Voice.takeoffclimb = func {
    if( me.automata2 == "takeoff" ) {
-       if( me.is_climbing() ) {
+       if( me.is_climbing() and me.aglft > constantaero.LIFTOFFFT ) {
            me.automata2 = me.crewvoice.steppilot( "liftoff", me.pilotclimb );
            if( me.has_AI() ) {
                me.aftertakeoffinit();
@@ -1387,7 +1551,7 @@ Voice.flight = func {
 }
 
 Voice.flightallways = func {
-   if( !me.dependency["crew"].getChild("emergency").getValue() ) {
+   if( !me.dependency["crew"].getChild("unexpected").getValue() ) {
        altitudeft = me.dependency["autoflight"].getChild("altitude-select").getValue();
        if( me.selectft != altitudeft ) {
            me.selectft = altitudeft;
@@ -1876,6 +2040,38 @@ Voice.checkallways = func {
    }
 }
 
+
+# ---------------------
+# FOUR ENGINE FLAME OUT
+# ---------------------
+Voice.fourengineflameoutinit = func {
+   var result = constant.TRUE;
+
+   if( me.is_fourengineflameout() ) {
+       result = constant.FALSE;
+   }
+
+   if( result ) {
+       me.emergencyinit( "fourengineflameout", constant.TRUE );
+   }
+}
+
+# ----------------------------------
+# FOUR ENGINE FLAME OUT (SUPERSONIC)
+# ----------------------------------
+Voice.fourengineflameoutmach1init = func {
+   var result = constant.TRUE;
+
+   if( me.is_fourengineflameoutmach1() ) {
+       result = constant.FALSE;
+   }
+
+   if( result ) {
+       me.emergencyinit( "fourengineflameoutmach1", constant.TRUE );
+   }
+}
+
+
 Voice.on_ground = func {
    var result = constant.FALSE;
 
@@ -1946,6 +2142,32 @@ Voice.is_approaching = func {
    return result;
 }
 
+Voice.is_allengines = func {
+    var result = constant.TRUE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
+         if( !me.dependency["engine"][i].getChild("running").getValue() ) {
+             result = constant.FALSE;
+             break;
+         }
+    }
+
+    return result;
+}
+
+Voice.is_noengines = func {
+    var result = constant.TRUE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
+         if( me.dependency["engine"][i].getChild("running").getValue() ) {
+             result = constant.FALSE;
+             break;
+         }
+    }
+
+    return result;
+}
+
 
 # ==========
 # CREW VOICE 
@@ -1956,28 +2178,28 @@ Crewvoice = {};
 Crewvoice.new = func {
    var obj = { parents : [Crewvoice,System],
 
-           voicebox : Voicebox.new(),
+               voicebox : Voicebox.new(),
 
-           CONVERSATIONSEC : 4.0,                            # until next message
-           REPEATSEC : 4.0,                                  # between 2 messages
+               CONVERSATIONSEC : 4.0,                            # until next message
+               REPEATSEC : 4.0,                                  # between 2 messages
 
-           # pilot in command
-           phrasecaptain : "",
-           delaycaptainsec : 0.0,
+               # pilot in command
+               phrasecaptain : "",
+               delaycaptainsec : 0.0,
 
-           # pilot not in command
-           phrase : "",
-           delaysec : 0.0,                                   # delay this phrase
-           nextsec : 0.0,                                    # delay the next phrase
+               # pilot not in command
+               phrase : "",
+               delaysec : 0.0,                                   # delay this phrase
+               nextsec : 0.0,                                    # delay the next phrase
 
-           # engineer
-           phraseengineer : "",
-           delayengineersec : 0.0,
+               # engineer
+               phraseengineer : "",
+               delayengineersec : 0.0,
 
-           asynchronous : constant.FALSE,
+               asynchronous : constant.FALSE,
 
-           hearsound : constant.FALSE,
-           hearvoice : constant.FALSE
+               hearsound : constant.FALSE,
+               hearvoice : constant.FALSE
          };
 
    obj.init();
@@ -1988,7 +2210,7 @@ Crewvoice.new = func {
 Crewvoice.init = func {
    me.inherit_system("/systems/voice");
 
-   me.hearsound = me.dependency["sound"].getChild("enabled").getValue();
+   me.hearsound = me.itself["sound"].getChild("enabled").getValue();
 }
 
 Crewvoice.textexport = func {
@@ -2005,7 +2227,7 @@ Crewvoice.textexport = func {
 
 Crewvoice.schedule = func {
    if( me.hearsound ) {
-       me.hearvoice = me.itself["voice-ctrl"].getNode("sound").getValue();
+       me.hearvoice = me.itself["root-ctrl"].getNode("sound").getValue();
    }
 
    me.voicebox.schedule();
@@ -2058,6 +2280,11 @@ Crewvoice.talkpilot = func( phrase ) {
        print("phrase overflow : ", phrase);
    }
 
+   # add an optional argument
+   if( find("%s", phrase) >= 0 ) {
+       phrase = sprintf( phrase, me.itself["root"].getChild("argument").getValue() );
+   }
+
    me.phrase = phrase;
    me.delaysec = 0;
 }
@@ -2099,6 +2326,12 @@ Crewvoice.stepcaptain = func( state, table ) {
    return state;
 }
 
+Crewvoice.nowcaptain = func( state, table ) {
+   me.stepcaptain( state, table );
+
+   me.playvoices( constant.HUMANSEC );
+}
+
 Crewvoice.talkcaptain = func( phrase ) {
    if( me.phrasecaptain != "" ) {
        print("captain phrase overflow : ", phrase);
@@ -2129,7 +2362,7 @@ Crewvoice.playvoices = func( rates ) {
            me.itself["display"].getChild("copilot").setValue(me.phrase);
 
            if( me.hearvoice ) {
-               me.dependency["sound"].getChild("copilot").setValue(me.phrase);
+               me.itself["sound"].getChild("copilot").setValue(me.phrase);
                me.dependency["copilot-3d"].getNode("teeth").setValue(constant.TRUE);
            }
            me.voicebox.sendtext(me.phrase);
@@ -2151,7 +2384,7 @@ Crewvoice.playvoices = func( rates ) {
            me.itself["display"].getChild("engineer").setValue(me.phraseengineer);
 
            if( me.hearvoice ) {
-               me.dependency["sound"].getChild("pilot").setValue(me.phraseengineer);
+               me.itself["sound"].getChild("pilot").setValue(me.phraseengineer);
                me.dependency["engineer-3d"].getNode("teeth").setValue(constant.TRUE);
            }
            me.voicebox.sendtext(me.phraseengineer, constant.TRUE);
@@ -2168,7 +2401,7 @@ Crewvoice.playvoices = func( rates ) {
            me.itself["display"].getChild("captain").setValue(me.phrasecaptain);
 
            if( me.hearvoice ) {
-               me.dependency["sound"].getChild("pilot").setValue(me.phrasecaptain);
+               me.itself["sound"].getChild("pilot").setValue(me.phrasecaptain);
            }
            me.voicebox.sendtext(me.phrasecaptain, constant.FALSE, constant.TRUE);
            me.phrasecaptain = "";
@@ -2195,15 +2428,15 @@ Speedperception = {};
 Speedperception.new = func {
    var obj = { parents : [Speedperception],
 
-           ratiostep : 0.0,                                  # rates
+               ratiostep : 0.0,                                  # rates
 
-           DECAYKT : 0.0,
-           FINALKT : 0.0,
+               DECAYKT : 0.0,
+               FINALKT : 0.0,
 
-           reactionkt : 0.0,
+               reactionkt : 0.0,
 
-           DECAYKTPS : -1.0,                                 # climb
-           FINALKTPS : -3.0                                  # descent
+               DECAYKTPS : -2.0,                                 # climb
+               FINALKTPS : -3.0                                  # descent
          };
 
    obj.init();
@@ -2225,7 +2458,7 @@ Speedperception.schedule = func( speedkt, lastspeedkt ) {
     me.reactionkt = speedkt - lastspeedkt;
 }
 
-Speedperception.approachdecrease = func {
+Speedperception.climbdecrease = func {
     var result = constant.FALSE;
 
     if( me.reactionkt < me.DECAYKT ) {
@@ -2261,20 +2494,20 @@ Altitudeperception = {};
 Altitudeperception.new = func {
    var obj = { parents : [Altitudeperception],
 
-           ratio1s : 0.0,                                    # 1 s
-           ratiostep : 0.0,                                  # rates
+               ratio1s : 0.0,                                    # 1 s
+               ratiostep : 0.0,                                  # rates
 
-           FLIGHTLEVELFT : 10000,  
-           MARGINFT : 200,                                   # for altitude detection
+               FLIGHTLEVELFT : 10000,  
+               MARGINFT : 200,                                   # for altitude detection
 
-           MAXFT : 0.0,
+               MAXFT : 0.0,
 
-           reactionft : 0.0,
+               reactionft : 0.0,
 
-           level10000 : 0,                                   # current flight level
-           levelabove : constant.TRUE,                       # above sea level
-           levelbelow : constant.FALSE,
-           transition : constant.FALSE                       # below transition level
+               level10000 : 0,                                   # current flight level
+               levelabove : constant.TRUE,                       # above sea level
+               levelbelow : constant.FALSE,
+               transition : constant.FALSE                       # below transition level
          };
 
    obj.init();

@@ -116,6 +116,7 @@
     <psi>3500</psi>
   </supplier>
 
+
   <!-- ======== -->
   <!-- Circuits -->
   <!-- ======== -->
@@ -192,6 +193,12 @@
     <name>Gear</name>
     <prop>/systems/hydraulic/sensors/gear</prop>
   </circuit>
+
+  <circuit>
+    <name>Gear Steering</name>
+    <prop>/systems/hydraulic/sensors/steering</prop>
+  </circuit>
+
 
   <!-- ======================== -->
   <!-- connect in power sources -->
@@ -454,6 +461,24 @@
     <output>Gear</output>
     <switch>
       <prop>/controls/gear/hydraulic</prop>
+    </switch>
+  </connection>
+
+<!-- Steering -->
+
+  <connection>
+    <input>Green</input>
+    <output>Gear Steering</output>
+    <switch>
+      <prop>/controls/gear/steering/hydraulic</prop>
+    </switch>
+  </connection>
+
+  <connection>
+    <input>Yellow</input>
+    <output>Gear Steering</output>
+    <switch>
+      <prop>/controls/gear/steering/hydraulic</prop>
     </switch>
   </connection>
 

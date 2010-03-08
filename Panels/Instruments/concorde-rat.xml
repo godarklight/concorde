@@ -305,13 +305,8 @@
     <property alias="../../../../params/rat-on"/>
    </binding>
    <binding>
-    <command>property-assign</command>
-    <property>/controls/electric/ac/emergency/standby</property>
-    <value>true</value>
-   </binding>
-   <binding>
     <command>nasal</command>
-    <script>globals.Concorde.RATinstrument.deployexport();</script>
+    <script>globals.Concorde.hydraulicsystem.ratdeployexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>
@@ -344,7 +339,7 @@
    </binding>
    <binding>
     <command>nasal</command>
-    <script>globals.Concorde.RATinstrument.testexport();</script>
+    <script>globals.Concorde.hydraulicsystem.rattestexport();</script>
    </binding>
    <binding>
     <command>property-toggle</command>

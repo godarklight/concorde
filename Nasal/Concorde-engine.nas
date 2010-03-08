@@ -13,16 +13,16 @@ Engine = {};
 Engine.new = func {
    var obj = { parents : [Engine,System],
 
-           enginecontrol : EngineControl.new(),
-           airdoor : AirDoor.new(),
-           bucket : Bucket.new(),
-           intake : Intake.new(),
-           rating : Rating.new(),
-           throttles : EngineThrottle.new(),
+               enginecontrol : EngineControl.new(),
+               airdoor : AirDoor.new(),
+               bucket : Bucket.new(),
+               intake : Intake.new(),
+               rating : Rating.new(),
+               throttles : EngineThrottle.new(),
 
-           CUTOFFSEC : 1.0,
+               CUTOFFSEC : 1.0,
 
-           OILPSI : 15.0
+               OILPSI : 15.0
          };
 
    obj.init();
@@ -31,7 +31,7 @@ Engine.new = func {
 };
 
 Engine.init = func {
-    me.inherit_system("/systems/engines");
+    me.inherit_system("/systems/engines","engine");
 }
 
 Engine.amber_intake = func( index ) {
@@ -61,20 +61,24 @@ Engine.set_throttle = func( position ) {
 }
 
 Engine.starter = func( index ) {
-    if( !me.itself["engine-sys"][index].getChild("relight").getValue() ) {
+    if( !me.itself["root"][index].getChild("relight").getValue() ) {
         if( me.dependency["electric"][index].getValue() ) {
             if( me.dependency["air"][index].getValue() ) {
-                me.itself["engine-ctrl"][index].getChild("starter").setValue(constant.TRUE);
+                me.itself["root-ctrl"][index].getChild("starter").setValue(constant.TRUE);
             }
         }
     }
 }
 
-Engine.relight = func( index ) {
-    if( !me.itself["engine-ctrl"][index].getChild("starter").getValue() ) {
-        if( me.dependency["electric"][index].getValue() ) {
-            me.itself["engine-sys"][index].getChild("relight").setValue(constant.TRUE);
+Engine.relight = func( index, set ) {
+    if( set ) {
+        if( !me.itself["root-ctrl"][index].getChild("starter").getValue() ) {
+            me.itself["root"][index].getChild("relight").setValue(constant.TRUE);
         }
+    }
+
+    else {
+        me.itself["root"][index].getChild("relight").setValue(constant.FALSE);
     }
 }
 
@@ -88,12 +92,19 @@ Engine.laneexport = func {
     me.intake.laneexport();
 }
 
+Engine.reverseexport = func {
+    me.bucket.reverseexport();
+}
+
 Engine.schedule = func {
     me.throttles.schedule();
     me.bucket.schedule();
     me.airdoor.schedule();
     me.rating.schedule();
     me.enginecontrol.schedule();
+    me.failure();
+    me.autoignition();
+    me.start();
 }
 
 Engine.slowschedule = func {
@@ -104,10 +115,59 @@ Engine.cutoffcron = func {
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        # engine start by user
        if( me.itself["engine"][i].getChild("starter").getValue() ) {
-           if( me.itself["engine-ctrl"][i].getChild("cutoff").getValue() ) {
-               me.itself["engine-ctrl"][i].getChild("cutoff").setValue(constant.FALSE);
+           if( !me.itself["root-ctrl"][i].getChild("hp-valve").getValue() ) {
+               me.itself["root-ctrl"][i].getChild("hp-valve").setValue(constant.TRUE);
            }
        }
+   }
+}
+
+Engine.failure = func {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+        if( !me.itself["root"][i].getChild("serviceable").getValue() ) {
+            if( !me.itself["root-ctrl"][i].getChild("cutoff").getValue() ) {
+                me.itself["root-ctrl"][i].getChild("cutoff").setValue(constant.TRUE);
+            }
+        }
+   }
+}
+
+Engine.autoignition = func {
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+        if( me.itself["root"][i].getChild("serviceable").getValue() ) {
+
+            if( me.itself["root-ctrl"][i].getChild("autoignition").getValue() ) {
+                if( !me.itself["engine"][i].getChild("running").getValue() and
+                    me.itself["root-ctrl"][i].getChild("hp-valve").getValue() and
+                    me.itself["root-ctrl"][i].getChild("cutoff").getValue() ) {
+                    me.itself["root-ctrl"][i].getChild("cutoff").setValue(constant.FALSE);
+                }
+            }
+        }
+   }
+}
+
+Engine.start = func {
+   # action by HP valve
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+        if( me.itself["root"][i].getChild("serviceable").getValue() ) {
+
+            # start requires starter or relight
+            if( me.itself["root-ctrl"][i].getChild("hp-valve").getValue() ) {
+                if( ( me.itself["engine"][i].getChild("starter").getValue() or
+                      me.itself["root"][i].getChild("relight").getValue() ) and
+                    me.itself["engine"][i].getChild("cutoff").getValue() ) {
+                    me.itself["root-ctrl"][i].getChild("cutoff").setValue(constant.FALSE);
+                }
+            }
+
+            # shutdown
+            else {
+                if( !me.itself["engine"][i].getChild("cutoff").getValue() ) {
+                    me.itself["root-ctrl"][i].getChild("cutoff").setValue(constant.TRUE);
+                }
+            }
+        }
    }
 }
 
@@ -128,14 +188,15 @@ EngineThrottle.new = func {
 }
 
 EngineThrottle.init = func {
-    me.inherit_system("/systems/engines");
+    me.inherit_system("/systems/engines","engine");
 }
 
 EngineThrottle.red_throttle = func {
     var result = constant.FALSE;
 
     for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-         if( me.dependency["throttle"][i].getChild("failure").getValue() ) {
+         if( me.dependency["throttle"][i].getChild("failure").getValue() or
+             me.dependency["throttle-ctrl"][i].getChild("test").getValue() ) {
              result = constant.TRUE;
              break;
          }
@@ -146,6 +207,7 @@ EngineThrottle.red_throttle = func {
 
 EngineThrottle.schedule = func {
     var result = constant.FALSE;
+    var factor = 0.0;
 
     for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
          if( !me.dependency["throttle"][i].getChild("serviceable").getValue() or
@@ -158,15 +220,16 @@ EngineThrottle.schedule = func {
 
          me.dependency["throttle"][i].getChild("available").setValue( result );
 
-         if( !me.dependency["throttle"][i].getChild("serviceable").getValue() ) {
-             result = constant.TRUE;
+         if( !me.dependency["throttle"][i].getChild("serviceable").getValue() or
+             me.dependency["throttle-ctrl"][i].getChild("test").getValue() ) {
+             factor = 1.0;
          }
          else {
-             result = constant.FALSE;
+             factor = 0.0;
          }
 
-         if( me.dependency["throttle"][i].getChild("failure").getValue() != result ) {
-             me.dependency["throttle"][i].getChild("failure").setValue( result );
+         if( me.dependency["throttle"][i].getChild("failure").getValue() != factor ) {
+             me.dependency["throttle"][i].getChild("failure").setValue( factor );
          }
     }
 }
@@ -210,7 +273,7 @@ EngineControl.new = func {
 }
 
 EngineControl.init = func {
-    me.inherit_system("/systems/engines");
+    me.inherit_system("/systems/engines","engine");
 }
 
 EngineControl.schedule = func {
@@ -221,7 +284,7 @@ EngineControl.schedule = func {
     me.wow = me.dependency["weight"].getChild("wow").getValue();
 
     for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-         me.reheat = me.itself["engine-ctrl"][i].getChild("reheat").getValue();
+         me.reheat = me.itself["root-ctrl"][i].getChild("reheat").getValue();
          me.takeoff = me.rating.is_takeoff( i );
          me.climb = me.rating.is_climb( i );
 
@@ -279,7 +342,7 @@ EngineControl.schedule = func {
              }
 
              else {
-                 if( me.dependency["gear"][0].getChild("position-norm").getValue() == constantaero.GEARDOWN ) {
+                 if( me.dependency["gear"][constantaero.GEARFRONT].getChild("position-norm").getValue() == constantaero.GEARDOWN ) {
                      me.value = me.LOW
                  }
 
@@ -300,7 +363,7 @@ EngineControl.schedule = func {
              }
          }
 
-         me.itself["engine-sys"][i].getChild("schedule").setValue( me.value );
+         me.itself["root"][i].getChild("schedule").setValue( me.value );
     }
 }
 
@@ -382,7 +445,7 @@ EngineN1.new = func {
 };
 
 EngineN1.init = func {
-    me.inherit_system("/systems/engines");
+    me.inherit_system("/systems/engines","engine");
 }
 
 EngineN1.get_throttle = func( position ) {
@@ -437,7 +500,7 @@ EngineN1.engine4 = func( speedkt ) {
 
         # only below 60 kt
         if( speedkt < me.ENGINE4KT ) {
-            me.engine4limiter = me.itself["engine-ctrl"][3].getChild("n1-to-limiter").getValue();
+            me.engine4limiter = me.itself["root-ctrl"][3].getChild("n1-to-limiter").getValue();
         }
 
         # normal control
@@ -446,8 +509,8 @@ EngineN1.engine4 = func( speedkt ) {
                  me.engine4limiter = constant.FALSE;
 
                 # align throttle
-                throttle = me.itself["engine-ctrl"][2].getChild("throttle").getValue();
-                me.itself["engine-ctrl"][3].getChild("throttle").setValue(throttle);
+                throttle = me.itself["root-ctrl"][2].getChild("throttle").getValue();
+                me.itself["root-ctrl"][3].getChild("throttle").setValue(throttle);
             }
         }
     }
@@ -457,8 +520,8 @@ EngineN1.reheatcontrol = func {
    var augmentation = constant.FALSE;
 
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        if( me.itself["engine-ctrl"][i].getChild("reheat").getValue() and
-            me.itself["engine-ctrl"][i].getChild("throttle").getValue() > me.THROTTLEREHEAT and
+        if( me.itself["root-ctrl"][i].getChild("reheat").getValue() and
+            me.itself["root-ctrl"][i].getChild("throttle").getValue() > me.THROTTLEREHEAT and
             me.itself["engine"][i].getChild("n1").getValue() > me.N1REHEAT ) {
             augmentation = constant.TRUE;
         }
@@ -468,7 +531,7 @@ EngineN1.reheatcontrol = func {
 
         if( me.reheat[i] != augmentation ) {
             me.reheat[i] = augmentation;
-            me.itself["engine-ctrl"][i].getChild("augmentation").setValue( me.reheat[i] );
+            me.itself["root-ctrl"][i].getChild("augmentation").setValue( me.reheat[i] );
         }
    }
 }
@@ -489,8 +552,8 @@ EngineN1.exhausttexture = func {
 
         if( me.exhaust[i] != factor ) {
             me.exhaust[i] = factor;
-            me.itself["engine-sys"][i].getChild("nozzle-factor").setValue(me.exhaust[i]);
-            me.itself["engine-sys"][i].getChild("nozzle-texture").setValue(texture);
+            me.itself["root"][i].getChild("nozzle-factor").setValue(me.exhaust[i]);
+            me.itself["root"][i].getChild("nozzle-texture").setValue(texture);
         }
    }
 }
@@ -507,7 +570,7 @@ EngineN1.transitsound = func {
         if( value >= me.N1TRANSIT ) {
             if( transit == me.TRANSITOFF ) {
                 # only once, above 70.
-                interpolate( "/systems/engines/transit", me.TRANSITEND, me.TRANSITSEC );
+                interpolate( me.itself["engines-sys"].getChild("transit").getPath(), me.TRANSITEND, me.TRANSITSEC );
                 break;
             }
 
@@ -547,7 +610,7 @@ Rating.new = func {
 };
 
 Rating.init = func {
-   me.inherit_system("/systems/engines");
+   me.inherit_system("/systems/engines","engine");
 }
 
 Rating.set_throttle = func( position ) {
@@ -558,22 +621,7 @@ Rating.set_throttle = func( position ) {
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
         position_new = position;
 
-        # autoland first
-        if( me.is_takeoff(i) ) {
-            maxthrottle = me.THROTTLETAKEOFF;
-        }
-
-        # flight
-        else {
-            if( me.is_climb(i) ) {
-                maxthrottle = me.THROTTLECLIMB;
-            }
-
-            # cruise
-            else {
-                maxthrottle = me.THROTTLECRUISE;
-            }
-        }
+        maxthrottle = me.level( i );
 
         if( position_new > maxthrottle ) {
             position_new = maxthrottle;
@@ -586,21 +634,26 @@ Rating.set_throttle = func( position ) {
 
         # default, except autothrottle
         if( me.itself["engine-auto"][i].getValue() == "" ) {
-            me.itself["engine-ctrl"][i].getChild("throttle").setValue( position_new );
+            me.itself["root-ctrl"][i].getChild("throttle").setValue( position_new );
         }
 
         # last human operation (to detect goaround).
-        me.itself["engine-ctrl"][i].getChild("throttle-manual").setValue( position );
+        me.itself["root-ctrl"][i].getChild("throttle-manual").setValue( position );
    }
 }
 
 Rating.schedule = func {
+   me.enginen1.schedule();
+   me.supervisor();
+   me.autothrottle();
+}
+
+Rating.supervisor = func {
    var reheat = constant.FALSE;
    var monitor = me.dependency["takeoff-monitor"].getValue();
    var j = 0;
    var rating = "";
 
-   me.enginen1.schedule();
 
    # arm takeoff rating
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
@@ -616,39 +669,73 @@ Rating.schedule = func {
             }
 
             if( me.dependency["gear"][j].getChild("position-norm").getValue() == constantaero.GEARDOWN ) {
-                me.itself["engine-ctrl"][i].getChild("rating").setValue(constantaero.RATINGTAKEOFF);
+                me.itself["root-ctrl"][i].getChild("rating").setValue(constantaero.RATINGTAKEOFF);
             }
         }
    }
 
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-       reheat = me.itself["engine-ctrl"][i].getChild("reheat").getValue();
+       reheat = me.itself["root-ctrl"][i].getChild("reheat").getValue();
 
        if( reheat and me.is_takeoff(i) ) {
            # automatic contigency, if takeoff monitor
            if( monitor ) {
-               me.itself["engine-ctrl"][i].getChild("contingency").setValue(constant.TRUE);
+               me.itself["root-ctrl"][i].getChild("contingency").setValue(constant.TRUE);
            }
        }
-       elsif( !reheat and me.itself["engine-ctrl"][i].getChild("contingency").getValue() ) {
-           me.itself["engine-ctrl"][i].getChild("contingency").setValue(constant.FALSE);
+       elsif( !reheat and me.itself["root-ctrl"][i].getChild("contingency").getValue() ) {
+           me.itself["root-ctrl"][i].getChild("contingency").setValue(constant.FALSE);
        }
    }
 
    # apply to engines
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-        rating = me.itself["engine-ctrl"][i].getChild("rating").getValue();
+        rating = me.itself["root-ctrl"][i].getChild("rating").getValue();
         if( rating != constantaero.RATINGTAKEOFF ) {
-            rating = me.itself["engine-ctrl"][i].getChild("rating-flight").getValue();
+            rating = me.itself["root-ctrl"][i].getChild("rating-flight").getValue();
         }
-        me.itself["engine-sys"][i].getChild("rating").setValue(rating);
+        me.itself["root"][i].getChild("rating").setValue(rating);
    }
+}
+
+Rating.autothrottle = func {
+    var maxthrottle = constantaero.THROTTLEIDLE;
+
+    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+         maxthrottle = me.level( i );
+
+         me.dependency["autothrottle"][i].getChild("u_max").setValue( maxthrottle );
+         me.dependency["automach"][i].getChild("u_max").setValue( maxthrottle );
+    }
+}
+
+Rating.level = func( index ) {
+    var maxthrottle = constantaero.THROTTLEIDLE;
+
+    # autoland first
+    if( me.is_takeoff( index ) ) {
+        maxthrottle = me.THROTTLETAKEOFF;
+    }
+
+    # flight
+    else {
+        if( me.is_climb( index ) ) {
+            maxthrottle = me.THROTTLECLIMB;
+        }
+
+        # cruise
+        else {
+            maxthrottle = me.THROTTLECRUISE;
+        }
+    }
+
+    return maxthrottle;
 }
 
 Rating.is_takeoff = func( index ) {
     var result = constant.FALSE;
 
-    if( me.itself["engine-ctrl"][index].getChild("rating").getValue() == constantaero.RATINGTAKEOFF ) {
+    if( me.itself["root-ctrl"][index].getChild("rating").getValue() == constantaero.RATINGTAKEOFF ) {
         result = constant.TRUE;
     }
 
@@ -659,7 +746,7 @@ Rating.is_climb = func( index ) {
     var result = constant.FALSE;
 
     if( !me.is_takeoff( index ) and
-        me.itself["engine-ctrl"][index].getChild("rating-flight").getValue() == constantaero.RATINGCLIMB ) {
+        me.itself["root-ctrl"][index].getChild("rating-flight").getValue() == constantaero.RATINGCLIMB ) {
         result = constant.TRUE;
     }
 
@@ -705,13 +792,48 @@ Bucket.set_rate = func( rates ) {
 }
 
 Bucket.init = func {
-   me.inherit_system("/systems/engines");
+   me.inherit_system("/systems/engines","engine");
 
    var denom = me.SUPERSONICMACH - me.SUBSONICMACH;
 
    me.set_rate( me.BUCKETSEC );
 
    me.COEF = me.TAKEOFFDEG / denom;
+}
+
+Bucket.reverseexport = func {
+   var reverse = constant.FALSE;
+   var target = constant.FALSE;
+
+   # determine current position of levers
+   for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+        if( me.itself["root-ctrl"][i].getChild("reverser").getValue() ) {
+            reverse = constant.TRUE;
+            break;
+        }
+   }
+
+   # 4 levers on ground
+   if( me.dependency["weight"].getChild("wow").getValue() ) {
+       target = constant.not( reverse );
+
+       for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+            me.itself["root-ctrl"][i].getChild("reverser").setValue( target );
+       }
+   }
+
+   # only levers 2 and 3 in flight
+   else {
+       for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+            target = constant.not( reverse );
+
+            if( !constantaero.inboardengine( i ) ) {
+                target = constant.FALSE;
+            }
+
+            me.itself["root-ctrl"][i].getChild("reverser").setValue( target );
+       }
+   }
 }
 
 Bucket.schedule = func {
@@ -768,6 +890,39 @@ Bucket.applyrad = func( property, anglerad, targetdeg ) {
    }
 }
 
+Bucket.reverse = func( index ) {
+   var result = constant.FALSE;
+   var flightrev = me.itself["engines-ctrl"].getChild("flight-reverse").getValue();
+
+   # disarmed by throttle above 10 %.
+   if( flightrev ) {
+       if( me.itself["root-ctrl"][index].getChild("throttle").getValue() > constantaero.THROTTLEREV ) {
+           flightrev = constant.FALSE;
+           me.itself["engines-ctrl"].getChild("flight-reverse").setValue( flightrev );
+       }
+   }
+
+   # CAUTION : use controls, because there is a delay by /engines/engine[0]/reversed !
+   if( me.itself["root-ctrl"][index].getChild("reverser").getValue() ) {
+       # on ground
+       if( me.dependency["weight"].getChild("wow").getValue() ) {
+           result = constant.TRUE;
+       }
+
+       # in flight, only if :
+       # - armed.
+       # - engines 2 and 3.
+       # - idle throttle.
+       elsif( flightrev ) {
+           if( constantaero.inboardengine( index ) ) {
+               result = constant.TRUE;
+           }
+       }
+   }
+
+   return result;
+}
+
 # bucket position
 Bucket.position = func {
    var step = 0.0;
@@ -790,8 +945,7 @@ Bucket.position = func {
    }
 
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-       # CAUTION : use controls, because there is a delay by /engines/engine[0]/reversed !
-       if( me.itself["engine-ctrl"][i].getChild("reverser").getValue() ) {
+       if( me.reverse( i ) ) {
            # reversed : 73 deg
            valuedeg = me.REVERSERDEG;
            reverserdeg = me.AEROBRAKEDEG;
@@ -801,11 +955,11 @@ Bucket.position = func {
            reverserdeg = 0.0;
        }
 
-       result = me.itself["engine-sys"][i].getChild("bucket-deg").getValue();
-       valuedeg = me.apply( "/systems/engines/engine[" ~ i ~ "]/bucket-deg", result, valuedeg );
+       result = me.itself["root"][i].getChild("bucket-deg").getValue();
+       valuedeg = me.apply( me.itself["root"][i].getChild("bucket-deg").getPath(), result, valuedeg );
 
-       result = me.itself["engine-ctrl"][i].getChild("reverser-angle-rad").getValue();
-       me.applyrad( me.itself["engine-ctrl"][i].getChild("reverser-angle-rad").getPath(), result, reverserdeg );
+       result = me.itself["root-ctrl"][i].getChild("reverser-angle-rad").getValue();
+       me.applyrad( me.itself["root-ctrl"][i].getChild("reverser-angle-rad").getPath(), result, reverserdeg );
    }
 }
 
@@ -829,7 +983,7 @@ AirDoor.new = func {
 };
 
 AirDoor.init = func {
-   me.inherit_system("/systems/engines");
+   me.inherit_system("/systems/engines","engine");
 }
 
 # air door position
@@ -838,12 +992,12 @@ AirDoor.schedule = func {
    var speedmach = me.dependency["mach"].getChild("indicated-mach").getValue();
    var speedkt = me.dependency["asi"].getChild("indicated-speed-kt").getValue();
    var touchdown = me.dependency["weight"].getChild("wow").getValue();
-   var gearpos = me.dependency["gear"][1].getChild("position-norm").getValue();
+   var gearpos = me.dependency["gear"][constantaero.GEARLEFT].getChild("position-norm").getValue();
 
    # engines 1 to 3 :
    for( var i=0; i <= constantaero.ENGINE3; i=i+1 ) {
-       if( me.itself["engine-ctrl"][i].getChild("secondary-air-door").getValue() ) {
-           value = me.itself["engine-sys"][i].getChild("secondary-air-door").getValue();
+       if( me.itself["root-ctrl"][i].getChild("secondary-air-door").getValue() ) {
+           value = me.itself["root"][i].getChild("secondary-air-door").getValue();
            # opens above Mach 0.26
            if( !value ) {
                if( speedmach > me.ENGINESMACH ) {
@@ -854,13 +1008,13 @@ AirDoor.schedule = func {
            elsif( speedmach < me.ENGINESMACH and touchdown ) {
                value = constant.FALSE;
            }
-           me.itself["engine-sys"][i].getChild("secondary-air-door").setValue(value);
+           me.itself["root"][i].getChild("secondary-air-door").setValue(value);
        }
    }
 
    # engine 4
-   if( me.itself["engine-ctrl"][constantaero.ENGINE4].getChild("secondary-air-door").getValue() ) {
-       value = me.itself["engine-sys"][constantaero.ENGINE4].getChild("secondary-air-door").getValue();
+   if( me.itself["root-ctrl"][constantaero.ENGINE4].getChild("secondary-air-door").getValue() ) {
+       value = me.itself["root"][constantaero.ENGINE4].getChild("secondary-air-door").getValue();
        # opens above 220 kt
        if( !value ) {
            if( speedkt > me.ENGINE4KT ) {
@@ -871,7 +1025,7 @@ AirDoor.schedule = func {
        elsif( speedmach < me.ENGINESMACH and gearpos == constantaero.GEARDOWN ) {
            value = constant.FALSE;
        }
-       me.itself["engine-sys"][constantaero.ENGINE4].getChild("secondary-air-door").setValue(value);
+       me.itself["root"][constantaero.ENGINE4].getChild("secondary-air-door").setValue(value);
    }
 }
 
@@ -909,7 +1063,7 @@ Intake.new = func {
 };
 
 Intake.init = func {
-   me.inherit_system("/systems/engines");
+   me.inherit_system("/systems/engines","engine");
 
    me.OFFSETMACH = me.MAXMACH - me.MINMACH;
 }
@@ -920,13 +1074,13 @@ Intake.amber_intake = func( index ) {
 
     # auto or green / blue selected
     if( !me.dependency["hydraulic"].getChild(me.hydmain[index]).getValue() and
-        me.itself["engine-sys"][index].getChild("intake-main").getValue() ) {
+        me.itself["root"][index].getChild("intake-main").getValue() ) {
         result = constant.TRUE;
     }
 
     # yellow selected
     elsif( !me.dependency["hydraulic"].getChild("yellow").getValue() and
-           me.itself["engine-sys"][index].getChild("intake-standby").getValue() ) {
+           me.itself["root"][index].getChild("intake-standby").getValue() ) {
         result = constant.TRUE;
     }
 
@@ -937,7 +1091,7 @@ Intake.laneexport = func {
    var selector = 0;
 
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-        selector = me.itself["engine-ctrl"][i].getChild("intake-selector").getValue();
+        selector = me.itself["root-ctrl"][i].getChild("intake-selector").getValue();
 
         if( selector == me.LANEAUTOA or selector == me.LANEA ) {
             me.lane[0] = constant.TRUE;
@@ -949,7 +1103,7 @@ Intake.laneexport = func {
         }
 
         for( var j=0; j<constantaero.NBAUTOPILOTS; j=j+1 ) {
-             me.itself["engine-sys"][i].getChild("intake-lane", j).setValue(me.lane[j]);
+             me.itself["root"][i].getChild("intake-lane", j).setValue(me.lane[j]);
         }
    }
 }
@@ -970,7 +1124,7 @@ Intake.auxilliaryinlet = func( speedmach ) {
    }
 
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-        me.itself["engine-sys"][i].getChild("intake-aux-inlet").setValue(pos);
+        me.itself["root"][i].getChild("intake-aux-inlet").setValue(pos);
    }
 }
 
@@ -979,17 +1133,17 @@ Intake.ramphydraulic = func {
    var standby  = constant.FALSE;
 
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-        if( me.itself["engine-ctrl"][i].getChild("intake-auto").getValue() ) {
+        if( me.itself["root-ctrl"][i].getChild("intake-auto").getValue() ) {
             main = constant.TRUE;
             standby = !me.dependency["hydraulic"].getChild(me.hydmain[i]).getValue();
         }
         else {
-            main = me.itself["engine-ctrl"][i].getChild("intake-main").getValue();
+            main = me.itself["root-ctrl"][i].getChild("intake-main").getValue();
             standby = !main;
         }
 
-        me.itself["engine-sys"][i].getChild("intake-main").setValue(main);
-        me.itself["engine-sys"][i].getChild("intake-standby").setValue(standby);
+        me.itself["root"][i].getChild("intake-main").setValue(main);
+        me.itself["root"][i].getChild("intake-standby").setValue(standby);
    }
 }
 
@@ -1026,13 +1180,13 @@ Intake.rampposition = func( speedmach ) {
    # engineer moves ramp manually
    if( hydfailure ) {
        for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-            pospercent = me.itself["engine-sys"][i].getChild("ramp-percent").getValue();
+            pospercent = me.itself["root"][i].getChild("ramp-percent").getValue();
 
             # to the left (negativ), if throttle lever must be retarded
             ratio = ( ramppercent - pospercent ) / me.MAXRAMP;
 
             ratiopercent = ratio * 100;
-            me.itself["engine-sys"][i].getChild("intake-ratio-error").setValue(ratiopercent);
+            me.itself["root"][i].getChild("intake-ratio-error").setValue(ratiopercent);
        }
 
        # ramp is too much closed (supercritical)
@@ -1059,8 +1213,8 @@ Intake.rampposition = func( speedmach ) {
    # hydraulics moves intake ramp
    else {
        for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-            me.itself["engine-sys"][i].getChild("ramp-percent").setValue(ramppercent);
-            me.itself["engine-sys"][i].getChild("intake-ratio-error").setValue(0.0);
+            me.itself["root"][i].getChild("ramp-percent").setValue(ramppercent);
+            me.itself["root"][i].getChild("intake-ratio-error").setValue(0.0);
        }
    }
 

@@ -8,8 +8,8 @@
 <PropertyList>
 
  <name>Side Slip indicator</name>
- <w-base>100</w-base>
- <h-base>20</h-base>
+ <w-base>150</w-base>
+ <h-base>40</h-base>
 
  <params>
   <serviceable>/instrumentation/side-slip[0]/serviceable</serviceable>
@@ -18,6 +18,8 @@
 
 
  <layers>
+
+  <layer include="concorde-gauge-horizontal.xml"/>
 
   <layer>
    <name>background</name>

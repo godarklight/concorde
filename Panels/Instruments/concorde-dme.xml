@@ -8,10 +8,12 @@
 <PropertyList>
 
  <name>Concorde DME</name>
- <w-base>120</w-base>
- <h-base>60</h-base>
+ <w-base>200</w-base>
+ <h-base>100</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>background</name>
@@ -22,8 +24,8 @@
    <y1>0.25</y1>
    <x2>1.0</x2>
    <y2>0.75</y2>
-   <w>150</w>
-   <h>150</h>
+   <w>200</w>
+   <h>200</h>
   </layer>
 
 <!-- DME 1 -->
@@ -69,7 +71,7 @@
      </and>
     </condition>
     <font>led</font>
-    <point-size>7</point-size>
+    <point-size>12</point-size>
     <color>
      <red>1.0</red>
      <green>0.5</green>
@@ -88,7 +90,7 @@
     <name>DME 1 not in range</name>
     <type>text</type>
     <font>led</font>
-    <point-size>7</point-size>
+    <point-size>12</point-size>
     <color>
      <red>1.0</red>
      <green>0.5</green>
@@ -105,11 +107,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-57</offset>
+     <offset>-83</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-7</offset>
+     <offset>-13</offset>
     </transformation>
    </transformations>
   </layer>
@@ -158,7 +160,7 @@
      </and>
     </condition>
     <font>led</font>
-    <point-size>7</point-size>
+    <point-size>12</point-size>
     <color>
      <red>1.0</red>
      <green>0.5</green>
@@ -177,7 +179,7 @@
     <name>DME 2 not in range</name>
     <type>text</type>
     <font>led</font>
-    <point-size>7</point-size>
+    <point-size>12</point-size>
     <color>
      <red>1.0</red>
      <green>0.5</green>
@@ -194,11 +196,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>14</offset>
+     <offset>12</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-7</offset>
+     <offset>-13</offset>
     </transformation>
    </transformations>
   </layer>

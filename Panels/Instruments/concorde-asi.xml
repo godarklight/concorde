@@ -5,6 +5,8 @@
 The ias light is real.
 
 
+_______________________________________________________________________________
+
 Adapted from T-38 Airspeed Indicator with digital readout added
 David Culp, Mar 2003, davidculp2@attbi.com, based on:
 
@@ -44,20 +46,21 @@ properties' values.
  <params>
   <test>/controls/lighting/crew/captain/test</test>
   <serviceable>/instrumentation/airspeed-indicator[0]/serviceable</serviceable>
+  <failure-flag>/instrumentation/airspeed-indicator[0]/failure-flag</failure-flag>
+  <vmo-failure-flag>/instrumentation/airspeed-indicator[0]/vmo-failure-flag</vmo-failure-flag>
   <speed-sel>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</speed-sel>
   <vmo-sel>/instrumentation/airspeed-indicator[0]/vmo-kt</vmo-sel>
+  <standby-ctrl>/instrumentation/airspeed-indicator[0]/standby</standby-ctrl>
  </params>
   
  
  <layers>
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>gauge face</name>
    <texture>   
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi.rgb</path>
-    <x1>0.5</x1>
-    <y1>0.5</y1>
-    <x2>1.0</x2>
-    <y2>1.0</y2>
    </texture>
    <w>112</w>
    <h>112</h>
@@ -70,13 +73,12 @@ properties' values.
    <layer>
     <name>Digital airspeed</name>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property alias="../../../../../../params/serviceable"/>
-     </and>
+     <not>
+      <property alias="../../../../../../params/failure-flag"/>
+     </not>
     </condition>
     <type>text</type>
-    <font>led</font>
-    <point-size>6</point-size>
+    <point-size>13</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -85,7 +87,7 @@ properties' values.
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+      <property alias="../../../../../../params/speed-sel"/>
       <min>50.0</min>
       <max>590.0</max>
       <format>%4.0f</format>
@@ -94,7 +96,7 @@ properties' values.
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-16</offset>
+      <offset>-17</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
@@ -106,14 +108,14 @@ properties' values.
    <layer>
     <name>Off flag</name>
     <texture>
-     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon.rgb</path>
-     <x1>0.85</x1>
-     <y1>0.35</y1>
-     <x2>0.96</x2>
-     <y2>0.43</y2>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi-2.rgb</path>
+     <x1>0.8535</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>0.0977</y2>
     </texture>
-    <w>18</w>
-    <h>15</h>
+    <w>12</w>
+    <h>8</h>
     <transformations>
      <transformation>
       <type>x-shift</type>
@@ -125,6 +127,79 @@ properties' values.
      </transformation>
     </transformations>
    </layer>
+  </layer>
+
+  <layer>
+   <name>VMO flag</name>
+   <condition>
+    <property alias="../../../../params/vmo-failure-flag"/>
+   </condition>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi-2.rgb</path>
+    <x1>0.0</x1>
+    <y1>0.0</y1>
+    <x2>0.1465</x2>
+    <y2>0.0977</y2>
+   </texture>
+   <w>12</w>
+   <h>8</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>22</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>0</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>sensor</name>
+   <type>switch</type>
+
+   <layer>
+    <name>ADC</name>
+    <condition>
+     <not>
+      <property alias="../../../../../../params/standby-ctrl"/>
+     </not>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi-2.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.9023</y1>
+     <x2>0.1465</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>12</w>
+    <h>8</h>
+   </layer>
+
+   <layer>
+    <name>Standby</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-asi-2.rgb</path>
+     <x1>0.8535</x1>
+     <y1>0.9023</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+    </texture>
+    <w>12</w>
+    <h>8</h>
+   </layer>
+
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>0</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-26</offset>
+    </transformation>
+   </transformations>
   </layer>
 
    <layer>
@@ -151,13 +226,16 @@ properties' values.
       <max>590.0</max>
       <scale>1.0</scale>
        <interpolation>
-       <entry><ind>  50</ind><dep>    0</dep></entry>
-       <entry><ind> 100</ind><dep>   44.8</dep></entry>
-       <entry><ind> 200</ind><dep>   121.9</dep></entry>
-       <entry><ind> 300</ind><dep>   188.1</dep></entry>
-       <entry><ind> 400</ind><dep>   246.9</dep></entry>
-       <entry><ind> 500</ind><dep>   300.5</dep></entry>
-       <entry><ind> 600</ind><dep>   350.0</dep></entry>
+       <entry><ind>  50</ind><dep>   -15</dep></entry>
+       <entry><ind>  60</ind><dep>    -7.5</dep></entry>
+       <entry><ind>  70</ind><dep>     0</dep></entry>
+       <entry><ind> 190</ind><dep>    90</dep></entry>
+       <entry><ind> 250</ind><dep>   135</dep></entry>
+       <entry><ind> 350</ind><dep>   176.25</dep></entry>
+       <entry><ind> 355</ind><dep>   180</dep></entry>
+       <entry><ind> 475</ind><dep>   270</dep></entry>
+       <entry><ind> 570</ind><dep>   341.25</dep></entry>
+       <entry><ind> 590</ind><dep>   356.25</dep></entry>
        </interpolation>
      </transformation>
      <transformation>
@@ -195,13 +273,16 @@ properties' values.
        <max>590.0</max>
        <scale>1.0</scale>
        <interpolation>
-        <entry><ind>  50</ind><dep>    0</dep></entry>
-        <entry><ind> 100</ind><dep>   44.8</dep></entry>
-        <entry><ind> 200</ind><dep>   121.9</dep></entry>
-        <entry><ind> 300</ind><dep>   188.1</dep></entry>
-        <entry><ind> 400</ind><dep>   246.9</dep></entry>
-        <entry><ind> 500</ind><dep>   300.5</dep></entry>
-        <entry><ind> 600</ind><dep>   350.0</dep></entry>
+        <entry><ind>  50</ind><dep>   -15</dep></entry>
+        <entry><ind>  60</ind><dep>    -7.5</dep></entry>
+        <entry><ind>  70</ind><dep>     0</dep></entry>
+        <entry><ind> 190</ind><dep>    90</dep></entry>
+        <entry><ind> 250</ind><dep>   135</dep></entry>
+        <entry><ind> 350</ind><dep>   176.25</dep></entry>
+        <entry><ind> 355</ind><dep>   180</dep></entry>
+        <entry><ind> 475</ind><dep>   270</dep></entry>
+        <entry><ind> 570</ind><dep>   341.25</dep></entry>
+        <entry><ind> 590</ind><dep>   356.25</dep></entry>
        </interpolation>
       </transformation>
       <transformation>
@@ -225,7 +306,7 @@ properties' values.
      <transformations>
       <transformation>
        <type>rotation</type>
-       <offset>188.1</offset> <!-- 300 kt -->
+       <offset>155.625</offset>     <!-- 300 kt -->
       </transformation>
       <transformation>
        <type>y-shift</type>
@@ -271,6 +352,94 @@ properties' values.
     </transformations>
    </layer>
 
+   <layer>
+    <name>Knob</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/blister.rgb</path>
+     <x1>0.25</x1>
+     <y1>0.75</y1>
+     <x2>0.5</x2>
+     <y2>1.0</y2>
+    </texture>
+    <h>24</h>
+    <w>24</w>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-50</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-50</offset>
+     </transformation>
+     <transformation>
+      <type>rotation</type>
+      <offset>180</offset>
+     </transformation>
+    </transformations>
+   </layer> 
+
+<!-- selector -->
+
+   <layer>
+    <name>selector</name>
+    <type>switch</type>
+
+    <layer>
+     <name>selector left</name>
+     <condition>
+      <not>
+       <property alias="../../../../../../params/standby-ctrl"/>
+      </not>
+     </condition>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.0</x1>
+      <x2>1.0</x2>
+      <y1>0.0</y1>
+      <y2>1.0</y2>
+     </texture>
+     <w>7</w>
+     <h>16</h>
+     <transformations>
+      <transformation>
+       <type>rotation</type>
+       <offset>-90</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <layer>
+     <name>selector right</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-white-button.rgb</path>
+      <x1>0.0</x1>
+      <x2>1.0</x2>
+      <y1>0.0</y1>
+      <y2>1.0</y2>
+     </texture>
+     <w>7</w>
+     <h>16</h>
+     <transformations>
+      <transformation>
+       <type>rotation</type>
+       <offset>0</offset>
+      </transformation>
+     </transformations>
+    </layer>
+
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>55</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>-45</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
 <!-- Yellow light within plus/minus 5 kt -->
 
 <!-- translucent lens -->
@@ -306,14 +475,14 @@ properties' values.
        </and>
        <not include="concorde-cond-voltage-inst.xml"/>
        <not>
-        <property>/instrumentation/airspeed-indicator[0]/serviceable</property>
+        <property alias="../../../../../../../params/serviceable"/>
        </not>
       </or>
      </condition>
 
      <layer include="concorde-bulb-led-off.xml">
-      <w>16</w>
-      <h>16</h>
+      <w>15</w>
+      <h>15</h>
      </layer>
      <layer>
       <name>background off</name>
@@ -324,8 +493,8 @@ properties' values.
        <x2>1.0</x2>
        <y2>1.0</y2>
       </texture>
-      <w>16</w>
-      <h>16</h>
+      <w>15</w>
+      <h>15</h>
      </layer>
     </layer>
 
@@ -334,8 +503,8 @@ properties' values.
      <type>group</type>
  
      <layer include="concorde-bulb-led-on.xml">
-      <w>16</w>
-      <h>16</h>
+      <w>15</w>
+      <h>15</h>
      </layer>
      <layer>
       <name>background on</name>
@@ -346,24 +515,41 @@ properties' values.
        <x2>1.0</x2>
        <y2>1.0</y2>
       </texture>
-      <w>16</w>
-      <h>16</h>
+      <w>15</w>
+      <h>15</h>
       <emissive>true</emissive>
      </layer>
     </layer>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-52</offset>
+      <offset>-49</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>50</offset>
+      <offset>47</offset>
      </transformation>
     </transformations>
    </layer>
 
  </layers>
+
+ <actions>
+ 
+  <action>
+   <name>toggle sensor</name>
+   <button>0</button>
+   <x>43</x>
+   <y>-58</y>
+   <w>24</w>
+   <h>24</h>
+   <binding>
+    <command>property-toggle</command>
+    <property alias="../../../../params/standby-ctrl"/>
+   </binding>
+  </action>
+
+ </actions>
 </PropertyList>
 
 

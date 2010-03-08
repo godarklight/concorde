@@ -3,7 +3,7 @@
 <!-- Alarm on nose wheel :
 
      - no hydraulics (green and yellow).
-     - TO DO : yellow hydraulics, only when PFCU selector at yellow-green.
+     - must be reset.
 -->
 
 <PropertyList>
@@ -23,11 +23,10 @@
      <condition>
       <or include="concorde-cond-voltage-bulb.xml">
        <and>
-        <or include="concorde-cond-test-copilot.xml"/>
-        <or>
-         <property>/systems/hydraulic/power/green</property>
-         <property>/systems/hydraulic/power/yellow</property>
-        </or>
+        <not>
+         <property>/controls/gear/steering/test</property>
+        </not>
+        <property>/controls/gear/steering/hydraulic</property>
        </and>
       </or>
      </condition>

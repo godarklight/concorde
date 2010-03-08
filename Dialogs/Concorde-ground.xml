@@ -27,6 +27,7 @@
 
        <checkbox>
          <halign>left</halign>
+        <live>true</live>
          <label>Air bleed</label>
          <property>/systems/air-bleed/ground-service/door</property>
          <binding>
@@ -37,6 +38,7 @@
 
        <checkbox>
          <halign>left</halign>
+        <live>true</live>
          <label>Air conditioning</label>
          <property>/systems/temperature/ground-service/door</property>
          <binding>
@@ -52,6 +54,7 @@
 
        <checkbox>
          <halign>left</halign>
+        <live>true</live>
          <label>Electrical power</label>
          <property>/systems/electrical/ground-service/door</property>
          <binding>
@@ -69,20 +72,85 @@
     </text>
 
     <text>
-      <label>INS</label>
+      <label>Gear</label>
     </text>
 
-    <checkbox>
-      <label>Fast alignment of INS (not real)  ~</label>
+    <group>
+      <layout>hbox</layout>
+
+      <checkbox>
+        <label>Test rudder pedal</label>
+        <halign>left</halign>
+        <property>/controls/crew/steering/pedal</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/crew/steering/pedal</property>
+        </binding>
+        <binding>
+         <command>nasal</command>
+         <script>globals.Concorde.gearsystem.steeringexport();</script>
+        </binding>
+      </checkbox>
+
+      <checkbox>
+        <label>Wheel chocks</label>
+        <live>true</live>
+        <halign>left</halign>
+        <property>/controls/gear/wheel-chocks</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/gear/wheel-chocks</property>
+        </binding>
+      </checkbox>
+    </group>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label>Pushback</label>
+    </text>
+
+    <group>
+      <layout>hbox</layout>
+
+      <checkbox>
+        <label>Call (release brakes once connected)</label>
+        <halign>left</halign>
+        <property>/controls/tractor/pushback</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/tractor/pushback</property>
+        </binding>
+      </checkbox>
+
+      <text>
+        <halign>left</halign>
+        <live>true</live>
+        <property>/systems/tractor/distance-m</property>
+        <color>
+         <red>0.2</red>
+         <green>0.8</green>
+         <blue>0.2</blue>
+        </color>
+      </text>
+    </group>
+
+    <input>
       <halign>left</halign>
-      <property>/controls/crew/ins-alignment</property>
+      <property>/controls/tractor/distance-m</property>
+      <label>Distance (m)  ~</label>
       <binding>
-       <command>property-toggle</command>
-       <property>/controls/crew/ins-alignment</property>
+       <command>dialog-apply</command>
       </binding>
-    </checkbox>
+    </input>
 
   </group>
+
+  <text>
+    <label></label>
+  </text>
 
   <text>
     <label></label>

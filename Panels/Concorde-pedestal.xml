@@ -1359,10 +1359,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>95</x>
-   <y>495</y>
-   <w>130</w>
-   <h>130</h>
+   <x>125</x>
+   <y>500</y>
+   <w>210</w>
+   <h>175</h>
   </instrument>
 
   <instrument include="Instruments/concorde-datum.xml">
@@ -1384,10 +1384,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>340</x>
-   <y>540</y>
-   <w>250</w>
-   <h>120</h>
+   <x>345</x>
+   <y>545</y>
+   <w>210</w>
+   <h>84</h>
   </instrument>
 
   <instrument include="Instruments/concorde-temperature.xml">
@@ -1410,15 +1410,16 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <serviceable>/instrumentation/temperature[1]/serviceable</serviceable>
+    <failure-flag>/instrumentation/temperature[1]/failure-flag</failure-flag>
+    <isa-failure-flag>/instrumentation/temperature[1]/isa-failure-flag</isa-failure-flag>
     <tmo-sel>/instrumentation/temperature[1]/indicated-tmo-degc</tmo-sel>
     <static-sel>/instrumentation/temperature[1]/indicated-static-degc</static-sel>
     <isa-sel>/instrumentation/temperature[1]/isa-degc</isa-sel>
    </params>
-   <x>580</x>
-   <y>495</y>
-   <w>130</w>
-   <h>130</h>
+   <x>565</x>
+   <y>500</y>
+   <w>210</w>
+   <h>175</h>
   </instrument>
 
 <!-- CAPTAIN AUDIO PANEL -->

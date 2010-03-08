@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
-<!-- Engineer's machmeter -->
-
 <PropertyList>
 
- <name>Digital Machmeter display</name>
- <w-base>95</w-base>
- <h-base>45</h-base>
+ <name>Engineer Machmeter</name>
+ <w-base>128</w-base>
+ <h-base>128</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>background</name>
@@ -54,9 +54,9 @@
     <name>Mach display</name>
     <type>switch</type>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property>/instrumentation/mach-indicator[2]/serviceable</property>
-     </and>
+     <not>
+      <property>/instrumentation/mach-indicator[2]/failure-flag</property>
+     </not>
     </condition>
 
 <!-- the Mach 0.45 limitation is to match the Captain's machmeter -->

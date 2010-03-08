@@ -15,7 +15,7 @@
 Virtualcrew = {};
 
 Virtualcrew.new = func {
-   var obj = { parents : [Virtualcrew,Checklist,System], 
+   var obj = { parents : [Virtualcrew,System], 
 
                generic : Generic.new(),
 
@@ -39,7 +39,6 @@ Virtualcrew.new = func {
 }
 
 Virtualcrew.inherit_virtualcrew = func( path ) {
-    me.inherit_checklist( path );
     me.inherit_system( path );
 
     var obj = Virtualcrew.new();
@@ -74,6 +73,9 @@ Virtualcrew.done = func( message = "" ) {
 
     # first task to do.
     me.task = constant.TRUE;
+
+    # still something to do, must wait.
+    me.reset_end();
 }
 
 Virtualcrew.done_ground = func( message = "" ) {
@@ -139,12 +141,11 @@ Virtualcrew.reset_crew = func {
     me.taskcrew = constant.FALSE;
 }
 
-Virtualcrew.can = func {
-    # still something to do, must wait.
-    if( me.task ) {
-        me.taskend = constant.FALSE;
-    }
+Virtualcrew.reset_end = func {
+    me.taskend = constant.FALSE;
+}
 
+Virtualcrew.can = func {
     return !me.task;
 }
 
@@ -183,6 +184,7 @@ Virtualcrew.timestamp = func {
     me.itself["root"].getChild("time").setValue(getprop("/sim/time/gmt-string"));
 }
 
+# other crew member tells, that he has completed
 Virtualcrew.completed = func {
     if( me.can() ) {
         me.set_completed();
@@ -323,6 +325,10 @@ Checklist.inherit_checklist = func( path ) {
     me.checklist = obj.checklist;
 
     me.inherit_system( path );
+}
+
+Checklist.set_checklist = func {
+    me.checklist = me.dependency["voice"].getChild("checklist").getValue();
 }
 
 Checklist.is_nochecklist = func {
@@ -485,6 +491,16 @@ Checklist.is_enginestart = func {
     return result;
 }
 
+Checklist.is_pushback = func {
+    var result = constant.FALSE;
+
+    if( me.checklist == "pushback" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
 Checklist.is_started = func {
     var result = constant.FALSE;
 
@@ -535,6 +551,14 @@ Checklist.is_beforetakeoff = func {
     return result;
 }
 
+Checklist.set_startup = func {
+    me.dependency["crew"].getChild("startup").setValue( constant.TRUE );
+}
+
+Checklist.not_startup = func {
+    me.dependency["crew"].getChild("startup").setValue( constant.FALSE );
+}
+
 Checklist.set_completed = func {
     me.dependency["crew"].getChild("completed").setValue( constant.TRUE );
 }
@@ -576,6 +600,156 @@ Checklist.is_recall = func {
     return result;
 }
 
+Checklist.is_startup = func {
+    var result = constant.FALSE;
+
+    if( me.dependency["crew"].getChild("startup").getValue() ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+
+# =========
+# EMERGENCY
+# =========
+
+Emergency = {};
+
+Emergency.new = func {
+   var obj = { parents : [Emergency,System], 
+
+               emergency : ""
+             };
+
+   return obj;
+}
+
+Emergency.inherit_emergency = func( path ) {
+    var obj = Emergency.new();
+
+    me.emergency = obj.emergency;
+
+    me.inherit_system( path );
+}
+
+Emergency.set_emergency = func {
+    me.emergency = me.dependency["voice"].getChild("emergency").getValue();
+}
+
+Emergency.is_emergency = func {
+    var result = constant.FALSE;
+
+    if( me.emergency != "" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Emergency.is_fourengineflameout = func {
+    var result = constant.FALSE;
+
+    if( me.emergency == "fourengineflameout" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+Emergency.is_fourengineflameoutmach1 = func {
+    var result = constant.FALSE;
+
+    if( me.emergency == "fourengineflameoutmach1" ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+
+# =============
+# COMMON CHECKS
+# =============
+
+CommonCheck = {};
+
+CommonCheck.new = func {
+    var obj = { parents : [CommonCheck,System] 
+              };
+
+    return obj;
+}
+
+CommonCheck.inherit_commoncheck = func( path ) {
+    me.inherit_system( path );
+}
+
+# ----------
+# NAVIGATION
+# ----------
+CommonCheck.ins = func( index, mode ) {
+    if( me.can() ) {
+        if( me.dependency["ins"][index].getNode("msu").getChild("mode").getValue() != mode ) {
+            me.dependency["ins"][index].getNode("msu").getChild("mode").setValue(mode);
+            me.toggleclick("ins-" ~ index);
+        }
+    }
+}
+
+
+# ===================
+# ASYNCHRONOUS CHECKS
+# ===================
+
+AsynchronousCheck = {};
+
+AsynchronousCheck.new = func {
+   var obj = { parents : [AsynchronousCheck],
+
+               completed : constant.TRUE
+             };
+
+   return obj;
+}
+
+AsynchronousCheck.inherit_asynchronouscheck = func( path ) {
+   me.inherit_system( path );
+
+   var obj = AsynchronousCheck.new();
+
+   me.completed = obj.completed;
+}
+
+AsynchronousCheck.is_change = func {
+   var change = constant.FALSE;
+
+   return change;
+}
+
+# once night lighting, virtual crew must switch again lights.
+AsynchronousCheck.set_task = func {
+   me.completed = constant.FALSE;
+}
+
+AsynchronousCheck.has_task = func {
+   var result = constant.FALSE;
+
+   if( me.is_change() or !me.completed ) {
+       result = constant.TRUE;
+   }
+   else {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+AsynchronousCheck.set_completed = func {
+   me.completed = constant.TRUE;
+}
+
 
 # ==============
 # NIGHT LIGHTING
@@ -584,7 +758,7 @@ Checklist.is_recall = func {
 Nightlighting = {};
 
 Nightlighting.new = func {
-   var obj = { parents : [Nightlighting,System],
+   var obj = { parents : [Nightlighting,AsynchronousCheck,System],
 
                lightingsystem : nil,
 
@@ -595,9 +769,6 @@ Nightlighting.new = func {
                lightcompass : 0.0,
                lightlow : constant.FALSE,
 
-               NIGHTRAD : 1.57,                        # sun below horizon
-
-               completed : constant.TRUE,
                night : constant.FALSE
          };
 
@@ -607,7 +778,7 @@ Nightlighting.new = func {
 }
 
 Nightlighting.init = func {
-    me.inherit_system("/systems/human");
+    me.inherit_asynchronouscheck("/systems/human");
 }
 
 Nightlighting.set_relation = func( lighting ) {
@@ -784,31 +955,258 @@ Nightlighting.is_change = func {
 Nightlighting.is_night = func {
    var result = constant.FALSE;
 
-   if( me.noinstrument["sun"].getValue() > me.NIGHTRAD ) {
+   if( me.noinstrument["sun"].getValue() > constant.NIGHTRAD ) {
        result = constant.TRUE;
    }
 
    return result;
 }
 
-# once night lighting, virtual crew must switch again lights.
-Nightlighting.set_task = func {
-   me.completed = constant.FALSE;
+
+# ================
+# RADIO MANAGEMENT
+# ================
+
+RadioManagement = {};
+
+RadioManagement.new = func {
+   var obj = { parents : [RadioManagement,AsynchronousCheck,System],
+
+               autopilotsystem : nil,
+
+               DESCENTFPM : -100,
+
+               tower : "",
+               landing : constant.FALSE,
+
+               NOENTRY : -1,
+               entry : -1
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+RadioManagement.init = func {
+   me.inherit_asynchronouscheck("/systems/human");
 }
 
-Nightlighting.has_task = func {
+RadioManagement.set_relation = func( autopilot ) {
+    me.autopilotsystem = autopilot;
+}
+
+RadioManagement.copilot = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("radio").getValue() ) {
+       if( me.has_task() ) {
+           me.set_task();
+
+           # VOR 1
+           if( task.can() ) {
+               me.set_vor( 1, task );
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
+   }
+}
+
+RadioManagement.captain = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("radio").getValue() ) {
+       if( me.has_task() ) {
+           me.set_task();
+
+           # VOR 0
+           if( task.can() ) {
+               me.set_vor( 0, task );
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
+   }
+}
+
+RadioManagement.engineer = func( task ) {
+   # optional
+   if( me.dependency["crew"].getChild("radio").getValue() ) {
+       if( me.has_task() ) {
+           me.set_task();
+
+           # ADF 1
+           if( task.can() ) {
+               me.set_adf( 0, task );
+           }
+
+           # ADF 2
+           if( task.can() ) {
+               me.set_adf( 1, task );
+           }
+
+           if( task.can() ) {
+               me.set_completed();
+           }
+       }
+   }
+}
+
+RadioManagement.set_vor = func( index, task ) {
+    var phase = me.get_phase();
+
+    if( phase != nil ) {
+        var vor = phase.getChildren("vor");
+
+        # NAV 0 is reserved
+        var radio = index + 1;
+
+        if( index < size( vor ) ) {
+            var change = constant.FALSE;
+            var currentmhz = 0.0;
+            var frequencymhz = 0.0;
+            var frequency = nil;
+
+            # not real : no NAV standby frequency
+            frequency = vor[ index ].getChild("standby-mhz");
+            if( frequency != nil ) {
+                frequencymhz = frequency.getValue();
+                currentmhz = me.dependency["vor"][radio].getNode("frequencies/standby-mhz").getValue();
+
+                if( currentmhz != frequencymhz ) {
+                    me.dependency["vor"][radio].getNode("frequencies/standby-mhz").setValue(frequencymhz);
+                    change = constant.TRUE;
+                }
+            }
+
+            frequency = vor[ index ].getChild("selected-mhz");
+            if( frequency != nil ) {
+                frequencymhz = frequency.getValue();
+                currentmhz = me.dependency["vor"][radio].getNode("frequencies/selected-mhz").getValue();
+
+                if( currentmhz != frequencymhz ) {
+                    me.dependency["vor"][radio].getNode("frequencies/selected-mhz").setValue(frequencymhz);
+                    change = constant.TRUE;
+                    task.toggleclick("vor " ~ index);
+                }
+            }
+
+            if( change ) {
+                me.autopilotsystem.apsendnavexport();
+            }
+        }
+    }
+}
+
+RadioManagement.set_adf = func( index, task ) {
+    var phase = me.get_phase();
+
+    if( phase != nil ) {
+        var adf = phase.getChildren("adf");
+
+        if( index < size( adf ) ) {
+            var frequency = nil;
+            var frequencykhz = 0;
+            var currentkhz = 0;
+
+            # not real : no ADF standby frequency
+            frequency = adf[ index ].getChild("standby-khz");
+            if( frequency != nil ) {
+                frequencykhz = frequency.getValue();
+                currentkhz = me.dependency["adf"][index].getNode("frequencies/standby-khz").getValue();
+
+                if( currentkhz != frequencykhz ) {
+                    me.dependency["adf"][index].getNode("frequencies/standby-khz").setValue(frequencykhz);
+                }
+            }
+
+            frequency = adf[ index ].getChild("selected-khz");
+            if( frequency != nil ) {
+                frequencykhz = frequency.getValue();
+                currentkhz = me.dependency["adf"][index].getNode("frequencies/selected-khz").getValue();
+
+                if( currentkhz != frequencykhz ) {
+                    me.dependency["adf"][index].getNode("frequencies/selected-khz").setValue(frequencykhz);
+                    task.toggleclick("adf " ~ index);
+                }
+            }
+        }
+    }
+}
+
+RadioManagement.get_phase = func {
+    var phase = nil;
+
+    if( me.entry > me.NOENTRY ) {
+        if( me.landing ) {
+            phase = me.itself["airport"][ me.entry ].getNode("arrival");
+        }
+
+        else {
+            phase = me.itself["airport"][ me.entry ].getNode("departure");
+        }
+    }
+
+    return phase;
+}
+
+# tower changed by dialog (destination or airport location)
+RadioManagement.is_change = func {
    var result = constant.FALSE;
 
-   if( me.is_change() or !me.completed ) {
-       result = constant.TRUE;
+   var target = me.noinstrument["tower"].getValue();
+
+   if( me.tower != target ) {
+       var airport = "";
+
+       for(var i=0; i<size(me.itself["airport"]); i=i+1) {
+           airport = me.itself["airport"][ i ].getChild("airport-id").getValue();
+           if( airport == target ) {
+               me.entry = i;
+
+               result = constant.TRUE;
+               break;
+           }
+       }
    }
-   else {
-       result = constant.FALSE;
+
+   if( !result ) {
+       var phase = me.is_landing();
+
+       if( me.landing != phase ) {
+           var speedkt = me.noinstrument["airspeed"].getValue();
+
+           # do not change frequencies, just after landing 
+           if( me.landing and speedkt > constantaero.TAXIKT ) {
+           }
+
+           else {
+               me.landing = phase;
+
+               result = constant.TRUE;
+           }
+       }
    }
 
    return result;
 }
 
-Nightlighting.set_completed = func {
+RadioManagement.is_landing = func {
+   var result = constant.FALSE;
+   var rateftpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
+
+   if( rateftpm < me.DESCENTFPM ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+RadioManagement.set_completed = func {
+   me.tower = me.noinstrument["tower"].getValue();
+
    me.completed = constant.TRUE;
 }

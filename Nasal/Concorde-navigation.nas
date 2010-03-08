@@ -114,16 +114,18 @@ Inertial.alertlight = func {
    var alert = constant.FALSE;
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-        value = me.waypoints[0].getChild("dist").getValue();
-        if( value != nil and value != "" ) {
-            speedfps = me.itself["root"][i].getNode("computed/ground-speed-fps").getValue();
-            rangenm = speedfps * constant.MINUTETOSECOND * constant.FEETTONM;
+        if( me.route_active() ) {
+            value = me.waypoints[0].getChild("dist").getValue();
+            if( value != nil and value != "" ) {
+                speedfps = me.itself["root"][i].getNode("computed/ground-speed-fps").getValue();
+                rangenm = speedfps * constant.MINUTETOSECOND * constant.FEETTONM;
 
-            # alert 1 minute before track change
-            if( value < rangenm ) {
-                alert = constant.TRUE;
-            }
-        } 
+                # alert 1 minute before track change
+                if( value < rangenm ) {
+                    alert = constant.TRUE;
+                }
+            } 
+        }
 
         # send to all remote INS
         me.itself["root"][i].getNode("light/alert").setValue(alert);
@@ -222,6 +224,10 @@ Inertial.display_waypoint = func( i, selector, aligned ) {
    var j = me.itself["root"][i].getNode("control/waypoint").getValue();
    var nbwaypoints = me.dependency["autopilot"].getNode("route/num").getValue();
 
+
+   if( !me.route_active() ) {
+       nbwaypoints = 0;
+   }
   
    if( j <= nbwaypoints ) {
        j = j - 1;
@@ -296,45 +302,52 @@ Inertial.track = func {
    var offsetnm = 0.0;
    var id = me.waypoints[0].getChild("id").getValue();
 
-   # new waypoint
-   if( id != me.waypoint and id != nil ) {
-       me.waypoint = id;
+   if( me.route_active() ) {
+       # new waypoint
+       if( id != me.waypoint and id != nil ) {
+           me.waypoint = id;
 
-       # initial track
-       me.bearingdeg = me.noinstrument["track"].getValue();
-       for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-            me.itself["root"][i].getNode("computed/leg-true-course-deg").setValue(me.bearingdeg);
-       }
-   }
-
-   # deviation from initial track
-   if( me.waypoint != "" ) {
-       me.trackdeg = me.noinstrument["track"].getValue();
-       offsetdeg = me.trackdeg - me.bearingdeg;
-       offsetdeg = constant.crossnorth( offsetdeg );
-
-       distancenm = me.waypoints[0].getChild("dist").getValue();
-       offsetrad = offsetdeg * constant.DEGTORAD;
-       offsetnm = math.sin( offsetrad ) * distancenm;
-
-       if( offsetnm > me.MAXXTKNM ) {
-           offsetnm = me.MAXXTKNM;
-       }
-       elsif( offsetnm < - me.MAXXTKNM ) {
-           offsetnm = - me.MAXXTKNM;
+           # initial track
+           me.bearingdeg = me.noinstrument["track"].getValue();
+           for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
+                me.itself["root"][i].getNode("computed/leg-true-course-deg").setValue(me.bearingdeg);
+           }
        }
 
-       for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
-            me.itself["root"][i].getNode("computed/leg-course-deviation-deg").setValue(offsetdeg);
-            me.itself["root"][i].getNode("computed/leg-course-error-nm").setValue(offsetnm);
+       # deviation from initial track
+       if( me.waypoint != "" ) {
+           me.trackdeg = me.noinstrument["track"].getValue();
+           offsetdeg = me.trackdeg - me.bearingdeg;
+           offsetdeg = constant.crossnorth( offsetdeg );
+
+           distancenm = me.waypoints[0].getChild("dist").getValue();
+           offsetrad = offsetdeg * constant.DEGTORAD;
+           offsetnm = math.sin( offsetrad ) * distancenm;
+
+           if( offsetnm > me.MAXXTKNM ) {
+               offsetnm = me.MAXXTKNM;
+           }
+           elsif( offsetnm < - me.MAXXTKNM ) {
+               offsetnm = - me.MAXXTKNM;
+           }
+
+           for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
+                me.itself["root"][i].getNode("computed/leg-course-deviation-deg").setValue(offsetdeg);
+                me.itself["root"][i].getNode("computed/leg-course-error-nm").setValue(offsetnm);
+           }
        }
    }
 }
 
 Inertial.failure = func {
    var warning = constant.FALSE;
+   var lastwarning = constant.FALSE;
+   var path = "";
+   var indication = nil;
 
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
+        lastwarning = me.itself["root"][i].getNode("light/warning").getValue();
+
         if( !me.itself["root"][i].getChild("serviceable").getValue() or
             !me.itself["root"][i].getNode("msu/aligned").getValue() ) {
             warning = constant.TRUE;
@@ -343,7 +356,24 @@ Inertial.failure = func {
             warning = constant.FALSE;
         }
 
-        me.itself["root"][i].getNode("light/warning").setValue( warning );
+        if( warning != lastwarning ) {
+            me.itself["root"][i].getNode("light/warning").setValue( warning );
+
+            if( warning ) {
+                # blocked on last measure
+                indication = me.itself["root"][i].getNode("computed/heading-failure-deg");
+                indication.setValue( me.noinstrument["true"].getValue() );
+            }
+            else {
+                indication = me.noinstrument["true"];
+            }
+
+            path = me.itself["root"][i].getNode("computed/heading-deg").getAliasTarget().getPath();
+            if( path != indication ) {
+                me.itself["root"][i].getNode("computed/heading-deg").unalias();
+                me.itself["root"][i].getNode("computed/heading-deg").alias( indication );
+            }
+        }
    }
 }
 
@@ -416,6 +446,18 @@ Inertial.alignment = func {
    }
 }
 
+Inertial.route_active = func {
+   var result = constant.FALSE;
+
+   # autopilot/route-manager/wp is updated only once airborne
+   if( me.dependency["autopilot"].getChild("active").getValue() and
+       me.dependency["autopilot"].getChild("airborne").getValue() ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
 Inertial.quicksec = func( thresholdsec ) {
    var result = thresholdsec;
 
@@ -481,14 +523,16 @@ Inertial.set_index = func( index, modeindex ) {
 }
 
 
-# =================
-# AIR DATA COMPUTER
-# =================
+# =======
+# COMPASS
+# =======
 
-AirDataComputer = {};
+Compass = {};
 
-AirDataComputer.new = func {
-   var obj = { parents : [AirDataComputer,System]
+Compass.new = func {
+   var obj = { parents : [Compass,System],
+
+               ok : [ constant.TRUE, constant.TRUE ]
              };
 
    obj.init();
@@ -496,31 +540,128 @@ AirDataComputer.new = func {
    return obj;
 };
 
-AirDataComputer.init = func {
-   me.inherit_system("/instrumentation","adc");
+Compass.init = func {
+   me.inherit_system("/instrumentation","compass");
 }
 
-AirDataComputer.amber_adc = func {
-    var result = constant.FALSE;
+Compass.toggleexport = func {
+   var source = nil;
 
-    if( !me.dependency["electric"].getChild("specific").getValue() ) {
-        result = constant.TRUE;
-    }
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        source = me.get_source( i );
 
-    return result;
+        me.set_source( i, source );
+   }
 }
 
-AirDataComputer.red_ads = func {
-    var result = constant.FALSE;
+Compass.schedule = func {
+   var status = constant.FALSE;
+   var indication = nil;
+   var source = nil;
 
-    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-         if( !me.itself["root"][i].getChild("serviceable").getValue() ) {
-             result = constant.TRUE;
-         }
-    }
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        status = me.itself["root"][i].getChild("serviceable").getValue();
 
-    return result;
+        if( status != me.ok[ i ] ) {
+            me.ok[ i ] = status;
+
+            if( status ) {
+                source = me.get_source( i );
+            }
+
+            else {
+                indication = me.itself["root"][i].getChild("heading-deg");
+
+                # blocked on last measure
+                source = me.itself["root"][i].getChild("heading-failure-deg");
+                source.setValue( indication.getValue() );
+            }
+
+            me.set_source( i, source );
+        }
+   }
 }
 
-AirDataComputer.schedule = func {
+Compass.set_source = func( index, source ) {
+   var path = me.itself["root"][index].getChild("heading-deg").getAliasTarget().getPath();
+
+   if( path != source ) {
+       me.itself["root"][index].getChild("heading-deg").unalias();
+       me.itself["root"][index].getChild("heading-deg").alias( source );
+   }
+}
+
+Compass.get_source = func( index ) {
+   var source = nil;
+
+   if( me.itself["root"][index].getChild("mode-dg").getValue() ) {
+       source = me.dependency["ins"][index].getNode("computed/heading-deg");
+   }
+   else {
+       source = me.noinstrument["magnetic"];
+   }
+
+   return source;
+}
+
+
+# ==============================
+# HORIZONTAL SITUATION INDICATOR
+# ==============================
+
+HSI = {};
+
+HSI.new = func {
+   var obj = { parents : [HSI,System]
+             };
+
+   obj.init();
+
+   return obj;
+};
+
+HSI.init = func {
+   me.inherit_system("/instrumentation","hsi");
+}
+
+HSI.toggleexport = func {
+   var path = "";
+   var source = nil;
+
+   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
+        source = me.get_source( i );
+
+        path = me.itself["root"][i].getChild("heading-deg").getAliasTarget().getPath();
+        if( path != source ) {
+            me.itself["root"][i].getChild("heading-deg").unalias();
+            me.itself["root"][i].getChild("heading-deg").alias( source );
+        }
+   }
+}
+
+HSI.get_source = func( index ) {
+   var source = nil;
+
+   if( me.itself["root"][index].getChild("ins-source").getValue() ) {
+       if( me.itself["root"][index].getChild("nav-ins2").getValue() ) {
+           source = me.dependency["ins"][constantaero.INS2];
+       }
+       else {
+           source = me.dependency["ins"][constantaero.INS1];
+       }
+
+       source = source.getChild("computed");
+   }
+   else {
+       if( me.itself["root"][index].getChild("compass2").getValue() ) {
+           source = me.dependency["compass"][constantaero.AP2];
+       }
+       else {
+           source = me.dependency["compass"][constantaero.AP1];
+       }
+   }
+
+   source = source.getChild("heading-deg");
+
+   return source;
 }

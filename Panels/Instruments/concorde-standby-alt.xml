@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 
-<!-- Concorde standby altimeter (adapted from T38).
+<!-- Concorde standby altimeter :
+
+     - works by pressure.
+     - no voltage.
 
 
+Adapted from : Mar 2003, David Culp, davidculp2@attbi.com
 Added thousands digital readout.
-Mar 2003, David Culp, davidculp2@attbi.com
 ___________________________________________________________________
 
 Improved altimeter instrument.
@@ -48,39 +51,28 @@ properties' values.
 
 <PropertyList>
 
- <name>Standby Altimeter</name>
+ <name>Standby altimeter</name>
  <w-base>128</w-base>
  <h-base>128</h-base>
 
+ <params>
+  <serviceable>/instrumentation/altimeter-standby/serviceable</serviceable>
+  <inhg-ctrl>/instrumentation/altimeter-standby/setting-inhg</inhg-ctrl>
+  <ft-sel>/instrumentation/altimeter-standby/indicated-altitude-ft</ft-sel>
+ </params>
+
+
  <layers>
 
-  <layer>
-   <name>subscale</name>
-   <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/faces-6.rgb</path>
-    <x1>0.51</x1>
-    <y1>0.51</y1>
-    <x2>1.0</x2>
-    <y2>1.0</y2>
-   </texture>
-   <w>104</w>
-   <h>104</h>
-   <transformations>
-    <transformation>
-     <type>rotation</type>
-     <property>/instrumentation/altimeter-standby/setting-inhg</property>
-     <scale>-152.37</scale>  <!-- degrees rotation per inHG -->
-    </transformation>
-   </transformations>
-  </layer>
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
-   <name>guage face</name>
+   <name>gauge face</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-altimeter.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-altimeter-standby.rgb</path>
     <x1>0.0</x1>
-    <y1>0.5</y1>
-    <x2>0.5</x2>
+    <y1>0.0</y1>
+    <x2>1.0</x2>
     <y2>1.0</y2>
    </texture>
    <w>110</w>
@@ -88,7 +80,158 @@ properties' values.
   </layer>
 
   <layer>
-   <name>numeric datum</name>
+   <name>hatched</name>
+   <type>switch</type>
+ 
+   <layer>
+    <name>Negativ</name>
+    <condition>
+     <less-than>
+      <property alias="../../../../../../params/ft-sel"/>
+      <value>0.0</value>
+     </less-than>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-yellow-bg.rgb</path>
+    </texture>
+    <w>11</w>
+    <h>12</h>
+   </layer>
+ 
+   <layer>
+    <name>Below 10000 ft</name>
+    <condition>
+     <less-than>
+      <property alias="../../../../../../params/ft-sel"/>
+      <value>10000.0</value>
+     </less-than>
+    </condition>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-hatched-bg.rgb</path>
+    </texture>
+    <w>11</w>
+    <h>12</h>
+   </layer>
+
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-25</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>10</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>digital windows</name>
+   <type>switch</type>
+
+   <layer>
+    <name>ft - digital</name>
+    <condition>
+     <and>
+      <property alias="../../../../../../params/serviceable"/>
+      <greater-than-equals>
+       <property alias="../../../../../../../params/ft-sel"/>
+       <value>0.0</value>
+      </greater-than-equals>
+     </and>
+    </condition>
+    <type>text</type>
+    <point-size>13</point-size>
+    <color>
+     <red>1.0</red>
+    <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property alias="../../../../../../params/ft-sel"/>
+      <scale>0.001</scale>
+      <format>%1.3f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-17</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>6</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
+    <name>ftx1000 - negativ</name>
+    <condition>
+     <and>
+      <property alias="../../../../../../params/serviceable"/>
+      <less-than>
+       <property alias="../../../../../../../params/ft-sel"/>
+       <value>0.0</value>
+      </less-than>
+     </and>
+    </condition>
+    <type>text</type>
+    <point-size>13</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property alias="../../../../../../params/ft-sel"/>
+      <scale>-0.001</scale>
+      <format>%1.3f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-17</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>6</offset>
+     </transformation>
+    </transformations>
+   </layer>
+ 
+   <layer>
+    <name>OFF flag</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
+     <x1>0.9375</x1>
+     <y1>0.5</y1>
+     <x2>1.0</x2>
+     <y2>0.546875</y2>
+    </texture>
+    <w>52</w>
+    <h>10</h>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-7</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>10</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+  </layer>
+
+  <layer>
+   <name>altimeter inhg</name>
    <type>text</type>
    <point-size>8</point-size>
    <color>
@@ -99,87 +242,19 @@ properties' values.
    <chunks>
     <chunk>
      <type>number-value</type>
-     <property>/instrumentation/altimeter-standby/setting-inhg</property>
-     <format>%2.2f</format>
+     <property alias="../../../../../params/inhg-ctrl"/>
+     <scale>100.0</scale>
+     <format>%4.f</format>
     </chunk>
    </chunks>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>10</offset>
+     <offset>-10</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-5</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>ftx1000 - digital</name>
-   <condition>
-    <and>
-     <greater-than>
-      <property>/systems/electrical/outputs/standby-alt</property>
-      <value>20</value>
-     </greater-than>
-     <property>/instrumentation/altimeter-standby/serviceable</property>
-    </and>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>6</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/altimeter-standby/indicated-altitude-ft</property>
-     <scale>0.001</scale>
-     <truncate>true</truncate>
-     <format>%4.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-30</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-8</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>altimeter inhg</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>5</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property>/instrumentation/altimeter-standby/setting-inhg</property>
-     <format>%2.2f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-15</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-23</offset>
+     <offset>-36</offset>
     </transformation>
    </transformations>
   </layer>
@@ -194,29 +269,23 @@ properties' values.
     <y2>1.0</y2>
    </texture>
    <w>6</w>
-   <h>48</h>
+   <h>42</h>
    <transformations>
     <transformation>
      <type>rotation</type>
-     <condition>
-      <greater-than>
-       <property>/systems/electrical/outputs/standby-alt</property>
-       <value>20</value>
-      </greater-than>
-     </condition>
-     <property>/instrumentation/altimeter-standby/indicated-altitude-ft</property>
+     <property alias="../../../../../params/ft-sel"/>
      <max>100000.0</max>
      <scale>0.36</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>20.0</offset>
+     <offset>27.0</offset>
     </transformation>
    </transformations>
   </layer>
 
   <layer>
-   <name>button</name>
+   <name>axis</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
     <x1>0.6171875</x1>
@@ -224,8 +293,8 @@ properties' values.
     <x2>0.7890625</x2>
     <y2>0.4140625</y2>
    </texture>
-   <w>15</w>
-   <h>15</h>
+   <w>12</w>
+   <h>12</h>
   </layer>
 
   <layer>
@@ -237,9 +306,9 @@ properties' values.
     <x2>1.0</x2>
     <y2>0.5</y2>
    </texture>
-  <w>128</w>
-  <h>128</h>
- <transformations>
+   <w>128</w>
+   <h>128</h>
+   <transformations>
     <transformation>
      <type>x-shift</type>
      <offset>2</offset>
@@ -248,10 +317,10 @@ properties' values.
      <type>y-shift</type>
      <offset>-2</offset>
     </transformation>
-    </transformations>
+   </transformations>
   </layer>
 
-   <layer>
+  <layer>
    <name>Knob</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/blister.rgb</path>
@@ -265,11 +334,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-50</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-45</offset>
+     <offset>-50</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -278,20 +347,20 @@ properties' values.
    </transformations>
   </layer> 
 
- </layers> 
+ </layers>
 
  <actions>
 
   <action>
    <name>calibrate fine</name>
    <button>0</button>
-   <x>-56</x>
-   <y>-56</y>
+   <x>-62</x>
+   <y>-61</y>
    <w>12</w>
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter-standby/setting-inhg</property>
+    <property alias="../../../../params/inhg-ctrl"/>
     <step>-0.01</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -302,13 +371,13 @@ properties' values.
   <action>
    <name>calibrate coarse</name>
    <button>1</button>
-   <x>-56</x>
-   <y>-56</y>
+   <x>-62</x>
+   <y>-61</y>
    <w>12</w>
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter-standby/setting-inhg</property>
+    <property alias="../../../../params/inhg-ctrl"/>
     <step>-0.1</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -319,13 +388,13 @@ properties' values.
   <action>
    <name>calibrate fine</name>
    <button>0</button>
-   <x>-46</x>
-   <y>-56</y>
+   <x>-51</x>
+   <y>-61</y>
    <w>12</w>
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter-standby/setting-inhg</property>
+    <property alias="../../../../params/inhg-ctrl"/>
     <step>0.01</step>
     <min>26.0</min>
     <max>33.0</max>
@@ -336,13 +405,13 @@ properties' values.
   <action>
    <name>calibrate coarse</name>
    <button>1</button>
-   <x>-46</x>
-   <y>-56</y>
+   <x>-51</x>
+   <y>-61</y>
    <w>12</w>
    <h>24</h>
    <binding>
     <command>property-adjust</command>
-    <property>/instrumentation/altimeter-standby/setting-inhg</property>
+    <property alias="../../../../params/inhg-ctrl"/>
     <step>0.1</step>
     <min>26.0</min>
     <max>33.0</max>

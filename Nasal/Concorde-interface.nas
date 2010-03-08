@@ -27,7 +27,8 @@ Seats.new = func {
 
            firstseat : constant.FALSE,
            firstseatview : 0,
-           fullcokpit : constant.FALSE,
+           fullcockpit : constant.FALSE,
+           fulloutside : constant.FALSE,
 
            CAPTINDEX : 0,
 
@@ -81,12 +82,17 @@ Seats.init = func {
                  me.save_lookup("observer", i);
                  me.save_initial( "observer", me.theviews[i] );
             }
+            elsif( name == "Observer 2 View" ) {
+                 me.save_lookup("observer2", i);
+                 me.save_initial( "observer2", me.theviews[i] );
+            }
         }
    }
 
    # default
    me.recoverfloating = me.controls.getChild("recover").getValue();
    me.fullcockpit = me.controls.getChild("all").getValue();
+   me.fulloutside = me.controls.getChild("all-outside").getValue();
 }
 
 Seats.railexport = func( name ) {
@@ -102,6 +108,17 @@ Seats.fullexport = func {
    }
 
    me.controls.getChild("all").setValue( me.fullcockpit );
+}
+
+Seats.fulloutsideexport = func {
+   if( me.fulloutside ) {
+       me.fulloutside = constant.FALSE;
+   }
+   else {
+       me.fulloutside = constant.TRUE;
+   }
+
+   me.controls.getChild("all-outside").setValue( me.fulloutside );
 }
 
 Seats.viewexport = func( name ) {
@@ -161,6 +178,7 @@ Seats.viewexport = func( name ) {
    me.audioexport();
 
    me.controls.getChild("all").setValue( me.fullcockpit );
+   me.controls.getChild("all-outside").setValue( constant.FALSE );
 }
 
 Seats.recoverexport = func {
@@ -330,13 +348,16 @@ Seats.restorefull = func {
        found = constant.TRUE;
    }
 
-   # systematically disable all instruments in external view
    if( found ) {
        me.controls.getChild("all").setValue( me.fullcockpit );
    }
+   # systematically disable all instruments in external view
    else {
        me.controls.getChild("all").setValue( constant.FALSE );
    }
+
+   # systematically disable all model
+   me.controls.getChild("all-outside").setValue( constant.FALSE );
 }
 
 # backup initial position
@@ -492,18 +513,18 @@ Menu.new = func {
    var obj = { parents : [Menu],
 
 # menu handles
-           autopilot : nil,
-           crew : nil,
-           environment : nil,
-           fuel : nil,
-           ground : nil,
-           instruments : {},
-           navigation : nil,
-           procedures : {},
-           radios : nil,
-           systems : nil,
-           voice : {},
-           menu : nil
+               autopilot : nil,
+               crew : nil,
+               environment : nil,
+               fuel : nil,
+               ground : nil,
+               instruments : {},
+               navigation : nil,
+               procedures : {},
+               radios : nil,
+               systems : nil,
+               voice : {},
+               menu : nil
          };
 
     obj.init();
@@ -530,7 +551,7 @@ Menu.init = func {
     me.navigation = gui.Dialog.new("/sim/gui/dialogs/Concorde/navigation/dialog",
                                    "Aircraft/Concorde/Dialogs/Concorde-navigation.xml");
 
-    me.array( me.procedures, 3, "procedures" );
+    me.array( me.procedures, 4, "procedures" );
 
     me.radios = gui.Dialog.new("/sim/gui/dialogs/Concorde/radios/dialog",
                                 "Aircraft/Concorde/Dialogs/Concorde-radios.xml");
@@ -716,8 +737,8 @@ Crewbox.resettimer = func {
 }
 
 Crewbox.crewtext = func {
-    if( !me.crew.getChild("minimized").getValue() or
-        !me.crewcontrols.getChild("timeout").getValue() ) {
+    # text visible, only when 2D crew is minimized
+    if( !me.crew.getChild("minimized").getValue() ) {
         me.checklisttext();
         me.copilottext();
         me.engineertext();
@@ -732,6 +753,10 @@ Crewbox.checklisttext = func {
     var text = me.voice.getChild("callout").getValue();
     var text2 = me.voice.getChild("checklist").getValue();
     var index = me.lineindex["checklist"];
+
+    if( text2 == "" ) {
+        text2 = me.voice.getChild("emergency").getValue();
+    }
 
     if( text2 != "" ) {
         text = text2 ~ " " ~ text;
@@ -754,7 +779,7 @@ Crewbox.copilottext = func {
     }
 
     if( me.copilot.getChild("activ").getValue() or
-        me.crew.getChild("emergency").getValue() ) {
+        me.crew.getChild("unexpected").getValue() ) {
         green = constant.TRUE;
     }
 
@@ -855,7 +880,7 @@ Voicebox.init = func {
 }
 
 Voicebox.schedule = func {
-   me.seetext = me.itself["voice-ctrl"].getChild("text").getValue();
+   me.seetext = me.itself["root-ctrl"].getChild("text").getValue();
 }
 
 Voicebox.textexport = func {
@@ -871,7 +896,7 @@ Voicebox.textexport = func {
    }
 
    me.sendtext( feedback, !me.seetext, constant.FALSE, constant.TRUE );
-   me.itself["voice-ctrl"].getChild("text").setValue(me.seetext);
+   me.itself["root-ctrl"].getChild("text").setValue(me.seetext);
 
    return feedback;
 }

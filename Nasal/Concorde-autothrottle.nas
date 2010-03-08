@@ -24,7 +24,7 @@ Autothrottle.new = func {
 
                LIGHTKT : 10.0,
 
-               engaged_channel : -1
+               engaged_channel : constantaero.APNONE
          };
 
 # autopilot initialization
@@ -87,20 +87,20 @@ Autothrottle.engagechannel = func( index, value ) {
 
 Autothrottle.whichchannel = func {
     # records the 1st channel of autoland; otherwise must disengage to swap.
-    if( me.itself["channel"][0].getChild("engage").getValue() ) {
-        if( !me.itself["channel"][1].getChild("engage").getValue() ) {
-            me.engaged_channel = 0;
+    if( me.itself["channel"][constantaero.AP1].getChild("engage").getValue() ) {
+        if( !me.itself["channel"][constantaero.AP2].getChild("engage").getValue() ) {
+            me.engaged_channel = constantaero.AP1;
         }
     }
-    elsif( me.itself["channel"][1].getChild("engage").getValue() ) {
-        if( !me.itself["channel"][0].getChild("engage").getValue() ) {
-            me.engaged_channel = 1;
+    elsif( me.itself["channel"][constantaero.AP2].getChild("engage").getValue() ) {
+        if( !me.itself["channel"][constantaero.AP1].getChild("engage").getValue() ) {
+            me.engaged_channel = constantaero.AP2;
         }
     }
 
     # crash if channel access !
     else {
-        me.engaged_channel = -1;
+        me.engaged_channel = constantaero.APNONE;
     }
 }
 
@@ -199,10 +199,10 @@ Autothrottle.maxclimb = func {
 Autothrottle.no_voltage = func {
    var result = constant.FALSE;
 
-   if( ( !me.dependency["electric"].getChild("autopilot", 0).getValue() and
-         !me.dependency["electric"].getChild("autopilot", 1).getValue() ) or
-       ( !me.itself["autothrottle"][0].getChild("serviceable").getValue() and
-         !me.itself["autothrottle"][1].getChild("serviceable").getValue() ) ) {
+   if( ( !me.dependency["electric"].getChild("autopilot", constantaero.AP1).getValue() and
+         !me.dependency["electric"].getChild("autopilot", constantaero.AP2).getValue() ) or
+       ( !me.itself["autothrottle"][constantaero.AP1].getChild("serviceable").getValue() and
+         !me.itself["autothrottle"][constantaero.AP2].getChild("serviceable").getValue() ) ) {
        result = constant.TRUE;
    }
 
@@ -211,24 +211,24 @@ Autothrottle.no_voltage = func {
 
 # disconnect if no voltage (cannot disable the autopilot !)
 Autothrottle.voltage = func() {
-   var voltage1 = me.dependency["electric"].getChild("autopilot", 0).getValue();
-   var voltage2 = me.dependency["electric"].getChild("autopilot", 1).getValue();
+   var voltage1 = me.dependency["electric"].getChild("autopilot", constantaero.AP1).getValue();
+   var voltage2 = me.dependency["electric"].getChild("autopilot", constantaero.AP2).getValue();
    var channel = constant.FALSE;
 
    if( voltage1 ) {
-       voltage1 = me.itself["autothrottle"][0].getChild("serviceable").getValue();
+       voltage1 = me.itself["autothrottle"][constantaero.AP1].getChild("serviceable").getValue();
    }
    if( voltage2 ) {
-       voltage2 = me.itself["autothrottle"][1].getChild("serviceable").getValue();
+       voltage2 = me.itself["autothrottle"][constantaero.AP2].getChild("serviceable").getValue();
    }
 
    if( !voltage1 or !voltage2 ) {
        # disconnect autothrottle 1
        if( !voltage1 ) {
-           channel = me.itself["channel"][0].getChild("engage").getValue();
+           channel = me.itself["channel"][constantaero.AP1].getChild("engage").getValue();
            if( channel ) {
-               me.engagechannel(0, constant.FALSE);
-               channel = me.itself["channel"][1].getChild("engage").getValue();
+               me.engagechannel(constantaero.AP1, constant.FALSE);
+               channel = me.itself["channel"][constantaero.AP2].getChild("engage").getValue();
                if( !channel ) {
                    me.atdiscexport();
                }
@@ -237,10 +237,10 @@ Autothrottle.voltage = func() {
 
        # disconnect autothrottle 2
        if( !voltage2 ) {
-           channel = me.itself["channel"][1].getChild("engage").getValue();
+           channel = me.itself["channel"][constantaero.AP2].getChild("engage").getValue();
            if( channel ) {
-               me.engagechannel(1, constant.FALSE);
-               channel = me.itself["channel"][0].getChild("engage").getValue();
+               me.engagechannel(constantaero.AP2, constant.FALSE);
+               channel = me.itself["channel"][constantaero.AP1].getChild("engage").getValue();
                if( !channel ) {
                    me.atdiscexport();
                }
@@ -292,8 +292,8 @@ Autothrottle.atdiscincompatible = func( apchannel1, apchannel2 ) {
 
     # disconnect autothrottle, if not compatible
     if( me.is_maxclimb() ) {
-        channel1 = me.itself["channel"][0].getChild("engage").getValue();
-        channel2 = me.itself["channel"][1].getChild("engage").getValue();
+        channel1 = me.itself["channel"][constantaero.AP1].getChild("engage").getValue();
+        channel2 = me.itself["channel"][constantaero.AP2].getChild("engage").getValue();
 
         # same channel if maxclimb or maxcruise mode
         if( ( apchannel1 and apchannel2 ) or ( apchannel1 and channel2 ) or ( apchannel2 and channel1 ) ) {
@@ -355,8 +355,8 @@ Autothrottle.atactivatemode = func( property, value ) {
 Autothrottle.is_engaged = func {
    var result = constant.FALSE;
 
-   if( me.itself["channel"][0].getChild("engage").getValue() or
-       me.itself["channel"][1].getChild("engage").getValue() ) {
+   if( me.itself["channel"][constantaero.AP1].getChild("engage").getValue() or
+       me.itself["channel"][constantaero.AP2].getChild("engage").getValue() ) {
        result = constant.TRUE;
    }
 
@@ -383,8 +383,8 @@ Autothrottle.atenable = func {
 
 # activate autothrottle
 Autothrottle.atexport = func {
-   var channel1 = me.itself["channel"][0].getChild("engage").getValue();
-   var channel2 = me.itself["channel"][1].getChild("engage").getValue();
+   var channel1 = me.itself["channel"][constantaero.AP1].getChild("engage").getValue();
+   var channel2 = me.itself["channel"][constantaero.AP2].getChild("engage").getValue();
 
    # channel engaged by XML
    me.whichchannel();

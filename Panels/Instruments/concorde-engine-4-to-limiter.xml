@@ -8,7 +8,7 @@
 <PropertyList>
 
  <name>Engine 4 takeoff limiter</name>
- <w-base>260</w-base>
+ <w-base>156</w-base>
  <h-base>104</h-base>
 
  <layers>
@@ -29,6 +29,13 @@
    <layer include="concorde-switch-off.xml">
     <name>88 percent</name>
    </layer>
+
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>55</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -49,7 +56,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-110</offset>
+     <offset>-60</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -76,7 +83,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-112</offset>
+     <offset>-62</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -103,7 +110,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-22</offset>
+     <offset>33</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -113,7 +120,7 @@
   </layer>
 
   <layer>
-   <name>54% Title</name>
+   <name>88% Title</name>
    <type>text</type>
    <point-size>13</point-size>
    <color>
@@ -130,7 +137,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-13</offset>
+     <offset>42</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -146,7 +153,7 @@
   <action>
    <name>toggle Take/Off limiter</name>
    <button>0</button>
-   <x>-22</x>
+   <x>33</x>
    <y>-19</y>
    <w>44</w>
    <h>44</h>

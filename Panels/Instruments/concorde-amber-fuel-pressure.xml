@@ -11,7 +11,7 @@
  <h-base>26</h-base>
 
  <params>
-  <level-lb>/consumables/fuel/tank[13]/level-lbs</level-lb>
+  <level-select>/consumables/fuel/tank[13]/level-lbs</level-select>
  </params>
 
 
@@ -30,7 +30,7 @@
       <and>
        <or include="concorde-cond-test-eng-center.xml"/>  <!-- bug -->
        <greater-than>
-        <property alias="../../../../../../../../params/level-lb"/>
+        <property alias="../../../../../../../../params/level-select"/>
         <value>30.0</value>
        </greater-than>
       </and>

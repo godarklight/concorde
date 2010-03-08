@@ -210,7 +210,7 @@
     </group>
 
     <text>
-     <label>at acquired altitude (ft) (0 ft for last)</label>
+     <label>at acquired altitude (ft)</label>
      <color>
       <red>0.5</red>
       <green>0.5</green>
@@ -227,6 +227,19 @@
       <blue>0.2</blue>
      </color>
     </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <input>
+     <halign>left</halign>
+     <property>/controls/engineer/destination-ft</property>
+     <label>ft at last waypoint</label>
+     <binding>
+      <command>dialog-apply</command>
+     </binding>
+    </input>
   </group>
 
   <text>

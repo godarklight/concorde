@@ -3,7 +3,7 @@
 <PropertyList>
   <name>Concorde-procedures2</name>
   <layout>vbox</layout>
-  <width>500</width>
+  <width>700</width>
 
   <text>
     <label>Concorde procedures</label>
@@ -136,7 +136,7 @@
       </text>
 
       <button>
-       <legend>After takeoff</legend>
+       <legend>After takeoff (1000 ft)</legend>
        <binding>
          <command>nasal</command>
          <script>globals.Concorde.voicecrew.aftertakeoffexport();</script>
@@ -341,16 +341,16 @@
     <key>s</key>
     <binding>
      <command>dialog-show</command>
-     <dialog-name>Concorde-procedures3</dialog-name>
+     <dialog-name>Concorde-procedures4</dialog-name>
     </binding>
    </button>
 
    <button>
-    <legend>Page 1</legend>
+    <legend>Page 3</legend>
     <key>p</key>
     <binding>
      <command>dialog-show</command>
-     <dialog-name>Concorde-procedures</dialog-name>
+     <dialog-name>Concorde-procedures3</dialog-name>
     </binding>
     <binding>
       <command>dialog-close</command>

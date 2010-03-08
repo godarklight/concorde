@@ -219,6 +219,10 @@
     <property alias="../../../../params/nav-ins2"/>
    </binding>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.HSIinstrument.toggleexport();</script>
+   </binding>
+   <binding>
     <command>property-toggle</command>
     <property>/instrumentation/generic/click</property>
    </binding>

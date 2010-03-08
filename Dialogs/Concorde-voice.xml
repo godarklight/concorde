@@ -68,7 +68,7 @@
       <live>true</live>
       <property>/systems/voice/display/captain</property>
       <color>
-       <red>0.2</red>
+       <red>0.8</red>
        <green>0.8</green>
        <blue>0.2</blue>
       </color>
@@ -106,7 +106,7 @@
       <color>
        <red>0.2</red>
        <green>0.8</green>
-       <blue>0.2</blue>
+       <blue>0.8</blue>
       </color>
      </text>
     </group>
@@ -125,16 +125,17 @@
      <group>
       <layout>vbox</layout>
 
-      <button>
-       <legend>takeoff</legend>
-       <binding>
-         <command>nasal</command>
-         <script>globals.Concorde.voicecrew.takeoffexport();</script>
-       </binding>
-      </button>
+      <text>
+        <label>takeoff</label>
+        <color>
+          <red>0.5</red>
+          <green>0.5</green>
+          <blue>0.5</blue>
+        </color>
+      </text>
 
       <text>
-        <label>Parking brake</label>
+        <label>Parking brake on</label>
       </text>
 
       <text>
@@ -155,7 +156,7 @@
       </text>
 
       <text>
-        <label>Parking brake</label>
+        <label>Parking brake off</label>
       </text>
 
       <text>
@@ -200,13 +201,14 @@
      <group>
       <layout>vbox</layout>
 
-      <button>
-       <legend>flight</legend>
-       <binding>
-         <command>nasal</command>
-         <script>globals.Concorde.voicecrew.flightexport();</script>
-       </binding>
-      </button>
+      <text>
+        <label>flight</label>
+        <color>
+          <red>0.5</red>
+          <green>0.5</green>
+          <blue>0.5</blue>
+        </color>
+      </text>
 
       <text>
         <label>10000 ft</label>
@@ -275,14 +277,13 @@
     <group>
       <layout>vbox</layout>
 
-      <text>
-        <label>flight</label>
-        <color>
-          <red>0.5</red>
-          <green>0.5</green>
-          <blue>0.5</blue>
-        </color>
-      </text>
+      <button>
+       <legend>flight</legend>
+       <binding>
+         <command>nasal</command>
+         <script>globals.Concorde.voicecrew.flightexport();</script>
+       </binding>
+      </button>
 
       <text>
         <label>10000 ft</label>
@@ -389,14 +390,13 @@
         <label>v</label>
       </text>
 
-      <text>
-        <label>takeoff</label>
-        <color>
-          <red>0.5</red>
-          <green>0.5</green>
-          <blue>0.5</blue>
-        </color>
-      </text>
+      <button>
+       <legend>takeoff</legend>
+       <binding>
+         <command>nasal</command>
+         <script>globals.Concorde.voicecrew.takeoffexport();</script>
+       </binding>
+      </button>
      </group>
 
   </group>

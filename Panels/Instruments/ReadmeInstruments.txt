@@ -10,7 +10,7 @@ Concorde instruments
   *          green-warning
   *          red-alarm
   *          yellow-warning
-  *          white-button.
+  *          white-button
 - warning lights are emissive by night :
   * concorde-bulb-on/off           : warning-lamps.rgb (rectangular).
   *          bulb-white-on/off     : orange would be barely visible below white light.
@@ -34,8 +34,6 @@ TO DO
 
 3D instruments
 --------------
-- 2D instruments will be converted as hotspots, except those common to 2D panel :
-  requires texture without alpha ?
 - transparent 2D textures (warning lights) in 3D instruments : 2 mesh surfaces,
   or instrument emissivity ?
 - transparent 2D background (to get the lighting of panel) will need a background painting.
@@ -53,6 +51,7 @@ Known problems
   Example : instrument having all layers shifted upwards,
   so that its bottom starts on the disturbed hotspot;
   but the bottom is not visible because without texture !
+- missing hotspots are caused by a panel side lower than the underlying 3D surface.
 - sometimes a bug (the condition doesn't work) appears in such a situation :
 
       <or include="concorde-cond-flashing-light.xml">
@@ -72,4 +71,4 @@ Known problems
   (condition) and /Sounds (condition).
 
 
-25 March 2007.
+8 November 2009.

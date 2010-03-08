@@ -178,7 +178,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>34</h>
   </instrument>
 
-  <instrument include="../../Instruments/clock.xml">
+  <instrument include="Instruments/concorde-clock.xml">
    <name>Chronometer</name>
    <condition>
     <or>
@@ -238,238 +238,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
 <!-- BRAKES TEMPERATURE -->
 
-  <instrument include="Instruments/concorde-red-brakes-forward.xml">
-   <name>Overheat forward brakes 1</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>-30</x>
-   <y>185</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-forward.xml">
-   <name>Overheat forward brakes 2</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>0</x>
-   <y>185</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-forward.xml">
-   <name>Overheat forward brakes 3</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>290</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>170</x>
-   <y>185</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-forward.xml">
-   <name>Overheat forward brakes 4</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>200</x>
-   <y>185</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-rear.xml">
-   <name>Overheat rear brakes 1</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>-30</x>
-   <y>135</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-rear.xml">
-   <name>Overheat rear brakes 2</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>290</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>0</x>
-   <y>135</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-rear.xml">
-   <name>Overheat rear brakes 3</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>170</x>
-   <y>135</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-red-brakes-rear.xml">
-   <name>Overheat rear brakes 4</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>200</x>
-   <y>135</y>
-   <w>22</w>
-   <h>44</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-brakes-temperature.xml">
    <name>Brakes temperature</name>
    <condition>
@@ -495,37 +263,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <x>85</x>
    <y>165</y>
-   <w>95</w>
-   <h>142.5</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-test-brakes.xml">
-   <name>Test brakes</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>285</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-35</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>140</x>
-   <y>110</y>
-   <w>75</w>
-   <h>30</h>
+   <w>286</w>
+   <h>143</h>
   </instrument>
 
 <!-- INTAKE PRESSURE RATIO ERROR -->
@@ -1068,10 +807,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>447</x>
-   <y>575</y>
-   <w>85</w>
-   <h>170</h>
+   <x>455</x>
+   <y>585</y>
+   <w>95</w>
+   <h>190</h>
   </instrument>
 
 <!-- CABIN ALTITUDE -->
@@ -1100,7 +839,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>280</x>
-   <y>560</y>
+   <y>570</y>
    <w>22</w>
    <h>44</h>
   </instrument>
@@ -1129,9 +868,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>350</x>
-   <y>560</y>
-   <w>75</w>
-   <h>75</h>
+   <y>570</y>
+   <w>90</w>
+   <h>90</h>
   </instrument>
 
   <instrument include="Instruments/concorde-pressure-differential.xml">
@@ -1158,9 +897,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>560</x>
-   <y>560</y>
-   <w>75</w>
-   <h>75</h>
+   <y>570</y>
+   <w>90</w>
+   <h>90</h>
   </instrument>
 
   <instrument include="Instruments/concorde-red-pressure-over.xml">
@@ -1187,7 +926,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>630</x>
-   <y>560</y>
+   <y>570</y>
    <w>22</w>
    <h>44</h>
   </instrument>
@@ -1222,9 +961,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <altitude-sel>/systems/pressurization/system[0]/max-diff-ft</altitude-sel>
    </params>
    <x>335</x>
-   <y>455</y>
-   <w>110</w>
-   <h>110</h>
+   <y>460</y>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
   <instrument include="Instruments/concorde-pressure-cabin-rate.xml">
@@ -1251,9 +990,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>455</x>
-   <y>445</y>
-   <w>75</w>
-   <h>75</h>
+   <y>447</y>
+   <w>90</w>
+   <h>90</h>
   </instrument>
 
   <instrument include="Instruments/concorde-pressure-altitude-sel.xml">
@@ -1286,9 +1025,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <altitude-sel>/systems/pressurization/system[1]/max-diff-ft</altitude-sel>
    </params>
    <x>575</x>
-   <y>455</y>
-   <w>110</w>
-   <h>110</h>
+   <y>460</y>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
 <!-- LIGHTING -->
@@ -3329,7 +3068,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <bucket-deg>/systems/engines/engine[0]/bucket-deg</bucket-deg>
+    <bucket-pos>/systems/engines/engine[0]/bucket-deg</bucket-pos>
    </params>
    <x>500</x>
    <y>150</y>
@@ -3361,7 +3100,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <bucket-deg>/systems/engines/engine[1]/bucket-deg</bucket-deg>
+    <bucket-pos>/systems/engines/engine[1]/bucket-deg</bucket-pos>
    </params>
    <x>550</x>
    <y>150</y>
@@ -3393,7 +3132,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <bucket-deg>/systems/engines/engine[2]/bucket-deg</bucket-deg>
+    <bucket-pos>/systems/engines/engine[2]/bucket-deg</bucket-pos>
    </params>
    <x>600</x>
    <y>150</y>
@@ -3425,7 +3164,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <bucket-deg>/systems/engines/engine[3]/bucket-deg</bucket-deg>
+    <bucket-pos>/systems/engines/engine[3]/bucket-deg</bucket-pos>
    </params>
    <x>650</x>
    <y>150</y>
@@ -3487,9 +3226,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>425</x>
+   <x>387</x>
    <y>80</y>
-   <w>150</w>
+   <w>90</w>
    <h>60</h>
   </instrument>
 
@@ -3591,6 +3330,64 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
 <!-- IN-FLIGHT REVERSE -->
+
+  <instrument include="Instruments/concorde-title-engine-flight-reverse.xml">
+   <name>Flight reverse arm</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>335</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>270</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>480</x>
+   <y>110</y>
+   <w>200</w>
+   <h>10</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-engine-flight-reverse.xml">
+   <name>Flight reverse arm push button</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>335</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>275</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-30</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>480</x>
+   <y>80</y>
+   <w>35</w>
+   <h>35</h>
+  </instrument>
 
   <instrument include="Instruments/concorde-blue-engine-reverse.xml">
    <name>Air supply isolation valve</name>

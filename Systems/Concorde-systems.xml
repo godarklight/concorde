@@ -2,14 +2,34 @@
 
 <PropertyList>
 
-  <pitot>
+  <pitot>                                                   <!-- nose probe -->
     <name>pitot</name>
     <number>0</number>
   </pitot>
 
-  <static>
+  <pitot>                                                   <!-- right probe -->
+    <name>pitot</name>
+    <number>1</number>
+  </pitot>
+
+  <pitot>                                                   <!-- left probe -->
+    <name>pitot</name>
+    <number>2</number>
+  </pitot>
+
+  <static>                                                  <!-- nose probe -->
     <name>static</name>
     <number>0</number>
+  </static>
+
+  <static>                                                  <!-- right probe -->
+    <name>static</name>
+    <number>1</number>
+  </static>
+
+  <static>                                                  <!-- left probe -->
+    <name>static</name>
+    <number>2</number>
   </static>
 
   <vacuum>

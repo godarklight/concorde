@@ -15,50 +15,55 @@
 Virtualengineer = {};
 
 Virtualengineer.new = func {
-   var obj = { parents : [Virtualengineer,Virtualcrew,Checklist,System], 
+   var obj = { parents : [Virtualengineer,CommonCheck,Virtualcrew,Checklist,Emergency,System], 
 
-           airbleedsystem : nil,
-           autopilotsystem : nil,
-           voicecrew : nil,
-           electricalsystem : nil,
-           enginesystem : nil,
-           fuelsystem : nil,
+               airbleedsystem : nil,
+               autopilotsystem : nil,
+               electricalsystem : nil,
+               enginesystem : nil,
+               fuelsystem : nil,
+               hydraulicsystem : nil,
+               voicecrew : nil,
 
-           navigation : Navigation.new(),
-           nightlighting : Nightlighting.new(),
-           nightlighting2 : Nightlighting.new(),
+               navigation : Navigation.new(),
+               nightlighting : Nightlighting.new(),
+               nightlighting2 : Nightlighting.new(),
+               radiomanagement : RadioManagement.new(),
+               radiomanagement2 : RadioManagement.new(),
 
-           FUELSEC : 15.0,
-           CRUISESEC : 10.0,
-           TAKEOFFSEC : 5.0,
-           REHEATSEC : 4.0,
+               FUELSEC : 15.0,
+               CRUISESEC : 10.0,
+               TAKEOFFSEC : 5.0,
+               REHEATSEC : 4.0,
 
-           rates : 0.0,
+               rates : 0.0,
 
-           SAFEFT : 1500.0,
+               SAFEFT : 1500.0,
 
-           altitudeft : 0.0,
-           aglft : 0.0,
+               altitudeft : 0.0,
+               aglft : 0.0,
 
-           CLIMBFPM : 100,
-           DESCENTFPM : -100,
+               CLIMBFPM : 100,
+               DESCENTFPM : -100,
 
-           speedfpm : 0.0,
+               speedfpm : 0.0,
 
-           CRUISEMACH : 1.95,
-           SONICMACH : 1.0,
+               CRUISEMACH : 1.95,
+               SONICMACH : 1.0,
 
-           speedmach : 0.0,
+               speedmach : 0.0,
 
-           ANTIICEOFF : 0,
+               speedkt : 0.0,
 
-           MAXPERCENT : 53.6,                                # maximum on ground
-           CGPERCENT : 0.25,                                 # checklist
+               ANTIICEOFF : 0,
+ 
+               MAXPERCENT : 53.6,                                # maximum on ground
+               CGPERCENT : 0.25,                                 # checklist
 
-           FOGMETER : 1000,                                  # visibility
+               FOGMETER : 1000,                                  # visibility
 
-           FOGDEGC : -3,
-           ICEDEGC : 0
+               FOGDEGC : -3,
+               ICEDEGC : 0
          };
 
     obj.init();
@@ -71,36 +76,45 @@ Virtualengineer.init = func {
 
     me.inherit_system(path);
     me.inherit_checklist(path);
+    me.inherit_emergency(path);
     me.inherit_virtualcrew(path);
+    me.inherit_commoncheck(path);
 
     settimer( func { me.setweighthuman(); }, me.CRUISESEC );
 }
 
-Virtualengineer.set_relation = func( airbleed, autopilot, electrical, engine, fuel, lighting, voice ) {
+Virtualengineer.set_relation = func( airbleed, autopilot, electrical, engine, fuel, hydraulic, lighting, voice ) {
     me.airbleedsystem = airbleed;
     me.autopilotsystem = autopilot;
     me.electricalsystem = electrical;
     me.enginesystem = engine;
     me.fuelsystem = fuel;
+    me.hydraulicsystem = hydraulic;
     me.voicecrew = voice;
 
     me.nightlighting.set_relation( lighting );
     me.nightlighting2.set_relation( lighting );
+
+    me.radiomanagement.set_relation( autopilot );
+    me.radiomanagement2.set_relation( autopilot );
 }
 
 Virtualengineer.toggleexport = func {
     var launch = constant.FALSE;
 
-    if( !me.itself["engineer"].getChild("activ").getValue() ) {
+    if( !me.itself["root-ctrl"].getChild("activ").getValue() ) {
         launch = constant.TRUE;
     }
  
-    me.itself["engineer"].getChild("activ").setValue(launch);
+    me.itself["root-ctrl"].getChild("activ").setValue(launch);
 
     if( launch and !me.is_running() ) {
         # must switch lights again
         me.nightlighting.set_task();
         me.nightlighting2.set_task();
+
+        me.radiomanagement.set_task();
+        me.radiomanagement2.set_task();
 
         me.schedule();
         me.slowschedule();
@@ -110,7 +124,7 @@ Virtualengineer.toggleexport = func {
 Virtualengineer.reheatexport = func {
     # at first engine 2 3.
     if( !me.has_reheat() ) {
-        for( var i = 1; i <= 2 ; i = i+1 ) {
+        for( var i = constantaero.ENGINE2; i <= constantaero.ENGINE3 ; i = i+1 ) {
              me.dependency["engine-ctrl"][i].getChild("reheat").setValue( constant.TRUE );
         }
  
@@ -131,24 +145,11 @@ Virtualengineer.reheatexport = func {
 
 Virtualengineer.reheatcron = func {
     if( me.has_reheat() ) {
-        me.dependency["engine-ctrl"][0].getChild("reheat").setValue( constant.TRUE );
-        me.dependency["engine-ctrl"][3].getChild("reheat").setValue( constant.TRUE );
+        me.dependency["engine-ctrl"][constantaero.ENGINE1].getChild("reheat").setValue( constant.TRUE );
+        me.dependency["engine-ctrl"][constantaero.ENGINE4].getChild("reheat").setValue( constant.TRUE );
  
         me.toggleclick("reheat-1-4");
     }
-}
-
-Virtualengineer.has_reheat = func {
-    var augmentation = constant.FALSE;
-
-    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-         if( me.dependency["engine-ctrl"][i].getChild("reheat").getValue() ) {
-             augmentation = constant.TRUE;
-             break;
-         }
-    }
-
-    return augmentation;
 }
 
 Virtualengineer.veryslowschedule = func {
@@ -161,7 +162,7 @@ Virtualengineer.slowschedule = func {
     me.rates = me.FUELSEC;
 
     if( me.itself["root"].getChild("serviceable").getValue() ) {
-        me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fpm").getValue();
+        me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
 
         # a slow change is more natural.
         me.fuel();
@@ -188,7 +189,7 @@ Virtualengineer.schedule = func {
 }
 
 Virtualengineer.run = func {
-    if( me.itself["engineer"].getChild("activ").getValue() ) {
+    if( me.itself["root-ctrl"].getChild("activ").getValue() ) {
         me.set_running();
 
         me.rates = me.speed_ratesec( me.rates );
@@ -197,22 +198,26 @@ Virtualengineer.run = func {
 }
 
 Virtualengineer.runslow = func {
-    if( me.itself["engineer"].getChild("activ").getValue() ) {
+    if( me.itself["root-ctrl"].getChild("activ").getValue() ) {
         me.rates = me.speed_ratesec( me.rates );
         settimer( func { me.slowschedule(); }, me.rates );
     }
 }
 
 Virtualengineer.supervisor = func {
-    if( me.itself["engineer"].getChild("activ").getValue() ) {
+    if( me.itself["root-ctrl"].getChild("activ").getValue() ) {
         me.rates = me.TAKEOFFSEC;
 
+        me.speedkt = me.noinstrument["airspeed"].getValue();
         me.speedmach = me.noinstrument["mach"].getValue();
         me.aglft = me.noinstrument["agl"].getValue();
         me.altitudeft = me.noinstrument["altitude"].getValue();
 
-        me.checklist = me.dependency["voice"].getChild("checklist").getValue();
+        me.set_checklist();
+        me.set_emergency();
 
+
+        # normal
         if( me.is_beforetakeoff() ) {
             me.set_activ();
             me.beforetakeoff();
@@ -227,6 +232,11 @@ Virtualengineer.supervisor = func {
         elsif( me.is_afterstart() ) {
             me.set_activ();
             me.afterstart();
+        }
+
+        elsif( me.is_pushback() ) {
+            me.set_activ();
+            me.pushback();
         }
 
         elsif( me.is_enginestart() ) {
@@ -302,6 +312,18 @@ Virtualengineer.supervisor = func {
         }
 
 
+        # emergency
+        elsif( me.is_fourengineflameout() ) {
+            me.set_activ();
+            me.fourengineflameout();
+        }
+
+        elsif( me.is_fourengineflameoutmach1() ) {
+            me.set_activ();
+            me.fourengineflameoutmach1();
+        }
+
+
         me.allways();
 
         me.rates = me.randoms( me.rates );
@@ -320,20 +342,28 @@ Virtualengineer.allways = func {
     me.setweight();
 
     me.nightlighting.engineer( me );
+    me.radiomanagement.engineer( me );
 
     if( me.is_busy() ) {
         me.nightlighting2.captain( me );
+        me.radiomanagement2.captain( me );
     }
 
     me.allinsready();
 }
 
 Virtualengineer.aftertakeoff = func {
-    me.enginerating( constantaero.RATINGFLIGHT );
+    if( me.aglft > constantaero.REHEATFT or me.speedkt >= constantaero.APPROACHKT ) {
+        me.reheatcut();
+    }
 
-    if( me.has_completed() ) {
-        me.voicecrew.engineercheck( "completed" );
-        me.voicecrew.nochecklistinit();
+    if( me.aglft > constantaero.CLIMBFT ) {
+        me.enginerating( constantaero.RATINGFLIGHT );
+
+        if( me.has_completed() ) {
+            me.voicecrew.engineercheck( "completed" );
+            me.voicecrew.nochecklistinit();
+        }
     }
 }
 
@@ -354,9 +384,7 @@ Virtualengineer.transsonic = func {
 
     if( me.can() ) {
         if( me.is_cruising() ) {
-            if( me.has_reheat() ) {
-                me.reheatexport();
-            }
+            me.reheatcut();
         }
 
         # waits
@@ -414,8 +442,9 @@ Virtualengineer.beforelanding = func {
 # GROUND
 # ------
 Virtualengineer.afterlanding = func {
-    me.fuel();
     me.groundidle( constant.TRUE );
+    me.autoignition( constant.FALSE );
+
     me.taxioutboard();
 
     # because of engine shutdown
@@ -441,10 +470,17 @@ Virtualengineer.parking = func {
 
     me.waitgroundpowerbreaker( constant.TRUE );
 
+    # must wait for nose raise (copilot)
+    if( me.dependency["nose"].getValue() > constantaero.NOSEUP ) {
+        me.done();
+    }
+
     me.shutengines();
+    me.throttlemaster( constant.TRUE );
 
     me.anticollision( constant.FALSE );
     me.engineantiicing( constant.FALSE );
+    me.autoignition( constant.FALSE );
 
     me.shutairbleeds();
     me.airconditioning( constant.TRUE );
@@ -460,6 +496,16 @@ Virtualengineer.parking = func {
 }
 
 Virtualengineer.stopover = func {
+    if( me.is_startup() ) {
+        me.autoignition( constant.FALSE );
+        me.shutengines();
+
+        if( me.can() ) {
+            me.not_startup();
+        }
+    }
+
+    me.adc( constant.FALSE );
     me.allins( constantaero.INSOFF );
 
     me.groundpowerbreaker( constant.FALSE );
@@ -495,6 +541,8 @@ Virtualengineer.preliminary = func {
     me.ins( constantaero.INS3, constantaero.INSALIGN );
     me.ins( constantaero.INS2, constantaero.INSALIGN );
 
+    me.adc( constant.TRUE );
+
     if( me.has_completed() ) {
         me.voicecrew.nochecklistinit();
     }
@@ -503,11 +551,14 @@ Virtualengineer.preliminary = func {
 Virtualengineer.cockpit = func {
     me.flightrating( constantaero.RATINGCLIMB );
     me.throttlemaster( constant.TRUE );
+    me.autoignition( constant.FALSE );
     me.enginerating( constantaero.RATINGTAKEOFF );
 
     me.ins( constantaero.INS1, constantaero.INSALIGN );
     me.ins( constantaero.INS3, constantaero.INSALIGN );
     me.ins( constantaero.INS2, constantaero.INSALIGN );
+
+    me.compass();
 
     me.crossbleedvalve( constantaero.ENGINE1, constant.FALSE );
     me.crossbleedvalve( constantaero.ENGINE2, constant.TRUE );
@@ -557,6 +608,34 @@ Virtualengineer.enginestart = func {
     }
 }
 
+Virtualengineer.pushback = func {
+    me.startengine( constantaero.ENGINE3 );
+    me.startengine( constantaero.ENGINE2 );
+
+    me.crossbleedvalve( constantaero.ENGINE2, constant.TRUE );
+    me.crossbleedvalve( constantaero.ENGINE3, constant.TRUE );
+
+    if( me.dependency["tractor"].getChild("engine14").getValue() ) {
+        me.crossbleedvalve( constantaero.ENGINE4, constant.TRUE );
+        me.startengine( constantaero.ENGINE4 );
+
+        me.crossbleedvalve( constantaero.ENGINE1, constant.TRUE );
+        me.startengine( constantaero.ENGINE1 );
+
+        me.completed();
+    }
+
+    # waits for pushback
+    else {
+        me.done();
+    }
+
+    if( me.has_completed() ) {
+        me.voicecrew.engineercheck( "completed" );
+        me.voicecrew.startedinit();
+    }
+}
+
 Virtualengineer.afterstart = func {
     me.groundidle( constant.TRUE );
 
@@ -576,9 +655,8 @@ Virtualengineer.afterstart = func {
 }
 
 Virtualengineer.taxi = func( callout ) {
-    me.fuel();
-
     me.enginerating( constantaero.RATINGTAKEOFF );
+    me.autoignition( constant.TRUE );
 
     me.drainmastheater( constant.TRUE );
 
@@ -611,9 +689,80 @@ Virtualengineer.beforetakeoff = func {
 }
 
 
+# ---------
+# EMERGENCY
+# ---------
+Virtualengineer.fourengineflameout = func {
+    if( !me.allenginesrunning() ) {
+        # easier to work
+        me.cancelaudio();
+
+        me.unguardrat( constantaero.AP2 );
+        me.deployrat( constantaero.AP2 );
+
+        me.throttleidle();
+        me.autoignition( constant.FALSE );
+        me.throttlemaster( constant.FALSE );
+        me.relightallengines( constant.TRUE );
+
+        me.emergencyenginestart( constantaero.ENGINE2 );
+        me.emergencyenginestart( constantaero.ENGINE4 );
+        me.emergencyenginestart( constantaero.ENGINE3 );
+        me.emergencyenginestart( constantaero.ENGINE1 );
+    }
+
+    # restores situation, before emergency
+    else {
+        me.emergencyrelight( -1 );
+        me.relightallengines( constant.FALSE );
+        me.autoignition( constant.TRUE );
+    }
+
+    if( me.has_completed() ) {
+        me.voicecrew.noemergencyinit();
+    }
+}
+
+Virtualengineer.fourengineflameoutmach1 = func {
+    if( !me.allenginesrunning() ) {
+        # easier to work
+        me.cancelaudio();
+
+        me.throttleidle();
+        me.autoignition( constant.FALSE );
+        me.relightallengines( constant.TRUE );
+
+        me.emergencyenginestart( constantaero.ENGINE2 );
+        me.emergencyenginestart( constantaero.ENGINE4 );
+        me.emergencyenginestart( constantaero.ENGINE3 );
+        me.emergencyenginestart( constantaero.ENGINE1 );
+    }
+
+    # restores situation, before emergency
+    else {
+        me.emergencyrelight( -1 );
+        me.relightallengines( constant.FALSE );
+        me.autoignition( constant.TRUE );
+    }
+
+    if( me.has_completed() ) {
+        me.voicecrew.noemergencyinit();
+    }
+}
+
+
 # -------
 # ENGINES
 # -------
+Virtualengineer.taxioutboard = func {
+    for( i = constantaero.ENGINE2; i <= constantaero.ENGINE3; i=i+1 ) {
+         if( me.can() ) {
+             # taxi with outboard engines
+             me.hpvalve( i, constant.FALSE );
+         }
+    }
+}
+
 Virtualengineer.groundidle = func( set ) {
     if( me.can() ) {
         var path = "";
@@ -632,25 +781,54 @@ Virtualengineer.groundidle = func( set ) {
     }
 }
 
-Virtualengineer.reheat = func {
-    if( me.is_cruising() ) {
-        if( me.can() ) {
-            if( me.has_reheat() ) {
-                me.reheatexport();
-            }
+Virtualengineer.reheatcut = func {
+    if( me.can() ) {
+        if( me.has_reheat() ) {
+            me.reheatexport();
         }
-    }
-
-    # waits
-    else {
-        me.done();
     }
 }
 
-Virtualengineer.stopengine = func( index ) {
-    if( !me.dependency["engine-ctrl"][index].getChild("cutoff").getValue() ) {
-         me.dependency["engine-ctrl"][index].getChild("cutoff").setValue(constant.TRUE);
-         me.toggleclick("stop-engine-" ~ index);
+Virtualengineer.has_reheat = func {
+    var augmentation = constant.FALSE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
+         if( me.dependency["engine-ctrl"][i].getChild("reheat").getValue() ) {
+             augmentation = constant.TRUE;
+             break;
+         }
+    }
+
+    return augmentation;
+}
+
+Virtualengineer.hpvalve = func( index, set ) {
+    if( me.can() ) {
+        if( me.dependency["engine-ctrl"][index].getChild("hp-valve").getValue() != set ) {
+            me.dependency["engine-ctrl"][index].getChild("hp-valve").setValue( set );
+            me.toggleclick("hp-valve-" ~ index);
+        }
+    }
+}
+
+Virtualengineer.autoignition = func( set ) {
+    if( me.can() ) {
+        for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
+             if( me.dependency["engine-ctrl"][i].getChild("autoignition").getValue() != set ) {
+                 me.dependency["engine-ctrl"][i].getChild("autoignition").setValue( set );
+                 me.toggleclick("autoignition-" ~ i);
+                 break;
+             }
+        }
+    }
+}
+
+Virtualengineer.enginestarter = func( index ) {
+    if( me.can() ) {
+        if( !me.dependency["engine-ctrl"][index].getChild("starter").getValue() ) {
+            me.enginesystem.starter( index );
+            me.toggleclick("starter-" ~ index);
+        }
     }
 }
 
@@ -701,77 +879,82 @@ Virtualengineer.setenginecontrol = func( set ) {
 }
 
 Virtualengineer.shutengines = func {
-    # must wait for nose raise (copilot)
-    if( me.dependency["nose"].getValue() > constantaero.NOSEUP ) {
-        me.done();
-    }
-
     if( me.can() ) {
         for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
-             if( me.can() ) {
-                 me.stopengine( i );
-             }
+             me.hpvalve( i, constant.FALSE );
         }
     }
-
-    me.throttlemaster( constant.TRUE );
 }
 
 Virtualengineer.startengine = func( index ) {
     me.crossbleedvalve( index, constant.TRUE );
 
     if( me.can() ) {
-        if( !me.dependency["engine"][index].getChild("running").getValue() and
-            !me.dependency["engine-ctrl"][index].getChild("starter").getValue() ) {
-            me.enginesystem.starter( index );
-            me.toggleclick("starter-" ~ index);
-        }
-
-        elsif( me.dependency["engine-ctrl"][index].getChild("cutoff").getValue() ) {
-            me.dependency["engine-ctrl"][index].getChild("cutoff").setValue( constant.FALSE );
-            me.toggleclick("hp-valve-" ~ index);
+        if( !me.dependency["engine"][index].getChild("running").getValue() ) {
+            me.enginestarter( index );
+            me.hpvalve( index, constant.TRUE );
         }
 
         # waits for shut of start valve
-        elsif( me.dependency["engine-ctrl"][index].getChild("starter").getValue() ) {
-            me.done();
-        }
+        if( me.can() )  {
+           if( me.dependency["engine-ctrl"][index].getChild("starter").getValue() ) {
+               me.done();
+           }
 
-        else {
-            me.bleedvalve( index, constant.TRUE );
+           else {
+               me.bleedvalve( index, constant.TRUE );
+           }
         }
     }
 }
 
-Virtualengineer.is_throttleidle = func {
-    var result = constant.TRUE;
-
+Virtualengineer.emergencyenginestart = func( index ) {
     if( me.can() ) {
-        for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
-             if( me.dependency["engine-ctrl"][i].getChild("throttle-manual").getValue() != constantaero.THROTTLEIDLE ) {
-                 result = constant.FALSE;
+        if( !me.dependency["engine"][index].getChild("running").getValue() ) {
+            var set = me.electricalsystem.enginerelightexport( index );
 
-                 me.done_crew("not-idle");
-                 break;
-             }
-        }
+            me.emergencyrelight( set );
+            me.hpvalve( index, constant.TRUE );
 
-        if( result ) {
-            me.reset_crew();
+            # waits for engine running
+            if( me.can() ) {
+                me.done();
+            }
         }
     }
+}
 
-    # engineer is unable to idle the joystick !
-    return result;
+Virtualengineer.relightallengines = func( set ) {
+    if( me.can() ) {
+        for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
+             me.relightengine( i, set );
+        }
+    }
+}
+
+Virtualengineer.relightengine = func( index, set ) {
+    if( me.can() ) {
+        if( me.dependency["engine-sys"][index].getChild("relight").getValue() != set ) {
+            me.enginesystem.relight( index, set );
+            me.toggleclick("relight-" ~ index);
+        }
+    }
 }
 
 Virtualengineer.throttleidle = func {
     if( me.can() ) {
+        var found = constant.FALSE;
+
         for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
              if( me.dependency["engine-ctrl"][i].getChild("throttle-manual").getValue() != constantaero.THROTTLEIDLE ) {
                  me.enginesystem.set_throttle( constantaero.THROTTLEIDLE );
-                 me.done("idle");
+                 found = constant.TRUE;
              }
+        }
+
+        # the 4 levers at once
+        if( found ) {
+            me.done("idle");
         }
     }
 }
@@ -788,6 +971,19 @@ Virtualengineer.throttlemaster = func( set ) {
     }
 }
 
+Virtualengineer.allenginesrunning = func {
+    var result = constant.TRUE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
+         if( !me.dependency["engine"][i].getChild("running").getValue() ) {
+             result = constant.FALSE;
+             break;
+         }
+    }
+
+    return result;
+}
+
 
 # ----------
 # NAVIGATION
@@ -795,15 +991,6 @@ Virtualengineer.throttlemaster = func( set ) {
 Virtualengineer.allins = func( mode ) {
     for( var i = 0; i < constantaero.NBINS; i = i + 1 ) {
          me.ins( i, mode );
-    }
-}
-
-Virtualengineer.ins = func( index, mode ) {
-    if( me.can() ) {
-        if( me.dependency["ins"][index].getNode("msu").getChild("mode").getValue() != mode ) {
-            me.dependency["ins"][index].getNode("msu").getChild("mode").setValue(mode);
-            me.toggleclick("ins-" ~ index);
-        }
     }
 }
 
@@ -826,6 +1013,28 @@ Virtualengineer.insready = func( index ) {
                 }
             }
         }
+    }
+}
+
+Virtualengineer.compass = func {
+    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i + 1 ) {
+         if( me.can() ) {
+             if( me.dependency["compass"][i].getChild("mode-dg").getValue() ) {
+                 me.dependency["compass"][i].getChild("mode-dg").setValue( constant.FALSE );
+                 me.toggleclick("mode-dg-" ~ i);
+             }
+         }
+    }
+}
+
+Virtualengineer.adc = func( set ) {
+    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i + 1 ) {
+         if( me.can() ) {
+             if( me.dependency["adc"][i].getChild("switch").getValue() != set ) {
+                 me.dependency["adc"][i].getChild("switch").setValue( set );
+                 me.toggleclick("adc-" ~ i);
+             }
+         }
     }
 }
 
@@ -920,15 +1129,6 @@ Virtualengineer.wingantiicing = func( set ) {
 # --------
 # LIGHTING
 # --------
-Virtualengineer.taxioutboard = func {
-    for( i = constantaero.ENGINE2; i <= constantaero.ENGINE3; i=i+1 ) {
-         if( me.can() ) {
-             # taxi with outboard engines
-             me.stopengine( i );
-         }
-    }
-}
-
 Virtualengineer.anticollision = func( set ) {
     if( me.can() ) {
         if( me.dependency["lighting"].getChild("strobe").getValue() != set ) {
@@ -972,6 +1172,20 @@ Virtualengineer.groundpower = func( call ) {
                  me.done();
             }
         }
+
+        elsif( !me.dependency["gear-ctrl"].getChild("wheel-chocks").getValue() ) {
+            if( !me.wait_ground() and call ) {
+                # must wait for wheel chocks (ground)
+                me.done_ground();
+            }
+
+            else  {
+                me.dependency["gear-ctrl"].getChild("wheel-chocks").setValue( constant.TRUE );
+
+                me.reset_ground();
+                me.done();
+           }
+        }
     }
 }
 
@@ -1003,6 +1217,16 @@ Virtualengineer.battery = func( set ) {
                  me.toggleclick("battery-" ~ i);
                  break;
              }
+        }
+    }
+}
+
+Virtualengineer.emergencyrelight = func( set ) {
+    if( me.can() ) {
+        if( me.dependency["electric-ac"].getNode("emergency").getChild("relight-selector").getValue() != set ) {
+            me.dependency["electric-ac"].getNode("emergency").getChild("relight-selector").setValue( set );
+            me.electricalsystem.emergencyrelightexport();
+            me.toggleclick("emerg-relight-" ~ set);
         }
     }
 }
@@ -1057,7 +1281,6 @@ Virtualengineer.bleedvalve = func( index, set ) {
             me.dependency["air-bleed"][index].getChild("bleed-valve").setValue( set );
             me.toggleclick("bleed-valve-" ~ index);
         }
-
     }
 }
 
@@ -1067,7 +1290,29 @@ Virtualengineer.crossbleedvalve = func( index, set ) {
             me.dependency["air-bleed"][index].getChild("cross-bleed-valve").setValue( set );
             me.toggleclick("cross-bleed-valve-" ~ index);
         }
+    }
+}
 
+
+# ----------
+# HYDRAULICS
+# ----------
+Virtualengineer.unguardrat = func( index ) {
+    if( me.can() ) {
+        if( me.dependency["rat"][index].getChild("guard").getValue() ) {
+            me.dependency["rat"][index].getChild("guard").setValue( constant.FALSE );
+            me.toggleclick("rat-guard-" ~ index);
+        }
+    }
+}
+
+Virtualengineer.deployrat = func( index ) {
+    if( me.can() ) {
+        if( !me.dependency["rat"][index].getChild("on").getValue() ) {
+            me.dependency["rat"][index].getChild("on").setValue( constant.TRUE );
+            me.hydraulicsystem.ratdeployexport();
+            me.toggleclick("rat-" ~ index);
+        }
     }
 }
 
@@ -1382,24 +1627,24 @@ Navigation = {};
 Navigation.new = func {
    var obj = { parents : [Navigation,System], 
 
-           DESTINATIONFT : 0.0,
+               altitudeft : 0.0,
 
-           altitudeft : 0.0,
+               last : constant.FALSE,
 
-           NOSPEEDFPM : 0.0,
+               NOSPEEDFPM : 0.0,
 
-           SUBSONICKT : 480,                                 # estimated ground speed
-           FLIGHTKT : 150,                                   # minimum ground speed
+               SUBSONICKT : 480,                                 # estimated ground speed
+               FLIGHTKT : 150,                                   # minimum ground speed
 
-           groundkt : 0,
+               groundkt : 0,
 
-           SUBSONICKGPH : 20000,                             # subsonic consumption
+               SUBSONICKGPH : 20000,                             # subsonic consumption
 
-           kgph : 0,
+               kgph : 0,
 
-           NOFUELKG : -999,
+               NOFUELKG : -999,
 
-           totalkg : 0
+               totalkg : 0
          };
 
    obj.init();
@@ -1438,10 +1683,11 @@ Navigation.schedule = func {
 
    me.altitudeft = me.noinstrument["altitude"].getValue();
    selectft = me.dependency["autoflight"].getChild("altitude-select").getValue();
+   me.last = constant.FALSE;
 
 
    # waypoint
-   for( var i = 0; i < 3; i = i+1 ) {
+   for( var i = 2; i >= 0; i = i-1 ) {
         if( i < 2 ) {
             id = me.dependency["waypoint"][i].getChild("id").getValue();
             distnm = me.dependency["waypoint"][i].getChild("dist").getValue();
@@ -1452,7 +1698,6 @@ Navigation.schedule = func {
         else {
             id = getprop("/autopilot/route-manager/wp-last/id"); 
             distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
-            targetft = me.DESTINATIONFT;
         }
 
         fuelkg = me.estimatefuelkg( id, distnm );
@@ -1469,6 +1714,12 @@ Navigation.estimatespeedfpm = func( id, distnm, targetft ) {
    var minutes = 0.0;
 
    if( id != "" and distnm != nil ) {
+       # last waypoint at sea level
+       if( !me.last ) {
+           targetft = me.itself["root-ctrl"].getChild("destination-ft").getValue();
+           me.last = constant.TRUE;
+       }
+
        minutes = ( distnm / me.groundkt ) * constant.HOURTOMINUTE;
        speedfpm = ( targetft - me.altitudeft ) / minutes;
    }

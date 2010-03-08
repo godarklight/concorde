@@ -12,14 +12,14 @@ ElectricalXML = {};
 ElectricalXML.new = func {
    var obj = { parents : [ElectricalXML],
 
-           config : nil,
-           electrical : nil,
-           iterations : nil,
+               config : nil,
+               electrical : nil,
+               iterations : nil,
 
-           forced : 0,
+               forced : 0,
 
-           components : ElecComponentArray.new(),
-           connectors : ElecConnectorArray.new()
+               components : ElecComponentArray.new(),
+               connectors : ElecConnectorArray.new()
          };
 
    obj.init();
@@ -272,23 +272,23 @@ ElecComponentArray = {};
 ElecComponentArray.new = func {
    var obj = { parents : [ElecComponentArray],
 
-           supplier_name : [],
-           transformer_name : [],
-           bus_name :      [],
-           output_name :   [],
+               supplier_name : [],
+               transformer_name : [],
+               bus_name :      [],
+               output_name :   [],
 
-           suppliers : [],
-           nb_charges : 0,                                        # number of batteries
-           nb_suppliers : 0,
+               suppliers : [],
+               nb_charges : 0,                                        # number of batteries
+               nb_suppliers : 0,
 
-           transformers : [],
-           nb_transformers : 0,
+               transformers : [],
+               nb_transformers : 0,
 
-           buses :    [],
-           nb_buses : 0,
+               buses :    [],
+               nb_buses : 0,
 
-           outputs : [],
-           nb_outputs : 0
+               outputs : [],
+               nb_outputs : 0
          };
 
    return obj;
@@ -491,9 +491,9 @@ ElecComponent = {};
 ElecComponent.new = func {
    var obj = { parents : [ElecComponent],
 
-           NOVOLT : 0.0,
+               NOVOLT : 0.0,
 
-           done : constant.FALSE
+               done : constant.FALSE
          };
 
    return obj;
@@ -558,15 +558,15 @@ ElecSupplier = {};
 ElecSupplier.new = func( kind, prop, rpm, volts, nb_charges, amps ) {
    var obj = { parents : [ElecSupplier,ElecComponent],
 
-           value : 0.0,
+               value : 0.0,
 
-           kind : kind,
-           rpm : rpm,
-           volts : volts,
-           propcharge : "",
-           amps : amps,
+               kind : kind,
+               rpm : rpm,
+               volts : volts,
+               propcharge : "",
+               amps : amps,
 
-           props : prop
+               props : prop
          };
 
    obj.init( nb_charges );
@@ -689,11 +689,11 @@ ElecTransformer = {};
 ElecTransformer.new = func( allvolts, prop ) {
    var obj = { parents : [ElecTransformer,ElecComponent],
 
-           value : 0.0,
+               value : 0.0,
 
-           ratio : 0,
+               ratio : 0,
 
-           prop : prop
+               prop : prop
          };
 
    obj.init( allvolts );
@@ -746,10 +746,10 @@ ElecBus = {};
 ElecBus.new = func( allprops ) {
    var obj = { parents : [ElecBus,ElecComponent],
 
-           values : [],
+               values : [],
 
-           nb_props : 0,
-           props : []
+               nb_props : 0,
+               props : []
          };
 
    obj.init( allprops );
@@ -823,9 +823,9 @@ ElecOutput = {};
 ElecOutput.new = func( prop ) {
    var obj = { parents : [ElecOutput,ElecComponent],
 
-           value : 0.0,
+               value : 0.0,
 
-           props : prop
+               props : prop
          };
 
    obj.inherit_eleccomponent();
@@ -870,8 +870,8 @@ ElecConnectorArray = {};
 ElecConnectorArray.new = func {
    var obj = { parents : [ElecConnectorArray],
 
-           connectors      :  [],
-           nb_connectors : 0
+               connectors      :  [],
+               nb_connectors : 0
          };
 
    return obj;
@@ -917,9 +917,9 @@ ElecConnector = {};
 ElecConnector.new = func( input, output, prop ) {
    var obj = { parents : [ElecConnector],
 
-           input : input,
-           output : output,
-           prop : prop
+               input : input,
+               output : output,
+               prop : prop
          };
 
    return obj;

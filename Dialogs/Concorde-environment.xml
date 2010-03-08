@@ -16,6 +16,28 @@
     <halign>center</halign>
 
     <text>
+      <label>Visual effects  ~</label>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <checkbox>
+      <halign>left</halign>
+      <label>smoke</label>
+      <property>/controls/environment/effects</property>
+      <binding>
+       <command>property-toggle</command>
+       <property>/controls/environment/effects</property>
+      </binding>
+    </checkbox>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
       <label>Icing  ~</label>
     </text>
 
@@ -87,6 +109,10 @@
     </group>
 
   </group>
+
+  <text>
+    <label></label>
+  </text>
 
   <text>
     <label></label>

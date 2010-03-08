@@ -57,7 +57,14 @@ properties' values.
  <w-base>128</w-base>
  <h-base>128</h-base>
 
+ <params>
+  <adc>/instrumentation/ivsi-adc[0]/indicated-speed-fps</adc>
+ </params>
+
+
  <layers>
+
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>glare shield</name>
@@ -68,8 +75,8 @@ properties' values.
     <x2>1.0</x2>
     <y2>1.0</y2>
    </texture>
-   <w>127</w>
-   <h>127</h>
+   <w>109</w>
+   <h>109</h>
   </layer>
 
   <layer>
@@ -82,8 +89,8 @@ properties' values.
     <x2>1.0</x2>
     <y2>1.0</y2>
    </texture>
-   <w>114</w>
-   <h>114</h>
+   <w>98</w>
+   <h>98</h>
   </layer>
 
 <!-- fix misc.rgb -->
@@ -97,12 +104,12 @@ properties' values.
     <x2>0.8375</x2>
     <y2>1.0</y2>
    </texture>
-   <w>6</w>
-   <h>48</h>
+   <w>5</w>
+   <h>41</h>
    <transformations>
     <transformation>
      <type>rotation</type>
-     <property>/instrumentation/inst-vertical-speed-indicator/indicated-speed-fps</property>
+     <property alias="../../../../../params/adc"/>
      <min>-100.0</min>
      <max>100.0</max>
      <scale>1.0</scale>
@@ -119,7 +126,7 @@ properties' values.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>20.0</offset>
+     <offset>17.0</offset>
     </transformation>
    </transformations>
   </layer>
@@ -133,8 +140,8 @@ properties' values.
     <x2>0.7890625</x2>
     <y2>0.4140625</y2>
    </texture>
-   <w>15</w>
-   <h>15</h>
+   <w>13</w>
+   <h>13</h>
   </layer>
 
   <layer>
@@ -158,11 +165,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>40</offset>
+     <offset>34</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>42</offset>
+     <offset>36</offset>
     </transformation>
    </transformations>
   </layer>
@@ -171,8 +178,8 @@ properties' values.
 
   <layer>
    <name>target0</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -192,7 +199,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -203,12 +210,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -219,7 +226,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -278,7 +285,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -289,12 +296,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -305,7 +312,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -332,7 +339,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -343,12 +350,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -359,7 +366,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[0]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -367,8 +374,8 @@ properties' values.
 
   <layer>
    <name>target1</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -388,7 +395,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -399,12 +406,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -415,7 +422,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -474,7 +481,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -485,12 +492,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -501,7 +508,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -528,7 +535,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -539,12 +546,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -555,7 +562,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[1]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -563,8 +570,8 @@ properties' values.
 
   <layer>
    <name>target2</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -584,7 +591,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -595,12 +602,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -611,7 +618,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -670,7 +677,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -681,12 +688,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -697,7 +704,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -724,7 +731,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -735,12 +742,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -751,7 +758,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[2]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -759,8 +766,8 @@ properties' values.
 
   <layer>
    <name>target3</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -780,7 +787,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -791,12 +798,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -807,7 +814,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -866,7 +873,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -877,12 +884,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -893,7 +900,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -920,7 +927,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -931,12 +938,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -947,7 +954,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[3]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -955,8 +962,8 @@ properties' values.
 
   <layer>
    <name>target4</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -976,7 +983,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -987,12 +994,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1003,7 +1010,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -1062,7 +1069,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1073,12 +1080,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1089,7 +1096,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1116,7 +1123,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1127,12 +1134,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1143,7 +1150,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[4]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1151,8 +1158,8 @@ properties' values.
 
   <layer>
    <name>target5</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -1172,7 +1179,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1183,12 +1190,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1199,7 +1206,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -1258,7 +1265,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1269,12 +1276,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1285,7 +1292,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1312,7 +1319,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1323,12 +1330,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1339,7 +1346,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[5]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1347,8 +1354,8 @@ properties' values.
 
   <layer>
    <name>target6</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -1368,7 +1375,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1379,12 +1386,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1395,7 +1402,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -1454,7 +1461,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1465,12 +1472,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1481,7 +1488,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1508,7 +1515,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1519,12 +1526,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1535,7 +1542,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[6]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1543,8 +1550,8 @@ properties' values.
 
   <layer>
    <name>target7</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -1564,7 +1571,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1575,12 +1582,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1591,7 +1598,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -1650,7 +1657,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1661,12 +1668,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1677,7 +1684,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1704,7 +1711,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1715,12 +1722,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1731,7 +1738,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[7]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1739,8 +1746,8 @@ properties' values.
 
   <layer>
    <name>target8</name>
-   <w>16</w>
-   <h>16</h>
+   <w>14</w>
+   <h>14</h>
    <condition>
     <and include="concorde-cond-voltage-inst.xml">
      <less-than-equals>
@@ -1760,7 +1767,7 @@ properties' values.
     <transformation>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1771,12 +1778,12 @@ properties' values.
      </condition>
      <type>x-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <condition>
@@ -1787,7 +1794,7 @@ properties' values.
      </condition>
      <type>y-shift</type>
      <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-     <scale>0.875</scale>
+     <scale>0.75</scale>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -1846,7 +1853,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1857,12 +1864,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1873,7 +1880,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1900,7 +1907,7 @@ properties' values.
      <transformation>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1911,12 +1918,12 @@ properties' values.
       </condition>
       <type>x-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/x-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
      <transformation>
       <condition>
@@ -1927,7 +1934,7 @@ properties' values.
       </condition>
       <type>y-shift</type>
       <property>/instrumentation/tcas/traffics/traffic[8]/y-shift</property>
-      <scale>0.875</scale>
+      <scale>0.75</scale>
      </transformation>
     </transformations>
    </layer>
@@ -1937,8 +1944,8 @@ properties' values.
 
   <layer>
    <name>range knob</name>
-   <w>22</w>
-   <h>22</h>
+   <w>19</w>
+   <h>19</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/radar_misc.rgb</path>
     <x1>0.0273437</x1>
@@ -1949,11 +1956,11 @@ properties' values.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-48</offset>
+     <offset>-41</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-52</offset>
+     <offset>-45</offset>
     </transformation>
     <transformation>
      <condition>
@@ -1977,10 +1984,10 @@ properties' values.
   <action>
    <name>set range 40</name>
    <button>0</button>
-   <x>-65</x>
-   <y>-70</y>
-   <w>35</w>
-   <h>35</h>
+   <x>-56</x>
+   <y>-60</y>
+   <w>30</w>
+   <h>30</h>
    <condition>
     <equals>
      <property>/instrumentation/radar/range</property>
@@ -2002,10 +2009,10 @@ properties' values.
   <action>
    <name>set range 20</name>
    <button>0</button>
-   <x>-65</x>
-   <y>-70</y>
-   <w>35</w>
-   <h>35</h>
+   <x>-56</x>
+   <y>-60</y>
+   <w>30</w>
+   <h>30</h>
    <condition>
     <equals>
      <property>/instrumentation/radar/range</property>

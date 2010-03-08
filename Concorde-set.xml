@@ -47,6 +47,12 @@
  2.6           January 2009               Transformers (26 volts), fuel pumps (XML).
                                           Flight control system failure.
                                           Virtual crew completes the normal checklists.
+ 2.7           March 2010                 Smoke effect.
+                                          New cockpit and 2D textures with relief.
+                                          2nd observer view.
+                                          Steering, pushback.
+                                          Looking ahead smooths autopilot heading modes.
+                                          Autoignition, wheel chocks, ADC failure.
  ==============================================================================================
 -->
 
@@ -56,7 +62,7 @@
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.6</aircraft-version>
+  <aircraft-version>2.7</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.rgb</splash-texture>
@@ -94,6 +100,14 @@
   
   <model>
    <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
+   <pushback>
+    <enabled type="bool">false</enabled>
+    <kp type="double">1500</kp>
+    <ki type="double">50</ki>
+    <kd type="double">0</kd>
+    <position-norm type="double">0</position-norm>
+    <target-speed-fps type="double">0</target-speed-fps>
+   </pushback>
   </model>
 
 <!-- compensates the shift of VRP at nose -->
@@ -200,7 +214,6 @@
     <heading-select>324</heading-select>                                    <!-- LFBO 32R -->
     <heading-true-select>87</heading-true-select>                           <!-- EGTG 09 -->
    </autopilot>
-   <real-nav type="bool">true</real-nav>                                    <!-- nav is accurate until ground -->
   </autoflight>
 
 <!-- takeoff monitor bug -->

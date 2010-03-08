@@ -2,7 +2,7 @@
 
 <!-- Concorde HSI :
 
-     - when no more voltage DME is off, which means that one doesn't need to slave needles to voltage.
+     - when no more voltage, DME is off, which means that one doesn't need to slave needles to voltage.
      - but when no more voltage, autopilot is not off : true heading is still correct, if way point.
 
 
@@ -15,12 +15,13 @@ Adapted from Martin Dressler dr@musicabona.cz
 
  <name>HSI</name>
  <w-base>512</w-base>
- <h-base>768</h-base>
+ <h-base>512</h-base>
 
  <params>
   <ins-source>/instrumentation/hsi[0]/ins-source</ins-source>
   <serviceable>/instrumentation/hsi[0]/serviceable</serviceable>
   <nav2>/instrumentation/hsi[0]/dev-nav2</nav2>
+  <heading-deg>/instrumentation/hsi[0]/heading-deg</heading-deg>
   <heading-select>/controls/autoflight/autopilot[0]/heading-select</heading-select>
   <true-select>/controls/autoflight/autopilot[0]/heading-true-select</true-select>
  </params>
@@ -28,10 +29,14 @@ Adapted from Martin Dressler dr@musicabona.cz
  
  <layers>
  
+  <layer include="concorde-gauge.xml"/>
+
+<!-- darken the white bar -->
+
   <layer>
    <name>Black background</name>
-   <w>456</w>
-   <h>412</h>
+   <w>400</w>
+   <h>220</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.9375</x1>
@@ -39,6 +44,12 @@ Adapted from Martin Dressler dr@musicabona.cz
     <y1>0.0</y1>
     <y2>0.0625</y2>
    </texture>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-25</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
@@ -103,26 +114,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
    </transformations>
@@ -186,7 +181,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -254,7 +249,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -330,26 +325,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
    </transformations>
@@ -380,8 +359,8 @@ Adapted from Martin Dressler dr@musicabona.cz
 
   <layer>
    <name>Compas rose</name>
-   <w>328</w>
-   <h>328</h>
+   <w>340</w>
+   <h>340</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi3.rgb</path>
     <x1>0.0</x1>
@@ -396,26 +375,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
    </transformations>
@@ -463,26 +426,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -554,26 +501,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -692,26 +623,10 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
@@ -783,31 +698,38 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
     <transformation>
      <condition>
-      <and>
-       <not>
-        <property alias="../../../../../../../../params/ins-source"/>
-       </not>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
+      <property alias="../../../../../../params/serviceable"/>
      </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
-     <scale>-1</scale>
-    </transformation>
-    <transformation>
-     <condition>
-      <and>
-       <property alias="../../../../../../../params/ins-source"/>
-       <property alias="../../../../../../../params/serviceable"/>
-      </and>
-     </condition>
-     <type>rotation</type>
-     <property>/orientation/heading-deg</property>
+     <property alias="../../../../../params/heading-deg"/>
      <scale>-1</scale>
     </transformation>
     <transformation>
      <type>y-shift</type>
      <offset>107</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>GS background (top)</name>
+   <w>408</w>
+   <h>293</h>
+   <texture>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
+    <x1>0.0</x1>
+    <x2>0.796875</x2>
+    <y1>0.1875</y1>
+    <y2>0.7598</y2>
+   </texture>
+   <transformations>
+    <transformation>
+     <type>y-shift</type>
+     <offset>17</offset>
+    </transformation>
+    <transformation>
+     <type>rotation</type>
+     <offset>180</offset>
     </transformation>
    </transformations>
   </layer>
@@ -830,7 +752,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     </transformation>
    </transformations>
   </layer>
-				  
+
   <layer>
    <name>GS needle right</name>
    <condition>
@@ -1011,10 +933,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    </transformations>
   </layer>
 
+<!--
   <layer>
    <name>Foreground</name>
-   <w>512</w>
-   <h>512</h>
+   <w>410</w>
+   <h>410</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi1.rgb</path>
     <x1>0.0</x1>
@@ -1023,6 +946,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     <y2>1.0</y2>
    </texture>
   </layer>
+-->
 
 <!-- REFERENCE -->
 
@@ -1038,7 +962,7 @@ Adapted from Martin Dressler dr@musicabona.cz
      </not>
     </condition>
     <type>text</type>
-    <point-size>34</point-size>
+    <point-size>27</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -1053,7 +977,7 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-40</offset>
+      <offset>-32</offset>
      </transformation>
     </transformations>
    </layer>
@@ -1061,7 +985,7 @@ Adapted from Martin Dressler dr@musicabona.cz
    <layer>
     <name>Title true</name>
     <type>text</type>
-    <point-size>34</point-size>
+    <point-size>27</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -1076,14 +1000,14 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-50</offset>
+      <offset>-40</offset>
      </transformation>
     </transformations>
    </layer>
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <offset>252</offset>
+     <offset>172</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1098,8 +1022,8 @@ Adapted from Martin Dressler dr@musicabona.cz
      </not>
     </or>
    </condition>
-   <w>139</w>
-   <h>80</h>
+   <w>111</w>
+   <h>64</h>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/hsi2.rgb</path>
     <x1>0.796875</x1>
@@ -1110,7 +1034,7 @@ Adapted from Martin Dressler dr@musicabona.cz
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <offset>233</offset>
+     <offset>156</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1136,8 +1060,8 @@ Adapted from Martin Dressler dr@musicabona.cz
      <x2>0.25</x2>
      <y2>0.095</y2>
      </texture>
-     <w>162</w>
-     <h>61</h>
+     <w>130</w>
+     <h>49</h>
     </layer>
     <layer>
      <name>on</name>
@@ -1148,17 +1072,17 @@ Adapted from Martin Dressler dr@musicabona.cz
      <x2>0.5</x2>
      <y2>0.095</y2>
      </texture>
-     <w>162</w>
-     <h>61</h>
+     <w>130</w>
+     <h>49</h>
     </layer>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-174</offset>
+      <offset>-134</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>293</offset>
+      <offset>204</offset>
      </transformation>
     </transformations>
   </layer>
@@ -1172,16 +1096,16 @@ Adapted from Martin Dressler dr@musicabona.cz
      <x2>1.0</x2>
      <y2>0.9</y2>
    </texture>
-   <w>162</w>
-   <h>61</h>
+   <w>130</w>
+   <h>49</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-174</offset>
+     <offset>-134</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>293</offset>
+     <offset>204</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1189,7 +1113,7 @@ Adapted from Martin Dressler dr@musicabona.cz
   <layer>
    <name>Title miles</name>
    <type>text</type>
-   <point-size>27</point-size>
+   <point-size>20</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -1204,11 +1128,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-217</offset>
+     <offset>-165</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>330</offset>
+     <offset>234</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1236,7 +1160,7 @@ Adapted from Martin Dressler dr@musicabona.cz
      </condition>
      <type>text</type>
      <font>led</font>
-     <point-size>22</point-size>
+     <point-size>18</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -1255,7 +1179,7 @@ Adapted from Martin Dressler dr@musicabona.cz
      <name>INS overflow</name>
      <type>text</type>
      <font>led</font>
-     <point-size>22</point-size>
+     <point-size>18</point-size>
      <color>
       <red>0.0</red>
       <green>0.85</green>
@@ -1271,11 +1195,11 @@ Adapted from Martin Dressler dr@musicabona.cz
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-234</offset>
+      <offset>-182</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>270</offset>
+      <offset>186</offset>
      </transformation>
     </transformations>
   </layer>
@@ -1301,8 +1225,8 @@ Adapted from Martin Dressler dr@musicabona.cz
      <x2>0.25</x2>
      <y2>0.095</y2>
      </texture>
-     <w>162</w>
-     <h>61</h>
+     <w>130</w>
+     <h>49</h>
     </layer>
     <layer>
      <name>on</name>
@@ -1313,17 +1237,17 @@ Adapted from Martin Dressler dr@musicabona.cz
      <x2>0.5</x2>
      <y2>0.095</y2>
      </texture>
-     <w>162</w>
-     <h>61</h>
+     <w>130</w>
+     <h>49</h>
     </layer>
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>174</offset>
+      <offset>134</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>293</offset>
+      <offset>204</offset>
      </transformation>
     </transformations>
   </layer>
@@ -1331,22 +1255,22 @@ Adapted from Martin Dressler dr@musicabona.cz
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning.rgb</path>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-yellow-warning-flat.rgb</path>
      <x1>0.7</x1>
      <y1>0.8</y1>
      <x2>1.0</x2>
      <y2>0.9</y2>
    </texture>
-   <w>162</w>
-   <h>61</h>
+   <w>130</w>
+   <h>49</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>174</offset>
+     <offset>134</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>293</offset>
+     <offset>204</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1354,7 +1278,7 @@ Adapted from Martin Dressler dr@musicabona.cz
   <layer>
    <name>Title ground speed</name>
    <type>text</type>
-   <point-size>27</point-size>
+   <point-size>20</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -1369,11 +1293,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>105</offset>
+     <offset>80</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>330</offset>
+     <offset>234</offset>
     </transformation>
    </transformations>
   </layer>
@@ -1387,7 +1311,7 @@ Adapted from Martin Dressler dr@musicabona.cz
    </condition>
    <type>text</type>
    <font>led</font>
-   <point-size>22</point-size>
+   <point-size>18</point-size>
    <color>
     <red>0.85</red>
     <green>0.85</green>
@@ -1404,11 +1328,11 @@ Adapted from Martin Dressler dr@musicabona.cz
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>117</offset>
+     <offset>89</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>270</offset>
+     <offset>186</offset>
     </transformation>
    </transformations>
   </layer>

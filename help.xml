@@ -46,6 +46,14 @@
       <desc>floating view up/down</desc>
     </key>
     <key>
+      <name>F12</name>
+      <desc>radio frequencies</desc>
+    </key>
+    <key>
+      <name>shift-F12</name>
+      <desc>crew text</desc>
+    </key>
+    <key>
       <name>a/A</name>
       <desc>speed-up</desc>
     </key>
@@ -54,8 +62,8 @@
       <desc>emergency brakes</desc>
     </key>
     <key>
-      <name>f</name>
-      <desc>full cockpit</desc>
+      <name>f/F</name>
+      <desc>full cockpit/aircraft</desc>
     </key>
     <key>
       <name>alt-g</name>
@@ -85,12 +93,10 @@
       <name>ctrl-A</name>
       <desc>altitude acquire</desc>
     </key>
-<!--
     <key>
       <name>ctrl-B</name>
       <desc>reverse thrust</desc>
     </key>
--->
     <key>
       <name>ctrl-D</name>
       <desc>disconnect autopilot</desc>
@@ -124,6 +130,10 @@
       <desc>observer (floating) view</desc>
     </key>
     <key>
+      <name>ctrl-L</name>
+      <desc>observer 2 (floating) view</desc>
+    </key>
+    <key>
       <name>ctrl-N</name>
       <desc>nav 1 hold</desc>
     </key>
@@ -134,14 +144,6 @@
     <key>
       <name>ctrl-P</name>
       <desc>pitch hold</desc>
-    </key>
-    <key>
-      <name>ctrl-R</name>
-      <desc>radio frequencies</desc>
-    </key>
-    <key>
-      <name>shift-ctrl-R</name>
-      <desc>crew text</desc>
     </key>
     <key>
       <name>ctrl-S</name>
@@ -163,14 +165,19 @@
       <name>ctrl-Z</name>
       <desc>virtual crew</desc>
     </key>
+    <key>
+      <name>shift-ctrl-Z</name>
+      <desc>abort checklist</desc>
+    </key>
 
 <!-- FDM ops -->
 
     <text>
  ________________________Procedures_________________________
  Takeoff (408000 lb) :
-            nose 5°, afterburner, V1 165 kt,
-            VR 195 kt, pitch 13.5° at rotation, V2 220 kt.
+            nose 5 deg, afterburner, V1 165 kt,
+            VR 195 kt, pitch 13.5 deg at rotation, V2 220 kt.
+            trim before engaging autopilot.
  Subsonic cruise :
             Mach 0.95, at FL260 (full load).
  Acceleration :
@@ -186,9 +193,9 @@
             190 kt.
             10 NM at 3500 ft.
  Landing (245000 lb) :
-            nose 12.5°, VREF 162 kt, pitch 10° at touch down.
+            nose 12.5 deg, VREF 162 kt, pitch 10 deg at touch down.
  Taxi :
-            nose 5°, only 2 engines.
+            nose 5 deg, only 2 engines.
  Parking :
             nose and visor up, as weather seal.
 
@@ -220,7 +227,7 @@
 
  max range : supersonic 3550 nm, subsonic 2760 nm
  fuel flow : 20.5 tons/hour at Mach 2
- max temperature : 127°C on nose
+ max temperature : 127 degC on nose
     </text>
 
 </PropertyList>

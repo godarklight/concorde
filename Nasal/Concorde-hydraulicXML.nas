@@ -12,14 +12,14 @@ HydraulicXML = {};
 HydraulicXML.new = func {
    var obj = { parents : [HydraulicXML],
 
-           HYDSEC : 1.0,
+               HYDSEC : 1.0,
 
-           config : nil,
-           hydraulic : nil,
-           iterations : nil,
+               config : nil,
+               hydraulic : nil,
+               iterations : nil,
 
-           components : HydComponentArray.new(),
-           connections : HydConnectionArray.new()
+               components : HydComponentArray.new(),
+               connections : HydConnectionArray.new()
          };
 
    obj.init();
@@ -203,14 +203,14 @@ HydComponentArray = {};
 HydComponentArray.new = func {
    var obj = { parents : [HydComponentArray],
 
-           supplier_name : [],
-           circuit_name :  [],
+               supplier_name : [],
+               circuit_name :  [],
 
-           suppliers : [],
-           nb_suppliers : 0,
+               suppliers : [],
+               nb_suppliers : 0,
 
-           circuits : [],
-           nb_circuits : 0,
+               circuits : [],
+               nb_circuits : 0,
          };
 
    return obj;
@@ -336,13 +336,13 @@ HydComponent = {};
 HydComponent.new = func {
    var obj = { parents : [HydComponent],
 
-           HYDSEC : 1.0,
+               HYDSEC : 1.0,
 
-           NOGALUS : 0.0,
+               NOGALUS : 0.0,
 
-           NOPSI : 0.0,
+               NOPSI : 0.0,
 
-           done : constant.FALSE
+               done : constant.FALSE
          };
 
    return obj;
@@ -407,15 +407,15 @@ HydSupplier = {};
 HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) {
    var obj = { parents : [HydSupplier,HydComponent],
 
-           value : 0.0,
+               value : 0.0,
 
-           kind : kind,
-           props : prop,
-           source : source,
-           factor : factor,
-           minpsi : minpsi,
-           psi : psi,
-           galus : galus
+               kind : kind,
+               props : prop,
+               source : source,
+               factor : factor,
+               minpsi : minpsi,
+               psi : psi,
+               galus : galus
          };
 
    obj.init( rates );
@@ -527,16 +527,16 @@ HydCircuit = {};
 HydCircuit.new = func( contentnode, allprops, rates ) {
    var obj = { parents : [HydCircuit,HydComponent],
 
-           contentgalus : 0.0,
+               contentgalus : 0.0,
 
-           RESERVOIRCOEF : 0.8,
+               RESERVOIRCOEF : 0.8,
 
-           contentprop : "",
+               contentprop : "",
 
-           values : [],
+               values : [],
 
-           nb_props : 0,
-           props : []
+               nb_props : 0,
+               props : []
          };
 
    obj.init( contentnode, allprops, rates );
@@ -644,8 +644,8 @@ HydConnectionArray = {};
 HydConnectionArray.new = func {
    var obj = { parents : [HydConnectionArray],
 
-           connections : [],
-           nb_connections : 0
+               connections : [],
+               nb_connections : 0
          };
 
    return obj;
@@ -691,9 +691,9 @@ HydConnection = {};
 HydConnection.new = func( input, output, prop ) {
    var obj = { parents : [HydConnection],
 
-           input : input,
-           output : output,
-           prop : prop
+               input : input,
+               output : output,
+               prop : prop
          };
 
    return obj;

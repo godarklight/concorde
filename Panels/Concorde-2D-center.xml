@@ -64,10 +64,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-kg.xml">
    <name>Fuel weight display</name>
-   <x>345</x>
-   <y>490</y>
-   <w>75</w>
-   <h>30</h>
+   <x>348</x>
+   <y>492</y>
+   <w>125</w>
+   <h>50</h>
   </instrument>
 
 <!-- Engine indicators -->
@@ -81,9 +81,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[0]/bug_pph</bug-select>
     <configuration-select>/systems/engines/engine[0]/configuration</configuration-select>
    </params>
-   <x>29</x>
-   <y>455</y>
-   <w>140</w>
+   <x>54</x>
+   <y>450</y>
+   <w>100</w>
    <h>20</h>
   </instrument>
 
@@ -96,9 +96,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[1]/bug_pph</bug-select>
     <configuration-select>/systems/engines/engine[1]/configuration</configuration-select>
    </params>
-   <x>131</x>
-   <y>455</y>
-   <w>140</w>
+   <x>156</x>
+   <y>450</y>
+   <w>100</w>
    <h>20</h>
   </instrument>
 
@@ -111,9 +111,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[2]/bug_pph</bug-select>
     <configuration-select>/systems/engines/engine[2]/configuration</configuration-select>
    </params>
-   <x>233</x>
-   <y>455</y>
-   <w>140</w>
+   <x>258</x>
+   <y>450</y>
+   <w>100</w>
    <h>20</h>
   </instrument>
 
@@ -126,9 +126,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <bug-select>/controls/engines/engine[3]/bug_pph</bug-select>
     <configuration-select>/systems/engines/engine[3]/configuration</configuration-select>
    </params>
-   <x>335</x>
-   <y>455</y>
-   <w>140</w>
+   <x>360</x>
+   <y>450</y>
+   <w>100</w>
    <h>20</h>
   </instrument>
 
@@ -340,7 +340,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <x>605</x>
    <y>450</y>
    <w>25</w>
-   <h>90</h>
+   <h>125</h>
   </instrument>
 
   <instrument include="Instruments/concorde-visor-status.xml">
@@ -361,16 +361,16 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
   <instrument include="Instruments/concorde-gear-lights.xml">
    <name>Gear lights</name>
-   <x>625</x>
+   <x>605</x>
    <y>300</y>
-   <w>120</w>
+   <w>180</w>
    <h>120</h>
   </instrument>
 
   <instrument include="Instruments/concorde-accl-aoa.xml">
    <name>g and AoA display</name>
    <x>470</x>
-   <y>125</y>
+   <y>145</y>
    <w>70</w>
    <h>280</h>
   </instrument>
@@ -382,10 +382,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <x>790</x>
    <y>690</y>
    <w>120</w>
-   <h>120</h>
+   <h>100</h>
   </instrument>
 
-  <instrument include="../../Instruments/controls.xml">
+  <instrument include="Instruments/concorde-controls.xml">
    <name>Control Position Indicators</name>
    <x>780</x>
    <y>515</y>
@@ -656,7 +656,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <name>Engine 4 TO limiter</name>
    <x>550</x>
    <y>600</y>
-   <w>225</w>
+   <w>135</w>
    <h>90</h>
   </instrument>
 

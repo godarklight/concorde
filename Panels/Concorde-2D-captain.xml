@@ -313,25 +313,9 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
   <instrument include="Instruments/concorde-ap-nav.xml">
    <name>NAV 1 dial</name>
    <x>190</x>
-   <y>477</y>
-   <w>60</w>
-   <h>60</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-dme-mode.xml">
-   <name>NAV 1 knob</name>
-   <x>153</x>
-   <y>435</y>
-   <w>90</w>
-   <h>45</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-test.xml">
-   <name>NAV 1 knob (decimal)</name>
-   <x>205</x>
-   <y>435</y>
-   <w>60</w>
-   <h>60</h>
+   <y>460</y>
+   <w>103</w>
+   <h>85</h>
   </instrument>
 
   <instrument include="Instruments/concorde-hsi-source.xml">
@@ -346,34 +330,13 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>NAV 2 dial</name>
    <params>
     <frq-disp>/instrumentation/nav[2]/frequencies/selected-mhz</frq-disp>
-   </params>
-   <x>959</x>
-   <y>477</y>
-   <w>60</w>
-   <h>60</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-dme-mode.xml">
-   <name>NAV 2 knob</name>
-   <params>
     <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
     <selector-ctrl>/instrumentation/dme[1]/selector</selector-ctrl>
    </params>
-   <x>922</x>
-   <y>435</y>
-   <w>90</w>
-   <h>45</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-test.xml">
-   <name>NAV 2 knob (decimal)</name>
-   <params>
-    <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
-   </params>
-   <x>974</x>
-   <y>435</y>
-   <w>60</w>
-   <h>60</h>
+   <x>959</x>
+   <y>460</y>
+   <w>103</w>
+   <h>85</h>
   </instrument>
 
 <!-- dials -->
@@ -471,20 +434,28 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>80</h>
   </instrument>
 
+  <instrument include="Instruments/concorde-standby-asi.xml">
+   <name>Standby ASI</name>
+   <x>90</x>
+   <y>172</y>
+   <w>120</w>
+   <h>120</h>
+  </instrument>
+
   <instrument include="Instruments/concorde-dme.xml">
    <name>DME Display</name>
-   <x>75</x>
-   <y>93</y>
-   <w>106</w>
-   <h>53</h>
+   <x>90</x>
+   <y>85</y>
+   <w>120</w>
+   <h>60</h>
   </instrument>
 
   <instrument include="Instruments/concorde-tas.xml">
    <name>TAS Display</name>
-   <x>75</x>
+   <x>90</x>
    <y>25</y>
-   <w>110</w>
-   <h>55</h>
+   <w>120</w>
+   <h>60</h>
   </instrument>
 
 <!-- CAPTAIN far left -->
@@ -525,7 +496,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-asi.xml">
    <name>KIAS display</name>
-   <x>202</x>
+   <x>207</x>
    <y>298</y>
    <w>135</w>
    <h>135</h>
@@ -535,8 +506,8 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <name>Machmeter display</name>
    <x>215</x>
    <y>172</y>
-   <w>105</w>
-   <h>105</h>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
   <instrument include="Instruments/concorde-compass-vor.xml">
@@ -549,73 +520,51 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- CAPTAIN center -->
 
-  <instrument include="Instruments/concorde-horizon-attitude.xml">
-   <name>Attitude indicator (alarm on attitude)</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <x>320</x>
-   <y>350</y>
-   <w>50</w>
-   <h>20</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-horizon-dh.xml">
-   <name>Attitude indicator (decision altitude)</name>
-   <condition>
-    <property>/sim/current-view/internal</property>
-   </condition>
-   <x>430</x>
-   <y>350</y>
-   <w>50</w>
-   <h>20</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-horizon.xml">
    <name>Attitude Indicator</name>
    <x>375</x>
-   <y>282</y>
-   <w>170</w>
-   <h>170</h>
+   <y>279</y>
+   <w>190</w>
+   <h>190</h>
   </instrument>
 
   <instrument include="Instruments/concorde-hsi.xml">
    <name>Horizontal Situation Indicator</name>
    <x>375</x>
    <y>88</y>
-   <w>150</w>
-   <h>225</h>
+   <w>190</w>
+   <h>190</h>
   </instrument>
 
 <!-- CAPTAIN right -->
 
   <instrument include="Instruments/concorde-vsi.xml">
    <name>IVSI</name>
-   <x>487</x>
-   <y>285</y>
-   <w>50</w>
-   <h>200</h>
+   <x>495</x>
+   <y>275</y>
+   <w>38</w>
+   <h>230</h>
   </instrument>
 
   <instrument include="Instruments/concorde-radio-alt.xml">
    <name>Radio altimeter</name>
-   <x>603</x>
-   <y>311</y>
-   <w>152</w>
-   <h>152</h>
+   <x>580</x>
+   <y>313</y>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
    <instrument include="Instruments/concorde-altimeter.xml">
    <name>Altimeter</name>
    <x>580</x>
    <y>190</y>
-   <w>130</w>
-   <h>130</h>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
    <instrument include="Instruments/concorde-compass-adf.xml">
    <name>ADF</name>
-   <x>535</x>
+   <x>537</x>
    <y>55</y>
    <w>120</w>
    <h>120</h>
@@ -625,13 +574,13 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
   <instrument include="Instruments/concorde-tcas.xml">
    <name>TCAS</name>
-   <x>707</x>
-   <y>201</y>
-   <w>100</w>
-   <h>100</h>
+   <x>703</x>
+   <y>190</y>
+   <w>120</w>
+   <h>120</h>
   </instrument>
 
-  <instrument include="../../Instruments/clock.xml">
+  <instrument include="Instruments/concorde-clock.xml">
    <name>Chronometer</name>
    <x>670</x>
    <y>55</y>
@@ -647,44 +596,20 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <h>90</h>
   </instrument>
 
-  <instrument include="Instruments/concorde-rating-cty.xml">
-   <name>Engine Rating Contingency</name>
-   <x>780</x>
-   <y>240</y>
-   <w>30</w>
-   <h>20</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-rating-to.xml">
-   <name>Engine Rating Take/Off</name>
-   <x>780</x>
-   <y>215</y>
-   <w>30</w>
-   <h>20</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-rating-clb.xml">
-   <name>Engine Rating Climb</name>
-   <x>780</x>
-   <y>190</y>
-   <w>30</w>
-   <h>20</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-rating-crs.xml">
-   <name>Engine Rating Ctuise</name>
-   <x>780</x>
-   <y>165</y>
-   <w>30</w>
-   <h>20</h>
+  <instrument include="Instruments/concorde-rating-lights.xml">
+   <name>Engine Rating</name>
+   <x>775</x>
+   <y>170</y>
+   <w>20</w>
+   <h>80</h>
   </instrument>
 
   <instrument include="Instruments/concorde-cg.xml">
    <name>Center of Gravity</name>
-   <x>755</x>
-   <y>50</y>
-   <w>25</w>
-   <h>125</h>
+   <x>765</x>
+   <y>63</y>
+   <w>49</w>
+   <h>130</h>
   </instrument>
 
 <!-- OVERHEAD PANEL -->

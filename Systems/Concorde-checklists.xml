@@ -293,7 +293,24 @@
 
     <checklists>
 
+     <all>
+      <captain>
+       <message>
+       <description>all checklists</description>
+        <action>abort</action>
+        <text>abort checklist</text>
+       </message>
+      </captain>
+     </all>
+
      <aftertakeoff>
+      <captain>
+       <description>answer</description>
+       <message>
+        <action>recall</action>
+        <text>recall</text>
+       </message>
+      </captain>
       <engineer>
        <description>checklist</description>
        <message>
@@ -425,8 +442,8 @@
       <pilot>
        <description>checklist</description>
        <message>
-        <action>clearance</action>
-        <text>ground control, requesting clearance to start</text>
+        <action>clearance</action>                                 <!-- with callsign -->
+        <text>ground control, %s requesting clearance to start</text>
        </message>
        <message>
         <action>clear</action>
@@ -435,7 +452,38 @@
       </pilot>
      </beforestart>
 
+     <pushback>
+      <pilot>
+       <description>checklist</description>
+       <message>
+        <action>disconnect</action>
+        <text>ground, requesting disconnect and pushback</text>
+       </message>
+       <message>
+        <action>pushback</action>
+        <text>pushback</text>
+       </message>
+       <message>
+        <action>clear</action>
+        <text>clear to start</text>
+       </message>
+      </pilot>
+      <engineer>
+       <message>
+        <action>completed</action>
+        <text>pushback checklist completed</text>
+       </message>
+      </engineer>
+     </pushback>
+
      <afterstart>
+      <captain>
+       <description>answer</description>
+       <message>
+        <action>channel</action>
+        <text>reset</text>
+       </message>
+      </captain>
       <pilot>
        <description>checklist</description>
        <message>
@@ -454,8 +502,27 @@
      </afterstart>
 
      <taxi>
+      <captain>
+       <description>answer</description>
+       <message>
+        <action>taxiturn</action>
+        <text>on</text>
+       </message>
+       <message>
+        <action>landingtaxi</action>
+        <text>on</text>
+       </message>
+      </captain>
       <engineer>
        <description>checklist</description>
+       <message>
+        <action>taxiturn</action>
+        <text>taxi turn lights</text>                              <!-- captain task -->
+       </message>
+       <message>
+        <action>landingtaxi</action>
+        <text>landing taxi lights</text>                           <!-- captain task -->
+       </message>
        <message>
         <action>completed</action>
         <text>taxi checklist completed</text>
@@ -464,6 +531,17 @@
      </taxi>
 
      <beforetakeoff>
+      <captain>
+       <description>answer</description>
+       <message>
+        <action>recall</action>
+        <text>recall</text>
+       </message>
+       <message>
+        <action>inhibit</action>
+        <text>inhibit</text>
+       </message>
+      </captain>
       <engineer>
        <description>checklist</description>
        <message>

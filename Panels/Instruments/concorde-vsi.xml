@@ -1,26 +1,28 @@
 <?xml version="1.0"?>
 
-<!-- Instantaneous Vertical Speed Indicator :
+<!-- Vertical Speed Indicator :
 
      - the real blue strip has a ratio of 6.5 (vertical/horizontal).
      - the left black strip is slightly narrower than the right black strip.
-     - use feet/s, to authorize a swap to /velocities/vertical-speed-fps.
+     - it uses feet/s, to authorize a swap to /velocities/vertical-speed-fps.
 -->
 
 <PropertyList>
 
- <name>IVSI display</name>
- <w-base>50</w-base>
- <h-base>200</h-base>
+ <name>VSI display</name>
+ <w-base>40</w-base>
+ <h-base>240</h-base>
 
  <params>
   <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
-  <speed-sel>/instrumentation/inst-vertical-speed-indicator[0]/indicated-speed-fps</speed-sel>
-  <serviceable>/instrumentation/inst-vertical-speed-indicator[0]/serviceable</serviceable>
+  <speed-sel>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</speed-sel>
+  <alarm-flag>/instrumentation/vertical-speed-indicator[0]/alarm-flag</alarm-flag>
  </params>
 
 
  <layers>
+
+  <layer include="concorde-gauge-high.xml"/>
 
   <layer>
    <name>instrument background</name>
@@ -41,8 +43,8 @@
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-vsi.rgb</path>
     <x1>0.78</x1>
     <y1>0.78</y1>
-    <x2>1.0</x2>
-    <y2>1.0</y2>
+    <x2>0.99</x2>
+    <y2>0.99</y2>
    </texture>
    <w>11</w>
    <h>11</h>
@@ -318,12 +320,7 @@
   <layer>
    <name>OFF flag</name>
    <condition>
-    <or> 
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property alias="../../../../../../params/serviceable"/>
-     </not>
-    </or> 
+    <property alias="../../../../params/alarm-flag"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -353,12 +350,7 @@
   <layer>
    <name>OFF flag 2</name>
    <condition>
-    <or> 
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property alias="../../../../../../params/serviceable"/>
-     </not>
-    </or> 
+    <property alias="../../../../params/alarm-flag"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>

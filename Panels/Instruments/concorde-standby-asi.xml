@@ -28,12 +28,14 @@ properties' values.
 
 <PropertyList>
 
- <name>590 Knot Airspeed Indicator</name>
+ <name>Standby Airspeed Indicator</name>
  
  <w-base>128</w-base>
  <h-base>128</h-base>
    
  <layers>
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>gauge face</name>
    <texture>   
@@ -65,8 +67,7 @@ properties' values.
     </and>
    </condition>
    <type>text</type>
-   <font>led</font>
-   <point-size>7</point-size>
+   <point-size>15</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>

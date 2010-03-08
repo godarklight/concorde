@@ -3,7 +3,6 @@
 <PropertyList>
   <name>Concorde-procedures</name>
   <layout>vbox</layout>
-  <width>700</width>
 
   <text>
     <label>Concorde procedures</label>
@@ -136,7 +135,7 @@
       </text>
 
       <button>
-       <legend>After landing (aborted takeoff)</legend>
+       <legend>After landing (or aborted takeoff)</legend>
        <binding>
          <command>nasal</command>
          <script>globals.Concorde.voicecrew.afterlandingexport();</script>
@@ -215,7 +214,7 @@
       </button>
 
       <button>
-       <legend>Preliminary</legend>
+       <legend>Preliminary preparation</legend>
        <binding>
          <command>nasal</command>
          <script>globals.Concorde.voicecrew.preliminaryexport();</script>
@@ -223,7 +222,7 @@
       </button>
 
       <button>
-       <legend>Cockpit</legend>
+       <legend>Crew cockpit preparation</legend>
        <binding>
          <command>nasal</command>
          <script>globals.Concorde.voicecrew.cockpitexport();</script>
@@ -238,13 +237,25 @@
        </binding>
       </button>
 
-      <button>
-       <legend>Engine start</legend>
-       <binding>
-         <command>nasal</command>
-         <script>globals.Concorde.voicecrew.enginestartexport();</script>
-       </binding>
-      </button>
+      <group>
+       <layout>hbox</layout>
+
+       <button>
+        <legend>Engine start</legend>
+        <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.voicecrew.enginestartexport();</script>
+        </binding>
+       </button>
+
+       <button>
+        <legend>Pushback</legend>
+        <binding>
+          <command>nasal</command>
+          <script>globals.Concorde.voicecrew.pushbackexport();</script>
+        </binding>
+       </button>
+      </group>
 
       <text>
         <label>|</label>
@@ -362,7 +373,7 @@
     <key>s</key>
     <binding>
      <command>dialog-show</command>
-     <dialog-name>Concorde-procedures3</dialog-name>
+     <dialog-name>Concorde-procedures4</dialog-name>
     </binding>
    </button>
 

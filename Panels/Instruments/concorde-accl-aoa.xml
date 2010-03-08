@@ -9,16 +9,19 @@
 
  <name>G and AOA display</name>
  <w-base>50</w-base>
- <h-base>200</h-base>
+ <h-base>275</h-base>
 
  <params>
   <serviceable>/instrumentation/accelerometer-aoa[0]/serviceable</serviceable>
+  <failure-flag>/instrumentation/accelerometer-aoa[0]/failure-flag</failure-flag>
   <g-sel>/instrumentation/accelerometer-aoa[0]/g</g-sel>
   <aoa-sel>/instrumentation/accelerometer-aoa[0]/alpha-deg</aoa-sel>
  </params>
 
 
  <layers>
+
+  <layer include="concorde-gauge-high.xml"/>
 
   <layer>
    <name>background</name>
@@ -31,12 +34,6 @@
    </texture>
     <w>35</w>
     <h>187</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>8</offset>
-    </transformation>
-   </transformations>
   </layer>
 
   <layer>
@@ -57,7 +54,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset> <!-- aligned left -->
+     <offset>13</offset> <!-- aligned left -->
     </transformation> 
     <transformation>
      <type>x-shift</type>
@@ -101,7 +98,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>21</offset> <!-- aligned right -->
+     <offset>13</offset> <!-- aligned right -->
     </transformation> 
     <transformation>
      <condition>
@@ -126,12 +123,7 @@
   <layer>
    <name>OFF flag</name>
    <condition>
-    <or>
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property alias="../../../../../../params/serviceable"/>
-     </not>
-    </or>
+    <property alias="../../../../params/failure-flag"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -145,7 +137,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>10</offset>
+     <offset>2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -161,12 +153,7 @@
   <layer>
    <name>OFF flag 2</name>
    <condition>
-    <or>
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property alias="../../../../../../params/serviceable"/>
-     </not>
-    </or>
+    <property alias="../../../../params/failure-flag"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -180,7 +167,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>10</offset>
+     <offset>2</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>

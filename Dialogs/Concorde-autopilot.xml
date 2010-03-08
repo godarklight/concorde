@@ -24,11 +24,21 @@
 
      <checkbox>
        <halign>left</halign>
-       <label>Waypoint input toggles autopilot (not real)  ~</label>
+       <label>Route activation toggles autopilot (not real)  ~</label>
        <property>/controls/autoflight/fg-waypoint</property>
        <binding>
         <command>property-toggle</command>
         <property>/controls/autoflight/fg-waypoint</property>
+       </binding>
+     </checkbox>
+
+     <checkbox>
+       <label>Fast alignment (not real)  ~</label>
+       <halign>left</halign>
+       <property>/controls/crew/ins-alignment</property>
+       <binding>
+        <command>property-toggle</command>
+        <property>/controls/crew/ins-alignment</property>
        </binding>
      </checkbox>
     </group>

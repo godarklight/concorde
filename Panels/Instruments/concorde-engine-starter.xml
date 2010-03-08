@@ -3,7 +3,7 @@
 <!-- engine starter / relight :
 
      - starter requires voltage and air pressure.
-     - relight (without starter) only requires voltage : effective start depends of JSBSim (enough speed).
+     - relight (without starter) requires nothing : effective start depends of JSBSim (enough speed).
 -->
 
 <PropertyList>
@@ -181,12 +181,9 @@
    <name>Toggle Relight</name>
    <button>1</button>
    <condition>
-    <and>
-     <not>
-      <property alias="../../../../../../params/control-starter"/>
-     </not>
-     <property alias="../../../../../params/engine-relight"/>
-    </and>
+    <not>
+     <property alias="../../../../../params/control-starter"/>
+    </not>
    </condition>
    <x>-5</x>
    <y>-21</y>

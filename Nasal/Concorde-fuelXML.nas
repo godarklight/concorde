@@ -12,8 +12,6 @@ FuelXML = {};
 FuelXML.new = func {
    var obj = { parents : [FuelXML],
 
-               tanksystem : Tanks.new(),
-
                FUELSEC : 1.0,
 
                config : nil,
@@ -39,9 +37,6 @@ FuelXML.init = func {
    me.fuel = props.globals.getNode("/systems/fuel");
    me.iterations = props.globals.getNode("/systems/fuel/internal/iterations");
 
-   me.tanksystem.initinstrument();
-   me.tanksystem.presetfuel();
-
    children = me.config.getChildren("supplier");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
@@ -54,7 +49,7 @@ FuelXML.init = func {
         me.components.add_circuit( children[i] );
    }
 
-   children = me.config.getChildren("connection");
+   children = me.config.getChildren("connect");
    nb_children = size( children );
    for( i = 0; i < nb_children; i = i+1 ) {
         me.connections.add_connect( children[i] );
@@ -73,7 +68,7 @@ FuelXML.init = func {
    }
 }
 
-FuelXML.schedule = func( pumplb ) {
+FuelXML.schedule = func( pumplb, tanksystem ) {
    var remain = constant.FALSE;
    var iter = 0;
    var name = "";
@@ -114,7 +109,7 @@ FuelXML.schedule = func( pumplb ) {
        me.iterations.setValue(iter);
    }
 
-   me.apply( pumplb );
+   me.apply( pumplb, tanksystem );
 }
 
 FuelXML.pressurize = func( connection ) {
@@ -189,22 +184,22 @@ FuelXML.network = func( output ) {
    }
 }
 
-FuelXML.apply = func( pumplb ) {
+FuelXML.apply = func( pumplb, tanksystem ) {
    var component = nil;
 
    for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
         component = me.components.get_supplier( i );
-        component.apply( me.tanksystem, pumplb );
+        component.apply( tanksystem, pumplb );
    }
 
    for( var i = 0; i < me.components.count_circuit(); i = i+1 ) {
         component = me.components.get_circuit( i );
-        component.apply( me.tanksystem, pumplb );
+        component.apply( tanksystem, pumplb );
    }
 
    for( var i = 0; i < me.connections.count_inter(); i = i+1 ) {
         component = me.connections.get_inter( i );
-        component.apply( me.components, me.tanksystem, pumplb );
+        component.apply( me.components, tanksystem, pumplb );
    }
 }
 
@@ -931,54 +926,40 @@ FuelTransfer.valve_opened = func( component ) {
 }
 
 
-# =====
-# TANKS
-# =====
+# ===========
+# TANK PARSER
+# ===========
 
 # adds an indirection to convert the tank name into an array index.
 
-Tanks = {};
+TankXML = {};
 
-Tanks.new = func {
+TankXML.new = func {
 # tank contents, to be initialised from XML
-   var obj = { parents : [Tanks], 
+   var obj = { parents : [TankXML], 
 
-           pumpsystem : Pump.new(),
+               pumpsystem : Pump.new(),
+   
+               CONTENTLB : {},
+               TANKINDEX : {},
+               TANKNAME : [],
 
-           CONTENTLB : { "1" : 0.0, "2" : 0.0, "3" : 0.0, "4" : 0.0, "5" : 0.0, "6" : 0.0, "7" : 0.0,
-                         "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0,
-                         "LP1" : 0.0, "LP2" : 0.0, "LP3" : 0.0, "LP4" : 0.0 },
-           TANKINDEX : { "1" : 0, "2" : 1, "3" : 2, "4" : 3, "5" : 4, "6" : 5, "7" : 6,
-                         "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12,
-                         "LP1" : 13, "LP2" : 14, "LP3" : 15, "LP4" : 16 },
-           TANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A",
-                        "LP1", "LP2", "LP3", "LP4" ],
+               nb_tanks : 0,
 
-           nb_tanks : 0,
-
-           OVERFULL : 0.97,
-           OVERFULL : 0.97,
-           UNDERFULL : 0.8,
-           LOWLEVELLB : [ 0.0, 0.0, 0.0, 0.0 ],
-           LOWLEVEL : 0.2,
-
-           AFTTRIMLB : { "1" : 0.0, "4" : 0.0 },
-           AFTTRIM : 0.4,                                                # aft trim at 40 %
-
-           HPVALVELB : 30.0,                                             # fuel low pressure
-
-           fillings : nil,
-           pumps : nil,
-           tankcontrols : nil,
-           tanks : nil
+               fillings : nil,
+               pumps : nil,
+               tankcontrols : nil,
+               tanks : nil
          };
-
-    obj.init();
 
     return obj;
 }
 
-Tanks.init = func {
+TankXML.inherit_tankXML = func {
+    var obj = TankXML.new();
+
+    me.pumpsystem = obj.pumpsystem;
+
     me.tankcontrols = props.globals.getNode("/controls/fuel").getChildren("tank");
     me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
     me.fillings = props.globals.getNode("/systems/fuel/tanks").getChildren("filling");
@@ -989,48 +970,22 @@ Tanks.init = func {
     me.initcontent();
 }
 
-Tanks.amber_fuel = func {
-   var result = constant.FALSE;
-
-   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        if( me.tanks[i].getChild("level-lbs").getValue() <= me.LOWLEVELLB[i] ) {
-            result = constant.TRUE;
-            break;
-        }
-   }
-
-   if( !result ) {
-       # LP valve
-       for( var i = 13; i <= 16; i = i+1 ) {
-            if( me.tanks[i].getChild("level-lbs").getValue() <= me.HPVALVELB ) {
-                result = constant.TRUE;
-                break;
-            }
-       }
-   }
-
-   return result;
+TankXML.initcontent = func {
+    me.inherit_content();
 }
 
 # fuel initialization
-Tanks.initcontent = func {
+TankXML.inherit_initcontent = func {
    var densityppg = 0.0;
 
    for( var i=0; i < me.nb_tanks; i=i+1 ) {
         densityppg = me.tanks[i].getChild("density-ppg").getValue();
         me.CONTENTLB[me.TANKNAME[i]] = me.tanks[i].getChild("capacity-gal_us").getValue() * densityppg;
    }
-
-   me.AFTTRIMLB["1"] = me.CONTENTLB["1"] * me.AFTTRIM;
-   me.AFTTRIMLB["4"] = me.CONTENTLB["4"] * me.AFTTRIM;
-
-   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
-       me.LOWLEVELLB[i] = me.CONTENTLB[me.TANKNAME[i]] * me.LOWLEVEL;
-   }
 }
 
 # change by dialog
-Tanks.menu = func {
+TankXML.menu = func {
    var change = constant.FALSE;
    var last = getprop("/systems/fuel/presets");
    var comment = getprop("/systems/fuel/tanks/dialog");
@@ -1053,7 +1008,7 @@ Tanks.menu = func {
 }
 
 # fuel configuration
-Tanks.presetfuel = func {
+TankXML.presetfuel = func {
    var value = "";
    var fuel = getprop("/systems/fuel/presets");
    var dialog = getprop("/systems/fuel/tanks/dialog");
@@ -1079,7 +1034,7 @@ Tanks.presetfuel = func {
    me.load( fuel );
 }
 
-Tanks.load = func( fuel ) {
+TankXML.load = func( fuel ) {
    var child = nil;
    var levelgalus = 0.0;
    var presets = me.fillings[fuel].getChildren("tank");
@@ -1100,108 +1055,55 @@ Tanks.load = func( fuel ) {
 }
 
 # tank initialization
-Tanks.inittank = func( no, contentlb, overfull, underfull, lowlevel ) {
-   var valuelb = 0.0;
-
+TankXML.inherit_inittank = func( no, contentlb ) {
    me.tanks[no].getChild("content-lb").setValue( contentlb );
-
-   # optional :  must be created by XML
-   if( overfull ) {
-       valuelb = contentlb * me.OVERFULL;
-       me.tanks[no].getChild("over-full-lb").setValue( valuelb );
-   }
-   if( underfull ) {
-       valuelb = contentlb * me.UNDERFULL;
-       me.tanks[no].getChild("under-full-lb").setValue( valuelb );
-   }
-   if( lowlevel ) {
-       me.tanks[no].getChild("low-level-lb").setValue( me.LOWLEVELLB[no] );
-   }
 }
 
-Tanks.initinstrument = func {
-   var overfull = constant.FALSE;
-   var underfull = constant.FALSE;
-   var lowlevel = constant.FALSE;
-
+TankXML.initinstrument = func {
    for( var i=0; i < me.nb_tanks; i=i+1 ) {
-        overfull = constant.FALSE;
-        underfull = constant.FALSE;
-        lowlevel = constant.FALSE;
-
-        if( ( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) or
-            i == me.TANKINDEX["5"] or i == me.TANKINDEX["7"] or
-            i == me.TANKINDEX["9"] or i == me.TANKINDEX["11"] ) {
-            overfull = constant.TRUE;
-        }
-        if( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) {
-            underfull = constant.TRUE;
-        }
-        if( i >= me.TANKINDEX["1"] and i <= me.TANKINDEX["4"] ) {
-            lowlevel = constant.TRUE;
-        }
-
-        me.inittank( i,  me.CONTENTLB[me.TANKNAME[i]],  overfull,  underfull,  lowlevel );
+        me.inherit_inittank( i,  me.CONTENTLB[me.TANKNAME[i]] );
    }
 }
 
-Tanks.controls = func( name, switch, index = 0 ) {
+TankXML.controls = func( name, switch, index = 0 ) {
    return me.tankcontrols[me.TANKINDEX[name]].getChild( switch, index );
 }
 
-Tanks.getafttrimlb = func( name ) {
-   return me.AFTTRIMLB[name];
-}
-
-Tanks.getlevellb = func( name ) {
+TankXML.getlevellb = func( name ) {
    return me.pumpsystem.getlevellb( me.TANKINDEX[name] );
 }
 
-Tanks.getlevelkg = func( name ) {
+TankXML.getlevelkg = func( name ) {
    return me.pumpsystem.getlevelkg( me.TANKINDEX[name] );
 }
 
-Tanks.lowlevel = func {
-   var result = constant.FALSE;
-
-   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
-      levellb = me.pumpsystem.getlevellb( i ); 
-      if( levellb < me.LOWLEVELLB[i] ) {
-          result = constant.TRUE;
-          break;
-      }
-   }
-
-   return result;
-}
-
-Tanks.empty = func( name ) {
+TankXML.empty = func( name ) {
    return me.pumpsystem.empty( me.TANKINDEX[name] );
 }
 
-Tanks.full = func( name ) {
+TankXML.full = func( name ) {
    return me.pumpsystem.full( me.TANKINDEX[name], me.CONTENTLB[name] );
 }
 
-Tanks.reduce = func( name, enginegal ) {
+TankXML.reduce = func( name, enginegal ) {
    me.pumpsystem.reduce( me.TANKINDEX[name], enginegal );
 }
 
-Tanks.dumptank = func( name, pumplb ) {
+TankXML.dumptank = func( name, pumplb ) {
    me.pumpsystem.dumptank( me.TANKINDEX[name], pumplb );
 }
 
-Tanks.pumpcross = func( left, right, pumplb ) {
+TankXML.pumpcross = func( left, right, pumplb ) {
    me.pumpsystem.pumpcross( me.TANKINDEX[left], me.CONTENTLB[left],
                             me.TANKINDEX[right], me.CONTENTLB[right], pumplb );
 }
 
-Tanks.transfertanks = func( dest, sour, pumplb ) {
+TankXML.transfertanks = func( dest, sour, pumplb ) {
    me.pumpsystem.transfertanks( me.TANKINDEX[dest], me.CONTENTLB[dest], me.TANKINDEX[sour], pumplb );
 }
 
 # fills completely a tank
-Tanks.filltank = func( dest, sour ) {
+TankXML.filltank = func( dest, sour ) {
    var pumplb = me.CONTENTLB[dest] - me.getlevellb( dest );
 
    me.pumpsystem.transfertanks( me.TANKINDEX[dest], me.CONTENTLB[dest], me.TANKINDEX[sour], pumplb );
@@ -1219,7 +1121,7 @@ Pump = {};
 Pump.new = func {
    var obj = { parents : [Pump],
 
-           tanks : nil 
+               tanks : nil 
          };
 
    obj.init();

@@ -3,19 +3,19 @@
 <PropertyList>
 
  <name>Concorde-systems</name>
- <width>600</width>
- <height>490</height>
+ <width>800</width>
+ <height>550</height>
  <modal>false</modal>
 
  <text>
   <x>10</x>
-  <y>460</y>
+  <y>520</y>
   <label>Concorde Systems</label>
  </text>
 
  <text>
   <x>30</x>
-  <y>430</y>
+  <y>490</y>
   <label>(Uncheck a system to fail it.)</label>
   <color>
     <red>0.5</red>
@@ -25,7 +25,7 @@
  </text>
 
  <group>
-  <y>360</y>
+  <y>420</y>
 
   <checkbox>
    <x>30</x>
@@ -56,7 +56,7 @@
  </group>
 
  <group>
-  <y>330</y>
+  <y>390</y>
 
   <checkbox>
    <x>30</x>
@@ -84,22 +84,22 @@
    <label>Autothrottle 1</label>
    <property>/systems/autothrottle[0]/serviceable</property>
   </checkbox>
- </group>
-
- <group>
-  <y>300</y>
 
   <checkbox>
-   <x>30</x>
+   <x>630</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
    <label>Autothrottle 2</label>
    <property>/systems/autothrottle[1]/serviceable</property>
   </checkbox>
+ </group>
+
+ <group>
+  <y>360</y>
 
   <checkbox>
-   <x>230</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -108,7 +108,7 @@
   </checkbox>
 
   <checkbox>
-   <x>430</x>
+   <x>230</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -118,7 +118,47 @@
  </group>
 
  <group>
-  <y>270</y>
+  <y>330</y>
+
+  <checkbox>
+   <x>30</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Engine 1</label>
+   <property>/systems/engines/engine[0]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Engine 2</label>
+   <property>/systems/engines/engine[1]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>430</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Engine 3</label>
+   <property>/systems/engines/engine[2]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>630</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Engine 4</label>
+   <property>/systems/engines/engine[3]/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>300</y>
 
   <checkbox>
    <x>30</x>
@@ -146,6 +186,37 @@
    <label>GPWS</label>
    <property>/systems/gpws/serviceable</property>
   </checkbox>
+
+  <checkbox>
+   <x>630</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Hydraulic</label>
+   <property>/systems/hydraulic/serviceable</property>
+  </checkbox>
+ </group>
+
+ <group>
+  <y>270</y>
+
+  <checkbox>
+   <x>30</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Lighting</label>
+   <property>/systems/lighting/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>230</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>MWS</label>
+   <property>/systems/mws/serviceable</property>
+  </checkbox>
  </group>
 
  <group>
@@ -156,8 +227,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Hydraulic</label>
-   <property>/systems/hydraulic/serviceable</property>
+   <label>Pitot 1</label>
+   <property>/systems/pitot[0]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -165,8 +236,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Lighting</label>
-   <property>/systems/lighting/serviceable</property>
+   <label>Pitot 2</label>
+   <property>/systems/pitot[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -174,8 +245,17 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>MWS</label>
-   <property>/systems/mws/serviceable</property>
+   <label>Pitot 3</label>
+   <property>/systems/pitot[2]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>630</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Pressurization</label>
+   <property>/systems/pressurization/serviceable</property>
   </checkbox>
  </group>
 
@@ -187,8 +267,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Pitot</label>
-   <property>/systems/pitot/serviceable</property>
+   <label>Static 1</label>
+   <property>/systems/static[0]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -196,8 +276,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Pressurization</label>
-   <property>/systems/pressurization/serviceable</property>
+   <label>Static 2</label>
+   <property>/systems/static[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -205,8 +285,17 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Static</label>
-   <property>/systems/static/serviceable</property>
+   <label>Static 3</label>
+   <property>/systems/static[2]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>630</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Tank</label>
+   <property>/systems/tank/serviceable</property>
   </checkbox>
  </group>
 
@@ -218,8 +307,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Tank</label>
-   <property>/systems/tank/serviceable</property>
+   <label>Throttle 1</label>
+   <property>/systems/throttles/throttle[0]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -227,8 +316,8 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Throttle 1</label>
-   <property>/systems/throttles/throttle[0]/serviceable</property>
+   <label>Throttle 2</label>
+   <property>/systems/throttles/throttle[1]/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -236,8 +325,17 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Throttle 2</label>
-   <property>/systems/throttles/throttle[1]/serviceable</property>
+   <label>Throttle 3</label>
+   <property>/systems/throttles/throttle[2]/serviceable</property>
+  </checkbox>
+
+  <checkbox>
+   <x>630</x>
+   <y>0</y>
+   <width>20</width>
+   <height>20</height>
+   <label>Throttle 4</label>
+   <property>/systems/throttles/throttle[3]/serviceable</property>
   </checkbox>
  </group>
 
@@ -249,34 +347,12 @@
    <y>0</y>
    <width>20</width>
    <height>20</height>
-   <label>Throttle 3</label>
-   <property>/systems/throttles/throttle[2]/serviceable</property>
+   <label>Vacuum</label>
+   <property>/systems/vacuum/serviceable</property>
   </checkbox>
 
   <checkbox>
    <x>230</x>
-   <y>0</y>
-   <width>20</width>
-   <height>20</height>
-   <label>Throttle 4</label>
-   <property>/systems/throttles/throttle[3]/serviceable</property>
-  </checkbox>
-
-  <checkbox>
-   <x>430</x>
-   <y>0</y>
-   <width>20</width>
-   <height>20</height>
-   <label>Vacuum</label>
-   <property>/systems/vacuum/serviceable</property>
-  </checkbox>
- </group>
-
- <group>
-  <y>120</y>
-
-  <checkbox>
-   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -300,7 +376,7 @@
   </button>
 
   <button>
-   <x>275</x>
+   <x>375</x>
    <y>0</y>
    <legend>Close</legend>
    <default>true</default>
@@ -315,7 +391,7 @@
   </button>
 
   <button>
-   <x>495</x>
+   <x>695</x>
    <y>0</y>
    <legend>Menu</legend>
    <key>m</key>

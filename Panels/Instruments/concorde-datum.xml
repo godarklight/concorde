@@ -14,10 +14,12 @@ in the basic heading mode.
 <PropertyList>
 
  <name>Datum adjust unit</name>
- <w-base>250</w-base>
- <h-base>120</h-base>
+ <w-base>320</w-base>
+ <h-base>128</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge-horizontal.xml"/>
 
 <!-- autothrottle -->
 
@@ -31,40 +33,12 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-65</offset>
+     <offset>-75</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Autothrottle</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>9</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
      <property>/controls/autoflight/datum/speed</property>
-     <format>%2.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-78</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-28</offset>
+     <scale>2.0</scale>
     </transformation>
    </transformations>
   </layer>
@@ -87,11 +61,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-123</offset>
+     <offset>-133</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>-5</offset>
     </transformation>
    </transformations>
   </layer>
@@ -114,11 +88,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-97</offset>
+     <offset>-107</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset>
+     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -141,11 +115,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-100</offset>
+     <offset>-110</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-55</offset>
+     <offset>-35</offset>
     </transformation>
    </transformations>
   </layer>
@@ -162,40 +136,12 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>100</offset>
+     <offset>90</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-19</offset>
-    </transformation>
-   </transformations>
-  </layer>
-
-  <layer>
-   <name>Pitch deg</name>
-   <type>text</type>
-   <font>led</font>
-   <point-size>9</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
      <property>/controls/autoflight/datum/altitude</property>
-     <format>%2.0f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>88</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>-28</offset>
+     <scale>-2.0</scale>
     </transformation>
    </transformations>
   </layer>
@@ -218,11 +164,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>42</offset>
+     <offset>32</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-25</offset>
+     <offset>-5</offset>
     </transformation>
    </transformations>
   </layer>
@@ -245,11 +191,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>65</offset>
+     <offset>55</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>5</offset>
+     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -272,11 +218,11 @@ in the basic heading mode.
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>73</offset>
+     <offset>63</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-55</offset>
+     <offset>-35</offset>
     </transformation>
    </transformations>
   </layer>
@@ -288,8 +234,8 @@ in the basic heading mode.
   <action>
    <name>Plus 1 kt / 0.01 Mach</name>
    <button>0</button>
-   <x>-100</x>
-   <y>0</y>
+   <x>-110</x>
+   <y>20</y>
    <w>70</w>
    <h>17</h>
    <binding>
@@ -301,8 +247,8 @@ in the basic heading mode.
   <action>
    <name>Minus 1 kt / 0.01 Mach</name>
    <button>0</button>
-   <x>-100</x>
-   <y>-59</y>
+   <x>-110</x>
+   <y>-39</y>
    <w>70</w>
    <h>17</h>
    <binding>
@@ -314,8 +260,8 @@ in the basic heading mode.
   <action>
    <name>Minus altitude</name>
    <button>0</button>
-   <x>64</x>
-   <y>0</y>
+   <x>54</x>
+   <y>20</y>
    <w>33</w>
    <h>17</h>
    <binding>
@@ -327,8 +273,8 @@ in the basic heading mode.
   <action>
    <name>Minus altitude (slow)</name>
    <button>0</button>
-   <x>101</x>
-   <y>0</y>
+   <x>91</x>
+   <y>20</y>
    <w>33</w>
    <h>17</h>
    <binding>
@@ -340,8 +286,8 @@ in the basic heading mode.
   <action>
    <name>Plus altitude</name>
    <button>0</button>
-   <x>64</x>
-   <y>-59</y>
+   <x>54</x>
+   <y>-39</y>
    <w>33</w>
    <h>17</h>
    <binding>
@@ -353,8 +299,8 @@ in the basic heading mode.
   <action>
    <name>Plus altitude (slow)</name>
    <button>0</button>
-   <x>101</x>
-   <y>-59</y>
+   <x>91</x>
+   <y>-39</y>
    <w>33</w>
    <h>17</h>
    <binding>

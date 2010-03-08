@@ -2,8 +2,12 @@
 
 <!-- Concorde ADF Radio Magnetic Indicator :
 
+     - Captain compass coupler feeds Captain ADF RMI.
      - the needle orientation by loss of voltage is managed by Flightgear :
        the failure flag is not raised, but the needle doesn't rotate.
+     - Flightgear NAV is always true heading (towards the real antenna);
+       while compass may be either magnetic or true.
+
 
 
      Known problem :
@@ -21,10 +25,13 @@
  <params>
   <voltage>/systems/electrical/outputs/specific</voltage>
   <voltage-adf>/systems/electrical/outputs/adf</voltage-adf>
+  <compass2>/instrumentation/hsi[0]/compass2</compass2>
  </params>
 
 
  <layers>
+ 
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>gauge face</name>
@@ -35,16 +42,31 @@
     <x2>0.49</x2>
     <y2>1.0</y2>
    </texture>
-    <w>104</w>
-    <h>104</h>
+   <w>104</w>
+   <h>104</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
      <offset>1</offset>
     </transformation>
     <transformation>
+     <condition>
+      <not>
+       <property alias="../../../../../../../params/compass2"/>
+      </not>
+     </condition>
      <type>rotation</type>
-     <property>/orientation/heading-magnetic-deg</property>
+     <property>/instrumentation/compass[0]/heading-deg</property>
+     <min>0.0</min>
+     <max>360.0</max>
+     <scale>-1.0</scale>
+    </transformation>
+    <transformation>
+     <condition>
+      <property alias="../../../../../../params/compass2"/>
+     </condition>
+     <type>rotation</type>
+     <property>/instrumentation/compass[1]/heading-deg</property>
      <min>0.0</min>
      <max>360.0</max>
      <scale>-1.0</scale>
@@ -222,15 +244,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
       <offset>-90</offset> <!-- horizontal left -->
-     </transformation>
-     <transformation>
-      <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
-      <min>0.0</min>
-      <max>360.0</max>
-      <scale>-1.0</scale>
      </transformation>
      <transformation>
       <type>x-shift</type>
@@ -294,15 +308,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
       <offset>90</offset> <!-- horizontal right -->
-     </transformation>
-     <transformation>
-      <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
-      <min>0.0</min>
-      <max>360.0</max>
-      <scale>-1.0</scale>
      </transformation>
      <transformation>
       <type>x-shift</type>
@@ -370,15 +376,7 @@
     <transformations>
      <transformation>
       <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
       <offset>90</offset> <!-- horizontal right -->
-     </transformation>
-     <transformation>
-      <type>rotation</type>
-      <property>/orientation/heading-magnetic-deg</property>
-      <min>0.0</min>
-      <max>360.0</max>
-      <scale>-1.0</scale>
      </transformation>
      <transformation>
       <type>rotation</type>

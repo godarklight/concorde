@@ -5,6 +5,9 @@
  <h-base>160</h-base>
 
  <layers>
+
+  <layer include="concorde-gauge-high.xml"/>
+
   <layer>
    <name>background</name>
    <texture>
@@ -16,6 +19,16 @@
    </texture>    
    <w>5</w>
    <h>70</h>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-5</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-10</offset>
+    </transformation>
+   </transformations>
   </layer> 
 
   <layer>
@@ -36,11 +49,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-10</offset>
+     <offset>-13</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>58</offset>
+     <offset>48</offset>
     </transformation>
    </transformations>
   </layer>
@@ -63,11 +76,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-4</offset>
+     <offset>-7</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>50</offset>
+     <offset>40</offset>
     </transformation>
    </transformations>
   </layer>
@@ -104,8 +117,12 @@
      <offset>-55</offset>
     </transformation>
     <transformation>
+     <type>x-shift</type>
+     <offset>-5</offset>
+    </transformation>
+    <transformation>
      <type>y-shift</type>
-     <offset>35</offset>
+     <offset>25</offset>
     </transformation>
     <transformation>
     <type>rotation</type>
@@ -132,11 +149,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>10</offset>
+     <offset>5</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>10</offset>
+     <offset>0</offset>
     </transformation>
    </transformations>
   </layer>
@@ -159,11 +176,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-8</offset>
+     <offset>-11</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-45</offset>
+     <offset>-55</offset>
     </transformation>
    </transformations>
   </layer>

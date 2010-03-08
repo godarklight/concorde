@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
 
-<!-- HSI compass :
-
-     - not yet implemented.
--->
-
 <PropertyList>
 
  <name>HSI compass</name>
@@ -153,7 +148,6 @@
 
  </layers>
 
-<!--
  <actions>
 
   <action>
@@ -168,12 +162,15 @@
     <property alias="../../../../params/compass2"/>
    </binding>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.HSIinstrument.toggleexport();</script>
+   </binding>
+   <binding>
     <command>property-toggle</command>
     <property>/instrumentation/generic/click</property>
    </binding>
   </action>
 
  </actions>
--->
  
 </PropertyList>

@@ -1,15 +1,12 @@
 <?xml version="1.0"?>
 
-<!-- Engine HP valve (cutoff).
--->
-
 <PropertyList>
  <name>HP valve</name>
  <w-base>28</w-base>
  <h-base>28</h-base>
 
  <params>
-  <cutoff>/engines/engine[0]/cutoff</cutoff>
+  <hp-valve>/controls/engines/engine[0]/hp-valve</hp-valve>
  </params>
 
 
@@ -22,9 +19,7 @@
    <layer>
     <name>open</name>
     <condition>
-     <not>
-      <property alias="../../../../../../params/cutoff"/>
-     </not>
+     <property alias="../../../../../params/hp-valve"/>
     </condition>
     <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-open.rgb</path>

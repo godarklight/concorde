@@ -174,83 +174,10 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
    <params>
     <frq-disp>/instrumentation/nav[2]/frequencies/selected-mhz</frq-disp>
    </params>
-   <x>67</x>
-   <y>433</y>
-   <w>70</w>
-   <h>70</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-dme-mode.xml">
-   <name>NAV 2 knob</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-40</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>15</value>
-      </less-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
-    <selector-ctrl>/instrumentation/dme[1]/selector</selector-ctrl>
-   </params>
-   <x>25</x>
-   <y>390</y>
-   <w>90</w>
-   <h>45</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-ap-nav-test.xml">
-   <name>NAV 2 knob (decimal)</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>270</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-40</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>15</value>
-      </less-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <frq-ctrl>/instrumentation/nav[2]/frequencies/selected-mhz</frq-ctrl>
-   </params>
-   <x>85</x>
-   <y>390</y>
-   <w>60</w>
-   <h>60</h>
+   <x>47</x>
+   <y>418</y>
+   <w>170</w>
+   <h>140</h>
   </instrument>
 
   <instrument include="Instruments/concorde-red-land.xml">

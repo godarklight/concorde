@@ -29,6 +29,12 @@
  </animation>
 
  <animation>
+  <name>AllPilot</name>
+  <object-name>TheHead</object-name>
+  <object-name>Body</object-name>
+ </animation>
+
+ <animation>
   <type>rotate</type>
   <object-name>TheHead</object-name>
   <property>systems/human/copilot/heading-deg</property>
@@ -97,6 +103,28 @@
   <condition>
    <property>systems/human/copilot/teeth</property>
   </condition>
+ </animation>
+
+ <animation>
+  <type>material</type>
+  <object-name>AllPilot</object-name>
+  <emission>
+   <red>0.53</red>
+   <green>0.44</green>
+   <blue>0.08</blue>
+   <factor-prop>systems/lighting/level/human/copilot</factor-prop>
+  </emission> 
+ </animation> 
+
+ <animation>
+  <type>pick</type>
+  <object-name>AllPilot</object-name>
+  <action>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.crewscreen.minimizeexport();</script>
+   </binding>
+  </action>
  </animation>
 
 </PropertyList>

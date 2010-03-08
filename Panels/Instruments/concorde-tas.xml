@@ -10,23 +10,15 @@
 
  <layers>
 
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>background</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
    </texture>
     <w>90</w>
-    <h>45</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+    <h>35</h>
   </layer>
 
   <layer>
@@ -41,8 +33,7 @@
      </and>
     </condition>
     <type>text</type>
-    <font>led</font>
-    <point-size>7</point-size>
+    <point-size>14</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -59,11 +50,11 @@
     <transformations>
      <transformation>
       <type>x-shift</type>
-      <offset>-36</offset>
+      <offset>-17</offset>
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>0</offset>
+      <offset>-3</offset>
      </transformation>
     </transformations>
    </layer>
@@ -96,7 +87,7 @@
   <layer>
    <name>Unit</name>
    <type>text</type>
-   <point-size>17</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -111,7 +102,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>15</offset>
+     <offset>25</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -123,7 +114,7 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>14</point-size>
+   <point-size>6</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -138,11 +129,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-35</offset>
+     <offset>-8</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-20</offset>
+     <offset>-12</offset>
     </transformation>
    </transformations>
   </layer>

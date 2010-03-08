@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- Concorde artificial horizon
+<!-- Concorde artificial horizon :
+
+     - max positive incidence : 16.5 deg.
+     - min positive incidence : 5.5 deg (above Mach 1.0).
+
 
 
 Adapted from Martin Dressler dr@musicabona.cz
@@ -41,10 +45,15 @@ properties' values.
   <pitch-deg>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</pitch-deg>
   <offset-deg>/instrumentation/attitude-indicator[0]/horizon-offset-deg</offset-deg>
   <fd2>/instrumentation/attitude-indicator[0]/fd2</fd2>
+  <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
+  <decision-ft>/instrumentation/radio-altimeter[0]/decision-ft</decision-ft>
+  <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
  </params>
 
 
  <layers>
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>background</name>
    <texture>
@@ -397,6 +406,195 @@ properties' values.
     <transformation>
      <type>y-shift</type>
      <offset>-45</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- translucent lens -->
+
+  <layer>
+   <name>Attitude amber light</name>
+   <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <or>
+      <not include="concorde-cond-voltage-horizon.xml"/>
+      <and>
+       <less-than-equals>
+        <property>/orientation/pitch-deg</property>
+        <value>16.5</value>
+       </less-than-equals>
+       <greater-than-equals>
+        <property>/orientation/pitch-deg</property>
+        <value>-5.5</value>
+       </greater-than-equals>
+      </and>
+     </or>
+    </condition>
+ 
+    <layer>
+     <name>lamp off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon-att-off.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <w>32</w>
+     <h>32</h>
+    </layer>
+
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-horizon-att.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <w>32</w>
+     <h>32</h>
+    </layer>
+   </layer>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+ 
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon-att-on.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <emissive>true</emissive>
+     <w>32</w>
+     <h>32</h>
+    </layer>
+    
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-horizon-att.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <w>32</w>
+     <h>32</h>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-38</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+  
+<!-- translucent lens -->
+
+  <layer>
+   <name>Decision amber light</name>
+   <type>switch</type>
+
+   <layer>
+    <name>off</name>
+    <type>group</type>
+    <condition>
+     <or>
+      <not include="concorde-cond-voltage-horizon.xml"/>
+      <not>
+       <property alias="../../../../../../../params/decision-ctrl"/>
+      </not>
+      <greater-than-equals>
+       <property alias="../../../../../../../params/ft-sel"/>
+       <property n="1" alias="../../../../../../../params/decision-ft"/>
+      </greater-than-equals>
+     </or>
+    </condition>
+
+    <layer>
+    <name>lamp off</name>
+    <texture>
+     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon-dh-off.rgb</path>
+     <x1>0.0</x1>
+     <y1>0.0</y1>
+     <x2>1.0</x2>
+     <y2>1.0</y2>
+     </texture>
+     <w>32</w>
+     <h>32</h>
+    </layer>
+    
+    <layer>
+     <name>background off</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-horizon-dh.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <h>32</h>
+     <w>32</w>
+    </layer>
+   </layer>
+
+   <layer>
+    <name>on</name>
+    <type>group</type>
+
+    <layer>
+     <name>lamp on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-horizon-dh-on.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <emissive>true</emissive>
+     <w>32</w>
+     <h>32</h>
+    </layer>
+    
+    <layer>
+     <name>background on</name>
+     <texture>
+      <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-amber-horizon-dh.rgb</path>
+      <x1>0.0</x1>
+      <y1>0.0</y1>
+      <x2>1.0</x2>
+      <y2>1.0</y2>
+     </texture>
+     <h>32</h>
+     <w>32</w>
+     <emissive>true</emissive>
+    </layer>
+   </layer>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>35</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
     </transformation>
    </transformations>
   </layer>

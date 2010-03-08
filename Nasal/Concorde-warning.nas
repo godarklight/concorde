@@ -64,7 +64,7 @@ Gpws.sound_terrain = func {
 
        for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
             aglft = me.dependency["radio-altimeter"][i].getChild("indicated-altitude-ft").getValue();
-            speedftps = me.dependency["ivsi"][i].getChild("indicated-speed-fps").getValue();
+            speedftps = me.dependency["adc"][i].getNode("output").getChild("vertical-speed-fps").getValue();
 
             # excessive rate of descent below 2500 ft.
             if( aglft < me.RADIOFT ) {
@@ -218,30 +218,32 @@ Icedetection.runmodel = func {
                     elevationft = me.noinstrument["cloud"][i].getChild("elevation-ft").getValue();
                     thicknessft = me.noinstrument["cloud"][i].getChild("thickness-ft").getValue();
 
-                    # inside layer
-                    if( ( altft > elevationft and altft < elevationft + thicknessft ) or
-                        coverage == "clear" ) {
+                    if( elevationft != nil and thicknessft != nil ) {
+                        # inside layer
+                        if( ( altft > elevationft and altft < elevationft + thicknessft ) or
+                            coverage == "clear" ) {
 
-                        # enters layer
-                        if( !me.inside ) {
-                             me.inside = constant.TRUE;
-                             me.insidemin = 0;
+                            # enters layer
+                            if( !me.inside ) {
+                                 me.inside = constant.TRUE;
+                                 me.insidemin = 0;
+                            }
+
+                            # ignores the coverage of cloud, and airframe speed
+                            else {
+                                 me.insidemin = me.insidemin + 1;
+                            }
+
+                            if( me.insidemin >= me.durationmin[coverage] ) {
+                                 me.warning = constant.TRUE;
+                            }
+
+                            me.itself["detection"].getChild("duration-min").setValue(me.insidemin);
+                            me.itself["detection"].getChild("coverage").setValue(coverage);
+ 
+                            found = constant.TRUE;
+                            break;
                         }
-
-                        # ignores the coverage of cloud, and airframe speed
-                        else {
-                             me.insidemin = me.insidemin + 1;
-                        }
-
-                        if( me.insidemin >= me.durationmin[coverage] ) {
-                             me.warning = constant.TRUE;
-                        }
-
-                        me.itself["detection"].getChild("duration-min").setValue(me.insidemin);
-                        me.itself["detection"].getChild("coverage").setValue(coverage);
-
-                        found = constant.TRUE;
-                        break;
                     }
                 }
            }
@@ -352,7 +354,7 @@ Mws.cancelexport = func {
 }
 
 Mws.recallexport = func {
-   me.itself["mws"].getChild("inhibit").setValue(constant.FALSE);
+   me.itself["root-ctrl"].getChild("inhibit").setValue(constant.FALSE);
 
    me.cancel();
    me.recall();
@@ -775,13 +777,13 @@ Mws.setred = func( name, index = 0 ) {
 }
 
 Mws.setredinhibit = func( name, index = 0 ) {
-   if( !me.itself["mws"].getChild("inhibit").getValue() ) {
+   if( !me.itself["root-ctrl"].getChild("inhibit").getValue() ) {
        me.setred( name, index );
    }
 }
 
 Mws.setamber = func( name, index = 0 ) {
-   if( !me.itself["mws"].getChild("inhibit").getValue() ) {
+   if( !me.itself["root-ctrl"].getChild("inhibit").getValue() ) {
        me.itself["amber"].getChild( name, index ).setValue( constant.TRUE );
        me.itself["amber"].getChild( me.recallpath( name ), index ).setValue( constant.FALSE );
        me.class2 = constant.TRUE;

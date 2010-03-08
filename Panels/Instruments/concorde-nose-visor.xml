@@ -37,6 +37,8 @@ extended/retracted in three steps.
 
  <layers>
 
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>cylinder</name>
    <texture>
@@ -47,7 +49,7 @@ extended/retracted in three steps.
     <y2>1.0</y2>
    </texture>
    <w>130</w>
-   <h>125</h>
+   <h>115</h>
   </layer>
 
   <layer>
@@ -110,7 +112,7 @@ extended/retracted in three steps.
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-75</offset>
+     <offset>-68</offset>
     </transformation>
    </transformations>
   </layer>
@@ -877,33 +879,6 @@ extended/retracted in three steps.
 
  <actions>
 
-<!-- flap extend/retract -->
-  <action>
-   <name>Flap Extend</name>
-   <button>0</button>
-   <condition>
-    <and>
-     <property>/systems/hydraulic/power/green</property>
-     <not-equals>
-      <property>/controls/nose-visor/pos-norm</property>
-      <property n="1">/sim/flaps/setting[3]</property>
-     </not-equals>
-    </and>
-   </condition>
-   <x>-24.5</x>
-   <y>7</y>
-   <w>48</w>
-   <h>48</h>
-   <binding>
-    <command>nasal</command>
-    <script>controls.flapsDown(1)</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-
   <action>
    <name>Flap Retract</name>
    <button>0</button>
@@ -917,12 +892,38 @@ extended/retracted in three steps.
     </and>
    </condition>
    <x>-24.5</x>
-   <y>-55</y>
+   <y>7</y>
    <w>48</w>
    <h>48</h>
    <binding>
     <command>nasal</command>
     <script>controls.flapsDown(-1)</script>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+
+  <action>
+   <name>Flap Extend</name>
+   <button>0</button>
+   <condition>
+    <and>
+     <property>/systems/hydraulic/power/green</property>
+     <not-equals>
+      <property>/controls/nose-visor/pos-norm</property>
+      <property n="1">/sim/flaps/setting[3]</property>
+     </not-equals>
+    </and>
+   </condition>
+   <x>-24.5</x>
+   <y>-55</y>
+   <w>48</w>
+   <h>48</h>
+   <binding>
+    <command>nasal</command>
+    <script>controls.flapsDown(1)</script>
    </binding>
    <binding>
     <command>property-toggle</command>

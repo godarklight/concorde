@@ -129,7 +129,7 @@ Pressurization.initsystem = func( index ) {
 }
 
 Pressurization.initconstant = func {
-    if( me.itself["system-ctrl"][0].getChild("select").getValue() ) {
+    if( me.itself["system-ctrl"][constantaero.AP1].getChild("select").getValue() ) {
         me.system_no = 0;
     }
     else {
@@ -155,11 +155,7 @@ Pressurization.ground_relief = func {
 
     # opens ground relief valve if not takeoff
     me.ground = constant.FALSE;
-    if( me.dependency["weight"].getChild("wow").getValue() and
-        me.dependency["engine"][0].getChild("throttle" ).getValue() < constantaero.THROTTLEMAX and
-        me.dependency["engine"][1].getChild("throttle" ).getValue() < constantaero.THROTTLEMAX and
-        me.dependency["engine"][2].getChild("throttle" ).getValue() < constantaero.THROTTLEMAX and
-        me.dependency["engine"][3].getChild("throttle" ).getValue() < constantaero.THROTTLEMAX ) {
+    if( me.dependency["weight"].getChild("wow").getValue() and !me.is_takeoff() ) {
         if( me.itself["valve"].getChild("ground-auto").getValue() ) {
             if( me.diffpsi < me.GROUNDPSI ) {
                 me.ground = constant.TRUE;
@@ -168,6 +164,19 @@ Pressurization.ground_relief = func {
     }
 
     me.itself["valve"].getChild("ground-relief").setValue(me.ground);
+}
+
+Pressurization.is_takeoff = func {
+    var result = constant.FALSE;
+
+    for( var i = 0; i < constantaero.NBENGINES; i=i+1 ) {
+         if( me.dependency["engine"][i].getChild("throttle" ).getValue() == constantaero.THROTTLEMAX ) {
+             result = constant.TRUE;
+             break;
+         }
+    }
+
+    return result = constant.TRUE;
 }
 
 Pressurization.thrust_recuperator = func {
@@ -340,7 +349,7 @@ Pressurization.apply = func( interpol ) {
           me.cabininhg = me.PRESSURIZEMININHG;
       }
 
-      interpolate("/systems/pressurization/pressure-inhg",me.cabininhg,me.PRESSURIZESEC);
+      interpolate(me.itself["system-sys"].getChild("pressure-inhg").getPath(),me.cabininhg,me.PRESSURIZESEC);
 }
 
 Pressurization.system = func {
@@ -379,7 +388,7 @@ Pressurization.discharge = func {
    if( !me.ground ) {
 
        # aft valve is approximately 50 % of forward valve
-       me.dischargevalve[me.system_no][0] = ( constant.abs( me.outflowinhg ) / me.PRESSURIZEINHG ) * me.VALVEOPEN;
+       me.dischargevalve[me.system_no][0] = ( math.abs( me.outflowinhg ) / me.PRESSURIZEINHG ) * me.VALVEOPEN;
        me.dischargevalve[me.system_no][1] = me.dischargevalve[me.system_no][0] * me.RATIOAFT;
    }
 
@@ -395,7 +404,7 @@ Pressurization.discharge = func {
    # depressurization through valves of system 2
    if( me.itself["emergency"].getChild("depressurization").getValue() ) {
        for( var j = 0; j < constantaero.NBAUTOPILOTS; j=j+1 ) {
-            me.dischargevalve[1][j] = me.VALVEOPEN;
+            me.dischargevalve[constantaero.AP2][j] = me.VALVEOPEN;
        }
    }
            
@@ -426,9 +435,9 @@ Pressurization.discharge = func {
 
    # apply
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
-        interpolate("/systems/pressurization/system[" ~ i ~ "]/discharge-fwd-percent",
+        interpolate(me.itself["system"][i].getChild("discharge-fwd-percent").getPath(),
                     me.dischargevalve[i][0], me.INERTIASEC);
-        interpolate("/systems/pressurization/system[" ~ i ~ "]/discharge-aft-percent",
+        interpolate(me.itself["system"][i].getChild("discharge-aft-percent").getPath(),
                     me.dischargevalve[i][1], me.INERTIASEC);
    }
 }
@@ -513,7 +522,7 @@ Differentialpressure.schedule = func {
    var diffpsi = ( cabininhg - pressureinhg ) * constant.INHGTOPSI;
 
    # energy provided by differential pressure
-   interpolate("/instrumentation/differential-pressure/differential-psi",diffpsi,me.DIFFSEC);
+   interpolate(me.itself["root"].getChild("differential-psi").getPath(),diffpsi,me.DIFFSEC);
 }
 
 
@@ -650,7 +659,7 @@ Airbleed.schedule = func {
             pressurepsi = me.NOPSI;
         }
 
-        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/bleed-psi",pressurepsi);
+        me.apply(me.itself["engine"][i].getChild("bleed-psi").getPath(),pressurepsi);
 
         # ===========
         # cross bleed
@@ -672,7 +681,7 @@ Airbleed.schedule = func {
             pressurepsi = bleedpsi;
         }
 
-        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/cross-psi",pressurepsi);
+        me.apply(me.itself["engine"][i].getChild("cross-psi").getPath(),pressurepsi);
 
         # ==================
         # conditioning valve
@@ -685,7 +694,7 @@ Airbleed.schedule = func {
             pressurepsi = me.NOPSI;
         }
 
-        me.apply("/systems/air-bleed/engine[" ~ i ~ "]/conditioning-psi",pressurepsi);
+        me.apply(me.itself["engine"][i].getChild("conditioning-psi").getPath(),pressurepsi);
    }
 
    # jet pump only when landing gear down
@@ -991,11 +1000,11 @@ Airconditioning.schedule = func {
             ductdegc = me.coolingdegc( coef, oldductdegc );
         }
 
-        me.apply("/systems/temperature/group[" ~ i ~ "]/flow-kgph",flowkgph);
+        me.apply(me.itself["group"][i].getChild("flow-kgph").getPath(),flowkgph);
 
         # one supposes quick cooling by RAM air, when no mass flow.
-        me.apply("/systems/temperature/group[" ~ i ~ "]/inlet-degc",inletdegc);
-        me.apply("/systems/temperature/group[" ~ i ~ "]/duct-degc",ductdegc);
+        me.apply(me.itself["group"][i].getChild("inlet-degc").getPath(),inletdegc);
+        me.apply(me.itself["group"][i].getChild("duct-degc").getPath(),ductdegc);
    }
 }
 
@@ -1032,7 +1041,7 @@ Airconditioning.control = func( index, location, flowkgph, targetdegc ) {
         currentdegc = me.itself["root"].getChild(location).getValue();
         targetdegc = me.warmingdegc( flowkgph, currentdegc, targetdegc );
 
-        interpolate("/systems/temperature/" ~ location,targetdegc,me.AIR60SEC);
+        interpolate(me.itself["root"].getChild(location).getPath(),targetdegc,me.AIR60SEC);
     }
 
     me.adjustvalve( index );
@@ -1135,6 +1144,6 @@ Airconditioning.closevalve = func {
 }
 
 Airconditioning.adjustvalve = func( index ) {
-   interpolate("/systems/temperature/group[" ~ index ~ "]/temperature-valve",
+   interpolate(me.itself["group"][index].getChild("temperature-valve").getPath(),
                me.temperature_valve, me.VALVESEC);
 }

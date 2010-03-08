@@ -7,13 +7,15 @@
 <PropertyList>
  <name>Fuel Quantity</name>
  <w-base>160</w-base>
- <h-base>128</h-base>
+ <h-base>160</h-base>
 
  <params>
   <content-select>/consumables/fuel/tank[0]/level-gal_us</content-select>
  </params>
 
  <layers>
+
+  <layer include="concorde-gauge.xml"/>
 
   <layer>
    <name>background</name>

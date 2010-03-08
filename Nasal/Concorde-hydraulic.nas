@@ -13,14 +13,14 @@ Hydraulic = {};
 Hydraulic.new = func {
    var obj = { parents : [Hydraulic,System], 
 
-           parser : HydraulicXML.new(),
-           ground : HydGround.new(),
-           rat : Rat.new(),
-           brakes : Brakes.new(),
+               parser : HydraulicXML.new(),
+               ground : HydGround.new(),
+               rat : Rat.new(),
+               brakes : Brakes.new(),
 
-           HYDSEC : 1.0,                                  # refresh rate
+               HYDSEC : 1.0,                                  # refresh rate
 
-           HYDFAILUREPSI : 3400
+               HYDFAILUREPSI : 3400
          };
 
     obj.init();
@@ -51,6 +51,14 @@ Hydraulic.brakesparkingexport = func {
 
 Hydraulic.brakesemergencyexport = func {
     me.brakes.emergencyexport();
+}
+
+Hydraulic.rattestexport = func {
+    me.rat.testexport();
+}
+
+Hydraulic.ratdeployexport = func {
+    me.rat.deployexport();
 }
 
 Hydraulic.amber_hydraulics = func {
@@ -128,6 +136,16 @@ Hydraulic.has_gear = func {
    return result;
 }
 
+Hydraulic.has_steering = func {
+   var result = 0.0;
+
+   if( me.itself["sensors"].getChild("steering").getValue() >= me.HYDFAILUREPSI ) {
+       result = 1.0;
+   }
+
+   return result;
+}
+
 Hydraulic.brakes_pedals = func( pressure ) {
    return me.brakes.pedals( pressure );
 }
@@ -146,6 +164,7 @@ Hydraulic.schedule = func {
    me.itself["power"].getChild("yellow").setValue( me.has_yellow() );
 
    me.itself["power"].getChild("gear").setValue( me.has_gear() );
+   me.itself["power"].getChild("steering").setValue( me.has_steering() );
 }
 
 
@@ -368,13 +387,13 @@ Brakes.schedule = func( greenpsi, yellowpsi ) {
 }
 
 Brakes.accumulator = func {
-   interpolate("/systems/brakes/green-accu-psi",me.normalaccupsi,me.HYDSEC);
-   interpolate("/systems/brakes/left-psi",me.leftbrakepsi,me.HYDSEC);
-   interpolate("/systems/brakes/right-psi",me.rightbrakepsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("green-accu-psi").getPath(),me.normalaccupsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("left-psi").getPath(),me.leftbrakepsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("right-psi").getPath(),me.rightbrakepsi,me.HYDSEC);
 
-   interpolate("/systems/brakes/yellow-accu-psi",me.emergaccupsi,me.HYDSEC);
-   interpolate("/systems/brakes/emerg-left-psi",me.leftemergpsi,me.HYDSEC);
-   interpolate("/systems/brakes/emerg-right-psi",me.rightemergpsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("yellow-accu-psi").getPath(),me.emergaccupsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("emerg-left-psi").getPath(),me.leftemergpsi,me.HYDSEC);
+   interpolate(me.itself["root"].getChild("emerg-right-psi").getPath(),me.rightemergpsi,me.HYDSEC);
 }
 
 Brakes.normal = func( greenpsi, yellowpsi ) {
@@ -421,7 +440,7 @@ Brakes.emergency = func( yellowpsi ) {
        targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEGREENPSI );
        if( me.emergfailure( targetbrakepsi ) ) {
            # disable brake parking (keyboard)
-           me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
+           me.wheelchocks();
        }
 
        # visualize apply of parking brake
@@ -434,7 +453,7 @@ Brakes.emergency = func( yellowpsi ) {
 
    # unused emergency/parking brakes have a weaker pressure
    else {
-       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
+       me.wheelchocks();
 
        if( me.normalaccupsi >= me.BRAKEACCUPSI ) {
            targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEMAXPSI );
@@ -446,6 +465,16 @@ Brakes.emergency = func( yellowpsi ) {
                me.parkingapply( targetbrakepsi );
            }
        }
+   }
+}
+
+Brakes.wheelchocks = func {
+   if( me.dependency["gear"].getChild("wheel-chocks").getValue() ) {
+       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
+   }
+
+   else {
+       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
    }
 }
 
@@ -479,16 +508,16 @@ Brakes.emergencypsi = func( pressurepsi ) {
 }
 
 Brakes.brakeapply = func( leftnormalpsi, rightnormalpsi, targetbrakepsi ) {
-   var leftpsi = me.apply( "/controls/gear/brake-left", leftnormalpsi, targetbrakepsi );
-   var rightpsi = me.apply( "/controls/gear/brake-right", rightnormalpsi, targetbrakepsi );
+   var leftpsi = me.apply( me.dependency["gear"].getChild("brake-left").getPath(), leftnormalpsi, targetbrakepsi );
+   var rightpsi = me.apply( me.dependency["gear"].getChild("brake-right").getPath(), rightnormalpsi, targetbrakepsi );
 
    me.leftbrakepsi = leftpsi;       # BUG ?
    me.rightbrakepsi = rightpsi;       # BUG ?
 }
 
 Brakes.parkingapply = func( targetbrakepsi ) {
-   var leftpsi = me.apply( "/controls/gear/brake-parking", me.leftemergpsi, targetbrakepsi );
-   var rightpsi = me.apply( "/controls/gear/brake-parking", me.rightemergpsi, targetbrakepsi );
+   var leftpsi = me.apply( me.dependency["gear"].getChild("brake-parking").getPath(), me.leftemergpsi, targetbrakepsi );
+   var rightpsi = me.apply( me.dependency["gear"].getChild("brake-parking").getPath(), me.rightemergpsi, targetbrakepsi );
 
    me.leftemergpsi = leftpsi;       # BUG ?
    me.rightemergpsi = rightpsi;       # BUG ?
@@ -595,21 +624,21 @@ BrakesHeat = {};
 BrakesHeat.new = func {
    var obj = { parents : [BrakesHeat,System], 
 
-           COOLSEC : 1000,                             # ( 500 - 15 ) degc / 2 hours
-           HYDSEC : 1.0,
+               COOLSEC : 1000,                             # ( 500 - 15 ) degc / 2 hours
+               HYDSEC : 1.0,
 
-           timesec : 0.0,
+               timesec : 0.0,
 
-           WARMKT2TODEGCPSEC : 0.0184,                 # (500 - 15 ) degc / ( 160 kt x 160 kt )
+               WARMKT2TODEGCPSEC : 0.0184,                 # (500 - 15 ) degc / ( 160 kt x 160 kt )
 
-           lastspeedkt : 0.0,
+               lastspeedkt : 0.0,
 
-           ABRUPTDEGC : 1.0,
+               ABRUPTDEGC : 1.0,
 
-           lastoatdegc : 0.0,
-           tempdegc : 0.0,
-           tempmaxdegc : 0.0,
-           temppeakdegc : 0.0
+               lastoatdegc : 0.0,
+               tempdegc : 0.0,
+               tempmaxdegc : 0.0,
+               temppeakdegc : 0.0
          };
 
    obj.init();
@@ -738,13 +767,19 @@ BrakesHeat.curvereset = func {
 Rat = {};
 
 Rat.new = func {
-   var obj = { parents : [Rat],
+   var obj = { parents : [Rat, System],
 
-           TESTSEC : 2.5,
-           DEPLOYSEC : 1.5
+               TESTSEC : 2.5,
+               DEPLOYSEC : 1.5
          };
 
+   obj.init();
+
    return obj;
+}
+
+Rat.init = func() {
+    me.inherit_system("/systems/hydraulic");
 }
 
 Rat.testexport = func {
@@ -752,14 +787,15 @@ Rat.testexport = func {
 }
 
 Rat.test = func {
-    if( getprop("/systems/hydraulic/rat/test") ) {
-        setprop("/systems/hydraulic/rat/selector[0]/test",constant.FALSE);
-        setprop("/systems/hydraulic/rat/selector[1]/test",constant.FALSE);
-        setprop("/systems/hydraulic/rat/test","");
+    if( me.itself["rat"].getChild("test").getValue() ) {
+        me.itself["rat-ctrl"][0].getChild("test").setValue(constant.FALSE);
+        me.itself["rat-ctrl"][1].getChild("test").setValue(constant.FALSE);
+        me.itself["rat"].getChild("test").setValue( constant.FALSE );
     }
-    elsif( getprop("/systems/hydraulic/rat/selector[0]/test") or
-           getprop("/systems/hydraulic/rat/selector[1]/test") ) {
-        setprop("/systems/hydraulic/rat/test",constant.TRUE);
+
+    elsif( me.itself["rat-ctrl"][0].getChild("test").getValue() or
+           me.itself["rat-ctrl"][1].getChild("test").getValue() ) {
+        me.itself["rat"].getChild("test").setValue( constant.TRUE );
 
         # shows the light
         settimer(func { me.test(); }, me.TESTSEC);
@@ -767,20 +803,23 @@ Rat.test = func {
 }
 
 Rat.deployexport = func {
+    me.dependency["emergency"].getChild("standby").setValue( constant.TRUE );
+
     me.deploy();
 }
 
 Rat.deploy = func {
-    if( getprop("/systems/hydraulic/rat/deploying") ) {
-        setprop("/systems/hydraulic/rat/deploying",constant.FALSE);
-        setprop("/systems/hydraulic/rat/deployed",constant.TRUE);
+    if( me.itself["rat"].getChild("deploying").getValue() ) {
+        me.itself["rat"].getChild("deploying").setValue( constant.FALSE );
+        me.itself["rat"].getChild("deployed").setValue( constant.TRUE );
     }
-    elsif( getprop("/systems/hydraulic/rat/selector[0]/on") or 
-           getprop("/systems/hydraulic/rat/selector[1]/on") ) {
 
-        if( !getprop("/systems/hydraulic/rat/deployed") and
-            !getprop("/systems/hydraulic/rat/deploying") ) {
-            setprop("/systems/hydraulic/rat/deploying",constant.TRUE);
+    elsif( me.itself["rat-ctrl"][0].getChild("on").getValue() or
+           me.itself["rat-ctrl"][1].getChild("on").getValue() ) {
+
+        if( !me.itself["rat"].getChild("deployed").getValue() and
+            !me.itself["rat"].getChild("deploying").getValue() ) {
+            me.itself["rat"].getChild("deploying").setValue( constant.TRUE );
 
             # delay of deployment
             settimer(func { me.deploy(); }, me.DEPLOYSEC);
@@ -800,6 +839,8 @@ Gear.new = func {
 
                damper : PitchDamper.new(),
 
+               STEERINGKT : 15,
+
                GEARSEC : 5.0
          };
 
@@ -814,10 +855,37 @@ Gear.init = func {
     settimer( func { me.schedule(); }, me.GEARSEC );
 }
 
+Gear.steeringexport = func {
+   var result = constant.FALSE;
+
+   # taxi with steering wheel, rudder pedal at takeoff
+   if( me.noinstrument["airspeed"].getValue() < me.STEERINGKT ) {
+
+       # except forced by menu
+       if( !me.dependency["steering"].getChild("pedal").getValue() ) {
+           result = constant.TRUE;
+       }
+   }
+
+   me.dependency["steering"].getChild("wheel").setValue(result);
+}
+
 Gear.schedule = func {
     var rates = me.damper.schedule();
 
+    me.steeringexport();
+    me.steering();
+
     settimer( func { me.schedule(); }, rates );
+}
+
+Gear.steering = func {
+    # on ground, inhibit if no hydraulics
+    if( !me.dependency["hydraulic"].getChild("green").getValue() and
+        !me.dependency["hydraulic"].getChild("yellow").getValue() and
+        me.dependency["weight"].getChild("wow").getValue() ) {
+        me.itself["steering"].getChild("hydraulic").setValue( constant.FALSE );
+    }
 }
 
 Gear.can_up = func {
@@ -827,7 +895,7 @@ Gear.can_up = func {
        if( me.dependency["hydraulic"].getChild("gear").getValue() ) {
            # prevents retract on ground
            if( me.noinstrument["agl"].getValue() > constantaero.GEARFT ) {
-               if( me.itself["gear"].getChild("gear-down").getValue() ) {
+               if( me.itself["root-ctrl"].getChild("gear-down").getValue() ) {
                    result = constant.TRUE;
                }
            }
@@ -842,7 +910,7 @@ Gear.can_down = func {
 
    if( me.dependency["electric"].getValue() ) {
        if( me.dependency["hydraulic"].getChild("gear").getValue() ) {
-           if( !me.itself["gear"].getChild("gear-down").getValue() ) {
+           if( !me.itself["root-ctrl"].getChild("gear-down").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -856,7 +924,7 @@ Gear.can_standby = func {
 
    if( me.dependency["electric"].getValue() ) {
        if( me.dependency["hydraulic"].getChild("yellow").getValue() ) {
-           if( !me.itself["gear"].getChild("gear-down").getValue() ) {
+           if( !me.itself["root-ctrl"].getChild("gear-down").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -867,8 +935,8 @@ Gear.can_standby = func {
 
 Gear.standbyexport = func {
    if( me.can_standby() ) {
-       if( !me.itself["gear"].getChild("gear-down").getValue() ) {
-           me.itself["gear"].getChild("gear-down").setValue( constant.TRUE );
+       if( !me.itself["root-ctrl"].getChild("gear-down").getValue() ) {
+           me.itself["root-ctrl"].getChild("gear-down").setValue( constant.TRUE );
        }
    }
 }
@@ -883,21 +951,20 @@ PitchDamper = {};
 PitchDamper.new = func {
    var obj = { parents : [PitchDamper,System],
 
-           wow : WeightSwitch.new(),
+               wow : WeightSwitch.new(),
 
-           DAMPERSEC : 1.0,
-           TOUCHSEC : 0.2,                                      # to detect touch down
+               DAMPERSEC : 1.0,
+               TOUCHSEC : 0.2,                                      # to detect touch down
 
-           rates : 0.0,
+               rates : 0.0,
 
-           TOUCHDEG : 5.0,
+               TOUCHDEG : 5.0,
 
-           rebound : constant.FALSE,
+               rebound : constant.FALSE,
 
-           DAMPERDEGPS : 1.0,
+               DAMPERDEGPS : 1.0,
 
-           field : { "left" : "bogie-left-deg", "right" : "bogie-right-deg" },
-           gearpath : "/systems/gear/"
+               field : { "left" : "bogie-left-deg", "right" : "bogie-right-deg" }
          };
 
    obj.init();
@@ -906,7 +973,7 @@ PitchDamper.new = func {
 }
 
 PitchDamper.init = func {
-    me.inherit_system(me.gearpath);
+    me.inherit_system("/systems/gear");
 }
 
 PitchDamper.schedule = func {
@@ -950,7 +1017,7 @@ PitchDamper.damper = func( name ) {
 
         # rolling
         else {
-            path = me.gearpath ~ me.field[name];
+            path = me.itself["root"].getChild(me.field[name]).getPath();
             me.rebound = constant.FALSE;
             me.set_rate( me.DAMPERSEC );
             interpolate(path,target,me.rates);
@@ -964,7 +1031,7 @@ PitchDamper.damper = func( name ) {
             target = 0.0;
         }
 
-        path = me.gearpath ~ me.field[name];
+        path = me.itself["root"].getChild(me.field[name]).getPath();
         interpolate(path,target,me.rates);
         me.rebound = constant.FALSE;
     }
@@ -980,16 +1047,16 @@ WeightSwitch = {};
 WeightSwitch.new = func {
   var  obj = { parents : [WeightSwitch,System],
 
-           AIRSEC : 15.0,
-           TOUCHSEC : 0.2,                                      # to detect touch down
+               AIRSEC : 15.0,
+               TOUCHSEC : 0.2,                                      # to detect touch down
 
-           rates : 0.0,
+               rates : 0.0,
 
-           LANDFT : 500.0,
-           AIRFT : 50.0,
-
-           tyre : { "left" : 2, "right" : 4 },
-           ground : { "left" : constant.TRUE, "right" : constant.TRUE }
+               LANDFT : 500.0,
+               AIRFT : 50.0,
+  
+               tyre : { "left" : 2, "right" : 4 },
+               ground : { "left" : constant.TRUE, "right" : constant.TRUE }
          };
 
    obj.init();
@@ -1077,7 +1144,7 @@ NoseVisor.init = func() {
 NoseVisor.has_nose_down = func {
    var result = constant.FALSE;
 
-   if( me.itself["nose"].getChild("pos-norm").getValue() > me.VISORDOWN ) {
+   if( me.itself["root-ctrl"].getChild("pos-norm").getValue() > me.VISORDOWN ) {
        result = constant.TRUE;
    }
 
@@ -1103,7 +1170,7 @@ NoseVisor.can_up = func {
            if( me.has_nose_down() ) {
                result = constant.TRUE;
            }
-           elsif( me.itself["nose"].getChild("wiper-override").getValue() ) {
+           elsif( me.itself["root-ctrl"].getChild("wiper-override").getValue() ) {
                result = constant.TRUE;
            }
        }
@@ -1152,7 +1219,9 @@ Flight = {};
 Flight.new = func {
    var obj = { parents : [Flight,System], 
 
-               FLIGHTSEC : 3.0                               # refresh rate
+               FLIGHTSEC : 3.0,                              # refresh rate
+
+               WINDKT : 40
          };
 
     obj.init();
@@ -1233,11 +1302,11 @@ Flight.red_pfc = func {
 Flight.schedule = func {
    # avoid reset by FDM or system initialization
    if( me.is_ready() ) {
-       me.control_monitoring();
+       me.monitoring();
    }
 }
 
-Flight.control_monitoring = func {
+Flight.monitoring = func {
    var pfcu_inner = constant.FALSE;
    var pfcu_outer = constant.FALSE;
    var pfcu_rudder = constant.FALSE;
@@ -1258,9 +1327,28 @@ Flight.control_monitoring = func {
        }
    }
 
-   me.itself["pfcu"].getChild("inner-zero").setValue( pfcu_inner );
-   me.itself["pfcu"].getChild("outer-zero").setValue( pfcu_outer );
-   me.itself["pfcu"].getChild("rudder-zero").setValue( pfcu_rudder );
+
+   # surfaces float into the wind
+   if( me.noinstrument["airspeed"].getValue() > me.WINDKT ) {
+       me.itself["pfcu"].getChild("inner-zero").setValue( pfcu_inner );
+       me.itself["pfcu"].getChild("outer-zero").setValue( pfcu_outer );
+       me.itself["pfcu"].getChild("rudder-zero").setValue( pfcu_rudder );
+
+       me.itself["pfcu"].getChild("inner-stuck").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("outer-stuck").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("rudder-stuck").setValue( constant.FALSE );
+   }
+
+   # without wind and hydraulics, surfaces fall down
+   else {
+       me.itself["pfcu"].getChild("inner-zero").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("outer-zero").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("rudder-zero").setValue( constant.FALSE );
+
+       me.itself["pfcu"].getChild("inner-stuck").setValue( pfcu_inner );
+       me.itself["pfcu"].getChild("outer-stuck").setValue( pfcu_outer );
+       me.itself["pfcu"].getChild("rudder-stuck").setValue( pfcu_rudder );
+   }
 }
 
 
@@ -1292,10 +1380,10 @@ Doors.new = func {
 Doors.init = func {
    me.inherit_system( "/systems/doors" );
 
-   if( me.itself["doors"].getNode("flight-deck").getChild("opened").getValue() ) {
+   if( me.itself["root-ctrl"].getNode("flight-deck").getChild("opened").getValue() ) {
        me.flightdeck.toggle();
    }
-   if( !me.itself["doors"].getNode("engineer-deck").getChild("out").getValue() ) {
+   if( !me.itself["root-ctrl"].getNode("engineer-deck").getChild("out").getValue() ) {
        me.engineerdeck.toggle();
    }
 }
@@ -1303,9 +1391,9 @@ Doors.init = func {
 Doors.flightdeckexport = func {
    var allowed = constant.TRUE;
 
-   if( me.itself["doors"].getNode("flight-deck").getChild("position-norm").getValue() == me.DOORCLOSED ) {
+   if( me.itself["root-ctrl"].getNode("flight-deck").getChild("position-norm").getValue() == me.DOORCLOSED ) {
        # locked in flight
-       if( me.itself["doors"].getNode("flight-deck").getChild("normal").getValue() ) {
+       if( me.itself["root-ctrl"].getNode("flight-deck").getChild("normal").getValue() ) {
            # can open only from inside
            if( getprop("/sim/current-view/z-offset-m") > me.INSIDEDECKZM ) {
                allowed = constant.FALSE;
@@ -1323,9 +1411,109 @@ Doors.engineerdeckexport = func {
 
    me.engineerdeck.toggle();
 
-   if( me.itself["doors"].getNode("engineer-deck").getChild("out").getValue() ) {
+   if( me.itself["root-ctrl"].getNode("engineer-deck").getChild("out").getValue() ) {
        state = constant.FALSE;
    }
 
-   me.itself["doors"].getNode("engineer-deck").getChild("out").setValue(state);
+   me.itself["root-ctrl"].getNode("engineer-deck").getChild("out").setValue(state);
+}
+
+
+# =======
+# TRACTOR
+# =======
+
+Tractor = {};
+
+Tractor.new = func {
+   var obj = { parents : [Tractor,System],
+
+               TRACTORSEC : 10.0,
+
+               SPEEDFPS : 5.0,
+               STOPFPS : 0.0,
+
+               CONNECTED : 1.0,
+               DISCONNECTED : 0.0,
+
+               disconnecting : constant.FALSE,
+
+               initial : nil
+             };
+
+# user customization
+   obj.init();
+
+   return obj;
+};
+
+Tractor.init = func {
+   me.inherit_system( "/systems/tractor" );
+}
+
+Tractor.schedule = func {
+   if( me.itself["root-ctrl"].getChild("pushback").getValue() ) {
+       me.start();
+   }
+
+   me.move();
+}
+
+Tractor.move = func {
+   if( me.itself["root"].getChild("pushback").getValue() and !me.disconnecting ) {
+       var status = "";
+       var latlon = geo.aircraft_position();
+       var rollingmeter = latlon.distance_to( me.initial );
+
+       status = sprintf(rollingmeter, "1f.0");
+
+       # wait for tractor connect
+       if( me.dependency["pushback"].getChild("position-norm").getValue() == me.CONNECTED ) {
+           var ratefps = math.sgn( me.itself["root-ctrl"].getChild("distance-m").getValue() ) * me.SPEEDFPS;
+
+           me.dependency["pushback"].getChild("target-speed-fps").setValue( ratefps );
+       }
+
+       if( rollingmeter >= math.abs( me.itself["root-ctrl"].getChild("distance-m").getValue() ) ) {
+           # wait for tractor disconnect
+           me.disconnecting = constant.TRUE;
+
+           me.dependency["pushback"].getChild("target-speed-fps").setValue( me.STOPFPS );
+           interpolate(me.dependency["pushback"].getChild("position-norm").getPath(), me.DISCONNECTED, me.TRACTORSEC);
+
+           status = "";
+       }
+
+       me.itself["root"].getChild("distance-m").setValue( status );
+   }
+
+   # tractor disconnect
+   elsif( me.disconnecting ) {
+       if( me.dependency["pushback"].getChild("position-norm").getValue() == me.DISCONNECTED ) {
+           me.disconnecting = constant.FALSE;
+
+           me.dependency["pushback"].getChild("enabled").setValue( constant.FALSE );
+
+           # interphone to copilot
+           me.itself["root"].getChild("clear").setValue( constant.TRUE );
+           me.itself["root"].getChild("pushback").setValue( constant.FALSE );
+       }
+   }
+}
+
+Tractor.start = func {
+   # must wait for end of current movement
+   if( !me.itself["root"].getChild("pushback").getValue() ) {
+       me.disconnecting = constant.FALSE;
+
+       me.initial = geo.aircraft_position();
+
+       me.itself["root-ctrl"].getChild("pushback").setValue( constant.FALSE );
+       me.itself["root"].getChild("pushback").setValue( constant.TRUE );
+       me.itself["root"].getChild("clear").setValue( constant.FALSE );
+       me.itself["root"].getChild("engine14").setValue( constant.FALSE );
+
+       me.dependency["pushback"].getChild("enabled").setValue( constant.TRUE );
+       interpolate(me.dependency["pushback"].getChild("position-norm").getPath(), me.CONNECTED, me.TRACTORSEC);
+   }
 }

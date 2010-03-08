@@ -32,6 +32,8 @@ properties' values.
 
  <layers>
 
+  <layer include="concorde-gauge-high.xml"/>
+
 <!-- Outer Indicator -->
   <layer>
    <name>lamp</name>
@@ -92,7 +94,7 @@ properties' values.
    <transformations>
     <transformation>
     <type>y-shift</type>
-     <offset>-26</offset>
+     <offset>-29</offset>
     </transformation>
    </transformations>
   </layer>
@@ -111,7 +113,7 @@ properties' values.
    <transformations>
     <transformation>
     <type>y-shift</type>
-     <offset>-26</offset>
+     <offset>-29</offset>
     </transformation>
    </transformations>
   </layer>
@@ -173,12 +175,6 @@ properties' values.
      <h>26</h>
     </layer>
    </layer>
-   <transformations>
-    <transformation>
-    <type>y-shift</type>
-     <offset>3</offset>
-    </transformation>
-   </transformations>
   </layer>
   
   <layer>
@@ -192,12 +188,6 @@ properties' values.
    </texture>
    <w>26</w>
    <h>26</h>
-   <transformations>
-    <transformation>
-     <type>y-shift</type>
-     <offset>3</offset>
-    </transformation>
-   </transformations>
   </layer>
 
 <!-- Inner Indicator -->
@@ -260,7 +250,7 @@ properties' values.
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <offset>32</offset>
+     <offset>29</offset>
     </transformation>
    </transformations>
   </layer>
@@ -279,7 +269,7 @@ properties' values.
    <transformations>
     <transformation>
      <type>y-shift</type>
-     <offset>32</offset>
+     <offset>29</offset>
     </transformation>
    </transformations>
   </layer>

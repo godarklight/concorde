@@ -10,6 +10,7 @@
 
  <params>
   <serviceable>/instrumentation/mach-indicator[0]/serviceable</serviceable>
+  <failure-flag>/instrumentation/mach-indicator[0]/failure-flag</failure-flag>
   <mach-sel>/instrumentation/mach-indicator[0]/indicated-mach</mach-sel>
   <mmo-sel>/instrumentation/mach-indicator[0]/mmo-mach</mmo-sel>
   <min-sel>/instrumentation/mach-indicator[0]/min</min-sel>
@@ -19,24 +20,58 @@
 
  <layers>
 
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>background</name>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-machmeter.rgb</path>
    </texture>
-    <w>128</w>
-    <h>128</h>
+   <w>112</w>
+   <h>112</h>
+  </layer>
+
+  <layer>
+   <name>Mach display</name>
+   <condition>
+    <and include="concorde-cond-voltage-inst.xml">
+     <greater-than-equals>
+      <property alias="../../../../../../params/mach-sel"/>
+      <value>0.45</value>
+     </greater-than-equals>
+     <property alias="../../../../../params/serviceable"/>
+    </and>
+   </condition>
+   <type>text</type>
+   <point-size>13</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>number-value</type>
+     <property alias="../../../../../params/mach-sel"/>
+     <format>%1.2f</format>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-30</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>8</offset>
+    </transformation>
+   </transformations>
   </layer>
 
   <layer>
    <name>OFF flag</name>
    <condition>
-    <or>
-     <not include="concorde-cond-voltage-inst.xml"/>
-     <not>
-      <property alias="../../../../../../params/serviceable"/>
-     </not>
-    </or>
+    <property alias="../../../../params/failure-flag"/>
    </condition>
    <texture>
     <path>Aircraft/Concorde/Panels/Instruments/Textures/misc-1.rgb</path>
@@ -45,16 +80,16 @@
     <x2>1.0</x2>
     <y2>0.546875</y2>
    </texture>
-   <w>35</w>
-   <h>10</h>
+   <w>31</w>
+   <h>9</h>
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-37</offset>
+     <offset>-32</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-29</offset>
+     <offset>-25</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -83,8 +118,8 @@
      <x2>0.8375</x2>
      <y2>1.0</y2>
     </texture>
-    <w>6</w>
-    <h>50</h>
+    <w>5</w>
+    <h>44</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -101,7 +136,7 @@
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>24</offset>
+      <offset>21</offset>
      </transformation>
     </transformations>
    </layer> 
@@ -115,8 +150,8 @@
      <x2>0.8375</x2>
      <y2>1.0</y2>
     </texture>
-    <w>6</w>
-    <h>50</h>
+    <w>5</w>
+    <h>44</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -124,49 +159,11 @@
      </transformation>
      <transformation>
       <type>y-shift</type>
-      <offset>24</offset>
+      <offset>21</offset>
      </transformation>
     </transformations>
    </layer> 
   </layer> 
-
-  <layer>
-   <name>Digital Mach display</name>
-   <condition>
-    <and include="concorde-cond-voltage-inst.xml">
-     <greater-than-equals>
-      <property alias="../../../../../../params/mach-sel"/>
-      <value>0.45</value>
-     </greater-than-equals>
-     <property alias="../../../../../params/serviceable"/>
-    </and>
-   </condition>
-   <type>text</type>
-   <font>led</font>
-   <point-size>6</point-size>
-   <color>
-    <red>1.0</red>
-    <green>1.0</green>
-    <blue>1.0</blue>
-   </color>
-   <chunks>
-    <chunk>
-     <type>number-value</type>
-     <property alias="../../../../../params/mach-sel"/>
-     <format>%1.2f</format>
-    </chunk>
-   </chunks>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>-32</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>8</offset>
-    </transformation>
-   </transformations>
-  </layer>
 
 <!-- Maximum Operating Mach number -->
 
@@ -179,8 +176,8 @@
     <x2>0.7289</x2>
     <y2>1.0</y2>
    </texture>
-   <w>6</w>
-   <h>50</h>
+   <w>5</w>
+   <h>44</h>
    <transformations>
     <transformation>
      <type>rotation</type>
@@ -192,7 +189,7 @@
      <property alias="../../../../../params/mmo-sel"/>
      <min>0.45</min>
      <max>2.4</max>
-      <scale>1.0</scale>
+     <scale>1.0</scale>
      <interpolation>
       <entry><ind>0.40</ind><dep>-14</dep></entry>
       <entry><ind>0.50</ind><dep>  0</dep></entry>
@@ -202,7 +199,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>24</offset>
+     <offset>21</offset>
     </transformation>
    </transformations>
   </layer> 
@@ -227,8 +224,8 @@
      <x2>0.7289</x2>
      <y2>1.0</y2>
     </texture>
-    <w>20</w>
-    <h>10</h>
+    <w>18</w>
+    <h>9</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -249,7 +246,7 @@
      </transformation>
      <transformation>
       <type>x-shift</type> <!-- align with min -->
-      <offset>-10</offset>
+      <offset>-9</offset>
      </transformation>
      <transformation>
       <type>rotation</type>
@@ -267,8 +264,8 @@
      <x2>0.7289</x2>
      <y2>1.0</y2>
     </texture>
-    <w>20</w>
-    <h>10</h>
+    <w>18</w>
+    <h>9</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -280,7 +277,7 @@
      </transformation>
      <transformation>
       <type>x-shift</type>
-      <offset>-10</offset>
+      <offset>-9</offset>
      </transformation>
      <transformation>
       <type>rotation</type>
@@ -310,8 +307,8 @@
      <x2>0.7289</x2>
      <y2>1.0</y2>
     </texture>
-    <w>20</w>
-    <h>10</h>
+    <w>18</w>
+    <h>9</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -331,7 +328,7 @@
      </transformation>
      <transformation>
       <type>x-shift</type> <!-- align wit max -->
-      <offset>10</offset>
+      <offset>9</offset>
      </transformation>
     </transformations>
    </layer> 
@@ -345,8 +342,8 @@
      <x2>0.7289</x2>
      <y2>1.0</y2>
     </texture>
-    <w>20</w>
-    <h>10</h>
+    <w>18</w>
+    <h>9</h>
     <transformations>
      <transformation>
       <type>rotation</type>
@@ -358,7 +355,7 @@
      </transformation>
      <transformation>
       <type>x-shift</type>
-      <offset>10</offset>
+      <offset>9</offset>
      </transformation>
     </transformations>
    </layer> 
@@ -373,18 +370,8 @@
     <x2>1.0</x2>
     <y2>0.5</y2>
    </texture>
-   <w>135</w>
-   <h>135</h>
-   <transformations>
-    <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
-     <type>y-shift</type>
-     <offset>0</offset>
-    </transformation>
-   </transformations>
+   <w>128</w>
+   <h>128</h>
   </layer>
 
  </layers>

@@ -179,7 +179,7 @@ Crewhuman.headrates = func {
            me.movehead = constant.TRUE;
            headingdeg = me.TURNDEG * ( rand() - 0.5 );
            pitchdeg = me.RAISEDEG * ( rand() - 0.5 );
-           me.heads = constant.abs( headingdeg / me.MUSCLEDEGPSEC );
+           me.heads = math.abs( headingdeg / me.MUSCLEDEGPSEC );
 
            # waits for end of rotation
            steps = me.heads + me.WAITSEC * rand();
@@ -413,7 +413,7 @@ Engineerseat.rotate = func( targetdeg, clear ) {
         # correction by engineer view rotation
         movementdeg = targetdeg - viewdeg;
         movementdeg = constant.crossnorth( movementdeg );
-        movementsec = constant.abs( movementdeg / me.SEATDEGPSEC );
+        movementsec = math.abs( movementdeg / me.SEATDEGPSEC );
     }
 
     # clears engineer rotation
@@ -421,17 +421,17 @@ Engineerseat.rotate = func( targetdeg, clear ) {
         var seatdeg = me.itself["engineer"].getChild("seat-deg").getValue();
 
         movementdeg = me.STATICDEG;
-        movementsec = constant.abs( seatdeg / me.SEATDEGPSEC );
+        movementsec = math.abs( seatdeg / me.SEATDEGPSEC );
     }
 
 
-    interpolate("/systems/human/engineer/seat-deg", movementdeg, movementsec );
+    interpolate(me.itself["engineer"].getChild("seat-deg").getPath(), movementdeg, movementsec );
 }
 
 Engineerseat.translate = func( targetm ) {
     me.headm = targetm;
 
-    interpolate("/systems/human/engineer/seat-x-m", me.headm, me.BOGGIESEC );
+    interpolate(me.itself["engineer"].getChild("seat-x-m").getPath(), me.headm, me.BOGGIESEC );
 }
 
 Engineerseat.rotateclear = func {
@@ -486,7 +486,7 @@ SeatRail.toggle = func( seat ) {
    }
 
    if( canstowe ) {
-       me.roll("/systems/human/" ~ seat ~ "/stowe-norm");
+       me.roll(me.itself[seat].getChild("stowe-norm").getPath());
    }
 }
 

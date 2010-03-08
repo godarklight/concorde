@@ -78,9 +78,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <min-sel>/instrumentation/cg[1]/min-percent</min-sel>
     <max-sel>/instrumentation/cg[1]/max-percent</max-sel>
    </params>
-   <x>145</x>
+   <x>153</x>
    <y>542</y>
-   <w>22</w>
+   <w>42</w>
    <h>110</h>
   </instrument>
 
@@ -204,10 +204,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>210</x>
+   <x>205</x>
    <y>475</y>
-   <w>45</w>
-   <h>18</h>
+   <w>70</w>
+   <h>28</h>
   </instrument>
 
   <instrument include="Instruments/concorde-fuel-ac-weight.xml">
@@ -463,8 +463,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>32</x>
    <y>550</y>
-   <w>56.25</w>
-   <h>45</h>
+   <w>56</w>
+   <h>56</h>
   </instrument>
 
   <instrument include="Instruments/concorde-yellow-fuel-pressure.xml">
@@ -1263,8 +1263,8 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </params>
    <x>397</x>
    <y>550</y>
-   <w>56.25</w>
-   <h>45</h>
+   <w>56</w>
+   <h>56</h>
   </instrument>
 
   <instrument include="Instruments/concorde-yellow-fuel-pressure.xml">
@@ -1622,7 +1622,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <lbs-select>/consumables/fuel/tank[0]/level-lbs</lbs-select>
-    <low-level-select>/consumables/fuel/tank[0]/low-level-lb</low-level-select>
+    <low-level-select>/consumables/fuel/tank[0]/low-level-lbs</low-level-select>
    </params>
    <x>40</x>
    <y>395</y>
@@ -1755,7 +1755,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <lbs-select>/consumables/fuel/tank[1]/level-lbs</lbs-select>
-    <low-level-select>/consumables/fuel/tank[1]/low-level-lb</low-level-select>
+    <low-level-select>/consumables/fuel/tank[1]/low-level-lbs</low-level-select>
    </params>
    <x>137</x>
    <y>395</y>
@@ -1855,7 +1855,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <lbs-select>/consumables/fuel/tank[2]/level-lbs</lbs-select>
-    <low-level-select>/consumables/fuel/tank[2]/low-level-lb</low-level-select>
+    <low-level-select>/consumables/fuel/tank[2]/low-level-lbs</low-level-select>
    </params>
    <x>293</x>
    <y>395</y>
@@ -1988,7 +1988,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <lbs-select>/consumables/fuel/tank[3]/level-lbs</lbs-select>
-    <low-level-select>/consumables/fuel/tank[3]/low-level-lb</low-level-select>
+    <low-level-select>/consumables/fuel/tank[3]/low-level-lbs</low-level-select>
    </params>
    <x>390</x>
    <y>395</y>
@@ -4440,7 +4440,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <level-lb>/consumables/fuel/tank[13]/level-lbs</level-lb>
+    <level-select>/consumables/fuel/tank[13]/level-lbs</level-select>
    </params>
    <x>-18</x>
    <y>216</y>
@@ -4472,7 +4472,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <level-lb>/consumables/fuel/tank[14]/level-lbs</level-lb>
+    <level-select>/consumables/fuel/tank[14]/level-lbs</level-select>
    </params>
    <x>140</x>
    <y>216</y>
@@ -4504,7 +4504,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <level-lb>/consumables/fuel/tank[15]/level-lbs</level-lb>
+    <level-select>/consumables/fuel/tank[15]/level-lbs</level-select>
    </params>
    <x>290</x>
    <y>216</y>
@@ -4536,7 +4536,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <level-lb>/consumables/fuel/tank[16]/level-lbs</level-lb>
+    <level-select>/consumables/fuel/tank[16]/level-lbs</level-select>
    </params>
    <x>448</x>
    <y>216</y>

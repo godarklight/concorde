@@ -107,8 +107,8 @@ Sounds
 ------
 - see Sounds/Concorde-real-sound.xml to install real Concorde sounds.
 - voice callouts requires Festival (festival --server in a separate shell),
-  set /sim/sound/voices/enabled to true; to see the text of callouts, press "shift-ctrl-R"
-  (saved on exit in aircraft-data). 
+  set /sim/sound/voices/enabled to true.
+- to disable text display of callouts, press "shift-F12" (saved on exit in aircraft-data). 
 
 Frame rate
 ----------
@@ -122,7 +122,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 1.9.0 : minimal version.
+- 2.0.0 : minimal version.
 
 
 Keyboard
@@ -130,25 +130,27 @@ Keyboard
 - "alt-b"  : emergency "b"rakes.
 - "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
 - "ctrl-F" : a"F"terburner.
-- "f"      : "f"ull cockpit (all instruments).
+- "f / F"  : "f"ull cockpit (all instruments) / aircraft.
 - "alt-g"  : "g"ear standby.
 - "alt-n"  : "n"ose standby.
 - "q"      : "q"uit speed up.
-- "y"      : toggle "y"oke.
+- "y"      : "y"oke.
 
 Views
 -----
 - "ctrl-E"       : "E"ngineer view.
 - "ctrl-J"       : Copilot view.
 - "ctrl-K"       : Observer view (floating).
+- "ctrl-L"       : Observer 2 view (floating).
 - "ctrl-O"       : "O"verhead view.
 - "ctrl-W"       : Ste"W"ard view (floating).
 - "shift-ctrl-X" : restore floating view.
 
 Virtual crew
 ------------
-- "shift-ctrl-R" : show c"R"ew text.
 - "ctrl-Z"       : virtual crew.
+- "shift-ctrl-Z" : abort checklist.
+- "shift-F12"    : show crew text.
 
 Unchanged behaviour
 -------------------
@@ -166,8 +168,8 @@ Same behaviour
 - "ctrl-G" : "G"lide slope.
 - "ctrl-N" : "N"av 1 hold.
 - "ctrl-P" : "P"itch hold.
-- "ctrl-R" : "R"adio frequencies.
 - "ctrl-S" : autothrottle.
+- "F12"    : radio frequencies.
 
 Improved behaviour
 ------------------
@@ -183,7 +185,7 @@ Improved behaviour
 
 Alternate behaviour
 -------------------
-- "ctrl-B"    : reverse thrust used as speedbrake (FDM not implemented).
+- "ctrl-B"    : reverse thrust used as speedbrake.
 - "ctrl-I"    : menu.
 - "ctrl-T"    : altitude hold.
 - "[ / ]"     : nose used as flaps.
@@ -223,20 +225,13 @@ Engine
 - to start an engine, activate the starter, before opening the HP VALVE (overhead).
   The starter requires air bleed, either from the ground service (open 1 cross bleed valve),
   or by its adjacent running engine (open 2 cross bleed valve).
-  The starter is not required in flight (relight), if enough speed.
-- the 1st engine start requires AC voltage, either from the ground supply ("ctrl-I g"),
-  or in flight (4 engines flame out) by the emergency generator :
-  * activate the virtual copilot.
-  * deploy the RAM Air Turbine : standby instruments work.
-  * most other instruments also work, if the emergency generator has automatically started.
-  * with the emergency relight busbar (below the starters), select the 1st engine to start.
-  * relight this engine, before opening its HP VALVE (overhead).
-  * once this engine started, restore the relight selector to off.
-  * start the 3 other engines normally.
+- the starter requires AC voltage, from the ground supply ("ctrl-I g").
+- the starter is not required in flight (relight), if enough speed :
+  relight is automatic, when autoignition is on (overhead).
 
 Fuel
 ----
-Use virtual engineer (or to 2D panel) to start :
+Use virtual engineer (or 2D panel) to start :
 - the collector tanks 1 2 3 4 feed respectively engines 1 2 3 4.
 - the main tanks 5 7 feed the collector tanks.
 
@@ -272,8 +267,10 @@ Virtual crew
 - the virtual crew operates parallely to the voice callouts.
 - a green crew member is performing his checklist.
 - a yellow crew member is not performing his checklist.
-- a checklist in process is white.
+- a white checklist is in process.
 - by default, virtual crew triggers checklists, if in flight :
+  for manual operation, press "ctrl-I p s".
+- by default, virtual crew adjusts radio frequencies, if tower available in Nasal/Concorde-route.xml :
   for manual operation, press "ctrl-I p s".
 
 3D
@@ -282,13 +279,20 @@ Virtual crew
 
 Captain
 -------
-- by default, Captain tasks are performed by other crew members :
-  for call by the crew member reading the checklist, press "ctrl-I p s".
+- by default, Captain tasks are performed automatically :
+  his answers are yellow.
+- for call by the crew member reading the checklist, press "ctrl-I p s".
 
 Copilot
 -------
-- the copilot is never the pilot in command;
-  except 4 engines flameout, where he holds the aircraft during engine start.
+- his calls are green.
+- the copilot is pilot in command, only during 4 engines flameout,
+  where he holds the aircraft during engine start.
+
+Engineer
+-------
+- his calls are blue.
+- center of gravity is ajusted without checklist.
 
 
 Alarms
@@ -304,7 +308,7 @@ Sound
 - pull-up : excessive descent speed; too low gear at approach, nose not down at touch down.
 - rattle  : overspeed.
 - siren   : loss of autopilot.
-- whistle : JSBSim stall (rare), aft center of gravity warning, underspeed.
+- whistle : JSBSim stall, aft center of gravity warning, underspeed.
 
 Red
 ---
@@ -376,7 +380,7 @@ Amber
 
 Overhead
 ........
-- "ADC"  : electrical failure.
+- "ADC"  : ADC failure.
 - "ELEC" : electrical failure.
 - "FUEL" : fuel failure.
 - "HYD"  : hydraulical failure.
@@ -385,7 +389,7 @@ Overhead
 
 ADC
 ...
-- "ADC"  : electrical failure.
+- "ADC"  : ADC failure.
 
 Electrical
 ..........
@@ -453,6 +457,10 @@ Overhead
 ADC
 ...
 - "TEST" : test completed.
+
+Engines
+.......
+- "OPEN" : flight reverse armed.
 
 Hydraulics
 ..........
@@ -526,7 +534,7 @@ TBPB 09  - EGLL 27R, 3700 NM (Barbados).
 Example
 -------
 EGLL 27L - KJFK 22L, 3400 NM :
-- load --flight-plan from Doc.
+- load the flight plan from the Doc directory.
 - acceleration 30 NM before MERLY.
 - stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "ctrl-I n").
 - warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57600 ft (60 ft/min 2h07).
@@ -552,7 +560,7 @@ JSBSim
 - maximum thrust (without air intakes) at FL500 is 10093 lb, matching the real value of 10000 lb !
 - center of gravity inside corridor.
 - shift of center or pressure.
-- the geometry is real data.
+- geometry is real data.
 - tanks default at maximum takeoff weight (408000 lb).
 - consumption London - New York : correct landing weight at KJFK.
 - climb Mach 0.95 - 1.7 in 10 minutes.
@@ -572,8 +580,7 @@ TO DO instruments
 
 TO FDM
 -------
-- fix negativ elevator drag.
-- gear wedge, when no hydraulics.
+- reduce drag during subsonic climb.
 - inertia of surfaces.
 - move autopilot PID inside the FDM ?
 - additional drag when RAT.
@@ -595,7 +602,16 @@ Known problems
 
 Known problems autopilot
 ------------------------
-- heading hold is a little slow to converge.
+- NAV hold mode is sensitive to the turbulence of the ground layer.
+- toggle INS mode, only AFTER activation of route, or use "ctrl-I a".
+- heading modes are a little slow to converge, at supersonic speed.
+- heading modes may start to bank into the opposite direction.
+- at Mach 2.02, once unlocked, vertical speed hold is unstable.
+
+Known problems 2.0.0 autopilot
+------------------------------
+- the first waypoint is always ignored : insert a double waypoint.
+- to update waypoints, once route is activated, clear completely the route.
 
 Known problems autoland
 -----------------------
@@ -613,7 +629,6 @@ Known problems sound
 Known problems OSG
 ------------------
 The following artefacts are supposed to be solved by OSG :
-- missing hotspots.
 - panels swaping too early.
 - instrument transparent through layer with alpha (steward view).
 - transparency order of blinking anti-collision light over wing.
@@ -633,10 +648,6 @@ Secondary problems FDM
 Secondary problems JSBSim
 -------------------------
 - AoA at 180 deg, when one breaks strongly (empty tanks).
-
-Secondary problems autopilot
-----------------------------
-- to substitute the IVSI, see Systems/Concorde-init-instrumentation.xml.
 
 Secondary problems instruments
 ----------------------------
@@ -675,4 +686,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-4 January 2009.
+7 March 2010.

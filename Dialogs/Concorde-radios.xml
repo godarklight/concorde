@@ -448,6 +448,10 @@
     <command>dialog-apply</command>
    </binding>
    <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+   <binding>
     <command>dialog-close</command>
    </binding>
   </button>
@@ -459,6 +463,10 @@
    <equal>true</equal>
    <binding>
     <command>dialog-apply</command>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </button>
 

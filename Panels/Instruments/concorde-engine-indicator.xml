@@ -9,7 +9,7 @@
 <PropertyList>
 
  <name>Engine indicator lights</name>
- <w-base>140</w-base>
+ <w-base>100</w-base>
  <h-base>20</h-base>
 
  <params>
@@ -20,7 +20,10 @@
   <configuration-select>/systems/engines/engine[0]/configuration</configuration-select>
  </params>
 
+
  <layers>
+
+ <layer include="concorde-gauge-horizontal.xml"/>
 
 <!-- GO LIGHT -->
 
@@ -87,6 +90,12 @@
      <emissive>true</emissive>
     </layer>
    </layer>
+  <transformations>
+   <transformation>
+    <type>x-shift</type>
+    <offset>-25</offset>
+   </transformation>
+  </transformations>
   </layer>
 
 <!-- CONFIGURATION -->
@@ -149,12 +158,6 @@
     <emissive>true</emissive>
    </layer>
   </layer>
-  <transformations>
-   <transformation>
-    <type>x-shift</type>
-    <offset>25</offset>
-   </transformation>
-  </transformations>
  </layer>
 
 <!-- REVERSER -->
@@ -234,7 +237,7 @@
   <transformations>
    <transformation>
     <type>x-shift</type>
-    <offset>50</offset>
+    <offset>25</offset>
    </transformation>
   </transformations>
  </layer>

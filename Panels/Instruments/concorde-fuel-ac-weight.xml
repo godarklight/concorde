@@ -13,6 +13,8 @@
 
  <layers>
 
+  <layer include="concorde-gauge.xml"/>
+
   <layer>
    <name>background fuel</name>
    <texture>
@@ -61,7 +63,7 @@
   <layer>
    <name>Title fuel</name>
    <type>text</type>
-   <point-size>6</point-size>
+   <point-size>5</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -76,11 +78,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-29</offset>
+     <offset>-26</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>40</offset>
+     <offset>38</offset>
     </transformation>
    </transformations>
   </layer>
@@ -213,7 +215,7 @@
   <layer>
    <name>Title</name>
    <type>text</type>
-   <point-size>7</point-size>
+   <point-size>6</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -228,11 +230,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-23</offset>
+     <offset>-20</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-41</offset>
+     <offset>-39</offset>
     </transformation>
    </transformations>
   </layer>

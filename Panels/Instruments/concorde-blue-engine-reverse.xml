@@ -21,7 +21,12 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <or include="concorde-cond-test-eng-forward.xml"/>
+      <and>
+       <or include="concorde-cond-test-eng-forward.xml"/>
+       <not>
+        <property>/controls/engines/flight-reverse</property>
+       </not>
+      </and>
      </or>
     </condition>
 

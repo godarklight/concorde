@@ -1,18 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- Concorde temperatures :
-
-     - ISA depends of slave altimeter.
-     - voltage.
--->
+<!-- Concorde temperatures -->
 
 <PropertyList>
  <name>TMO, OAT and ISA</name>
- <w-base>140</w-base>
- <h-base>140</h-base>
+ <w-base>240</w-base>
+ <h-base>200</h-base>
 
  <params>
-  <serviceable>/instrumentation/temperature[0]/serviceable</serviceable>
+  <failure-flag>/instrumentation/temperature[0]/failure-flag</failure-flag>
+  <isa-failure-flag>/instrumentation/temperature[0]/isa-failure-flag</isa-failure-flag>
   <tmo-sel>/instrumentation/temperature[0]/indicated-tmo-degc</tmo-sel>
   <static-sel>/instrumentation/temperature[0]/indicated-static-degc</static-sel>
   <isa-sel>/instrumentation/temperature[0]/isa-degc</isa-sel>
@@ -21,17 +18,20 @@
 
  <layers>
 
+  <layer include="concorde-gauge.xml"/>
+
+  <layer include="concorde-gauge.xml">
+   <w>140</w>
+   <h>140</h>
+  </layer>
+
   <layer>
    <name>background</name>
    <texture>
-    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-bg.rgb</path>
-    <x1>0.6</x1>
-    <y1>0.2</y1>
-    <x2>0.9</x2>
-    <y2>0.3</y2>
+    <path>Aircraft/Concorde/Panels/Instruments/Textures/concorde-black-knob.rgb</path>
    </texture>
    <w>130</w>
-   <h>140</h>
+   <h>130</h>
   </layer>
 
 <!-- Maximum Total Temperature -->
@@ -39,13 +39,12 @@
   <layer>
    <name>TMO display</name>
    <condition>
-    <and include="concorde-cond-voltage-inst.xml">
-     <property alias="../../../../../params/serviceable"/>
-    </and>
+    <not>
+     <property alias="../../../../../params/failure-flag"/>
+    </not>
    </condition>
    <type>text</type>
-   <font>led</font>
-   <point-size>8</point-size>
+   <point-size>15</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -61,11 +60,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>8</offset>
+     <offset>5</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>45</offset>
+     <offset>36</offset>
     </transformation>
    </transformations>
   </layer>
@@ -77,12 +76,12 @@
    <layer>
     <name>Total Title</name>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property alias="../../../../../../params/serviceable"/>
-     </and>
+     <not>
+      <property alias="../../../../../../params/failure-flag"/>
+     </not>
     </condition>
     <type>text</type>
-    <point-size>15</point-size>
+    <point-size>13</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -126,7 +125,7 @@
     <layer>
      <name>Total title</name>
      <type>text</type>
-     <point-size>15</point-size>
+     <point-size>13</point-size>
      <color>
       <red>0.0</red>
       <green>0.0</green>
@@ -153,11 +152,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-56</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>48</offset>
+     <offset>37</offset>
     </transformation>
    </transformations>
   </layer>
@@ -165,7 +164,7 @@
   <layer>
    <name>TMO Title</name>
    <type>text</type>
-   <point-size>15</point-size>
+   <point-size>10</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -180,11 +179,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-45</offset>
+     <offset>-35</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>21</offset>
+     <offset>20</offset>
     </transformation>
    </transformations>
   </layer>
@@ -194,13 +193,12 @@
   <layer>
    <name>OAT display</name>
    <condition>
-    <and include="concorde-cond-voltage-inst.xml">
-     <property alias="../../../../../params/serviceable"/>
-    </and>
+    <not>
+     <property alias="../../../../../params/failure-flag"/>
+    </not>
    </condition>
    <type>text</type>
-   <font>led</font>
-   <point-size>8</point-size>
+   <point-size>15</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -216,11 +214,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-1</offset>
+     <offset>5</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-9</offset>
+     <offset>-7</offset>
     </transformation>
    </transformations>
   </layer>
@@ -232,12 +230,12 @@
    <layer>
     <name>OAT Title</name>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property alias="../../../../../../params/serviceable"/>
-     </and>
+     <not>
+      <property alias="../../../../../../params/failure-flag"/>
+     </not>
     </condition>
     <type>text</type>
-    <point-size>15</point-size>
+    <point-size>13</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -281,7 +279,7 @@
     <layer>
      <name>OAT title</name>
      <type>text</type>
-     <point-size>15</point-size>
+     <point-size>13</point-size>
      <color>
       <red>0.0</red>
       <green>0.0</green>
@@ -308,7 +306,7 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-56</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
@@ -320,7 +318,7 @@
   <layer>
    <name>Unit</name>
    <type>text</type>
-   <point-size>19</point-size>
+   <point-size>15</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -339,7 +337,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-33</offset>
+     <offset>-27</offset>
     </transformation>
    </transformations>
   </layer>
@@ -349,13 +347,12 @@
   <layer>
    <name>ISA display</name>
    <condition>
-    <and include="concorde-cond-voltage-inst.xml">
-     <property alias="../../../../../params/serviceable"/>
-    </and>
+    <not>
+     <property alias="../../../../../params/isa-failure-flag"/>
+    </not>
    </condition>
    <type>text</type>
-   <font>led</font>
-   <point-size>8</point-size>
+   <point-size>15</point-size>
    <color>
     <red>1.0</red>
     <green>1.0</green>
@@ -371,11 +368,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>8</offset>
+     <offset>5</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-61</offset>
+     <offset>-46</offset>
     </transformation>
    </transformations>
   </layer>
@@ -387,12 +384,12 @@
    <layer>
     <name>ISA Title</name>
     <condition>
-     <and include="concorde-cond-voltage-inst.xml">
-      <property alias="../../../../../../params/serviceable"/>
-     </and>
+     <not>
+      <property alias="../../../../../../params/isa-failure-flag"/>
+     </not>
     </condition>
     <type>text</type>
-    <point-size>15</point-size>
+    <point-size>13</point-size>
     <color>
      <red>1.0</red>
      <green>1.0</green>
@@ -436,7 +433,7 @@
     <layer>
      <name>ISA title</name>
      <type>text</type>
-     <point-size>15</point-size>
+     <point-size>13</point-size>
      <color>
       <red>0.0</red>
       <green>0.0</green>
@@ -463,11 +460,11 @@
    <transformations>
     <transformation>
      <type>x-shift</type>
-     <offset>-56</offset>
+     <offset>-36</offset>
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-60</offset>
+     <offset>-47</offset>
     </transformation>
    </transformations>
   </layer>

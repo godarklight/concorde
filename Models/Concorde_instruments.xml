@@ -1,0 +1,969 @@
+<?xml version="1.0"?>
+
+<!-- 
+    Panels :
+    - all panels are 1024x512, i.e. surface must have width/height = 2/1, to keep the scale of instruments.
+    - the frame rate is related to the number of visible instruments :
+      Instrument visibility is limited by the view heading or view pitch (see each panel file).
+      One takes the limit of the visual range, rounded to 5, plus/minus 5 degrees as margin.
+
+-->
+ 
+<PropertyList>
+
+ <!-- ======================================= -->
+ <!-- panel models (X/Y/Z depth/width/height) -->
+ <!-- ======================================= -->
+
+ <!-- AUTOPILOT -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
+   <bottom-left>
+    <x-m>-23.728</x-m>
+    <y-m>-0.310</y-m>
+    <z-m> 1.148</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.728</x-m>
+    <y-m> 0.190</y-m>
+    <z-m> 1.148</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.806</x-m>
+    <y-m>-0.310</y-m>
+    <z-m> 1.382</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-autopilot-right.xml</path>
+   <bottom-left>
+    <x-m>-23.728</x-m>
+    <y-m> 0.256</y-m>
+    <z-m> 1.148</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.728</x-m>
+    <y-m> 0.756</y-m>
+    <z-m> 1.148</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.806</x-m>
+    <y-m> 0.256</y-m>
+    <z-m> 1.382</z-m>
+   </top-left>
+  </panel>
+
+ <!-- PILOT -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pilot.xml</path>
+   <bottom-left>
+    <x-m>-23.790</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 0.988</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.790</x-m>
+    <y-m> 0.579</y-m>
+    <z-m> 0.988</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.895</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 1.593</z-m>
+   </top-left>
+  </panel>
+
+ <!-- OVERHEAD -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead.xml</path>
+   <bottom-left>
+    <x-m>-23.585</x-m>
+    <y-m>-0.332</y-m>
+    <z-m> 1.620</z-m>       <!-- keep slope ! -->
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.585</x-m>
+    <y-m> 0.208</y-m>
+    <z-m> 1.620</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.317</x-m>
+    <y-m>-0.332</y-m>
+    <z-m> 1.745</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead-lighting.xml</path>
+   <bottom-left>
+    <x-m>-23.476</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 1.665</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.476</x-m>
+    <y-m> 0.282</y-m>
+    <z-m> 1.665</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.234</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 1.775</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead-channel.xml</path>
+   <bottom-left>
+    <x-m>-23.358</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 1.713</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.358</x-m>
+    <y-m> 0.282</y-m>
+    <z-m> 1.713</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.097</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 1.933</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead-shutdown.xml</path>
+   <bottom-left>
+    <x-m>-23.320</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 1.730</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.320</x-m>
+    <y-m> 0.282</y-m>
+    <z-m> 1.730</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.057</x-m>
+    <y-m>-0.242</y-m>
+    <z-m> 2.010</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-overhead-engineer.xml</path>
+   <bottom-left>
+    <x-m>-23.225</x-m>
+    <y-m>-0.422</y-m>
+    <z-m> 1.750</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.225</x-m>
+    <y-m> 0.438</y-m>
+    <z-m> 1.750</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.795</x-m>
+    <y-m>-0.422</y-m>
+    <z-m> 1.765</z-m>
+   </top-left>
+  </panel>
+
+ <!-- CONSOLE -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-captain.xml</path>
+   <bottom-left>
+    <x-m>-23.30</x-m>
+    <y-m>-0.765</y-m>
+    <z-m>0.853</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.30</x-m>
+    <y-m>-0.165</y-m>
+    <z-m>0.853</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.60</x-m>
+    <y-m>-0.765</y-m>
+    <z-m>0.873</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-captain-top.xml</path>
+   <bottom-left>
+    <x-m>-23.075</x-m>
+    <y-m>-0.870</y-m>
+    <z-m>1.053</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.075</x-m>
+    <y-m>-0.490</y-m>
+    <z-m>0.988</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.375</x-m>
+    <y-m>-0.870</y-m>
+    <z-m>1.058</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-copilot.xml</path>
+   <bottom-left>
+    <x-m>-23.30</x-m>
+    <y-m> 0.735</y-m>
+    <z-m>0.853</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.30</x-m>
+    <y-m> 1.335</y-m>
+    <z-m>0.853</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.60</x-m>
+    <y-m> 0.735</y-m>
+    <z-m>0.873</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-console-copilot-top.xml</path>
+   <bottom-left>
+    <x-m>-23.075</x-m>
+    <y-m> 0.800</y-m>
+    <z-m>1.048</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.075</x-m>
+    <y-m> 1.180</y-m>
+    <z-m>1.113</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.375</x-m>
+    <y-m> 0.800</y-m>
+    <z-m>1.048</z-m>
+   </top-left>
+  </panel>
+
+ <!-- PEDESTAL (slope) -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pedestal.xml</path>
+   <bottom-left>
+    <x-m>-23.180</x-m>
+    <y-m>-0.245</y-m>
+    <z-m> 0.823</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.180</x-m>
+    <y-m> 0.485</y-m>
+    <z-m> 0.823</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.545</x-m>
+    <y-m>-0.245</y-m>
+    <z-m> 0.831</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pedestal-middle.xml</path>
+   <bottom-left>
+    <x-m>-23.01</x-m>
+    <y-m>-0.225</y-m>
+    <z-m> 0.823</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.01</x-m>
+    <y-m> 0.455</y-m>
+    <z-m> 0.823</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.35</x-m>
+    <y-m>-0.225</y-m>
+    <z-m> 0.833</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-pedestal-bottom.xml</path>
+   <bottom-left>
+    <x-m>-22.655</x-m>
+    <y-m>-0.165</y-m>
+    <z-m> 0.818</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-22.655</x-m>
+    <y-m> 0.525</y-m>
+    <z-m> 0.818</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.00</x-m>
+    <y-m>-0.165</y-m>
+    <z-m> 0.823</z-m>
+   </top-left>
+  </panel>
+
+ <!-- ENGINEER  1st column -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-pressure.xml</path>
+   <bottom-left>
+    <x-m>-22.405</x-m>
+    <y-m> 0.501</y-m>
+    <z-m> 1.326</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.855</x-m>
+    <y-m> 0.559</y-m>
+    <z-m> 1.326</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.405</x-m>
+    <y-m> 0.376</y-m>
+    <z-m> 1.601</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-intake.xml</path>
+   <bottom-left>
+    <x-m>-22.410</x-m>
+    <y-m> 0.510</y-m>
+    <z-m> 0.869</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.762</x-m>
+    <y-m> 0.566</y-m>
+    <z-m> 0.869</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.410</x-m>
+    <y-m> 0.514</y-m>
+    <z-m> 1.203</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-lighting.xml</path>
+   <bottom-left>
+    <x-m>-22.572</x-m>
+    <y-m> 0.514</y-m>
+    <z-m> 0.743</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.538</x-m>
+    <y-m> 0.514</y-m>
+    <z-m> 0.743</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.572</x-m>
+    <y-m> 0.514</y-m>
+    <z-m> 1.258</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-engine.xml</path>
+   <bottom-left>
+    <x-m>-22.430</x-m>
+    <y-m> 0.490</y-m>
+    <z-m> 0.441</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.500</x-m>
+    <y-m> 0.580</y-m>
+    <z-m> 0.441</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-22.430</x-m>
+    <y-m> 0.502</y-m>
+    <z-m> 0.904</z-m>
+   </top-left>
+  </panel>
+
+ <!-- ENGINEER  2nd column -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-air.xml</path>
+   <bottom-left>
+    <x-m>-21.950</x-m>
+    <y-m> 0.440</y-m>
+    <z-m> 1.552</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.400</x-m>
+    <y-m> 0.440</y-m>
+    <z-m> 1.552</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.950</x-m>
+    <y-m> 0.32</y-m>
+    <z-m> 1.818</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-temperature.xml</path>
+   <bottom-left>
+    <x-m>-21.710</x-m>
+    <y-m> 0.455</y-m>
+    <z-m> 1.517</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.160</x-m>
+    <y-m> 0.455</y-m>
+    <z-m> 1.517</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.710</x-m>
+    <y-m> 0.33</y-m>
+    <z-m> 1.783</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel-top.xml</path>
+   <bottom-left>
+    <x-m>-21.945</x-m>
+    <y-m> 0.535</y-m>
+    <z-m> 1.338</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.245</x-m>
+    <y-m> 0.535</y-m>
+    <z-m> 1.338</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.945</x-m>
+    <y-m> 0.370</y-m>
+    <z-m> 1.698</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-fuel.xml</path>
+   <bottom-left>
+    <x-m>-21.977</x-m>
+    <y-m> 0.542</y-m>
+    <z-m> 0.728</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-21.037</x-m>
+    <y-m> 0.542</y-m>
+    <z-m> 0.728</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.967</x-m>
+    <y-m> 0.552</y-m>
+    <z-m> 1.198</z-m>
+   </top-left>
+  </panel>
+
+ <!-- ENGINEER  3rd column -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-hydraulic.xml</path>
+   <bottom-left>
+    <x-m>-21.480</x-m>
+    <y-m> 0.453</y-m>
+    <z-m> 1.518</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-20.810</x-m>
+    <y-m> 0.362</y-m>
+    <z-m> 1.518</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.480</x-m>
+    <y-m> 0.307</y-m>
+    <z-m> 1.833</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-electric-top.xml</path>
+   <bottom-left>
+    <x-m>-21.485</x-m>
+    <y-m> 0.535</y-m>
+    <z-m> 1.338</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-20.935</x-m>
+    <y-m> 0.456</y-m>
+    <z-m> 1.338</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.485</x-m>
+    <y-m> 0.400</y-m>
+    <z-m> 1.633</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-electric.xml</path>
+   <bottom-left>
+    <x-m>-21.495</x-m>
+    <y-m> 0.546</y-m>
+    <z-m> 0.872</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-20.842</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 0.872</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.495</x-m>
+    <y-m> 0.546</y-m>
+    <z-m> 1.1985</z-m>
+   </top-left>
+  </panel>
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-engineer-compass.xml</path>
+   <bottom-left>
+    <x-m>-21.495</x-m>
+    <y-m> 0.531</y-m>
+    <z-m> 0.441</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-20.842</x-m>
+    <y-m> 0.448</y-m>
+    <z-m> 0.441</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-21.495</x-m>
+    <y-m> 0.531</y-m>
+    <z-m> 0.904</z-m>
+   </top-left>
+  </panel>
+
+<!-- STEWARD -->
+
+  <panel>
+   <path>Aircraft/Concorde/Panels/Concorde-steward.xml</path>
+   <bottom-left>
+    <x-m>-17.63</x-m>
+    <y-m>-0.51</y-m>
+    <z-m> 1.558</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-17.63</x-m>
+    <y-m>-1.11</y-m>
+    <z-m> 1.558</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-17.63</x-m>
+    <y-m>-0.51</y-m>
+    <z-m> 1.858</z-m>
+   </top-left>
+  </panel>
+
+
+<!-- ============ -->
+<!-- Instruments  -->
+<!-- ============ -->
+
+  <model>
+   <name>Standby Compass</name>
+   <path>Aircraft/Instruments-3d/comp/comp.xml</path>
+   <offsets>
+    <x-m>-23.671</x-m>
+    <y-m>0.0</y-m>
+    <z-m> 1.583</z-m>
+   </offsets>
+  </model>
+
+<!-- dash -->
+
+  <model>
+   <name>Captain Flood</name>
+   <path>Aircraft/Concorde/Instruments/light/captain-flood.xml</path>
+   <offsets>
+    <x-m>-23.814</x-m>
+    <y-m>-0.526</y-m>
+    <z-m> 1.303</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Center Flood</name>
+   <path>Aircraft/Concorde/Instruments/light/center-flood.xml</path>
+   <offsets>
+    <x-m>-23.818</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.270</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot Flood</name>
+   <path>Aircraft/Concorde/Instruments/light/copilot-flood.xml</path>
+   <offsets>
+    <x-m>-23.814</x-m>
+    <y-m> 0.526</y-m>
+    <z-m> 1.303</z-m>
+   </offsets>
+  </model>
+
+<!-- pedestal -->
+
+  <model>
+   <name>Trim Cylinder</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/trim-cylinder.xml</path>
+   <offsets>
+    <x-m>-23.224</x-m>
+    <y-m>-0.149</y-m>
+    <z-m> 0.825</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Throttle Cylinder</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/throttle-cylinder.xml</path>
+   <offsets>
+    <x-m>-23.292</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 0.822</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Brake Cylinder</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/brake-cylinder.xml</path>
+   <offsets>
+    <x-m>-23.185</x-m>
+    <y-m> 0.115</y-m>
+    <z-m> 0.807</z-m>
+   </offsets>
+  </model>
+
+<!-- steering -->
+
+  <model>
+   <name>Captain Steering</name>
+   <path>Aircraft/Concorde/Instruments/yoke/steering.xml</path>
+   <offsets>
+    <x-m>-23.575</x-m>
+    <y-m>-0.736</y-m>
+    <z-m> 0.806</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot Steering</name>
+   <path>Aircraft/Concorde/Instruments/yoke/steering.xml</path>
+   <offsets>
+    <x-m>-23.575</x-m>
+    <y-m> 0.742</y-m>
+    <z-m> 0.806</z-m>
+   </offsets>
+  </model>
+
+<!-- yokes -->
+
+  <model>
+   <name>Captain Yoke</name>
+   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
+   <offsets>
+    <x-m>-23.456</x-m>
+    <y-m>-0.446</y-m>
+    <z-m> 0.325</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot Yoke</name>
+   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
+   <offsets>
+    <x-m>-23.456</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 0.325</z-m>
+   </offsets>
+  </model>
+
+<!-- seats -->
+
+  <model>
+   <name>Captain Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/captain.xml</path>
+   <offsets>
+    <x-m>-23.109</x-m>
+    <y-m>-0.446</y-m>
+    <z-m> 0.272</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/copilot.xml</path>
+   <offsets>
+    <x-m>-23.109</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 0.272</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Engineer Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/engineer.xml</path>
+   <offsets>
+    <x-m>-21.788</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 0.272</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Observer Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/observer.xml</path>
+   <offsets>
+    <x-m>-21.630</x-m>
+    <y-m>-0.689</y-m>
+    <z-m> 0.272</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Observer 2 Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/observer2.xml</path>
+   <offsets>
+    <x-m>-21.016</x-m>
+    <y-m>-0.399</y-m>
+    <z-m> 0.687</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Attendant Seat</name>
+   <path>Aircraft/Concorde/Instruments/seat/attendant.xml</path>
+   <offsets>
+    <x-m>-18.511</x-m>
+    <y-m>-0.622</y-m>
+    <z-m> 0.711</z-m>
+   </offsets>
+  </model>
+
+<!-- pilots -->
+
+  <model>
+   <name>Copilot human</name>
+   <path>Aircraft/Concorde/Instruments/crew/pilot.xml</path>
+   <offsets>
+    <x-m>-22.96</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 1.10</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Engineer human</name>
+   <path>Aircraft/Concorde/Instruments/crew/engineer.xml</path>
+   <offsets>
+    <x-m>-21.788</x-m>
+    <y-m>-0.10</y-m>
+    <z-m> 1.02</z-m>
+    <heading-deg>270</heading-deg>
+   </offsets>
+  </model>
+
+
+<!-- ======== -->
+<!-- Exterior  -->
+<!-- ======== -->
+
+<!-- wipers -->
+
+  <model>
+   <name>Left Wiper</name>
+   <path>Aircraft/Concorde/Models/Exterior/wiper/left-wiper.xml</path>
+   <offsets>
+    <x-m>-23.949</x-m>
+    <y-m>-0.654</y-m>
+    <z-m> 1.204</z-m>
+    <heading-deg>23</heading-deg>
+    <pitch-deg>43</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Right Wiper</name>
+   <path>Aircraft/Concorde/Models/Exterior/wiper/right-wiper.xml</path>
+   <offsets>
+    <x-m>-23.949</x-m>
+    <y-m> 0.654</y-m>
+    <z-m> 1.204</z-m>
+    <heading-deg>-23</heading-deg>
+    <pitch-deg>43</pitch-deg>
+   </offsets>
+  </model>
+
+<!-- lights -->
+
+  <model>
+   <name>Taxi turn left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxiturnleft.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi turn right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxiturnright.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Navigation left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/navigationleft.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Navigation right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/navigationright.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Navigation tail</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/navigationtail.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Collision left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/collisionleft.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Collision right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/collisionright.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Collision tail</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/collisiontail.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxileft.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi cone left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxiconeleft.xml</path>
+   <offsets>
+    <x-m>-13.335</x-m>
+    <y-m>-0.386</y-m>
+    <z-m>-1.056</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxiright.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi cone right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/taxiconeright.xml</path>
+   <offsets>
+    <x-m>-13.335</x-m>
+    <y-m> 0.386</y-m>
+    <z-m>-1.056</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/landingleft.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing cone left</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/landingconeleft.xml</path>
+   <offsets>
+    <x-m>-10.659</x-m>
+    <y-m>-1.553</y-m>
+    <z-m>-0.272</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/landingright.xml</path>
+   <offsets>
+    <x-m>0.0</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing cone right</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/landingconeright.xml</path>
+   <offsets>
+    <x-m>-10.659</x-m>
+    <y-m> 1.553</y-m>
+    <z-m>-0.272</z-m>
+   </offsets>
+  </model>
+
+</PropertyList>

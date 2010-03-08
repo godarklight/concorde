@@ -881,7 +881,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <cutoff>/engines/engine[0]/cutoff</cutoff>
+    <hp-valve>/controls/engines/engine[0]/hp-valve</hp-valve>
    </params>
    <x>435</x>
    <y>90</y>
@@ -905,7 +905,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <cutoff>/engines/engine[1]/cutoff</cutoff>
+    <hp-valve>/controls/engines/engine[1]/hp-valve</hp-valve>
    </params>
    <x>481</x>
    <y>90</y>
@@ -929,7 +929,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <cutoff>/engines/engine[2]/cutoff</cutoff>
+    <hp-valve>/controls/engines/engine[2]/hp-valve</hp-valve>
    </params>
    <x>527</x>
    <y>90</y>
@@ -953,7 +953,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <cutoff>/engines/engine[3]/cutoff</cutoff>
+    <hp-valve>/controls/engines/engine[3]/hp-valve</hp-valve>
    </params>
    <x>573</x>
    <y>90</y>
@@ -962,7 +962,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
-   <name>Engine 1 cutoff</name>
+   <name>Engine 1 HP valve switch</name>
    <condition>
     <or>
      <and>
@@ -978,10 +978,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <eng-num>/systems/engines/engine[0]/engine-num</eng-num>
-    <cutoff>/engines/engine[0]/cutoff</cutoff>
-    <control-cutoff>/controls/engines/engine[0]/cutoff</control-cutoff>
-    <relight>/systems/engines/engine[0]/relight</relight>
-    <starter>/engines/engine[0]/starter</starter>
+    <hp-valve>/controls/engines/engine[0]/hp-valve</hp-valve>
    </params>
    <x>435</x>
    <y>25</y>
@@ -990,7 +987,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
-   <name>Engine 2 cutoff</name>
+   <name>Engine 2 HP valve switch</name>
    <condition>
     <or>
      <and>
@@ -1006,10 +1003,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <eng-num>/systems/engines/engine[1]/engine-num</eng-num>
-    <cutoff>/engines/engine[1]/cutoff</cutoff>
-    <control-cutoff>/controls/engines/engine[1]/cutoff</control-cutoff>
-    <relight>/systems/engines/engine[1]/relight</relight>
-    <starter>/engines/engine[1]/starter</starter>
+    <hp-valve>/controls/engines/engine[1]/hp-valve</hp-valve>
    </params>
    <x>481</x>
    <y>25</y>
@@ -1018,7 +1012,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
-   <name>Engine 3 cutoff</name>
+   <name>Engine 3 HP valve switch</name>
    <condition>
     <or>
      <and>
@@ -1034,10 +1028,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <eng-num>/systems/engines/engine[2]/engine-num</eng-num>
-    <cutoff>/engines/engine[2]/cutoff</cutoff>
-    <control-cutoff>/controls/engines/engine[2]/cutoff</control-cutoff>
-    <relight>/systems/engines/engine[2]/relight</relight>
-    <starter>/engines/engine[2]/starter</starter>
+    <hp-valve>/controls/engines/engine[2]/hp-valve</hp-valve>
    </params>
    <x>527</x>
    <y>25</y>
@@ -1046,7 +1037,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
   <instrument include="Instruments/concorde-engine-hp-valve-switch.xml">
-   <name>Engine 4 cutoff</name>
+   <name>Engine 4 HP valve switch</name>
    <condition>
     <or>
      <and>
@@ -1062,10 +1053,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    </condition>
    <params>
     <eng-num>/systems/engines/engine[3]/engine-num</eng-num>
-    <cutoff>/engines/engine[3]/cutoff</cutoff>
-    <control-cutoff>/controls/engines/engine[3]/cutoff</control-cutoff>
-    <relight>/systems/engines/engine[3]/relight</relight>
-    <starter>/engines/engine[3]/starter</starter>
+    <hp-valve>/controls/engines/engine[3]/hp-valve</hp-valve>
    </params>
    <x>573</x>
    <y>25</y>
