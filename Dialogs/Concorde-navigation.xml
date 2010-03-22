@@ -236,9 +236,6 @@
      <halign>left</halign>
      <property>/controls/engineer/destination-ft</property>
      <label>ft at last waypoint</label>
-     <binding>
-      <command>dialog-apply</command>
-     </binding>
     </input>
   </group>
 
@@ -254,6 +251,9 @@
     <default>true</default>
     <key>Esc</key>
     <binding>
+     <command>dialog-apply</command>
+    </binding>
+    <binding>
       <command>dialog-close</command>
     </binding>
    </button>
@@ -264,6 +264,9 @@
     <binding>
      <command>dialog-show</command>
      <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+    <binding>
+     <command>dialog-apply</command>
     </binding>
     <binding>
       <command>dialog-close</command>

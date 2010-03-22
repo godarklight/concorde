@@ -612,6 +612,7 @@ Known problems 2.0.0 autopilot
 ------------------------------
 - the first waypoint is always ignored : insert a double waypoint.
 - to update waypoints, once route is activated, clear completely the route.
+- during descent, route manager may update the target altitude (press F11).
 
 Known problems autoland
 -----------------------
@@ -686,4 +687,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-7 March 2010.
+14 March 2010.
