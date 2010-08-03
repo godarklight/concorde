@@ -1963,55 +1963,96 @@
   </axis>
  </animation>
 
-<!-- PRIMARY NOZZLES -->
+<!-- Engine glow -->
 
- <animation>
-  <type>material</type>
-  <object-name>PrimaryNozzle1</object-name>
-  <emission>
-   <red>1.0</red>
-   <green>1.0</green>
-   <blue>1.0</blue>
-   <factor-prop>systems/engines/engine[0]/nozzle-factor</factor-prop>
-  </emission> 
-  <texture-prop>systems/engines/engine[0]/nozzle-texture</texture-prop>
- </animation> 
+<animation>
+	<type>material</type>
+	<object-name>Reheat1</object-name>
+	<condition>
+	  <not><property>engines/engine[0]/augmentation</property></not>
+	</condition>
+	<transparency>
+	<alpha-prop>engines/engine[0]/nozzle-pos-norm</alpha-prop>
+	<factor>-1</factor>
+	<offset>1</offset>
+	</transparency>
+</animation>
 
- <animation>
-  <type>material</type>
-  <object-name>PrimaryNozzle2</object-name>
-  <emission>
-   <red>1.0</red>
-   <green>1.0</green>
-   <blue>1.0</blue>
-   <factor-prop>systems/engines/engine[1]/nozzle-factor</factor-prop>
-  </emission> 
-  <texture-prop>systems/engines/engine[1]/nozzle-texture</texture-prop>
- </animation> 
+<animation>
+	<type>material</type>
+	<object-name>Reheat2</object-name>
+	<condition>
+	  <not><property>engines/engine[1]/augmentation</property></not>
+	</condition>
+	<transparency>
+	<alpha-prop>engines/engine[1]/nozzle-pos-norm</alpha-prop>
+	<factor>-1</factor>
+	<offset>1</offset>
+	</transparency>
+</animation>
 
- <animation>
-  <type>material</type>
-  <object-name>PrimaryNozzle3</object-name>
-  <emission>
-   <red>1.0</red>
-   <green>1.0</green>
-   <blue>1.0</blue>
-   <factor-prop>systems/engines/engine[2]/nozzle-factor</factor-prop>
-  </emission> 
-  <texture-prop>systems/engines/engine[2]/nozzle-texture</texture-prop>
- </animation> 
+<animation>
+	<type>material</type>
+	<object-name>Reheat3</object-name>
+	<condition>
+	  <not><property>engines/engine[2]/augmentation</property></not>
+	</condition>
+	<transparency>
+	<alpha-prop>engines/engine[2]/nozzle-pos-norm</alpha-prop>
+	<factor>-1</factor>
+	<offset>1</offset>
+	</transparency>
+</animation>
 
- <animation>
-  <type>material</type>
-  <object-name>PrimaryNozzle4</object-name>
-  <emission>
-   <red>1.0</red>
-   <green>1.0</green>
-   <blue>1.0</blue>
-   <factor-prop>systems/engines/engine[3]/nozzle-factor</factor-prop>
-  </emission> 
-  <texture-prop>systems/engines/engine[3]/nozzle-texture</texture-prop>
- </animation> 
+<animation>
+	<type>material</type>
+	<object-name>Reheat4</object-name>
+	<condition>
+	  <not><property>engines/engine[3]/augmentation</property></not>
+	</condition>
+	<transparency>
+	<alpha-prop>engines/engine[3]/nozzle-pos-norm</alpha-prop>
+	<factor>-1</factor>
+	<offset>1</offset>
+	</transparency>
+</animation>
+
+<!-- Burner Flame -->
+<animation>
+	<type>select</type>
+	<object-name>OuterFlame1</object-name>
+	<object-name>InnerFlame1</object-name>
+	<condition>
+	  <property>engines/engine[0]/augmentation</property>
+	</condition>
+</animation>
+
+<animation>
+	<type>select</type>
+	<object-name>OuterFlame2</object-name>
+	<object-name>InnerFlame2</object-name>
+	<condition>
+	  <property>engines/engine[1]/augmentation</property>
+	</condition>
+</animation>
+
+<animation>
+	<type>select</type>
+	<object-name>OuterFlame3</object-name>
+	<object-name>InnerFlame3</object-name>
+	<condition>
+	  <property>engines/engine[2]/augmentation</property>
+	</condition>
+</animation>
+
+<animation>
+	<type>select</type>
+	<object-name>OuterFlame4</object-name>
+	<object-name>InnerFlame4</object-name>
+	<condition>
+	  <property>engines/engine[3]/augmentation</property>
+	</condition>
+</animation>
 
 <!-- SECONDARY NOZZLES -->
 
