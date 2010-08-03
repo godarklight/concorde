@@ -468,7 +468,6 @@ EngineN1.schedule = func {
     me.groundidle( speedkt );
     me.engine4( speedkt );
     me.reheatcontrol();
-    me.exhausttexture();
     me.transitsound();
 }
 
@@ -532,28 +531,6 @@ EngineN1.reheatcontrol = func {
         if( me.reheat[i] != augmentation ) {
             me.reheat[i] = augmentation;
             me.itself["root-ctrl"][i].getChild("augmentation").setValue( me.reheat[i] );
-        }
-   }
-}
-
-EngineN1.exhausttexture = func {
-   var factor = 0.0;
-   var texture = "";
-
-   for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        if( me.itself["engine"][i].getChild("n1").getValue() > me.N1EXHAUST ) {
-            factor = 1.0;
-            texture = "concorde.rgb";
-        }
-        else {
-            factor = 0.0;
-            texture = me.texpath ~ "/concorde-nozzle.rgb";
-        }
-
-        if( me.exhaust[i] != factor ) {
-            me.exhaust[i] = factor;
-            me.itself["root"][i].getChild("nozzle-factor").setValue(me.exhaust[i]);
-            me.itself["root"][i].getChild("nozzle-texture").setValue(texture);
         }
    }
 }
