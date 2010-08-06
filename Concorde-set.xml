@@ -90,7 +90,13 @@
 -->
   </sound>
 
-  <panel>
+   <submodels>
+     <servicable type="bool">true</servicable>
+     <path type="string">Aircraft/Concorde/concorde-submodels.xml</path>
+   </submodels>
+
+
+   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-2D-captain.xml</path>
    <visibility>false</visibility>
   </panel>
