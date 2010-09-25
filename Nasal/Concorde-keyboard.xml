@@ -187,6 +187,13 @@
      <command>nasal</command>
      <script>globals.Concorde.seatsystem.viewexport("captain");</script>
     </binding>
+    <mod-shift>
+     <desc>Restore view pitch</desc>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.seatsystem.restorepitchexport();</script>
+     </binding>
+    </mod-shift>
    </key>
 
    <key n="23">

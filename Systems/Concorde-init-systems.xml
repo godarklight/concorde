@@ -743,6 +743,7 @@
     <csd-inlet-degc type="double">0.0</csd-inlet-degc>
     <csd-oil-psi type="double">0.0</csd-oil-psi>
     <engine-num>1</engine-num>
+    <fuel-degc type="double">15.0</fuel-degc>
     <intake-aux-inlet type="bool">true</intake-aux-inlet>
     <intake-lane type="bool" n="0">true</intake-lane>
     <intake-lane type="bool" n="1">false</intake-lane>
@@ -765,6 +766,7 @@
     <csd-inlet-degc type="double">0.0</csd-inlet-degc>
     <csd-oil-psi type="double">0.0</csd-oil-psi>
     <engine-num>2</engine-num>
+    <fuel-degc type="double">15.0</fuel-degc>
     <intake-aux-inlet type="bool">true</intake-aux-inlet>
     <intake-lane type="bool" n="0">true</intake-lane>
     <intake-lane type="bool" n="1">false</intake-lane>
@@ -787,6 +789,7 @@
     <csd-inlet-degc type="double">0.0</csd-inlet-degc>
     <csd-oil-psi type="double">0.0</csd-oil-psi>
     <engine-num>3</engine-num>
+    <fuel-degc type="double">15.0</fuel-degc>
     <intake-aux-inlet type="bool">true</intake-aux-inlet>
     <intake-lane type="bool" n="0">true</intake-lane>
     <intake-lane type="bool" n="1">false</intake-lane>
@@ -809,6 +812,7 @@
     <csd-inlet-degc type="double">0.0</csd-inlet-degc>
     <csd-oil-psi type="double">0.0</csd-oil-psi>
     <engine-num>4</engine-num>
+    <fuel-degc type="double">15.0</fuel-degc>
     <intake-aux-inlet type="bool">true</intake-aux-inlet>
     <intake-lane type="bool" n="0">true</intake-lane>
     <intake-lane type="bool" n="1">false</intake-lane>
@@ -1485,6 +1489,18 @@
       <component>/systems/air-bleed</component>
       <subcomponent>engine</subcomponent>
      </air>
+     <airbleed>
+      <component>/controls/pneumatic</component>
+      <subcomponent>engine</subcomponent>
+     </airbleed>
+     <engine>
+      <component>/systems/engines</component>
+      <subcomponent>engine</subcomponent>
+     </engine>
+     <tank>
+      <component>/consumables/fuel</component>
+      <subcomponent>tank</subcomponent>
+     </tank>
     </dependency>
 
     <itself>
@@ -1545,10 +1561,6 @@
     <dependency>
      <pushback>/sim/model/pushback</pushback>
     </dependency>
-
-    <noinstrument>
-     <weight>/fdm/jsbsim/inertia/weight-lbs</weight>
-    </noinstrument>
    </relations>
   </tractor>
 

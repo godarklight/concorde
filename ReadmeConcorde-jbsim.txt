@@ -122,7 +122,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 2.0.0 : minimal version.
+- 2.0.x : minimal version.
 
 
 Keyboard
@@ -144,6 +144,7 @@ Views
 - "ctrl-L"       : Observer 2 view (floating).
 - "ctrl-O"       : "O"verhead view.
 - "ctrl-W"       : Ste"W"ard view (floating).
+- "shift-ctrl-V" : restore view pitch.
 - "shift-ctrl-X" : restore floating view.
 
 Virtual crew
@@ -605,11 +606,11 @@ Known problems autopilot
 - NAV hold mode is sensitive to the turbulence of the ground layer.
 - toggle INS mode, only AFTER activation of route, or use "ctrl-I a".
 - heading modes are a little slow to converge, at supersonic speed.
-- heading modes may start to bank into the opposite direction.
 - at Mach 2.02, once unlocked, vertical speed hold is unstable.
 
-Known problems 2.0.0 autopilot
-------------------------------
+Known problems GIT autopilot
+----------------------------
+- on engagement, magnetic and true heading modes bank into the opposite direction.
 - the first waypoint is always ignored : insert a double waypoint.
 - to update waypoints, once route is activated, clear completely the route.
 - during descent, route manager may update the target altitude (press F11).
@@ -687,4 +688,4 @@ References
     British Airways flight manual 1979, 1600 pages. 
 
 
-14 March 2010.
+22 August 2010.

@@ -522,7 +522,7 @@
    </relations>
 
    <total-gal_us type="double">0.0</total-gal_us>
-   <total-kg type="double">0.0</total-kg>
+   <total-lbs alias="/fdm/jsbsim/propulsion/total-fuel-lbs"/>
   </fuel>
 
   <fuel-consumed n="0">
@@ -921,6 +921,28 @@
     </dependency>
    </relations>
   </tank-pressure>
+
+  <tank-temperature>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <engine-degc>15.0</engine-degc>
+
+   <relations>
+    <dependency>
+     <engine>
+      <component>/systems/engines</component>
+      <subcomponent>engine</subcomponent>
+     </engine>
+     <tank>
+      <component>/consumables/fuel</component>
+      <subcomponent>tank</subcomponent>
+     </tank>
+    </dependency>
+   </relations>
+   
+   <selector type="int">0</selector>
+   <tank-degc>15.0</tank-degc>
+  </tank-temperature>
 
   <tas-indicator>
    <serviceable type="bool" archive="y">true</serviceable>

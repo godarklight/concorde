@@ -104,8 +104,9 @@
     <chunks>
      <chunk>
       <type>number-value</type>
-      <property>instrumentation/fuel/total-kg</property>
+      <property>instrumentation/fuel/total-lbs</property>
       <format>%6.0f</format>
+      <scale>0.45359</scale>            <!-- kg -->
      </chunk>
     </chunks>
     <transformations>

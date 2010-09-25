@@ -844,12 +844,12 @@ Pressurizetank = {};
 Pressurizetank.new = func {
    var obj = { parents : [Pressurizetank,System],
 
-           diffpressure : TankPressure.new(),
+               diffpressure : TankPressure.new(),
 
-           TANKSEC : 30.0,                          # refresh rate
-           PRESSURIZEINHG : 9.73,                   # 28000 ft
-           MAXPSI : 1.5,
-           MINPSI : 0.0
+               TANKSEC : 30.0,                          # refresh rate
+               PRESSURIZEINHG : 9.73,                   # 28000 ft
+               MAXPSI : 1.5,
+               MINPSI : 0.0
          };
 
    obj.init();
@@ -993,10 +993,6 @@ TotalFuel.init = func {
 # total of fuel in kg
 TotalFuel.schedule = func {
    var fuelgalus = 0.0;
-   var fuelkg = 0.0;
-   var stepkg = 0.0;
-   var fuelkgpmin = 0.0;
-   var fuelkgph = 0.0;
    var speedup = me.noinstrument["speed-up"].getValue();
 
    # last total
@@ -1012,17 +1008,16 @@ TotalFuel.schedule = func {
 
 
    # real
-   fuelkg = fuelgalus * constant.GALUSTOKG;
-   me.itself["root"].getChild("total-kg").setValue(fuelkg);
+   var fuelkg = fuelgalus * constant.GALUSTOKG;
 
 
    # ==========================================================
    # - MUST BE CONSTANT with speed up : pumping is accelerated.
    # - not real, used to check errors in pumping.
    # ==========================================================
-   stepkg = tankskg - fuelkg;
-   fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC * speedup );
-   fuelkgph = fuelkgpmin * constant.HOURTOMINUTE;
+   var stepkg = tankskg - fuelkg;
+   var fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC * speedup );
+   var fuelkgph = fuelkgpmin * constant.HOURTOMINUTE;
 
    # not real
    me.itself["root"].getChild("fuel-flow-kg_ph").setValue(fuelkgph);

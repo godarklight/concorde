@@ -67,6 +67,8 @@ Autopilot.new = func {
 
            landheadingdeg : 0.0,
 
+           routeactive : constant.FALSE,
+
            engaged_channel : constantaero.APNONE
          };
 
@@ -145,7 +147,7 @@ Autopilot.red_autopilot = func {
 }
 
 Autopilot.schedule = func {
-   me.supervisor();
+   me.supervisor( constant.FALSE );
 
    me.red_autopilot();
 }
@@ -154,11 +156,14 @@ Autopilot.slowschedule = func {
    me.releasedatum();
 }
 
-Autopilot.supervisor = func {
-   # disconnect autopilot if no voltage (TO DO by FG)
-   me.voltage();
+Autopilot.supervisor = func( recursive = 1 ) {
+   # avoid recursive calls
+   if( !recursive ) {
+       # disconnect autopilot if no voltage (TO DO by FG)
+       me.voltage();
 
-   me.inslight();
+       me.inslight();
+   }
 
    me.lockroll();
 
@@ -1855,21 +1860,29 @@ Autopilot.is_true = func {
 }
 
 Autopilot.inslight = func {
+   var activation = constant.FALSE;
    var id = ["", "", ""];
 
    # TEMPORARY work around for 2.0.0
    if( me.route_active() ) {
+       activation = constant.TRUE;
+
        # each time, because the route can change
        var wp = me.itself["route"].getChildren("wp");
+       var current_wp = me.itself["route-manager"].getChild("current-wp").getValue();
        var nb_wp = size(wp);
 
        # route manager doesn't update these fields
        if( nb_wp >= 1 ) {
-           id[0] = wp[0].getChild("id").getValue();
+           id[0] = wp[current_wp].getChild("id").getValue();
+
+           # defaut
+           id[1] = "";
+           id[2] = id[0];
        }
 
        if( nb_wp >= 2 ) {
-           id[1] = wp[1].getChild("id").getValue();
+           id[1] = wp[current_wp + 1].getChild("id").getValue();
        }
 
        if( nb_wp > 0 ) {
@@ -1916,12 +1929,16 @@ Autopilot.inslight = func {
        }
 
        # Feedback requested by user : activation of route toggles autopilot
-       else {
+       elsif( !me.routeactive ) {
+           # only when route is being activated (otherwise cannot leave INS mode)
            if( !me.is_ins() ) {
                me.apinsexport();
            }
        }
    }
+
+
+   me.routeactive = activation;
 }
 
 Autopilot.ins_failure = func {

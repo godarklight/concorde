@@ -104,9 +104,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>-54</x>
+   <x>-57</x>
    <y>45</y>
-   <w>30</w>
+   <w>38</w>
    <h>165</h>
   </instrument>
 
@@ -541,10 +541,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>66</x>
+   <x>63</x>
    <y>160</y>
-   <w>77.5</w>
-   <h>77.5</h>
+   <w>80</w>
+   <h>80</h>
   </instrument>
 
   <instrument include="Instruments/concorde-machmeter.xml">
@@ -1377,9 +1377,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>437</x>
-   <y>203</y>
-   <w>38</w>
-   <h>38</h>
+   <y>210</y>
+   <w>54</w>
+   <h>54</h>
   </instrument>
 
   <instrument include="Instruments/concorde-red-brakes-fail.xml">
@@ -2615,10 +2615,43 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>690</x>
-   <y>180</y>
-   <w>52</w>
-   <h>60</h>
+   <x>698</x>
+   <y>182</y>
+   <w>68</w>
+   <h>75</h>
+  </instrument>
+
+  <instrument include="Instruments/concorde-nose-visor-status.xml">
+   <name>Nose/visor status</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/captain</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>345</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>275</value>
+      </greater-than>
+      <less-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>5</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-45</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>760</x>
+   <y>182</y>
+   <w>54</w>
+   <h>75</h>
   </instrument>
 
   <instrument include="Instruments/concorde-nose-visor-lights.xml">
@@ -2648,108 +2681,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>729</x>
-   <y>180</y>
+   <x>737</x>
+   <y>182</y>
    <w>12</w>
-   <h>60</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-visor-status.xml">
-   <name>Visor status</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>345</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-45</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>750</x>
-   <y>195</y>
-   <w>20</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-nose-status.xml">
-   <name>Nose status</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>345</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>275</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>5</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-50</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>750</x>
-   <y>160</y>
-   <w>20</w>
-   <h>30</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-wiper-override.xml">
-   <name>Wiper override switch</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>340</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>280</value>
-      </greater-than>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>0</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-45</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>775</x>
-   <y>195</y>
-   <w>20</w>
    <h>60</h>
   </instrument>
 
@@ -2780,10 +2714,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>740</x>
-   <y>120</y>
-   <w>66</w>
-   <h>44</h>
+   <x>752</x>
+   <y>122</y>
+   <w>72</w>
+   <h>45</h>
   </instrument>
 
   <instrument include="Instruments/concorde-red-inner-elevon.xml">
@@ -2813,10 +2747,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>785</x>
-   <y>113</y>
-   <w>15</w>
-   <h>6</h>
+   <x>793</x>
+   <y>114</y>
+   <w>10</w>
+   <h>10</h>
   </instrument>
 
   <instrument include="Instruments/concorde-accl-aoa.xml">
@@ -2852,9 +2786,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <g-sel>/instrumentation/accelerometer-aoa[1]/g</g-sel>
     <aoa-sel>/instrumentation/accelerometer-aoa[1]/alpha-deg</aoa-sel>
    </params>
-   <x>690</x>
+   <x>695</x>
    <y>65</y>
-   <w>30</w>
+   <w>38</w>
    <h>165</h>
   </instrument>
 
@@ -2885,10 +2819,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>750</x>
-   <y>53</y>
-   <w>85</w>
-   <h>85</h>
+   <x>757</x>
+   <y>54</y>
+   <w>83</w>
+   <h>83</h>
   </instrument>
 
   <instrument include="Instruments/concorde-test-gear-steering.xml">
@@ -3017,7 +2951,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>760</x>
+   <x>763</x>
    <y>-9</y>
    <w>70</w>
    <h>35</h>
@@ -3465,10 +3399,10 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <vmo-sel>/instrumentation/airspeed-indicator[1]/vmo-kt</vmo-sel>
     <standby-ctrl>/instrumentation/airspeed-indicator[1]/standby</standby-ctrl>
    </params>
-   <x>831</x>
+   <x>829</x>
    <y>160</y>
-   <w>77.5</w>
-   <h>77.5</h>
+   <w>80</w>
+   <h>80</h>
   </instrument>
 
   <instrument include="Instruments/concorde-machmeter.xml">

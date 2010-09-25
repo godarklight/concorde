@@ -13,55 +13,55 @@ Pressurization = {};
 Pressurization.new = func {
    var obj = { parents : [Pressurization,System],
 
-           diffpressure : Differentialpressure.new(),
+               diffpressure : Differentialpressure.new(),
 
-           PRESSURIZESEC : 5.0,                       # sampling
-           INERTIASEC : 1.2,                          # inertia of discharge valve
+               PRESSURIZESEC : 5.0,                       # sampling
+               INERTIASEC : 1.2,                          # inertia of discharge valve
 
-           speedup : 1.0,
+               speedup : 1.0,
 
-           DEPRESSURIZEINHGPM : 10.0,                 # 10 inhg/minute (guess)
-           LEAKINHGPM : 0.01,                         # 0.01 inhg/minute if no pressurization
+               DEPRESSURIZEINHGPM : 10.0,                 # 10 inhg/minute (guess)
+               LEAKINHGPM : 0.01,                         # 0.01 inhg/minute if no pressurization
 
-           PRESSURIZEINHGPM : 0.0,                    # 18 mbar/minute = 0.53 inhg/minute
+               PRESSURIZEINHGPM : 0.0,                    # 18 mbar/minute = 0.53 inhg/minute
 
-           MININHG : 19.82,                           # 11000 ft
+               MININHG : 19.82,                           # 11000 ft
 
-           DEPRESSURIZEINHG : 0.0,
-           LEAKINHG : 0.0,
-           PRESSURIZEINHG : 0.0,                      # step
-           PRESSURIZEMININHG : 0.0,                   # minimum pressure in cabine
+               DEPRESSURIZEINHG : 0.0,
+               LEAKINHG : 0.0,
+               PRESSURIZEINHG : 0.0,                      # step
+               PRESSURIZEMININHG : 0.0,                   # minimum pressure in cabine
 
-           cabininhg : constantISA.SEA_inhg,
-           DATUMINHG : constantISA.SEA_inhg,
-           outflowinhg : 0.0,
-           pressureinhg : constantISA.SEA_inhg,
-           targetinhg : constantISA.SEA_inhg,
+               cabininhg : constantISA.SEA_inhg,
+               DATUMINHG : constantISA.SEA_inhg,
+               outflowinhg : 0.0,
+               pressureinhg : constantISA.SEA_inhg,
+               targetinhg : constantISA.SEA_inhg,
 
-           THRUSTPSI : 7.0,
-           THRUSTOFFPSI : 3.0,
-           GROUNDPSI : 1.45,
+               THRUSTPSI : 7.0,
+               THRUSTOFFPSI : 3.0,
+               GROUNDPSI : 1.45,
 
-           diffpsi : 0.0,
+               diffpsi : 0.0,
 
-           UNDERPRESSUREFT : 10000.0,
-           LANDINGFT : 2500.0,
+               UNDERPRESSUREFT : 10000.0,
+               LANDINGFT : 2500.0,
 
-           altseaft : 0.0,
+               altseaft : 0.0,
 
-           CLIMBFTPM : 2000.0,
-           DESCENTFTPM : 1500.0,
+               CLIMBFTPM : 2000.0,
+               DESCENTFTPM : 1500.0,
 
-           system_no : 0,
+               system_no : 0,
 
-           VALVEOPEN : 100,
-           VALVESHUT : 0,
+               VALVEOPEN : 100,
+               VALVESHUT : 0,
 
-           dischargevalve : [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ],
+               dischargevalve : [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ],
 
-           RATIOAFT : 0.50,                             # aft discharge valve is 50 % of foward valve.
+               RATIOAFT : 0.50,                             # aft discharge valve is 50 % of foward valve.
 
-           ground : constant.TRUE                       # ground relief valve
+               ground : constant.TRUE                       # ground relief valve
          };
 
    obj.init();
@@ -488,9 +488,9 @@ Differentialpressure = {};
 Differentialpressure.new = func {
    var obj = { parents : [Differentialpressure,System],
 
-           DIFFSEC : 5.0,
+               DIFFSEC : 5.0,
 
-           OVERPRESSUREPSI : 11.0
+               OVERPRESSUREPSI : 11.0
          };
 
    obj.init();
@@ -535,16 +535,16 @@ Airbleed = {};
 Airbleed.new = func {
    var obj = { parents : [Airbleed,System],
 
-           airconditioning : Airconditioning.new(),
+               airconditioning : Airconditioning.new(),
 
-           AIRSEC : 1.0,                              # refresh rate
+               AIRSEC : 1.0,                              # refresh rate
 
-           OVERPSI : 85.0,                            # overpressure
-           MAXPSI : 65.0,                             # maximum pressure
-           GROUNDPSI : 35.0,                          # ground supply pressure
-           NOPSI : 0.0,
+               OVERPSI : 85.0,                            # overpressure
+               MAXPSI : 65.0,                             # maximum pressure
+               GROUNDPSI : 35.0,                          # ground supply pressure
+               NOPSI : 0.0,
 
-           adjacent : { 0 : 1, 1 : 0, 2 : 3, 3 : 2  }
+               adjacent : { 0 : 1, 1 : 0, 2 : 3, 3 : 2  }
          };
 
    obj.init();
@@ -608,6 +608,10 @@ Airbleed.groundserviceexport = func {
 
 Airbleed.reargroundserviceexport = func {
     me.airconditioning.groundservice();
+}
+
+Airbleed.fueltankexport = func {
+    me.airconditioning.fueltankexport();
 }
 
 Airbleed.has_groundservice = func {
@@ -762,37 +766,41 @@ Airconditioning = {};
 Airconditioning.new = func {
    var obj = { parents : [Airconditioning,System],
 
-           AIR60SEC : 60.0,                           # warming rate
-           VALVESEC : 5.0,
-           AIRSEC : 1.0,                              # refresh rate
+               fueltank : TankTemperature.new(),
 
-           speedup : 1.0,
+               AIR60SEC : 60.0,                           # warming rate
+               VALVESEC : 5.0,
+               AIRSEC : 1.0,                              # refresh rate
 
-           MINPSI : 65.0,                             # minimum pressure for air conditioning
-           NOPSI : 0.0,
+               speedup : 1.0,
 
-           NORMALKGPH : 4200.0,
-           NOMASSKGPH : 0.0,
+               MINPSI : 65.0,                             # minimum pressure for air conditioning
+               NOPSI : 0.0,
 
-           VALVEH : 1.0,                              # opened : hot air maximum
-           VALVEC : 0.0,                              # shut : cold air only
+               NORMALKGPH : 4200.0,
+               NOMASSKGPH : 0.0,
 
-           temperature_valve : 0.0,
-           ground_supply : constant.FALSE,
+               VALVEH : 1.0,                              # opened : hot air maximum
+               VALVEC : 0.0,                              # shut : cold air only
 
-           PRIMARYDEGC : 150.0,
-           OVERDEGC : 120.0,                          # duct over temperature
-           DUCTDEGC : 30.0,                           # selector range
-           DUCTMINDEGC : 5.0,
+               temperature_valve : 0.0,
+               ground_supply : constant.FALSE,
 
-           ramairdegc : 0.0,
+               PRIMARYDEGC : 150.0,
+               OVERDEGC : 120.0,                          # duct over temperature
+               DUCTDEGC : 30.0,                           # selector range
+               DUCTMINDEGC : 5.0,
 
-           WARMINGDEGCPMIN : 0.5,                     # cabin
-           COOLINGDEGCPMIN : 0.1,                     # isolation
+               ramairdegc : 0.0,
 
-           thegroup : { "1" : 0, "2" : 1, "3" : 2, "4" : 3 },
-           thetemperature : { "1" : "flight-deck-degc", "2" : "cabin-fwd-degc", "3" : "cabin-rear-degc",
-                              "4" : "cabin-rear-degc" }
+               WARMINGDEGCPMIN : 0.5,                     # cabin
+               COOLINGDEGCPMIN : 0.1,                     # isolation
+
+               FUELHEATING : 0.8,                         # guessed at 80 %
+
+               thegroup : { "1" : 0, "2" : 1, "3" : 2, "4" : 3 },
+               thetemperature : { "1" : "flight-deck-degc", "2" : "cabin-fwd-degc", "3" : "cabin-rear-degc",
+                              "    4" : "cabin-rear-degc" }
          };
 
    obj.init();
@@ -806,6 +814,8 @@ Airconditioning.init = func {
 
 Airconditioning.set_rate = func( rates ) {
     me.AIRSEC = rates;
+
+    me.fueltank.set_rate( me.AIRSEC );
 }
 
 Airconditioning.amber_air = func {
@@ -825,6 +835,10 @@ Airconditioning.red_doors = func {
     var result = me.itself["root"].getChild("ground-service").getChild("door").getValue();
 
     return result; 
+}
+
+Airconditioning.fueltankexport = func {
+    me.fueltank.selectorexport();
 }
 
 Airconditioning.has_groundservice = func {
@@ -857,7 +871,7 @@ Airconditioning.slowschedule = func {
    me.speedup = me.noinstrument["speed-up"].getValue();
 
  
-   for( var i = 0; i < 3; i = i+1 ) {
+   for( var i = 0; i < constantaero.ENGINE4; i = i+1 ) {
         flowkgph = me.itself["group"][i].getChild("flow-kgph").getValue();
         targetdegc = me.selectordegc( i );
 
@@ -964,6 +978,8 @@ Airconditioning.schedule = func {
    var oldductdegc = 0.0;
    var ductdegc = 0.0;
    var inletdegc = 0.0;
+   var fueldegc = 0.0;
+   var tankdegc = 0.0;
    var flowkgph = 0.0;
    var coef = 0.0;
    var serviceable = me.itself["root"].getChild("serviceable").getValue();
@@ -1005,7 +1021,20 @@ Airconditioning.schedule = func {
         # one supposes quick cooling by RAM air, when no mass flow.
         me.apply(me.itself["group"][i].getChild("inlet-degc").getPath(),inletdegc);
         me.apply(me.itself["group"][i].getChild("duct-degc").getPath(),ductdegc);
+
+        # air bleed transfers heat to fuel
+        tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
+        fueldegc = tankdegc;
+
+        if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
+            fueldegc = fueldegc + ( inletdegc - tankdegc ) * me.FUELHEATING;
+        }
+        me.apply(me.dependency["engine"][i].getChild("fuel-degc").getPath(),fueldegc);
    }
+
+
+   # tank temperature
+   me.fueltank.schedule();
 }
 
 Airconditioning.apply = func( path, value ) {
@@ -1146,4 +1175,47 @@ Airconditioning.closevalve = func {
 Airconditioning.adjustvalve = func( index ) {
    interpolate(me.itself["group"][index].getChild("temperature-valve").getPath(),
                me.temperature_valve, me.VALVESEC);
+}
+
+
+# ================
+# TANK TEMPERATURE
+# ================
+
+TankTemperature = {};
+
+TankTemperature.new = func {
+   var obj = { parents : [TankTemperature,System],
+
+               AIRSEC : 1.0,
+
+               selector : 0
+         };
+
+   obj.init();
+
+   return obj;
+};
+
+TankTemperature.init = func {
+   me.inherit_system("/instrumentation/tank-temperature");
+}
+
+TankTemperature.set_rate = func( rates ) {
+   me.AIRSEC = rates;
+}
+
+TankTemperature.selectorexport = func {
+   me.selector = me.itself["root"].getChild("selector").getValue();
+
+   me.schedule();
+}
+
+TankTemperature.schedule = func {
+   interpolate( me.itself["root"].getChild("tank-degc").getPath(),
+                me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(),
+                me.AIRSEC );
+   interpolate( me.itself["root"].getChild("engine-degc").getPath(),
+                me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(),
+                me.AIRSEC );
 }

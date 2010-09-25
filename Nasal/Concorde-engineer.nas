@@ -1346,9 +1346,9 @@ Virtualengineer.setweight = func {
 }
 
 Virtualengineer.setweighthuman = func {
-    var totalkg = me.dependency["fuel"].getChild("total-kg").getValue();
+    var totallb = me.dependency["fuel"].getChild("total-lbs").getValue();
 
-    me.fuelsystem.setweighthuman( totalkg );
+    me.fuelsystem.setweighthuman( totallb * constant.LBTOKG );
 }
 
 Virtualengineer.fuel = func {
@@ -1669,7 +1669,7 @@ Navigation.schedule = func {
        me.groundkt = groundfps * constant.FPSTOKT;
    }
 
-   me.totalkg = me.dependency["fuel"].getChild("total-kg").getValue();
+   me.totalkg = me.dependency["fuel"].getChild("total-lbs").getValue() * constant.LBTOKG;
 
    # on ground
    if( me.groundkt < me.FLIGHTKT ) {

@@ -481,6 +481,36 @@ Seats.restoreexport = func {
    }
 }
 
+# restore view pitch
+Seats.restorepitchexport = func {
+   var index = getprop("/sim/current-view/view-number");
+
+   if( index == me.CAPTINDEX ) {
+       var headingdeg = me.theviews[index].getNode("config").getChild("heading-offset-deg").getValue();
+       var pitchdeg = me.theviews[index].getNode("config").getChild("pitch-offset-deg").getValue();
+
+       setprop("/sim/current-view/heading-offset-deg", headingdeg );
+       setprop("/sim/current-view/pitch-offset-deg", pitchdeg );
+   }
+
+   # only cockpit views
+   else {
+       var name = "";
+
+       for( var i = 0; i < me.nb_seats; i=i+1 ) {
+            name = me.names[i];
+            if( me.theseats.getChild(name).getValue() ) {
+                var headingdeg = me.theviews[index].getNode("config").getChild("heading-offset-deg").getValue();
+                var pitchdeg = me.theviews[index].getNode("config").getChild("pitch-offset-deg").getValue();
+
+                setprop("/sim/current-view/heading-offset-deg", headingdeg );
+                setprop("/sim/current-view/pitch-offset-deg", pitchdeg );
+                break;
+            }
+        }
+   }
+}
+
 Seats.audioexport = func {
    var name = "";
    var panel = constant.TRUE;

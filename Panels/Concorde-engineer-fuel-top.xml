@@ -70,10 +70,71 @@ override those by providing <w>..</w> and <h>..</h> properties with the
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <x>210</x>
-   <y>245</y>
-   <w>360</w>
+   <x>220</x>
+   <y>250</y>
+   <w>365</w>
    <h>30</h>
+  </instrument>
+
+<!-- fuel temperature -->
+
+  <instrument include="Instruments/concorde-fuel-temperature.xml">
+   <name>Fuel temperature</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>220</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-20</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>415</x>
+   <y>220</y>
+   <w>75</w>
+   <h>75</h>
+  </instrument>
+
+
+  <instrument include="Instruments/concorde-fuel-temperature-sel.xml">
+   <name>Fuel temperature selector</name>
+   <condition>
+    <or>
+     <and>
+      <property>/sim/current-view/internal</property>
+      <property>/systems/seat/engineer</property>
+      <less-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>285</value>
+      </less-than>
+      <greater-than>
+       <property>/sim/current-view/goal-heading-offset-deg</property>
+       <value>225</value>
+      </greater-than>
+      <greater-than>
+       <property>/sim/current-view/goal-pitch-offset-deg</property>
+       <value>-25</value>
+      </greater-than>
+     </and>
+     <property>/controls/seat/all</property>
+    </or>
+   </condition>
+   <x>415</x>
+   <y>155</y>
+   <w>73</w>
+   <h>44</h>
   </instrument>
 
 <!-- jettison valves -->
@@ -562,7 +623,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <defined-status>/controls/fuel/tank[8]/inlet-static[0]</defined-status>
    </params>
    <x>190</x>
-   <y>225</y>
+   <y>230</y>
    <w>10</w>
    <h>10</h>
   </instrument>
@@ -653,7 +714,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     <defined-status>/controls/fuel/tank[8]/inlet-static[1]</defined-status>
    </params>
    <x>350</x>
-   <y>225</y>
+   <y>230</y>
    <w>10</w>
    <h>10</h>
   </instrument>

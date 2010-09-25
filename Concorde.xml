@@ -6,9 +6,14 @@
 
     <fileheader>
         <author> </author>
-        <filecreationdate> 6 March 2010 </filecreationdate>
-        <version> 1.12 </version>
+        <filecreationdate> 14 August 2010 </filecreationdate>
+        <version> 1.13 </version>
         <description>Aerospatiale/British Aerospace Concorde</description>
+
+        <license>
+           <licenseName>GPL (General Public License)</licenseName>
+           <licenseURL>http://www.gnu.org/licenses/gpl.html</licenseURL>
+        </license>
 
         <note>Nose gear is longer.</note>
         <note>Air intake effect, which allows more drag at Mach 1.3-2.0.</note>
@@ -1086,6 +1091,7 @@
             <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 9255.0100 </capacity>
             <contents unit="LBS"> 9255.0100 </contents>
+            <temperature> 59 </temperature>                                           <!-- 15 deg C -->
         </tank>
         <tank type="FUEL">    <!-- Tank number 1 -->
             <documentation>
@@ -1103,6 +1109,7 @@
             <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 10075.1300 </capacity>
             <contents unit="LBS"> 10075.1300 </contents>
+            <temperature> 59 </temperature>
         </tank>
         <tank type="FUEL">    <!-- Tank number 2 -->
             <documentation>
@@ -1120,6 +1127,7 @@
             <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 10075.1300 </capacity>
             <contents unit="LBS"> 10075.1300 </contents>
+            <temperature> 59 </temperature>
         </tank>
         <tank type="FUEL">    <!-- Tank number 3 -->
             <documentation>
@@ -1136,6 +1144,7 @@
             <radius unit="IN"> 50 </radius>
             <capacity unit="LBS"> 9255.0100 </capacity>
             <contents unit="LBS"> 9255.0100 </contents>
+            <temperature> 59 </temperature>
         </tank>
         <tank type="FUEL">    <!-- Tank number 4 -->
             <documentation>
