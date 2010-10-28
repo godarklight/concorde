@@ -524,6 +524,36 @@
 
 <!-- lower the visor inside the nose (curved guide rails) -->
 
+ <animation>
+  <type>rotate</type>
+  <object-name>Screen</object-name>
+  <property>surface-positions/flap-pos-norm</property>
+  <interpolation>
+    <entry>
+     <ind>0.0</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.11</ind>
+     <dep>0</dep>
+    </entry>
+    <entry>
+     <ind>0.33</ind>
+     <dep>9</dep> <!-- rotate -->
+    </entry>
+  </interpolation>
+  <center>
+   <x-m>-25.720</x-m>
+   <y-m>1.108</y-m>
+   <z-m>0</z-m>
+ </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
   <animation>
   <type>translate</type>
   <object-name>Screen</object-name>
@@ -534,34 +564,15 @@
      <dep>0</dep>
     </entry>
     <entry>
-     <ind>0.06</ind>
-     <dep>-0.02</dep>
-    </entry>
-    <entry>
-     <ind>0.12</ind>
-     <dep>-0.15</dep>
-    </entry>
-    <entry>
-     <ind>0.18</ind>
-     <dep>-0.25</dep>
-    </entry>
-    <entry>
-     <ind>0.23</ind>
-     <dep>-0.33</dep>
-    </entry>
-    <entry>
-     <ind>0.29</ind>
-     <dep>-0.38</dep>
-    </entry>
-    <entry>
-     <ind>0.34</ind>
-     <dep>-0.40</dep> <!-- down -->
-    </entry>
-    <entry>
-     <ind>1.0</ind>
-     <dep>-0.40</dep>
+     <ind>0.11</ind>
+     <dep>-0.25</dep> <!-- down -->
     </entry>
   </interpolation>
+  <center>
+   <x-m>-25.720</x-m>
+   <y-m>1.108</y-m>
+   <z-m>0</z-m>
+ </center>
   <axis>
    <x>0</x>
    <y>0</y>
@@ -579,14 +590,15 @@
      <dep>0</dep>
     </entry>
     <entry>
-     <ind>0.34</ind>
-     <dep>-0.80</dep> <!-- forwards -->
-    </entry>
-    <entry>
-     <ind>1.0</ind>
-     <dep>-0.80</dep>
+     <ind>0.33</ind>
+     <dep>-0.7</dep> <!-- forward -->
     </entry>
   </interpolation>
+  <center>
+   <x-m>-25.720</x-m>
+   <y-m>1.108</y-m>
+   <z-m>0</z-m>
+ </center>
   <axis>
    <x>1</x>
    <y>0</y>
