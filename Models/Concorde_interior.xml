@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+
+<!--
+
+     Known problems :
+     ==============
+     - is copilot seat really unsymetrical ?
+
+-->
+
+<PropertyList>
+
+<!-- COCKPIT -->
+
+  <model>
+   <name>Left Captain Foot Plate</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <offsets>
+    <x-m>-24.037</x-m>
+    <y-m>-0.584</y-m>
+    <z-m> 0.332</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Right Captain Foot Plate</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <offsets>
+    <x-m>-24.037</x-m>
+    <y-m>-0.310</y-m>
+    <z-m> 0.332</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Left Copilot Foot Plate</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <offsets>
+    <x-m>-24.037</x-m>
+    <y-m> 0.321</y-m>
+    <z-m> 0.332</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Right Copilot Foot Plate</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <offsets>
+    <x-m>-24.037</x-m>
+    <y-m> 0.593</y-m>
+    <z-m> 0.332</z-m>
+   </offsets>
+  </model>
+
+<!-- DASH -->
+
+  <model>
+   <name>Left Top Console</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top.xml</path>
+   <offsets>
+    <x-m>-23.190</x-m>
+    <y-m>-0.893</y-m>
+    <z-m> 0.957</z-m>
+    <heading-deg>-4.5</heading-deg>
+    <pitch-deg>1.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Left Pedestal</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/panel-pedestal.xml</path>
+   <offsets>
+    <x-m>-23.788</x-m>
+    <y-m>-0.448</y-m>
+    <z-m> 0.328</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Right Pedestal</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/panel-pedestal.xml</path>
+   <offsets>
+    <x-m>-23.788</x-m>
+    <y-m> 0.459</y-m>
+    <z-m> 0.328</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Right Top Console</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top-copilot.xml</path>
+   <offsets>
+    <x-m>-23.190</x-m>
+    <y-m> 0.881</y-m>
+    <z-m> 0.957</z-m>
+    <heading-deg>4.5</heading-deg>
+    <pitch-deg>1.0</pitch-deg>
+   </offsets>
+  </model>
+
+<!-- ENGINEER -->
+
+  <model>
+   <name>Engineer Deck</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/engineer-deck.xml</path>
+   <offsets>
+    <x-m>-21.802</x-m>
+    <y-m> 0.691</y-m>
+    <z-m> 0.859</z-m>
+   </offsets>
+  </model>
+
+
+<!-- ======== -->
+<!-- LIGHTING -->
+<!-- ======== -->
+
+  <animation>
+   <name>Dash lighting</name>
+   <object-name>Left Pedestal</object-name>
+   <object-name>Left Top Console</object-name>
+   <object-name>Right Pedestal</object-name>
+   <object-name>Right Top Console</object-name>
+  </animation>
+
+  <animation>
+   <name>Cockpit lighting</name>
+   <object-name>Left Captain Foot Plate</object-name>
+   <object-name>Left Copilot Foot Plate</object-name>
+   <object-name>Right Captain Foot Plate</object-name>
+   <object-name>Right Copilot Foot Plate</object-name>
+  </animation>
+
+</PropertyList>

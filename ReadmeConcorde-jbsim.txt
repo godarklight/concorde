@@ -599,6 +599,7 @@ TO DO JSBSim
 
 Known problems
 ==============
+- a high IVSI soon after launch may switch virtual crew from "holding" to "flight" : use "ctrl-I v" to restore "takeoff".
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
@@ -687,5 +688,8 @@ References
     http://www.flight-manuals-on-cd.com/Concorde.html/ :
     British Airways flight manual 1979, 1600 pages. 
 
+    http://www.eflightmanuals.com/ :
+    British Airways maintenance manual.
 
-22 August 2010.
+
+28 November 2010.

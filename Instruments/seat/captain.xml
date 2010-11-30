@@ -59,8 +59,8 @@
  <animation> 
   <type>material</type> 
   <object-name>MovingSeat</object-name>
-  <property-base>sim/model/liveryseat/</property-base> 
-  <texture-prop>texture</texture-prop> 
+  <property-base>sim/model/livery/</property-base> 
+  <texture-prop>texture-seat</texture-prop> 
  </animation> 
 
  <animation>
@@ -95,16 +95,31 @@
   </axis>
  </animation>
 
+<!-- stowing -->
+
  <animation>
   <type>translate</type>
   <object-name>MovingSeat</object-name>
   <property>systems/human/captain/stowe-norm</property>
-  <factor>0.6</factor>
+  <factor>0.9</factor>
   <axis>
    <x>1.0</x>
    <y>0.0</y>
    <z>0.0</z>
   </axis>
+ </animation>
+
+ <animation>
+  <type>pick</type>
+  <object-name>Seat</object-name>
+  <action>
+   <button>0</button>
+   <repeatable>false</repeatable>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.seatsystem.railexport("captain");</script>
+   </binding>
+  </action>
  </animation>
 
 </PropertyList>

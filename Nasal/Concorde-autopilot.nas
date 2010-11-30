@@ -17,59 +17,59 @@ Autopilot = {};
 Autopilot.new = func {
    var obj = { parents : [Autopilot,System],
 
-           autothrottlesystem : nil,
+               autothrottlesystem : nil,
 
-           PREDICTIONSEC : 6.0,
-           STABLESEC : 3.0,
-           AUTOPILOTSEC : 3.0,                            # refresh rate
-           ALTACQUIRESEC : 2.0,
-           MAXCLIMBSEC : 1.0,
-           SAFESEC : 1.0,                                 # autoland
-           GOAROUNDSEC : 1.0,
-           TOUCHSEC : 0.2,
-           FLARESEC : 0.1,
+               PREDICTIONSEC : 6.0,
+               STABLESEC : 3.0,
+               AUTOPILOTSEC : 3.0,                            # refresh rate
+               ALTACQUIRESEC : 2.0,
+               MAXCLIMBSEC : 1.0,
+               SAFESEC : 1.0,                                 # autoland
+               GOAROUNDSEC : 1.0,
+               TOUCHSEC : 0.2,
+               FLARESEC : 0.1,
 
-           CLIMBFPM : 2000.0,
-           ACQUIREFPM : 800.0,
-           TOUCHFPM : -750.0,                             # autoland
-           DESCENTFPM : -1000.0,
+               CLIMBFPM : 2000.0,
+               ACQUIREFPM : 800.0,
+               TOUCHFPM : -750.0,                             # autoland
+               DESCENTFPM : -1000.0,
 
-           MACHFT : 25000.0,                              # altitude for Mach speed
-           AUTOLANDFT : 1500.0,
-           ALTIMETERFT : 1200.0,
-           LANDINGFT : 500.0,                             # adjusts to the landing pitch
-           PITCHFT : 100.0,                               # reaches the landing pitch
-           FLAREFT : 100.0,                               # leaves glide slope
-           LIGHTFT : 50.0,
+               MACHFT : 25000.0,                              # altitude for Mach speed
+               AUTOLANDFT : 1500.0,
+               ALTIMETERFT : 1200.0,
+               LANDINGFT : 500.0,                             # adjusts to the landing pitch
+               PITCHFT : 100.0,                               # reaches the landing pitch
+               FLAREFT : 100.0,                               # leaves glide slope
+               LIGHTFT : 50.0,
 
-           PITCHDEG : 20.0,                               # max pitch
-           ALPHADEG : 17.5,                               # max alpha
-           ROLLDEG : 1.0,                                 # roll to swap to next waypoint
-           OSCTRACKDEG : 0.5,                             # gap between track heading and prediction filter, before oscillations
-           OSCNAVDEG : 0.5,                               # gap between nav hold and prediction filter, before oscillations
+               PITCHDEG : 20.0,                               # max pitch
+               ALPHADEG : 17.5,                               # max alpha
+               ROLLDEG : 1.0,                                 # roll to swap to next waypoint
+               OSCTRACKDEG : 0.5,                             # gap between track heading and prediction filter, before oscillations
+               OSCNAVDEG : 0.5,                               # gap between nav hold and prediction filter, before oscillations
 
-           WPTNM : 4.0,                                   # distance to swap to next waypoint
-           VORNM : 3.0,                                   # distance to inhibate VOR
+               WPTNM : 4.0,                                   # distance to swap to next waypoint
+               VORNM : 3.0,                                   # distance to inhibate VOR
 
-           GOAROUNDDEG : 15.0,
+               GOAROUNDDEG : 15.0,
 
 # If no pitch control, sudden swap to 10 deg causes a rebound, worsened by the ground effect.
 # Ignoring the glide slope at 200-300 ft, with a pitch of 10 degrees, would be simpler;
 # but the glide slope following is implicit until 100 ft (red autoland light).
-           FLAREDEG : 10.0,
+               FLAREDEG : 10.0,
 
 # If 10 degrees, vertical speed, too high to catch the glide slope,
 # cannot be recovered during the last 100 ft.
-           LANDINGDEG : 8.5,                              # landing pitch
+               LANDINGDEG : 8.5,                              # landing pitch
 
-           PIDSUPERSONIC : 1,
-           PIDSUBSONIC : 0,
+               PIDSUPERSONIC : 1,
+               PIDSUBSONIC : 0,
 
-           landheadingdeg : 0.0,
+               landheadingdeg : 0.0,
 
-           routeactive : constant.FALSE,
+               routeactive : constant.FALSE,
 
-           engaged_channel : constantaero.APNONE
+               engaged_channel : constantaero.APNONE
          };
 
 # autopilot initialization
@@ -173,6 +173,13 @@ Autopilot.supervisor = func( recursive = 1 ) {
    me.sonicspeedmode();
 
    me.landlight();
+
+   # TEMPORARY work around for heading modes PID :
+   # heading modes banks into the direction, before engagement.
+   if( !me.is_lock_magnetic() ) {
+       # sets the value early.
+       me.magneticheading();
+   }
 }
 
 Autopilot.no_voltage = func {

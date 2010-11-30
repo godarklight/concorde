@@ -4,12 +4,12 @@
 
  <name>Concorde-systems</name>
  <width>800</width>
- <height>550</height>
+ <height>580</height>
  <modal>false</modal>
 
  <text>
   <x>10</x>
-  <y>520</y>
+  <y>550</y>
   <label>Concorde Systems</label>
  </text>
 
@@ -25,7 +25,7 @@
  </text>
 
  <group>
-  <y>420</y>
+  <y>450</y>
 
   <checkbox>
    <x>30</x>
@@ -56,7 +56,7 @@
  </group>
 
  <group>
-  <y>390</y>
+  <y>420</y>
 
   <checkbox>
    <x>30</x>
@@ -75,9 +75,13 @@
    <label>Autopilot 2</label>
    <property>/systems/autopilot[1]/serviceable</property>
   </checkbox>
+ </group>
+
+ <group>
+  <y>390</y>
 
   <checkbox>
-   <x>430</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -86,7 +90,7 @@
   </checkbox>
 
   <checkbox>
-   <x>630</x>
+   <x>230</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>

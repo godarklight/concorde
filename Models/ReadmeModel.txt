@@ -34,15 +34,22 @@ Pitch
 The original 3D model had a pitch and a longer front gear :
 - the fuselage is always horizontal (B).
 - the pitch seems to exist (C)(D) at empty load.
-- the front gear is longer in flight (piston extended) (E).
+- the front gear seems longer in flight (piston extended) (E).
+
+
+Gear
+----
+- for piston animation, left main gear is mirrored from right main gear.
+- when gear is extended, main door closes over cylinder thanks to a flap (A).
 
 
 Groups
 ------
 - the hull group is disabled inside cockpit.
-- primary nozzles and cabin don't belong to the hull group (livery, see below).
+- the nose group is enabled inside cockpit.
+- screen, front and side don't belong to the hull group (livery, see below).
 - the cockpit is without group, to avoid inheritance of lighting (not allowed by OSG).
-- groups with only 1 mesh : nose, screen, front, side.
+- groups with only 1 mesh : nose, screen, front and side.
 - for selection during design, groups are in separate layers.
 
 
@@ -57,11 +64,11 @@ horizontally on the center of gravity :
 Texturing
 ---------
 The cockpit texture without alpha makes the 2D instruments visible on a panel;
-the other texture with alpha is for clipping of 2D instruments.
+the other texture with alpha is for clipping of 2D instruments (doesn't work yet with OSG).
 
 Livery works with only 1 texture per group :
-- screen and front maps a 2nd texture with alpha layer, for their transparent windows;
-- primary nozzles swaps in real time between 2 textures.
+- screen, front and side map a 2nd texture with alpha layer, for their transparent windows;
+- exhaust has a separate texture.
 
 
 
@@ -70,7 +77,7 @@ TO DO
 - compression of gear spring.
 - probes on nose, RAT.
 - bore the doors.
-- passenger seats.
+- passenger area.
 
 
 Known problems
@@ -83,6 +90,7 @@ Known problems outside
 - the tail wheel door seems too long : one part of tail gear hole is closed by the small left and
   right doors.
 - the water deflector of main gear crosses the fuselage at retraction.
+- closed doors of front gear are too wide.
 
 Known problems cockpit
 ----------------------
@@ -105,6 +113,9 @@ References
 (E) http://www.airliners.net/open.file/0441886/L/ :
     G-BOAE, by Harm Rutten.
 
+    http://www.eflightmanuals.com/ :
+    British Airways maintenance manual.
+
 
 Credits
 =======
@@ -115,13 +126,13 @@ See the forum of http://www.blender.org/, message from "Bogey", subject "Update 
 and download links" (24 october 2003 6:23 pm).
 
 
-Updates (-) and additions (+) to the original model                                   Version
+Updates (-) and additions (+) to the original model                         Author    Version
 ---------------------------------------------------------------------------------------------
 + tail door closed.                                                                     1.1
 + cockpit.                                                                              1.2
 - visibility of visor and nose from cockpit.                                            2.0
 - split of nozzles (reverser).                                                          2.1
-- alignment of main gear internal doors with their well.
+- alignment of main gear internal doors with their well.                                 ?
 - split of main gear wheels (spin).                                                     2.2
 - alignment to the nose tip, instead of the tail tip (VRP).                             2.3
 - split of main gear pistons (bogie compression and torsion).                           2.3
@@ -131,9 +142,17 @@ Updates (-) and additions (+) to the original model                             
 - split of primary nozzles (reheat off texture).                                        2.4
 - shift aft the texture of front doors.                                                 2.5
 + visor well.                                                                           2.6
++ extract instruments into separate files.                                              2.7
+- conversion of .rgb to .png.                                             C. Schmitt    2.8
++ exhaust.                                                                C. Schmitt    2.8
++ extract panels into separate files.                                                   2.9
+- split of main gear cylinders (compression).                                           2.9
+- deeper wells to fit the gears.                                                        2.9
+- make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
+- make the nosetip seperate in the model.                                 C. Schmitt    2.9
 
 
 Made with Blender 2.49b.
 
 
-27 September 2009.
+27 November 2010.

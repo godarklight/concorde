@@ -54,35 +54,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 <!-- COLUMNN 1 -->
 <!-- ========= -->
 
-  <instrument include="Instruments/concorde-title-hyd-ground.xml">
-   <name>Ground hydraulics check out</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>360</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-15</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>20</x>
-   <y>530</y>
-   <w>300</w>
-   <h>25</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-hyd-ground-check-out.xml">
    <name>Ground hydraulics check out</name>
    <condition>
@@ -96,86 +67,20 @@ override those by providing <w>..</w> and <h>..</h> properties with the
       </less-than>
       <greater-than>
        <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-20</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>90</x>
-   <y>493</y>
-   <w>140</w>
-   <h>105</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-hyd-ground-pump.xml">
-   <name>Ground hydraulics pump 1</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>355</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>295</value>
-      </greater-than>
-      <greater-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-20</value>
-      </greater-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <params>
-    <pump-switch>/controls/hydraulic/ground/pump[0]/switch</pump-switch>
-    <pump-num>/controls/hydraulic/ground/pump[0]/num</pump-num>
-   </params>
-   <x>5</x>
-   <y>465</y>
-   <w>51</w>
-   <h>34</h>
-  </instrument>
-
-  <instrument include="Instruments/concorde-hyd-ground-pump.xml">
-   <name>Ground hydraulics pump 2</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/engineer</property>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>350</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
        <value>290</value>
       </greater-than>
       <greater-than>
        <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-20</value>
+       <value>-15</value>
       </greater-than>
      </and>
      <property>/controls/seat/all</property>
     </or>
    </condition>
-   <params>
-    <pump-switch>/controls/hydraulic/ground/pump[1]/switch</pump-switch>
-    <pump-num>/controls/hydraulic/ground/pump[1]/num</pump-num>
-   </params>
-   <x>175</x>
-   <y>465</y>
-   <w>51</w>
-   <h>34</h>
+   <x>85</x>
+   <y>485</y>
+   <w>286</w>
+   <h>114</h>
   </instrument>
 
   <instrument include="Instruments/concorde-clock.xml">

@@ -57,8 +57,8 @@
  <animation>
   <type>material</type>
   <object-name>MovingSeat</object-name>
-  <property-base>sim/model/liveryseat/</property-base>
-  <texture-prop>texture</texture-prop>
+  <property-base>sim/model/livery/</property-base>
+  <texture-prop>texture-seat</texture-prop>
  </animation>
 
  <animation>
@@ -107,7 +107,9 @@
    <z>1.0</z>
   </axis>
  </animation>
- 
+
+<!-- stowing -->
+
  <animation>
   <type>rotate</type>
   <object-name>Armrest</object-name>
@@ -162,6 +164,19 @@
    <y>0.0</y>
    <z>0.0</z>
   </axis>
+ </animation>
+
+ <animation>
+  <type>pick</type>
+  <object-name>Seat</object-name>
+  <action>
+   <button>0</button>
+   <repeatable>false</repeatable>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.seatsystem.railexport("engineer");</script>
+   </binding>
+  </action>
  </animation>
 
 </PropertyList>

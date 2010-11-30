@@ -3,6 +3,11 @@
 <PropertyList> 
  <path>yoke.ac</path> 
 
+ <params>
+  <seat>systems/seat/captain</seat>
+ </params>
+
+
  <animation>
   <name>YokePillar</name>
   <object-name>Yoke</object-name>
@@ -13,6 +18,19 @@
   <name>AllYoke</name>
   <object-name>YokePillar</object-name>
   <object-name>Bellows</object-name>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>AllYoke</object-name>
+  <condition>
+   <or>
+    <property>controls/seat/yoke</property>
+    <not>
+     <property alias="../../../../../params/seat"/>      <!-- bug -->
+    </not>
+   </or>
+  </condition>
  </animation>
 
  <animation>

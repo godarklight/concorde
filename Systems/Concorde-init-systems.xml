@@ -1390,6 +1390,8 @@
   <seat>
    <captain type="bool">true</captain>
    <copilot type="bool">false</copilot>
+   <gear-front type="bool">false</gear-front>
+   <gear-main type="bool">false</gear-main>
    <engineer type="bool">false</engineer>
    <observer type="bool">false</observer>
    <observer2 type="bool">false</observer2>
@@ -1397,6 +1399,18 @@
     <engineer>
      <heading-deg type="double">360</heading-deg>                            <!-- OSG at 360, until ctrl-E -->
     </engineer>
+    <gear-front>
+     <move type="bool">false</move>
+     <x-m type="double">0.0</x-m>
+     <y-m type="double">0.0</y-m>
+     <z-m type="double">0.0</z-m>
+    </gear-front>
+    <gear-main>
+     <move type="bool">false</move>
+     <x-m type="double">0.0</x-m>
+     <y-m type="double">0.0</y-m>
+     <z-m type="double">0.0</z-m>
+    </gear-main>
     <observer>
      <move type="bool">false</move>
      <x-m type="double">0.0</x-m>

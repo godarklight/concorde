@@ -570,6 +570,8 @@
 <!-- Instruments  -->
 <!-- ============ -->
 
+<!-- OVERHEAD -->
+
   <model>
    <name>Standby Compass</name>
    <path>Aircraft/Instruments-3d/comp/comp.xml</path>
@@ -580,7 +582,7 @@
    </offsets>
   </model>
 
-<!-- dash -->
+<!-- DASH -->
 
   <model>
    <name>Captain Flood</name>
@@ -612,7 +614,7 @@
    </offsets>
   </model>
 
-<!-- pedestal -->
+<!-- PEDESTAL -->
 
   <model>
    <name>Trim Cylinder</name>
@@ -644,6 +646,8 @@
    </offsets>
   </model>
 
+<!-- CONSOLES -->
+
 <!-- steering -->
 
   <model>
@@ -666,29 +670,7 @@
    </offsets>
   </model>
 
-<!-- yokes -->
-
-  <model>
-   <name>Captain Yoke</name>
-   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
-   <offsets>
-    <x-m>-23.456</x-m>
-    <y-m>-0.446</y-m>
-    <z-m> 0.325</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Copilot Yoke</name>
-   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
-   <offsets>
-    <x-m>-23.456</x-m>
-    <y-m> 0.458</y-m>
-    <z-m> 0.325</z-m>
-   </offsets>
-  </model>
-
-<!-- seats -->
+<!-- SEATS -->
 
   <model>
    <name>Captain Seat</name>
@@ -750,7 +732,52 @@
    </offsets>
   </model>
 
-<!-- pilots -->
+<!-- yokes -->
+
+  <model>
+   <name>Captain Yoke</name>
+   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
+   <offsets>
+    <x-m>-23.456</x-m>
+    <y-m>-0.446</y-m>
+    <z-m> 0.325</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot Yoke</name>
+   <path>Aircraft/Concorde/Instruments/yoke/yoke.xml</path>
+   <offsets>
+    <x-m>-23.456</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 0.325</z-m>
+   </offsets>
+   <overlay>
+    <params>
+     <seat>systems/seat/copilot</seat>
+    </params>
+   </overlay>
+  </model>
+
+<!-- ENGINEER -->
+
+  <model>
+   <name>Cold Air Outlet</name>
+   <path>Aircraft/Concorde/Instruments/pressure/cold-air-outlet.xml</path>
+   <offsets>
+    <x-m>-22.356</x-m>
+    <y-m> 0.327</y-m>
+    <z-m> 1.703</z-m>
+    <heading-deg>20</heading-deg>
+    <pitch-deg>-5</pitch-deg>
+    <roll-deg>24</roll-deg>
+   </offsets>
+  </model>
+
+
+<!-- ====== -->
+<!-- Humans  -->
+<!-- ====== -->
 
   <model>
    <name>Copilot human</name>
@@ -772,5 +799,145 @@
     <heading-deg>270</heading-deg>
    </offsets>
   </model>
+  
+<!-- SEAT (the condition rotates once) -->
+ 
+  <animation>
+   <type>rotate</type>
+   <object-name>Engineer human</object-name>
+   <property>sim/current-view/goal-heading-offset-deg</property>
+   <offset-deg>90</offset-deg>
+   <condition>
+    <and>
+     <property>systems/seat/engineer</property>
+     <equals>
+      <property>systems/human/engineer/seat-deg</property>
+      <value>0.0</value>
+     </equals>
+     <equals>
+      <property>systems/human/engineer/seat-x-m</property>
+      <value>0.0</value>
+     </equals>
+    </and>
+   </condition>
+   <center>
+    <x-m>-21.788</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </center>
+   <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+   </axis>
+  </animation>
+ 
+  <animation>
+   <type>rotate</type>
+   <object-name>Engineer human</object-name>
+   <property>systems/human/engineer/seat-deg</property>
+   <center>
+    <x-m>-21.788</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </center>
+   <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+   </axis>
+  </animation>
+ 
+  <animation>
+   <type>translate</type>
+   <object-name>Engineer human</object-name>
+   <property>systems/human/engineer/seat-x-m</property>
+   <axis>
+    <x>0.0</x>
+    <y>1.0</y>
+    <z>0.0</z>
+   </axis>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>Engineer human</object-name>
+   <condition>
+    <and>
+     <property>systems/human/serviceable</property>
+     <property>controls/engineer/activ</property>
+     <not>
+      <property>systems/seat/engineer</property>
+     </not>
+     <not>
+      <property>systems/seat/overhead</property>
+     </not>
+     <equals>
+      <property>systems/human/engineer/stowe-norm</property>
+      <value>0</value>
+     </equals>
+    </and>
+   </condition>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>Copilot human</object-name>
+   <condition>
+    <and>
+     <property>systems/human/serviceable</property>
+     <property>controls/copilot/activ</property>
+     <not>
+      <property>systems/seat/copilot</property>
+     </not>
+     <equals>
+      <property>systems/human/copilot/stowe-norm</property>
+      <value>0</value>
+     </equals>
+    </and>
+   </condition>
+  </animation>
+
+
+<!-- ============ -->
+<!-- OPTIMIZATION -->
+<!-- ============ -->
+
+  <animation>
+   <name>Captain location</name>
+   <object-name>Captain Flood</object-name>
+   <object-name>Captain Seat</object-name>
+   <object-name>Captain Steering</object-name>
+   <object-name>Captain Yoke</object-name>
+  </animation>
+
+  <animation>
+   <name>Overhead instruments</name>
+   <object-name>Standby Compass</object-name>
+  </animation>
+
+  <animation>
+   <name>Center instruments</name>
+   <object-name>Center Flood</object-name>
+  </animation>
+
+  <animation>
+   <name>Pedestal instruments</name>
+   <object-name>Trim Cylinder</object-name>
+   <object-name>Throttle Cylinder</object-name>
+   <object-name>Brake Cylinder</object-name>
+  </animation>
+
+  <animation>
+   <name>Copilot location</name>
+   <object-name>Copilot Flood</object-name>
+   <object-name>Copilot Steering</object-name>
+   <object-name>Copilot Yoke</object-name>
+  </animation>
+
+  <animation>
+   <name>Engineer location</name>
+   <object-name>Cold Air Outlet</object-name>
+  </animation>
 
 </PropertyList>

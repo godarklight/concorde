@@ -200,6 +200,12 @@ ConcordeMain.savedata = func {
                        "/controls/voice/text",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
+                       "/systems/seat/position/gear-front/x-m",
+                       "/systems/seat/position/gear-front/y-m",
+                       "/systems/seat/position/gear-front/z-m",
+                       "/systems/seat/position/gear-main/x-m",
+                       "/systems/seat/position/gear-main/y-m",
+                       "/systems/seat/position/gear-main/z-m",
                        "/systems/seat/position/observer/x-m",
                        "/systems/seat/position/observer/y-m",
                        "/systems/seat/position/observer/z-m",
@@ -275,11 +281,9 @@ ConcordeMain.instantiate = func {
 
 # general initialization
 ConcordeMain.init = func {
-   # 1 path per name + 1 path for index
    aircraft.livery.init( "Aircraft/Concorde/Models/Liveries",
                          "sim/model/livery/name",
-                         "sim/model/liveryseat/name",
-                         "sim/model/liveryseat/index" );
+                         "sim/model/livery/index" );
 
    me.instantiate();
    me.putinrelation();

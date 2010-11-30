@@ -32,7 +32,7 @@
  </group>
 
 
-<!-- engineer -->
+<!-- copilot -->
 
  <text>
   <x>30</x>
@@ -42,10 +42,10 @@
 
 
  <group>
-  <y>430</y>
+  <y>400</y>
 
   <checkbox>
-   <x>10</x>
+   <x>470</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -53,8 +53,14 @@
    <property>/instrumentation/altimeter[2]/serviceable</property>
   </checkbox>
 
+ </group>
+
+
+ <group>
+  <y>370</y>
+
   <checkbox>
-   <x>240</x>
+   <x>10</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -63,7 +69,7 @@
   </checkbox>
 
   <checkbox>
-   <x>470</x>
+   <x>240</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -75,7 +81,7 @@
 
 
  <group>
-  <y>400</y>
+  <y>340</y>
 
   <checkbox>
    <x>10</x>
@@ -83,7 +89,7 @@
    <width>20</width>
    <height>20</height>
    <label>Center of Gravity 2</label>
-   <property>/instrumentation/cg[1]/serviceable</property>
+   <property>/instrumentation/cg/serviceable</property>
   </checkbox>
 
   <checkbox>
@@ -108,10 +114,10 @@
 
 
  <group>
-  <y>370</y>
+  <y>310</y>
 
   <checkbox>
-   <x>10</x>
+   <x>470</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -119,8 +125,14 @@
    <property>/instrumentation/fuel/serviceable</property>
   </checkbox>
 
+ </group>
+
+
+ <group>
+  <y>280</y>
+
   <checkbox>
-   <x>240</x>
+   <x>470</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -128,8 +140,14 @@
    <property>/instrumentation/ins[2]/serviceable</property>
   </checkbox>
 
+ </group>
+
+
+ <group>
+  <y>250</y>
+
   <checkbox>
-   <x>470</x>
+   <x>10</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -139,9 +157,8 @@
 
  </group>
 
-
  <group>
-  <y>340</y>
+  <y>190</y>
 
   <checkbox>
    <x>10</x>
@@ -173,7 +190,7 @@
    <x>50</x>
    <y>0</y>
    <legend>Apply</legend>
-   <key>a</key>
+    <key>a</key>
    <equal>true</equal>
    <binding>
     <command>dialog-apply</command>

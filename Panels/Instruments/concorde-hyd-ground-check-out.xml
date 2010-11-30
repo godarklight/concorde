@@ -6,13 +6,71 @@
 
 <PropertyList>
  <name>Ground hydraulics check out</name>
- <w-base>216</w-base>
- <h-base>162</h-base>
+ <w-base>325</w-base>
+ <h-base>130</h-base>
 
 
  <layers>
 
-<!-- YELLOW YELLOW -->
+  <layer include="concorde-gauge.xml"/>
+
+<!-- TITLE -->
+
+  <layer>
+   <name>Title</name>
+   <type>text</type>
+   <point-size>10</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>GROUND HYD</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-85</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title 2nd part</name>
+   <type>text</type>
+   <point-size>10</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>CHECK OUT</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>20</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>50</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- YELLOW YELLOW (bottom left) -->
 
   <layer>
    <name>Title YY</name>
@@ -36,7 +94,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-55</offset>
+     <offset>-45</offset>
     </transformation>
    </transformations>
   </layer>
@@ -63,7 +121,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-64</offset>
+     <offset>-54</offset>
     </transformation>
    </transformations>
   </layer>
@@ -92,7 +150,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-13</offset>
+     <offset>-8</offset>
     </transformation>
    </transformations>
   </layer>
@@ -119,7 +177,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-22</offset>
+     <offset>-17</offset>
     </transformation>
    </transformations>
   </layer>
@@ -148,7 +206,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>29</offset>
+     <offset>34</offset>
     </transformation>
    </transformations>
   </layer>
@@ -175,7 +233,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>20</offset>
+     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -204,7 +262,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>29</offset>
+     <offset>34</offset>
     </transformation>
    </transformations>
   </layer>
@@ -231,7 +289,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>20</offset>
+     <offset>25</offset>
     </transformation>
    </transformations>
   </layer>
@@ -260,7 +318,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-13</offset>
+     <offset>-8</offset>
     </transformation>
    </transformations>
   </layer>
@@ -287,12 +345,12 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-22</offset>
+     <offset>-17</offset>
     </transformation>
    </transformations>
   </layer>
 
-<!-- YELLOW YELLOW -->
+<!-- YELLOW YELLOW (bottom right) -->
 
   <layer>
    <name>Title YY</name>
@@ -316,7 +374,7 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-55</offset>
+     <offset>-45</offset>
     </transformation>
    </transformations>
   </layer>
@@ -343,10 +401,12 @@
     </transformation>
     <transformation>
      <type>y-shift</type>
-     <offset>-64</offset>
+     <offset>-54</offset>
     </transformation>
    </transformations>
   </layer>
+
+<!-- knob -->
 
   <layer>
    <name>knob rotation</name>
@@ -361,12 +421,8 @@
    <h>60</h>
    <transformations>
     <transformation>
-     <type>x-shift</type>
-     <offset>0</offset>
-    </transformation>
-    <transformation>
      <type>y-shift</type>
-     <offset>-14</offset>
+     <offset>-4</offset>
     </transformation>
     <transformation>
      <type>rotation</type>
@@ -394,7 +450,181 @@
     </transformation>
     <transformation>
     <type>y-shift</type>
-    <offset>-4</offset>
+    <offset>1</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- PUMP 1 -->
+
+  <layer>
+   <name>Pump switch</name>
+   <type>switch</type>
+
+   <layer include="concorde-switch-on.xml">
+    <name>on</name>
+    <condition>
+     <property>/controls/hydraulic/ground/pump[0]/switch</property>
+    </condition>
+    <w>20</w>
+    <h>20</h>
+   </layer>
+
+   <layer include="concorde-switch-off.xml">
+    <name>off</name>
+    <w>20</w>
+    <h>20</h>
+   </layer>
+   
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-100</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-30</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title on</name>
+   <type>text</type>
+   <point-size>5</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>ON</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-124</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-18</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title off</name>
+   <type>text</type>
+   <point-size>5</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>OFF</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>-127</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+<!-- PUMP 2 -->
+
+  <layer>
+   <name>Pump switch</name>
+   <type>switch</type>
+
+   <layer include="concorde-switch-on.xml">
+    <name>on</name>
+    <condition>
+     <property>/controls/hydraulic/ground/pump[1]/switch</property>
+    </condition>
+    <w>20</w>
+    <h>20</h>
+   </layer>
+
+   <layer include="concorde-switch-off.xml">
+    <name>off</name>
+    <w>20</w>
+    <h>20</h>
+   </layer>
+   
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>100</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-30</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title on</name>
+   <type>text</type>
+   <point-size>5</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>ON</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>117</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-18</offset>
+    </transformation>
+   </transformations>
+  </layer>
+
+  <layer>
+   <name>Title off</name>
+   <type>text</type>
+   <point-size>5</point-size>
+   <color>
+    <red>1.0</red>
+    <green>1.0</green>
+    <blue>1.0</blue>
+   </color>
+   <chunks>
+    <chunk>
+     <type>literal</type>
+     <text>OFF</text>
+    </chunk>
+   </chunks>
+   <transformations>
+    <transformation>
+     <type>x-shift</type>
+     <offset>117</offset>
+    </transformation>
+    <transformation>
+     <type>y-shift</type>
+     <offset>-43</offset>
     </transformation>
    </transformations>
   </layer>
@@ -407,7 +637,7 @@
    <name>selector left</name>
    <button>0</button>
    <x>-50</x>
-   <y>-65</y>
+   <y>-55</y>
    <w>50</w>
    <h>100</h>
    <binding>
@@ -428,7 +658,7 @@
    <name>selector right</name>
    <button>0</button>
    <x>0</x>
-   <y>-65</y>
+   <y>-55</y>
    <w>50</w>
    <h>100</h>
    <binding>
@@ -438,6 +668,40 @@
     <min>0</min>
     <max>5</max>
     <wrap>0</wrap>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+  
+  <action>
+   <name>Toggle pump 1</name>
+   <button>0</button>
+   <x>-111</x>
+   <y>-40</y>
+   <w>21</w>
+   <h>21</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/controls/hydraulic/ground/pump[0]/switch</property>
+   </binding>
+   <binding>
+    <command>property-toggle</command>
+    <property>/instrumentation/generic/click</property>
+   </binding>
+  </action>
+  
+  <action>
+   <name>Toggle pump 2</name>
+   <button>0</button>
+   <x>91</x>
+   <y>-40</y>
+   <w>21</w>
+   <h>21</h>
+   <binding>
+    <command>property-toggle</command>
+    <property>/controls/hydraulic/ground/pump[1]/switch</property>
    </binding>
    <binding>
     <command>property-toggle</command>

@@ -86,6 +86,14 @@ Seats.init = func {
                  me.save_lookup("observer2", i);
                  me.save_initial( "observer2", me.theviews[i] );
             }
+            elsif( name == "Main Gear View" ) {
+                me.save_lookup("gear-main", i);
+                me.save_initial( "gear-main", me.theviews[i] );
+            }
+            elsif( name == "Front Gear View" ) {
+                me.save_lookup("gear-front", i);
+                me.save_initial( "gear-front", me.theviews[i] );
+            }
         }
    }
 

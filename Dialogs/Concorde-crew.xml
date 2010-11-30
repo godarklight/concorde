@@ -3,7 +3,6 @@
 <PropertyList>
   <name>Concorde-crew</name>
   <layout>vbox</layout>
-  <width>500</width>
 
   <text>
     <label>Concorde crew</label>
@@ -88,7 +87,40 @@
      <layout>vbox</layout>
      <halign>left</halign>
 
-     <checkbox>
+     <group>
+      <layout>hbox</layout>
+
+      <group>
+       <layout>vbox</layout>
+
+       <checkbox>
+        <halign>left</halign>
+        <label>Front Gear (floating)</label>
+        <property>/systems/seat/gear-front</property>
+        <binding>
+         <command>nasal</command>
+         <script>globals.Concorde.seatsystem.viewexport("gear-front");</script>
+        </binding>
+        <binding>
+         <command>dialog-update</command>
+        </binding>
+       </checkbox>
+
+       <checkbox>
+        <halign>left</halign>
+        <label>Main Gear (floating)</label>
+        <property>/systems/seat/gear-main</property>
+        <binding>
+         <command>nasal</command>
+         <script>globals.Concorde.seatsystem.viewexport("gear-main");</script>
+        </binding>
+        <binding>
+         <command>dialog-update</command>
+        </binding>
+       </checkbox>
+      </group>
+
+      <checkbox>
        <halign>left</halign>
        <label>Recover position of last session  ~</label>
        <property>/controls/seat/recover</property>
@@ -96,7 +128,8 @@
         <command>nasal</command>
         <script>globals.Concorde.seatsystem.recoverexport();</script>
        </binding>
-     </checkbox>
+      </checkbox>
+     </group>
 
      <text>
        <halign>left</halign>

@@ -4,24 +4,17 @@
 
      Path must be from calling .xml.
 
-
-     TO DO : AF livery.
-
 -->
 
 <PropertyList>
   <sim>
     <model>
      <livery>
-      <name type="string">Air France (seats)</name>
-      <index type="int">1</index>
-      <texture>concorde.png</texture>
+      <name type="string">Air France</name>
+      <index type="int">3</index>
+      <texture>Liveries/AF.png</texture>
+      <texture-seat>../../Models/Liveries/concorde-seat-AF.png</texture-seat>
      </livery>
-     <liveryseat>
-      <name type="string">Air France (seats)</name>
-      <index type="int">1</index>
-      <texture>../../Models/Liveries/concorde-seat-AF.png</texture>
-     </liveryseat>
     </model>
   </sim>
 </PropertyList>
