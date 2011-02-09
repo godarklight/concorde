@@ -1883,12 +1883,12 @@ Autopilot.inslight = func {
        if( nb_wp >= 1 ) {
            id[0] = wp[current_wp].getChild("id").getValue();
 
-           # defaut
+           # default
            id[1] = "";
            id[2] = id[0];
        }
 
-       if( nb_wp >= 2 ) {
+       if( current_wp + 1 < nb_wp ) {
            id[1] = wp[current_wp + 1].getChild("id").getValue();
        }
 
