@@ -415,7 +415,7 @@ ConstantSpeedDrive.schedule = func {
 
        # connected
        if( csd ) {
-           egtdegf = me.dependency["engine"][i].getChild("egt_degf").getValue();
+           egtdegf = me.dependency["engine"][i].getChild("egt-degf").getValue();
            egtdegc = constant.fahrenheit_to_celsius( egtdegf );
        }
 
