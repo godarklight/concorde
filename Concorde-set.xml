@@ -176,6 +176,9 @@
    <file>Aircraft/Concorde/Nasal/Concorde-jbsim.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-override.nas</file>
   </Concorde>
+  <tyresmoke>
+    <file>Aircraft/Concorde/Nasal/Concorde-tyre.nas</file>
+  </tyresmoke>
  </nasal>
 
  <input>
@@ -243,11 +246,40 @@
    </engine>
   </engines>
 
-<!-- parking brake -->
 
-  <gear>
+ <gear>
+
+   <!-- parking brake -->
    <brake-parking-lever type="bool">true</brake-parking-lever>
-  </gear>
+
+   <!-- tyre effects -->
+   <gear n="0">
+     <tyre-smoke type="int">0</tyre-smoke>
+     <sprayspeed-ms type="double">0</sprayspeed-ms>
+     <spray-density type="double">0</spray-density>
+     <caster-angle-deg-damped type="double">0</caster-angle-deg-damped>
+   </gear>
+   <gear n="1">
+     <tyre-smoke type="int">0</tyre-smoke>
+     <sprayspeed-ms type="double">0</sprayspeed-ms>
+     <spray-density type="double">0</spray-density>
+   </gear>
+   <gear n="2">
+     <tyre-smoke type="int">0</tyre-smoke>
+     <sprayspeed-ms type="double">0</sprayspeed-ms>
+     <spray-density type="double">0</spray-density>
+   </gear>
+   <gear n="3">
+     <tyre-smoke type="int">0</tyre-smoke>
+     <sprayspeed-ms type="double">0</sprayspeed-ms>
+     <spray-density type="double">0</spray-density>
+   </gear>
+   <gear n="4">
+     <tyre-smoke type="int">0</tyre-smoke>
+     <sprayspeed-ms type="double">0</sprayspeed-ms>
+     <spray-density type="double">0</spray-density>
+   </gear>
+ </gear>
 
 <!-- external lights -->
 
