@@ -341,19 +341,15 @@ Fuel.stophydraulicpumps = func {
    var status = constant.FALSE;
 
    # driven by switch
-   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-        status = me.tanksystem.controls( "11", "pump-green-on" ).getValue();
-        me.tanksystem.controls( "11", "pump-green" ).setValue( status );
-        status = me.tanksystem.controls( "11", "pump-blue-on" ).getValue();
-        me.tanksystem.controls( "11", "pump-blue" ).setValue( status );
-   }
+   status = me.tanksystem.controls( "11", "pump-green-on" ).getValue();
+   me.tanksystem.controls( "11", "pump-green" ).setValue( status );
+   status = me.tanksystem.controls( "11", "pump-blue-on" ).getValue();
+   me.tanksystem.controls( "11", "pump-blue" ).setValue( status );
 }
 
 Fuel.starthydraulicpumps = func {
-   for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
-        me.tanksystem.controls( "11", "pump-green" ).setValue( constant.TRUE );
-        me.tanksystem.controls( "11", "pump-blue" ).setValue( constant.TRUE );
-   }
+   me.tanksystem.controls( "11", "pump-green" ).setValue( constant.TRUE );
+   me.tanksystem.controls( "11", "pump-blue" ).setValue( constant.TRUE );
 }
 
 Fuel.forwardautohuman = func( forward ) {
