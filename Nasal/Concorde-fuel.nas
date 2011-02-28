@@ -345,7 +345,7 @@ Fuel.stophydraulicpumps = func {
         status = me.tanksystem.controls( "11", "pump-green-on" ).getValue();
         me.tanksystem.controls( "11", "pump-green" ).setValue( status );
         status = me.tanksystem.controls( "11", "pump-blue-on" ).getValue();
-        me.tanksystem.controls( "11", "pump-green" ).setValue( status );
+        me.tanksystem.controls( "11", "pump-blue" ).setValue( status );
    }
 }
 
