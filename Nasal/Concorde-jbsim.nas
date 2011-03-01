@@ -108,7 +108,6 @@ ConcordeMain.sec3cron = func {
    flightsystem.schedule();
    fuelsystem.slowschedule();
    antiicingsystem.schedule();
-   TCASinstrument.schedule();
    INSinstrument.schedule();
    Compassinstrument.schedule();
    crewscreen.schedule();
@@ -255,7 +254,6 @@ ConcordeMain.instantiate = func {
    globals.Concorde.INSinstrument = Concorde.Inertial.new();
    globals.Concorde.Compassinstrument = Concorde.Compass.new();
    globals.Concorde.HSIinstrument = Concorde.HSI.new();
-   globals.Concorde.TCASinstrument = Concorde.Traffic.new();
    globals.Concorde.transponderinstrument = Concorde.Transponder.new();
    globals.Concorde.wiperinstrument = Concorde.Wiper.new();
    globals.Concorde.noseinstrument = Concorde.NoseVisor.new();
