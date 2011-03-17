@@ -1166,7 +1166,7 @@ Pump.full = func( index, contentlb ) {
    var tanklb = me.getlevellb(index);
    var result = constant.TRUE;
 
-   if( tanklb < contentlb ) {
+   if( contentlb - tanklb > 0.1 ) {
        result = constant.FALSE;
    }
 
