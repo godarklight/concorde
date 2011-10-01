@@ -728,6 +728,12 @@ AsynchronousCheck.is_change = func {
    return change;
 }
 
+AsynchronousCheck.is_allowed = func {
+   var change = constant.TRUE;
+
+   return change;
+}
+
 # once night lighting, virtual crew must switch again lights.
 AsynchronousCheck.set_task = func {
    me.completed = constant.FALSE;
@@ -736,7 +742,7 @@ AsynchronousCheck.set_task = func {
 AsynchronousCheck.has_task = func {
    var result = constant.FALSE;
 
-   if( me.is_change() or !me.completed ) {
+   if( me.is_allowed() and ( me.is_change() or !me.completed ) ) {
        result = constant.TRUE;
    }
    else {
@@ -974,10 +980,13 @@ RadioManagement.new = func {
 
                autopilotsystem : nil,
 
+               EARTHKM : 20000,                  # largest distance between 2 points on earth surface
+               RANGENM : 200,                    # range to change the radio frequencies
+
                DESCENTFPM : -100,
 
+               target : "",
                tower : "",
-               landing : constant.FALSE,
 
                NOENTRY : -1,
                entry : -1
@@ -1141,7 +1150,7 @@ RadioManagement.get_phase = func {
     var phase = nil;
 
     if( me.entry > me.NOENTRY ) {
-        if( me.landing ) {
+        if( me.noinstrument["speed"].getValue() < me.DESCENTFPM * constant.MINUTETOSECOND ) {
             phase = me.itself["airport"][ me.entry ].getNode("arrival");
         }
 
@@ -1153,60 +1162,75 @@ RadioManagement.get_phase = func {
     return phase;
 }
 
-# tower changed by dialog (destination or airport location)
 RadioManagement.is_change = func {
    var result = constant.FALSE;
+   var index = me.NOENTRY;
+   var distancemeter = 0.0;
+   var nearestmeter = me.EARTHKM * constant.KMTOMETER;
+   var airport = "";
+   var info = nil;
+   var flight = geo.aircraft_position();
+   var destination = geo.Coord.new();
 
-   var target = me.noinstrument["tower"].getValue();
 
-   if( me.tower != target ) {
-       var airport = "";
+   # nearest airport
+   me.target = "";
+   for(var i=0; i<size(me.itself["airport"]); i=i+1) {
+       airport = me.itself["airport"][ i ].getChild("airport-id").getValue();
+       info = airportinfo( airport );
 
-       for(var i=0; i<size(me.itself["airport"]); i=i+1) {
-           airport = me.itself["airport"][ i ].getChild("airport-id").getValue();
-           if( airport == target ) {
-               me.entry = i;
-
-               result = constant.TRUE;
-               break;
+       if( info != nil ) {
+           destination.set_latlon( info.lat, info.lon );
+           distancemeter = flight.distance_to( destination ); 
+           if( distancemeter < nearestmeter ) {
+               me.target = airport;
+               nearestmeter = distancemeter;
+               index = i;
            }
        }
    }
 
-   if( !result ) {
-       var phase = me.is_landing();
 
-       if( me.landing != phase ) {
-           var speedkt = me.noinstrument["airspeed"].getValue();
+   # only within radio range
+   if( nearestmeter < me.RANGENM * constant.NMTOMETER ) {
+       if( me.tower != me.target ) {
+           me.entry = index;
 
-           # do not change frequencies, just after landing 
-           if( me.landing and speedkt > constantaero.TAXIKT ) {
-           }
+           me.itself["root"].getChild("airport-id").setValue( me.target );
 
-           else {
-               me.landing = phase;
-
-               result = constant.TRUE;
-           }
+           result = constant.TRUE;
        }
    }
+
 
    return result;
 }
 
-RadioManagement.is_landing = func {
-   var result = constant.FALSE;
-   var rateftpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
+RadioManagement.is_allowed = func {
+   var result = constant.TRUE;
 
-   if( rateftpm < me.DESCENTFPM ) {
-       result = constant.TRUE;
+   var speedkt = me.noinstrument["airspeed"].getValue();
+
+   if( speedkt > constantaero.TAXIKT ) {
+       var aglft = me.noinstrument["agl"].getValue();
+       var altft = me.noinstrument["altitude"].getValue();
+
+       # do not change frequencies just after landing 
+       if( aglft < constantaero.GEARFT ) {
+           result = constant.FALSE;
+       }
+
+       # do not change frequencies during approach (RJTT is managed by crew, while RJAA is not)
+       elsif( altft < constantaero.APPROACHFT ) {
+           result = constant.FALSE;
+       }
    }
 
    return result;
 }
 
 RadioManagement.set_completed = func {
-   me.tower = me.noinstrument["tower"].getValue();
+   me.tower = me.target;
 
    me.completed = constant.TRUE;
 }

@@ -81,12 +81,15 @@ Autopilot.new = func {
 Autopilot.init = func {
    me.inherit_system("/systems/autopilot");
 
+   me.reinitexport();
+   me.apdiscexport();
+}
+
+Autopilot.reinitexport = func {
    # - NAV 0 is reserved for autopilot.
    # - copy NAV 0-1 from preferences.xml to 1-2.
    me.sendnav( 1, 2 );
    me.sendnav( 0, 1 );
-
-   me.apdiscexport();
 }
 
 Autopilot.set_relation = func( autothrottle ) {
@@ -277,23 +280,21 @@ Autopilot.lockroll = func {
 
 # avoid strong roll near a waypoint
 Autopilot.lockwaypointroll = func {
-    var lastnm = 0.0;
-    var rolldeg = 0.0;
     var distancenm = me.itself["waypoint"][0].getChild("dist").getValue();
 
     # next waypoint
     if( distancenm != nil ) {
-        lastnm = me.itself["state"].getChild("waypoint-nm").getValue();
+        var lastnm = me.itself["state"].getChild("waypoint-nm").getValue();
 
         # avoids strong roll
         if( distancenm < me.WPTNM ) {
 
             # pop waypoint, enough soon to avoid banking on release
             # into the opposite direction of the next waypoint
-            rolldeg =  me.noinstrument["roll"].getValue();
-            if( distancenm > lastnm or rolldeg < - me.ROLLDEG or rolldeg > me.ROLLDEG ) {
+            var rolldeg =  me.noinstrument["roll"].getValue();
+            if( distancenm > lastnm or math.abs(rolldeg) > me.ROLLDEG ) {
                 if( me.is_lock_true() ) {
-                    setprop("/autopilot/route-manager/input","@pop");
+                    setprop("/autopilot/route-manager/input","@DELETE0");
                     me.resetprediction( "true-heading-hold1" );
                 }
             }

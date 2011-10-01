@@ -49,15 +49,19 @@
                                           Flight control system failure.
                                           Virtual crew completes the normal checklists.
  2.7           March 2010                 Smoke effect.
-                                          New cockpit 2D/3D textures with relief (by T. Renk).
+                                          2D/3D cockpit textures with relief (by T. Renk).
                                           2nd observer view.
                                           Steering, pushback.
                                           Looking ahead smooths autopilot heading modes.
                                           Autoignition, wheel chocks, ADC failure,
                                           reverse in flight, compass.
- 2.8           September 2010             Contrails (by V. Meazza), exhausts (by C. Schmitt).
+ 2.8           September 2010             Contrails (by V. Meazza).
+                                          Exhausts and shaders (by C. Schmitt).
                                           Fuel temperature.
- 2.9           December 2010              Alternate liveries.
+ 2.9           November 2010              Alternate liveries.
+ 2.10          October 2011               Tyre smoke effect (by C. Schmitt).
+                                          3D wheel chocks.
+                                          3D INS.
  ==============================================================================================
 -->
 
@@ -67,7 +71,7 @@
 
   <description>Concorde</description>
   <status>early-production</status>
-  <aircraft-version>2.9</aircraft-version>
+  <aircraft-version>2.10</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.png</splash-texture>
@@ -164,6 +168,7 @@
    <file>Aircraft/Concorde/Nasal/Concorde-fuelXML.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-fuel.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-engine.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-INS.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-navigation.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-warning.nas</file>
@@ -246,8 +251,7 @@
    </engine>
   </engines>
 
-
- <gear>
+  <gear>
 
    <!-- parking brake -->
    <brake-parking-lever type="bool">true</brake-parking-lever>
@@ -279,7 +283,7 @@
      <sprayspeed-ms type="double">0</sprayspeed-ms>
      <spray-density type="double">0</spray-density>
    </gear>
- </gear>
+  </gear>
 
 <!-- external lights -->
 

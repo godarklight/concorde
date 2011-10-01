@@ -64,6 +64,7 @@ Subsonic cruise
 Supersonic climb
 ----------------
 - start afterburner with VS at 3500 ft/minute; then progressively decrease until 700 ft/minute.
+- climb with full throttle.
 - at Mach 1.1, drag starts to decrease : prepare to increase the climb rate.
 - stay inside the corridor of Mach/center of gravity. Below the minimum means a too high altitude
   for the current Mach speed : accelerate by reducing climb speed.
@@ -122,7 +123,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 2.0.x : minimal version.
+- 2.4.0 : minimal version.
 
 
 Keyboard
@@ -599,22 +600,19 @@ TO DO JSBSim
 
 Known problems
 ==============
-- a high IVSI soon after launch may switch virtual crew from "holding" to "flight" : use "ctrl-I v" to restore "takeoff".
+- data are not saved on reinit.
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
 ------------------------
-- NAV hold mode is sensitive to the turbulence of the ground layer.
 - toggle INS mode, only AFTER activation of route, or use "ctrl-I a".
+- NAV hold mode is sensitive to the turbulence of the ground layer.
 - heading modes are a little slow to converge, at supersonic speed.
 - at Mach 2.02, once unlocked, vertical speed hold is unstable.
 
-Known problems GIT autopilot
-----------------------------
+Known problems 2.4.0 autopilot
+------------------------------
 - on engagement, magnetic and true heading modes bank into the opposite direction.
-- the first waypoint is always ignored : insert a double waypoint.
-- to update waypoints, once route is activated, clear completely the route.
-- during descent, route manager may update the target altitude (press F11).
 
 Known problems autoland
 -----------------------
@@ -639,7 +637,7 @@ The following artefacts are supposed to be solved by OSG :
 
 Secondary problems
 ==================
-- electrical system may have 1 s failure during checklist of engine start.
+- AI doesn't triggers fuel transfert of tanks 5, if tanks are interconnected.
 
 Secondary problems FDM
 -----------------------
@@ -692,4 +690,4 @@ References
     British Airways maintenance manual.
 
 
-28 November 2010.
+18 September 2011.

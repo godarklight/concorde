@@ -42,7 +42,7 @@
    <object-name>PitchTrimWheel</object-name>
    <action>
     <button>0</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/elevator-trim</property>
@@ -54,7 +54,7 @@
    </action>
    <action>
     <button>1</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/elevator-trim</property>
@@ -88,7 +88,7 @@
    <object-name>YawTrimWheel</object-name>
    <action>
     <button>0</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/rudder-trim</property>
@@ -100,7 +100,7 @@
    </action>
    <action>
     <button>1</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/rudder-trim</property>
@@ -132,7 +132,7 @@
    <object-name>RollTrimWheel</object-name>
    <action>
     <button>0</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/aileron-trim</property>
@@ -144,7 +144,7 @@
    </action>
    <action>
     <button>1</button>
-    <repeatable>false</repeatable>
+    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/aileron-trim</property>

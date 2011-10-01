@@ -166,7 +166,10 @@ AirDataComputer.new = func {
 
                GROUNDKT : 50,
 
-               last_failure : [ constant.FALSE, constant.FALSE ]
+               ivsi_instrument : [ constant.TRUE, constant.TRUE ],
+               ivsi_status : [ constant.TRUE, constant.TRUE ],
+
+               last_status : [ constant.TRUE, constant.TRUE ]
              };
 
    obj.init();
@@ -207,6 +210,7 @@ AirDataComputer.red_ads = func {
 AirDataComputer.schedule = func {
     for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
          me.failure( i );
+         me.ivsisensor( i );
     }
 
     me.computer();
@@ -243,7 +247,7 @@ AirDataComputer.computer = func {
 
        for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
             if( me.itself["root"][i].getChild("serviceable").getValue() and
-                me.itself["adc-ctrl"][i].getChild("switch").getValue() ) {
+                me.itself["adc-sys"][i].getChild("switch").getValue() ) {
                 child = me.itself["root"][i].getNode("output");
 
                 child.getChild("vmo-kt").setValue(vmokt);
@@ -269,12 +273,12 @@ AirDataComputer.failure = func( index ) {
     }
 
     # isolation disables warnings
-    if( !me.itself["adc-ctrl"][index].getChild("switch").getValue() ) {
+    if( !me.itself["adc-sys"][index].getChild("switch").getValue() ) {
         serviceable = constant.FALSE;
     }
 
-    if( serviceable != me.last_failure[index] ) {
-        me.last_failure[index] = serviceable;
+    if( serviceable != me.last_status[index] ) {
+        me.last_status[index] = serviceable;
 
         # failure is caused by sensor
         me.noinstrument["altimeter"][index].getChild("serviceable").setValue( serviceable );
@@ -314,6 +318,67 @@ AirDataComputer.failuresensor = func( child, serviceable, sensor, output, altern
     if( path != indication ) {
         child.getNode(output).unalias();
         child.getNode(output).alias( indication );
+    }
+}
+
+AirDataComputer.ivsisensor = func( index ) {
+    var change = constant.FALSE;
+    var path = "";
+    var child = nil;
+
+    # cruise above 50000 ft
+    if( me.itself["adc-ctrl"].getChild("ivsi-in-cruise").getValue() and
+        ( me.noinstrument["altitude"].getValue() > constantaero.CRUISEFT ) ) {
+        me.ivsi_instrument[index] = constant.TRUE;
+        change = constant.TRUE;
+
+        path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
+    }
+
+    # toggles IVSI instrument
+    elsif( me.itself["adc-sys"][index].getChild("ivsi-emulated").getValue() != me.ivsi_instrument[index] ) {
+        me.ivsi_instrument[index] = me.itself["adc-sys"][index].getChild("ivsi-emulated").getValue();
+        change = constant.TRUE;
+
+        if( me.ivsi_instrument[index] ) {
+            path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
+        }
+
+        else {
+            path = me.noinstrument["vertical-speed"].getPath();
+        }
+    }
+
+    # only IVSI instrument manages failure
+    if( me.ivsi_status[index] != me.last_status[index] ) {
+        me.ivsi_status[index] = me.last_status[index];
+        change = constant.TRUE;
+
+        if( !me.ivsi_status[index] ) {
+            if( me.ivsi_instrument[index] ) {
+                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
+            }
+            else {
+                path = me.itself["root"][index].getNode("output/vertical-speed-failure-fps").getPath();
+            }
+        }
+        else {
+            if( me.ivsi_instrument[index] ) {
+                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
+            }
+            else {
+                path = me.noinstrument["vertical-speed"].getPath();
+            }
+        }
+    }
+
+    if( change ) {
+        child = me.itself["root"][index].getNode("output/vertical-speed-fps");
+        if( me.itself["adc-ctrl"].getChild("ivsi-log").getValue() ) {
+            print( "alias " ~ child.getPath() ~ " to " ~ path );
+        }
+        child.unalias();
+        child.alias( path );
     }
 }
 

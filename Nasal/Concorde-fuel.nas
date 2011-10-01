@@ -24,6 +24,8 @@ Fuel.new = func {
                fuelconsumedinstrument : FuelConsumed.new(),
                aircraftweightinstrument : AircraftWeight.new(),
 
+               presets : 0,                                                  # saved state
+
                PUMPSEC : 1.0,
 
 # at Mach 2, trim tank 10 only feeds 2 supply tanks 5 and 7 : 45200 lb/h, or 6.3 lb/s per tank.
@@ -56,6 +58,8 @@ Fuel.init = func {
 
     me.tanksystem.initinstrument();
     me.tanksystem.presetfuel();
+
+    me.savestate();
 }
 
 Fuel.amber_fuel = func {
@@ -90,7 +94,25 @@ Fuel.slowschedule = func {
 Fuel.menuexport = func {
    var change = me.tanksystem.menu();
 
+   me.savestate();
+
    me.itself["root"].getChild("reset").setValue( change );
+}
+
+Fuel.reinitexport = func {
+   # restore for reinit
+   me.itself["root"].getChild("presets").setValue( me.presets );
+
+   me.tanksystem.presetfuel();
+
+   me.itself["root"].getChild("reset").setValue( constant.TRUE );
+
+   me.savestate();
+}
+
+Fuel.savestate = func {
+   # backup for reinit
+   me.presets = me.itself["root"].getChild("presets").getValue();
 }
 
 Fuel.setweighthuman = func( totalkg ) {

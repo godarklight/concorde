@@ -294,6 +294,8 @@ Constant.new = func {
                METERTOFEET : 3.28083989501,
                NMTOFEET : 6076.11548556,
                FEETTONM : 0.0001645788,
+               NMTOMETER : 1852,
+               KMTOMETER : 1000,
 # pressure
                INHGTOPSI : 0.491154077497,
                MBARTOINHG : 0.029529987508,
@@ -643,7 +645,7 @@ System.new = func {
 
                RELOCATIONFT : 0.0,                         # max descent speed around 6000 feet/minute.
 
-               altseaft : 0.0,
+               altitudeseaft : 0.0,
 
                dependency : {},
                itself : {},
@@ -662,7 +664,7 @@ System.inherit_system = func( path, subpath = "" ) {
    me.SYSSEC = obj.SYSSEC;
    me.ready = obj.ready;
    me.RELOCATIONFT = obj.RELOCATIONFT;
-   me.altseaft = obj.altseaft;
+   me.altitudeseaft = obj.altitudeseaft;
    me.dependency = obj.dependency;
    me.itself = obj.itself;
    me.noinstrument = obj.noinstrument;
@@ -765,12 +767,12 @@ System.is_relocating = func {
    var altft = me.noinstrument["altitude"].getValue();
 
    # relocation in flight, or at another airport
-   variationftpm = altft - me.altseaft;
+   variationftpm = altft - me.altitudeseaft;
    if( variationftpm < - me.RELOCATIONFT or variationftpm > me.RELOCATIONFT ) {
        result = constant.TRUE;
    }
 
-   me.altseaft = altft;
+   me.altitudeseaft = altft;
 
    return result;
 }

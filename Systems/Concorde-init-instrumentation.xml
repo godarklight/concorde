@@ -14,6 +14,14 @@
      - <noinstrument> is to built the instrument.
 
 
+     State reset :
+
+     - relocation (typically in flight or by airport change) triggers state reset.
+     - properties are reset to their initial state at FG startup.
+     - preserve="y" disables reset on selected properties (typically those initialised by nasal at startup).
+     - preserve="y" doesn't work with a saved property, whose saved state is only restored.
+
+
 
      Instantaneous Vertical Speed Indicator :
      ======================================
@@ -115,6 +123,7 @@
     <mach alias="/velocities/mach"/>
     <mach-failure type="double">0.0</mach-failure>
     <vertical-speed-fps alias="/instrumentation/ivsi-adc[0]/indicated-speed-fps"/>
+    <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
     <vmo-kt type="double">999.0</vmo-kt>
    </output>
 
@@ -125,10 +134,11 @@
     </dependency>
 
     <itself>
-     <adc-ctrl>
+     <adc-ctrl>/controls/adc</adc-ctrl>
+     <adc-sys>
       <component>/controls/adc</component>
       <subcomponent>system</subcomponent>
-     </adc-ctrl>
+     </adc-sys>
     </itself>
 
     <noinstrument>
@@ -151,6 +161,7 @@
      <mach>/velocities/mach</mach>
      <tat>fdm/jsbsim/propulsion/tat-c</tat>
      <temperature>/environment/temperature-degc</temperature>
+     <vertical-speed>/velocities/vertical-speed-fps</vertical-speed>
     </noinstrument>
    </relations>
   </adc>
@@ -176,6 +187,7 @@
     <mach alias="/velocities/mach"/>
     <mach-failure type="double">0.0</mach-failure>
     <vertical-speed-fps alias="/instrumentation/ivsi-adc[1]/indicated-speed-fps"/>
+    <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
     <vmo-kt type="double">999.0</vmo-kt>
    </output>
   </adc>
@@ -611,6 +623,7 @@
    <serviceable type="bool" archive="y">true</serviceable>
 
    <control>
+    <light type="double">1.0</light>                                       <!-- dim control -->
     <remote type="bool">true</remote>                                      <!-- to/from all INS -->
     <selector type="int">0</selector>                                      <!-- position -->
     <test type="bool">false</test>
@@ -637,6 +650,10 @@
 
    <light>
     <alert type="bool">false</alert>
+    <battery type="bool">false</battery>
+    <hold type="bool">false</hold>
+    <insert type="bool">false</insert>
+    <remote type="bool">false</remote>
     <warning type="bool">false</warning>
    </light>
 
@@ -675,6 +692,7 @@
    <serviceable type="bool" archive="y">true</serviceable>
 
    <control>
+    <light type="double">1.0</light>
     <remote type="bool">true</remote>
     <selector type="int">0</selector>
     <test type="bool">false</test>
@@ -701,6 +719,10 @@
 
    <light>
     <alert type="bool">false</alert>
+    <battery type="bool">false</battery>
+    <hold type="bool">false</hold>
+    <insert type="bool">false</insert>
+    <remote type="bool">false</remote>
     <warning type="bool">false</warning>
    </light>
 
@@ -723,6 +745,7 @@
    <serviceable type="bool" archive="y">true</serviceable>
 
    <control>
+    <light type="double">1.0</light>
     <remote type="bool">true</remote>
     <selector type="int">0</selector>
     <test type="bool">false</test>
@@ -749,6 +772,10 @@
 
    <light>
     <alert type="bool">false</alert>
+    <battery type="bool">false</battery>
+    <hold type="bool">false</hold>
+    <insert type="bool">false</insert>
+    <remote type="bool">false</remote>
     <warning type="bool">false</warning>
    </light>
 
@@ -831,16 +858,16 @@
    <test-outer type="bool">false</test-outer>
   </marker-beacon>
 
-  <nav n="0">
+  <nav n="0" preserve="y">
    <volume type="double">0.0</volume>                                      <!-- reserved for autopilot -->
   </nav>
 
-  <nav n="1">
+  <nav n="1" preserve="y">
    <volume type="double">0.0</volume>
    <serviceable type="bool">true</serviceable>                             <!-- boolean for menu -->
   </nav>
 
-  <nav n="2">
+  <nav n="2" preserve="y">
    <frequencies>
     <selected-mhz type="double">120.00</selected-mhz>
     <standby-mhz type="double">121.00</standby-mhz>

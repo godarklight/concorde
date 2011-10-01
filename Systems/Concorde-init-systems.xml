@@ -16,6 +16,14 @@
        speed implicitly known, during a subsonic cruise.
 
 
+     State reset :
+
+     - relocation (typically in flight or by airport change) triggers state reset.
+     - properties are reset to their initial state at FG startup.
+     - preserve="y" disables reset on selected properties (typically those initialised by nasal at startup).
+     - preserve="y" doesn't work with a saved property, whose saved state is only restored.
+
+
      Known problems :
      ==============
      - electrical system has a Nasal stack overflow, when above <iterations-forced>4</iterations-forced>
@@ -996,6 +1004,8 @@
   <human>
    <serviceable type="bool" archive="y">false</serviceable>                  <!-- no 3D -->
 
+   <airport-id></airport-id>
+
    <captain>
     <stowe-norm type="double">0.0</stowe-norm>
    </captain>
@@ -1027,7 +1037,6 @@
       <subcomponent>adf</subcomponent>
      </adf>
      <crew>/controls/crew</crew>
-     <ivsi>/instrumentation/vertical-speed-indicator[0]</ivsi>
      <lighting>/controls/lighting/crew</lighting>
      <lighting-captain>/controls/lighting/crew/captain</lighting-captain>
      <lighting-copilot>/controls/lighting/crew/copilot</lighting-copilot>
@@ -1054,9 +1063,11 @@
     </itself>
 
     <noinstrument>
-     <airspeed>/velocities/airspeed-kt</airspeed>
+     <airspeed>/velocities/groundspeed-kt</airspeed>
+     <agl>/position/altitude-agl-ft</agl>
+     <altitude>/position/altitude-ft</altitude>
+     <speed>/velocities/vertical-speed-fps</speed>
      <sun>/sim/time/sun-angle-rad</sun>
-     <tower>/sim/tower/airport-id</tower>
     </noinstrument>
    </relations>
 
@@ -1355,26 +1366,26 @@
 
    <system n="0">
     <cabin-alt-ft>8000.0</cabin-alt-ft>
-    <datum-inhg>0.0</datum-inhg>
+    <datum-inhg preserve="y">0.0</datum-inhg>
     <datum-mbar>1013.21</datum-mbar>
     <discharge-aft-percent>0.0</discharge-aft-percent>
     <discharge-fwd-percent>0.0</discharge-fwd-percent>
-    <inhg-per-min>0.0</inhg-per-min>
-    <max-diff-ft>29000.0</max-diff-ft>
+    <inhg-per-min preserve="y">0.0</inhg-per-min>
+    <max-diff-ft preserve="y">29000.0</max-diff-ft>
     <mbar-per-min>18.0</mbar-per-min>
-    <min-pressure-inhg>0.0</min-pressure-inhg>
+    <min-pressure-inhg preserve="y">0.0</min-pressure-inhg>
    </system>
 
    <system n="1">
     <cabin-alt-ft>8000.0</cabin-alt-ft>
-    <datum-inhg>0.0</datum-inhg>
+    <datum-inhg preserve="y">0.0</datum-inhg>
     <datum-mbar>1013.21</datum-mbar>
     <discharge-aft-percent>0.0</discharge-aft-percent>
     <discharge-fwd-percent>0.0</discharge-fwd-percent>
-    <inhg-per-min>0.0</inhg-per-min>
-    <max-diff-ft>29000.0</max-diff-ft>
+    <inhg-per-min preserve="y">0.0</inhg-per-min>
+    <max-diff-ft preserve="y">29000.0</max-diff-ft>
     <mbar-per-min>18.0</mbar-per-min>
-    <min-pressure-inhg>0.0</min-pressure-inhg>
+    <min-pressure-inhg preserve="y">0.0</min-pressure-inhg>
    </system>
 
    <valve>

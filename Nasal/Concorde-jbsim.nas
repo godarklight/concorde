@@ -164,6 +164,7 @@ ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
+   copilotcrew.slowschedule();
    engineercrew.veryslowschedule();
 
    # schedule the next call
@@ -171,7 +172,10 @@ ConcordeMain.sec60cron = func {
 }
 
 ConcordeMain.savedata = func {
-   var saved_props = [ "/controls/anti-ice/icing-model/duration/few-min",
+   var saved_props = [ "/controls/adc/ivsi-in-cruise",
+                       "/controls/adc/system[0]/ivsi-emulated",
+                       "/controls/adc/system[1]/ivsi-emulated",
+                       "/controls/anti-ice/icing-model/duration/few-min",
                        "/controls/anti-ice/icing-model/duration/scattered-min",
                        "/controls/anti-ice/icing-model/duration/broken-min",
                        "/controls/anti-ice/icing-model/duration/overcast-min",
@@ -191,7 +195,9 @@ ConcordeMain.savedata = func {
                        "/controls/crew/startup",
                        "/controls/crew/timeout",
                        "/controls/crew/timeout-s",
-                       "/controls/environment/effects",
+                       "/controls/environment/rain",
+                       "/controls/environment/smoke",
+                       "/controls/fuel/reinit",
                        "/controls/tractor/distance-m",
                        "/controls/seat/recover",
                        "/controls/seat/yoke",
@@ -306,4 +312,16 @@ ConcordeMain.init = func {
    print("concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 
-concordeL = setlistener("/sim/signals/fdm-initialized", func { theconcorde = ConcordeMain.new(); removelistener(concordeL); });
+# state reset
+ConcordeMain.reinit = func {
+   if( getprop("/controls/fuel/reinit") ) {
+       # default is JSBSim state, which loses fuel selection.
+       globals.Concorde.fuelsystem.reinitexport();
+   }
+}
+
+# object creation
+concordeL  = setlistener("/sim/signals/fdm-initialized", func { globals.Concorde.main = ConcordeMain.new(); removelistener(concordeL); });
+
+# state reset
+concordeL2 = setlistener("/sim/signals/reinit", func { globals.Concorde.main.reinit(); });

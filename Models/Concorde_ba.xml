@@ -284,16 +284,6 @@
    <object-name>Engineer location</object-name>
   </animation>
 
-<!-- avoids side effect on selection -->
-
-  <animation>
-   <name>EngineerPanel</name> 
-   <object-name>EngineerLeft</object-name>
-   <object-name>EngineerRight</object-name>
-   <object-name>Engineer</object-name>
-   <object-name>EngineerAft</object-name>
-  </animation>
-
   <animation>
    <type>select</type>
    <object-name>engineer</object-name>
@@ -2486,7 +2476,8 @@
   </axis>
  </animation>
 
-<!-- Shader effects -->
+
+<!-- SHADER effects -->
 
  <effect>
   <inherits-from>Aircraft/Generic/Effects/Fuselagereflect</inherits-from>
@@ -2519,11 +2510,7 @@
   <type>material</type>
   <object-name>CeilingEdge</object-name>
   <object-name>Dashboard</object-name>
-  <object-name>RoofLight1</object-name>
-  <object-name>RoofLight2</object-name>
-  <object-name>AvionicsLRack</object-name>
-  <object-name>AvionicsRRack</object-name>
-  <object-name>AvionicsRack</object-name>
+  <object-name>Rack lighting</object-name>
   <emission>
    <red>0.66</red>
    <green>0.68</green>
@@ -2563,8 +2550,6 @@
   <object-name>UpperPanel</object-name>
   <object-name>ConsoleLeft</object-name>
   <object-name>ConsoleRight</object-name>
-  <object-name>TopConsoleLeft</object-name>
-  <object-name>TopConsoleRight</object-name>
   <object-name>CeilingPanel</object-name>
   <object-name>Dash lighting</object-name>
   <emission>
@@ -2603,17 +2588,6 @@
 
  <animation>
   <type>material</type>
-  <object-name>EngineerPanel</object-name>
-  <emission>
-   <red>0.83</red>
-   <green>0.74</green>
-   <blue>0.38</blue>
-   <factor-prop>systems/lighting/level/engineer/panel</factor-prop>
-  </emission> 
- </animation> 
-
- <animation>
-  <type>material</type>
   <object-name>ConsoleForward</object-name>
   <object-name>ConsoleAft</object-name>
   <emission>
@@ -2623,42 +2597,5 @@
    <factor-prop>systems/lighting/level/panel/console</factor-prop>
   </emission> 
  </animation> 
-
-
-<!-- ....... -->
-<!-- COCKPIT -->
-<!-- ....... -->
-
-<!-- DOOR (doesn't work before lights/lighting !) -->
-
- <animation>
-  <type>rotate</type>
-  <object-name>FlightDeckDoor</object-name>
-  <property>controls/doors/flight-deck/position-norm</property>
-  <factor>-90</factor>
-  <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>-19.649</x-m>
-   <y-m>-0.437</y-m>
-   <z-m>0.0</z-m>
-  </center>
-  <axis>
-   <x>0.0</x>
-   <y>0.0</y>
-   <z>1.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>pick</type>
-  <object-name>FlightDeckDoor</object-name>
-  <action>
-   <button>0</button>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.doorsystem.flightdeckexport();</script>
-   </binding>
-  </action>
- </animation>
 
 </PropertyList>

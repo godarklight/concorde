@@ -130,6 +130,41 @@ properties' values.
    <type>switch</type>
 
    <layer>
+    <name>ft10000 - digital</name>
+    <condition>
+     <greater-than-equals>
+      <property alias="../../../../../../params/ft-sel"/>
+      <value>10000.0</value>
+     </greater-than-equals>
+    </condition>
+    <type>text</type>
+    <point-size>13</point-size>
+    <color>
+     <red>1.0</red>
+     <green>1.0</green>
+     <blue>1.0</blue>
+    </color>
+    <chunks>
+     <chunk>
+      <type>number-value</type>
+      <property alias="../../../../../../params/ft-sel"/>
+      <scale>0.001</scale>
+      <format>%1.3f</format>
+     </chunk>
+    </chunks>
+    <transformations>
+     <transformation>
+      <type>x-shift</type>
+      <offset>-25</offset>
+     </transformation>
+     <transformation>
+      <type>y-shift</type>
+      <offset>6</offset>
+     </transformation>
+    </transformations>
+   </layer>
+
+   <layer>
     <name>ft - digital</name>
     <condition>
      <and>

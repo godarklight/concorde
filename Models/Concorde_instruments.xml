@@ -570,6 +570,16 @@
 <!-- Instruments  -->
 <!-- ============ -->
 
+  <model>
+   <name>Captain glass</name>
+   <path>Aircraft/Concorde/Instruments/crew/glass.xml</path>
+   <offsets>
+    <x-m>-23.710</x-m>
+    <y-m>-0.765</y-m>
+    <z-m> 0.875</z-m>
+   </offsets>
+  </model>
+
 <!-- OVERHEAD -->
 
   <model>
@@ -617,6 +627,46 @@
 <!-- PEDESTAL -->
 
   <model>
+   <name>INS 1</name>
+   <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
+   <offsets>
+    <x-m>-23.690</x-m>
+    <y-m>-0.155</y-m>
+    <z-m> 0.833</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>INS 2</name>
+   <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
+   <offsets>
+    <x-m>-23.690</x-m>
+    <y-m> 0.155</y-m>
+    <z-m> 0.833</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <ins-service>/instrumentation/ins[1]/serviceable</ins-service>
+     <ins-selector>/instrumentation/ins[1]/control/selector</ins-selector>
+     <ins-switch>/instrumentation/ins[1]/control/test</ins-switch>
+     <ins-waypoint>/instrumentation/ins[1]/control/waypoint</ins-waypoint>
+     <ins-light>/instrumentation/ins[1]/control/light</ins-light>
+     <ins-mode>/instrumentation/ins[1]/msu/mode</ins-mode>
+     <display-left>/instrumentation/ins[1]/data/left</display-left>
+     <display-right>/instrumentation/ins[1]/data/right</display-right>
+     <light-alert>/instrumentation/ins[1]/light/alert</light-alert>
+     <light-warning>/instrumentation/ins[1]/light/warning</light-warning>
+     <light-remote>/instrumentation/ins[1]/light/remote</light-remote>
+     <light-insert>/instrumentation/ins[1]/light/insert</light-insert>
+     <light-hold>/instrumentation/ins[1]/light/hold</light-hold>
+     <light-battery>/instrumentation/ins[1]/light/battery</light-battery>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
    <name>Trim Cylinder</name>
    <path>Aircraft/Concorde/Instruments/pedestal/trim-cylinder.xml</path>
    <offsets>
@@ -644,6 +694,34 @@
     <y-m> 0.115</y-m>
     <z-m> 0.807</z-m>
    </offsets>
+  </model>
+
+  <model>
+   <name>INS 3</name>
+   <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
+   <offsets>
+    <x-m>-22.920</x-m>
+    <y-m> 0.110</y-m>
+    <z-m> 0.820</z-m>
+   </offsets>
+   <overlay>
+    <params>
+     <ins-service>/instrumentation/ins[2]/serviceable</ins-service>
+     <ins-selector>/instrumentation/ins[2]/control/selector</ins-selector>
+     <ins-switch>/instrumentation/ins[2]/control/test</ins-switch>
+     <ins-waypoint>/instrumentation/ins[2]/control/waypoint</ins-waypoint>
+     <ins-light>/instrumentation/ins[2]/control/light</ins-light>
+     <ins-mode>/instrumentation/ins[2]/msu/mode</ins-mode>
+     <display-left>/instrumentation/ins[2]/data/left</display-left>
+     <display-right>/instrumentation/ins[2]/data/right</display-right>
+     <light-alert>/instrumentation/ins[2]/light/alert</light-alert>
+     <light-warning>/instrumentation/ins[2]/light/warning</light-warning>
+     <light-remote>/instrumentation/ins[2]/light/remote</light-remote>
+     <light-insert>/instrumentation/ins[2]/light/insert</light-insert>
+     <light-hold>/instrumentation/ins[2]/light/hold</light-hold>
+     <light-battery>/instrumentation/ins[2]/light/battery</light-battery>
+    </params>
+   </overlay>
   </model>
 
 <!-- CONSOLES -->
@@ -923,6 +1001,9 @@
 
   <animation>
    <name>Pedestal instruments</name>
+   <object-name>INS 1</object-name>
+   <object-name>INS 2</object-name>
+   <object-name>INS 3</object-name>
    <object-name>Trim Cylinder</object-name>
    <object-name>Throttle Cylinder</object-name>
    <object-name>Brake Cylinder</object-name>

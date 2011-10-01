@@ -23,15 +23,42 @@
       <label></label>
     </text>
 
-    <checkbox>
-      <halign>left</halign>
-      <label>smoke</label>
-      <property>/controls/environment/effects</property>
-      <binding>
-       <command>property-toggle</command>
-       <property>/controls/environment/effects</property>
-      </binding>
-    </checkbox>
+    <group>
+      <layout>hbox</layout>
+
+      <checkbox>
+        <halign>left</halign>
+        <label>smoke</label>
+        <property>/controls/environment/smoke</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/environment/smoke</property>
+        </binding>
+      </checkbox>
+
+      <group>
+        <layout>vbox</layout>
+
+        <checkbox>
+          <halign>left</halign>
+          <label>rain visible from cockpit</label>
+          <property>/controls/environment/rain</property>
+          <binding>
+           <command>property-toggle</command>
+           <property>/controls/environment/rain</property>
+          </binding>
+        </checkbox>
+
+        <text>
+         <label>(restart after toggle)</label>
+         <color>
+          <red>0.5</red>
+          <green>0.5</green>
+          <blue>0.5</blue>
+         </color>
+        </text>
+      </group>
+    </group>
 
     <text>
       <label></label>

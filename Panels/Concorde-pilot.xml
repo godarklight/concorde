@@ -112,38 +112,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
 <!-- CAPTAIN far left -->
 
-  <instrument include="Instruments/concorde-speed-up.xml">
-   <name>Speed up</name>
-   <condition>
-    <and>
-     <property>/sim/current-view/internal</property>
-     <property>/systems/seat/captain</property>
-     <or>
-      <less-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>55</value>
-      </less-than>
-      <greater-than>
-       <property>/sim/current-view/goal-heading-offset-deg</property>
-       <value>345</value>
-      </greater-than>
-     </or>
-     <less-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>0</value>
-     </less-than>
-     <greater-than>
-      <property>/sim/current-view/goal-pitch-offset-deg</property>
-      <value>-50</value>
-     </greater-than>
-    </and>
-   </condition>
-   <x>-10</x>
-   <y>225</y>
-   <w>50</w>
-   <h>40</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-compass-ins.xml">
    <name>Compass INS</name>
    <condition>
@@ -4154,7 +4122,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <params>
-    <adc>/instrumentation/ivsi-adc[1]/indicated-speed-fps</adc>
+    <adc>/instrumentation/adc[1]/output/vertical-speed-fps</adc>
    </params>
    <x>1120</x>
    <y>8</y>

@@ -61,6 +61,84 @@
       </binding>
     </checkbox>
 
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label>IVSI emulation</label>
+    </text>
+
+    <text>
+      <label>Vertical speed may vary slowly during cruise at Mach 2</label>
+      <color>
+       <red>0.5</red>
+       <green>0.5</green>
+       <blue>0.5</blue>
+      </color>
+    </text>
+
+    <text>
+      <label>As work around, changes of atmospheric pressure emulates an IVSI</label>
+      <color>
+       <red>0.5</red>
+       <green>0.5</green>
+       <blue>0.5</blue>
+      </color>
+    </text>
+
+    <group>
+     <layout>hbox</layout>
+
+     <group>
+      <layout>vbox</layout>
+
+      <checkbox>
+        <halign>left</halign>
+        <label>IVSI 1 from 0 ft  ~</label>
+        <property>/controls/adc/system[0]/ivsi-emulated</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/adc/system[0]/ivsi-emulated</property>
+        </binding>
+      </checkbox>
+
+      <checkbox>
+        <halign>left</halign>
+        <label>IVSI 2 from 0 ft  ~</label>
+        <property>/controls/adc/system[1]/ivsi-emulated</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/adc/system[1]/ivsi-emulated</property>
+        </binding>
+      </checkbox>
+     </group>
+
+     <group>
+      <layout>vbox</layout>
+
+      <checkbox>
+        <halign>left</halign>
+        <label>Above 50000 ft (recommended)  ~</label>
+        <property>/controls/adc/ivsi-in-cruise</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/adc/ivsi-in-cruise</property>
+        </binding>
+      </checkbox>
+
+      <checkbox>
+        <halign>left</halign>
+        <label>Log instrument toggles</label>
+        <property>/controls/adc/ivsi-log</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/adc/ivsi-log</property>
+        </binding>
+      </checkbox>
+     </group>
+    </group>
+
   </group>
 
   <text>

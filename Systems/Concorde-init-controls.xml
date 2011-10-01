@@ -14,13 +14,17 @@
 <PropertyList>
 
   <adc>
+   <ivsi-in-cruise type="bool">true</ivsi-in-cruise>          <!-- IVSI instrument above 50000 ft -->
+   <ivsi-log type="bool">false</ivsi-log>                     <!-- not log of IVSI changes -->
    <system n="0">
+    <ivsi-emulated type="bool">false</ivsi-emulated>          <!-- no IVSI instrument -->
     <num type="int">1</num>
     <selector type="int">0</selector>                         <!-- normal -->
     <switch type="bool">true</switch>
    </system>
 
    <system n="1">
+    <ivsi-emulated type="bool">false</ivsi-emulated>          <!-- no IVSI instrument -->
     <num type="int">2</num>
     <selector type="int">0</selector>                         <!-- normal -->
     <switch type="bool">true</switch>
@@ -418,7 +422,8 @@
   </engines>
 
   <environment>
-   <effects type="bool">true</effects>
+   <rain type="bool">false</rain>                             <!-- not visible from cockpit -->
+   <smoke type="bool">true</smoke>
   </environment>
 
   <flight>
@@ -464,6 +469,8 @@
     <forward-guard type="bool">true</forward-guard>
     <forward-override type="bool">false</forward-override>
    </pumps>
+
+   <reinit type="bool">true</reinit>                          <!-- restore fuel on reinit -->
 
    <tank n="0">
     <aft-trim type="bool">false</aft-trim>

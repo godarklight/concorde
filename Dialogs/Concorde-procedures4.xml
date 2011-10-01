@@ -118,7 +118,7 @@
       </checkbox>
 
       <checkbox>
-        <label>adjusts VOR and ADF to tower  ~</label>
+        <label>adjusts VOR and ADF to nearest airport  ~</label>
         <halign>left</halign>
         <property>/controls/crew/radio</property>
         <binding>
@@ -126,6 +126,24 @@
          <property>/controls/crew/radio</property>
         </binding>
       </checkbox>
+
+      <text>
+        <label>(in Nasal/Concorde-route.xml)</label>
+        <color>
+         <red>0.5</red>
+         <green>0.5</green>
+         <blue>0.5</blue>
+        </color>
+      </text>
+
+      <text>
+        <label>only ground and above FL 100</label>
+        <color>
+         <red>0.5</red>
+         <green>0.5</green>
+         <blue>0.5</blue>
+        </color>
+      </text>
 
       <checkbox>
         <label>performs Captain checks (not real)  ~</label>

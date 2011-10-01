@@ -23,10 +23,7 @@ Model
 The floor is supposed to be at the same level than the external nose strakes (blade),
 which puts it slightly above the bottom of the (textured) doors.
 
-These meshes are not smoothed (solid) :
-- overhead.
-- engineer panel.
-- blue avionics rack, near the observer seat.
+The overhead is not smoothed (solid).
 
 
 Pitch
@@ -145,14 +142,14 @@ Updates (-) and additions (+) to the original model                         Auth
 + extract instruments into separate files.                                              2.7
 - conversion of .rgb to .png.                                             C. Schmitt    2.8
 + exhaust.                                                                C. Schmitt    2.8
-+ extract panels into separate files.                                                   2.9
 - split of main gear cylinders (compression).                                           2.9
 - deeper wells to fit the gears.                                                        2.9
 - make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
 - make the nosetip seperate in the model.                                 C. Schmitt    2.9
++ extract panels into separate files.                                                   2.10
 
 
 Made with Blender 2.49b.
 
 
-27 November 2010.
+4 September 2011.
