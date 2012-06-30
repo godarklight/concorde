@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
      VRP :
      - the model is shifted at the nose tip, where one wants the FDM to compute the movement.
      - CAUTION : this is the nose tip, without the droop nose (0.53 m).
@@ -79,7 +79,7 @@
     - fuselage wall doesn't stop rotation of observer seat.
 
 -->
- 
+
 <PropertyList>
   <path>concorde.ac</path>
   <offsets>
@@ -150,7 +150,7 @@
   <model>
    <name>Pushback</name>
    <path>Models/Airport/Pushback/Goldhofert.xml</path>
-   <offsets>   
+   <offsets>
     <x-m>-11.80</x-m>
     <y-m>0</y-m>
     <z-m>-4.60</z-m>
@@ -672,7 +672,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m>-11.965</x-m>
    <y-m> 0.0</y-m>
@@ -683,7 +683,7 @@
    <y>1</y>
    <z>0</z>
   </axis>
- </animation> 
+ </animation>
 
  <animation>
   <type>rotate</type>
@@ -706,7 +706,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m>-12.133</x-m>
    <y-m>0</y-m>
@@ -717,7 +717,7 @@
    <y>1</y>
    <z>0</z>
   </axis>
- </animation> 
+ </animation>
 
  <animation>
   <type>select</type>
@@ -796,7 +796,7 @@
       <ind>1.0</ind>
       <dep>74.0</dep> <!-- locks the door once gear down -->
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>-16.135</x1-m>
    <y1-m>-0.605</y1-m>
@@ -828,7 +828,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>-12.268</x1-m>
    <y1-m>-0.637</y1-m>
@@ -860,7 +860,7 @@
       <ind>1.0</ind>
       <dep>-74.0</dep> <!-- locks the door once gear down -->
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>-16.135</x1-m>
    <y1-m>0.605</y1-m>
@@ -869,7 +869,7 @@
    <y2-m>0.635</y2-m>
    <z2-m>-0.743</z2-m>
   </axis>
- </animation> 
+ </animation>
 
   <animation>
   <type>rotate</type>
@@ -892,7 +892,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>-12.268</x1-m>
    <y1-m>0.637</y1-m>
@@ -901,7 +901,7 @@
    <y2-m>0.640</y2-m>
    <z2-m>-0.748</z2-m>
   </axis>
- </animation> 
+ </animation>
 
  <animation>
   <type>select</type>
@@ -935,7 +935,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m>-10.924</x-m>
    <y-m>0.0</y-m>
@@ -946,7 +946,7 @@
    <y>1</y>
    <z>0</z>
   </axis>
- </animation> 
+ </animation>
 
  <animation>
   <type>select</type>
@@ -1169,7 +1169,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m> 3.577</y-m>
@@ -1227,7 +1227,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m> 0.333</y-m>
@@ -1269,7 +1269,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m> 3.638</y-m>
@@ -1307,7 +1307,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m> 1.715</y-m>
@@ -1341,7 +1341,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m> 3.731</y-m>
@@ -1404,7 +1404,7 @@
      <ind>1.0</ind>
      <dep>85.5</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>4.904</x1-m>
    <y1-m>3.897</y1-m>
@@ -1618,7 +1618,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m>-3.577</y-m>
@@ -1676,7 +1676,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m>-0.333</y-m>
@@ -1718,7 +1718,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m>-3.638</y-m>
@@ -1756,7 +1756,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m>-1.715</y-m>
@@ -1790,7 +1790,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m> 0.0</x-m>
    <y-m>-3.731</y-m>
@@ -1853,7 +1853,7 @@
      <ind>1.0</ind>
      <dep>-85.5</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>4.904</x1-m>
    <y1-m>-3.912</y1-m>
@@ -1937,7 +1937,7 @@
      <ind>1.0</ind>
      <dep>0.0</dep>
    </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m>22.880</x-m> <!-- real axis is along the leg door -->
    <y-m>0.0</y-m>
@@ -1991,7 +1991,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>23.954</x1-m>
    <y1-m>-0.265</y1-m>
@@ -2023,7 +2023,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <axis>
    <x1-m>23.954</x1-m>
    <y1-m>0.265</y1-m>
@@ -2032,7 +2032,7 @@
    <y2-m>0.255</y2-m>
    <z2-m>0.346</z2-m>
   </axis>
- </animation> 
+ </animation>
 
   <animation>
   <type>rotate</type>
@@ -2055,7 +2055,7 @@
       <ind>1.0</ind>
       <dep>0.0</dep>
     </entry>
-  </interpolation>   
+  </interpolation>
   <center>
    <x-m>22.847</x-m>
    <y-m>0.0</y-m>
@@ -2066,7 +2066,7 @@
    <y>1</y>
    <z>0</z>
   </axis>
- </animation> 
+ </animation>
 
  <animation>
   <type>select</type>
@@ -2092,7 +2092,7 @@
   <object-name>Right2Elevon</object-name>
   <property>surface-positions/right-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <axis>
    <x1-m>14.008</x1-m>
    <y1-m>12.036</y1-m>
@@ -2108,7 +2108,7 @@
   <object-name>Right2Elevon</object-name>
   <property>surface-positions/elevator-pos-norm</property>
   <factor>-22.5</factor> <!-- max real is 23.5 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <axis>
    <x1-m>14.008</x1-m>
    <y1-m>12.036</y1-m>
@@ -2124,7 +2124,7 @@
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/right-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
    <y-m>0.0</y-m>
@@ -2142,7 +2142,7 @@
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
    <y-m>0.0</y-m>
@@ -2168,7 +2168,7 @@
   <object-name>Left2Elevon</object-name>
   <property>surface-positions/left-aileron-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <axis>
    <x1-m>14.008</x1-m>
    <y1-m>-12.036</y1-m>
@@ -2184,7 +2184,7 @@
   <object-name>Left2Elevon</object-name>
   <property>surface-positions/elevator-pos-norm</property>
   <factor>22.5</factor> <!-- max real is 23.5 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <axis>
    <x1-m>14.008</x1-m>
    <y1-m>-12.036</y1-m>
@@ -2200,7 +2200,7 @@
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/left-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
    <y-m>0.0</y-m>
@@ -2218,7 +2218,7 @@
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
    <y-m>0.0</y-m>
@@ -2239,7 +2239,7 @@
   <object-name>Lowerrudder</object-name>
   <property>surface-positions/rudder-pos-norm</property>
   <factor>29</factor> <!-- max real is 30 deg -->
-  <offset-deg>0</offset-deg>   
+  <offset-deg>0</offset-deg>
   <center>
    <x-m>23.085</x-m>
    <y-m>0.0</y-m>
@@ -2480,18 +2480,49 @@
 <!-- SHADER effects -->
 
  <effect>
-  <inherits-from>Aircraft/Generic/Effects/Fuselagereflect</inherits-from>
-  <object-name>Cabin</object-name>
+  <inherits-from>Aircraft/Concorde/Models/Effects/fuselage-reflect</inherits-from>
   <object-name>Screen_0</object-name>
-  <object-name>Screen_1</object-name>
-  <object-name>Side</object-name>
   <object-name>Front_0</object-name>
-  <object-name>Front_1</object-name>
   <object-name>Hull</object-name>
   <object-name>Wing</object-name>
   <object-name>Nose_0</object-name>
   <object-name>Nose_1</object-name>
+  <object-name>Upperrudder</object-name>
+  <object-name>Lowerrudder</object-name>
+  <object-name>LOailaron</object-name>
+  <object-name>LMailaron</object-name>
+  <object-name>LIailaron</object-name>
+  <object-name>ROailaron</object-name>
+  <object-name>RMailaron</object-name>
+  <object-name>RIailaron</object-name>
+  <object-name>Engine</object-name>
+  <object-name>EngineIntake</object-name>
+  <object-name>OLImaindoor</object-name>
+  <object-name>OLOmaindoor</object-name>
+  <object-name>ORImaindoor</object-name>
+  <object-name>OROmaindoor</object-name>
+  <object-name>LIdoorclosed</object-name>
+  <object-name>LOdoorclosed</object-name>
+  <object-name>RIdoorclosed</object-name>
+  <object-name>ROdoorclosed</object-name>
+  <object-name>OFLbigdoor</object-name>
+  <object-name>OFlsmalldoor</object-name>
+  <object-name>OFRbigdoor</object-name>
+  <object-name>OFRsmalldoor</object-name>
+  <object-name>Fucdclosed</object-name>
+  <object-name>Taildoorfront</object-name>
+  <object-name>Littledoorleft</object-name>
+  <object-name>Littledoorright</object-name>
+  <object-name>Taildoorclosed</object-name>
  </effect>
+
+   <effect>
+	   <inherits-from>Aircraft/Concorde/Models/Effects/glass</inherits-from>
+	   <object-name>Cabin</object-name>
+	   <object-name>Screen_1</object-name>
+	   <object-name>Side</object-name>
+	   <object-name>Front_1</object-name>
+   </effect>
 
 
 <!-- =================== -->
@@ -2516,8 +2547,8 @@
    <green>0.68</green>
    <blue>0.64</blue>
    <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
 <!-- isolated from a group -->
 
@@ -2529,8 +2560,8 @@
    <green>0.68</green>
    <blue>0.64</blue>
    <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
  <animation>
   <type>material</type>
@@ -2540,8 +2571,8 @@
    <green>0.68</green>
    <blue>0.64</blue>
    <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
  <animation>
   <type>material</type>
@@ -2557,8 +2588,8 @@
    <green>0.79</green>
    <blue>0.87</blue>
    <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
  <animation>
   <type>material</type>
@@ -2570,8 +2601,8 @@
    <green>0.46</green>
    <blue>0.44</blue>
    <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
 <!-- FLOOD LIGHTING (only if no roof light) -->
 
@@ -2583,8 +2614,8 @@
    <green>0.74</green>
    <blue>0.38</blue>
    <factor-prop>systems/lighting/level/panel/main</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
  <animation>
   <type>material</type>
@@ -2595,7 +2626,7 @@
    <green>0.74</green>
    <blue>0.38</blue>
    <factor-prop>systems/lighting/level/panel/console</factor-prop>
-  </emission> 
- </animation> 
+  </emission>
+ </animation>
 
 </PropertyList>
