@@ -380,19 +380,10 @@
    </condition>
   </animation>
 
-<!-- increases frame rate inside the cockpit (only cockpit and nose/visor) -->
-
-  <animation>
-   <name>external</name>
-   <object-name>Side</object-name>                             <!-- transparent windows -->
-   <object-name>Hull</object-name>
-   <object-name>Cabin</object-name>                            <!-- transparent windows -->
-   <object-name>fx</object-name>                               <!-- exhaust -->
-  </animation>
-
+<!-- hide side windows in cockpit view -->
   <animation>
    <type>select</type>
-   <object-name>external</object-name>                         <!-- group avoids side effects -->
+   <object-name>Side</object-name>
    <condition>
     <or>
      <not>
