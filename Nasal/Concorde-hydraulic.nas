@@ -98,8 +98,9 @@ Hydraulic.red_feel = func {
 
 Hydraulic.has_green = func {
    var result = constant.FALSE;
-
-   if( me.itself["sensors"].getChild("green").getValue() >= me.HYDFAILUREPSI ) {
+   var greenpsi = me.itself["sensors"].getChild("green").getValue();
+   if( greenpsi == nil ) greenpsi = 0;
+   if( greenpsi >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -108,8 +109,9 @@ Hydraulic.has_green = func {
 
 Hydraulic.has_yellow = func {
    var result = constant.FALSE;
-
-   if( me.itself["sensors"].getChild("yellow").getValue() >= me.HYDFAILUREPSI ) {
+   var yellowpsi = me.itself["sensors"].getChild("yellow").getValue();
+   if( yellowpsi == nil ) yellowpsi = 0;
+   if( yellowpsi >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -118,8 +120,9 @@ Hydraulic.has_yellow = func {
 
 Hydraulic.has_blue = func {
    var result = constant.FALSE;
-
-   if( me.itself["sensors"].getChild("blue").getValue() >= me.HYDFAILUREPSI ) {
+   var bluepsi = me.itself["sensors"].getChild("blue").getValue();
+   if( bluepsi == nil ) bluepsi = 0;
+   if( bluepsi  >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -128,8 +131,9 @@ Hydraulic.has_blue = func {
 
 Hydraulic.has_gear = func {
    var result = constant.FALSE;
-
-   if( me.itself["sensors"].getChild("gear").getValue() >= me.HYDFAILUREPSI ) {
+   var gearpsi = me.itself["sensors"].getChild("gear").getValue();
+   if( gearpsi == nil ) gearpsi = 0;
+   if( gearpsi >= me.HYDFAILUREPSI ) {
        result = constant.TRUE;
    }
 
@@ -138,8 +142,9 @@ Hydraulic.has_gear = func {
 
 Hydraulic.has_steering = func {
    var result = 0.0;
-
-   if( me.itself["sensors"].getChild("steering").getValue() >= me.HYDFAILUREPSI ) {
+   var steeringpsi = me.itself["sensors"].getChild("steering").getValue();
+   if( steeringpsi == nil ) steeringpsi = 0;
+   if( steeringpsi >= me.HYDFAILUREPSI ) {
        result = 1.0;
    }
 
@@ -155,7 +160,9 @@ Hydraulic.schedule = func {
    me.parser.schedule();
 
    var greenpsi = me.itself["sensors"].getChild("green").getValue();
+   if( greenpsi == nil ) greenpsi = 0;
    var yellowpsi = me.itself["sensors"].getChild("yellow").getValue();
+   if( yellowpsi == nil ) yellowpsi = 0;
 
    me.brakes.schedule( greenpsi, yellowpsi );
 
