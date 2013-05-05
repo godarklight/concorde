@@ -1,1 +1,1 @@
-Attempting to improve the concorde for flightgear.
+Attempting to improve the concorde for flightgear. 
