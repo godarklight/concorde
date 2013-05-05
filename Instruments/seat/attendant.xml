@@ -1,0 +1,25 @@
+<?xml version="1.0" ?> 
+
+<PropertyList> 
+ <path>seat-attendant.ac</path> 
+
+ <nasal>
+  <load>
+   var livery_update = aircraft.livery_update.new(
+   "Aircraft/Concorde/Models/Liveries", 10,
+   func { print("Concorde livery update (attendant seat)") });
+  </load>
+
+  <unload>
+   livery_update.stop();
+  </unload>
+ </nasal>
+
+ <animation>
+  <type>material</type>
+  <object-name>Seat</object-name>
+  <property-base>sim/model/livery/</property-base>
+  <texture-prop>texture-seat</texture-prop>
+ </animation>
+
+</PropertyList>
