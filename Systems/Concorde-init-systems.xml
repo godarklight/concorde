@@ -166,8 +166,8 @@
 
    <config n="0">
     <dg-heading-hold1>
-     <input>/autopilot/internal/fdm-heading-bug-error-deg-15-sec</input>
-     <Kp type="double">-1.0</Kp>
+     <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
+     <Kp type="double">-5.0</Kp>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
     </dg-heading-hold1>
@@ -175,11 +175,11 @@
      <Kp type="double">0.1</Kp>
     </dg-heading-hold3>
     <nav-hold1>
-     <input>/autopilot/internal/nav1-heading-error-deg-15-sec</input>
+     <input>/autopilot/internal/nav1-heading-error-deg</input>
     </nav-hold1>
     <true-heading-hold1>
-     <input type="string">/autopilot/internal/true-heading-error-deg-15-sec</input>
-     <Kp type="double">-1.0</Kp>
+     <input type="string">/autopilot/internal/true-heading-error-deg</input>
+     <Kp type="double">-5.0</Kp>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
     </true-heading-hold1>
@@ -224,8 +224,8 @@
 
    <pid>
     <dg-heading-hold1>
-     <input alias="/autopilot/internal/fdm-heading-bug-error-deg-15-sec"/>
-     <Kp type="double">-1.0</Kp>
+     <input alias="/autopilot/internal/fdm-heading-bug-error-deg"/>
+     <Kp type="double">-5.0</Kp>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
      <stable-sec type="double">0.0</stable-sec>
@@ -236,15 +236,15 @@
      <Kp type="double">0.1</Kp>
     </dg-heading-hold3>
     <nav-hold1>
-     <input alias="/autopilot/internal/nav1-heading-error-deg-15-sec"/>
+     <input alias="/autopilot/internal/nav1-heading-error-deg"/>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
      <stable-sec type="double">0.0</stable-sec>
     </nav-hold1>
     <prediction-filter type="bool">true</prediction-filter>                  <!-- no debug -->
     <true-heading-hold1>
-     <input alias="/autopilot/internal/true-heading-error-deg-15-sec"/>
-     <Kp type="double">-1.0</Kp>
+     <input alias="/autopilot/internal/true-heading-error-deg"/>
+     <Kp type="double">-5.0</Kp>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
      <stable-sec type="double">0.0</stable-sec>
