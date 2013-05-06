@@ -35,6 +35,16 @@
     <type>pick</type>
     <object-name>AutothrottleSet</object-name>
     <action>
+      <name>Autothrottle Reset</name>
+      <button>2</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-assign</command>
+	<property>/controls/autoflight/target-speed-adjust</property>
+	<value>0</value>
+      </binding>
+    </action>
+    <action>
       <name>Speed Set Switch Up</name>
       <button>3</button>
       <repeatable>false</repeatable>
@@ -64,6 +74,16 @@
   <animation>
     <type>pick</type>
     <object-name>RollSet</object-name>
+    <action>
+      <name>Roll Reset</name>
+      <button>2</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-assign</command>
+	<property>/controls/autoflight/target-roll-adjust</property>
+	<value>0</value>
+      </binding>
+    </action>
     <action>
       <name>Roll Set Left</name>
       <button>3</button>

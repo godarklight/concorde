@@ -890,7 +890,12 @@
       <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
-      <prop>/autopilot/settings/target-speed-kt</prop>
+      <expression>
+	<sum>
+	  <property>/controls/autoflight/target-speed-adjust</property>
+          <property>/autopilot/settings/target-speed-kt</property>
+	</sum>
+      </expression>
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -921,7 +926,12 @@
       <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
-      <prop>/autopilot/settings/target-speed-kt</prop>
+      <expression>
+	<sum>
+	  <property>/controls/autoflight/target-speed-adjust</property>
+          <property>/autopilot/settings/target-speed-kt</property>
+	</sum>
+      </expression>
     </reference>
     <output>
       <prop>/controls/engines/engine[1]/throttle</prop>
@@ -952,7 +962,12 @@
       <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
-      <prop>/autopilot/settings/target-speed-kt</prop>
+      <expression>
+	<sum>
+	  <property>/controls/autoflight/target-speed-adjust</property>
+          <property>/autopilot/settings/target-speed-kt</property>
+	</sum>
+      </expression>
     </reference>
     <output>
       <prop>/controls/engines/engine[2]/throttle</prop>
@@ -983,7 +998,12 @@
       <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
-      <prop>/autopilot/settings/target-speed-kt</prop>
+      <expression>
+	<sum>
+	  <property>/controls/autoflight/target-speed-adjust</property>
+          <property>/autopilot/settings/target-speed-kt</property>
+	</sum>
+      </expression>
     </reference>
     <output>
       <prop>/controls/engines/engine[3]/throttle</prop>
