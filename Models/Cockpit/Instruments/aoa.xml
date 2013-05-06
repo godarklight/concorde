@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<PropertyList>
+    <path>../Models/aoa.ac</path>
+    <animation>
+        <type>translate</type>
+        <object-name>Accl</object-name>
+	<property>/fdm/jsbsim/accelerations/Nz</property>        
+        <interpolation>
+            <entry><ind>3.5</ind><dep>.073</dep></entry>
+            <entry><ind>-1</ind><dep>-.073</dep></entry>
+	  </interpolation>
+	<axis>
+            <x>0</x>
+            <y>0</y>
+            <z>1</z>
+        </axis>
+    </animation>
+    <animation>
+        <type>translate</type>
+        <object-name>Aoa</object-name>
+	<property>instrumentation/accelerometer-aoa[0]/alpha-deg</property>        
+	  <interpolation>
+            <entry><ind>25</ind><dep>.076</dep></entry>
+            <entry><ind>-5</ind><dep>-.076</dep></entry>
+	  </interpolation>
+          <axis>
+            <x>0</x>
+            <y>0</y>
+            <z>1</z>
+        </axis>
+    </animation>
+</PropertyList>
