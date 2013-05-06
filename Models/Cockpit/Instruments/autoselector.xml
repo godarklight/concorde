@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <path>../Models/autoselector.ac</path>
+  <animation>
+    <type>pick</type>
+    <object-name>NoseSet</object-name>
+    <action>
+      <name>Nose Set Switch Up</name>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+        <property>/autopilot/settings/vertical-speed-fpm</property>
+        <step>100</step>
+        <min>-6000</min>
+        <max>6000</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <action>
+      <name>Nose Set Switch Down</name>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+        <property>/autopilot/settings/vertical-speed-fpm</property>
+        <step>-100</step>
+        <min>-6000</min>
+        <max>6000</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>AutothrottleSet</object-name>
+    <action>
+      <name>Speed Set Switch Up</name>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+	<property>/controls/autoflight/target-speed-adjust</property>
+        <step>1</step>
+	<min>-16</min>
+	<max>16</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <action>
+      <name>Speed Set Switch Down</name>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+	<property>/controls/autoflight/target-speed-adjust</property>
+        <step>-1</step>
+	<min>-16</min>
+        <max>16</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>RollSet</object-name>
+    <action>
+      <name>Roll Set Left</name>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+	<property>/controls/autoflight/target-roll-adjust</property>
+        <step>1</step>
+	<min>-16</min>
+	<max>16</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <action>
+      <name>Roll Set Right</name>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-adjust</command>
+	<property>/controls/autoflight/target-roll-adjust</property>
+        <step>-1</step>
+	<min>-30</min>
+        <max>30</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+  </animation>
+</PropertyList>

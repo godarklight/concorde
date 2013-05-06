@@ -50,7 +50,7 @@
   <!-- =============================================================== -->
   <!-- Prediction filters                                              -->
   <!-- =============================================================== -->
-
+  
   <predict-simple>
      <input>/velocities/mach</input>
      <output>/autopilot/internal/lookahead-5-sec-mach</output>
@@ -98,7 +98,12 @@
       <prop>/orientation/roll-deg</prop>
     </input>
     <reference>
-      <value>0.0</value>
+      <expression>
+	<sum>
+          <value>0.0</value>
+	  <property>/controls/autoflight/target-roll-adjust</property>
+	</sum>
+      </expression>
     </reference>
     <output>
       <prop>/controls/flight/aileron</prop>
