@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <path>../Models/horizon.ac</path>
+  <animation>
+    <type>rotate</type>
+    <object-name>Horizon</object-name>
+    <property>/instrumentation/attitude-indicator[0]/indicated-roll-deg</property>
+    <factor>1</factor>
+    <center>
+      <x-m>0</x-m>
+      <y-m>0</y-m>
+      <z-m>0</z-m>
+    </center>
+    <axis>
+      <x>1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+  <animation>
+  <type>textranslate</type>
+  <object-name>Horizon</object-name>
+    <property>/instrumentation/attitude-indicator[0]/indicated-pitch-deg</property>
+    <factor>0.009765625</factor>
+    <axis>
+      <x>0</x>
+      <y>1</y>
+    </axis>
+  </animation>
+</PropertyList>
