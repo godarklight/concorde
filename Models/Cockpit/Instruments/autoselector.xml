@@ -40,8 +40,8 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-assign</command>
-	<property>/controls/autoflight/target-speed-adjust</property>
-	<value>0</value>
+        <property>/controls/autoflight/target-speed-adjust</property>
+        <value>0</value>
       </binding>
     </action>
     <action>
@@ -50,10 +50,10 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>/controls/autoflight/target-speed-adjust</property>
+        <property>/controls/autoflight/target-speed-adjust</property>
         <step>1</step>
-	<min>-16</min>
-	<max>16</max>
+        <min>-16</min>
+        <max>16</max>
         <wrap>false</wrap>
       </binding>
     </action>
@@ -63,9 +63,9 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>/controls/autoflight/target-speed-adjust</property>
+        <property>/controls/autoflight/target-speed-adjust</property>
         <step>-1</step>
-	<min>-16</min>
+        <min>-16</min>
         <max>16</max>
         <wrap>false</wrap>
       </binding>
@@ -80,8 +80,8 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-assign</command>
-	<property>/controls/autoflight/target-roll-adjust</property>
-	<value>0</value>
+        <property>/controls/autoflight/target-roll-adjust</property>
+        <value>0</value>
       </binding>
     </action>
     <action>
@@ -90,10 +90,10 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>/controls/autoflight/target-roll-adjust</property>
+        <property>/controls/autoflight/target-roll-adjust</property>
         <step>1</step>
-	<min>-16</min>
-	<max>16</max>
+        <min>-16</min>
+        <max>16</max>
         <wrap>false</wrap>
       </binding>
     </action>
@@ -103,9 +103,9 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>/controls/autoflight/target-roll-adjust</property>
+        <property>/controls/autoflight/target-roll-adjust</property>
         <step>-1</step>
-	<min>-30</min>
+        <min>-30</min>
         <max>30</max>
         <wrap>false</wrap>
       </binding>
