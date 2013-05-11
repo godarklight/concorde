@@ -31,15 +31,15 @@ Autopilot.new = func {
 
                CLIMBFPM : 2000.0,
                ACQUIREFPM : 800.0,
-               TOUCHFPM : -750.0,                             # autoland
+               TOUCHFPM : -300.0,                             # autoland
                DESCENTFPM : -1000.0,
 
                MACHFT : 25000.0,                              # altitude for Mach speed
-               AUTOLANDFT : 2000.0,                           # altitude for LA mode
+               AUTOLANDFT : 1500.0,                           # altitude for LA mode
                ALTIMETERFT : 1200.0,
-               LANDINGFT : 1500.0,                            # adjusts to the landing pitch
-               PITCHFT : 1000.0,                              # reaches the landing pitch
-               FLAREFT : 50.0,                                # leaves glide slope
+               LANDINGFT : 800.0,                            # adjusts to the landing pitch
+               PITCHFT : 500.0,                              # reaches the landing pitch
+               FLAREFT : 80.0,                                # leaves glide slope
                LIGHTFT : 50.0,
 
                PITCHDEG : 20.0,                               # max pitch
@@ -56,7 +56,7 @@ Autopilot.new = func {
 # If no pitch control, sudden swap to 10 deg causes a rebound, worsened by the ground effect.
 # Ignoring the glide slope at 200-300 ft, with a pitch of 10 degrees, would be simpler;
 # but the glide slope following is implicit until 100 ft (red autoland light).
-               FLAREDEG : 10.0,
+               FLAREDEG : 10,
 
 # If 10 degrees, vertical speed, too high to catch the glide slope,
 # cannot be recovered during the last 100 ft.
@@ -1064,12 +1064,10 @@ Autopilot.autoland = func {
                                me.heading(me.landheadingdeg);
                                me.apactivatemode("heading","dg-heading-hold");
                            }
-                           me.modepitch( me.FLAREDEG );
+                           me.verticalspeed(me.TOUCHFPM);
                            me.autothrottlesystem.speed(-100);
+                           me.apactivatemode("altitude","vertical-speed-hold");
                            me.autothrottlesystem.atactivatemode("speed","speed-with-throttle");
-                           #me.verticalspeed(me.TOUCHFPM);
-                           #me.autothrottlesystem.atactivatemode("speed","vertical-speed-with-throttle");
-                           
                        }
 
                        # tip to landing pitch :
