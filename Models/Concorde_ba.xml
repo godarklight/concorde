@@ -142,7 +142,7 @@
    <name>Interior</name>
    <path>Aircraft/Concorde/Models/Concorde_interior.xml</path>
   </model>
-  
+
   <model>
    <name>Cockpit</name>
    <path>Aircraft/Concorde/Models/Concorde_3d_cockpit.xml</path>
@@ -2484,7 +2484,7 @@
   <inherits-from>Aircraft/Concorde/Models/Effects/fuselage-reflect</inherits-from>
   <object-name>Screen_0</object-name>
   <object-name>Front_0</object-name>
- <object-name>Hull</object-name>
+  <object-name>Hull</object-name>
   <object-name>Wing</object-name>
   <object-name>Nose_0</object-name>
   <object-name>Nose_1</object-name>
@@ -2591,7 +2591,7 @@
    <factor-prop>systems/lighting/level/roof</factor-prop>
   </emission>
  </animation>
-
+<!--
  <animation>
   <type>material</type>
   <object-name>Cockpit</object-name>
@@ -2605,6 +2605,7 @@
   </emission>
  </animation>
 
+ -->
 <!-- FLOOD LIGHTING (only if no roof light) -->
 
  <animation>
