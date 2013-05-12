@@ -64,7 +64,8 @@ Gpws.sound_terrain = func {
 
        for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
             aglft = me.dependency["radio-altimeter"][i].getChild("indicated-altitude-ft").getValue();
-            speedftps = me.dependency["adc"][i].getNode("output").getChild("vertical-speed-fps").getValue();
+            speedftps = me.dependency["adc"][i].getNode("output").getChild("vertical-speed-fpm").getValue();
+            speedftps = speedftps / 60;
 
             # excessive rate of descent below 2500 ft.
             if( aglft < me.RADIOFT ) {

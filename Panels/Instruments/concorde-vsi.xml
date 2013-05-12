@@ -15,7 +15,7 @@
 
  <params>
   <tcr-ctrl>/autopilot/settings/vertical-speed-fpm</tcr-ctrl>
-  <speed-sel>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</speed-sel>
+  <speed-sel>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</speed-sel>
   <alarm-flag>/instrumentation/vertical-speed-indicator[0]/alarm-flag</alarm-flag>
  </params>
 
@@ -61,13 +61,13 @@
      <max>100.0</max>
      <scale>1.0</scale>
      <interpolation> <!-- index must increase, because of lookup ! -->
-      <entry><ind> -100.0</ind><dep>-66.0</dep></entry>
-      <entry><ind>  -33.3</ind><dep>-39.0</dep></entry>
-      <entry><ind>  -16.7</ind><dep>-27.0</dep></entry>
+      <entry><ind> -6000</ind><dep>-66.0</dep></entry>
+      <entry><ind>  -2000</ind><dep>-39.0</dep></entry>
+      <entry><ind>  -1000</ind><dep>-27.0</dep></entry>
       <entry><ind>   0.0</ind><dep>  0.0</dep></entry>
-      <entry><ind>   16.7</ind><dep> 27.0</dep></entry>
-      <entry><ind>   33.3</ind><dep> 39.0</dep></entry>
-      <entry><ind>  100.0</ind><dep> 66.0</dep></entry>
+      <entry><ind>   1000</ind><dep> 27.0</dep></entry>
+      <entry><ind>   2000</ind><dep> 39.0</dep></entry>
+      <entry><ind>  6000</ind><dep> 66.0</dep></entry>
      </interpolation>
     </transformation>
    </transformations>

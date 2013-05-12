@@ -162,7 +162,7 @@ Virtualengineer.slowschedule = func {
     me.rates = me.FUELSEC;
 
     if( me.itself["root"].getChild("serviceable").getValue() ) {
-        me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
+        me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fpm").getValue();
 
         # a slow change is more natural.
         me.fuel();

@@ -58,7 +58,7 @@ properties' values.
  <h-base>128</h-base>
 
  <params>
-  <adc>/instrumentation/adc[0]/output/vertical-speed-fps</adc>
+  <adc>/instrumentation/adc[0]/output/vertical-speed-fpm</adc>
  </params>
 
 
@@ -113,21 +113,21 @@ properties' values.
      <max>100.0</max>
      <scale>1.0</scale>
      <interpolation>
-      <entry><ind>-100.0</ind><dep>-175.0</dep></entry>
-      <entry><ind>-80.0</ind><dep>-165.0</dep></entry>
-      <entry><ind>-65.0</ind><dep>-150.0</dep></entry>
-      <entry><ind>-50.0</ind><dep>-135.0</dep></entry>
-      <entry><ind>-33.3</ind><dep>-110.0</dep></entry>
-      <entry><ind>-25</ind><dep>-90</dep></entry>
-      <entry><ind>-16.7</ind><dep>-65</dep></entry>
+      <entry><ind>-6000</ind><dep>-175.0</dep></entry>
+      <entry><ind>-4800</ind><dep>-165.0</dep></entry>
+      <entry><ind>-3900</ind><dep>-150.0</dep></entry>
+      <entry><ind>-3000</ind><dep>-135.0</dep></entry>
+      <entry><ind>-2000</ind><dep>-110.0</dep></entry>
+      <entry><ind>-1500</ind><dep>-90</dep></entry>
+      <entry><ind>-1000</ind><dep>-65</dep></entry>
       <entry><ind> 0</ind><dep>  0.0</dep></entry>
-      <entry><ind>16.7</ind><dep>65</dep></entry>
-      <entry><ind>25</ind><dep>90</dep></entry>
-      <entry><ind>33.3</ind><dep>110</dep></entry>
-      <entry><ind>50.0</ind><dep>135.0</dep></entry>
-      <entry><ind>65.0</ind><dep>150.0</dep></entry>
-      <entry><ind>80.0</ind><dep>165.0</dep></entry>
-      <entry><ind>100.0</ind><dep>180.0</dep></entry>
+      <entry><ind>1000</ind><dep>65</dep></entry>
+      <entry><ind>1500</ind><dep>90</dep></entry>
+      <entry><ind>2000</ind><dep>110</dep></entry>
+      <entry><ind>3000</ind><dep>135.0</dep></entry>
+      <entry><ind>3900</ind><dep>150.0</dep></entry>
+      <entry><ind>4800</ind><dep>165.0</dep></entry>
+      <entry><ind>6000</ind><dep>180.0</dep></entry>
      </interpolation>
     </transformation>
     <transformation>

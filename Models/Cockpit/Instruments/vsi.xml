@@ -4,31 +4,31 @@
   <animation>
     <type>translate</type>
     <object-name>Current</object-name>
-    <property>instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</property>
+    <property>instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</property>
     <interpolation>
       <entry>
-        <ind>100</ind>
+        <ind>6000</ind>
         <dep>.0736</dep>
       </entry>
       <entry>
-        <ind>33.33</ind>
+        <ind>2000</ind>
         <dep>.0443</dep>
       </entry>
       <entry>
-        <ind>16.66</ind>
+        <ind>1000</ind>
         <dep>.0297</dep>
       </entry>
       <entry><ind>0</ind><dep/>0</entry>
       <entry>
-        <ind>-16.66</ind>
+        <ind>-1000</ind>
         <dep>-.0297</dep>
       </entry>
       <entry>
-        <ind>-33.33</ind>
+        <ind>-2000</ind>
         <dep>-.0443</dep>
       </entry>
       <entry>
-        <ind>-100</ind>
+        <ind>-6000</ind>
         <dep>-.0736</dep>
       </entry>
     </interpolation>

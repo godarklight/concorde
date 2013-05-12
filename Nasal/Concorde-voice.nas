@@ -686,7 +686,7 @@ Voice.schedule = func {
        me.groundkt = me.dependency["ins"].getChild("ground-speed-fps").getValue() * constant.FPSTOKT;
        me.altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue();
        me.aglft = me.dependency["radio-altimeter"].getChild("indicated-altitude-ft").getValue();
-       me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
+       me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fpm").getValue();
        me.gear = me.dependency["gear"].getChild("position-norm").getValue();
        me.nose = me.dependency["nose"].getChild("pos-norm").getValue();
 
