@@ -488,7 +488,6 @@ Autopilot.apactivatemode2 = func( property, value, value2 ) {
            me.apdischorizontal();
        }
    }
-
    me.apactivatemode( property, value );
 }
 
@@ -509,9 +508,7 @@ Autopilot.apactivatemode = func( property, value ) {
    elsif( property == "horizontal" ) {
        me.apdischorizontal();
    }
-
    me.itself["autoflight"].getChild(property).setValue(value);
-
    # remove 2nd channel of autoland after a goaround
    if( channel1 and channel2 ) {
        if( !me.is_autoland() ) {
@@ -519,7 +516,6 @@ Autopilot.apactivatemode = func( property, value ) {
            me.engagechannel(1, channel2);
        }
    }
-
    me.autothrottlesystem.atdiscincompatible( channel1, channel2 );
 }
 
@@ -1223,7 +1219,7 @@ Autopilot.apdiscaltitude = func {
 
    # switch to speed hold
    if( me.autothrottlesystem != nil ) {
-       me.autothrottlesystem.discmaxclimb();
+           me.autothrottlesystem.discmaxclimb();
    }
 }
 
@@ -1772,8 +1768,14 @@ Autopilot.apmachpitchexport = func {
 
 # max climb mode (includes max cruise mode)
 Autopilot.maxclimb = func {
-   if( me.autothrottlesystem.is_maxclimb() ) {          
+   if( me.autothrottlesystem.is_maxclimb() ) {
        if( me.is_engaged() ) {
+           if ( me.autothrottlesystem.is_maxcruise() ) {
+             if ( ! me.is_vertical_speed() ) {
+                 me.modeverticalspeed(50);
+                 me.apengage();
+             }
+           }
            me.autothrottlesystem.maxclimb();
        }
 
@@ -1784,8 +1786,8 @@ Autopilot.maxclimb = func {
 
 # max climb mode
 Autopilot.apmaxclimbexport = func {
-   if( me.autothrottlesystem.is_maxclimb() ) {          
-       me.apdiscaltitude();
+   if( me.autothrottlesystem.is_maxclimb() ) {
+   me.apdiscaltitude();
    }
 
    # holds pitch and VMO with throttle
@@ -1793,8 +1795,8 @@ Autopilot.apmaxclimbexport = func {
        if( !me.is_altitude_acquire() ) {
            me.apdiscverticalmode2();
        }
-       me.modeverticalspeedhold();
-       me.autothrottlesystem.atactivatemode("speed2","maxclimb");
+       me.apactivatemode2("altitude","speed-with-pitch","");
+       me.autothrottlesystem.atactivatemode("speed2", "maxclimb");
        me.maxclimb();
    }          
 

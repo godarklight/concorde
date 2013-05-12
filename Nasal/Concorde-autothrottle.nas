@@ -156,15 +156,13 @@ Autothrottle.discmaxclimb = func {
 Autothrottle.maxclimb = func {
    if( me.is_engaged() ) {
        var speedmach = me.get_mach().getChild("indicated-mach").getValue();
-
        # climb
        if( speedmach < constantaero.REHEATMACH ) {
            var vmokt = me.get_asi().getChild("vmo-kt").getValue();
 
            # catches the VMO with autothrottle
+           me.atactivatemode("speed","");
            me.speed(vmokt);
-           me.atactivatemode("speed","speed-with-throttle");
-
            if( me.is_maxcruise() ) {
                me.atactivatemode("speed2","maxclimb");
            }
@@ -188,7 +186,7 @@ Autothrottle.maxclimb = func {
                me.atactivatemode2("speed","mach-with-throttle","maxcruise");
            }
            else {
-               me.atactivatemode2("speed","mach-with-throttle","maxclimb");
+               me.atactivatemode("speed","","maxclimb");
            }
        }
    }
