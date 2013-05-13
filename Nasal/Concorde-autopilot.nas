@@ -953,8 +953,7 @@ Autopilot.targetpitch = func( targetdeg, aglft, rates ) {
 
    if( pitchdeg != targetdeg ) {
        if( targetdeg > pitchdeg ) {
-           speedfps = - me.get_ivsi().getChild("indicated-speed-fpm").getValue();
-           speedfps = speedfps / 60;
+           speedfps = - me.get_ivsi().getChild("indicated-speed-fps").getValue();
            deltaft = aglft - me.PITCHFT;
            timesec = deltaft / speedfps;
 
@@ -1636,7 +1635,8 @@ Autopilot.modeverticalspeed = func( speedfpm ) {
 }
 
 Autopilot.modeverticalspeedhold = func {
-   var speedfpm = me.get_ivsi().getChild("indicated-speed-fpm").getValue();
+   var speedfps = me.get_ivsi().getChild("indicated-speed-fps").getValue();
+   var speedfpm = speedfps * constant.MINUTETOSECOND;
 
    me.modeverticalspeed(speedfpm);
 }

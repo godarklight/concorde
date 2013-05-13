@@ -332,7 +332,7 @@ AirDataComputer.ivsisensor = func( index ) {
         me.ivsi_instrument[index] = constant.TRUE;
         change = constant.TRUE;
 
-        path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fpm").getPath();
+        path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
     }
 
     # toggles IVSI instrument
@@ -341,7 +341,7 @@ AirDataComputer.ivsisensor = func( index ) {
         change = constant.TRUE;
 
         if( me.ivsi_instrument[index] ) {
-            path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fpm").getPath();
+            path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
         }
 
         else {
@@ -356,15 +356,15 @@ AirDataComputer.ivsisensor = func( index ) {
 
         if( !me.ivsi_status[index] ) {
             if( me.ivsi_instrument[index] ) {
-                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fpm").getPath();
+                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
             }
             else {
-                path = me.itself["root"][index].getNode("output/vertical-speed-failure-fpm").getPath();
+                path = me.itself["root"][index].getNode("output/vertical-speed-failure-fps").getPath();
             }
         }
         else {
             if( me.ivsi_instrument[index] ) {
-                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fpm").getPath();
+                path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
             }
             else {
                 path = me.noinstrument["vertical-speed"].getPath();
@@ -373,7 +373,7 @@ AirDataComputer.ivsisensor = func( index ) {
     }
 
     if( change ) {
-        child = me.itself["root"][index].getNode("output/vertical-speed-fpm");
+        child = me.itself["root"][index].getNode("output/vertical-speed-fps");
         if( me.itself["adc-ctrl"].getChild("ivsi-log").getValue() ) {
             print( "alias " ~ child.getPath() ~ " to " ~ path );
         }

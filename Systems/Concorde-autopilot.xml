@@ -460,14 +460,13 @@
       <prop>/autopilot/settings/target-altitude-ft</prop>
     </reference>
     <output>
-      <prop>/autopilot/internal/target-climb-rate-fpm</prop>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
     </output>
     <config>
-      <Kp>1</Kp>          <!-- proportional gain -->
+      <Kp>0.1</Kp>          <!-- proportional gain -->
       <Ki>0.0</Ki>          <!-- integral gain -->
-      <Ti>10.0</Ti>       <!-- integrator time -->
-      <u_min>-1000</u_min> <!-- minimum output clamp -->
-      <u_max>2000</u_max>   <!-- maximum output clamp -->
+      <u_min>-16.67</u_min> <!-- minimum output clamp -->
+      <u_max>33.33</u_max>   <!-- maximum output clamp -->
     </config>
   </pi-simple-controller>
 
@@ -485,14 +484,13 @@
       <prop>/autopilot/settings/target-altitude-ft</prop>
     </reference>
     <output>
-      <prop>/autopilot/internal/target-climb-rate-fpm</prop>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
     </output>
     <config>
-      <Kp>1</Kp>          <!-- proportional gain -->
+      <Kp>0.1</Kp>          <!-- proportional gain -->
       <Ki>0.0</Ki>          <!-- integral gain -->
-      <Ti>10.0</Ti>       <!-- integrator time -->
-      <u_min>-1000</u_min> <!-- minimum output clamp -->
-      <u_max>2000</u_max>   <!-- maximum output clamp -->
+      <u_min>-16.67</u_min> <!-- minimum output clamp -->
+      <u_max>33.33</u_max>   <!-- maximum output clamp -->
     </config>
   </pi-simple-controller>
 
@@ -505,26 +503,24 @@
       <value>altitude-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
-      <prop>/autopilot/internal/target-climb-rate-fpm</prop>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
     </reference>
     <output>
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.0005</Kp>      <!-- proportional gain -->
-      <Ki>0</Ki>
-      <Kd>0</Kd>
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>2</Ti>       <!-- integrator time -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
-      <u_min>-0.5</u_min> <!-- minimum output clamp -->
-      <u_max>0.5</u_max>  <!-- maximum output clamp -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
 
@@ -536,26 +532,24 @@
       <value>altitude-hold-2</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
-      <prop>/autopilot/internal/target-climb-rate-fpm</prop>
+      <prop>/autopilot/internal/target-climb-rate-fps</prop>
     </reference>
     <output>
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.001</Kp>      <!-- proportional gain -->
-      <Ki>0</Ki>      <!-- proportional gain -->
-      <Kd>0</Kd>      <!-- proportional gain -->
+      <Kp>-0.01</Kp>      <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>5</Ti>       <!-- integrator time -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
-      <u_min>-0.5</u_min> <!-- minimum output clamp -->
-      <u_max>0.5</u_max>  <!-- maximum output clamp -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
 
@@ -564,14 +558,14 @@
   <!-- ................ -->
 
   <pid-controller>
-    <name>Glideslope Hold</name>
+    <name>Glideslop Hold</name>
     <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/sonic/altitude</prop>
       <value>gs1-hold</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
@@ -600,7 +594,7 @@
       <value>gs1-hold-2</value>
     </enable>
     <input>
-      <prop>/velocities/vertical-speed-fps</prop>
+      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
@@ -633,10 +627,10 @@
       <value>gs1-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
-      <prop>/instrumentation/nav[0]/gs-rate-of-climb-fpm</prop>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
     </reference>
      <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -665,10 +659,10 @@
       <value>gs1-with-throttle-2</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
-      <prop>/instrumentation/nav[0]/gs-rate-of-climb-fpm</prop>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
     </reference>
      <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -700,24 +694,25 @@
       <value>vertical-speed-hold</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
     </reference>
     <output>
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.0005</Kp>               <!-- proportional gain -->
-      <Ki>-0.0001</Ki>               <!-- proportional gain -->
-      <Kd>0</Kd>               <!-- proportional gain -->
+      <Kp>
+        <prop>/systems/autopilot/pid/vertical-speed-hold/Kp</prop>
+      </Kp>               <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>10</Ti>       <!-- integrator time -->
-      <Td>.0001</Td>    <!-- derivator time -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>-1.0</u_min> <!-- minimum output clamp -->
       <u_max>1.0</u_max>  <!-- maximum output clamp -->
     </config>
@@ -731,26 +726,27 @@
       <value>vertical-speed-hold-2</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
     </reference>
     <output>
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.0005</Kp>               <!-- proportional gain -->
-      <Ki>-0.0001</Ki>               <!-- proportional gain -->
-      <Kd>0</Kd>               <!-- proportional gain -->
+      <Kp>
+        <prop>/systems/autopilot/pid/vertical-speed-hold/Kp</prop>
+      </Kp>               <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>10</Ti>       <!-- integrator time -->
-      <Td>.0001</Td>    <!-- derivator time -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>-1.0</u_min> <!-- minimum output clamp -->
-      <u_max>1.0</u_max>
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
     </config>
   </pid-controller>
 
@@ -765,7 +761,7 @@
       <value>vertical-speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -798,7 +794,7 @@
       <value>vertical-speed-with-throttle-2</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
@@ -839,7 +835,7 @@
       <value>speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</prop>
+      <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
       <expression>
@@ -877,7 +873,7 @@
       <value>speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</prop>
+      <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
       <expression>
@@ -915,7 +911,7 @@
       <value>speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</prop>
+      <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
       <expression>
@@ -953,7 +949,7 @@
       <value>speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</prop>
+      <prop>/velocities/airspeed-kt</prop>
     </input>
     <reference>
       <expression>
@@ -994,7 +990,7 @@
       <value>mach-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/mach-indicator[0]/indicated-mach</prop>
+      <prop>/velocities/mach</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-mach</prop>
@@ -1027,7 +1023,7 @@
       <value>mach-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/mach-indicator[0]/indicated-mach</prop>
+      <prop>/velocities/mach</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-mach</prop>
@@ -1060,7 +1056,7 @@
       <value>mach-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/mach-indicator[0]/indicated-mach</prop>
+      <prop>/velocities/mach</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-mach</prop>
@@ -1093,7 +1089,7 @@
       <value>mach-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/mach-indicator[0]/indicated-mach</prop>
+      <prop>/velocities/mach</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-mach</prop>
@@ -1129,7 +1125,7 @@
       <value>speed-with-pitch</value>
     </enable>
     <input>
-      <prop>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</prop>
+      <prop>/autopilot/internal/lookahead-5-sec-airspeed-kt</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-speed-kt</prop>
@@ -1138,14 +1134,12 @@
       <prop>/autopilot/settings/target-pitch-deg</prop>
     </output>
     <config>
-      <Kp>-0.5</Kp>       <!-- proportional gain -->
-      <Ki>-.1</Ki>
-      <Kd>0</Kd>
+      <Kp>-0.1</Kp>       <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Ti>1.0</Ti>        <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>-15.0</u_min><!-- minimum output clamp -->
       <u_max>15.0</u_max> <!-- maximum output clamp -->
@@ -1192,7 +1186,7 @@
       <value>mach-with-pitch</value>
     </enable>
     <input>
-      <prop>/instrumentation/mach-indicator[0]/indicated-mach</prop>
+      <prop>/autopilot/internal/lookahead-5-sec-mach</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/target-mach</prop>
@@ -1201,14 +1195,12 @@
       <prop>/autopilot/settings/target-pitch-deg</prop>
     </output>
     <config>
-      <Kp>-3.0</Kp>       <!-- proportional gain -->
-      <Ki>-.1</Ki>
-      <Kd>0</Kd>
+      <Kp>-1.0</Kp>       <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Ti>1.0</Ti>        <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>-15.0</u_min><!-- minimum output clamp -->
       <u_max>15.0</u_max> <!-- maximum output clamp -->
