@@ -78,9 +78,14 @@ ConcordeMain.startupcron = func {
    }
 }
 
+elecrunloops=0;
+
 # 1 seconds cron (only, to spare frame rate)
 ConcordeMain.sec1cron = func {
-   electricalsystem.schedule();
+   if (elecrunloops < 10) {
+       electricalsystem.schedule();
+       elecrunloops = elecrunloops + 1;
+   }
    hydraulicsystem.schedule();
    fuelsystem.schedule();
    airbleedsystem.schedule();
