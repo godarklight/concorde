@@ -210,7 +210,7 @@ AirDataComputer.red_ads = func {
 AirDataComputer.schedule = func {
     for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
          me.failure( i );
-         #me.ivsisensor( i );
+         me.ivsisensor( i );
     }
 
     me.computer();
