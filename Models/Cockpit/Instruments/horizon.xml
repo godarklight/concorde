@@ -110,16 +110,16 @@
         </abs>
         <property>/controls/autoflight/flight-director[0]/engage</property>
         <property>/instrumentation/nav[1]/in-range</property>
-        <property>/instrumentation/nav[1]/heading-needle-deflection</property>
+        <property>/instrumentation/nav[1]/heading-needle-deflection-norm</property>
       </prod>
       <prod>
         <property>/controls/autoflight/flight-director[0]/engage</property>
         <property>/instrumentation/attitude-indicator[0]/fd2</property>
         <property>/instrumentation/nav[2]/in-range</property>
-        <property>/instrumentation/nav[2]/heading-needle-deflection</property>
+        <property>/instrumentation/nav[2]/heading-needle-deflection-norm</property>
       </prod>
     </sum>
-    <value>0.002</value>
+    <value>0.02</value>
   </prod>
     </expression>
     <axis>
@@ -143,16 +143,16 @@
         </abs>
         <property>/controls/autoflight/flight-director[0]/engage</property>
         <property>/instrumentation/nav[1]/gs-in-range</property>
-        <property>/instrumentation/nav[1]/gs-needle-deflection</property>
+        <property>/instrumentation/nav[1]/gs-needle-deflection-norm</property>
       </prod>
       <prod>
         <property>/controls/autoflight/flight-director[0]/engage</property>
         <property>/instrumentation/attitude-indicator[0]/fd2</property>
         <property>/instrumentation/nav[2]/gs-in-range</property>
-        <property>/instrumentation/nav[2]/gs-needle-deflection</property>
+        <property>/instrumentation/nav[2]/gs-needle-deflection-norm</property>
       </prod>
     </sum>
-    <value>0.002</value>
+    <value>0.02</value>
   </prod>
     </expression>
     <axis>
