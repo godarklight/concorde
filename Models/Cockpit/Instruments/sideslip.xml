@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <path>../Models/sideslip.ac</path>
+  <animation>
+    <type>translate</type>
+    <object-name>Slip</object-name>
+    <property>/instrumentation/side-slip[0]/angle-deg</property>
+    <interpolation>
+      <entry>
+        <ind>15</ind>
+        <dep>.047</dep>
+      </entry>
+            <entry>
+        <ind>5</ind>
+        <dep>.023</dep>
+      </entry>
+             <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+            <entry>
+        <ind>-5</ind>
+        <dep>-.023</dep>
+      </entry>
+      <entry>
+        <ind>-15</ind>
+        <dep>-.046</dep>
+      </entry>
+    </interpolation>
+    <axis>
+      <x>0</x>
+      <y>1</y>
+      <z>0</z>
+    </axis>
+  </animation>
+</PropertyList>
