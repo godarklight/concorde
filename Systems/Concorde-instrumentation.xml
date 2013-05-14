@@ -50,35 +50,40 @@ file, these values will be used (they are hardcoded).
   <airspeed-indicator>                                                       <!-- ADC 1 sensor -->
     <name>airspeed-adc</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[2]/measured-total-pressure-inhg</total-pressure>
+    <total-pressure>/systems/pitot[2]/total-pressure-inhg</total-pressure>
+    <!--<total-pressure>/systems/pitot[2]/measured-total-pressure-inhg</total-pressure>-->
     <static-pressure>/systems/static[2]/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <airspeed-indicator>                                                       <!-- ADC 2 sensor -->
     <name>airspeed-adc</name>
     <number>1</number>
-    <total-pressure>/systems/pitot[1]/measured-total-pressure-inhg</total-pressure>
+    <total-pressure>/systems/pitot[1]/total-pressure-inhg</total-pressure>
+    <!--<total-pressure>/systems/pitot[1]/measured-total-pressure-inhg</total-pressure>-->
     <static-pressure>/systems/static[1]/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <airspeed-indicator>
     <name>airspeed-sensor</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
+    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
+    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <airspeed-indicator>
     <name>airspeed-sensor</name>
     <number>1</number>
-    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
+    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
+    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
   <airspeed-indicator>
     <name>airspeed-standby</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
+    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
+    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
 
