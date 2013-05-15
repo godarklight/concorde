@@ -19,15 +19,7 @@
   <animation>
     <type>rotate</type>
     <object-name>ADF1Needle</object-name>
-    <expression>
-      <prod>
-        <difference>
-          <property>/instrumentation/adf[0]/indicated-bearing-deg</property>
-          <property>/orientation/heading-deg</property>
-        </difference>
-        <property>/instrumentation/adf[0]/in-range</property>
-      </prod>
-    </expression>
+    <property>/instrumentation/adf[0]/indicated-bearing-deg</property>
     <center>
       <x-m>0</x-m>
       <y-m>0</y-m>
@@ -42,15 +34,7 @@
   <animation>
     <type>rotate</type>
     <object-name>ADF2Needle</object-name>
-    <expression>
-      <prod>
-        <difference>
-          <property>/instrumentation/adf[1]/indicated-bearing-deg</property>
-          <property>/orientation/heading-deg</property>
-        </difference>
-        <property>/instrumentation/adf[1]/in-range</property>
-      </prod>
-    </expression>
+    <property>/instrumentation/adf[1]/indicated-bearing-deg</property>
     <center>
       <x-m>0</x-m>
       <y-m>0</y-m>
