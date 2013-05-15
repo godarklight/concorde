@@ -428,12 +428,14 @@
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>-0.05</Kp>      <!-- proportional gain -->
+      <Kp>-0.03</Kp>      <!-- proportional gain -->
+      <Ki>-0.01</Ki>      <!-- proportional gain -->
+      <Kd>0</Kd>      <!-- proportional gain -->
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
                           <!-- unfiltered derivative error -->
-      <Ti>1.0</Ti>        <!-- integrator time -->
+      <Ti>10.0</Ti>        <!-- integrator time -->
       <Td>0.00001</Td>    <!-- derivator time -->
       <u_min>-1.0</u_min> <!-- minimum output clamp -->
       <u_max>1.0</u_max>  <!-- maximum output clamp -->
@@ -704,9 +706,9 @@
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>
-        <prop>/systems/autopilot/pid/vertical-speed-hold/Kp</prop>
-      </Kp>               <!-- proportional gain -->
+      <Kp>-0.002</Kp>               <!-- proportional gain -->
+      <Ki>-0.001</Ki>
+      <Kp>0</Kp>
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
@@ -736,9 +738,9 @@
       <prop>/controls/flight/elevator-trim</prop>
     </output>
     <config>
-      <Kp>
-        <prop>/systems/autopilot/pid/vertical-speed-hold/Kp</prop>
-      </Kp>               <!-- proportional gain -->
+      <Kp>-0.002</Kp>               <!-- proportional gain -->
+      <Ki>-0.001</Ki>
+      <Kp>0</Kp>
       <beta>1.0</beta>    <!-- input value weighing factor -->
       <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
       <gamma>0.0</gamma>  <!-- input value weighing factor for -->
