@@ -71,7 +71,6 @@ Pressurization.new = func {
 
 Pressurization.init = func {
     me.inherit_system("/systems/pressurization");
-
     me.LEAKINHG = me.LEAKINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
     me.DEPRESSURIZEINHG = me.DEPRESSURIZEINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
 
@@ -810,6 +809,7 @@ Airconditioning.new = func {
 
 Airconditioning.init = func {
     me.inherit_system("/systems/temperature");
+    me.enginetempoverride = 0;
 }
 
 Airconditioning.set_rate = func( rates ) {
@@ -1021,9 +1021,18 @@ Airconditioning.schedule = func {
         # one supposes quick cooling by RAM air, when no mass flow.
         me.apply(me.itself["group"][i].getChild("inlet-degc").getPath(),inletdegc);
         me.apply(me.itself["group"][i].getChild("duct-degc").getPath(),ductdegc);
-
+        
+        # Added an override, for some reason when the tank runs out of fuel it goes NaN. This makes it only show the error once
         # air bleed transfers heat to fuel
-        tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
+        if ( me.enginetempoverride == 0 ) {
+            tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
+            if ( tankdegc == nil ) {
+                me.enginetempoverride = 1;
+                tankdegc = 15;
+            }
+        } else {
+            tankdegc = 15;
+        }
         fueldegc = tankdegc;
 
         if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
@@ -1199,6 +1208,7 @@ TankTemperature.new = func {
 
 TankTemperature.init = func {
    me.inherit_system("/instrumentation/tank-temperature");
+   
 }
 
 TankTemperature.set_rate = func( rates ) {
@@ -1212,10 +1222,10 @@ TankTemperature.selectorexport = func {
 }
 
 TankTemperature.schedule = func {
-   interpolate( me.itself["root"].getChild("tank-degc").getPath(),
-                me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(),
-                me.AIRSEC );
-   interpolate( me.itself["root"].getChild("engine-degc").getPath(),
-                me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(),
-                me.AIRSEC );
+   if ( Airconditioning.enginetempoverride = 0 ) {
+     interpolate( me.itself["root"].getChild("tank-degc").getPath(), me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(), me.AIRSEC );
+   } else {
+     interpolate( me.itself["root"].getChild("tank-degc").getPath(), 15, me.AIRSEC );
+   }
+   interpolate( me.itself["root"].getChild("engine-degc").getPath(), me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(), me.AIRSEC );
 }
