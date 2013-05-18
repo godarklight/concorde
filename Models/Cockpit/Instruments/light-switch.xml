@@ -4,7 +4,7 @@
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <property>/instrumentation/attitude-indicator[0]/fd2</property>
+    <property>/controls/lighting/panel-norm</property>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -30,12 +30,12 @@
     <type>pick</type>
     <object-name>Switch</object-name>
     <action>
-      <name>Captain FD2 Switch</name>
+      <name>Captain Light Switch</name>
       <button>0</button>
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>/instrumentation/attitude-indicator[0]/fd2</property>
+        <property>/controls/lighting/panel-norm</property>
         <step>1</step>
         <min>0</min>
         <max>1</max>
@@ -55,7 +55,7 @@
       <red>0.03</red>
       <green>0.015</green>
       <blue>0.015</blue>
-      <factor-prop>controls/lighting/panel-norm</factor-prop>
+      <factor>1</factor>
     </emission>
   </animation>
 </PropertyList>

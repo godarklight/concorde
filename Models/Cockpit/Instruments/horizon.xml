@@ -54,14 +54,14 @@
               <property>/instrumentation/nav[1]/in-range</property>
             </not>
             <not>
-               <property>/instrumentation/attitude-indicator[0]/fd2</property>
+              <property>/instrumentation/attitude-indicator[0]/fd2</property>
             </not>
           </and>
           <and>
-              <not>
-                <property>/instrumentation/nav[2]/in-range</property>
-              </not>
-              <property>/instrumentation/attitude-indicator[0]/fd2</property>
+            <not>
+              <property>/instrumentation/nav[2]/in-range</property>
+            </not>
+            <property>/instrumentation/attitude-indicator[0]/fd2</property>
           </and>
         </or>
         <property>/controls/autoflight/flight-director[0]/engage</property>
@@ -79,7 +79,7 @@
               <property>/instrumentation/nav[1]/gs-in-range</property>
             </not>
             <not>
-               <property>/instrumentation/attitude-indicator[0]/fd2</property>
+              <property>/instrumentation/attitude-indicator[0]/fd2</property>
             </not>
             <property>/instrumentation/nav[1]/has-gs</property>
           </and>
@@ -89,7 +89,7 @@
             </not>
             <property>/instrumentation/nav[2]/has-gs</property>
             <property>/instrumentation/attitude-indicator[0]/fd2</property>
-          </and>  
+          </and>
         </or>
         <property>/controls/autoflight/flight-director[0]/engage</property>
       </and>
@@ -100,27 +100,27 @@
     <object-name>LOCBar</object-name>
     <expression>
       <prod>
-      <sum>
-        <prod>
-          <abs>
-           <difference>
+        <sum>
+          <prod>
+            <abs>
+              <difference>
+                <property>/instrumentation/attitude-indicator[0]/fd2</property>
+                <value>1</value>
+              </difference>
+            </abs>
+            <property>/controls/autoflight/flight-director[0]/engage</property>
+            <property>/instrumentation/nav[1]/in-range</property>
+            <property>/instrumentation/nav[1]/heading-needle-deflection-norm</property>
+          </prod>
+          <prod>
+            <property>/controls/autoflight/flight-director[0]/engage</property>
             <property>/instrumentation/attitude-indicator[0]/fd2</property>
-            <value>1</value>
-          </difference>
-        </abs>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-        <property>/instrumentation/nav[1]/in-range</property>
-        <property>/instrumentation/nav[1]/heading-needle-deflection-norm</property>
+            <property>/instrumentation/nav[2]/in-range</property>
+            <property>/instrumentation/nav[2]/heading-needle-deflection-norm</property>
+          </prod>
+        </sum>
+        <value>0.02</value>
       </prod>
-      <prod>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-        <property>/instrumentation/attitude-indicator[0]/fd2</property>
-        <property>/instrumentation/nav[2]/in-range</property>
-        <property>/instrumentation/nav[2]/heading-needle-deflection-norm</property>
-      </prod>
-    </sum>
-    <value>0.02</value>
-  </prod>
     </expression>
     <axis>
       <x>0</x>
@@ -128,32 +128,32 @@
       <z>0</z>
     </axis>
   </animation>
-    <animation>
+  <animation>
     <type>translate</type>
     <object-name>GSBar</object-name>
     <expression>
       <prod>
-      <sum>
-        <prod>
-          <abs>
-           <difference>
+        <sum>
+          <prod>
+            <abs>
+              <difference>
+                <property>/instrumentation/attitude-indicator[0]/fd2</property>
+                <value>1</value>
+              </difference>
+            </abs>
+            <property>/controls/autoflight/flight-director[0]/engage</property>
+            <property>/instrumentation/nav[1]/gs-in-range</property>
+            <property>/instrumentation/nav[1]/gs-needle-deflection-norm</property>
+          </prod>
+          <prod>
+            <property>/controls/autoflight/flight-director[0]/engage</property>
             <property>/instrumentation/attitude-indicator[0]/fd2</property>
-            <value>1</value>
-          </difference>
-        </abs>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-        <property>/instrumentation/nav[1]/gs-in-range</property>
-        <property>/instrumentation/nav[1]/gs-needle-deflection-norm</property>
+            <property>/instrumentation/nav[2]/gs-in-range</property>
+            <property>/instrumentation/nav[2]/gs-needle-deflection-norm</property>
+          </prod>
+        </sum>
+        <value>0.02</value>
       </prod>
-      <prod>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-        <property>/instrumentation/attitude-indicator[0]/fd2</property>
-        <property>/instrumentation/nav[2]/gs-in-range</property>
-        <property>/instrumentation/nav[2]/gs-needle-deflection-norm</property>
-      </prod>
-    </sum>
-    <value>0.02</value>
-  </prod>
     </expression>
     <axis>
       <x>0</x>
@@ -161,53 +161,53 @@
       <z>1</z>
     </axis>
   </animation>
-    <animation>
+  <animation>
     <type>select</type>
     <object-name>ATTOn</object-name>
-      <condition>
-        <not>
-      <and>
-       <less-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>16.5</value>
-       </less-than-equals>
-       <greater-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>-5.5</value>
-       </greater-than-equals>
-      </and>
-    </not>
+    <condition>
+      <not>
+        <and>
+          <less-than-equals>
+            <property>/orientation/pitch-deg</property>
+            <value>16.5</value>
+          </less-than-equals>
+          <greater-than-equals>
+            <property>/orientation/pitch-deg</property>
+            <value>-5.5</value>
+          </greater-than-equals>
+        </and>
+      </not>
     </condition>
   </animation>
   <animation>
     <type>select</type>
     <object-name>ATTOff</object-name>
-      <condition>
+    <condition>
       <and>
-       <less-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>16.5</value>
-       </less-than-equals>
-       <greater-than-equals>
-        <property>/orientation/pitch-deg</property>
-        <value>-5.5</value>
-       </greater-than-equals>
+        <less-than-equals>
+          <property>/orientation/pitch-deg</property>
+          <value>16.5</value>
+        </less-than-equals>
+        <greater-than-equals>
+          <property>/orientation/pitch-deg</property>
+          <value>-5.5</value>
+        </greater-than-equals>
       </and>
     </condition>
   </animation>
-    <animation>
+  <animation>
     <type>select</type>
     <object-name>DHOn</object-name>
     <condition>
       <or>
-       <property>/instrumentation/radio-altimeter[0]/decision-height</property>
-      <not>
-      <greater-than-equals>
-       <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
-       <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
-      </greater-than-equals>
-      </not>
-    </or>
+        <property>/instrumentation/radio-altimeter[0]/decision-height</property>
+        <not>
+          <greater-than-equals>
+            <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
+            <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
+          </greater-than-equals>
+        </not>
+      </or>
     </condition>
   </animation>
   <animation>
@@ -215,14 +215,53 @@
     <object-name>DHOff</object-name>
     <condition>
       <or>
-      <not>
-       <property>/instrumentation/radio-altimeter[0]/decision-height</property>
-      </not>
-      <greater-than-equals>
-       <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
-       <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
-      </greater-than-equals>
-    </or>
+        <not>
+          <property>/instrumentation/radio-altimeter[0]/decision-height</property>
+        </not>
+        <greater-than-equals>
+          <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
+          <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
+        </greater-than-equals>
+      </or>
     </condition>
+  </animation>
+  <!--Default Lighting-->
+  <animation>
+    <type>material</type>
+    <object-name>Horizon</object-name>
+    <object-name>Inner</object-name>
+    <emission>
+      <red>0.2</red>
+      <green>0.1</green>
+      <blue>0.1</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>Frame</object-name>
+    <emission>
+      <red>0.01</red>
+      <green>0.005</green>
+      <blue>0.005</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>RollArrow</object-name>
+    <object-name>LOCBar</object-name>
+    <object-name>GSBar</object-name>
+    <object-name>GSWarning</object-name>
+    <object-name>Offset</object-name>
+    <object-name>OffsetDot</object-name>
+    <object-name>LOCBar</object-name>
+    <object-name>LOCWarning</object-name>
+    <emission>
+      <red>0.1</red>
+      <green>0.03</green>
+      <blue>0.03</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
   </animation>
 </PropertyList>

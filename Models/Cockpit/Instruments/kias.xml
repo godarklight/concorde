@@ -155,13 +155,38 @@
       <z>0</z>
     </axis>
   </animation>
-  <params>
-    <test>/controls/lighting/crew/copilot/test</test>
-    <serviceable>/instrumentation/airspeed-indicator[1]/serviceable</serviceable>
-    <failure-flag>/instrumentation/airspeed-indicator[1]/failure-flag</failure-flag>
-    <vmo-failure-flag>/instrumentation/airspeed-indicator[1]/vmo-failure-flag</vmo-failure-flag>
-    <speed-sel>/instrumentation/airspeed-indicator[1]/indicated-speed-kt</speed-sel>
-    <vmo-sel>/instrumentation/airspeed-indicator[1]/vmo-kt</vmo-sel>
-    <standby-ctrl>/instrumentation/airspeed-indicator[1]/standby</standby-ctrl>
-  </params>
+  <!--Default Lighting-->
+  <animation>
+    <type>material</type>
+    <object-name>LimitNeedle</object-name>
+    <object-name>KnotsGuage</object-name>
+    <object-name>MachGuage</object-name>
+    <emission>
+      <red>0.2</red>
+      <green>0.1</green>
+      <blue>0.1</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>Frame</object-name>
+    <object-name>FrameC</object-name>
+    <emission>
+      <red>0.01</red>
+      <green>0.005</green>
+      <blue>0.005</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>KIASNeedle</object-name>
+    <emission>
+      <red>0.1</red>
+      <green>0.03</green>
+      <blue>0.03</blue>
+      <factor-prop>controls/lighting/panel-norm</factor-prop>
+    </emission>
+  </animation>
 </PropertyList>
