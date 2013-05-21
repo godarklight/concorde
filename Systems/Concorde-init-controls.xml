@@ -183,6 +183,8 @@
 
   <autoflight>
    <altitude></altitude>
+   <altitude-aquire type="bool">false</altitude-aquire>
+   <altitude-display></altitude-display>
    <autopilot n="0">
     <engage type="bool">false</engage>
     <heading-select type="double">0.0</heading-select>
@@ -205,20 +207,18 @@
     <altitude type="double">0.0</altitude>
     <speed type="double">0.0</speed>
    </datum>
-   <fg-waypoint type="bool">true</fg-waypoint>                <!-- default FG behaviour -->
    <flight-director n="0">
     <engage type="bool">false</engage>
    </flight-director>
    <flight-director n="1">
     <engage type="bool">false</engage>
    </flight-director>
+   <gs-aquire type="bool">false</gs-aquire>
    <heading></heading>
-   <horizontal></horizontal>
-   <real-nav type="bool">true</real-nav>
+   <heading-display></heading-display>
+   <land-display type="bool">false</land-display>
    <speed></speed>
-   <speed2></speed2>
-   <vertical></vertical>
-   <vertical2></vertical2>
+   <vor-aquire type="bool">false</vor-aquire>
   </autoflight>
 
   <captain>

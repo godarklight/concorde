@@ -1011,7 +1011,9 @@
    </relations>
    
    <selector type="int">0</selector>
-   <tank-degc>15.0</tank-degc>
+   <tank-degc type="double">15.0</tank-degc>
+   <fuel-degc type="double">15.0</fuel-degc>
+   <engine-degc type="double">15.0</engine-degc>
   </tank-temperature>
 
   <tas-indicator>
@@ -1075,7 +1077,11 @@
 
    <id-code type="int">1200</id-code>
   </transponder>
-
+  
+  <vertical-speed-ap n="0">
+   <serviceable type="bool" archive="y">true</serviceable>
+  </vertical-speed-ap>
+  
   <vertical-speed-indicator n="0">
    <serviceable type="bool" archive="y">true</serviceable>
 

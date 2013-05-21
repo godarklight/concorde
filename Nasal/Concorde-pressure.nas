@@ -809,7 +809,7 @@ Airconditioning.new = func {
 
 Airconditioning.init = func {
     me.inherit_system("/systems/temperature");
-    me.enginetempoverride = 0;
+    Airconditioning.enginetempoverride = 0;
 }
 
 Airconditioning.set_rate = func( rates ) {
@@ -1024,7 +1024,7 @@ Airconditioning.schedule = func {
         
         # Added an override, for some reason when the tank runs out of fuel it goes NaN. This makes it only show the error once
         # air bleed transfers heat to fuel
-        if ( me.enginetempoverride == 0 ) {
+        if ( ! me.enginetempoverride ) {
             tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
             if ( tankdegc == nil ) {
                 me.enginetempoverride = 1;
@@ -1222,7 +1222,7 @@ TankTemperature.selectorexport = func {
 }
 
 TankTemperature.schedule = func {
-   if ( Airconditioning.enginetempoverride = 0 ) {
+   if ( ! Airconditioning.enginetempoverride ) {
      interpolate( me.itself["root"].getChild("tank-degc").getPath(), me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(), me.AIRSEC );
    } else {
      interpolate( me.itself["root"].getChild("tank-degc").getPath(), 15, me.AIRSEC );

@@ -18,7 +18,6 @@ Virtualcopilot.new = func {
    var obj = { parents : [Virtualcopilot,CommonCheck,Virtualcrew,Checklist,Emergency,System],
 
                airbleedsystem : nil,
-               autopilotsystem : nil,
                electricalsystem : nil,
                flightsystem : nil,
                hydraulicsystem : nil,
@@ -77,9 +76,9 @@ Virtualcopilot.init = func {
    me.run();
 }
 
-Virtualcopilot.set_relation = func( airbleed, autopilot, electrical, flight, hydraulic, lighting, mws, voice ) {
+Virtualcopilot.set_relation = func( airbleed, electrical, flight, hydraulic, lighting, mws, voice ) {
    me.airbleedsystem = airbleed;
-   me.autopilotsystem = autopilot;
+#   me.autopilotsystem = autopilot;
    me.electricalsystem = electrical;
    me.flightsystem = flight;
    me.hydraulicsystem = hydraulic;
@@ -88,7 +87,7 @@ Virtualcopilot.set_relation = func( airbleed, autopilot, electrical, flight, hyd
 
    me.nightlighting.set_relation( lighting );
 
-   me.radiomanagement.set_relation( autopilot );
+#   me.radiomanagement.set_relation( autopilot );
 }
 
 

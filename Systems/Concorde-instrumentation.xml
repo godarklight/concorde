@@ -219,6 +219,12 @@ file, these values will be used (they are hardcoded).
   </turn-indicator>
 
   <vertical-speed-indicator>                                                 <!-- vented to cabin pressure -->
+    <name>vertical-speed-ap</name>
+    <number>0</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </vertical-speed-indicator>
+  
+  <vertical-speed-indicator>                                                 <!-- vented to cabin pressure -->
     <name>cabin-rate-climb</name>
     <number>0</number>
     <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>

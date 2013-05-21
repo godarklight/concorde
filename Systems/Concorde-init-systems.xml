@@ -162,103 +162,6 @@
     <target-max-ft type="double">999.0</target-max-ft>
    </altimeter>
 
-   <!-- subsonic configuration -->
-
-   <config n="0">
-    <dg-heading-hold1>
-     <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
-     <Kp type="double">-4.0</Kp>
-     <u_min type="double">-30.0</u_min>
-     <u_max type="double">30.0</u_max>
-    </dg-heading-hold1>
-    <dg-heading-hold3>
-     <Kp type="double">0.1</Kp>
-    </dg-heading-hold3>
-    <nav-hold1>
-     <input>/autopilot/internal/nav1-heading-error-deg</input>
-    </nav-hold1>
-    <true-heading-hold1>
-     <input type="string">/autopilot/internal/true-heading-error-deg</input>
-     <Kp type="double">-4.0</Kp>
-     <u_min type="double">-30.0</u_min>
-     <u_max type="double">30.0</u_max>
-    </true-heading-hold1>
-    <true-heading-hold3>
-     <Kp type="double">0.1</Kp>
-    </true-heading-hold3>
-    <vertical-speed-hold>
-     <Kp type="double">-0.01</Kp>
-    </vertical-speed-hold>
-   </config>
-
-   <!-- supersonic configuration -->
-
-   <config n="1">
-    <dg-heading-hold1>
-     <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
-     <Kp type="double">-3.0</Kp>
-     <u_min type="double">-20.0</u_min>
-     <u_max type="double">20.0</u_max>
-    </dg-heading-hold1>
-    <dg-heading-hold3>
-     <Kp type="double">0.4</Kp>
-    </dg-heading-hold3>
-    <nav-hold1>
-     <input>/autopilot/internal/nav1-heading-error-deg</input>
-    </nav-hold1>
-    <true-heading-hold1>
-     <input type="string">/autopilot/internal/true-heading-error-deg</input>
-     <Kp type="double">-3.0</Kp>
-     <u_min type="double">-20.0</u_min>
-     <u_max type="double">20.0</u_max>
-    </true-heading-hold1>
-    <true-heading-hold3>
-     <Kp type="double">0.4</Kp>
-    </true-heading-hold3>
-    <vertical-speed-hold>
-     <Kp type="double">-0.02</Kp>
-    </vertical-speed-hold>
-   </config>
-
-   <!-- default is subsonic -->
-
-   <pid>
-    <dg-heading-hold1>
-     <input alias="/autopilot/internal/fdm-heading-bug-error-deg"/>
-     <Kp type="double">-5.0</Kp>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
-     <u_min type="double">-30.0</u_min>
-     <u_max type="double">30.0</u_max>
-    </dg-heading-hold1>
-    <dg-heading-hold3>
-     <Kp type="double">0.1</Kp>
-    </dg-heading-hold3>
-    <nav-hold1>
-     <input alias="/autopilot/internal/nav1-heading-error-deg"/>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
-    </nav-hold1>
-    <prediction-filter type="bool">true</prediction-filter>                  <!-- no debug -->
-    <true-heading-hold1>
-     <input alias="/autopilot/internal/true-heading-error-deg"/>
-     <Kp type="double">-5.0</Kp>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
-     <u_min type="double">-30.0</u_min>
-     <u_max type="double">30.0</u_max>
-    </true-heading-hold1>
-    <true-heading-hold3>
-     <Kp type="double">0.1</Kp>
-    </true-heading-hold3>
-    <vertical-speed-hold>
-     <Kp type="double">-0.01</Kp>
-    </vertical-speed-hold>
-   </pid>
-
    <state>
     <failure n="0" type="bool">false</failure>
     <failure n="1" type="bool">false</failure>
@@ -335,11 +238,9 @@
       <component>/devices/status/mice/mouse</component>
       <subcomponent>button</subcomponent>
      </mouse>
-     <pid>/systems/autopilot/pid</pid>
      <route>/autopilot/route-manager/route</route>
      <route-manager>/autopilot/route-manager</route-manager>
      <settings>/autopilot/settings</settings>
-     <sonic>/autopilot/locks/sonic</sonic>
      <state>/systems/autopilot/state</state>
      <waypoint>
       <component>/autopilot/route-manager</component>

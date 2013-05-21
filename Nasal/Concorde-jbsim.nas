@@ -43,7 +43,7 @@ ConcordeMain.new = func {
 #   no relation to an instrument / system failure.
 
 ConcordeMain.putinrelation = func {
-   autopilotsystem.set_relation( autothrottlesystem );
+#   autopilotsystem.set_relation( autothrottlesystem );
    MWSsystem.set_relation( ADCinstrument, CGinstrument, INSinstrument,
                            airbleedsystem, electricalsystem, enginesystem,
                            flightsystem, fuelsystem, hydraulicsystem, antiicingsystem,
@@ -51,13 +51,13 @@ ConcordeMain.putinrelation = func {
 
    wiperinstrument.set_relation( noseinstrument );
 
-   copilotcrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, flightsystem,
-                             hydraulicsystem, lightingsystem, MWSsystem, voicecrew );
-   engineercrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
-                              fuelsystem, hydraulicsystem, lightingsystem, voicecrew );
-   voicecrew.set_relation( autopilotsystem );
+#   copilotcrew.set_relation( airbleedsystem, electricalsystem, flightsystem,
+#                             hydraulicsystem, lightingsystem, MWSsystem, voicecrew );
+#   engineercrew.set_relation( airbleedsystem, electricalsystem, enginesystem,
+#                              fuelsystem, hydraulicsystem, lightingsystem, voicecrew );
+#   voicecrew.set_relation( autopilotsystem );
 
-   engineerhuman.set_relation( seatsystem );
+#   engineerhuman.set_relation( seatsystem );
 }
 
 ConcordeMain.synchronize = func {
@@ -68,18 +68,19 @@ ConcordeMain.synchronize = func {
 }
 
 ConcordeMain.startupcron = func {
-   if( getprop( "/controls/crew/startup" ) ) {
-       copilotcrew.toggleexport();
-       copilothuman.wakeupexport();
-       engineercrew.toggleexport();
-       engineerhuman.wakeupexport();
-       crewscreen.toggleexport();
-       voicecrew.toggleexport();
-   }
+#   if( getprop( "/controls/crew/startup" ) ) {
+#       copilotcrew.toggleexport();
+#       copilothuman.wakeupexport();
+#       engineercrew.toggleexport();
+#       engineerhuman.wakeupexport();
+#       crewscreen.toggleexport();
+#       voicecrew.toggleexport();
+#   }
 }
 
 # 1 seconds cron (only, to spare frame rate)
 ConcordeMain.sec1cron = func {
+   autopilotsystem.schedule();
    electricalsystem.schedule();
    hydraulicsystem.schedule();
    fuelsystem.schedule();
@@ -97,13 +98,13 @@ ConcordeMain.sec1cron = func {
    daytimeinstrument.schedule();
 
    # schedule the next call
-   settimer(func { me.sec1cron(); },fuelsystem.PUMPSEC);
+   settimer(func { me.sec1cron(); },1);
 }
 
 # 3 seconds cron
 ConcordeMain.sec3cron = func {
-   autopilotsystem.schedule();
-   autothrottlesystem.schedule();
+   #autopilotsystem.schedule();
+   #autothrottlesystem.schedule();
    MWSsystem.schedule();
    flightsystem.schedule();
    fuelsystem.slowschedule();
@@ -113,24 +114,24 @@ ConcordeMain.sec3cron = func {
    crewscreen.schedule();
 
    # schedule the next call
-   settimer(func { me.sec3cron(); },autopilotsystem.AUTOPILOTSEC);
+   settimer(func { me.sec3cron(); },3);
 }
 
 # 5 seconds cron
 ConcordeMain.sec5cron = func {
    CGinstrument.schedule();
    standbyIASinstrument.schedule();
-   autopilotsystem.slowschedule();
-   autothrottlesystem.slowschedule();
+#   autopilotsystem.slowschedule();
+#   autothrottlesystem.slowschedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
-   copilotcrew.fastschedule();
-   copilothuman.schedule();
-   engineerhuman.schedule();
+#   copilotcrew.fastschedule();
+#   copilothuman.schedule();
+#   engineerhuman.schedule();
    tractorexternal.schedule();
 
    # schedule the next call
-   settimer(func { me.sec5cron(); },pressuresystem.PRESSURIZESEC);
+   settimer(func { me.sec5cron(); },5);
 }
 
 # 10 seconds cron
@@ -138,14 +139,14 @@ ConcordeMain.sec10cron = func {
    MWSsystem.slowschedule();
 
    # schedule the next call
-   settimer(func { me.sec10cron(); },MWSsystem.AUXILIARYSEC);
+   settimer(func { me.sec10cron(); },10);
 }
 
 # 15 seconds cron
 ConcordeMain.sec15cron = func {
    TMOinstrument.schedule();
    GPWSsystem.slowschedule();
-   engineerhuman.slowschedule();
+#   engineerhuman.slowschedule();
 
    # schedule the next call
    settimer(func { me.sec15cron(); },15);
@@ -156,7 +157,7 @@ ConcordeMain.sec30cron = func {
    tankpressuresystem.schedule();
 
    # schedule the next call
-   settimer(func { me.sec30cron(); },tankpressuresystem.TANKSEC);
+   settimer(func { me.sec30cron(); },30);
 }
 
 # 60 seconds cron
@@ -164,8 +165,8 @@ ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
-   copilotcrew.slowschedule();
-   engineercrew.veryslowschedule();
+#   copilotcrew.slowschedule();
+#   engineercrew.veryslowschedule();
 
    # schedule the next call
    settimer(func { me.sec60cron(); },60);
@@ -182,27 +183,27 @@ ConcordeMain.savedata = func {
                        "/controls/anti-ice/icing-model/duration/clear-min",
                        "/controls/anti-ice/icing-model/temperature/max-degc",
                        "/controls/anti-ice/icing-model/temperature/min-degc",
-                       "/controls/autoflight/fg-waypoint",
-                       "/controls/autoflight/real-nav",
-                       "/controls/captain/countdown",
-                       "/controls/crew/captain-busy",
-                       "/controls/crew/checklist",
-                       "/controls/crew/ins-alignment",
-                       "/controls/crew/landing-lights",
-                       "/controls/crew/night-lighting",
-                       "/controls/crew/presets",
-                       "/controls/crew/radio",
-                       "/controls/crew/startup",
-                       "/controls/crew/timeout",
-                       "/controls/crew/timeout-s",
+#                       "/controls/autoflight/fg-waypoint",
+#                       "/controls/autoflight/real-nav",
+#                       "/controls/captain/countdown",
+#                       "/controls/crew/captain-busy",
+#                       "/controls/crew/checklist",
+#                       "/controls/crew/ins-alignment",
+#                       "/controls/crew/landing-lights",
+#                       "/controls/crew/night-lighting",
+#                       "/controls/crew/presets",
+#                       "/controls/crew/radio",
+#                       "/controls/crew/startup",
+#                       "/controls/crew/timeout",
+#                       "/controls/crew/timeout-s",
                        "/controls/environment/rain",
                        "/controls/environment/smoke",
                        "/controls/fuel/reinit",
                        "/controls/tractor/distance-m",
                        "/controls/seat/recover",
                        "/controls/seat/yoke",
-                       "/controls/voice/sound",
-                       "/controls/voice/text",
+#                       "/controls/voice/sound",
+#                       "/controls/voice/text",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",
@@ -241,7 +242,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.fuelsystem = Concorde.Fuel.new();
    globals.Concorde.tankpressuresystem = Concorde.Pressurizetank.new();
    globals.Concorde.autopilotsystem = Concorde.Autopilot.new();
-   globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
+#   globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
    globals.Concorde.GPWSsystem = Concorde.Gpws.new();
    globals.Concorde.MWSsystem = Concorde.Mws.new();
    globals.Concorde.enginesystem = Concorde.Engine.new();
@@ -273,12 +274,12 @@ ConcordeMain.instantiate = func {
    globals.Concorde.menuscreen = Menu.new();
    globals.Concorde.crewscreen = Crewbox.new();
 
-   globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
-   globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
-   globals.Concorde.voicecrew = Concorde.Voice.new();
+#   globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
+#   globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
+#   globals.Concorde.voicecrew = Concorde.Voice.new();
 
-   globals.Concorde.copilothuman = Concorde.Copilothuman.new();
-   globals.Concorde.engineerhuman = Concorde.Engineerhuman.new();
+#   globals.Concorde.copilothuman = Concorde.Copilothuman.new();
+#   globals.Concorde.engineerhuman = Concorde.Engineerhuman.new();
 
    globals.Concorde.tractorexternal = Concorde.Tractor.new();
 }

@@ -162,68 +162,43 @@
     </axis>
   </animation>
   <animation>
-    <type>select</type>
-    <object-name>ATTOn</object-name>
+    <type>material</type>
+    <object-name>ATT</object-name>
     <condition>
-      <not>
-        <and>
-          <less-than-equals>
-            <property>/orientation/pitch-deg</property>
-            <value>16.5</value>
-          </less-than-equals>
-          <greater-than-equals>
-            <property>/orientation/pitch-deg</property>
-            <value>-5.5</value>
-          </greater-than-equals>
-        </and>
-      </not>
+      <or>
+       <greater-than-equals>
+        <property>/orientation/pitch-deg</property>
+        <value>16.5</value>
+       </greater-than-equals>
+       <less-than-equals>
+        <property>/orientation/pitch-deg</property>
+        <value>-5.5</value>
+       </less-than-equals>
+      </or>
     </condition>
+      <emission>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+    </emission>
   </animation>
   <animation>
-    <type>select</type>
-    <object-name>ATTOff</object-name>
+    <type>material</type>
+    <object-name>DH</object-name>
     <condition>
       <and>
-        <less-than-equals>
-          <property>/orientation/pitch-deg</property>
-          <value>16.5</value>
-        </less-than-equals>
-        <greater-than-equals>
-          <property>/orientation/pitch-deg</property>
-          <value>-5.5</value>
-        </greater-than-equals>
-      </and>
-    </condition>
-  </animation>
-  <animation>
-    <type>select</type>
-    <object-name>DHOn</object-name>
-    <condition>
-      <or>
         <property>/instrumentation/radio-altimeter[0]/decision-height</property>
-        <not>
-          <greater-than-equals>
+          <less-than-equals>
             <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
             <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
-          </greater-than-equals>
-        </not>
-      </or>
+          </less-than-equals>
+      </and>
     </condition>
-  </animation>
-  <animation>
-    <type>select</type>
-    <object-name>DHOff</object-name>
-    <condition>
-      <or>
-        <not>
-          <property>/instrumentation/radio-altimeter[0]/decision-height</property>
-        </not>
-        <greater-than-equals>
-          <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
-          <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
-        </greater-than-equals>
-      </or>
-    </condition>
+      <emission>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.0</blue>
+      </emission>
   </animation>
   <!--Default Lighting-->
   <animation>
