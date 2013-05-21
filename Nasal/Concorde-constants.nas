@@ -717,7 +717,6 @@ System.loadtree = func( path, table ) {
    var component = "";
    var subcomponent = "";
    var value = "";
-
    if( props.globals.getNode(path) != nil ) {
        children = props.globals.getNode(path).getChildren();
        foreach( var c; children ) {

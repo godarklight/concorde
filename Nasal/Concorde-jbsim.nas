@@ -81,6 +81,7 @@ ConcordeMain.startupcron = func {
 # 1 seconds cron (only, to spare frame rate)
 ConcordeMain.sec1cron = func {
    autopilotsystem.schedule();
+   autothrottlesystem.schedule();
    electricalsystem.schedule();
    hydraulicsystem.schedule();
    fuelsystem.schedule();
@@ -103,8 +104,6 @@ ConcordeMain.sec1cron = func {
 
 # 3 seconds cron
 ConcordeMain.sec3cron = func {
-   #autopilotsystem.schedule();
-   #autothrottlesystem.schedule();
    MWSsystem.schedule();
    flightsystem.schedule();
    fuelsystem.slowschedule();
@@ -121,8 +120,6 @@ ConcordeMain.sec3cron = func {
 ConcordeMain.sec5cron = func {
    CGinstrument.schedule();
    standbyIASinstrument.schedule();
-#   autopilotsystem.slowschedule();
-#   autothrottlesystem.slowschedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
 #   copilotcrew.fastschedule();
@@ -183,9 +180,9 @@ ConcordeMain.savedata = func {
                        "/controls/anti-ice/icing-model/duration/clear-min",
                        "/controls/anti-ice/icing-model/temperature/max-degc",
                        "/controls/anti-ice/icing-model/temperature/min-degc",
-#                       "/controls/autoflight/fg-waypoint",
-#                       "/controls/autoflight/real-nav",
-#                       "/controls/captain/countdown",
+                       "/controls/autoflight/fg-waypoint",
+                       "/controls/autoflight/real-nav",
+                       "/controls/captain/countdown",
 #                       "/controls/crew/captain-busy",
 #                       "/controls/crew/checklist",
 #                       "/controls/crew/ins-alignment",
@@ -242,7 +239,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.fuelsystem = Concorde.Fuel.new();
    globals.Concorde.tankpressuresystem = Concorde.Pressurizetank.new();
    globals.Concorde.autopilotsystem = Concorde.Autopilot.new();
-#   globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
+   globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
    globals.Concorde.GPWSsystem = Concorde.Gpws.new();
    globals.Concorde.MWSsystem = Concorde.Mws.new();
    globals.Concorde.enginesystem = Concorde.Engine.new();
@@ -310,7 +307,7 @@ ConcordeMain.init = func {
    settimer(func { me.startupcron(); },2.0);
 
    # the 3D is soon visible (long by Cygwin)
-   print("concorde systems started, version ", getprop("/sim/aircraft-version"));
+   print("Concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 
 # state reset

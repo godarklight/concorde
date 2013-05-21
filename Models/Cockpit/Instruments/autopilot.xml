@@ -111,7 +111,7 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-    <!-- VL -->
+  <!-- VL -->
   <animation>
     <type>material</type>
     <object-name>VL</object-name>
@@ -129,11 +129,11 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>VLAquire</object-name>
     <condition>
-          <property>controls/autoflight/vor-aquire</property>
+      <property>controls/autoflight/vor-aquire</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -218,7 +218,7 @@
     <type>material</type>
     <object-name>LA</object-name>
     <condition>
-          <property>controls/autoflight/land-display</property>
+      <property>controls/autoflight/land-display</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -226,11 +226,11 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>LAAquire</object-name>
     <condition>
-          <property>controls/autoflight/land-aquire</property>
+      <property>controls/autoflight/land-aquire</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -329,11 +329,11 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>GLAquire</object-name>
     <condition>
-          <property>controls/autoflight/gs-aquire</property>
+      <property>controls/autoflight/gs-aquire</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -417,7 +417,7 @@
     <type>material</type>
     <object-name>AAAquire</object-name>
     <condition>
-          <property>controls/autoflight/altitude-aquire</property>
+      <property>controls/autoflight/altitude-aquire</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -426,25 +426,58 @@
     </emission>
   </animation>
   <!--=== Bindings ===-->
-  <!--Speed (NO AT YET)-->
-  <!--
-    <animation>
+  <!-- Speed -->
+  <animation>
     <type>pick</type>
     <object-name>IH</object-name>
     <action>
       <name>Speed Hold</name>
       <button>0</button>
       <repeatable>false</repeatable>
-     <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.autopilotsystem.apinsexport();</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autothrottlesystem.atspeedholdexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
     </action>
-    -->
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>IA</object-name>
+    <action>
+      <name>Speed Acquire</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autothrottlesystem.atspeedexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>MH</object-name>
+    <action>
+      <name>Mach Hold</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autothrottlesystem.atmachexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
+  </animation>
   <!-- Heading -->
   <animation>
     <type>pick</type>
@@ -542,6 +575,23 @@
       <binding>
         <command>nasal</command>
         <script>globals.Concorde.autopilotsystem.appitchexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>CL</object-name>
+    <action>
+      <name>CL</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autopilotsystem.apmaxclimbexport();</script>
       </binding>
       <binding>
         <command>property-toggle</command>
@@ -670,11 +720,11 @@
   </animation>
   <!--=== AP Switches ===-->
   <!--Lighting-->
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>AP1</object-name>
     <condition>
-	  <property>controls/autoflight/autopilot[0]/engage</property>
+      <property>controls/autoflight/autopilot[0]/engage</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -682,11 +732,11 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>AP2</object-name>
     <condition>
-	  <property>controls/autoflight/autopilot[1]/engage</property>
+      <property>controls/autoflight/autopilot[1]/engage</property>
     </condition>
     <emission>
       <red>0.5</red>
@@ -694,8 +744,8 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-  <!-- Movement-->
-    <animation>
+  <!--Movement-->
+  <animation>
     <type>translate</type>
     <object-name>AP1</object-name>
     <property>controls/autoflight/autopilot[0]/engage</property>
@@ -705,8 +755,8 @@
       <y>0</y>
       <z>1</z>
     </axis>
-    </animation>
-        <animation>
+  </animation>
+  <animation>
     <type>translate</type>
     <object-name>AP2</object-name>
     <property>controls/autoflight/autopilot[1]/engage</property>
@@ -716,48 +766,184 @@
       <y>0</y>
       <z>1</z>
     </axis>
-    </animation>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>AP1Label</object-name>
+    <property>controls/autoflight/autopilot[0]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>AP2Label</object-name>
+    <property>controls/autoflight/autopilot[1]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
   <!--Binding-->
-    <animation>
+  <animation>
     <type>pick</type>
     <object-name>AP1</object-name>
     <action>
       <name>AP1</name>
       <button>0</button>
       <repeatable>false</repeatable>
-     <binding>
-    <command>property-toggle</command>
-    <property>/controls/autoflight/autopilot[0]/engage</property>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.autopilotsystem.apexport();</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/controls/autoflight/autopilot[0]/engage</property>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autopilotsystem.apexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
     </action>
   </animation>
-    <animation>
+  <animation>
     <type>pick</type>
     <object-name>AP2</object-name>
     <action>
       <name>AP2</name>
       <button>0</button>
       <repeatable>false</repeatable>
-     <binding>
-    <command>property-toggle</command>
-    <property>/controls/autoflight/autopilot[1]/engage</property>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.autopilotsystem.apexport();</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/controls/autoflight/autopilot[1]/engage</property>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autopilotsystem.apexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
     </action>
   </animation>
-  </PropertyList>
+  <!-- AT Switches -->
+    <!--Lighting-->
+  <animation>
+    <type>material</type>
+    <object-name>AT1</object-name>
+    <condition>
+      <property>controls/autoflight/autothrottle[0]/engage</property>
+    </condition>
+    <emission>
+      <red>0.5</red>
+      <green>0.1</green>
+      <blue>0.0</blue>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>AT2</object-name>
+    <condition>
+      <property>controls/autoflight/autothrottle[1]/engage</property>
+    </condition>
+    <emission>
+      <red>0.5</red>
+      <green>0.1</green>
+      <blue>0.0</blue>
+    </emission>
+  </animation>
+  <!--Movement-->
+    <animation>
+    <type>translate</type>
+    <object-name>AT1</object-name>
+    <property>controls/autoflight/autothrottle[0]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>AT2</object-name>
+    <property>controls/autoflight/autothrottle[1]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>AT1Label</object-name>
+    <property>controls/autoflight/autothrottle[0]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>AT2Label</object-name>
+    <property>controls/autoflight/autothrottle[1]/engage</property>
+    <factor>0.0175</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <!--Binding-->
+  <animation>
+    <type>pick</type>
+    <object-name>AT1</object-name>
+    <action>
+      <name>AT1</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>/controls/autoflight/autothrottle[0]/engage</property>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autothrottlesystem.atexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>AT2</object-name>
+    <action>
+      <name>AT2</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>/controls/autoflight/autothrottle[1]/engage</property>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autothrottlesystem.atexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
+  </animation>
+</PropertyList>
