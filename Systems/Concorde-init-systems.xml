@@ -153,6 +153,14 @@
       <!-- no copilot -->
       <waypoint-nm type="double">0.0</waypoint-nm>
     </state>
+    <pid>
+      <vs-kp-current>0.003</vs-kp-current>
+      <vs-ki-current>0.001</vs-ki-current>
+      <vs-kp-gnd>0.003</vs-kp-gnd>
+      <vs-kp-50>0.001</vs-kp-50>
+      <vs-ki-gnd>0.001</vs-ki-gnd>
+      <vs-ki-50>0.0005</vs-ki-50>
+    </pid>
     <relations>
       <dependency>
         <altimeter>
@@ -219,11 +227,13 @@
           <component>/controls/autoflight</component>
           <subcomponent>flight-director</subcomponent>
         </flight-director>
+	<internal>/autopilot/internal</internal>
         <locks>/autopilot/locks</locks>
         <mouse>
           <component>/devices/status/mice/mouse</component>
           <subcomponent>button</subcomponent>
         </mouse>
+	<pid>/systems/autopilot/pid</pid>
         <route>/autopilot/route-manager/route</route>
         <route-manager>/autopilot/route-manager</route-manager>
         <settings>/autopilot/settings</settings>

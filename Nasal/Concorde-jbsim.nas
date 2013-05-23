@@ -43,7 +43,7 @@ ConcordeMain.new = func {
 #   no relation to an instrument / system failure.
 
 ConcordeMain.putinrelation = func {
-#   autopilotsystem.set_relation( autothrottlesystem );
+   #autopilotsystem.set_relation( autothrottlesystem );
    MWSsystem.set_relation( ADCinstrument, CGinstrument, INSinstrument,
                            airbleedsystem, electricalsystem, enginesystem,
                            flightsystem, fuelsystem, hydraulicsystem, antiicingsystem,

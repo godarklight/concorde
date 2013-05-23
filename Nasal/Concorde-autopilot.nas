@@ -42,6 +42,10 @@ Autopilot.init = func {
   me.apdiscexport();
 }
 
+Autopilot.setrelation = func(atsystem) {
+  #autothrottlesystem = atsystem;
+}
+
 Autopilot.reinitexport = func {
   #NAV 0 is reserved for autopilot
   #On startup, copy NAV1 to co-pilots NAV2, then copy NAV0 to pilots NAV1
@@ -107,9 +111,7 @@ Autopilot.apdiscvertical = func {
   me.is_gs_lock = 0;
   me.is_altitude_aquire = 0;
   me.is_altitude_aquiring = 0;
-  me.is_max_climb = 0;
   me.is_max_climb_aquire = 0;
-  me.is_max_cruise = 0;
   me.itself['autoflight'].getChild('altitude').setValue('');
   me.itself['autoflight'].getChild('altitude-display').setValue('');
   me.itself['autoflight'].getChild('altitude-aquire').setValue(0);
@@ -139,10 +141,37 @@ Autopilot.sendnav = func( index, target ) {
 #===ALTIMETER LIGHT===#
 
 Autopilot.altimeterlight = func {
-      var altsetting = me.itself['autoflight'].getChild('altitude-select').getValue();
-      me.itself['altimeter'].getChild('light-min-ft').setValue(altsetting - me.ALTIMETERFT);
-      me.itself['altimeter'].getChild('light-max-ft').setValue(altsetting - me.ALTIMETERFT);
+  var altsetting = me.itself['autoflight'].getChild('altitude-select').getValue();
+  me.itself['altimeter'].getChild('light-min-ft').setValue(altsetting - me.ALTIMETERFT);
+  me.itself['altimeter'].getChild('light-max-ft').setValue(altsetting - me.ALTIMETERFT);
 }
+
+#==PID SETTINGS===#
+
+Autopilot.configurepidsettings = func {
+  #This tunes vertical speed hold to be less sensitive as you climb. It replaces a supersonic and subsonic pid, improves response all around.
+  #gnd is ground, 50 is 50,000ft. Kp and Ki is clipped between gnd and 50,000ft values. Set in Concorde-init-systems.xml.
+  var altimeter_ft = me.noinstrument['altitude'].getValue();
+  var vs_kp_gnd = me.itself['pid'].getChild('vs-kp-gnd').getValue();
+  var vs_kp_50 = me.itself['pid'].getChild('vs-kp-50').getValue();
+  var vs_ki_gnd = me.itself['pid'].getChild('vs-ki-gnd').getValue();
+  var vs_ki_50 = me.itself['pid'].getChild('vs-ki-50').getValue();
+  #Yes this gives a negative value... Less sensitive as you climb.
+  var vs_kp_diff = vs_kp_50 - vs_kp_gnd;
+  var vs_ki_diff = vs_ki_50 - vs_ki_gnd;
+  var alt_factor = altimeter_ft / 50000;
+  if ( alt_factor < 0 ) {
+    alt_factor = 0;
+  }
+  if ( alt_factor > 1 ) {
+    alt_factor = 1;
+  }
+  var new_kp = vs_kp_gnd + ( vs_kp_diff * alt_factor );
+  var new_ki = vs_ki_gnd + ( vs_ki_diff * alt_factor );
+  me.itself['pid'].getChild('vs-kp-current').setValue(new_kp);
+  me.itself['pid'].getChild('vs-ki-current').setValue(new_ki);
+}
+
 
 #===AUTOPILOT CONNECT===#
 
@@ -209,7 +238,8 @@ Autopilot.apengage = func {
   if ( ! me.is_autopilot_engaged ) {
     me.apdiscexport();
   } else {
-    me.itself['internal'].getChild('heading')./autopilot/internal/target-vertical-speed-fpm-filtered
+
+    #Engage the autopilot from the current settings
     me.itself['locks'].getChild('heading').setValue(me.itself['autoflight'].getChild('heading').getValue());
     me.itself['locks'].getChild('altitude').setValue(me.itself['autoflight'].getChild('altitude').getValue());
   }
@@ -279,6 +309,15 @@ Autopilot.modespeedpitch = func {
 Autopilot.modemachpitch = func {
   me.itself['autoflight'].getChild('altitude').setValue('mach-with-pitch-trim');
   me.apengage();
+}
+
+Autopilot.modemaxclimb = func {
+    me.is_max_climb_aquire = 0;
+    var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
+    autothrottlesystem.speed(max_airspeed);
+    me.modespeedpitch();
+    autothrottlesystem.is_max_climb = 1;
+    autothrottlesystem.full();
 }
 
 #===AUTOPILOT LANDING MODE===#
@@ -435,18 +474,16 @@ Autopilot.apmaxclimbexport = func {
 
   var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
   var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
+  autothrottlesystem.atdiscspeed();
+  autothrottlesystem.atengage();
   if ( current_airspeed > (max_airspeed - 10) ) {
-    me.is_max_climb_aquire = 0;
-    me.modespeedpitch();
-    autothrottlesystem.atdiscspeed();
-    autothrottlesystem.setmaxclimb(1);
-    autothrottlesystem.full();
+    me.modemaxclimb();
   } else {
     me.is_max_climb_aquire = 1;
-    me.display('altitude-display', 'CL');
     me.setverticalspeed(0);
     me.modeverticalspeed();
   }
+  me.display('altitude-display', 'CL');
 }
 
 Autopilot.apspeedpitchexport = func {
@@ -529,20 +566,14 @@ Autopilot.schedule = func {
     var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
     var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
     if ( current_airspeed > ( max_airspeed - 10 )) {
-      me.is_max_climb_aquire = 0;
-      me.modespeedpitch();
+      me.modemaxclimb();
     }
   }
 
-  #Max climb mode is just speed-with-pitch-trim set to VMO. This checks altitude.
-  if ( me.is_max_climb ) {
-    me.apdiscvertical();
-  }
-
   #Max cruise, Not completely sure on this mode, But I feel like it should be mach-with-throttle and vertical-speed-hold set at 50fpm.
-  if ( me.is_max_cruise ) {
-
-  }
+  #if ( me.is_max_cruise ) {
+  #
+  #}
   
   if ( me.is_altitude_aquire ) {
     var current_ft = me.dependency['altimeter'][0].getChild('indicated-altitude-ft').getValue();
@@ -603,4 +634,6 @@ Autopilot.schedule = func {
   if ( me.is_landing ) {
     me.autoland();
   }
+
+  me.configurepidsettings();
 }

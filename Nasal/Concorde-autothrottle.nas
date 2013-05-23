@@ -89,7 +89,7 @@ Autothrottle.atdiscexport = func {
   me.itself['channel'][1].getChild('engage').setValue(0);
   me.atchannel();
   me.atengage();
-  me.is_maxclimb = 0;
+  me.is_max_climb = 0;
 }
 
 #=== MODES ===#
@@ -142,7 +142,8 @@ Autothrottle.mach = func( speedmach ) {
 }
 
 Autothrottle.holdspeed = func {
-  var current_airspeed = me.dependency['asi'][0].getChild('indicated-airspeed-kt').getValue();
+  #var current_airspeed = me.dependency['asi'][0].getChild('indicated-airspeed-kt').getValue();
+  var current_airspeed = 250;
   me.speed(current_airspeed);
 }
 
@@ -186,8 +187,8 @@ Autothrottle.atspeedholdexport = func {
 #=== SCHEDULE ===#
 
 Autothrottle.schedule = func {
-  if ( me.is_maxclimb ) {
+  if ( me.is_max_climb ) {
     var max_airspeed = me.dependency['asi'][0].getChild('vmo-kt').getValue();
-    me.speed(vmo-kt)
+    me.speed(max_airspeed);
   }
 }

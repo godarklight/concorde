@@ -34,38 +34,7 @@
     <input>
       <prop>/orientation/roll-deg</prop>
     </input>
-    <reference>
-      <condition>
-        <equals>
-          <property>/autopilot/locks/heading</property>
-          <value>wing-leveler</value>
-        </equals>
-      </condition>
-      <value>0</value>
-    </reference>
-    <reference>
-      <condition>
-        <or>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>roll-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>dg-heading-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>true-heading-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>nav1-hold</value>
-          </equals>
-        </or>
-      </condition>
-      <property>/autopilot/internal/target-roll-deg-filtered</property>
-    </reference>
+    <reference>/autopilot/internal/target-roll-deg-filtered</reference>
     <output>
       <prop>/controls/flight/aileron</prop>
     </output>
@@ -107,7 +76,7 @@
             <property>/autopilot/locks/speed</property>
             <value>speed-with-pitch-trim</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/speed</property>
             <value>mach-with-pitch-trim</value>
           </equals>
@@ -138,29 +107,6 @@
   <pi-simple-controller>
     <name>Vertical speed pitch hold</name>
     <debug>false</debug>
-    <enable>
-      <condition>
-        <or>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>vertical-speed-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>altitude-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>gs1-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/speed</property>
-            <value>speed-with-pitch-trim</value>
-          </equals>
-          <value/>
-        </or>
-      </condition>
-    </enable>
     <input>
       <prop>/autopilot/internal/vert-speed-fpm</prop>
     </input>
@@ -171,8 +117,8 @@
       <prop>/autopilot/internal/target-pitch-deg</prop>
     </output>
     <config>
-      <Kp>0.003</Kp>
-      <Ki>0.002</Ki>
+      <Kp><prop>/systems/autopilot/pid/vs-kp-current</prop></Kp>
+      <Ki><prop>/systems/autopilot/pid/vs-ki-current</prop></Ki>
       <min>-15.0</min>
       <max>20.0</max>
     </config>
@@ -182,8 +128,12 @@
     <name>Altitude Hold Vertical Speed Driver</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>altitude-hold</value>
+          <condition>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>altitude-hold</value>
+      </equals>
+      </condition>
     </enable>
     <input>
       <prop>/instrumentation/altimeter/indicated-altitude-ft</prop>
@@ -191,10 +141,10 @@
     <reference>
       <property>/autopilot/settings/target-altitude-ft</property>
     </reference>
-    <output>autopilot/internal/target-vertical-speed-fpm</output>
+    <output>/autopilot/internal/target-vertical-speed-fpm</output>
     <config>
-      <Kp>7</Kp>
-      <Ki>0.1</Ki>
+      <Kp>5</Kp>
+      <Ki>.1</Ki>
       <u_min>-1000</u_min>
       <u_max>2000</u_max>
     </config>
@@ -203,13 +153,17 @@
   <filter>
     <name>Glidescope Hold Vertical Speed Driver</name>
     <debug>false</debug>
-    <enable>
-      <prop>/autopilot/locks/altitude</prop>
-      <value>gs1-hold</value>
-    </enable>
+        <enable>
+          <condition>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>gs1-hold</value>
+      </equals>
+      </condition>
+      </enable>
     <type>gain</type>
     <input>/instrumentation/nav[0]/gs-rate-of-climb-fpm</input>
-    <output>autopilot/internal/target-vertical-speed-fpm</output>
+    <output>/autopilot/internal/target-vertical-speed-fpm</output>
     <gain>1</gain>
     <min>-2000</min>
     <max>0</max>
@@ -452,7 +406,7 @@
     </config>
   </pi-simple-controller>
   <!--Filters-->
-  <!-- Pitch Filter -->
+  <!-- Pitch calculator and filter -->
   <filter>
     <type>noise-spike</type>
     <max-rate-of-change>3</max-rate-of-change>
@@ -467,27 +421,75 @@
     </input>
     <input>
       <condition>
-        <not>
+        <or>
+			  <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>vertical-speed-hold</value>
+          </equals>
+	  <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>altitude-hold</value>
+          </equals>
+	  <equals>
+            <property>/autopilot/locks/speed</property>
+            <value>speed-with-pitch-trim</value>
+          </equals>
           <equals>
             <property>/autopilot/locks/altitude</property>
-            <value>pitch-hold</value>
+            <value>gs1-hold</value>
           </equals>
-        </not>
+        </or>
       </condition>
       <property>/autopilot/internal/target-pitch-deg</property>
     </input>
+    <input>
+      <property>/orientation/pitch-deg</property>
+    </input>
     <output>/autopilot/internal/target-pitch-deg-filtered</output>
   </filter>
-  
-  <!-- Roll filter -->
+  <!-- Roll calculator and filter -->
   <filter>
     <type>noise-spike</type>
     <max-rate-of-change>3</max-rate-of-change>
-    <input>/autopilot/internal/target-roll-deg</input>
+
+    <input>
+      <condition>
+        <equals>
+          <property>/autopilot/locks/heading</property>
+          <value>wing-leveler</value>
+        </equals>
+      </condition>
+      <value>0</value>
+    </input>
+    <input>
+      <condition>
+        <or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>roll-hold</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>true-heading-hold</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>nav1-hold</value>
+          </equals>
+        </or>
+      </condition>
+      <property>/autopilot/internal/target-roll-deg</property>
+    </input>
+    <input>
+      <property>/orientation/roll-deg</property>
+    </input>
     <output>/autopilot/internal/target-roll-deg-filtered</output>
   </filter>
-  
-  <!-- Vertical speed filter -->
+  <!-- Vertical speed calculator and filter -->
   <filter>
     <type>noise-spike</type>
     <max-rate-of-change>400</max-rate-of-change>
@@ -497,31 +499,34 @@
           <property>/autopilot/locks/altitude</property>
           <value>vertical-speed-hold</value>
         </equals>
-      </condition>
-      <property>/autopilot/settings/vertical-speed-fpm</property>
+	</condition>
+	<property>/autopilot/settings/vertical-speed-fpm</property>
     </input>
     <input>
       <condition>
-        <or>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>gs1-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>vertical-speed-hold</value>
-          </equals>
+	<or>
           <equals>
             <property>/autopilot/locks/altitude</property>
             <value>altitude-hold</value>
           </equals>
-          <equals>
+	  <equals>
             <property>/autopilot/locks/speed</property>
             <value>speed-with-pitch-trim</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/speed</property>
+            <value>mach-with-pitch-trim</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>gs1-hold</value>
           </equals>
         </or>
       </condition>
       <property>/autopilot/internal/target-vertical-speed-fpm</property>
+    </input>
+        <input>
+          <property>/autopilot/internal/vert-speed-fpm</property>
     </input>
     <output>/autopilot/internal/target-vertical-speed-fpm-filtered</output>
   </filter>
