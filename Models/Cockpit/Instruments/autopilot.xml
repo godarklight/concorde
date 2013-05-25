@@ -263,10 +263,16 @@
     <object-name>CL</object-name>
     <condition>
       <and>
-        <equals>
-          <property>controls/autoflight/altitude-display</property>
-          <value>CL</value>
-        </equals>
+      <or>
+          <equals>
+            <property>controls/autoflight/altitude-display</property>
+            <value>CL</value>
+          </equals>
+          <equals>
+            <property>controls/autoflight/altitude-display</property>
+            <value>CR</value>
+          </equals>
+        </or>
       </and>
     </condition>
     <emission>

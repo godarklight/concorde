@@ -12,23 +12,28 @@ Autopilot.new = func {
    var obj = { parents : [Autopilot,System],
 
                autothrottlesystem : nil,
+               MAXCRUISEFT: 50000,
+               MAXCRUISEMACH: 2.00,
+               MAXMACH: 2.02,
 
                GROUNDAUTOPILOT: 0,                            # Enable autopilot on ground for testing
-               MINAUTOPILOTFT: 50,                           # Stop autopilot from engaging on ground, causes wild trims
+               MINAUTOPILOTFT: 50,                            # Stop autopilot from engaging on ground, causes wild trims
                VLGSAQUIREDEFLECTION : 3,                      # When to engage VL and GL modes (degrees difference)
                TARGETFT : 1200.0,                             # When to engage AA mode from VS (altitude aquire light comes on)
                ALTIMETERFT : 50.0,                            # When the altitude aquire light goes out
 
-               TOUCHFPM : -300.0,                             # autoland vertical speed
                AUTOLANDFT : 1500.0,                           # altitude for LA mode
                LANDINGFT : 800.0,                             # Adjusts to the landing pitch
-               PITCHFT : 500.0,                               # Reaches the landing pitch
+               LANDINGDEGSEC : 10,                            # Reaches the landing pitch
                LANDINGDEG : 7.5,                              # Landing pitch
+               PITCHFT : 500.0,                               # Reaches the landing pitch
                FLAREFT : 80.0,                                # Leaves glide slope
+               FLAREDEG : 10,                                  # Leaves glide slope
+               FLARESEC : 2,                                  # Leaves glide slope
                WPTNM : 4.0,                                   # Distance to swap to next waypoint
                VORNM : 3.0,                                   # Distance to inhibate VOR
                GOAROUNDDEG : 15.0,                            # Pitch on go-around
-               LANDINGSEC : 3,                                # How long it takes to pitch down after landing
+               LANDINGSEC : 5,                                # How long it takes to pitch down after landing
          };
 
 # autopilot initialization
@@ -39,7 +44,7 @@ Autopilot.new = func {
 Autopilot.init = func {
   me.inherit_system('/systems/autopilot');
   me.reinitexport();
-  me.apdiscexport();
+  me.discexport();
 }
 
 Autopilot.setrelation = func(atsystem) {
@@ -56,6 +61,7 @@ Autopilot.reinitexport = func {
   me.is_turbulence = 0;
   me.is_land_aquire = 0;
   me.is_landing = 0;
+  me.landing_stage = 0;
   me.display('land-aquire', 0);
 }
 
@@ -65,13 +71,18 @@ Autopilot.display = func(vartype, varvalue) {
 
 #===AUTOPILOT DISCONNECT===#
 
-Autopilot.apdiscexport = func {
-  me.apdischeading();
-  me.apdiscvertical();
+Autopilot.discexport = func {
+  me.discheading();
+  me.discvertical();
   me.discaquire();
+  me.itself['channel'][0].getChild('engage').setValue(0);
+  me.itself['channel'][1].getChild('engage').setValue(0);
+  me.channelengage[0] = 0;
+  me.channelengage[1] = 0;
 }
 
 Autopilot.discaquire = func {
+  me.is_max_climb_aquire = 0;
   me.is_vor_aquire = 0;
   me.is_land_aquire = 0;
   me.is_gs_aquire = 0;
@@ -82,46 +93,61 @@ Autopilot.discaquire = func {
   me.display('altitude-aquire', 0);
 }
 
-Autopilot.apdiscroutemanager = func {
+Autopilot.discroutemanager = func {
   me.itself['settings'].getChild('gps-driving-true-heading').setValue(0);
 }
 
-Autopilot.apdischeading = func {
+Autopilot.discheading = func {
   me.is_holding_heading = 0;
-  me.is_holding_altitude = 0;
   me.is_vor_lock = 0;
-  if ( me.is_turbulence ) {
-    me.display('altitude-display', 'PH');
-    me.is_turbulence = 0;
-  }
+  #me.dischorizontallock();
   me.itself['autoflight'].getChild('heading').setValue('');
   me.display('heading-display', '');
   me.itself['autoflight'].getChild('vor-aquire').setValue(0);
-  me.apdiscroutemanager();
-  me.itself['locks'].getChild('heading').setValue('');
+  me.discroutemanager();
+  me.apengage();
 }
 
-Autopilot.apdiscvertical = func {
-  if ( me.is_turbulence ) {
-    me.display('heading-display', 'HH');
-    me.holdmagnetic();
-    me.modemagneticheading();
-    me.is_turbulence = 0;
-  }
+Autopilot.discvertical = func {
+  me.is_max_cruise = 0;
   me.is_gs_lock = 0;
-  me.is_altitude_aquire = 0;
-  me.is_altitude_aquiring = 0;
-  me.is_max_climb_aquire = 0;
   me.itself['autoflight'].getChild('altitude').setValue('');
   me.itself['autoflight'].getChild('altitude-display').setValue('');
   me.itself['autoflight'].getChild('altitude-aquire').setValue(0);
   me.itself['autoflight'].getChild('gs-aquire').setValue(0);
-  me.itself['locks'].getChild('altitude').setValue('');
+  me.apengage();
 }
 
 Autopilot.resettrim = func {
+  #Reset trim after autoland
   me.dependency['flight'].getChild('elevator-trim').setValue(0);
   me.dependency['flight'].getChild('aileron-trim').setValue(0);
+}
+
+Autopilot.discincompatible = func(vartype) {
+  if (vartype == "heading") {
+    me.discroutemanager();
+    me.is_vor_lock = 0;
+    me.is_land_aquire = 0;
+    me.is_landing = 0;
+    me.itself['autoflight'].getChild('vor-aquire').setValue(0);
+  }
+  if (vartype == "vertical") {
+    autothrottlesystem.is_max_climb = 0;
+    me.is_max_cruise = 0;
+    me.is_gs_lock = 0;
+    me.is_land_aquire = 0;
+    me.is_landing = 0;
+  }
+  if (vartype == "localiser") {
+
+  }
+  if (vartype == "glidescope") {
+    me.is_holding_altitude = 0;
+  }
+  if (vartype == "max-climb") {
+    
+  }
 }
 
 #===NAV COPY===#
@@ -178,14 +204,10 @@ Autopilot.configurepidsettings = func {
 
 Autopilot.setstartuphold = func {
   if ( me.itself['autoflight'].getChild('heading').getValue() == '' ) {
-    me.display('heading-display', 'HH');
-    me.holdmagnetic();
-    me.modemagneticheading();
+    me.apheadingholdexport();
   }
   if ( me.itself['autoflight'].getChild('altitude').getValue() == '' ) {
-    me.display('altitude-display', 'PH');
-    me.holdpitch();
-    me.modepitch();
+    me.appitchexport();
   }
 }
 
@@ -209,7 +231,6 @@ Autopilot.apchannel = func {
   #Enabling autopilot on ground causes wild trimming, so disable it unless config set.
   if ( current_ft < me.MINAUTOPILOTFT ) {
     if ( ! me.GROUNDAUTOPILOT ) {
-    #Intended release state, just say it cannot be enabled on the ground
     gui.popupTip("Cannot engage the autopilot while on the ground!");
     me.itself['channel'][0].getChild('engage').setValue(0);
     me.itself['channel'][1].getChild('engage').setValue(0);
@@ -224,8 +245,11 @@ Autopilot.apchannel = func {
   #This is what most functions read, they do not care if AP1 or AP2 is engaged.
   if ( me.channelengage[0] or me.channelengage[1] ) {
     me.is_autopilot_engaged = 1;
+    me.setstartuphold();
+    me.apengage();
   } else {
     me.is_autopilot_engaged = 0;
+    me.discexport();
   }
 
 }
@@ -235,14 +259,9 @@ Autopilot.apchannel = func {
 #It disables the autopilot/modes if both switches are off.
 
 Autopilot.apengage = func {
-  if ( ! me.is_autopilot_engaged ) {
-    me.apdiscexport();
-  } else {
-
     #Engage the autopilot from the current settings
     me.itself['locks'].getChild('heading').setValue(me.itself['autoflight'].getChild('heading').getValue());
     me.itself['locks'].getChild('altitude').setValue(me.itself['autoflight'].getChild('altitude').getValue());
-  }
 }
 
 #===AUTOPILOT MODES===#
@@ -256,6 +275,11 @@ Autopilot.modewinglevel = func {
 
 Autopilot.modemagneticheading = func {
   me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold');
+  me.apengage();
+}
+
+Autopilot.modemagneticheadingrudder = func {
+  me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold-rudder');
   me.apengage();
 }
 
@@ -312,19 +336,101 @@ Autopilot.modemachpitch = func {
 }
 
 Autopilot.modemaxclimb = func {
+    me.display('altitude-display', 'CL');
+    autothrottlesystem.display('speed-display', '');
+    me.is_max_cruise = 0;
     me.is_max_climb_aquire = 0;
+    autothrottlesystem.is_max_climb = 1;
     var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
     autothrottlesystem.speed(max_airspeed);
     me.modespeedpitch();
-    autothrottlesystem.is_max_climb = 1;
     autothrottlesystem.full();
 }
 
+Autopilot.modemaxcruise = func {
+  me.display('altitude-display', 'CR');
+  autothrottlesystem.display('speed-display', '');
+  autothrottlesystem.mach(2.02);
+  autothrottlesystem.modemach();
+  me.setverticalspeed(50);
+  me.modeverticalspeed();
+  autothrottlesystem.is_max_climb = 0;
+  me.is_max_cruise = 1;
+}
+
 #===AUTOPILOT LANDING MODE===#
+
 #Witness the difficult-to-land concorde do a perfect landing first time every time.
 
 Autopilot.modeland = func {
-  me.is_land_aquire = 1;
+  var current_ft = me.dependency['radio-altimeter'][0].getChild('indicated-altitude-ft').getValue();
+  #Start autolanding at 1500ft
+  #First stage is to fly the ILS normally from 1500ft to 1000ft but reduce speed to VREF + 10knots.
+  if ( me.landing_stage == 1 ) {
+    if ( current_ft < me.LANDINGFT ) {
+      me.holdpitch();
+      me.modepitch();
+      autothrottlesystem.modeglidescope();
+      interpolate('/autopilot/settings/target-pitch-deg', me.LANDINGDEG, me.LANDINGDEGSEC);
+      me.landing_stage = 2;
+    }
+  }
+
+  #Second stage is to pitch to 7.5 degrees from 1000-500ft and fly the glidescope with throttle.
+  if ( me.landing_stage == 2 ) {
+    #Slowly pitch to the landing pitch.
+    if ( current_ft < me.PITCHFT ) {
+      interpolate('/autopilot/settings/target-pitch-deg', me.LANDINGDEG, 0);
+      me.landing_stage = 3;
+    }
+  }
+  #Third stage is to flare to -300fpm
+  if ( me.landing_stage == 3 ) {
+    if ( current_ft < me.FLAREFT ) {
+      interpolate('/autopilot/settings/target-pitch-deg', me.FLAREDEG, me.FLARESEC);
+      autothrottlesystem.atdiscspeed();
+      autothrottlesystem.atengage();
+      autothrottlesystem.idle();  
+      #Wheel 2 and 4 are the back left and right of the main gear.
+      var wheel2onground = me.dependency['gear'][2].getChild('wow').getValue();
+      var wheel4onground = me.dependency['gear'][4].getChild('wow').getValue();
+      if ( wheel2onground and wheel4onground ) {
+        me.landing_stage = 4;
+        autothrottlesystem.setreverse(1);
+        me.holdmagnetic();
+        me.modemagneticheadingrudder();
+      }
+    }
+  }
+  #Forth stage is the rollout and pitchdown and thrust reverse activate.
+  if ( me.landing_stage == 4 ) {
+    interpolate('/autopilot/settings/target-pitch-deg', 0, me.LANDINGSEC);
+    var wheel0onground = me.dependency['gear'][0].getChild('wow').getValue();
+    if ( wheel0onground ) {
+      me.discvertical();
+      me.landing_stage = 5;
+    }
+  }
+  #Fifth stage is the thrust reverse
+  if ( me.landing_stage == 5 ) {
+    if ( autothrottlesystem.is_reversed() ) {
+      autothrottlesystem.full();
+      me.landing_stage = 6;
+    }
+  }
+  #Fifth stage is the disconnect and reset AP
+  if ( me.landing_stage == 6 ) {
+    varspeed = me.dependency['gear'][0].getChild('rollspeed-ms').getValue();
+    if ( varspeed < 20 ) {
+      autothrottlesystem.setreverse(0);
+      autothrottlesystem.idle();
+      autothrottlesystem.atdiscexport();
+      me.discexport();
+      me.resettrim();
+      me.is_landing = 0;
+      me.landing_stage = 0;
+    }
+  }
 }
 
 #===AUTOPILOT MODE SETTINGS===#
@@ -376,16 +482,16 @@ Autopilot.holdaltitude = func {
 
 Autopilot.apexport = func {
   me.apchannel();
-  me.setstartuphold();
   me.apengage();
 }
 
 Autopilot.apinsexport = func {
+  if ( me.is_autopilot_engaged ) {
   if ( me.itself['route-manager'].getChild('active').getValue() == 1 ) {
-    me.apdischeading();
     me.itself['settings'].getChild('gps-driving-true-heading').setValue(1);
     me.modetrueheading();
     me.display('heading-display', 'IN');
+  }
   }
 }
 
@@ -402,8 +508,17 @@ Autopilot.apsendheadingexport = func {
   }
 }
 
+Autopilot.apsendnavexport = func {
+    if ( me.channelengage[0] ) {
+      me.sendnav(1,0);
+    }
+    if ( me.channelengage[1] ) {
+      me.sendnav(2,0);
+    }
+}
+
 Autopilot.apheadingexport = func {
-  me.apdischeading();
+  if ( me.is_autopilot_engaged ) {
   me.apsendheadingexport();
   me.display('heading-display', 'TH');
   if ( me.channelengage[0] ) {
@@ -420,11 +535,11 @@ Autopilot.apheadingexport = func {
       me.modemagneticheading();
     }
   }
+  }
 }
 
 Autopilot.apheadingholdexport = func {
   if ( me.is_autopilot_engaged ) {
-    me.apdischeading();
     me.is_holding_heading = 1;
     me.display('heading-display', 'HH');
     me.holdmagnetic();
@@ -434,14 +549,13 @@ Autopilot.apheadingholdexport = func {
 
 Autopilot.apturbulenceexport = func {
   if ( me.is_autopilot_engaged ) {
-    me.apdischeading();
-    me.apdiscvertical();
     me.display('heading-display', 'TU');
     me.modeturbulence();
   }
 }
 
 Autopilot.apvorlocexport = func {
+  if ( me.is_autopilot_engaged ) {
   if ( ! me.is_vor_aquire and ! me.is_vor_lock ) {
     me.is_vor_aquire = 1;
     me.display('vor-aquire', 1);
@@ -451,22 +565,28 @@ Autopilot.apvorlocexport = func {
       me.display('vor-aquire', 0);
     }
   }
+  }
 }
 
 Autopilot.appitchexport = func {
-  me.apdiscvertical();
+  if ( me.is_autopilot_engaged ) {
   me.display('altitude-display', 'PH');
   me.holdpitch();
   me.modepitch();
+  }
 }
 
 Autopilot.apmachpitchexport = func {
-  me.apdiscvertical();
+  if ( me.is_autopilot_engaged ) {
   me.display('altitude-display', 'MP');
+  autothrottlesystem.holdmach();
   me.modemachpitch();
+  }
 }
 
 Autopilot.apmaxclimbexport = func {
+  if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   #To prevent the concorde from desending in max climb mode, I changed this to an aquire mode.
   #I cannot find information on what happens when the concorde is at 250knots and VMO is 380knots.
   #This stops the concorde from crashing into the ground while not near VMO.
@@ -484,41 +604,51 @@ Autopilot.apmaxclimbexport = func {
     me.modeverticalspeed();
   }
   me.display('altitude-display', 'CL');
+  autothrottlesystem.display('speed-display', '');
+  }
 }
 
 Autopilot.apspeedpitchexport = func {
-  me.apdiscvertical();
+  if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   me.display('altitude-display', 'IP');
+  autothrottlesystem.holdspeed();
   me.modespeedpitch();
+  }
 }
 
 Autopilot.apaltitudeholdexport = func {
-  me.apdiscvertical();
+  if ( me.is_autopilot_engaged ) {
   me.is_holding_altitude = 1;
   me.display('altitude-display', 'AH');
   me.holdaltitude();
   me.modealtitudehold();
+  }
 }
 
 Autopilot.aplandexport = func {
+  if ( me.is_autopilot_engaged ) {
     if ( ! me.is_land_aquire and ! me.is_landing ) {
       if ( me.is_vor_aquire or me.is_vor_lock ) {
-        if ( !me.is_gs_aquire or me.is_gs_lock ) {
+        if ( !me.is_gs_aquire and !me.is_gs_lock ) {
           me.is_gs_aquire = 1;
           me.display('gs-aquire', 1);
         }
         me.is_land_aquire = 1;
+        me.landing_stage = 0;
         me.display('land-aquire', 1);
       }
   } else {
     me.is_land_aquire = 0;
     me.display('land-aquire', 0);
   }
+  }
 }
 
 Autopilot.apglideexport = func {
+  if ( me.is_autopilot_engaged ) {
   if ( ! me.is_gs_aquire and ! me.is_gs_lock ) {
-    if ( !me.is_gs_aquire or me.is_gs_lock ) {
+    if ( !me.is_vor_aquire and !me.is_vor_lock ) {
       me.is_vor_aquire = 1;
       me.display('vor-aquire', 1);
     }
@@ -530,16 +660,19 @@ Autopilot.apglideexport = func {
       me.display('gs-aquire', 0);
     }
   }
+  }
 }
 
 Autopilot.apverticalexport = func {
-  me.apdiscvertical();
+  if ( me.is_autopilot_engaged ) {
   me.display('altitude-display', 'VS');
   me.holdverticalspeed();
   me.modeverticalspeed();
+  }
 }
 
 Autopilot.apaltitudeexport = func {
+  if ( me.is_autopilot_engaged ) {
   if ( ! me.is_altitude_aquire and ! me.is_altitude_aquiring ) {
   me.is_holding_altitude = 0;
   me.is_altitude_aquire = 1;
@@ -558,22 +691,37 @@ Autopilot.apaltitudeexport = func {
     me.is_altitude_aquire = 0;
     me.display('altitude-aquire', 0);
   }
+  }
 }
 
 Autopilot.schedule = func {
   #Engage max when faster than VMO. Stops concorde from desending in climb mode (which is weird).
+  if ( me.is_autopilot_engaged ) {
   if ( me.is_max_climb_aquire ) {
     var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
     var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
-    if ( current_airspeed > ( max_airspeed - 10 )) {
+    if ( current_airspeed > ( max_airspeed - 20 )) {
       me.modemaxclimb();
     }
   }
 
   #Max cruise, Not completely sure on this mode, But I feel like it should be mach-with-throttle and vertical-speed-hold set at 50fpm.
-  #if ( me.is_max_cruise ) {
-  #
-  #}
+  if ( autothrottlesystem.is_max_climb ) {
+  var current_mach = me.dependency['mach'][0].getChild('indicated-mach').getValue();
+  var current_ft = me.dependency['altimeter'][0].getChild('indicated-altitude-ft').getValue();
+    if (( current_ft > me.MAXCRUISEFT ) or ( current_mach > me.MAXCRUISEMACH )) {
+      me.modemaxcruise();
+    }
+  }
+
+  #Max cruise, Not completely sure on this mode, But I feel like it should be mach-with-throttle and vertical-speed-hold set at 50fpm.
+  if ( me.is_max_cruise ) {
+  var current_mach = me.dependency['mach'][0].getChild('indicated-mach').getValue();
+  var current_ft = me.dependency['altimeter'][0].getChild('indicated-altitude-ft').getValue();
+    if (( current_ft < me.MAXCRUISEFT ) and ( current_mach < me.MAXCRUISEMACH )) {
+      me.modemaxclimb();
+    }  
+  }
   
   if ( me.is_altitude_aquire ) {
     var current_ft = me.dependency['altimeter'][0].getChild('indicated-altitude-ft').getValue();
@@ -583,7 +731,7 @@ Autopilot.schedule = func {
     var light_min_ft = me.itself['altimeter'].getChild('light-min-ft').getValue();
     var light_max_ft = me.itself['altimeter'].getChild('light-max-ft').getValue();
     if ( current_ft < target_max_ft and current_ft > target_min_ft and ! me.is_altitude_aquiring ) {
-      me.apdiscvertical();
+      me.discvertical();
       me.is_altitude_aquire = 1;
       me.is_altitude_aquiring = 1;
       me.modealtitudehold();
@@ -605,10 +753,10 @@ Autopilot.schedule = func {
       var min_needle_diff = 0 - me.VLGSAQUIREDEFLECTION;
       var max_needle_diff = me.VLGSAQUIREDEFLECTION;
       if ( current_needle_diff > min_needle_diff and current_needle_diff < max_needle_diff ) {
-        me.apdischeading();
         me.modevorlock();
         me.display('vor-aquire', 0);
         me.display('heading-display', 'VL');
+        me.is_vor_aquire = 0;
         me.is_vor_lock = 1;
         me.apengage();
       }
@@ -618,22 +766,42 @@ Autopilot.schedule = func {
     var gs_in_range = me.dependency['nav'][0].getChild('gs-in-range').getBoolValue();
     if ( gs_in_range ) {
       var current_needle_diff = me.dependency['nav'][0].getChild('gs-needle-deflection').getValue();
-      var min_needle_diff = current_needle_diff - me.VLGSAQUIREDEFLECTION;
-      var max_needle_diff = current_needle_diff + me.VLGSAQUIREDEFLECTION;
+      var min_needle_diff = 0 - me.VLGSAQUIREDEFLECTION;
+      var max_needle_diff = me.VLGSAQUIREDEFLECTION;
       if ( current_needle_diff > min_needle_diff and current_needle_diff < max_needle_diff ) {
-        me.apdiscvertical();
+        me.discvertical();
         me.modeglidescope();
         me.display('gs-aquire', 0);
         me.display('altitude-display', 'GL');
         me.is_gs_lock = 1;
+        me.is_gs_aquire = 0;
         me.apengage();
       }
     }
   }
 
-  if ( me.is_landing ) {
-    me.autoland();
+  if ( me.is_land_aquire ) {
+    var current_ft = me.dependency['radio-altimeter'][0].getChild('indicated-altitude-ft').getValue();
+    if ( current_ft < me.AUTOLANDFT ) {
+      me.is_land_aquire = 0;
+      me.is_landing = 1;
+      me.landing_stage = 1;
+      me.display('heading-display', '');
+      me.display('altitude-display', '');
+      me.display('land-aquire', 0);
+      me.display('land-display', 1);
+      autothrottlesystem.display('speed-display', '');
+      var current_weight = me.dependency["weight"].getChild("weight-lb").getValue();
+      #Vref is a little too slow, it sometimes makes the next stage pitch down to 7.5 degrees.
+      #var vref = Constantaero.Vrefkt( current_weight ) + 10;
+      vref = 180;
+      autothrottlesystem.speed(vref);
+    }
   }
 
+  if ( me.is_landing ) {
+    me.modeland();
+  }
+  }
   me.configurepidsettings();
 }

@@ -230,6 +230,36 @@
       <u_max>30</u_max>
     </config>
   </pi-simple-controller>
+    <!-- Heading with rudder (Autoland rollout - Probably not real) -->
+  <pi-simple-controller>
+    <name>Heading Bug Hold Rudder</name>
+    <debug>false</debug>
+    <enable>
+      <condition>
+              <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold-rudder</value>
+          </equals>
+  </condition>
+    </enable>
+    <input>
+	    <property>autopilot/internal/nav1-heading-error-deg</property>
+    </input>
+        <reference>
+      <value>0.0</value>
+    </reference>
+    <output>
+      <prop>/controls/flight/rudder</prop>
+    </output>
+    <config>
+      <Kp>-0.005</Kp>
+      <Kp>-0.001</Kp>
+      <Ki>0</Ki>
+      <u_min>-.2</u_min>
+      <u_max>.2</u_max>
+    </config>
+  </pi-simple-controller>
+  
   <!-- Not really co-ordinated but helps with turns -->
   <!--
   <filter>
@@ -402,9 +432,40 @@
       <Kp>-1000</Kp>
       <Ki>-100</Ki>
       <u_min>-6000</u_min>
-      <u_max>7000</u_max>
+      <u_max>10000</u_max>
     </config>
   </pi-simple-controller>
+  <pid-controller>
+    <name>Glideslope with throttle</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/locks/speed</prop>
+      <value>gs-with-throttle</value>
+    </enable>
+    <input>
+      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
+    </reference>
+     <output>
+      <prop>/controls/engines/engine[0]/throttle</prop>
+      <prop>/controls/engines/engine[1]/throttle</prop>
+      <prop>/controls/engines/engine[2]/throttle</prop>
+      <prop>/controls/engines/engine[3]/throttle</prop>
+    </output>
+    <config>
+      <Kp>0.05</Kp>      <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>0.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
   <!--Filters-->
   <!-- Pitch calculator and filter -->
   <filter>
@@ -492,7 +553,7 @@
   <!-- Vertical speed calculator and filter -->
   <filter>
     <type>noise-spike</type>
-    <max-rate-of-change>400</max-rate-of-change>
+    <max-rate-of-change>500</max-rate-of-change> #Max autopilot change of 500fpm/s
     <input>
       <condition>
         <equals>
