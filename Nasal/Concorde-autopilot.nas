@@ -87,6 +87,7 @@ Autopilot.discaquire = func {
   me.is_land_aquire = 0;
   me.is_gs_aquire = 0;
   me.is_altitude_aquire = 0;
+  me.is_altitude_aquiring = 0;
   me.display('vor-aquire', 0);
   me.display('land-aquire', 0);
   me.display('gs-aquire', 0);
@@ -275,6 +276,11 @@ Autopilot.modewinglevel = func {
 
 Autopilot.modemagneticheading = func {
   me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold');
+  me.apengage();
+}
+
+Autopilot.modemagnetictrackheading = func {
+  me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold-track');
   me.apengage();
 }
 
@@ -498,12 +504,10 @@ Autopilot.apinsexport = func {
 Autopilot.apsendheadingexport = func {
   if ( ! me.is_holding_heading ) {
     if ( me.channelengage[0] ) {
-      me.settrue(me.itself['channel'][0].getChild('heading-select').getValue());
-      me.setmagnetic(me.itself['channel'][0].getChild('heading-true-select').getValue());
+      me.setmagnetic(me.itself['channel'][0].getChild('heading-select').getValue());
     }
     if ( me.channelengage[1] ) {
-      me.settrue(me.itself['channel'][1].getChild('heading-select').getValue());
-      me.setmagnetic(me.itself['channel'][1].getChild('heading-true-select').getValue());
+      me.setmagnetic(me.itself['channel'][1].getChild('heading-select').getValue());
     }
   }
 }
@@ -519,18 +523,19 @@ Autopilot.apsendnavexport = func {
 
 Autopilot.apheadingexport = func {
   if ( me.is_autopilot_engaged ) {
+  me.is_holding_heading = 0;
   me.apsendheadingexport();
   me.display('heading-display', 'TH');
   if ( me.channelengage[0] ) {
     if ( me.itself['channel'][0].getChild('track-push').getValue() ) {
-      me.modetrueheading();
+      me.modemagnetictrackheading();
     } else {
       me.modemagneticheading();
     }
   }
   if ( me.channelengage[1] ) {
     if ( me.itself['channel'][1].getChild('track-push').getValue() ) {
-      me.modetrueheading();
+      me.modemagnetictrackheading();
     } else {
       me.modemagneticheading();
     }

@@ -20,6 +20,10 @@
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold</value>
           </equals>
+	  <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold-track</value>
+          </equals>
           <equals>
             <property>/autopilot/locks/heading</property>
             <value>true-heading-hold</value>
@@ -177,6 +181,10 @@
         <or>
           <equals>
             <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold-track</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold</value>
           </equals>
           <equals>
@@ -190,6 +198,15 @@
         </or>
       </condition>
     </enable>
+    <input>
+      <condition>
+        <equals>
+          <property>/autopilot/locks/heading</property>
+          <value>dg-heading-hold-track</value>
+        </equals>
+      </condition>
+      <property>autopilot/internal/track-error-deg</property>
+    </input>
     <input>
       <condition>
         <equals>
@@ -533,6 +550,10 @@
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold</value>
           </equals>
+	  <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold-track</value>
+          </equals>
           <equals>
             <property>/autopilot/locks/heading</property>
             <value>true-heading-hold</value>
@@ -591,4 +612,24 @@
     </input>
     <output>/autopilot/internal/target-vertical-speed-fpm-filtered</output>
   </filter>
+  <!-- Heading Track Driver -->
+    <filter>
+    <type>gain</type>
+    <gain>1</gain>
+	<input>/autopilot/settings/heading-bug-deg</input>
+	<reference>orientation/track-magnetic-deg</reference>
+	<output>/autopilot/internal/track-error-deg-raw</output>
+    </filter>
+    <filter>
+    <type>gain</type>
+    <gain>1</gain>
+    <input>
+	<property>/autopilot/internal/track-error-deg-raw</property>
+	<period>
+     <min>-180.0</min>
+     <max>180.0</max>
+   </period>
+   </input>
+  <output>/autopilot/internal/track-error-deg</output>
+</filter>
 </PropertyList>
