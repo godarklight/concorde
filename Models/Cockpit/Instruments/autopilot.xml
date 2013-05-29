@@ -499,8 +499,34 @@
   </animation>
   <!-- Heading 1 Select -->
     <animation>
+    <type>translate</type>
+    <object-name>HDG1Select</object-name>
+    <property>controls/autoflight/autopilot[0]/track-push</property>
+    <factor>.005</factor>
+    <axis>
+      <x>1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+    <animation>
     <type>pick</type>
     <object-name>HDG1Select</object-name>
+        <action>
+      <name>Heading Track Push</name>
+      <button>1</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/autoflight/autopilot[0]/track-push</property>
+      </binding>
+      <!--
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
+      </binding>
+      -->
+    </action>
     <action>
       <name>Heading Up</name>
       <button>3</button>
@@ -537,6 +563,36 @@
     </action>
   </animation>
     <!-- Heading 2 Select -->
+        <animation>
+    <type>translate</type>
+    <object-name>HDG2Select</object-name>
+    <property>controls/autoflight/autopilot[1]/track-push</property>
+    <factor>.005</factor>
+    <axis>
+      <x>1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+      <animation>
+    <type>pick</type>
+    <object-name>HDG2Select</object-name>
+        <action>
+      <name>Heading 2 Track Push</name>
+      <button>1</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/autoflight/autopilot[1]/track-push</property>
+      </binding>
+      <!--
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.autopilotsystem.apsendheadingexport();</script>
+      </binding>
+      -->
+    </action>
+    </animation>
     <animation>
     <type>pick</type>
     <object-name>HDG2Select</object-name>

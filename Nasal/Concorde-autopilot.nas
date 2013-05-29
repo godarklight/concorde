@@ -246,6 +246,7 @@ Autopilot.apchannel = func {
   #This is what most functions read, they do not care if AP1 or AP2 is engaged.
   if ( me.channelengage[0] or me.channelengage[1] ) {
     me.is_autopilot_engaged = 1;
+    me.apsendnavexport();
     me.setstartuphold();
     me.apengage();
   } else {
@@ -257,7 +258,6 @@ Autopilot.apchannel = func {
 
 #===AUTPILOT LOCK SETTING===#
 #This function copies the temporary lock to the real autopilot lock that the autopilot.xml reads
-#It disables the autopilot/modes if both switches are off.
 
 Autopilot.apengage = func {
     #Engage the autopilot from the current settings
@@ -390,7 +390,7 @@ Autopilot.modeland = func {
       me.landing_stage = 3;
     }
   }
-  #Third stage is to flare to -300fpm
+  #Third stage is to flare
   if ( me.landing_stage == 3 ) {
     if ( current_ft < me.FLAREFT ) {
       interpolate('/autopilot/settings/target-pitch-deg', me.FLAREDEG, me.FLARESEC);
@@ -408,7 +408,7 @@ Autopilot.modeland = func {
       }
     }
   }
-  #Forth stage is the rollout and pitchdown and thrust reverse activate.
+  #Forth stage is the rollout and pitchdown and activate thrust reverse.
   if ( me.landing_stage == 4 ) {
     interpolate('/autopilot/settings/target-pitch-deg', 0, me.LANDINGSEC);
     var wheel0onground = me.dependency['gear'][0].getChild('wow').getValue();
