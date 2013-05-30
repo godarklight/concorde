@@ -1571,14 +1571,14 @@ Voice.flightallways = func {
 
        if( !me.altitudeselect ) { 
            if( me.vertical == "altitude-acquire" ) {
-               if( me.autopilotsystem.is_engaged() and
+               if( me.autopilotsystem.is_autopilot_engaged and
                    !me.autopilotsystem.altitudelight_on( me.altitudeft, me.selectft ) ) {
                    me.altitudeselect = constant.TRUE;
                }
            }
        }
        else { 
-           if( me.autopilotsystem.is_engaged() and
+           if( me.autopilotsystem.is_autopilot_engaged and
                me.autopilotsystem.altitudelight_on( me.altitudeft, me.selectft ) ) {
                if( me.crewvoice.stepallways( "1000fttogo", me.allwaysflight ) ) {
                    me.altitudeselect = constant.FALSE;
@@ -1615,9 +1615,9 @@ Voice.flightallways = func {
        elsif( me.fueltransfert and
               !me.dependency["engineer"].getNode("cg/forward").getValue() and
               !me.dependency["engineer"].getNode("cg/aft").getValue() ) {
-           if( ( me.autopilotsystem.is_engaged() and
-               ( me.autopilotsystem.is_altitude_acquire() or
-                 me.autopilotsystem.is_altitude_hold() ) ) or
+           if( ( me.autopilotsystem.is_autopilot_engaged and
+               ( me.autopilotsystem.is_altitude_acquire or
+                 me.autopilotsystem.is_holding_altitude ) ) or
                me.is_cruising() or me.is_approaching() ) {
                me.fueltransfert = constant.FALSE;
                me.crewvoice.stepengineer( "cgcorrect", me.engineerflight );
@@ -1766,7 +1766,7 @@ Voice.landing = func {
 Voice.landingpilot = func {
    if( me.automata2 == "landing" ) {
        if( me.dependency["nav"].getChild("in-range").getValue() ) {
-           if( me.autopilotsystem.is_engaged() and
+           if( me.autopilotsystem.is_autopilot_engaged and
                me.dependency["autoflight"].getChild("heading").getValue() == "nav1-hold" ) {
                me.automata2 = me.pilotcall( "beambar" );
            }
@@ -1775,7 +1775,7 @@ Voice.landingpilot = func {
    elsif( me.automata2 == "beambar" ) {
        if( me.dependency["nav"].getChild("in-range").getValue() and
            me.dependency["nav"].getChild("has-gs").getValue() ) {
-           if( me.autopilotsystem.is_engaged() and
+           if( me.autopilotsystem.is_autopilot_engaged and
                me.dependency["autoflight"].getChild("altitude").getValue() == "gs1-hold" ) {
                me.automata2 = me.pilotcall( "glideslope" );
            }

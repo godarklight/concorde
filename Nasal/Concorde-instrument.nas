@@ -249,9 +249,10 @@ AirDataComputer.computer = func {
             if( me.itself["root"][i].getChild("serviceable").getValue() and
                 me.itself["adc-sys"][i].getChild("switch").getValue() ) {
                 child = me.itself["root"][i].getNode("output");
-
-                child.getChild("vmo-kt").setValue(vmokt);
-                child.getChild("mmo-mach").setValue(mmomach);
+                interpolate(child.getChild("vmo-kt").getPath(), vmokt, 1);
+                interpolate(child.getChild("mmo-mach").getPath(), mmomach, 1);
+                #child.getChild("vmo-kt").setValue(vmokt);
+                #child.getChild("mmo-mach").setValue(mmomach);
             }
        }
    }
@@ -637,7 +638,7 @@ StandbyAirspeed.schedule = func {
        var weightlb = me.dependency["weight"].getChild("weight-lb").getValue();
        var vmokt = me.vmo.getvmokt( altitudeft, weightlb ) ;
 
-       me.itself["root"].getChild("vmo-kt").setValue(vmokt);
+       interpolate(me.itself["root"].getChild("vmo-kt").getPath(), vmokt, 1);
    }
 }  
 

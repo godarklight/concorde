@@ -112,7 +112,8 @@
     <name>Vertical speed pitch hold</name>
     <debug>false</debug>
     <input>
-      <prop>/autopilot/internal/vert-speed-fpm</prop>
+      <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fps</prop>
+      <scale>60</scale>
     </input>
     <reference>
       <property>/autopilot/internal/target-vertical-speed-fpm-filtered</property>
@@ -400,7 +401,7 @@
       <prop>/velocities/mach</prop>
     </input>
     <reference>
-      <prop>/autopilot/settings/target-mach</prop>
+      <prop>/autopilot/settings/target-speed-mach</prop>
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -431,7 +432,7 @@
     </config>
   </pid-controller>
   <!--KIAS with pitch VS driver-->
-  <pi-simple-controller>
+  <pid-controller>
     <name>KIAS Pitch Hold</name>
     <debug>false</debug>
     <enable>
@@ -446,12 +447,22 @@
     </reference>
     <output>autopilot/internal/target-vertical-speed-fpm</output>
     <config>
-      <Kp>-1000</Kp>
-      <Ki>-100</Ki>
+      <Kp>-500</Kp>
+      <!-- proportional gain -->
+      <beta>1.0</beta>
+      <!-- input value weighing factor -->
+      <alpha>0.1</alpha>
+      <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>
+      <!-- input value weighing factor for -->
+      <!-- unfiltered derivative error -->
+      <Ti>15.0</Ti>
+      <!-- integrator time -->
+      <Td>0.00001</Td>
       <u_min>-6000</u_min>
       <u_max>10000</u_max>
     </config>
-  </pi-simple-controller>
+  </pid-controller>
   <pid-controller>
     <name>Glideslope with throttle</name>
     <debug>false</debug>

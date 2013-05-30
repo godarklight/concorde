@@ -82,9 +82,9 @@ Virtualengineer.init = func {
     settimer( func { me.setweighthuman(); }, me.CRUISESEC );
 }
 
-Virtualengineer.set_relation = func( airbleed, electrical, engine, fuel, hydraulic, lighting, voice ) {
+Virtualengineer.set_relation = func( airbleed, autopilot, electrical, engine, fuel, hydraulic, lighting, voice ) {
     me.airbleedsystem = airbleed;
-    #me.autopilotsystem = autopilot;
+    me.autopilotsystem = autopilot;
     me.electricalsystem = electrical;
     me.enginesystem = engine;
     me.fuelsystem = fuel;

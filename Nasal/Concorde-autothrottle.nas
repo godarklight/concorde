@@ -151,11 +151,11 @@ Autothrottle.modemachpitch = func {
 #=== MODE SETTINGS ===#
 
 Autothrottle.speed = func( speedkt ) {
-  me.itself['settings'].getChild('target-speed-kt').setValue( speedkt );
+  interpolate(me.itself['settings'].getChild('target-speed-kt').getPath(), speedkt , 1);
 }
 
 Autothrottle.mach = func( speedmach ) {
-  me.itself['settings'].getChild('target-mach').setValue( speedmach );
+  interpolate(me.itself['settings'].getChild('target-speed-mach').getPath(), speedmach , 1);
 }
 
 Autothrottle.holdspeed = func {

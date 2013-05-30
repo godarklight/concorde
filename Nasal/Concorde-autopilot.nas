@@ -90,6 +90,7 @@ Autopilot.discaquire = func {
   me.is_altitude_aquiring = 0;
   me.display('vor-aquire', 0);
   me.display('land-aquire', 0);
+  me.display('land-display', 0);
   me.display('gs-aquire', 0);
   me.display('altitude-aquire', 0);
 }
