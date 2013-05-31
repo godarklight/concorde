@@ -24,7 +24,7 @@ Autopilot.new = func {
 
                AUTOLANDFT : 1500.0,                           # altitude for LA mode
                LANDINGFT : 800.0,                             # Adjusts to the landing pitch
-               LANDINGDEGSEC : 10,                            # Reaches the landing pitch
+               LANDINGDEGSEC : 20,                            # Reaches the landing pitch
                LANDINGDEG : 7.5,                              # Landing pitch
                PITCHFT : 500.0,                               # Reaches the landing pitch
                FLAREFT : 80.0,                                # Leaves glide slope
@@ -383,7 +383,7 @@ Autopilot.modeland = func {
     }
   }
 
-  #Second stage is to pitch to 7.5 degrees from 1000-500ft and fly the glidescope with throttle.
+  #Second stage is to pitch to 7.5 degrees from 800-500ft and fly the glidescope with throttle.
   if ( me.landing_stage == 2 ) {
     #Slowly pitch to the landing pitch.
     if ( current_ft < me.PITCHFT ) {
@@ -754,39 +754,30 @@ Autopilot.schedule = func {
   }
   if ( me.is_vor_aquire ) {
     var vor_in_range = me.dependency['nav'][0].getChild('in-range').getBoolValue();
-    if ( vor_in_range ) {
-      var current_needle_diff = me.dependency['nav'][0].getChild('heading-needle-deflection').getValue();
-      var min_needle_diff = 0 - me.VLGSAQUIREDEFLECTION;
-      var max_needle_diff = me.VLGSAQUIREDEFLECTION;
-      if ( current_needle_diff > min_needle_diff and current_needle_diff < max_needle_diff ) {
-        me.modevorlock();
-        me.display('vor-aquire', 0);
-        me.display('heading-display', 'VL');
-        me.is_vor_aquire = 0;
-        me.is_vor_lock = 1;
-        me.apengage();
-      }
+    var vor_signal = me.dependency['nav'][0].getChild('signal-quality-norm').getValue();
+    if ( vor_in_range and vor_signal > 0.9 ) {
+      me.modevorlock();
+      me.display('vor-aquire', 0);
+      me.display('heading-display', 'VL');
+      me.is_vor_aquire = 0;
+      me.is_vor_lock = 1;
+      me.apengage();
     }
   }
   if ( me.is_vor_lock and me.is_gs_aquire ) {
     var gs_in_range = me.dependency['nav'][0].getChild('gs-in-range').getBoolValue();
     if ( gs_in_range ) {
-      var current_needle_diff = me.dependency['nav'][0].getChild('gs-needle-deflection').getValue();
-      var min_needle_diff = 0 - me.VLGSAQUIREDEFLECTION;
-      var max_needle_diff = me.VLGSAQUIREDEFLECTION;
-      if ( current_needle_diff > min_needle_diff and current_needle_diff < max_needle_diff ) {
-        me.discvertical();
-        me.modeglidescope();
-        me.display('gs-aquire', 0);
-        me.display('altitude-display', 'GL');
-        me.is_gs_lock = 1;
-        me.is_gs_aquire = 0;
-        me.apengage();
-      }
-    }
+      me.discvertical();
+      me.modeglidescope();
+      me.display('gs-aquire', 0);
+      me.display('altitude-display', 'GL');
+      me.is_gs_lock = 1;
+      me.is_gs_aquire = 0;
+      me.apengage();
+     }
   }
 
-  if ( me.is_land_aquire ) {
+  if ( me.is_land_aquire and me.is_vor_lock and me.is_gs_lock ) {
     var current_ft = me.dependency['radio-altimeter'][0].getChild('indicated-altitude-ft').getValue();
     if ( current_ft < me.AUTOLANDFT ) {
       me.is_land_aquire = 0;
