@@ -188,7 +188,7 @@ Autothrottle.atspeedexport = func {
     me.speed(me.itself['autoflight'].getChild('speed-select').getValue());
     me.modespeed();
     var current_airspeed = me.dependency['asi'][0].getChild('indicated-speed-kt').getValue();
-    var target_airspeed = me.itself['settings'].getChild('target-speed-kt').getValue();
+    var target_airspeed = me.itself['autoflight'].getChild('speed-select').getValue();
     var diff_airspeed = abs( current_airspeed - target_airspeed );
     if ( diff_airspeed < me.SPEEDLIGHT ) {
       me.display('speed-display', 'IH');
