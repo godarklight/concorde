@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <PropertyList>
   <params>
-    <nav-ins2>/instrumentation/hsi[0]/nav-ins2</nav-ins2>
+    <nav-ins2>/instrumentation/hsi[0]/ins-source</nav-ins2>
   </params>
   <path>../Models/switch.ac</path>
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <property>/instrumentation/hsi[0]/nav-ins2</property>
+    <property>/instrumentation/hsi[0]/ins-source</property>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -38,7 +38,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>/instrumentation/hsi[0]/nav-ins2</property>
+        <property>/instrumentation/hsi[0]/ins-source</property>
         <step>1</step>
         <min>0</min>
         <max>1</max>

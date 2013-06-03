@@ -1,15 +1,23 @@
 <?xml version="1.0"?>
 <PropertyList>
   <params>
-    <nav-ins2>/instrumentation/hsi[0]/ins-source</nav-ins2>
+    <att-ins3>/instrumentation/compass[0]/att-ins3</att-ins3>
   </params>
   <path>../Models/switch.ac</path>
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <expression>
-      <value>-35</value>
-    </expression>
+    <property>/instrumentation/compass[0]/att-ins3</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-35</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>35</dep>
+      </entry>
+    </interpolation>
     <center>
       <x-m>0</x-m>
       <y-m>0</y-m>
@@ -20,6 +28,31 @@
       <y>0</y>
       <z>1</z>
     </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Switch</object-name>
+    <action>
+      <name>Captain INS Switch</name>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/compass[0]/att-ins3</property>
+        <step>1</step>
+        <min>0</min>
+        <max>1</max>
+        <wrap>true</wrap>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.HSIinstrument.toggleexport();</script>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>/instrumentation/generic/click</property>
+      </binding>
+    </action>
   </animation>
   <animation>
     <type>material</type>
