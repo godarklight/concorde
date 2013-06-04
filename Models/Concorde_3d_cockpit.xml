@@ -496,4 +496,124 @@
       <pitch-deg>-10</pitch-deg>
     </offsets>
   </model>
+    <model>
+    <name>Engine 1 EGT</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-egt.xml</path>
+    <overlay>
+      <params>
+        <egt>/engines/engine[0]/egt-degf</egt>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.79</x-m>
+      <y-m>-0.115</y-m>
+      <z-m>0.966</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 2 EGT</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-egt.xml</path>
+    <overlay>
+      <params>
+        <egt>/engines/engine[1]/egt-degf</egt>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.79</x-m>
+      <y-m>-0.044</y-m>
+      <z-m>0.966</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 3 EGT</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-egt.xml</path>
+    <overlay>
+      <params>
+        <egt>/engines/engine[2]/egt-degf</egt>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.79</x-m>
+      <y-m>0.027</y-m>
+      <z-m>0.966</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 4 EGT</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-egt.xml</path>
+    <overlay>
+      <params>
+        <egt>/engines/engine[3]/egt-degf</egt>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.79</x-m>
+      <y-m>0.098</y-m>
+      <z-m>0.966</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+      <model>
+    <name>Engine 1 Nozzle</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-nozzle.xml</path>
+    <overlay>
+      <params>
+        <nozzle>/engines/engine[0]/nozzle-pos-norm</nozzle>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.78</x-m>
+      <y-m>-0.115</y-m>
+      <z-m>0.903</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 2 Nozzle</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-nozzle.xml</path>
+    <overlay>
+      <params>
+        <nozzle>/engines/engine[1]/nozzle-pos-norm</nozzle>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.78</x-m>
+      <y-m>-0.044</y-m>
+      <z-m>0.903</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 3 Nozzle</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-nozzle.xml</path>
+    <overlay>
+      <params>
+        <nozzle>/engines/engine[2]/nozzle-pos-norm</nozzle>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.78</x-m>
+      <y-m>0.027</y-m>
+      <z-m>0.903</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Engine 4 Nozzle</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-nozzle.xml</path>
+    <overlay>
+      <params>
+        <nozzle>/engines/engine[3]/nozzle-pos-norm</nozzle>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.78</x-m>
+      <y-m>0.098</y-m>
+      <z-m>0.903</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
 </PropertyList>
