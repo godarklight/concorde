@@ -57,7 +57,7 @@
     </emission>
   </animation>
   <!-- Speed Numbers -->
-    <animation>
+  <animation>
     <type>textranslate</type>
     <object-name>Speed1</object-name>
     <property>controls/autoflight/speed-select</property>
@@ -94,7 +94,7 @@
     </axis>
   </animation>
   <!-- Speed Select -->
-    <animation>
+  <animation>
     <type>rotate</type>
     <object-name>SpeedSelect</object-name>
     <property>controls/autoflight/speed-select</property>
@@ -113,7 +113,7 @@
   <animation>
     <type>pick</type>
     <object-name>SpeedSelect</object-name>
-      <action>
+    <action>
       <name>Speed 1 Up</name>
       <button>0</button>
       <repeatable>false</repeatable>
@@ -349,8 +349,8 @@
     </emission>
   </animation>
   <!-- Heading Settings -->
-    <!-- Heading 1 Numbers -->
-    <animation>
+  <!-- Heading 1 Numbers -->
+  <animation>
     <type>textranslate</type>
     <object-name>HDG1Num1</object-name>
     <property>controls/autoflight/autopilot[0]/heading-select</property>
@@ -386,8 +386,8 @@
       <z>0</z>
     </axis>
   </animation>
-      <!-- VOR 1 Numbers -->
-    <animation>
+  <!-- VOR 1 Numbers -->
+  <animation>
     <type>textranslate</type>
     <object-name>VOR1Num1</object-name>
     <property>instrumentation/nav[1]/radials/selected-deg</property>
@@ -423,8 +423,8 @@
       <z>0</z>
     </axis>
   </animation>
-        <!-- VOR 2 Numbers -->
-    <animation>
+  <!-- VOR 2 Numbers -->
+  <animation>
     <type>textranslate</type>
     <object-name>VOR2Num1</object-name>
     <property>instrumentation/nav[2]/radials/selected-deg</property>
@@ -460,8 +460,8 @@
       <z>0</z>
     </axis>
   </animation>
-      <!-- Heading 2 Numbers -->
-    <animation>
+  <!-- Heading 2 Numbers -->
+  <animation>
     <type>textranslate</type>
     <object-name>HDG2Num1</object-name>
     <property>controls/autoflight/autopilot[1]/heading-select</property>
@@ -498,7 +498,7 @@
     </axis>
   </animation>
   <!-- Heading 1 Select -->
-    <animation>
+  <animation>
     <type>translate</type>
     <object-name>HDG1Select</object-name>
     <property>controls/autoflight/autopilot[0]/track-push</property>
@@ -509,10 +509,10 @@
       <z>0</z>
     </axis>
   </animation>
-    <animation>
+  <animation>
     <type>pick</type>
     <object-name>HDG1Select</object-name>
-        <action>
+    <action>
       <name>Heading Track Push</name>
       <button>1</button>
       <repeatable>false</repeatable>
@@ -562,8 +562,8 @@
       </binding>
     </action>
   </animation>
-    <!-- Heading 2 Select -->
-        <animation>
+  <!-- Heading 2 Select -->
+  <animation>
     <type>translate</type>
     <object-name>HDG2Select</object-name>
     <property>controls/autoflight/autopilot[1]/track-push</property>
@@ -574,10 +574,10 @@
       <z>0</z>
     </axis>
   </animation>
-      <animation>
+  <animation>
     <type>pick</type>
     <object-name>HDG2Select</object-name>
-        <action>
+    <action>
       <name>Heading 2 Track Push</name>
       <button>1</button>
       <repeatable>false</repeatable>
@@ -592,8 +592,8 @@
       </binding>
       -->
     </action>
-    </animation>
-    <animation>
+  </animation>
+  <animation>
     <type>pick</type>
     <object-name>HDG2Select</object-name>
     <action>
@@ -631,8 +631,8 @@
       </binding>
     </action>
   </animation>
-    <!-- Vor 1 Select -->
-    <animation>
+  <!-- Vor 1 Select -->
+  <animation>
     <type>pick</type>
     <object-name>VOR1Select</object-name>
     <action>
@@ -641,7 +641,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[1]/radials/selected-deg</property>
+        <property>instrumentation/nav[1]/radials/selected-deg</property>
         <step>1</step>
         <min>0</min>
         <max>360</max>
@@ -662,8 +662,8 @@
       </binding>
     </action>
   </animation>
-      <!-- Vor 2 Select -->
-    <animation>
+  <!-- Vor 2 Select -->
+  <animation>
     <type>pick</type>
     <object-name>VOR2Select</object-name>
     <action>
@@ -672,7 +672,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[2]/radials/selected-deg</property>
+        <property>instrumentation/nav[2]/radials/selected-deg</property>
         <step>1</step>
         <min>0</min>
         <max>360</max>
@@ -718,7 +718,7 @@
     <object-name>CL</object-name>
     <condition>
       <and>
-      <or>
+        <or>
           <equals>
             <property>controls/autoflight/altitude-display</property>
             <value>CL</value>
@@ -1179,9 +1179,8 @@
       </binding>
     </action>
   </animation>
-  
-    <!-- Altitude Numbers -->
-    <animation>
+  <!-- Altitude Numbers -->
+  <animation>
     <type>textranslate</type>
     <object-name>AltNum1</object-name>
     <property>controls/autoflight/altitude-select</property>
@@ -1218,7 +1217,7 @@
     </axis>
   </animation>
   <!-- Altitude Select -->
-    <animation>
+  <animation>
     <type>rotate</type>
     <object-name>AltSelect</object-name>
     <property>controls/autoflight/altitude-select</property>
@@ -1237,7 +1236,7 @@
   <animation>
     <type>pick</type>
     <object-name>AltSelect</object-name>
-      <action>
+    <action>
       <name>Alt 100 Up</name>
       <button>0</button>
       <repeatable>false</repeatable>
@@ -1405,7 +1404,7 @@
     </action>
   </animation>
   <!-- AT Switches -->
-    <!--Lighting-->
+  <!--Lighting-->
   <animation>
     <type>material</type>
     <object-name>AT1</object-name>
@@ -1431,7 +1430,7 @@
     </emission>
   </animation>
   <!--Movement-->
-    <animation>
+  <animation>
     <type>translate</type>
     <object-name>AT1</object-name>
     <property>controls/autoflight/autothrottle[0]/engage</property>
@@ -1518,8 +1517,8 @@
       </binding>
     </action>
   </animation>
-    <!-- FD Switches -->
-    <!--Lighting-->
+  <!-- FD Switches -->
+  <!--Lighting-->
   <animation>
     <type>material</type>
     <object-name>FD1</object-name>
@@ -1545,7 +1544,7 @@
     </emission>
   </animation>
   <!--Movement-->
-    <animation>
+  <animation>
     <type>translate</type>
     <object-name>FD1</object-name>
     <property>/controls/autoflight/flight-director[0]/engage</property>

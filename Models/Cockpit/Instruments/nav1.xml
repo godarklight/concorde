@@ -10,13 +10,13 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[1]/frequencies/selected-mhz</property>
+        <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
         <step>1</step>
         <min>108</min>
         <max>117.95</max>
         <wrap>false</wrap>
       </binding>
-            <binding>
+      <binding>
         <command>nasal</command>
         <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
       </binding>
@@ -27,7 +27,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[1]/frequencies/selected-mhz</property>
+        <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
         <step>-1</step>
         <min>108</min>
         <max>117.95</max>
@@ -48,13 +48,13 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[1]/frequencies/selected-mhz</property>
+        <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
         <step>0.05</step>
         <min>108</min>
         <max>117.95</max>
         <wrap>false</wrap>
       </binding>
-            <binding>
+      <binding>
         <command>nasal</command>
         <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
       </binding>
@@ -65,20 +65,20 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-	<property>instrumentation/nav[1]/frequencies/selected-mhz</property>
+        <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
         <step>-0.05</step>
         <min>108</min>
         <max>117.95</max>
         <wrap>false</wrap>
       </binding>
-            <binding>
+      <binding>
         <command>nasal</command>
         <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
       </binding>
     </action>
   </animation>
   <!-- Freq Display -->
-      <animation>
+  <animation>
     <type>textranslate</type>
     <object-name>Freq1</object-name>
     <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
@@ -117,7 +117,7 @@
       <z>0</z>
     </axis>
   </animation>
-    <animation>
+  <animation>
     <type>textranslate</type>
     <object-name>Freq4</object-name>
     <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
@@ -130,7 +130,7 @@
       <z>0</z>
     </axis>
   </animation>
-    <animation>
+  <animation>
     <type>textranslate</type>
     <object-name>Freq5</object-name>
     <property>instrumentation/nav[1]/frequencies/selected-mhz</property>
