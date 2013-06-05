@@ -312,6 +312,92 @@
     </offsets>
   </model>
   <!--CENTER-->
+    <model>
+    <name>Emergency Brakes Pressure</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/brake-pressure.xml</path>
+    <offsets>
+      <x-m>-23.834</x-m>
+      <y-m>-0.115</y-m>
+      <z-m>1.233</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+    <model>
+    <name>Engine 1 Indicator</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-indicator.xml</path>
+    <overlay>
+ <params>
+  <running>/engines/engine[0]/running</running>
+  <bucket>/systems/engines/engine[0]/bucket-deg</bucket>
+  <fuel>/engines/engine[0]/fuel-flow_pph</fuel>
+  <fuel-bug>/controls/engines/engine[0]/bug_pph</fuel-bug>
+  <configuration>/systems/engines/engine[0]/configuration</configuration>
+ </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.822</x-m>
+      <y-m>-0.115</y-m>
+      <z-m>1.195</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+      <model>
+    <name>Engine 2 Indicator</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-indicator.xml</path>
+    <overlay>
+ <params>
+  <running>/engines/engine[1]/running</running>
+  <bucket>/systems/engines/engine[1]/bucket-deg</bucket>
+  <fuel>/engines/engine[1]/fuel-flow_pph</fuel>
+  <fuel-bug>/controls/engines/engine[1]/bug_pph</fuel-bug>
+  <configuration>/systems/engines/engine[1]/configuration</configuration>
+ </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.822</x-m>
+      <y-m>-0.044</y-m>
+      <z-m>1.195</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+      <model>
+    <name>Engine 3 Indicator</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-indicator.xml</path>
+    <overlay>
+ <params>
+  <running>/engines/engine[2]/running</running>
+  <bucket>/systems/engines/engine[2]/bucket-deg</bucket>
+  <fuel>/engines/engine[2]/fuel-flow_pph</fuel>
+  <fuel-bug>/controls/engines/engine[2]/bug_pph</fuel-bug>
+  <configuration>/systems/engines/engine[2]/configuration</configuration>
+ </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.822</x-m>
+      <y-m>0.027</y-m>
+      <z-m>1.195</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+      <model>
+    <name>Engine 4 Indicator</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-indicator.xml</path>
+    <overlay>
+ <params>
+  <running>/engines/engine[3]/running</running>
+  <bucket>/systems/engines/engine[3]/bucket-deg</bucket>
+  <fuel>/engines/engine[3]/fuel-flow_pph</fuel>
+  <fuel-bug>/controls/engines/engine[3]/bug_pph</fuel-bug>
+  <configuration>/systems/engines/engine[3]/configuration</configuration>
+ </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.822</x-m>
+      <y-m>0.098</y-m>
+      <z-m>1.195</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
   <model>
     <name>Engine 1 N2</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/engine-n2.xml</path>
