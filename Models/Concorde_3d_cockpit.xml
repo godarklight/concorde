@@ -163,6 +163,11 @@
   <model>
     <name>Captain Altimeter</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/altimeter.xml</path>
+    <overlay>
+      <params>
+        <altitude>instrumentation/altimeter[0]/indicated-altitude-ft</altitude>
+      </params>
+    </overlay>
     <offsets>
       <x-m>-23.8099</x-m>
       <y-m>-0.3155</y-m>

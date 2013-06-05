@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/altimeter.ac</path>
+  <params>
+  <altitude>instrumentation/altimeter[0]/indicated-altitude-ft</altitude>
+  </params>
   <animation>
     <type>rotate</type>
     <object-name>AltNeedle</object-name>
@@ -26,19 +29,19 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+	      <property alias="/params/altitude" />
               <value>10000</value>
             </div>
           </floor>
           <max>
             <div>
               <difference>
-                <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+                <property alias="/params/altitude" />
                 <value>9980</value>
                 <prod>
                   <floor>
                     <div>
-                      <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+                      <property alias="/params/altitude" />
                       <value>10000</value>
                     </div>
                   </floor>
@@ -72,19 +75,25 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
               <value>1000</value>
             </div>
           </floor>
           <max>
             <div>
               <difference>
-                <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
                 <value>980</value>
                 <prod>
                   <floor>
                     <div>
-                      <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
                       <value>1000</value>
                     </div>
                   </floor>
@@ -118,19 +127,25 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
               <value>100</value>
             </div>
           </floor>
           <max>
             <div>
               <difference>
-                <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
                 <value>80</value>
                 <prod>
                   <floor>
                     <div>
-                      <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
                       <value>100</value>
                     </div>
                   </floor>
@@ -159,8 +174,15 @@
   <animation>
     <type>rotate</type>
     <object-name>alt10</object-name>
-    <property>instrumentation/altimeter[0]/indicated-altitude-ft</property>
-    <factor>3.6</factor>
+    <expression>
+	    <prod>
+		    <abs>
+	      <property alias="/params/altitude" />
+      </abs>
+      <value>3.6</value>
+      </prod>
+    
+    </expression>
     <center>
       <x-m>-0.006883</x-m>
       <y-m>0.01178</y-m>
