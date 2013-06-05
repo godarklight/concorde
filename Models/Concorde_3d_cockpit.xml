@@ -1,6 +1,25 @@
 <?xml version="1.0"?>
 <PropertyList>
   <model>
+    <name>Warning Lights</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/warning-lights.xml</path>
+    <overlay>
+      <params>
+        <test>/controls/lighting/crew/captain/test</test>
+        <serviceable>/instrumentation/cg[0]/serviceable</serviceable>
+        <cg-sel>/instrumentation/cg[0]/percent</cg-sel>
+        <min-sel>/instrumentation/cg[0]/min-percent</min-sel>
+        <max-sel>/instrumentation/cg[0]/max-percent</max-sel>
+      </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.83</x-m>
+      <y-m>-0.585</y-m>
+      <z-m>1.25</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
     <name>AoA Meter</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/aoa.xml</path>
     <offsets>
