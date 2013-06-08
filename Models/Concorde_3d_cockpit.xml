@@ -5,7 +5,7 @@
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/warning-lights.xml</path>
     <overlay>
       <params>
-        <test>/controls/lighting/crew/captain/test</test>
+        <test>/controls/autoflight/autopilot[0]/test-land</test>
         <serviceable>/instrumentation/cg[0]/serviceable</serviceable>
         <cg-sel>/instrumentation/cg[0]/percent</cg-sel>
         <min-sel>/instrumentation/cg[0]/min-percent</min-sel>
@@ -23,8 +23,14 @@
     <name>ACFS Warning Lights</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/afcs-warning-lights.xml</path>
     <overlay>
-      <params>
-      </params>
+  <params>
+    <test>/controls/autoflight/autopilot[0]/test-land</test>
+    <failure-sel>/systems/autopilot/state/failure[0]</failure-sel>
+    <serviceable-sel>/systems/autothrottle[0]/serviceable</serviceable-sel>
+    <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
+    <decision-ft>/instrumentation/radio-altimeter[0]/decision-ft</decision-ft>
+    <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
+  </params>
     </overlay>
     <offsets>
       <x-m>-23.83</x-m>

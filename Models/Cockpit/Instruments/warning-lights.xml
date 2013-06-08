@@ -12,6 +12,7 @@
     <type>material</type>
     <object-name>Terrain</object-name>
     <condition>
+	    <or>
       <and>
         <property>/systems/gpws/serviceable</property>
         <or>
@@ -19,6 +20,8 @@
           <property>/systems/gpws/terrain</property>
         </or>
       </and>
+      <property alias="/params/test"/>
+      </or>
     </condition>
     <emission>
       <red>0.8</red>
@@ -64,6 +67,18 @@
     </emission>
   </animation>
   -->
+      <animation>
+    <type>material</type>
+    <object-name>TYRE</object-name>
+    <condition>
+      <property alias="/params/test"/>
+    </condition>
+    <emission>
+      <red>0.8</red>
+      <green>0</green>
+      <blue>0</blue>
+    </emission>
+  </animation>
   <animation>
     <type>material</type>
     <object-name>MCG</object-name>
