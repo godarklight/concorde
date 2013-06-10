@@ -178,15 +178,12 @@ Autopilot.altimeterlight = func {
 
 Autopilot.configurepidsettings = func {
   #This tunes vertical speed hold to be less sensitive as you climb. It replaces a supersonic and subsonic pid, improves response all around.
-  #gnd is ground, 50 is 50,000ft. Kp and Ki is clipped between gnd and 50,000ft values. Set in Concorde-init-systems.xml.
+  #gnd is ground, 50 is 50,000ft. Kp is clipped between gnd and 50,000ft values. Set in Concorde-init-systems.xml.
   var altimeter_ft = me.noinstrument['altitude'].getValue();
   var vs_kp_gnd = me.itself['pid'].getChild('vs-kp-gnd').getValue();
   var vs_kp_50 = me.itself['pid'].getChild('vs-kp-50').getValue();
-  var vs_ki_gnd = me.itself['pid'].getChild('vs-ki-gnd').getValue();
-  var vs_ki_50 = me.itself['pid'].getChild('vs-ki-50').getValue();
   #Yes this gives a negative value... Less sensitive as you climb.
   var vs_kp_diff = vs_kp_50 - vs_kp_gnd;
-  var vs_ki_diff = vs_ki_50 - vs_ki_gnd;
   var alt_factor = altimeter_ft / 50000;
   if ( alt_factor < 0 ) {
     alt_factor = 0;
@@ -195,9 +192,7 @@ Autopilot.configurepidsettings = func {
     alt_factor = 1;
   }
   var new_kp = vs_kp_gnd + ( vs_kp_diff * alt_factor );
-  var new_ki = vs_ki_gnd + ( vs_ki_diff * alt_factor );
   me.itself['pid'].getChild('vs-kp-current').setValue(new_kp);
-  me.itself['pid'].getChild('vs-ki-current').setValue(new_ki);
 }
 
 
@@ -473,6 +468,7 @@ Autopilot.setverticalspeed = func(verticalspeed) {
 Autopilot.holdverticalspeed = func {
   var verticalspeed = me.dependency['ivsi'][0].getChild('indicated-speed-fps').getValue();
   verticalspeed = verticalspeed * 60;
+  me.itself['settings'].getChild('vertical-speed-fpm').setValue(verticalspeed);
   me.itself['settings'].getChild('vertical-speed-fpm').setValue(verticalspeed);
 }
 

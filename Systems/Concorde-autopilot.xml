@@ -4,7 +4,28 @@
   <!-- Main Roll Controller -->
   <pid-controller>
     <name>Roll Hold</name>
-    <debug>false</debug>
+    <input>
+      <prop>/orientation/roll-deg</prop>
+    </input>
+    <reference>/autopilot/internal/target-roll-deg-filtered</reference>
+    <output>
+      <prop>/autopilot/internal/driver-aileron</prop>
+    </output>
+    <config>
+      <Kp>.2</Kp>
+      <beta>1.0</beta>
+      <alpha>0.1</alpha>
+      <gamma>0.0</gamma>
+      <Ti>1.0</Ti>
+      <Td>.2</Td>
+      <u_min>-0.5</u_min>
+      <u_max>0.5</u_max>
+    </config>
+  </pid-controller>
+  <!-- Roll disconnect, helps stop AP diving on activation by leaving the controller running -->
+  <filter>
+    <type>gain</type>
+    <gain>1</gain>
     <enable>
       <condition>
         <or>
@@ -20,7 +41,7 @@
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold-track</value>
           </equals>
@@ -35,28 +56,36 @@
         </or>
       </condition>
     </enable>
-    <input>
-      <prop>/orientation/roll-deg</prop>
-    </input>
-    <reference>/autopilot/internal/target-roll-deg-filtered</reference>
-    <output>
-      <prop>/controls/flight/aileron</prop>
-    </output>
-    <config>
-      <Kp>.2</Kp>
-      <beta>1.0</beta>
-      <alpha>0.1</alpha>
-      <gamma>0.0</gamma>
-      <Ti>1.0</Ti>
-      <Td>.2</Td>
-      <u_min>-0.5</u_min>
-      <u_max>0.5</u_max>
-    </config>
-  </pid-controller>
+    <input>/autopilot/internal/driver-aileron</input>
+    <output>/controls/flight/aileron</output>
+  </filter>
   <!-- Main Pitch Controller -->
   <pid-controller>
     <name>Pitch hold</name>
-    <debug>false</debug>
+    <input>
+      <prop>/orientation/pitch-deg</prop>
+    </input>
+    <reference>
+      <property>/autopilot/internal/target-pitch-deg-filtered</property>
+    </reference>
+    <output>
+      <prop>/autopilot/internal/driver-elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>-.5</Kp>
+      <beta>1.0</beta>
+      <alpha>0.1</alpha>
+      <gamma>0.0</gamma>
+      <Ti>1</Ti>
+      <Td>0.1</Td>
+      <u_min>-1</u_min>
+      <u_max>1</u_max>
+    </config>
+  </pid-controller>
+  <!-- Pitch disconnect, helps stop AP diving on activation by leaving the controller running -->
+  <filter>
+    <type>gain</type>
+    <gain>1</gain>
     <enable>
       <condition>
         <or>
@@ -87,30 +116,34 @@
         </or>
       </condition>
     </enable>
-    <input>
-      <prop>/orientation/pitch-deg</prop>
-    </input>
-    <reference>
-      <property>/autopilot/internal/target-pitch-deg-filtered</property>
-    </reference>
-    <output>
-      <prop>/controls/flight/elevator-trim</prop>
-    </output>
-    <config>
-      <Kp>-.5</Kp>
-      <beta>1.0</beta>
-      <alpha>0.1</alpha>
-      <gamma>0.0</gamma>
-      <Ti>1</Ti>
-      <Td>0.1</Td>
-      <u_min>-1</u_min>
-      <u_max>1</u_max>
-    </config>
-  </pid-controller>
+    <input>/autopilot/internal/driver-elevator-trim</input>
+    <output>/controls/flight/elevator-trim</output>
+  </filter>
   <!-- Vertical Speed Hold Pitch Driver -->
-  <pi-simple-controller>
+  <pid-controller>
     <name>Vertical speed pitch hold</name>
-    <debug>false</debug>
+    <enable>
+      <condition>
+        <or>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>vertical-speed-hold</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>altitude-hold</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/speed</property>
+            <value>speed-with-pitch-trim</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/altitude</property>
+            <value>gs1-hold</value>
+          </equals>
+        </or>
+      </condition>
+    </enable>
     <input>
       <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fps</prop>
       <scale>60</scale>
@@ -119,27 +152,21 @@
       <property>/autopilot/internal/target-vertical-speed-fpm-filtered</property>
     </reference>
     <output>
-      <prop>/autopilot/internal/target-pitch-deg</prop>
+      <property>/autopilot/internal/target-pitch-deg</property>
     </output>
     <config>
-      <Kp><prop>/systems/autopilot/pid/vs-kp-current</prop></Kp>
-      <Ki><prop>/systems/autopilot/pid/vs-ki-current</prop></Ki>
+      <Kp>
+        <prop>/systems/autopilot/pid/vs-kp-current</prop>
+      </Kp>
+      <Ti>1</Ti>
+      <Td>0</Td>
       <min>-15.0</min>
       <max>20.0</max>
     </config>
-  </pi-simple-controller>
+  </pid-controller>
   <!-- Altitude Hold VS Driver -->
   <pi-simple-controller>
     <name>Altitude Hold Vertical Speed Driver</name>
-    <debug>false</debug>
-    <enable>
-          <condition>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>altitude-hold</value>
-      </equals>
-      </condition>
-    </enable>
     <input>
       <prop>/instrumentation/altimeter/indicated-altitude-ft</prop>
     </input>
@@ -157,15 +184,14 @@
   <!-- Glidescope Hold Driver -->
   <filter>
     <name>Glidescope Hold Vertical Speed Driver</name>
-    <debug>false</debug>
-        <enable>
-          <condition>
-          <equals>
-            <property>/autopilot/locks/altitude</property>
-            <value>gs1-hold</value>
-      </equals>
+    <enable>
+      <condition>
+        <equals>
+          <property>/autopilot/locks/altitude</property>
+          <value>gs1-hold</value>
+        </equals>
       </condition>
-      </enable>
+    </enable>
     <type>gain</type>
     <input>/instrumentation/nav[0]/gs-rate-of-climb-fpm</input>
     <output>/autopilot/internal/target-vertical-speed-fpm</output>
@@ -176,7 +202,6 @@
   <!-- Heading Driver -->
   <pi-simple-controller>
     <name>Heading Bug Hold</name>
-    <debug>false</debug>
     <enable>
       <condition>
         <or>
@@ -248,22 +273,21 @@
       <u_max>30</u_max>
     </config>
   </pi-simple-controller>
-    <!-- Heading with rudder (Autoland rollout - Probably not real) -->
+  <!-- Heading with rudder (Autoland rollout - Probably not real) -->
   <pi-simple-controller>
     <name>Heading Bug Hold Rudder</name>
-    <debug>false</debug>
     <enable>
       <condition>
-              <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>dg-heading-hold-rudder</value>
-          </equals>
-  </condition>
+        <equals>
+          <property>/autopilot/locks/heading</property>
+          <value>dg-heading-hold-rudder</value>
+        </equals>
+      </condition>
     </enable>
     <input>
-	    <property>autopilot/internal/nav1-heading-error-deg</property>
+      <property>autopilot/internal/nav1-heading-error-deg</property>
     </input>
-        <reference>
+    <reference>
       <value>0.0</value>
     </reference>
     <output>
@@ -277,7 +301,6 @@
       <u_max>.2</u_max>
     </config>
   </pi-simple-controller>
-  
   <!-- Not really co-ordinated but helps with turns -->
   <!--
   <filter>
@@ -311,7 +334,6 @@
   <!--=====Speed Modes=====-->
   <pid-controller>
     <name>Vertical Speed with Throttle</name>
-    <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/speed</prop>
       <value>vertical-speed-with-throttle</value>
@@ -351,7 +373,6 @@
   </pid-controller>
   <pid-controller>
     <name>Auto Throttle</name>
-    <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/speed</prop>
       <value>speed-with-throttle</value>
@@ -392,7 +413,6 @@
   </pid-controller>
   <pid-controller>
     <name>Mach Auto Throttle</name>
-    <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/speed</prop>
       <value>mach-with-throttle</value>
@@ -434,7 +454,6 @@
   <!--KIAS with pitch VS driver-->
   <pid-controller>
     <name>KIAS Pitch Hold</name>
-    <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/speed</prop>
       <value>speed-with-pitch-trim</value>
@@ -465,7 +484,6 @@
   </pid-controller>
   <pid-controller>
     <name>Glideslope with throttle</name>
-    <debug>false</debug>
     <enable>
       <prop>/autopilot/locks/speed</prop>
       <value>gs-with-throttle</value>
@@ -476,26 +494,34 @@
     <reference>
       <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
     </reference>
-     <output>
+    <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
       <prop>/controls/engines/engine[1]/throttle</prop>
       <prop>/controls/engines/engine[2]/throttle</prop>
       <prop>/controls/engines/engine[3]/throttle</prop>
     </output>
     <config>
-      <Kp>0.05</Kp>      <!-- proportional gain -->
-      <beta>1.0</beta>    <!-- input value weighing factor -->
-      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
-      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
-                          <!-- unfiltered derivative error -->
-      <Ti>10.0</Ti>       <!-- integrator time -->
-      <Td>0.00001</Td>    <!-- derivator time -->
-      <u_min>0.0</u_min> <!-- minimum output clamp -->
-      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+      <Kp>0.05</Kp>
+      <!-- proportional gain -->
+      <beta>1.0</beta>
+      <!-- input value weighing factor -->
+      <alpha>0.1</alpha>
+      <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>
+      <!-- input value weighing factor for -->
+      <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>
+      <!-- integrator time -->
+      <Td>0.00001</Td>
+      <!-- derivator time -->
+      <u_min>0.0</u_min>
+      <!-- minimum output clamp -->
+      <u_max>1.0</u_max>
+      <!-- maximum output clamp -->
     </config>
   </pid-controller>
   <!--Filters-->
-  <!-- Pitch calculator and filter -->
+  <!-- Pitch selector and filter -->
   <filter>
     <type>noise-spike</type>
     <max-rate-of-change>3</max-rate-of-change>
@@ -511,15 +537,15 @@
     <input>
       <condition>
         <or>
-			  <equals>
+          <equals>
             <property>/autopilot/locks/altitude</property>
             <value>vertical-speed-hold</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/altitude</property>
             <value>altitude-hold</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/speed</property>
             <value>speed-with-pitch-trim</value>
           </equals>
@@ -536,11 +562,24 @@
     </input>
     <output>/autopilot/internal/target-pitch-deg-filtered</output>
   </filter>
+  <!-- Stops VS mode going crazy -->
+  <filter>
+    <type>gain</type>
+    <enable>
+      <condition>
+        <equals>
+          <property>/autopilot/locks/altitude</property>
+          <value>pitch-hold</value>
+        </equals>
+      </condition>
+    </enable>
+    <input>/orientation/pitch-deg</input>
+    <output>/autopilot/internal/target-pitch-deg</output>
+  </filter>
   <!-- Roll calculator and filter -->
   <filter>
     <type>noise-spike</type>
     <max-rate-of-change>3</max-rate-of-change>
-
     <input>
       <condition>
         <equals>
@@ -561,7 +600,7 @@
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/heading</property>
             <value>dg-heading-hold-track</value>
           </equals>
@@ -585,24 +624,24 @@
   <!-- Vertical speed calculator and filter -->
   <filter>
     <type>noise-spike</type>
-    <max-rate-of-change>500</max-rate-of-change> #Max autopilot change of 500fpm/s
+    <max-rate-of-change>500</max-rate-of-change>
     <input>
       <condition>
         <equals>
           <property>/autopilot/locks/altitude</property>
           <value>vertical-speed-hold</value>
         </equals>
-	</condition>
-	<property>/autopilot/settings/vertical-speed-fpm</property>
+      </condition>
+      <property>/autopilot/settings/vertical-speed-fpm</property>
     </input>
     <input>
       <condition>
-	<or>
+        <or>
           <equals>
             <property>/autopilot/locks/altitude</property>
             <value>altitude-hold</value>
           </equals>
-	  <equals>
+          <equals>
             <property>/autopilot/locks/speed</property>
             <value>speed-with-pitch-trim</value>
           </equals>
@@ -618,29 +657,29 @@
       </condition>
       <property>/autopilot/internal/target-vertical-speed-fpm</property>
     </input>
-        <input>
-          <property>/autopilot/internal/vert-speed-fpm</property>
+    <input>
+      <property>/autopilot/internal/vert-speed-fpm</property>
     </input>
     <output>/autopilot/internal/target-vertical-speed-fpm-filtered</output>
   </filter>
   <!-- Heading Track Driver -->
-    <filter>
+  <filter>
     <type>gain</type>
     <gain>1</gain>
-	<input>/autopilot/settings/heading-bug-deg</input>
-	<reference>orientation/track-magnetic-deg</reference>
-	<output>/autopilot/internal/track-error-deg-raw</output>
-    </filter>
-    <filter>
+    <input>/autopilot/settings/heading-bug-deg</input>
+    <reference>orientation/track-magnetic-deg</reference>
+    <output>/autopilot/internal/track-error-deg-raw</output>
+  </filter>
+  <filter>
     <type>gain</type>
     <gain>1</gain>
     <input>
-	<property>/autopilot/internal/track-error-deg-raw</property>
-	<period>
-     <min>-180.0</min>
-     <max>180.0</max>
-   </period>
-   </input>
-  <output>/autopilot/internal/track-error-deg</output>
-</filter>
+      <property>/autopilot/internal/track-error-deg-raw</property>
+      <period>
+        <min>-180.0</min>
+        <max>180.0</max>
+      </period>
+    </input>
+    <output>/autopilot/internal/track-error-deg</output>
+  </filter>
 </PropertyList>
