@@ -12,11 +12,13 @@
       <prop>/autopilot/internal/driver-aileron</prop>
     </output>
     <config>
-      <Kp>.1</Kp>
+      <Kp>
+        <property>/systems/autopilot/pid/roll-kp-current</property>
+      </Kp>
       <beta>1.0</beta>
       <alpha>0.1</alpha>
       <gamma>0.0</gamma>
-      <Ti>3.0</Ti>
+      <Ti>10.0</Ti>
       <Td>0</Td>
       <u_min>-0.5</u_min>
       <u_max>0.5</u_max>
@@ -72,11 +74,13 @@
       <prop>/autopilot/internal/driver-elevator-trim</prop>
     </output>
     <config>
-      <Kp>-.5</Kp>
+      <Kp>
+        <property>/systems/autopilot/pid/pitch-kp-current</property>
+      </Kp>
       <beta>1.0</beta>
       <alpha>0.1</alpha>
       <gamma>0.0</gamma>
-      <Ti>1</Ti>
+      <Ti>10</Ti>
       <Td>0</Td>
       <u_min>-1</u_min>
       <u_max>1</u_max>
@@ -156,9 +160,9 @@
     </output>
     <config>
       <Kp>
-        <prop>/systems/autopilot/pid/vs-kp-current</prop>
+        <property>/systems/autopilot/pid/vs-kp-current</property>
       </Kp>
-      <Ti>.7</Ti>
+      <Ti>1</Ti>
       <Td>0</Td>
       <min>-15.0</min>
       <max>20.0</max>
@@ -200,7 +204,7 @@
     <max>0</max>
   </filter>
   <!-- Heading Driver -->
-  <pi-simple-controller>
+  <pid-controller>
     <name>Heading Bug Hold</name>
     <enable>
       <condition>
@@ -226,28 +230,93 @@
     </enable>
     <input>
       <condition>
-        <equals>
-          <property>/autopilot/locks/heading</property>
-          <value>dg-heading-hold-track</value>
-        </equals>
+        <and>
+          <or>
+            <and>
+              <property>/controls/autoflight/autopilot[0]/engage</property>
+              <property>/controls/autoflight/autopilot[0]/track-push</property>
+            </and>
+            <and>
+              <property>/controls/autoflight/autopilot[1]/engage</property>
+              <property>/controls/autoflight/autopilot[1]/track-push</property>
+            </and>
+          </or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold</value>
+          </equals>
+        </and>
       </condition>
       <property>autopilot/internal/track-error-deg</property>
     </input>
     <input>
       <condition>
-        <equals>
-          <property>/autopilot/locks/heading</property>
-          <value>dg-heading-hold</value>
-        </equals>
+        <and>
+          <or>
+            <and>
+              <property>/controls/autoflight/autopilot[0]/engage</property>
+              <not>
+                <property>/controls/autoflight/autopilot[0]/track-push</property>
+              </not>
+            </and>
+            <and>
+              <property>/controls/autoflight/autopilot[1]/engage</property>
+              <not>
+                <property>/controls/autoflight/autopilot[1]/track-push</property>
+              </not>
+            </and>
+          </or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>dg-heading-hold</value>
+          </equals>
+        </and>
       </condition>
       <property>autopilot/internal/fdm-heading-bug-error-deg</property>
     </input>
     <input>
       <condition>
-        <equals>
-          <property>/autopilot/locks/heading</property>
-          <value>true-heading-hold</value>
-        </equals>
+        <and>
+          <or>
+            <and>
+              <property>/controls/autoflight/autopilot[0]/engage</property>
+              <property>/controls/autoflight/autopilot[0]/track-push</property>
+            </and>
+            <and>
+              <property>/controls/autoflight/autopilot[1]/engage</property>
+              <property>/controls/autoflight/autopilot[1]/track-push</property>
+            </and>
+          </or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>true-heading-hold</value>
+          </equals>
+        </and>
+      </condition>
+      <property>autopilot/internal/true-track-error-deg</property>
+    </input>
+    <input>
+      <condition>
+        <and>
+          <or>
+            <and>
+              <property>/controls/autoflight/autopilot[0]/engage</property>
+              <not>
+                <property>/controls/autoflight/autopilot[0]/track-push</property>
+              </not>
+            </and>
+            <and>
+              <property>/controls/autoflight/autopilot[1]/engage</property>
+              <not>
+                <property>/controls/autoflight/autopilot[1]/track-push</property>
+              </not>
+            </and>
+          </or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>true-heading-hold</value>
+          </equals>
+        </and>
       </condition>
       <property>autopilot/internal/true-heading-error-deg</property>
     </input>
@@ -267,12 +336,15 @@
       <prop>/autopilot/internal/target-roll-deg</prop>
     </output>
     <config>
-      <Kp>-3.0</Kp>
-      <Ki>-0.1</Ki>
-      <u_min>-30</u_min>
-      <u_max>30</u_max>
+      <Kp>
+        <property>/systems/autopilot/pid/heading-kp-current</property>
+      </Kp>
+      <Ti>15</Ti>
+      <Td>0</Td>
+      <min>-30</min>
+      <max>30</max>
     </config>
-  </pi-simple-controller>
+  </pid-controller>
   <!-- Heading with rudder (Autoland rollout - Probably not real) -->
   <pi-simple-controller>
     <name>Heading Bug Hold Rudder</name>
@@ -649,11 +721,12 @@
     <output>/autopilot/internal/target-vertical-speed-fpm-filtered</output>
   </filter>
   <!-- Heading Track Driver -->
+  <!-- Magnetic -->
   <filter>
     <type>gain</type>
     <gain>1</gain>
     <input>/autopilot/settings/heading-bug-deg</input>
-    <reference>orientation/track-magnetic-deg</reference>
+    <reference>/orientation/track-magnetic-deg</reference>
     <output>/autopilot/internal/track-error-deg-raw</output>
   </filter>
   <filter>
@@ -667,6 +740,26 @@
       </period>
     </input>
     <output>/autopilot/internal/track-error-deg</output>
+  </filter>
+  <!-- True -->
+  <filter>
+    <type>gain</type>
+    <gain>1</gain>
+    <input>/autopilot/settings/true-heading-deg</input>
+    <reference>/orientation/track-deg</reference>
+    <output>/autopilot/internal/true-track-error-deg-raw</output>
+  </filter>
+  <filter>
+    <type>gain</type>
+    <gain>1</gain>
+    <input>
+      <property>/autopilot/internal/true-track-error-deg-raw</property>
+      <period>
+        <min>-180.0</min>
+        <max>180.0</max>
+      </period>
+    </input>
+    <output>/autopilot/internal/true-track-error-deg</output>
   </filter>
   <!--== Stops the autopilot from pulling crazy ivan's ==-->
   <!-- VS -->

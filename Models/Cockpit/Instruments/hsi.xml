@@ -75,21 +75,7 @@
     <object-name>HdgBug</object-name>
     <expression>
       <difference>
-        <sum>
-          <prod>
-            <property>/controls/autoflight/autopilot[0]/heading-select</property>
-            <abs>
-              <difference>
-                <property>/instrumentation/hsi[0]/ins-source</property>
-                <value>1</value>
-              </difference>
-            </abs>
-          </prod>
-          <prod>
-            <property>/controls/autoflight/autopilot[0]/heading-true-select</property>
-            <property>/instrumentation/hsi[0]/ins-source</property>
-          </prod>
-        </sum>
+        <property>/controls/autoflight/autopilot[0]/heading-select</property>
         <property>/instrumentation/hsi[0]/heading-deg</property>
       </difference>
     </expression>

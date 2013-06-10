@@ -180,10 +180,19 @@ Autopilot.configurepidsettings = func {
   #This tunes vertical speed hold to be less sensitive as you climb. It replaces a supersonic and subsonic pid, improves response all around.
   #gnd is ground, 50 is 50,000ft. Kp is clipped between gnd and 50,000ft values. Set in Concorde-init-systems.xml.
   var altimeter_ft = me.noinstrument['altitude'].getValue();
+  var roll_kp_gnd = me.itself['pid'].getChild('roll-kp-gnd').getValue();
+  var roll_kp_50 = me.itself['pid'].getChild('roll-kp-50').getValue();
+  var pitch_kp_gnd = me.itself['pid'].getChild('pitch-kp-gnd').getValue();
+  var pitch_kp_50 = me.itself['pid'].getChild('pitch-kp-50').getValue();
   var vs_kp_gnd = me.itself['pid'].getChild('vs-kp-gnd').getValue();
   var vs_kp_50 = me.itself['pid'].getChild('vs-kp-50').getValue();
-  #Yes this gives a negative value... Less sensitive as you climb.
+  var heading_kp_gnd = me.itself['pid'].getChild('heading-kp-gnd').getValue();
+  var heading_kp_50 = me.itself['pid'].getChild('heading-kp-50').getValue();
+  #Yes this gives a negative value... Less sensitive as you climb, apart from heading.
+  var roll_kp_diff = roll_kp_50 - roll_kp_gnd;
+  var pitch_kp_diff = pitch_kp_50 - pitch_kp_gnd;
   var vs_kp_diff = vs_kp_50 - vs_kp_gnd;
+  var heading_kp_diff = heading_kp_50 - heading_kp_gnd;
   var alt_factor = altimeter_ft / 50000;
   if ( alt_factor < 0 ) {
     alt_factor = 0;
@@ -191,8 +200,14 @@ Autopilot.configurepidsettings = func {
   if ( alt_factor > 1 ) {
     alt_factor = 1;
   }
-  var new_kp = vs_kp_gnd + ( vs_kp_diff * alt_factor );
-  me.itself['pid'].getChild('vs-kp-current').setValue(new_kp);
+  var roll_new_kp = roll_kp_gnd + ( roll_kp_diff * alt_factor );
+  me.itself['pid'].getChild('roll-kp-current').setValue(roll_new_kp);
+  var pitch_new_kp = pitch_kp_gnd + ( pitch_kp_diff * alt_factor );
+  me.itself['pid'].getChild('pitch-kp-current').setValue(pitch_new_kp);
+  var vs_new_kp = vs_kp_gnd + ( vs_kp_diff * alt_factor );
+  me.itself['pid'].getChild('vs-kp-current').setValue(vs_new_kp);
+  var heading_new_kp = heading_kp_gnd + ( heading_kp_diff * alt_factor );
+  me.itself['pid'].getChild('heading-kp-current').setValue(heading_new_kp);
 }
 
 
@@ -272,11 +287,6 @@ Autopilot.modewinglevel = func {
 
 Autopilot.modemagneticheading = func {
   me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold');
-  me.apengage();
-}
-
-Autopilot.modemagnetictrackheading = func {
-  me.itself['autoflight'].getChild('heading').setValue('dg-heading-hold-track');
   me.apengage();
 }
 
@@ -500,11 +510,18 @@ Autopilot.apinsexport = func {
 
 Autopilot.apsendheadingexport = func {
   if ( ! me.is_holding_heading ) {
+    var gps_driving_heading = me.itself['settings'].getChild('gps-driving-true-heading').getValue();
     if ( me.channelengage[0] ) {
       me.setmagnetic(me.itself['channel'][0].getChild('heading-select').getValue());
+      if ( ! gps_driving_heading ) {
+        me.settrue(me.itself['channel'][0].getChild('heading-select').getValue());
+      }
     }
     if ( me.channelengage[1] ) {
       me.setmagnetic(me.itself['channel'][1].getChild('heading-select').getValue());
+      if ( ! gps_driving_heading ) {
+        me.settrue(me.itself['channel'][1].getChild('heading-select').getValue());
+      }
     }
   }
 }
@@ -520,23 +537,25 @@ Autopilot.apsendnavexport = func {
 
 Autopilot.apheadingexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.is_holding_heading = 0;
-  me.apsendheadingexport();
-  me.display('heading-display', 'TH');
-  if ( me.channelengage[0] ) {
-    if ( me.itself['channel'][0].getChild('track-push').getValue() ) {
-      me.modemagnetictrackheading();
-    } else {
-      me.modemagneticheading();
+    var radinsmode1 = getprop('/instrumentation/hsi[0]/ins-source');
+    var radinsmode2 = getprop('/instrumentation/hsi[1]/ins-source');
+    me.is_holding_heading = 0;
+    me.apsendheadingexport();
+    me.display('heading-display', 'TH');
+    if ( me.channelengage[0] ) {
+      if ( radinsmode1 ) {
+        me.modetrueheading(); 
+      } else {
+        me.modemagneticheading();
+      }
     }
-  }
-  if ( me.channelengage[1] ) {
-    if ( me.itself['channel'][1].getChild('track-push').getValue() ) {
-      me.modemagnetictrackheading();
-    } else {
-      me.modemagneticheading();
+    if ( me.channelengage[1] ) {
+      if ( radinsmode2 ) {
+        me.modetrueheading(); 
+      } else {
+        me.modemagneticheading();
+      }
     }
-  }
   }
 }
 

@@ -2,7 +2,7 @@ Autothrottle = {};
 
 Autothrottle.new = func {
   var obj = { parents : [Autothrottle,System],
-    GROUNDAUTOPILOT: 1,  # Autothrotle for take off. No.
+    GROUNDAUTOPILOT: 0,  # Autothrotle for take off. No.
     MINAUTOPILOTFT: 100, # Minimum feet to engage autothrottle
     SPEEDLIGHT: 10,      # When the speed aquire light goes out (in knots difference).
     CRUISEMACH: 2.02,    # Speed to cruise in max cruise mode.
