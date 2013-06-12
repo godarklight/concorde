@@ -169,7 +169,7 @@
     </config>
   </pid-controller>
   <!-- Altitude Hold VS Driver -->
-  <pi-simple-controller>
+  <pid-controller>
     <name>Altitude Hold Vertical Speed Driver</name>
     <input>
       <prop>/instrumentation/altimeter/indicated-altitude-ft</prop>
@@ -179,12 +179,13 @@
     </reference>
     <output>/autopilot/internal/target-vertical-speed-fpm</output>
     <config>
-      <Kp>5</Kp>
-      <Ki>.1</Ki>
-      <u_min>-1000</u_min>
-      <u_max>2000</u_max>
+      <Kp>10</Kp>
+      <Ti>15</Ti>
+      <Td>0</Td>
+      <min>-1000</min>
+      <max>2000</max>
     </config>
-  </pi-simple-controller>
+  </pid-controller>
   <!-- Glidescope Hold Driver -->
   <filter>
     <name>Glidescope Hold Vertical Speed Driver</name>
