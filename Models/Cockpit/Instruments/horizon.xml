@@ -96,6 +96,34 @@
     </condition>
   </animation>
   <animation>
+    <type>select</type>
+    <object-name>GyroWarning</object-name>
+    <condition>
+      <not>
+        <property>/instrumentation/attitude-indicator[0]/serviceable</property>
+      </not>
+    </condition>
+  </animation>
+  <animation>
+    <type>select</type>
+    <object-name>FDWarning</object-name>
+    <condition>
+      <not>
+        <property>/instrumentation/flight-director[0]/serviceable</property>
+      </not>
+    </condition>
+  </animation>
+  <animation>
+    <type>select</type>
+    <object-name>AltWarning</object-name>
+    <condition>
+      <greater-than>
+        <property>/position/altitude-ft</property>
+        <value>60000</value>
+      </greater-than>
+    </condition>
+  </animation>
+  <animation>
     <type>translate</type>
     <object-name>LOCBar</object-name>
     <expression>
@@ -147,6 +175,68 @@
           </prod>
           <prod>
             <property>/controls/autoflight/flight-director[0]/engage</property>
+            <property>/instrumentation/attitude-indicator[0]/fd2</property>
+            <property>/instrumentation/nav[2]/gs-in-range</property>
+            <property>/instrumentation/nav[2]/gs-needle-deflection-norm</property>
+          </prod>
+        </sum>
+        <value>0.02</value>
+      </prod>
+    </expression>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>LocArrow</object-name>
+    <expression>
+      <prod>
+        <sum>
+          <prod>
+            <abs>
+              <difference>
+                <property>/instrumentation/attitude-indicator[0]/fd2</property>
+                <value>1</value>
+              </difference>
+            </abs>
+            <property>/instrumentation/nav[1]/in-range</property>
+            <property>/instrumentation/nav[1]/heading-needle-deflection-norm</property>
+          </prod>
+          <prod>
+            <property>/instrumentation/attitude-indicator[0]/fd2</property>
+            <property>/instrumentation/nav[2]/in-range</property>
+            <property>/instrumentation/nav[2]/heading-needle-deflection-norm</property>
+          </prod>
+        </sum>
+        <value>0.014</value>
+      </prod>
+    </expression>
+    <axis>
+      <x>0</x>
+      <y>1</y>
+      <z>0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>GSArrow</object-name>
+    <expression>
+      <prod>
+        <sum>
+          <prod>
+            <abs>
+              <difference>
+                <property>/instrumentation/attitude-indicator[0]/fd2</property>
+                <value>1</value>
+              </difference>
+            </abs>
+            <property>/instrumentation/nav[1]/gs-in-range</property>
+            <property>/instrumentation/nav[1]/gs-needle-deflection-norm</property>
+          </prod>
+          <prod>
             <property>/instrumentation/attitude-indicator[0]/fd2</property>
             <property>/instrumentation/nav[2]/gs-in-range</property>
             <property>/instrumentation/nav[2]/gs-needle-deflection-norm</property>
