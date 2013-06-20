@@ -1,60 +1,6 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/hsi.ac</path>
-  <!--
-  <animation>
-    <type>select</type>
-    <object-name>LOCWarning</object-name>
-    <condition>
-      <and>
-        <or>
-          <and>
-            <not>
-              <property>/instrumentation/nav[1]/in-range</property>
-            </not>
-            <not>
-               <property>/instrumentation/attitude-indicator[0]/fd2</property>
-            </not>
-          </and>
-          <and>
-              <not>
-                <property>/instrumentation/nav[2]/in-range</property>
-              </not>
-              <property>/instrumentation/attitude-indicator[0]/fd2</property>
-          </and>
-        </or>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-      </and>
-    </condition>
-  </animation>
-  <animation>
-    <type>select</type>
-    <object-name>GSWarning</object-name>
-    <condition>
-      <and>
-        <or>
-          <and>
-            <not>
-              <property>/instrumentation/nav[1]/gs-in-range</property>
-            </not>
-            <not>
-               <property>/instrumentation/attitude-indicator[0]/fd2</property>
-            </not>
-            <property>/instrumentation/nav[1]/has-gs</property>
-          </and>
-          <and>
-            <not>
-              <property>/instrumentation/nav[2]/gs-in-range</property>
-            </not>
-            <property>/instrumentation/nav[2]/has-gs</property>
-            <property>/instrumentation/attitude-indicator[0]/fd2</property>
-          </and>  
-        </or>
-        <property>/controls/autoflight/flight-director[0]/engage</property>
-      </and>
-    </condition>
-  </animation>
-  -->
   <animation>
     <type>rotate</type>
     <object-name>Compass</object-name>
@@ -344,6 +290,7 @@
     <type>textranslate</type>
     <object-name>Miles1</object-name>
     <property>/autopilot/route-manager/wp/dist</property>
+    <bias>0.0001</bias>
     <factor>0.0001</factor>
     <step>1000</step>
     <axis>
@@ -355,6 +302,7 @@
     <type>textranslate</type>
     <object-name>Miles2</object-name>
     <property>/autopilot/route-manager/wp/dist</property>
+    <bias>0.0001</bias>
     <factor>0.001</factor>
     <step>100</step>
     <axis>
@@ -366,6 +314,7 @@
     <type>textranslate</type>
     <object-name>Miles3</object-name>
     <property>/autopilot/route-manager/wp/dist</property>
+    <bias>0.0001</bias>
     <factor>0.01</factor>
     <step>10</step>
     <axis>
@@ -377,6 +326,7 @@
     <type>textranslate</type>
     <object-name>Miles4</object-name>
     <property>/autopilot/route-manager/wp/dist</property>
+    <bias>0.0001</bias>
     <factor>.1</factor>
     <step>1</step>
     <axis>
@@ -418,6 +368,7 @@
     <type>textranslate</type>
     <object-name>Speed1</object-name>
     <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
+    <bias>0.0001</bias>
     <factor>0.0000592484</factor>
     <step>1687.80929105</step>
     <axis>
@@ -429,6 +380,7 @@
     <type>textranslate</type>
     <object-name>Speed2</object-name>
     <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
+    <bias>0.0001</bias>
     <factor>0.000592484</factor>
     <step>168.780929105</step>
     <axis>
@@ -440,6 +392,7 @@
     <type>textranslate</type>
     <object-name>Speed3</object-name>
     <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
+    <bias>0.0001</bias>
     <factor>0.00592484</factor>
     <step>16.8780929105</step>
     <axis>
@@ -451,6 +404,7 @@
     <type>textranslate</type>
     <object-name>Speed4</object-name>
     <property>/instrumentation/ins[0]/computed/ground-speed-fps</property>
+    <bias>0.0001</bias>
     <factor>0.0592484</factor>
     <step>1.68780929105</step>
     <axis>

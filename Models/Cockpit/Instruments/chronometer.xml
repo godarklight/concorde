@@ -6,6 +6,7 @@
     <type>textranslate</type>
     <object-name>Hour1</object-name>
     <property>instrumentation/clock[0]/indicated-hour</property>
+    <bias>0.0001</bias>
     <factor>.01</factor>
     <step>10</step>
     <axis>
@@ -18,6 +19,7 @@
     <type>textranslate</type>
     <object-name>Hour2</object-name>
     <property>instrumentation/clock[0]/indicated-hour</property>
+    <bias>0.0001</bias>
     <factor>.1</factor>
     <step>1</step>
     <axis>
@@ -30,6 +32,7 @@
     <type>textranslate</type>
     <object-name>Min1</object-name>
     <property>instrumentation/clock[0]/indicated-min</property>
+    <bias>0.0001</bias>
     <factor>.01</factor>
     <step>10</step>
     <axis>
@@ -42,6 +45,7 @@
     <type>textranslate</type>
     <object-name>Min2</object-name>
     <property>instrumentation/clock[0]/indicated-min</property>
+    <bias>0.0001</bias>
     <factor>.1</factor>
     <step>1</step>
     <axis>
@@ -54,6 +58,7 @@
     <type>textranslate</type>
     <object-name>Sec1</object-name>
     <property>sim/time/utc/second</property>
+    <bias>0.0001</bias>
     <factor>.01</factor>
     <step>10</step>
     <axis>
@@ -65,6 +70,7 @@
   <animation>
     <type>textranslate</type>
     <object-name>Sec2</object-name>
+    <bias>0.0001</bias>
     <property>sim/time/utc/second</property>
     <factor>.1</factor>
     <step>1</step>
