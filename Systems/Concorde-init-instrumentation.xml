@@ -310,6 +310,7 @@
   </altimeter-standby>
   <attitude-indicator n="0">
     <serviceable type="bool">true</serviceable>
+    <test type="bool">false</test>
     <fd2 type="bool">false</fd2>
     <horizon-offset-deg type="double">0.0</horizon-offset-deg>
     <indicated-pitch-deg alias="/orientation/pitch-deg"/>
@@ -317,6 +318,7 @@
   </attitude-indicator>
   <attitude-indicator n="1">
     <serviceable type="bool">true</serviceable>
+    <test type="bool">false</test>
     <fd2 type="bool">true</fd2>
     <horizon-offset-deg type="double">0.0</horizon-offset-deg>
     <indicated-pitch-deg alias="/orientation/pitch-deg"/>

@@ -225,6 +225,12 @@
     <speed/>
     <vor-aquire type="bool">false</vor-aquire>
   </autoflight>
+  <circuit-breakers>
+    <cabin-lights-pwr type="bool">true</cabin-lights-pwr>
+    <instr-ignition-switch type="bool">true</instr-ignition-switch>
+    <flaps type="bool">true</flaps>
+    <turn-coordinator type="bool">true</turn-coordinator>
+  </circuit-breakers>
   <captain>
     <countdown type="bool">false</countdown>
     <!-- optional in practice -->

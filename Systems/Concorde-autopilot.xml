@@ -18,7 +18,7 @@
       <beta>1.0</beta>
       <alpha>0.1</alpha>
       <gamma>0.0</gamma>
-      <Ti>10.0</Ti>
+      <Ti>5</Ti>
       <Td>0</Td>
       <u_min>-0.5</u_min>
       <u_max>0.5</u_max>
@@ -80,7 +80,7 @@
       <beta>1.0</beta>
       <alpha>0.1</alpha>
       <gamma>0.0</gamma>
-      <Ti>10</Ti>
+      <Ti>5</Ti>
       <Td>0</Td>
       <u_min>-1</u_min>
       <u_max>1</u_max>
@@ -162,7 +162,7 @@
       <Kp>
         <property>/systems/autopilot/pid/vs-kp-current</property>
       </Kp>
-      <Ti>1</Ti>
+      <Ti>3</Ti>
       <Td>0</Td>
       <min>-15.0</min>
       <max>20.0</max>
@@ -179,7 +179,7 @@
     </reference>
     <output>/autopilot/internal/target-vertical-speed-fpm</output>
     <config>
-      <Kp>10</Kp>
+      <Kp>5</Kp>
       <Ti>15</Ti>
       <Td>0</Td>
       <min>-1000</min>
@@ -367,41 +367,34 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>-0.005</Kp>
       <Kp>-0.001</Kp>
       <Ki>0</Ki>
       <u_min>-.2</u_min>
       <u_max>.2</u_max>
     </config>
   </pi-simple-controller>
-  <!-- Not really co-ordinated but helps with turns -->
+  <!-- Rudder for turns -->
+  <!-- Driving from the coordination ball messes up heading too much -->
   <!--
   <filter>
     <name>Rudder Driver</name>
+    <type>gain</type>
     <enable>
       <condition>
-        <or>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>dg-heading-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>true-heading-hold</value>
-          </equals>
-          <equals>
-            <property>/autopilot/locks/heading</property>
-            <value>roll-hold</value>
-          </equals>
-        </or>
+        <and>
+          <or>
+            <property>/controls/autoflight/autopilot[0]/engage</property>
+            <property>/controls/autoflight/autopilot[1]/engage</property>
+          </or>
+          <not>
+            <property>/controls/flight/auto-coordination</property>
+          </not>
+        </and>
       </condition>
     </enable>
-    <type>gain</type>
-    <input>/controls/flight/aileron</input>
     <gain>.1</gain>
+    <input>/controls/flight/aileron</input>
     <output>/controls/flight/rudder</output>
-    <min>-.05</min>
-    <max>.05</max>
   </filter>
   -->
   <!--=====Speed Modes=====-->
