@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/aoa.ac</path>
+  <params>
+    <alpha-deg>instrumentation/accelerometer-aoa[0]/alpha-deg</alpha-deg>
+  </params>
   <animation>
     <type>translate</type>
     <object-name>Accl</object-name>
@@ -24,7 +27,7 @@
   <animation>
     <type>translate</type>
     <object-name>Aoa</object-name>
-    <property>instrumentation/accelerometer-aoa[0]/alpha-deg</property>
+    <property alias="/params/alpha-deg"/>
     <interpolation>
       <entry>
         <ind>25</ind>

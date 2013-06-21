@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/sideslip.ac</path>
+  <params>
+    <serviceable>/instrumentation/side-slip[0]/serviceable</serviceable>
+    <angle-sel>/instrumentation/side-slip[0]/angle-deg</angle-sel>
+  </params>
   <animation>
     <type>translate</type>
     <object-name>Slip</object-name>
-    <property>/instrumentation/side-slip[0]/angle-deg</property>
+    <property alias="/params/angle-sel"/>
     <interpolation>
       <entry>
         <ind>15</ind>

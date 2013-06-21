@@ -1,10 +1,19 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/asi.ac</path>
+  <params>
+    <test>/controls/lighting/crew/copilot/test</test>
+    <serviceable>/instrumentation/airspeed-indicator[0]/serviceable</serviceable>
+    <failure-flag>/instrumentation/airspeed-indicator[0]/failure-flag</failure-flag>
+    <vmo-failure-flag>/instrumentation/airspeed-indicator[0]/vmo-failure-flag</vmo-failure-flag>
+    <speed-sel>/instrumentation/airspeed-indicator[0]/indicated-speed-kt</speed-sel>
+    <vmo-sel>/instrumentation/airspeed-indicator[0]/vmo-kt</vmo-sel>
+    <standby-ctrl>/instrumentation/airspeed-indicator[0]/standby</standby-ctrl>
+  </params>
   <animation>
     <type>rotate</type>
     <object-name>ASINeedle</object-name>
-    <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+    <property alias="/params/speed-sel"/>
     <interpolation>
       <entry>
         <ind>60</ind>
@@ -41,7 +50,7 @@
   <animation>
     <type>rotate</type>
     <object-name>LimitNeedle</object-name>
-    <property>instrumentation/airspeed-indicator[0]/vmo-kt</property>
+    <property alias="/params/vmo-sel"/>
     <interpolation>
       <entry>
         <ind>60</ind>
@@ -83,18 +92,18 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+              <property alias="/params/speed-sel"/>
               <value>100</value>
             </div>
           </floor>
           <max>
             <difference>
-              <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+              <property alias="/params/speed-sel"/>
               <value>99</value>
               <prod>
                 <floor>
                   <div>
-                    <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+                    <property alias="/params/speed-sel"/>
                     <value>100</value>
                   </div>
                 </floor>
@@ -126,18 +135,18 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+              <property alias="/params/speed-sel"/>
               <value>10</value>
             </div>
           </floor>
           <max>
             <difference>
-              <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+              <property alias="/params/speed-sel"/>
               <value>9</value>
               <prod>
                 <floor>
                   <div>
-                    <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+                    <property alias="/params/speed-sel"/>
                     <value>10</value>
                   </div>
                 </floor>
@@ -164,7 +173,7 @@
   <animation>
     <type>rotate</type>
     <object-name>Number3</object-name>
-    <property>instrumentation/airspeed-indicator[0]/indicated-speed-kt</property>
+    <property alias="/params/speed-sel"/>
     <factor>36</factor>
     <center>
       <x-m>-0.0085</x-m>

@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/vsi.ac</path>
+  <params>
+    <vertical-speed-fps>instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</vertical-speed-fps>
+    <ap-vertical-speed-fpm>autopilot/settings/vertical-speed-fpm</ap-vertical-speed-fpm>
+  </params>
   <animation>
     <type>translate</type>
     <object-name>Current</object-name>
-    <property>instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</property>
+    <property alias="/params/vertical-speed-fps"/>
     <interpolation>
       <entry>
         <ind>100</ind>
@@ -41,7 +45,7 @@
   <animation>
     <type>translate</type>
     <object-name>Set</object-name>
-    <property>autopilot/settings/vertical-speed-fpm</property>
+    <property alias="/params/ap-vertical-speed-fpm"/>
     <interpolation>
       <entry>
         <ind>6000</ind>
@@ -55,7 +59,10 @@
         <ind>1000</ind>
         <dep>.0297</dep>
       </entry>
-      <entry><ind>0</ind><dep/>0</entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
       <entry>
         <ind>-1000</ind>
         <dep>-.0297</dep>

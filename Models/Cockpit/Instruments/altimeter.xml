@@ -3,11 +3,13 @@
   <path>../Models/altimeter.ac</path>
   <params>
     <altitude>instrumentation/altimeter[0]/indicated-altitude-ft</altitude>
+    <setting-inhg>instrumentation/altimeter-adc[0]/setting-inhg</setting-inhg>
+    <setting-hpa>instrumentation/altimeter-adc[0]/setting-hpa</setting-hpa>
   </params>
   <animation>
     <type>rotate</type>
     <object-name>AltNeedle</object-name>
-    <property>/instrumentation/altimeter[0]/indicated-altitude-ft</property>
+    <property alias="/params/altitude"/>
     <factor>.36</factor>
     <center>
       <x-m>0</x-m>
@@ -201,7 +203,7 @@
       <prod>
         <floor>
           <div>
-            <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+            <property alias="/params/setting-inhg"/>
             <value>10</value>
           </div>
         </floor>
@@ -225,7 +227,7 @@
     <expression>
       <prod>
         <floor>
-          <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+          <property alias="/params/setting-inhg"/>
         </floor>
         <value>36</value>
       </prod>
@@ -248,7 +250,7 @@
       <prod>
         <floor>
           <prod>
-            <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+            <property alias="/params/setting-inhg"/>
             <value>10</value>
           </prod>
         </floor>
@@ -269,7 +271,7 @@
   <animation>
     <type>rotate</type>
     <object-name>inhg4</object-name>
-    <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+    <property alias="/params/setting-inhg"/>
     <factor>3600</factor>
     <center>
       <x-m>-0.0076</x-m>
@@ -291,18 +293,18 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>1000</value>
             </div>
           </floor>
           <max>
             <difference>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>999</value>
               <prod>
                 <floor>
                   <div>
-                    <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+                    <property alias="/params/setting-hpa"/>
                     <value>1000</value>
                   </div>
                 </floor>
@@ -334,18 +336,18 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>100</value>
             </div>
           </floor>
           <max>
             <difference>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>99</value>
               <prod>
                 <floor>
                   <div>
-                    <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+                    <property alias="/params/setting-hpa"/>
                     <value>100</value>
                   </div>
                 </floor>
@@ -377,18 +379,18 @@
         <sum>
           <floor>
             <div>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>10</value>
             </div>
           </floor>
           <max>
             <difference>
-              <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+              <property alias="/params/setting-hpa"/>
               <value>9</value>
               <prod>
                 <floor>
                   <div>
-                    <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+                    <property alias="/params/setting-hpa"/>
                     <value>10</value>
                   </div>
                 </floor>
@@ -415,7 +417,7 @@
   <animation>
     <type>rotate</type>
     <object-name>mbar4</object-name>
-    <property>instrumentation/altimeter-adc[0]/setting-hpa</property>
+    <property alias="/params/setting-hpa"/>
     <factor>36</factor>
     <center>
       <x-m>-0.0076</x-m>
@@ -438,7 +440,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-assign</command>
-        <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+        <property alias="/params/setting-inhg"/>
         <value>29.92</value>
       </binding>
     </action>
@@ -448,7 +450,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-        <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+        <property alias="/params/setting-inhg"/>
         <step>.01</step>
         <min>0</min>
         <max>100</max>
@@ -461,7 +463,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-        <property>instrumentation/altimeter-adc[0]/setting-inhg</property>
+        <property alias="/params/setting-inhg"/>
         <step>-.01</step>
         <min>0</min>
         <max>100</max>

@@ -7,7 +7,7 @@
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <property>/instrumentation/hsi[0]/nav-ins2</property>
+    <property alias="/params/nav-ins2"/>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -38,7 +38,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>/instrumentation/hsi[0]/nav-ins2</property>
+        <property alias="/params/nav-ins2"/>
         <step>1</step>
         <min>0</min>
         <max>1</max>

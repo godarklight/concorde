@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/vor-compass.ac</path>
+  <params>
+    <heading-deg>/instrumentation/compass[0]/heading-deg</heading-deg>
+  </params>
   <animation>
     <type>rotate</type>
     <object-name>Guage</object-name>
-    <property>/instrumentation/compass[0]/heading-deg</property>
+    <property alias="/params/heading-deg"/>
     <center>
       <x-m>0</x-m>
       <y-m>0</y-m>

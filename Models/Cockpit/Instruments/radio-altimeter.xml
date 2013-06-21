@@ -1,47 +1,18 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/radio-altimeter.ac</path>
+  <params>
+    <serviceable>/instrumentation/radio-altimeter[0]/serviceable</serviceable>
+    <dial-ft>/instrumentation/radio-altimeter[0]/dial-decision-ft</dial-ft>
+    <decision-ft>/instrumentation/radio-altimeter[0]/dial-decision-ft</decision-ft>
+    <ft-sel>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</ft-sel>
+    <decision-ctrl>/instrumentation/radio-altimeter[0]/decision-height</decision-ctrl>
+  </params>
   <animation>
     <type>rotate</type>
     <object-name>RadioAltitude</object-name>
-    <property>instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
-    <interpolation>
-      <entry>
-        <ind>0</ind>
-        <dep>0</dep>
-      </entry>
-      <entry>
-        <ind>500</ind>
-        <dep>180</dep>
-      </entry>
-      <entry>
-        <ind>1500</ind>
-        <dep>270</dep>
-      </entry>
-      <entry>
-        <ind>2000</ind>
-        <dep>292</dep>
-      </entry>
-      <entry>
-        <ind>2500</ind>
-        <dep>315</dep>
-      </entry>
-    </interpolation>
-    <center>
-      <x-m>0</x-m>
-      <y-m>0</y-m>
-      <z-m>0</z-m>
-    </center>
-    <axis>
-      <x>-1</x>
-      <y>0</y>
-      <z>0</z>
-    </axis>
-  </animation>
-  <animation>
-    <type>rotate</type>
     <object-name>RadioAltitudeBlack</object-name>
-    <property>instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
+    <property alias="/params/ft-sel"/>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -78,7 +49,7 @@
   <animation>
     <type>rotate</type>
     <object-name>DHAltitude</object-name>
-    <property>instrumentation/radio-altimeter[0]/dial-decision-ft</property>
+    <property alias="/params/dial-ft"/>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -122,7 +93,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-assign</command>
-        <property>instrumentation/radio-altimeter[0]/decision-height</property>
+        <property alias="/params/decision-ctrl"/>
         <value>false</value>
       </binding>
     </action>
@@ -132,7 +103,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-        <property>instrumentation/radio-altimeter[0]/dial-decision-ft</property>
+        <property alias="/params/dial-ft"/>
         <step>10</step>
         <min>0</min>
         <max>1000</max>
@@ -145,7 +116,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-adjust</command>
-        <property>instrumentation/radio-altimeter[0]/dial-decision-ft</property>
+        <property alias="/params/dial-ft"/>
         <step>-10</step>
         <min>0</min>
         <max>1000</max>

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <PropertyList>
   <params>
-    <nav-ins2>/instrumentation/hsi[0]/compass2</nav-ins2>
+    <compass2>/instrumentation/hsi[0]/compass2</compass2>
   </params>
   <path>../Models/switch.ac</path>
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <property>/instrumentation/hsi[0]/compass2</property>
+    <property alias="/params/compass2"/>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -38,7 +38,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>/instrumentation/hsi[0]/compass2</property>
+        <property alias="/params/compass2"/>
         <step>1</step>
         <min>0</min>
         <max>1</max>

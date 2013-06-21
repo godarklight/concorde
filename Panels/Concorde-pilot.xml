@@ -255,9 +255,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <h>15</h>
   </instrument>
 
--->
-  
-<!--
   <instrument include="Instruments/concorde-standby-asi.xml">
    <name>Standby KIAS display</name>
    <condition>
@@ -2744,7 +2741,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>10</w>
    <h>10</h>
   </instrument>
-
+  <!--
   <instrument include="Instruments/concorde-accl-aoa.xml">
    <name>g and AoA display (Copilot)</name>
    <condition>
@@ -2783,7 +2780,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>38</w>
    <h>165</h>
   </instrument>
-
+  -->
   <instrument include="Instruments/concorde-controls.xml">
    <name>Control Position Indicators</name>
    <condition>
@@ -2915,7 +2912,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>20</w>
    <h>20</h>
   </instrument>
-
+<!--
   <instrument include="Instruments/concorde-dme.xml">
    <name>DME Display (Copilot)</name>
    <condition>
@@ -2948,7 +2945,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>70</w>
    <h>35</h>
   </instrument>
-
+  -->
   <instrument include="Instruments/concorde-title-brakes-anti-skid.xml">
    <name>Anti-skid</name>
    <condition>
@@ -3280,7 +3277,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
   </instrument>
 
 <!-- COPILOT left -->
-
+<!--
   <instrument include="Instruments/concorde-red-m-cg.xml">
    <name>Alarm on Center of Gravity (Copilot)</name>
    <condition>
@@ -3474,9 +3471,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>70</w>
    <h>70</h>
   </instrument>
-
+  -->
 <!-- COPILOT center -->
-
+  <!--
   <instrument include="Instruments/concorde-landing-display.xml">
    <name>Landing display (Copilot)</name>
    <condition>
@@ -3517,7 +3514,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>139</w>
    <h>32</h>
   </instrument>
-
+  
   <instrument include="Instruments/concorde-horizon.xml">
    <name>Attitude Indicator (Copilot)</name>
    <condition>
@@ -3560,7 +3557,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>100</w>
    <h>100</h>
   </instrument>
-
+  
   <instrument include="Instruments/concorde-hsi.xml">
    <name>Horizontal Situation Indicator (Copilot)</name>
    <condition>
@@ -3638,9 +3635,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>100</w>
    <h>27</h>
   </instrument>
-
+-->
 <!-- COPILOT right -->
-
+<!--
   <instrument include="Instruments/concorde-red-terrain.xml">
    <name>Alarm on Terrain (Copilot)</name>
    <condition>
@@ -3673,7 +3670,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>25</w>
    <h>10</h>
   </instrument>
-
+  
   <instrument include="Instruments/concorde-vsi.xml">
    <name>Vsi display (Copilot)</name>
    <condition>
@@ -3710,7 +3707,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>26</w>
    <h>156</h>
   </instrument>
-
+ 
   <instrument include="Instruments/concorde-r-nav-indicator.xml">
    <name>INS 2 DME</name>
    <condition>
@@ -3749,7 +3746,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>50</w>
    <h>8</h>
   </instrument>
-
+  
   <instrument include="Instruments/concorde-radio-alt.xml">
    <name>Radio altimeter (Copilot)</name>
    <condition>
@@ -3904,9 +3901,9 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>70</w>
    <h>70</h>
   </instrument>
-
+  -->
 <!-- COPILOT far right -->
-
+  <!--
   <instrument include="Instruments/concorde-compass-ins.xml">
    <name>Compass INS (Copilot)</name>
    <condition>
@@ -4084,7 +4081,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>17</w>
    <h>51</h>
   </instrument>
-
+  
   <instrument include="Instruments/concorde-clock.xml">
    <name>Chronometer (copilot)</name>
    <condition>
@@ -4153,7 +4150,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
    <w>70</w>
    <h>70</h>
   </instrument>
-
+  -->
  </instruments>
 
 </PropertyList>

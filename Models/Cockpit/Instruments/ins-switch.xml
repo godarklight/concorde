@@ -7,7 +7,7 @@
   <animation>
     <type>rotate</type>
     <object-name>Switch</object-name>
-    <property>/instrumentation/compass[0]/att-ins3</property>
+    <property alias="/params/att-ins3"/>
     <interpolation>
       <entry>
         <ind>0</ind>
@@ -38,7 +38,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>/instrumentation/compass[0]/att-ins3</property>
+        <property alias="/params/att-ins3"/>
         <step>1</step>
         <min>0</min>
         <max>1</max>

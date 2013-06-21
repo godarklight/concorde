@@ -1,10 +1,18 @@
 <?xml version="1.0"?>
 <PropertyList>
   <path>../Models/machmeter.ac</path>
+  <params>
+    <serviceable>/instrumentation/mach-indicator[0]/serviceable</serviceable>
+    <failure-flag>/instrumentation/mach-indicator[0]/failure-flag</failure-flag>
+    <mach-sel>/instrumentation/mach-indicator[0]/indicated-mach</mach-sel>
+    <mmo-sel>/instrumentation/mach-indicator[0]/mmo-mach</mmo-sel>
+    <min-sel>/instrumentation/mach-indicator[0]/min</min-sel>
+    <max-sel>/instrumentation/mach-indicator[0]/max</max-sel>
+  </params>
   <animation>
     <type>rotate</type>
     <object-name>MachNeedle</object-name>
-    <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+    <property alias="/params/mach-sel"/>
     <interpolation>
       <entry>
         <ind>.4</ind>
@@ -29,7 +37,7 @@
   <animation>
     <type>rotate</type>
     <object-name>LimitNeedle</object-name>
-    <property>instrumentation/mach-indicator[0]/mmo-mach</property>
+    <property alias="/params/mmo-sel"/>
     <interpolation>
       <entry>
         <ind>.4</ind>
@@ -54,7 +62,7 @@
   <animation>
     <type>rotate</type>
     <object-name>AFT</object-name>
-    <property>instrumentation/mach-indicator[0]/min</property>
+    <property alias="/params/min-sel"/>
     <interpolation>
       <entry>
         <ind>.4</ind>
@@ -79,7 +87,7 @@
   <animation>
     <type>rotate</type>
     <object-name>FWD</object-name>
-    <property>instrumentation/mach-indicator[0]/max</property>
+    <property alias="/params/max-sel"/>
     <interpolation>
       <entry>
         <ind>.4</ind>
@@ -108,15 +116,15 @@
       <prod>
         <sum>
           <floor>
-            <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+            <property alias="/params/mach-sel"/>
           </floor>
           <max>
             <prod>
               <difference>
-                <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+                <property alias="/params/mach-sel"/>
                 <value>0.99</value>
                 <floor>
-                  <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+                  <property alias="/params/mach-sel"/>
                 </floor>
               </difference>
               <value>100</value>
@@ -141,14 +149,13 @@
   <animation>
     <type>rotate</type>
     <object-name>Number2</object-name>
-    <!-- <property>instrumentation/mach-indicator[0]/indicated-mach</property> -->
     <expression>
       <prod>
         <sum>
           <div>
             <floor>
               <prod>
-                <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+                <property alias="/params/mach-sel"/>
                 <value>10</value>
               </prod>
             </floor>
@@ -157,12 +164,12 @@
           <max>
             <prod>
               <difference>
-                <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+                <property alias="/params/mach-sel"/>
                 <value>0.09</value>
                 <div>
                   <floor>
                     <prod>
-                      <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+                      <property alias="/params/mach-sel"/>
                       <value>10</value>
                     </prod>
                   </floor>
@@ -191,7 +198,7 @@
   <animation>
     <type>rotate</type>
     <object-name>Number3</object-name>
-    <property>instrumentation/mach-indicator[0]/indicated-mach</property>
+    <property alias="/params/mach-sel"/>
     <factor>3600</factor>
     <center>
       <x-m>-0.007806</x-m>
