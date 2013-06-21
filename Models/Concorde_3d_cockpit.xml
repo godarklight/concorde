@@ -294,7 +294,25 @@
       <pitch-deg>-10</pitch-deg>
     </offsets>
   </model>
-    <model>
+  <model>
+    <name>Captain RNAV WX Radar Update</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/rnav-wx-update.xml</path>
+    <overlay>
+        <params>
+    <test>/controls/lighting/crew/captain/test</test>
+    <low>/controls/lighting/crew/captain/low</low>
+    <aligned-select>/instrumentation/ins[0]/msu/aligned</aligned-select>
+    <dme-select>/instrumentation/dme[0]/in-range</dme-select>
+  </params>
+    </overlay>
+    <offsets>
+      <x-m>-23.83</x-m>
+      <y-m>-0.30</y-m>
+      <z-m>1.25</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
     <name>Captain Standby Horizon</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/standby-horizon.xml</path>
     <offsets>
