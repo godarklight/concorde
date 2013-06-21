@@ -99,28 +99,28 @@
     <object-name>GSWarning</object-name>
     <condition>
       <or>
-      <and>
-        <or>
-          <and>
-            <not>
-              <property alias="/params/gs1-in-range"/>
-            </not>
-            <not>
+        <and>
+          <or>
+            <and>
+              <not>
+                <property alias="/params/gs1-in-range"/>
+              </not>
+              <not>
+                <property alias="/params/fd2"/>
+              </not>
+              <property alias="/params/nav1-has-gs"/>
+            </and>
+            <and>
+              <not>
+                <property alias="/params/gs2-in-range"/>
+              </not>
+              <property alias="/params/nav2-has-gs"/>
               <property alias="/params/fd2"/>
-            </not>
-            <property alias="/params/nav1-has-gs"/>
-          </and>
-          <and>
-            <not>
-              <property alias="/params/gs2-in-range"/>
-            </not>
-            <property alias="/params/nav2-has-gs"/>
-            <property alias="/params/fd2"/>
-          </and>
-        </or>
-        <property alias="/params/fd-engage"/>
-      </and>
-              <property alias="/params/test"/>
+            </and>
+          </or>
+          <property alias="/params/fd-engage"/>
+        </and>
+        <property alias="/params/test"/>
       </or>
     </condition>
   </animation>
@@ -129,10 +129,10 @@
     <object-name>GyroWarning</object-name>
     <condition>
       <or>
-      <not>
-        <property alias="/params/attitude-serviceable"/>
-      </not>
-              <property alias="/params/test"/>
+        <not>
+          <property alias="/params/attitude-serviceable"/>
+        </not>
+        <property alias="/params/test"/>
       </or>
     </condition>
   </animation>
@@ -141,10 +141,10 @@
     <object-name>FDWarning</object-name>
     <condition>
       <or>
-      <not>
-        <property alias="/params/fd-serviceable"/>
-      </not>
-              <property alias="/params/test"/>
+        <not>
+          <property alias="/params/fd-serviceable"/>
+        </not>
+        <property alias="/params/test"/>
       </or>
     </condition>
   </animation>
@@ -153,11 +153,11 @@
     <object-name>AltWarning</object-name>
     <condition>
       <or>
-      <greater-than>
-        <property>/position/altitude-ft</property>
-        <value>60000</value>
-      </greater-than>
-              <property alias="/params/test"/>
+        <greater-than>
+          <property>/position/altitude-ft</property>
+          <value>60000</value>
+        </greater-than>
+        <property alias="/params/test"/>
       </or>
     </condition>
   </animation>
@@ -294,17 +294,17 @@
     <object-name>ATT</object-name>
     <condition>
       <or>
-      <or>
-        <greater-than-equals>
-          <property>/orientation/pitch-deg</property>
-          <value>16.5</value>
-        </greater-than-equals>
-        <less-than-equals>
-          <property>/orientation/pitch-deg</property>
-          <value>-5.5</value>
-        </less-than-equals>
-      </or>
-              <property alias="/params/test"/>
+        <or>
+          <greater-than-equals>
+            <property>/orientation/pitch-deg</property>
+            <value>16.5</value>
+          </greater-than-equals>
+          <less-than-equals>
+            <property>/orientation/pitch-deg</property>
+            <value>-5.5</value>
+          </less-than-equals>
+        </or>
+        <property alias="/params/test"/>
       </or>
     </condition>
     <emission>
@@ -318,14 +318,14 @@
     <object-name>DH</object-name>
     <condition>
       <or>
-      <and>
-        <property alias="/params/dh-on"/>
-        <less-than-equals>
-          <property alias="/params/radio-ft"/>
-          <property alias="/params/dh-ft"/>
-        </less-than-equals>
-      </and>
-          <property alias="/params/test"/>
+        <and>
+          <property alias="/params/dh-on"/>
+          <less-than-equals>
+            <property alias="/params/radio-ft"/>
+            <property alias="/params/dh-ft"/>
+          </less-than-equals>
+        </and>
+        <property alias="/params/test"/>
       </or>
     </condition>
     <emission>
@@ -358,7 +358,7 @@
     </axis>
   </animation>
   <!-- Z -->
-    <animation>
+  <animation>
     <type>translate</type>
     <object-name>CoordBall</object-name>
     <expression>

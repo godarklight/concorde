@@ -171,19 +171,19 @@
       <blue>0</blue>
     </emission>
   </animation>
-    <animation>
+  <animation>
     <type>material</type>
     <object-name>DH</object-name>
     <condition>
-	    <or>
-		    <property alias="/params/test"/>
-      <and>
-        <property>/instrumentation/radio-altimeter[0]/decision-height</property>
-        <less-than-equals>
-          <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
-          <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
-        </less-than-equals>
-      </and>
+      <or>
+        <property alias="/params/test"/>
+        <and>
+          <property>/instrumentation/radio-altimeter[0]/decision-height</property>
+          <less-than-equals>
+            <property>/instrumentation/radio-altimeter[0]/indicated-altitude-ft</property>
+            <property>/instrumentation/radio-altimeter[0]/decision-ft</property>
+          </less-than-equals>
+        </and>
       </or>
     </condition>
     <emission>
@@ -192,27 +192,27 @@
       <blue>0.0</blue>
     </emission>
   </animation>
-   <animation>
-  <type>pick</type>
-   <object-name>Test</object-name>
-   <action>
-    <button>0</button>
-    <repeatable>false</repeatable>
-    <interval-sec>0.2</interval-sec>
-    <binding>
-      <command>property-assign</command>
-      <property alias="/params/test"/>
-      <value>1</value>
-    </binding>
-    <mod-up>
-    <binding>
-      <command>property-assign</command>
-      <property alias="/params/test"/>
-      <value>0</value>
-    </binding>
-    </mod-up>
-   </action>
- </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Test</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <interval-sec>0.2</interval-sec>
+      <binding>
+        <command>property-assign</command>
+        <property alias="/params/test"/>
+        <value>1</value>
+      </binding>
+      <mod-up>
+        <binding>
+          <command>property-assign</command>
+          <property alias="/params/test"/>
+          <value>0</value>
+        </binding>
+      </mod-up>
+    </action>
+  </animation>
   <!--
   <animation>
     <type>material</type>

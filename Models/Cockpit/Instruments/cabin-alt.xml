@@ -2,19 +2,34 @@
 <PropertyList>
   <path>../Models/cabin-alt.ac</path>
   <params>
-  <altitude>instrumentation/cabin-altitude[0]/indicated-altitude-ft</altitude>
+    <altitude>instrumentation/cabin-altitude[0]/indicated-altitude-ft</altitude>
   </params>
   <animation>
     <type>rotate</type>
     <object-name>Needle</object-name>
     <property>/instrumentation/cabin-altitude[0]/indicated-altitude-ft</property>
-  <interpolation>
-    <entry><ind>-5000</ind><dep>-30</dep></entry>
-    <entry><ind>20000</ind><dep>120</dep></entry>
-    <entry><ind>30000</ind><dep>165</dep></entry>
-    <entry><ind>40000</ind><dep>195</dep></entry>
-    <entry><ind>50000</ind><dep>210</dep></entry>
-  </interpolation>
+    <interpolation>
+      <entry>
+        <ind>-5000</ind>
+        <dep>-30</dep>
+      </entry>
+      <entry>
+        <ind>20000</ind>
+        <dep>120</dep>
+      </entry>
+      <entry>
+        <ind>30000</ind>
+        <dep>165</dep>
+      </entry>
+      <entry>
+        <ind>40000</ind>
+        <dep>195</dep>
+      </entry>
+      <entry>
+        <ind>50000</ind>
+        <dep>210</dep>
+      </entry>
+    </interpolation>
     <center>
       <x-m>0</x-m>
       <y-m>0</y-m>
