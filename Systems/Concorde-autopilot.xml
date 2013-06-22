@@ -80,7 +80,7 @@
       <beta>1.0</beta>
       <alpha>0.1</alpha>
       <gamma>0.0</gamma>
-      <Ti>5</Ti>
+      <Ti>2</Ti>
       <Td>0</Td>
       <u_min>-1</u_min>
       <u_max>1</u_max>
@@ -205,7 +205,7 @@
     <max>0</max>
   </filter>
   <!-- Heading Driver -->
-  <pid-controller>
+  <pi-simple-controller>
     <name>Heading Bug Hold</name>
     <enable>
       <condition>
@@ -340,12 +340,11 @@
       <Kp>
         <property>/systems/autopilot/pid/heading-kp-current</property>
       </Kp>
-      <Ti>15</Ti>
-      <Td>0</Td>
+      <Ki>-0.01</Ki>
       <min>-30</min>
       <max>30</max>
     </config>
-  </pid-controller>
+  </pi-simple-controller>
   <!-- Heading with rudder (Autoland rollout - Probably not real) -->
   <pi-simple-controller>
     <name>Heading Bug Hold Rudder</name>
