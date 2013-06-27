@@ -9,21 +9,28 @@ KNOWN BUGS
 ==========
 
 My instruments don't honour the serviceable flag yet (no fail flags).
-Autopilot was recently scrapped and rewritten. If you find anything email me.
-Artificial horizon is so wrong, I will fix it when I have the interest or someone asks nicely :)
-The standby airspeed indicator mach part does not work yet.
+
+Autopilot was recently scrapped and rewritten, There is probably a few bugs I haven't caught yet.
+
+The standby airspeed indicator mach part is not animated.
 
 If you find any bugs don't be afraid to email me. I don't bite :)
+
 The more everyone tests and finds bugs, the more I can fix them and the better this will be when (if?) it gets into FGDATA.
 
 FUTURE PLANS
 ============
 
 Replace every 2D panel with a 3D one.
+
 Retexture the instrument frames with an actual texture. It will make it look better than the solid blue.
+
 Port to rembrandt but remain compatible with the default renderer. Fly the 777 at night, you will see why I want to.
-Massive retuning of the autopilot until it kicks every other planes AP out of the sky.
+
+Further tuning of the autopilot until it kicks every other planes AP out of the sky.
+
 Rewrite electrical system - On my computer it causes 20ms of lag every 3 seconds (it jitters).
+
 When I am finished and believe it is complete (maybe August 2013?), I will look at getting this into FGDATA for everyone.
 
 
@@ -35,12 +42,12 @@ Email: godarklight@gmail.com
 Skype: godarklight
 Forum thread: http://www.flightgear.org/forums/viewtopic.php?f=14&t=19824
 
-This is the first aircraft I have worked on. I had to learn blender, flightgear's XML, and nasal all because a (pretty) aircraft that hasn't flown for years. If you are an aircraft developer and you can I'm "doing it wrong", please give me pointers, Otherwise I will continue slowly and surely.
+This is the first aircraft I have worked on. I had to learn blender, flightgear's XML, and nasal all because a (pretty) aircraft that hasn't flown for years. If you are an aircraft developer and you can see that I'm "doing it wrong", please give me pointers, Otherwise I will continue slowly and surely.
 
-I'm improving the concorde because I want to. This might explain it:
+I'm improving the concorde because I want to. This might explain it: http://mpserver15.flightgear.org/modules/fgtracker/?FUNCT=FLIGHTS&CALLSIGN=DARK-L (Looks like the tracker had it's time reset, but effective flight time is accurate)
 
 
-I have been unable to contact the aircraft developer who is anonymous or unknown. If the author does read this, I'm interested in becoming a maintainer after I have finished it. I haven't added myself to the authors because I believe it is still "Unknown's" plane :)
+I have been unable to contact the aircraft developer who is anonymous or unknown. If the author does read this, I'm interested in becoming a maintainer after I have finished it. I haven't added myself to the authors because I believe it is still "Unknown's" plane. Maybe I'll add it in after I finish replacing the panels :)
 
 GIT INFO
 ========
