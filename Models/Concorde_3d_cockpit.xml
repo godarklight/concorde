@@ -1016,7 +1016,17 @@
   </model>
   <!-- COPILOT -->
   <model>
-    <name>AoA Meter</name>
+    <name>Nose Visor</name>
+    <path>Aircraft/Concorde/Models/Cockpit/Instruments/nose-visor.xml</path>
+    <offsets>
+      <x-m>-23.83</x-m>
+      <y-m>0.185</y-m>
+      <z-m>1.212</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+  <model>
+    <name>Copilot AoA Meter</name>
     <path>Aircraft/Concorde/Models/Cockpit/Instruments/aoa.xml</path>
     <overlay>
       <params>
