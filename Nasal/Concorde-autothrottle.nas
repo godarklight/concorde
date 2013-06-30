@@ -90,6 +90,18 @@ Autothrottle.atdiscexport = func {
   me.is_max_climb = 0;
 }
 
+Autothrottle.atdiscmaxclimbexport = func {
+#This function makes it go into speed hold mode
+  me.is_max_climb = 0;
+  var current_mach = me.dependency['mach'][0].getChild('indicated-mach').getValue();
+  if ( current_mach > 2 ) {
+    me.atmachexport();
+    me.mach(CRUISEMACH);
+  } else {
+    me.atspeedholdexport();
+  }
+}
+
 #=== MODES ===#
 
 Autothrottle.idle = func {

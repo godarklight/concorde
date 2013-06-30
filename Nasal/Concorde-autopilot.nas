@@ -43,7 +43,6 @@ Autopilot.new = func {
 
 Autopilot.init = func {
   me.inherit_system('/systems/autopilot');
-  print('Starting concorde autopilot');
 }
 
 Autopilot.set_relation = func(atsystem) {
@@ -114,7 +113,9 @@ Autopilot.discvertical = func {
   me.is_holding_altitude = 0;
   me.is_max_cruise = 0;
   me.is_max_climb_aquire = 0;
-  autothrottlesystem.is_max_climb = 0;
+  if ( autothrottlesystem.is_max_climb ) {
+    autothrottlesystem.atdiscmaxclimbexport();
+  }
   me.is_gs_lock = 0;
   me.disclanding();
   me.itself['autoflight'].getChild('altitude').setValue('');
