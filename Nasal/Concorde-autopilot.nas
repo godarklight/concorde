@@ -580,6 +580,7 @@ Autopilot.apvorlocexport = func {
 
 Autopilot.appitchexport = func {
   if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   me.display('altitude-display', 'PH');
   me.holdpitch();
   me.modepitch();
@@ -588,6 +589,7 @@ Autopilot.appitchexport = func {
 
 Autopilot.apmachpitchexport = func {
   if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   me.display('altitude-display', 'MP');
   autothrottlesystem.holdmach();
   me.modemachpitch();
@@ -629,6 +631,7 @@ Autopilot.apspeedpitchexport = func {
 
 Autopilot.apaltitudeholdexport = func {
   if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   me.is_holding_altitude = 1;
   me.display('altitude-display', 'AH');
   me.holdaltitude();
@@ -675,6 +678,7 @@ Autopilot.apglideexport = func {
 
 Autopilot.apverticalexport = func {
   if ( me.is_autopilot_engaged ) {
+  me.discvertical();
   me.display('altitude-display', 'VS');
   me.holdverticalspeed();
   me.modeverticalspeed();
@@ -771,12 +775,7 @@ Autopilot.schedule = func {
   if ( me.is_vor_lock and me.is_gs_aquire ) {
     var gs_in_range = me.dependency['nav'][0].getChild('gs-in-range').getBoolValue();
     if ( gs_in_range ) {
-      me.is_altitude_aquire = 0;
-      me.is_altitude_aquiring = 0;
-      me.is_holding_altitude = 0;
-      me.is_max_cruise = 0;
-      me.is_max_climb_aquire = 0;
-      autothrottlesystem.is_max_climb = 0;
+      me.discvertical();
       me.modeglidescope();
       me.display('gs-aquire', 0);
       me.display('altitude-display', 'GL');
