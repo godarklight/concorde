@@ -43,12 +43,11 @@ Autopilot.new = func {
 
 Autopilot.init = func {
   me.inherit_system('/systems/autopilot');
-  me.reinitexport();
-  me.discexport();
+  print('Starting concorde autopilot');
 }
 
-Autopilot.setrelation = func(atsystem) {
-  #autothrottlesystem = atsystem;
+Autopilot.set_relation = func(atsystem) {
+  autothrottlesystem = atsystem;
 }
 
 Autopilot.reinitexport = func {
@@ -59,10 +58,7 @@ Autopilot.reinitexport = func {
   me.channelengage = {0:0, 1:0};
   me.is_autopilot_engaged = 0;
   me.is_turbulence = 0;
-  me.is_land_aquire = 0;
-  me.is_landing = 0;
-  me.landing_stage = 0;
-  me.display('land-aquire', 0);
+  me.discexport();
 }
 
 Autopilot.display = func(vartype, varvalue) {
@@ -72,6 +68,7 @@ Autopilot.display = func(vartype, varvalue) {
 #===AUTOPILOT DISCONNECT===#
 
 Autopilot.discexport = func {
+  me.disclanding();
   me.discheading();
   me.discvertical();
   me.discaquire();
@@ -79,6 +76,7 @@ Autopilot.discexport = func {
   me.itself['channel'][1].getChild('engage').setValue(0);
   me.channelengage[0] = 0;
   me.channelengage[1] = 0;
+  me.apengage();
 }
 
 Autopilot.discaquire = func {
@@ -102,54 +100,42 @@ Autopilot.discroutemanager = func {
 Autopilot.discheading = func {
   me.is_holding_heading = 0;
   me.is_vor_lock = 0;
-  #me.dischorizontallock();
+  me.disclanding();
   me.itself['autoflight'].getChild('heading').setValue('');
   me.display('heading-display', '');
-  me.itself['autoflight'].getChild('vor-aquire').setValue(0);
+  me.display('vor-aquire', 0);
   me.discroutemanager();
   me.apengage();
 }
 
 Autopilot.discvertical = func {
+  me.is_altitude_aquire = 0;
+  me.is_altitude_aquiring = 0;
+  me.is_holding_altitude = 0;
   me.is_max_cruise = 0;
+  me.is_max_climb_aquire = 0;
+  autothrottlesystem.is_max_climb = 0;
   me.is_gs_lock = 0;
+  me.disclanding();
   me.itself['autoflight'].getChild('altitude').setValue('');
-  me.itself['autoflight'].getChild('altitude-display').setValue('');
-  me.itself['autoflight'].getChild('altitude-aquire').setValue(0);
-  me.itself['autoflight'].getChild('gs-aquire').setValue(0);
+  me.display('altitude-display', '');
+  me.display('altitude-aquire', 0);
+  me.display('gs-aquire', 0);
   me.apengage();
+}
+
+Autopilot.disclanding = func {
+  me.is_land_aquire = 0;
+  me.is_landing = 0;
+  me.landing_stage = 0;
+  me.display('land-display', 0);
+  me.display('land-aquire', 0);
 }
 
 Autopilot.resettrim = func {
   #Reset trim after autoland
   me.dependency['flight'].getChild('elevator-trim').setValue(0);
   me.dependency['flight'].getChild('aileron-trim').setValue(0);
-}
-
-Autopilot.discincompatible = func(vartype) {
-  if (vartype == "heading") {
-    me.discroutemanager();
-    me.is_vor_lock = 0;
-    me.is_land_aquire = 0;
-    me.is_landing = 0;
-    me.itself['autoflight'].getChild('vor-aquire').setValue(0);
-  }
-  if (vartype == "vertical") {
-    autothrottlesystem.is_max_climb = 0;
-    me.is_max_cruise = 0;
-    me.is_gs_lock = 0;
-    me.is_land_aquire = 0;
-    me.is_landing = 0;
-  }
-  if (vartype == "localiser") {
-
-  }
-  if (vartype == "glidescope") {
-    me.is_holding_altitude = 0;
-  }
-  if (vartype == "max-climb") {
-    
-  }
 }
 
 #===NAV COPY===#
@@ -437,7 +423,9 @@ Autopilot.modeland = func {
       autothrottlesystem.setreverse(0);
       autothrottlesystem.idle();
       autothrottlesystem.atdiscexport();
-      me.discexport();
+      me.itself['channel'][0].getChild('engage').setValue(0);
+      me.itself['channel'][1].getChild('engage').setValue(0);
+      me.apchannel();
       me.resettrim();
       me.is_landing = 0;
       me.landing_stage = 0;
@@ -716,9 +704,9 @@ Autopilot.apaltitudeexport = func {
 }
 
 Autopilot.schedule = func {
-  #Engage max when faster than VMO. Stops concorde from desending in climb mode (which is weird).
   if ( me.is_autopilot_engaged ) {
-  if ( me.is_max_climb_aquire ) {
+  #Engage max when faster than VMO. Stops concorde from desending in climb mode (which is weird).
+    if ( me.is_max_climb_aquire ) {
     var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
     var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
     if ( current_airspeed > ( max_airspeed - 20 )) {
@@ -782,7 +770,12 @@ Autopilot.schedule = func {
   if ( me.is_vor_lock and me.is_gs_aquire ) {
     var gs_in_range = me.dependency['nav'][0].getChild('gs-in-range').getBoolValue();
     if ( gs_in_range ) {
-      me.discvertical();
+      me.is_altitude_aquire = 0;
+      me.is_altitude_aquiring = 0;
+      me.is_holding_altitude = 0;
+      me.is_max_cruise = 0;
+      me.is_max_climb_aquire = 0;
+      autothrottlesystem.is_max_climb = 0;
       me.modeglidescope();
       me.display('gs-aquire', 0);
       me.display('altitude-display', 'GL');

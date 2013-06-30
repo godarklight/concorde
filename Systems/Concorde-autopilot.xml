@@ -162,30 +162,23 @@
       <Kp>
         <property>/systems/autopilot/pid/vs-kp-current</property>
       </Kp>
-      <Ti>3</Ti>
+      <Ti>5</Ti>
       <Td>0</Td>
       <min>-15.0</min>
       <max>20.0</max>
     </config>
   </pid-controller>
   <!-- Altitude Hold VS Driver -->
-  <pid-controller>
+  <filter>
     <name>Altitude Hold Vertical Speed Driver</name>
-    <input>
-      <prop>/instrumentation/altimeter/indicated-altitude-ft</prop>
-    </input>
-    <reference>
-      <property>/autopilot/settings/target-altitude-ft</property>
-    </reference>
+    <type>gain</type>
+    <gain>-4</gain>
+    <input>/instrumentation/altimeter/indicated-altitude-ft</input>
+    <reference>/autopilot/settings/target-altitude-ft</reference>
     <output>/autopilot/internal/target-vertical-speed-fpm</output>
-    <config>
-      <Kp>10</Kp>
-      <Ti>15</Ti>
-      <Td>0</Td>
-      <min>-1000</min>
-      <max>2000</max>
-    </config>
-  </pid-controller>
+    <min>-1000</min>
+    <max>2000</max>
+  </filter>
   <!-- Glidescope Hold Driver -->
   <filter>
     <name>Glidescope Hold Vertical Speed Driver</name>
@@ -340,7 +333,7 @@
       <Kp>
         <property>/systems/autopilot/pid/heading-kp-current</property>
       </Kp>
-      <Ki>-0.01</Ki>
+      <Ki>-0.02</Ki>
       <min>-30</min>
       <max>30</max>
     </config>
@@ -566,7 +559,7 @@
       <prop>/controls/engines/engine[3]/throttle</prop>
     </output>
     <config>
-      <Kp>0.05</Kp>
+      <Kp>0.1</Kp>
       <!-- proportional gain -->
       <beta>1.0</beta>
       <!-- input value weighing factor -->
@@ -575,7 +568,7 @@
       <gamma>0.0</gamma>
       <!-- input value weighing factor for -->
       <!-- unfiltered derivative error -->
-      <Ti>10.0</Ti>
+      <Ti>15</Ti>
       <!-- integrator time -->
       <Td>0.00001</Td>
       <!-- derivator time -->

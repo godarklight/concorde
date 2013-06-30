@@ -3,8 +3,8 @@ Autothrottle = {};
 Autothrottle.new = func {
   var obj = { parents : [Autothrottle,System],
     GROUNDAUTOPILOT: 0,  # Autothrotle for take off. No.
-    MINAUTOPILOTFT: 100, # Minimum feet to engage autothrottle
-    SPEEDLIGHT: 10,      # When the speed aquire light goes out (in knots difference).
+    MINAUTOPILOTFT: 50,  # Minimum feet to engage autothrottle
+    SPEEDLIGHT: 3,       # When the speed aquire light goes out (in knots difference).
     CRUISEMACH: 2.02,    # Speed to cruise in max cruise mode.
   };
 
@@ -31,10 +31,6 @@ Autothrottle.atsetdefaultmode = func {
   if ( current_mode == '' ) {
     me.atspeedholdexport();
   }
-}
-
-Autothrottle.iaslight = func {
-
 }
 
 Autothrottle.atchannel = func {

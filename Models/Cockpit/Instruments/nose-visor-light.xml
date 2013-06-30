@@ -62,36 +62,6 @@
       <blue>0</blue>
     </emission>
   </animation>
-  <animation>
-    <type>material</type>
-    <object-name>CRS</object-name>
-    <condition>
-      <and>
-        <equals>
-          <property>/systems/engines/engine[0]/rating</property>
-          <value>cruise</value>
-        </equals>
-        <equals>
-          <property>/systems/engines/engine[1]/rating</property>
-          <value>cruise</value>
-        </equals>
-        <equals>
-          <property>/systems/engines/engine[2]/rating</property>
-          <value>cruise</value>
-        </equals>
-        <equals>
-          <property>/systems/engines/engine[3]/rating</property>
-          <value>cruise</value>
-        </equals>
-      </and>
-    </condition>
-    <emission>
-      <red>0.8</red>
-      <green>0.8</green>
-      <blue>0.8</blue>
-    </emission>
-  </animation>
-  -->
   <!--Default Lighting-->
   <animation>
     <type>material</type>

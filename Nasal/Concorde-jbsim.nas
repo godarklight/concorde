@@ -43,7 +43,7 @@ ConcordeMain.new = func {
 #   no relation to an instrument / system failure.
 
 ConcordeMain.putinrelation = func {
-   #autopilotsystem.set_relation( autothrottlesystem );
+   autopilotsystem.set_relation( autothrottlesystem );
    MWSsystem.set_relation( ADCinstrument, CGinstrument, INSinstrument,
                            airbleedsystem, electricalsystem, enginesystem,
                            flightsystem, fuelsystem, hydraulicsystem, antiicingsystem,
@@ -65,6 +65,8 @@ ConcordeMain.synchronize = func {
    hydraulicsystem.set_rate( fuelsystem.PUMPSEC );
    airbleedsystem.set_rate( fuelsystem.PUMPSEC );
    enginesystem.set_rate( fuelsystem.PUMPSEC );
+   #This seems to be the correct spot for this.
+   autopilotsystem.reinitexport();
 }
 
 ConcordeMain.startupcron = func {
@@ -240,6 +242,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.tankpressuresystem = Concorde.Pressurizetank.new();
    globals.Concorde.autopilotsystem = Concorde.Autopilot.new();
    globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
+
    globals.Concorde.GPWSsystem = Concorde.Gpws.new();
    globals.Concorde.MWSsystem = Concorde.Mws.new();
    globals.Concorde.enginesystem = Concorde.Engine.new();
@@ -316,6 +319,7 @@ ConcordeMain.reinit = func {
        # default is JSBSim state, which loses fuel selection.
        globals.Concorde.fuelsystem.reinitexport();
    }
+   globals.Concorde.autopilotsystem.reinitexport();
 }
 
 # object creation
