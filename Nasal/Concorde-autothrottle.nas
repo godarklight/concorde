@@ -96,7 +96,7 @@ Autothrottle.atdiscmaxclimbexport = func {
   var current_mach = me.dependency['mach'][0].getChild('indicated-mach').getValue();
   if ( current_mach > 2 ) {
     me.atmachexport();
-    me.mach(CRUISEMACH);
+    me.mach(me.CRUISEMACH);
   } else {
     me.atspeedholdexport();
   }

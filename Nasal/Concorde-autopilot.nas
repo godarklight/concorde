@@ -57,6 +57,11 @@ Autopilot.reinitexport = func {
   me.channelengage = {0:0, 1:0};
   me.is_autopilot_engaged = 0;
   me.is_turbulence = 0;
+  me.is_altitude_aquire = 0;
+  me.is_altitude_aquiring = 0;
+  me.is_holding_altitude = 0;
+  me.is_max_climb_aquire = 0;
+  me.is_max_cruise = 0;
   me.discexport();
 }
 
@@ -111,13 +116,13 @@ Autopilot.discvertical = func {
   me.is_altitude_aquire = 0;
   me.is_altitude_aquiring = 0;
   me.is_holding_altitude = 0;
-  me.is_max_cruise = 0;
   me.is_max_climb_aquire = 0;
-  if ( autothrottlesystem.is_max_climb ) {
-    autothrottlesystem.atdiscmaxclimbexport();
-  }
   me.is_gs_lock = 0;
   me.disclanding();
+  if ( autothrottlesystem.is_max_climb or me.is_max_cruise ) {
+    me.is_max_cruise = 0;
+    autothrottlesystem.atdiscmaxclimbexport();
+  }
   me.itself['autoflight'].getChild('altitude').setValue('');
   me.display('altitude-display', '');
   me.display('altitude-aquire', 0);
@@ -678,7 +683,12 @@ Autopilot.apglideexport = func {
 
 Autopilot.apverticalexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
+    if ( me.is_altitude_aquire ) {
+      me.discvertical();
+    } else {
+      me.discvertical();
+      me.is_altitude_aquire = 1;
+    }
   me.display('altitude-display', 'VS');
   me.holdverticalspeed();
   me.modeverticalspeed();
