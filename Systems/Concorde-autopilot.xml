@@ -149,8 +149,7 @@
       </condition>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fps</prop>
-      <scale>60</scale>
+      <prop>/autopilot/internal/vert-speed-fpm</prop>
     </input>
     <reference>
       <property>/autopilot/internal/target-vertical-speed-fpm-filtered</property>
@@ -397,11 +396,10 @@
       <value>vertical-speed-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
+      <prop>/autopilot/internal/vert-speed-fpm</prop>
     </input>
     <reference>
       <prop>/autopilot/settings/vertical-speed-fpm</prop>
-      <scale>0.01667</scale>
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -556,10 +554,10 @@
       <value>gs-with-throttle</value>
     </enable>
     <input>
-      <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
+      <prop>/autopilot/internal/vert-speed-fpm</prop>
     </input>
     <reference>
-      <prop>/instrumentation/nav[0]/gs-rate-of-climb</prop>
+      <prop>/instrumentation/nav[0]/gs-rate-of-climb-fpm</prop>
     </reference>
     <output>
       <prop>/controls/engines/engine[0]/throttle</prop>
@@ -568,7 +566,7 @@
       <prop>/controls/engines/engine[3]/throttle</prop>
     </output>
     <config>
-      <Kp>0.1</Kp>
+      <Kp>0.005</Kp>
       <!-- proportional gain -->
       <beta>1.0</beta>
       <!-- input value weighing factor -->
