@@ -60,7 +60,6 @@ Autopilot.reinitexport = func {
   me.is_altitude_aquire = 0;
   me.is_altitude_aquiring = 0;
   me.is_holding_altitude = 0;
-  me.is_max_climb_aquire = 0;
   me.is_max_cruise = 0;
   me.discexport();
 }
@@ -84,7 +83,6 @@ Autopilot.discexport = func {
 }
 
 Autopilot.discaquire = func {
-  me.is_max_climb_aquire = 0;
   me.is_vor_aquire = 0;
   me.is_land_aquire = 0;
   me.is_gs_aquire = 0;
@@ -116,7 +114,6 @@ Autopilot.discvertical = func {
   me.is_altitude_aquire = 0;
   me.is_altitude_aquiring = 0;
   me.is_holding_altitude = 0;
-  me.is_max_climb_aquire = 0;
   me.is_gs_lock = 0;
   me.disclanding();
   if ( autothrottlesystem.is_max_climb or me.is_max_cruise ) {
@@ -343,7 +340,6 @@ Autopilot.modemaxclimb = func {
     me.display('altitude-display', 'CL');
     autothrottlesystem.display('speed-display', '');
     me.is_max_cruise = 0;
-    me.is_max_climb_aquire = 0;
     autothrottlesystem.is_max_climb = 1;
     var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
     autothrottlesystem.speed(max_airspeed);
@@ -571,76 +567,75 @@ Autopilot.apturbulenceexport = func {
 
 Autopilot.apvorlocexport = func {
   if ( me.is_autopilot_engaged ) {
-  if ( ! me.is_vor_aquire and ! me.is_vor_lock ) {
-    me.is_vor_aquire = 1;
-    me.display('vor-aquire', 1);
-  } else {
-    if ( ! me.is_land_aquire and ! me.is_landing and ! me.is_gs_aquire and ! me.is_gs_lock ) {
-      me.is_vor_aquire = 0;
-      me.display('vor-aquire', 0);
+    if ( ! me.is_vor_aquire and ! me.is_vor_lock ) {
+      me.is_vor_aquire = 1;
+      me.display('vor-aquire', 1);
+    } else {
+      if ( ! me.is_land_aquire and ! me.is_landing and ! me.is_gs_aquire and ! me.is_gs_lock ) {
+        me.is_vor_aquire = 0;
+        me.display('vor-aquire', 0);
+      }
     }
-  }
   }
 }
 
 Autopilot.appitchexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
-  me.display('altitude-display', 'PH');
-  me.holdpitch();
-  me.modepitch();
+    me.discvertical();
+    me.display('altitude-display', 'PH');
+    me.holdpitch();
+    me.modepitch();
   }
 }
 
 Autopilot.apmachpitchexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
-  me.display('altitude-display', 'MP');
-  autothrottlesystem.holdmach();
-  me.modemachpitch();
+    if ( autothrottlesystem.is_autothrottle_engaged ) {
+      me.discvertical();
+      me.display('altitude-display', 'MP');
+      autothrottlesystem.holdmach();
+      me.modemachpitch();
+    } else {
+      gui.popupTip("Disable autothrottle before enabling mach with pitch");
+    }
   }
 }
 
 Autopilot.apmaxclimbexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
-  #To prevent the concorde from desending in max climb mode, I changed this to an aquire mode.
-  #I cannot find information on what happens when the concorde is at 250knots and VMO is 380knots.
-  #This stops the concorde from crashing into the ground while not near VMO.
-  #Max climb is just a fancy way of saying, "speed-with-pitch-trim" with speed set at VMO.
-
-  var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
-  var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
-  autothrottlesystem.atdiscspeed();
-  autothrottlesystem.atengage();
-  if ( current_airspeed > (max_airspeed - 10) ) {
-    me.modemaxclimb();
-  } else {
-    me.is_max_climb_aquire = 1;
-    me.setverticalspeed(0);
-    me.modeverticalspeed();
-  }
-  me.display('altitude-display', 'CL');
-  autothrottlesystem.display('speed-display', '');
+    if ( autothrottlesystem.is_autothrottle_engaged ) {
+      me.discvertical();
+      autothrottlesystem.atdiscspeed();
+      autothrottlesystem.atengage();
+      me.modemaxclimb();
+      me.display('altitude-display', 'CL');
+      autothrottlesystem.display('speed-display', '');
+    } else {
+      gui.popupTip("Engage autothrottle before enabling max climb");
+    }
   }
 }
 
 Autopilot.apspeedpitchexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
-  me.display('altitude-display', 'IP');
-  autothrottlesystem.holdspeed();
-  me.modespeedpitch();
+    if ( autothrottlesystem.is_autothrottle_engaged ) {
+      me.discvertical();
+      me.display('altitude-display', 'IP');
+      autothrottlesystem.holdspeed();
+      me.modespeedpitch();
+    } else {
+      gui.popupTip("Disable autothrottle before enabling speed with pitch");
+    }
   }
 }
 
 Autopilot.apaltitudeholdexport = func {
   if ( me.is_autopilot_engaged ) {
-  me.discvertical();
-  me.is_holding_altitude = 1;
-  me.display('altitude-display', 'AH');
-  me.holdaltitude();
-  me.modealtitudehold();
+    me.discvertical();
+    me.is_holding_altitude = 1;
+    me.display('altitude-display', 'AH');
+    me.holdaltitude();
+    me.modealtitudehold();
   }
 }
 
@@ -656,10 +651,10 @@ Autopilot.aplandexport = func {
         me.landing_stage = 0;
         me.display('land-aquire', 1);
       }
-  } else {
-    me.is_land_aquire = 0;
-    me.display('land-aquire', 0);
-  }
+    } else {
+      me.is_land_aquire = 0;
+      me.display('land-aquire', 0);
+    }
   }
 }
 
@@ -720,15 +715,7 @@ Autopilot.apaltitudeexport = func {
 
 Autopilot.schedule = func {
   if ( me.is_autopilot_engaged ) {
-  #Engage max when faster than VMO. Stops concorde from desending in climb mode (which is weird).
-    if ( me.is_max_climb_aquire ) {
-    var current_airspeed = me.dependency['airspeed'][0].getChild('indicated-speed-kt').getValue();
-    var max_airspeed = me.dependency['airspeed'][0].getChild('vmo-kt').getValue();
-    if ( current_airspeed > ( max_airspeed - 20 )) {
-      me.modemaxclimb();
-    }
-  }
-
+    
   #Max cruise, Not completely sure on this mode, But I feel like it should be mach-with-throttle and vertical-speed-hold set at 50fpm.
   if ( autothrottlesystem.is_max_climb ) {
   var current_mach = me.dependency['mach'][0].getChild('indicated-mach').getValue();

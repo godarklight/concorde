@@ -533,9 +533,18 @@
       <gamma>0.0</gamma>
       <!-- input value weighing factor for -->
       <!-- unfiltered derivative error -->
-      <Ti>15.0</Ti>
+      <Ti>10.0</Ti>
       <!-- integrator time -->
       <Td>0</Td>
+      <u_min>
+        <condition>
+          <equals>
+            <property>/controls/autoflight/altitude-display</property>
+            <value>CL</value>
+          </equals>
+        </condition>
+        <value>0</value>
+      </u_min>
       <u_min>-6000</u_min>
       <u_max>10000</u_max>
     </config>
