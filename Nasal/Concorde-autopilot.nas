@@ -590,7 +590,7 @@ Autopilot.appitchexport = func {
 
 Autopilot.apmachpitchexport = func {
   if ( me.is_autopilot_engaged ) {
-    if ( autothrottlesystem.is_autothrottle_engaged ) {
+    if ( ! autothrottlesystem.is_autothrottle_engaged ) {
       me.discvertical();
       me.display('altitude-display', 'MP');
       autothrottlesystem.holdmach();
@@ -603,7 +603,7 @@ Autopilot.apmachpitchexport = func {
 
 Autopilot.apmaxclimbexport = func {
   if ( me.is_autopilot_engaged ) {
-    if ( ! autothrottlesystem.is_autothrottle_engaged ) {
+    if ( autothrottlesystem.is_autothrottle_engaged ) {
       me.discvertical();
       autothrottlesystem.atdiscspeed();
       autothrottlesystem.atengage();
