@@ -27,7 +27,7 @@ Autothrottle.display = func(vartype, varvalue) {
 }
 
 Autothrottle.atsetdefaultmode = func {
-  var current_mode = me.itself["autoflight"].getChild('speed').getValue();
+  var current_mode = me.itself["autoflight"].getChild('speed-display').getValue();
   if ( current_mode == '' ) {
     me.atspeedholdexport();
   }
@@ -56,30 +56,18 @@ Autothrottle.atchannel = func {
   if ( me.channelengage[0] or me.channelengage[1] ) {
     me.is_autothrottle_engaged = 1;
     me.atsetdefaultmode();
-    me.atengage();
   } else {
     me.is_autothrottle_engaged = 0;
     me.atdiscspeed();
     me.atdiscexport();
-    me.atengage();
   }
 }
-
-Autothrottle.atengage = func {
-  me.itself['locks'].getChild('speed').setValue(me.itself['autoflight'].getChild('speed').getValue());
-}
-
-Autothrottle.speedacquire = func {
-
-}
-
-
 
 #=== AT DISCONNECT ===#
 
 Autothrottle.atdiscspeed = func {
 #This function disables the autothrottle
-  me.itself['autoflight'].getChild('speed').setValue('');
+  me.itself['locks'].getChild('speed').setValue('');
 }
 
 Autothrottle.atdiscexport = func {
@@ -88,6 +76,9 @@ Autothrottle.atdiscexport = func {
   me.itself['channel'][0].getChild('engage').setValue(0);
   me.itself['channel'][1].getChild('engage').setValue(0);
   me.is_max_climb = 0;
+  me.channelengage[0] = 0;
+  me.channelengage[1] = 0;
+  me.is_autothrottle_engaged = 0;
 }
 
 Autothrottle.atdiscmaxclimbexport = func {
@@ -123,8 +114,8 @@ Autothrottle.setreverse = func(varvalue) {
 }
 
 Autothrottle.is_reversed = func() {
-  var vardeg = me.dependency['engine'][0].getChild('reverser-angle-rad').getValue();
-  if ( vardeg > 2 ) {
+  var thrust_lb = getprop('/engines/engine[0]/thrust_lb');
+  if ( thrust_lb < 0 ) {
     return 1;
   } else {
     return 0;
@@ -132,28 +123,23 @@ Autothrottle.is_reversed = func() {
 }
 
 Autothrottle.modemach = func {
-  me.itself['autoflight'].getChild('speed').setValue('mach-with-throttle');
-  me.atengage();
+  me.itself['locks'].getChild('speed').setValue('mach-with-throttle');
 }
 
 Autothrottle.modespeed = func {
-  me.itself['autoflight'].getChild('speed').setValue('speed-with-throttle');
-  me.atengage();
+  me.itself['locks'].getChild('speed').setValue('speed-with-throttle');
 }
 
 Autothrottle.modeglidescope = func {
-  me.itself['autoflight'].getChild('speed').setValue('gs-with-throttle');
-  me.atengage();
+  me.itself['locks'].getChild('speed').setValue('gs-with-throttle');
 }
 
 Autothrottle.modespeedpitch = func {
-  me.itself['autoflight'].getChild('speed').setValue('speed-with-pitch-trim');
-  me.atengage();
+  me.itself['locks'].getChild('speed').setValue('speed-with-pitch-trim');
 }
 
 Autothrottle.modemachpitch = func {
-  me.itself['autoflight'].getChild('speed').setValue('mach-with-pitch-trim');
-  me.atengage();
+  me.itself['locks'].getChild('speed').setValue('mach-with-pitch-trim');
 }
 
 #=== MODE SETTINGS ===#
@@ -210,9 +196,9 @@ Autothrottle.atspeedexport = func {
 
 Autothrottle.atspeedholdexport = func {
   if ( me.is_autothrottle_engaged ) {
-    me.display('speed-display', 'IH');
     me.holdspeed();
     me.modespeed();
+    me.display('speed-display', 'IH');
   }
 }
 

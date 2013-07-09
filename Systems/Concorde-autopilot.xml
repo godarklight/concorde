@@ -49,6 +49,14 @@
           </equals>
           <equals>
             <property>/autopilot/locks/heading</property>
+            <value>nav1-rudder</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>nav1-rudder-gnd</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
             <value>true-heading-hold</value>
           </equals>
           <equals>
@@ -333,18 +341,18 @@
         <property>/systems/autopilot/pid/heading-kp-current</property>
       </Kp>
       <Ki>-0.02</Ki>
-      <min>-30</min>
-      <max>30</max>
+      <min>-25</min>
+      <max>25</max>
     </config>
   </pi-simple-controller>
-  <!-- Heading with rudder (Autoland rollout - Probably not real) -->
-  <pi-simple-controller>
-    <name>Heading Bug Hold Rudder</name>
+  <!-- Nav with rudder (Autoland rollout - Probably not real) -->
+  <pid-controller>
+    <name>Nav1 Rudder Air</name>
     <enable>
       <condition>
         <equals>
           <property>/autopilot/locks/heading</property>
-          <value>dg-heading-hold-rudder</value>
+          <value>nav1-rudder</value>
         </equals>
       </condition>
     </enable>
@@ -358,10 +366,37 @@
       <prop>/controls/flight/rudder</prop>
     </output>
     <config>
-      <Kp>-0.001</Kp>
-      <Ki>0</Ki>
+      <Kp>-0.01</Kp>
+      <Ti>10</Ti>
+      <Td>1</Td>
       <u_min>-.2</u_min>
       <u_max>.2</u_max>
+    </config>
+  </pid-controller>
+    <pi-simple-controller>
+    <name>Nav1 Rudder Ground</name>
+    <enable>
+      <condition>
+        <equals>
+          <property>/autopilot/locks/heading</property>
+          <value>nav1-rudder-gnd</value>
+        </equals>
+      </condition>
+    </enable>
+    <input>
+      <property>/orientation/heading-deg</property>
+    </input>
+    <reference>
+      <property>/instrumentation/nav[0]/radials/target-radial-deg</property>
+    </reference>
+    <output>
+      <prop>/controls/flight/rudder</prop>
+    </output>
+    <config>
+      <Kp>0.01</Kp>
+      <Ki>0</Ki>
+      <u_min>-.05</u_min>
+      <u_max>.05</u_max>
     </config>
   </pi-simple-controller>
   <!-- Rudder for turns -->
@@ -633,10 +668,20 @@
     <max-rate-of-change>3</max-rate-of-change>
     <input>
       <condition>
-        <equals>
-          <property>/autopilot/locks/heading</property>
-          <value>wing-leveler</value>
-        </equals>
+        <or>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>wing-leveler</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>nav1-rudder</value>
+          </equals>
+          <equals>
+            <property>/autopilot/locks/heading</property>
+            <value>nav1-rudder-gnd</value>
+          </equals>
+        </or>
       </condition>
       <value>0</value>
     </input>
