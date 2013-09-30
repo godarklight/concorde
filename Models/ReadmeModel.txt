@@ -71,6 +71,7 @@ Livery works with only 1 texture per group :
 
 TO DO
 =====
+- replace AC3D groups by XML groups.
 - compression of gear spring.
 - probes on nose, RAT.
 - bore the doors.
@@ -91,6 +92,7 @@ Known problems outside
 
 Known problems cockpit
 ----------------------
+- aft pedestal too large, compared to scaled 3D instruments.
 - overhead slightly too large ?
 
 
@@ -147,9 +149,10 @@ Updates (-) and additions (+) to the original model                         Auth
 - make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
 - make the nosetip seperate in the model.                                 C. Schmitt    2.9
 + extract panels into separate files.                                                   2.10
++ dummy cabin.                                                            E. Huminiuc   2.11
 
 
-Made with Blender 2.49b.
+Made with Blender 2.64.
 
 
-4 September 2011.
+20 July 2013.

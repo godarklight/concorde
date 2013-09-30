@@ -1022,12 +1022,19 @@ Airconditioning.schedule = func {
         me.apply(me.itself["group"][i].getChild("inlet-degc").getPath(),inletdegc);
         me.apply(me.itself["group"][i].getChild("duct-degc").getPath(),ductdegc);
 
-        # air bleed transfers heat to fuel
-        tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
-        fueldegc = tankdegc;
+        if( me.dependency["tank"][i].getChild("empty").getValue() ) {
+            # outside air temperature, once empty
+            fueldegc = me.ramairdegc;
+        }
+        else {
+            # may return a NaN, when tank is empty
+            tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
 
-        if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
-            fueldegc = fueldegc + ( inletdegc - tankdegc ) * me.FUELHEATING;
+            # air bleed transfers heat to fuel
+            fueldegc = tankdegc;
+            if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
+                fueldegc = fueldegc + ( inletdegc - tankdegc ) * me.FUELHEATING;
+            }
         }
         me.apply(me.dependency["engine"][i].getChild("fuel-degc").getPath(),fueldegc);
    }
@@ -1212,9 +1219,20 @@ TankTemperature.selectorexport = func {
 }
 
 TankTemperature.schedule = func {
-   interpolate( me.itself["root"].getChild("tank-degc").getPath(),
-                me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(),
+   var tankdegc = 0.0;
+
+   # once empty, outside air temperature
+   if( me.dependency["tank"][me.selector].getChild("empty").getValue() ) {
+       tankdegc = me.noinstrument["temperature"].getValue();
+   }
+   else {
+       # may return a Nan, once empty
+       tankdegc = me.dependency["tank"][me.selector].getChild("temperature_degC").getValue();
+   }
+
+   interpolate( me.itself["root"].getChild("tank-degc").getPath(), tankdegc,
                 me.AIRSEC );
+
    interpolate( me.itself["root"].getChild("engine-degc").getPath(),
                 me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(),
                 me.AIRSEC );

@@ -16,6 +16,8 @@ Constantaero.new = func {
                ENGINE2 : 1,
                ENGINE1 : 0,
 
+               TANKLP : 13,                                      # tank emulating LP valve
+
                INS3 : 2,
                INS2 : 1,
                INS1 : 0,

@@ -235,6 +235,64 @@ HydGround.schedule = func {
 }
 
 
+# ============
+# WHEEL CHOCKS
+# ============
+
+WheelChocks = {};
+
+WheelChocks.new = func {
+   var obj = { parents : [WheelChocks,System] 
+         };
+
+   obj.init();
+
+   return obj;
+}
+
+WheelChocks.init = func {
+    me.inherit_system("/systems/brakes");
+}
+
+WheelChocks.toggle = func {
+   if( me.dependency["gear-ctrl"].getChild("wheel-chocks").getValue() ) {
+       me.dependency["gear-ctrl"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
+   }
+
+   else {
+       me.dependency["gear-ctrl"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
+   }
+}
+
+WheelChocks.schedule = func {
+   var offsetmeter = 0.0;
+
+   # adjust wheel chocks over ground
+   if( me.dependency["gear-ctrl"].getChild("wheel-chocks").getValue() ) {
+       for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
+            offsetmeter = me.meter( i );
+            me.dependency["gear-sys"][i].getChild("chock-z-m").setValue( offsetmeter );
+       }
+   }
+}
+
+WheelChocks.meter = func( index ) {
+   var compressionnorm = me.dependency["gear"][index].getChild("compression-norm").getValue();
+
+   var compressionminnorm = me.dependency["chocks-ctrl"][index].getChild("compression-min-norm").getValue();
+   var compressionmaxnorm = me.dependency["chocks-ctrl"][index].getChild("compression-max-norm").getValue();
+   var offsetminmeter  = me.dependency["chocks-ctrl"][index].getChild("offset-min-m").getValue();
+   var offsetmaxmeter  = me.dependency["chocks-ctrl"][index].getChild("offset-max-m").getValue();
+
+   var ratio = ( compressionmaxnorm - compressionnorm ) / ( compressionmaxnorm - compressionminnorm);
+   var offsetmeter = ( offsetminmeter - offsetmaxmeter );
+
+   var result = offsetmaxmeter + offsetmeter * ratio;
+
+   return result;
+}
+
+
 # ======
 # BRAKES
 # ======
@@ -244,27 +302,28 @@ Brakes = {};
 Brakes.new = func {
    var obj = { parents : [Brakes,System], 
 
-           heat : BrakesHeat.new(),
+               heat : BrakesHeat.new(),
+               wheelchock : WheelChocks.new(),
 
-           HYDSEC : 1.0,                               # refresh rate
+               HYDSEC : 1.0,                               # refresh rate
 
-           BRAKEACCUPSI : 3000.0,                      # yellow emergency/parking brakes accumulator
-           BRAKEMAXPSI : 1200.0,                       # max brake pressure
-           BRAKEYELLOWPSI : 900.0,                     # max abnormal pressure (yellow)
-           BRAKEGREENPSI : 400.0,                      # max normal pressure (green)
-           BRAKERESIDUALPSI : 15.0,                    # residual pressure of emergency brakes (1 atmosphere)
-           HYDNOPSI : 0.0,
+               BRAKEACCUPSI : 3000.0,                      # yellow emergency/parking brakes accumulator
+               BRAKEMAXPSI : 1200.0,                       # max brake pressure
+               BRAKEYELLOWPSI : 900.0,                     # max abnormal pressure (yellow)
+               BRAKEGREENPSI : 400.0,                      # max normal pressure (green)
+               BRAKERESIDUALPSI : 15.0,                    # residual pressure of emergency brakes (1 atmosphere)
+               HYDNOPSI : 0.0,
 
-           BRAKEPSIPSEC : 400.0,                       # reaction time, when one applies brakes
+               BRAKEPSIPSEC : 400.0,                       # reaction time, when one applies brakes
 
-           BRAKERATEPSI : 0.0,
+               BRAKERATEPSI : 0.0,
 
-           normalaccupsi : 0.0,
-           leftbrakepsi : 0.0,
-           rightbrakepsi : 0.0,
-           emergaccupsi : 0.0,
-           leftemergpsi : 0.0,
-           rightemergpsi : 0.0
+               normalaccupsi : 0.0,
+               leftbrakepsi : 0.0,
+               rightbrakepsi : 0.0,
+               emergaccupsi : 0.0,
+               leftemergpsi : 0.0,
+               rightemergpsi : 0.0
          };
 
    obj.init();
@@ -293,31 +352,31 @@ Brakes.lever = func {
     var pos = constantaero.BRAKENORMAL;
 
     # parking brake
-    if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
+    if( me.dependency["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
         pos = constantaero.BRAKEPARKING;
     }
 
     # emergency (must be set by Captain)
-    elsif( me.dependency["gear"].getChild("brake-emergency").getValue() ) {
+    elsif( me.dependency["gear-ctrl"].getChild("brake-emergency").getValue() ) {
         pos = constantaero.BRAKEEMERGENCY;
     }
 
     # for 3D lever
-    me.dependency["gear"].getChild("brake-pos-norm").setValue(pos);
+    me.dependency["gear-ctrl"].getChild("brake-pos-norm").setValue(pos);
 }
 
 Brakes.emergencyexport = func {
     var value = constant.TRUE;
     var value2 = constant.FALSE;
 
-    if( me.dependency["gear"].getChild("brake-emergency").getValue() ) {
+    if( me.dependency["gear-ctrl"].getChild("brake-emergency").getValue() ) {
         value = constant.FALSE;
         value2 = constant.TRUE;
     }
 
     # toggles between parking and emergency
-    me.dependency["gear"].getChild("brake-emergency").setValue(value);
-    me.dependency["gear"].getChild("brake-parking-lever").setValue(value2);
+    me.dependency["gear-ctrl"].getChild("brake-emergency").setValue(value);
+    me.dependency["gear-ctrl"].getChild("brake-parking-lever").setValue(value2);
 
     me.lever();
 }
@@ -325,13 +384,13 @@ Brakes.emergencyexport = func {
 Brakes.parkingexport = func {
     var value = constant.TRUE;
 
-    if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
+    if( me.dependency["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
         value = constant.FALSE;
     }
 
     # toggles between parking and normal
-    me.dependency["gear"].getChild("brake-emergency").setValue(constant.FALSE);
-    me.dependency["gear"].getChild("brake-parking-lever").setValue(value);
+    me.dependency["gear-ctrl"].getChild("brake-emergency").setValue(constant.FALSE);
+    me.dependency["gear-ctrl"].getChild("brake-parking-lever").setValue(value);
 
     me.lever();
 }
@@ -374,7 +433,7 @@ Brakes.has_normal = func {
 
 Brakes.has = func {
     var result = constant.TRUE;
-    var emergency = me.dependency["gear"].getChild("brake-emergency").getValue();
+    var emergency = me.dependency["gear-ctrl"].getChild("brake-emergency").getValue();
 
     # TO DO : failure only on left or right
     if( ( !me.has_normal() and !emergency ) or
@@ -407,7 +466,7 @@ Brakes.normal = func( greenpsi, yellowpsi ) {
    var targetbrakepsi = 0.0;
 
    # brake failure
-   if( !me.dependency["gear"].getChild("brake-emergency").getValue() ) {
+   if( !me.dependency["gear-ctrl"].getChild("brake-emergency").getValue() ) {
        targetbrakepsi = me.normalpsi( greenpsi );
 
        # disable normal brake (joystick)
@@ -442,17 +501,17 @@ Brakes.emergency = func( yellowpsi ) {
    var targetbrakepsi = me.emergencypsi( yellowpsi );
 
    # brake parking failure
-   if( me.dependency["gear"].getChild("brake-parking-lever").getValue() ) {
+   if( me.dependency["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
        # stays in the green area
        targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEGREENPSI );
        if( me.emergfailure( targetbrakepsi ) ) {
            # disable brake parking (keyboard)
-           me.wheelchocks();
+           me.wheelchock.toggle();
        }
 
        # visualize apply of parking brake
        else {
-           me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
+           me.dependency["gear-ctrl"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
 
            me.parkingapply( targetbrakepsi );
        }
@@ -460,7 +519,7 @@ Brakes.emergency = func( yellowpsi ) {
 
    # unused emergency/parking brakes have a weaker pressure
    else {
-       me.wheelchocks();
+       me.wheelchock.toggle();
 
        if( me.normalaccupsi >= me.BRAKEACCUPSI ) {
            targetbrakepsi = me.truncate( targetbrakepsi, me.BRAKEMAXPSI );
@@ -473,16 +532,9 @@ Brakes.emergency = func( yellowpsi ) {
            }
        }
    }
-}
 
-Brakes.wheelchocks = func {
-   if( me.dependency["gear"].getChild("wheel-chocks").getValue() ) {
-       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKEPARKING);
-   }
-
-   else {
-       me.dependency["gear"].getChild("brake-parking").setValue(constantaero.BRAKENORMAL);
-   }
+   # adjust wheel chocks over ground
+   me.wheelchock.schedule();
 }
 
 Brakes.normalpsi = func( pressurepsi ) {
@@ -515,16 +567,16 @@ Brakes.emergencypsi = func( pressurepsi ) {
 }
 
 Brakes.brakeapply = func( leftnormalpsi, rightnormalpsi, targetbrakepsi ) {
-   var leftpsi = me.apply( me.dependency["gear"].getChild("brake-left").getPath(), leftnormalpsi, targetbrakepsi );
-   var rightpsi = me.apply( me.dependency["gear"].getChild("brake-right").getPath(), rightnormalpsi, targetbrakepsi );
+   var leftpsi = me.apply( me.dependency["gear-ctrl"].getChild("brake-left").getPath(), leftnormalpsi, targetbrakepsi );
+   var rightpsi = me.apply( me.dependency["gear-ctrl"].getChild("brake-right").getPath(), rightnormalpsi, targetbrakepsi );
 
    me.leftbrakepsi = leftpsi;       # BUG ?
    me.rightbrakepsi = rightpsi;       # BUG ?
 }
 
 Brakes.parkingapply = func( targetbrakepsi ) {
-   var leftpsi = me.apply( me.dependency["gear"].getChild("brake-parking").getPath(), me.leftemergpsi, targetbrakepsi );
-   var rightpsi = me.apply( me.dependency["gear"].getChild("brake-parking").getPath(), me.rightemergpsi, targetbrakepsi );
+   var leftpsi = me.apply( me.dependency["gear-ctrl"].getChild("brake-parking").getPath(), me.leftemergpsi, targetbrakepsi );
+   var rightpsi = me.apply( me.dependency["gear-ctrl"].getChild("brake-parking").getPath(), me.rightemergpsi, targetbrakepsi );
 
    me.leftemergpsi = leftpsi;       # BUG ?
    me.rightemergpsi = rightpsi;       # BUG ?
@@ -702,8 +754,8 @@ BrakesHeat.warming = func {
            var stepkt2 = 0.0;
            var stepdegc = 0.0;
 
-           left = me.dependency["gear"].getChild("brake-left").getValue();
-           right = me.dependency["gear"].getChild("brake-right").getValue();
+           left = me.dependency["gear-ctrl"].getChild("brake-left").getValue();
+           right = me.dependency["gear-ctrl"].getChild("brake-right").getValue();
            allbrakes = left + right;
 
            if( allbrakes > 0.0 ) {

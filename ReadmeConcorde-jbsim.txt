@@ -106,7 +106,6 @@ Fuel load
 
 Sounds
 ------
-- see Sounds/Concorde-real-sound.xml to install real Concorde sounds.
 - voice callouts requires Festival (festival --server in a separate shell),
   set /sim/sound/voices/enabled to true.
 - to disable text display of callouts, press "shift-F12" (saved on exit in aircraft-data). 
@@ -123,7 +122,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 2.4.0 : minimal version.
+- 2.12.0 : minimal version.
 
 
 Keyboard
@@ -358,7 +357,6 @@ Engines
 
 Gear
 ....
-- "TYRE"  : tyre pressure.
 - "NOSE WHEEL"   : nose steering without hydraulics.
 
 Hydraulics
@@ -574,6 +572,7 @@ JSBSim
 TO DO
 =====
 - battery discharge.
+- replace AC3D groups by XML groups.
 
 TO DO instruments
 -----------------
@@ -601,14 +600,12 @@ TO DO JSBSim
 Known problems
 ==============
 - data are not saved on reinit.
-- if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
 ------------------------
 - toggle INS mode, only AFTER activation of route, or use "ctrl-I a".
 - NAV hold mode is sensitive to the turbulence of the ground layer.
 - heading modes are a little slow to converge, at supersonic speed.
-- at Mach 2.02, once unlocked, vertical speed hold is unstable.
 
 Known problems 2.4.0 autopilot
 ------------------------------
@@ -622,10 +619,7 @@ Known problems autoland
 
 Known problems sound
 --------------------
-- once 1 engine is shutdown, Concorde-sound.xml engines are mute, if not idle.
 - ATIS volume (VHF) changed only at the frequency swap.
-- exception through OpenAL errors (low hardware ?) means too many sounds :
-  remove for example engine start/shutdown or external sounds.
 
 Known problems OSG
 ------------------
@@ -638,6 +632,7 @@ The following artefacts are supposed to be solved by OSG :
 Secondary problems
 ==================
 - AI doesn't triggers fuel transfert of tanks 5, if tanks are interconnected.
+- if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Secondary problems FDM
 -----------------------
@@ -690,4 +685,4 @@ References
     British Airways maintenance manual.
 
 
-18 September 2011.
+29 September 2013.

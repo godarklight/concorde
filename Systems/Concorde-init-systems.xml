@@ -216,7 +216,7 @@
      <Kp type="double">0.4</Kp>
     </true-heading-hold3>
     <vertical-speed-hold>
-     <Kp type="double">-0.02</Kp>
+     <Kp type="double">-0.005</Kp>
     </vertical-speed-hold>
    </config>
 
@@ -457,7 +457,19 @@
 
    <relations>
     <dependency>
-     <gear>/controls/gear</gear>
+     <chocks-ctrl>
+      <component>/controls/gear/chocks</component>
+      <subcomponent>gear</subcomponent>
+     </chocks-ctrl>
+     <gear>
+      <component>/gear</component>
+      <subcomponent>gear</subcomponent>
+     </gear>
+     <gear-ctrl>/controls/gear</gear-ctrl>
+     <gear-sys>
+      <component>/systems/gear</component>
+      <subcomponent>gear</subcomponent>
+     </gear-sys>
     </dependency>
 
     <noinstrument>
@@ -958,6 +970,15 @@
   <gear>
    <bogie-left-deg type="double">0.0</bogie-left-deg>
    <bogie-right-deg type="double">0.0</bogie-right-deg>
+   <gear n="0">                                                              <!-- front gear -->
+    <chock-z-m type="double">0.0</chock-z-m>
+   </gear>
+   <gear n="1">                                                              <!-- front wing gear -->
+    <chock-z-m type="double">0.0</chock-z-m>
+   </gear>
+   <gear n="2">                                                              <!-- aft wing gear -->
+    <chock-z-m type="double">0.0</chock-z-m>
+   </gear>
 
    <relations>
     <dependency>
@@ -1442,6 +1463,22 @@
     </steward>
    </position>
    <overhead type="bool">false</overhead>
+
+   <relations>
+    <dependency>
+     <current-view>/sim/current-view</current-view>
+     <engineer>/systems/human/engineer</engineer>
+     <views>
+      <component>/sim</component>
+      <subcomponent>view</subcomponent>
+     </views>
+    </dependency>
+
+    <itself>
+     <position>/systems/seat/position</position>
+    </itself>
+   </relations>
+
    <steward type="bool">false</steward>
   </seat>
 

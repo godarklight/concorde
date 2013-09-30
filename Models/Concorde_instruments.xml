@@ -677,6 +677,36 @@
   </model>
 
   <model>
+   <name>VHF 1</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
+   <offsets>
+    <x-m>-23.047</x-m>
+    <y-m>-0.110</y-m>
+    <z-m> 0.820</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>VHF 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
+   <offsets>
+    <x-m>-23.047</x-m>
+    <y-m> 0.110</y-m>
+    <z-m> 0.820</z-m>
+   </offsets>
+   <overlay>
+    <params>
+     <vhf-frq>/instrumentation/comm[1]/frequencies/selected-mhz</vhf-frq>
+     <vhf-stdby>/instrumentation/comm[1]/frequencies/standby-mhz</vhf-stdby>
+     <vhf-selected>/controls/audio/comm[1]/selected</vhf-selected>
+     <vhf-selected2>/controls/audio/comm[1]/standby</vhf-selected2>
+     <vhf-knob>/controls/audio/comm[1]/knob[0]</vhf-knob>
+     <vhf-knob2>/controls/audio/comm[1]/knob[1]</vhf-knob2>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
    <name>INS 3</name>
    <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
    <offsets>
@@ -987,6 +1017,8 @@
    <object-name>Trim Cylinder</object-name>
    <object-name>Throttle Cylinder</object-name>
    <object-name>Brake Cylinder</object-name>
+   <object-name>VHF 1</object-name>
+   <object-name>VHF 2</object-name>
   </animation>
 
   <animation>

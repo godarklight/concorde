@@ -5,6 +5,11 @@
      - only 1 material per object (child included).
      - groups are allowed.
      - Red warnings must be outside the base group.
+
+
+     Known problems :
+     ==============
+     - if no voltage, off light becomes less darker.
 -->
 
 
@@ -253,6 +258,9 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle1</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -272,6 +280,9 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle2</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -291,6 +302,9 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle3</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -310,6 +324,9 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle4</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>

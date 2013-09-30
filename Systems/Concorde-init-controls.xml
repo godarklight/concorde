@@ -92,10 +92,14 @@
   <audio>
    <cancel type="bool">false</cancel>
    <comm n="0">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
     <selected type="bool">true</selected>
     <standby type="bool">false</standby>
    </comm>
    <comm n="1">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
     <selected type="bool">true</selected>
     <standby type="bool">false</standby>
    </comm>
@@ -648,6 +652,26 @@
    <brake-emergency type="bool">false</brake-emergency>       <!-- normal brakes -->
    <brake-parking-lever type="bool">false</brake-parking-lever>
    <brake-pos-norm type="double">0.0</brake-pos-norm>         <!-- 3D lever position -->
+   <chocks>
+    <gear n="0">                                              <!-- front gear -->
+     <compression-max-norm type="double">1.94</compression-max-norm>      <!-- max take off -->
+     <compression-min-norm type="double">1.15</compression-min-norm>      <!-- min fuel -->
+     <offset-max-m type="double"> 0.05</offset-max-m>
+     <offset-min-m type="double">-0.19</offset-min-m>
+    </gear>
+    <gear n="1">                                              <!-- front wing gear -->
+     <compression-max-norm type="double">0.205</compression-max-norm>     <!-- max fuel -->
+     <compression-min-norm type="double">0.080</compression-min-norm>     <!-- min fuel -->
+     <offset-max-m type="double"> 0.08</offset-max-m>
+     <offset-min-m type="double"> 0.03</offset-min-m>
+    </gear>
+    <gear n="2">                                              <!-- aft wing gear -->
+     <compression-max-norm type="double">0.207</compression-max-norm>     <!-- max fuel -->
+     <compression-min-norm type="double">0.120</compression-min-norm>     <!-- min fuel -->
+     <offset-max-m type="double"> 0.10</offset-max-m>
+     <offset-min-m type="double"> 0.07</offset-min-m>
+    </gear>
+   </chocks>
    <hydraulic type="bool">true</hydraulic>                    <!-- not neutral -->
    <steering>
     <channel type="bool">true</channel>                       <!-- channel 1 -->

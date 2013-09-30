@@ -16,21 +16,7 @@
    - in Concorde-set.xml, substitute Concorde-real-sound.xml to Concorde-sound.xml.
 
 
-   CAUTION for ears : external sound level is kept intentionally reasonable.
-
-
-   N1 :
-   - 40 % inside, passenger almost hears the same sound.
-   - 50 % outside, a delay to swap between whistle and exhaust noise.
-   - landing (noisy) is above 50 %, except touch down.
-
-
-   Positions of engines (estimated) :
-   - 4 and 6 m in width.
-   - 40 m in length, from nose.
- 
-   All sounds should be located by turning the head or moving the view.
-
+   These sounds are not currently supported by simgear sound engine.
 
 
    TO DO :
@@ -38,70 +24,9 @@
    - one cannot include sounds in a common file.
 
 
-   Known problems :
-   ==============
-   - interpolated property /systems/engines/transit is not used on its all range,
-   because nasal might not reach 0.0 or 1.0.
-
-
    References :
    ==========
-
-   - http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 :
-
-   Cockpit is very noisy until nose is streamlined.
-
-   - thunder is audible until 8 km.
-
-   - http://www.concordesst.com :
-
-   Shortly after takeoff, the aircraft enters the noise abatement procedure,
-   where the re-heats are turn off and power is reduced. The secondary nozzles are
-   opened further to allow more air to enter, quietening down the exhaust.
-   The secondary air doors also open at this stage to allow air to by pass the engine.
-
-   At slow speeds all the air into the engine is primary airflow and the secondary air doors
-   are kept closed. Keeping them closed also prevents the engine ingests any of
-   its own exhaust gas. At around Mach 0.55 the secondary exhaust buckets begin to open
-   as a function of Mach number to be fully open at when the aircraft is at Mach 1.1.
-
-   - see also Concorde-sound.xml : level of common sounds is identical.
-
-   Outside :
-   .......
-
-   - http://www.flightlevel350.net/ : 
-   outside takeoff and landing, by Graham Brown, EGGP.
-
-   Whistles during taxi and approach; approach is more noisy.
-   Even taxi is noisy.
-   More exhaust behind the nozzles.
-
-   con2 during primary nozzle transit ?
-
-   Cabin :
-   .....
-
-   - http://www.flightlevel350.net/ : 
-   passenger (middle wing) takeoff / landing, by Frederico Permutti, EGLL 09L / KJFK 13L.
-
-   Passenger doesn't hear much difference between landing and takeoff;
-   except a little of reheat and reverse thrust.
-
-   - http://www.flightlevel350.net/ : 
-   passenger (forwards of wing) takeoff, by Graham Gall, EGLL 09L.
-
-   Taxi whistle, takeoff exhaust.
-   Less engine sound, because near the cockpit.
-
-   Cockpit :
-   .......
-
-   - http://www.youtube.com/watch?v=PrjrxuPnCIA :
-   Takeoff inside the cockpit, EGLL.
-
-   No gear rumble on runway, no gear retraction.
-   Air conditioning is noisy during taxi.
+   see Concorde-sound.xml.
 -->
  
 <PropertyList>
@@ -874,7 +799,7 @@
    <volume>
     <max>0.3</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </start>
 
@@ -900,7 +825,7 @@
    <volume>
     <max>0.3</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </start>
 
@@ -952,7 +877,7 @@
    <volume>
     <max>0.3</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </start>
 
@@ -979,7 +904,7 @@
    <volume>
     <max>0.5</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </shutdown>
 
@@ -1004,7 +929,7 @@
    <volume>
     <max>0.5</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </shutdown>
 
@@ -1029,7 +954,7 @@
    <volume>
     <max>0.5</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </shutdown>
 
@@ -1054,7 +979,7 @@
    <volume>
     <max>0.5</max>
    </volume>
-   <reference-dist>250.0</reference-dist>
+   <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
   </shutdown>
 
@@ -1210,11 +1135,8 @@
    <name>gear-horn</name>
    <path>Sounds/gear-hrn.wav</path>
    <mode>looped</mode>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-gear.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-gear.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1228,11 +1150,8 @@
    <name>stall</name>
    <mode>looped</mode>
    <path>Sounds/stall.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-stall.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-stall.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1246,11 +1165,8 @@
    <name>overspeed</name>
    <mode>looped</mode>
    <path>Sounds/overspeed.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-overspeed.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-overspeed.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1264,11 +1180,8 @@
    <name>pull up</name>
    <mode>looped</mode>
    <path>Sounds/mk-viii/pull-up.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-terrain.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-terrain.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1282,11 +1195,8 @@
    <name>cavalry charge</name>
    <mode>looped</mode>
    <path>Sounds/overspeed2.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-cavalry.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-cavalry.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1300,11 +1210,8 @@
    <name>single gong</name>
    <mode>once</mode>
    <path>Sounds/beep.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-gong-single.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-gong-single.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1318,11 +1225,8 @@
    <name>repeated gong</name>
    <mode>once</mode>
    <path>Sounds/beep.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-gong-10s.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-gong-10s.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1336,11 +1240,8 @@
    <name>gong</name>
    <mode>looped</mode>
    <path>Sounds/beep.wav</path>
-   <condition>
-    <and include="../Panels/Instruments/concorde-cond-gong.xml">
-     <property>/sim/current-view/internal</property>
-    </and>
-   </condition>
+   <type>avionics</type>
+   <condition include="../Panels/Instruments/concorde-cond-gong.xml"/>
    <position>
     <x>8.0</x>
     <y>0.0</y>
@@ -1374,6 +1275,7 @@
   <click>
    <name>click on</name>
    <path>Sounds/click.wav</path>
+   <type>avionics</type>
    <condition>
     <property>/instrumentation/generic/click</property>
    </condition>
@@ -1389,6 +1291,7 @@
   <click>
    <name>click off</name>
    <path>Sounds/click.wav</path>
+   <type>avionics</type>
    <condition>
     <not>
      <property>/instrumentation/generic/click</property>
@@ -1406,6 +1309,3 @@
 </fx>
  
 </PropertyList>
-
-
-
