@@ -23,8 +23,6 @@ Model
 The floor is supposed to be at the same level than the external nose strakes (blade),
 which puts it slightly above the bottom of the (textured) doors.
 
-The overhead is not smoothed (solid).
-
 
 Pitch
 ------
@@ -38,16 +36,6 @@ Gear
 ----
 - for piston animation, left main gear is mirrored from right main gear.
 - when gear is extended, main door closes over cylinder thanks to a flap (A).
-
-
-Groups
-------
-- the hull group is disabled inside cockpit.
-- the nose group is enabled inside cockpit.
-- screen, front and side don't belong to the hull group (livery, see below).
-- the cockpit is without group, to avoid inheritance of lighting (not allowed by OSG).
-- groups with only 1 mesh : nose, screen, front and side.
-- for selection during design, groups are in separate layers.
 
 
 VRP
@@ -67,20 +55,23 @@ Livery works with only 1 texture per group :
 - screen, front and side map a 2nd texture with alpha layer, for their transparent windows;
 - exhaust has a separate texture.
 
+Windows (hull, cockpit, nose) are extracted into a separated object.
 
 
 TO DO
 =====
-- replace AC3D groups by XML groups.
 - compression of gear spring.
 - probes on nose, RAT.
 - bore the doors.
-- passenger area.
+
+TO DO cockpit
+-------------
+- UV map again the textured screws on pedestal and pilot panels.
 
 
 Known problems
 ==============
-- polygons with no area must be removed with Utils/Modeller/ac3d-despeckle, after Blender export.
+- polygons with no area may be removed with Utils/Modeller/ac3d-despeckle, after Blender export.
 
 Known problems outside
 ----------------------
@@ -92,7 +83,6 @@ Known problems outside
 
 Known problems cockpit
 ----------------------
-- aft pedestal too large, compared to scaled 3D instruments.
 - overhead slightly too large ?
 
 
@@ -141,18 +131,21 @@ Updates (-) and additions (+) to the original model                         Auth
 - split of primary nozzles (reheat off texture).                                        2.4
 - shift aft the texture of front doors.                                                 2.5
 + visor well.                                                                           2.6
-+ extract instruments into separate files.                                              2.7
 - conversion of .rgb to .png.                                             C. Schmitt    2.8
 + exhaust.                                                                C. Schmitt    2.8
 - split of main gear cylinders (compression).                                           2.9
 - deeper wells to fit the gears.                                                        2.9
 - make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
 - make the nosetip seperate in the model.                                 C. Schmitt    2.9
-+ extract panels into separate files.                                                   2.10
 + dummy cabin.                                                            E. Huminiuc   2.11
++ door to passenger area                                                                2.12
 
 
-Made with Blender 2.64.
+
+Made with Blender 2.67a.
+AC3D export :
+- auto smooth is enabled (default is 30 degrees). Except seats and switches.
+- AC3D groups are removed, to help import/export.
 
 
-20 July 2013.
+22 March 2014.

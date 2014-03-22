@@ -53,6 +53,7 @@
 
    - see also Concorde-sound.xml : level of common sounds is identical.
 
+
    Outside :
    .......
 
@@ -64,6 +65,7 @@
    More exhaust behind the nozzles.
 
    con2 (real sound) during primary nozzle transit ?
+
 
    Cabin :
    .....
@@ -79,6 +81,7 @@
 
    Taxi whistle, takeoff exhaust.
    Less engine sound, because near the cockpit.
+
 
    Cockpit :
    .......
@@ -114,10 +117,6 @@
     <and>
      <property>/sim/current-view/internal</property>
      <property>/engines/engine[0]/running</property>
-     <less-than>
-      <property>/systems/engines/engine[0]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -141,10 +140,6 @@
     <and>
      <property>/sim/current-view/internal</property>
      <property>/engines/engine[1]/running</property>     
-     <less-than>
-      <property>/systems/engines/engine[1]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -168,10 +163,6 @@
     <and>
      <property>/sim/current-view/internal</property>
      <property>/engines/engine[2]/running</property>     
-     <less-than>
-      <property>/systems/engines/engine[2]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -195,10 +186,6 @@
     <and>
      <property>/sim/current-view/internal</property>
      <property>/engines/engine[3]/running</property>     
-     <less-than>
-      <property>/systems/engines/engine[3]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -229,10 +216,6 @@
      <not>
       <property>/engines/engine[0]/augmentation</property>
      </not>     
-     <less-than>
-      <property>/systems/engines/engine[0]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -269,10 +252,6 @@
      <not>
       <property>/engines/engine[1]/augmentation</property>
      </not>     
-     <less-than>
-      <property>/systems/engines/engine[1]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -309,10 +288,6 @@
      <not>
       <property>/engines/engine[2]/augmentation</property>
      </not>     
-     <less-than>
-      <property>/systems/engines/engine[2]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -349,10 +324,6 @@
      <not>
       <property>/engines/engine[3]/augmentation</property>
      </not>     
-     <less-than>
-      <property>/systems/engines/engine[3]/bucket-deg</property>
-      <value>40</value>
-     </less-than>
     </and>
    </condition>
    <volume>
@@ -442,13 +413,13 @@
    <volume>
     <property>/engines/engine[0]/thrust_lb[0]</property>
     <type>ln</type>
-    <factor>0.07</factor>
+    <factor>0.028</factor>
     <offset>0.0</offset>
    </volume>
    <volume>
     <property>/engines/engine[1]/thrust_lb[0]</property>
     <type>ln</type>
-    <factor>0.07</factor>
+    <factor>0.028</factor>
     <offset>0.0</offset>
    </volume>    
    <position>
@@ -484,13 +455,13 @@
    <volume>
     <property>/engines/engine[2]/thrust_lb[0]</property>
     <type>ln</type>
-    <factor>0.07</factor>
+    <factor>0.028</factor>
     <offset>0.0</offset>
    </volume>    
    <volume>
     <property>/engines/engine[3]/thrust_lb[0]</property>
     <type>ln</type>
-    <factor>0.07</factor>
+    <factor>0.028</factor>
     <offset>0.0</offset>
    </volume>    
    <position>

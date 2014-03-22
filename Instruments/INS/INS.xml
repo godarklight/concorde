@@ -3,12 +3,7 @@
 <!-- INS at scale :
 
      - test by push.
-
-
-     OSG lighting :
-
-     - only 1 material per object (child included).
-     - groups are allowed.
+     - warning lights are not directly lighted by roof.
 
 
      TO DO :
@@ -41,8 +36,33 @@
  <path>INS.ac</path> 
 
   <animation>
-   <type>material</type>
+   <name>INS</name>
    <object-name>Plate</object-name>
+   <object-name>LeftDisplay</object-name>
+   <object-name>RightDisplay</object-name>
+   <object-name>WaypointSelector</object-name>
+   <object-name>FromToIndicator</object-name>
+   <object-name>WaypointChange</object-name>
+   <object-name>Button1</object-name>
+   <object-name>Button2</object-name>
+   <object-name>Button3</object-name>
+   <object-name>Button4</object-name>
+   <object-name>Button5</object-name>
+   <object-name>Button6</object-name>
+   <object-name>Button7</object-name>
+   <object-name>Button8</object-name>
+   <object-name>Button9</object-name>
+   <object-name>Button0</object-name>
+   <object-name>ClearButton</object-name>
+   <object-name>Plate2</object-name>
+   <object-name>DataSelector</object-name>
+   <object-name>DimControl</object-name>
+   <object-name>Switch</object-name>
+  </animation> 
+
+  <animation>
+   <type>material</type>
+   <object-name>INS</object-name>
    <emission>
     <red>0.71</red>
     <green>0.79</green>

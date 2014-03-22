@@ -529,6 +529,7 @@
      <altitude>/position/altitude-ft</altitude>
      <mach>/velocities/mach</mach>
      <speed-up>/sim/speed-up</speed-up>
+     <time>/sim/time/gmt-string</time>
      <user>/sim/user/callsign</user>
     </noinstrument>
    </relations>
@@ -547,9 +548,35 @@
     <label n="1">taxi</label>
     <label n="2">stopover</label>
    </presets>
+
+   <relations>
+    <dependency>
+     <copilot>/systems/copilot</copilot>
+     <copilot-ctrl>/controls/copilot</copilot-ctrl>
+     <engineer>/systems/engineer</engineer>
+     <engineer-ctrl>/controls/engineer</engineer-ctrl>
+     <human>/systems/human</human>
+     <voice>/systems/voice</voice>
+    </dependency>
+
+    <noinstrument>
+     <freeze>/sim/freeze/master</freeze>
+     <speed-up>/sim/speed-up</speed-up>
+     <startup>/sim/startup/ysize</startup>
+    </noinstrument>
+   </relations>
+
    <startup type="bool">true</startup>
    <unexpected type="bool">false</unexpected>
   </crew>
+
+  <doors>
+   <relations>
+    <noinstrument>
+     <view>/sim/current-view/z-offset-m</view>
+    </noinstrument>
+   </relations>
+  </doors>
 
   <electrical>
    <serviceable type="bool" archive="y">true</serviceable>
@@ -744,6 +771,7 @@
      <mach>/velocities/mach</mach>
      <speed-up>/sim/speed-up</speed-up>
      <temperature>/environment/temperature-degc</temperature>
+     <time>/sim/time/gmt-string</time>
      <visibility>/environment/visibility-m</visibility>
     </noinstrument>
    </relations>
@@ -1026,6 +1054,7 @@
    <serviceable type="bool" archive="y">false</serviceable>                  <!-- no 3D -->
 
    <airport-id></airport-id>
+   <airport-phase></airport-phase>
 
    <captain>
     <stowe-norm type="double">0.0</stowe-norm>
@@ -1688,6 +1717,8 @@
       <component>/systems/voice</component>
       <subcomponent>automata</subcomponent>
      </automata>
+     <callout>/systems/voice/callouts</callout>
+     <checklist>/systems/voice/checklists</checklist>
      <display>/systems/voice/display</display>
      <sound>/sim/sound/voices</sound>
     </itself>

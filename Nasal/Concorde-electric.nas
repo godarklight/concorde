@@ -728,11 +728,11 @@ Wiper.motor = func {
 Lighting = {};
 
 Lighting.new = func {
-   var obj = { parents : [Lighting],
+   var obj = { parents : [Lighting,System],
 
-           compass : CompassLight.new(),
-           internal : LightLevel.new(),
-           landing : LandingLight.new()
+               compass : CompassLight.new(),
+               internal : LightLevel.new(),
+               landing : LandingLight.new()
          };
 
    obj.init();
@@ -741,8 +741,11 @@ Lighting.new = func {
 };
 
 Lighting.init = func {
-   var strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
-   aircraft.light.new("controls/lighting/external/strobe", [ 0.03, 1.20 ], strobe_switch);
+   me.inherit_system("/systems/lighting");
+
+   var strobe_switch = me.itself["root-ctrl"].getNode("strobe");
+
+   aircraft.light.new(me.itself["root-ctrl"].getNode("external/strobe").getPath(), [ 0.03, 1.20 ], strobe_switch);
 }
 
 Lighting.schedule = func {

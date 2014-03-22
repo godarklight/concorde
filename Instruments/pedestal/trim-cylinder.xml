@@ -4,8 +4,17 @@
   <path>trim-cylinder.ac</path> 
 
   <animation>
-   <type>material</type>
+   <name>Trim</name>
    <object-name>TrimCylinder</object-name>
+   <object-name>PitchTrimIndex</object-name>
+   <object-name>PitchTrimWheel</object-name>
+   <object-name>YawTrimWheel</object-name>
+   <object-name>RollTrimWheel</object-name>
+  </animation>
+
+  <animation>
+   <type>material</type>
+   <object-name>Trim</object-name>
    <emission>
     <red>0.71</red>
     <green>0.79</green>

@@ -90,6 +90,16 @@
   </anti-ice>
 
   <audio>
+   <adf n="0">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <knob n="2" type="double">0.0</knob>
+   </adf>
+   <adf n="1">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <knob n="2" type="double">0.0</knob>
+   </adf>
    <cancel type="bool">false</cancel>
    <comm n="0">
     <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
@@ -695,6 +705,7 @@
   </gear>
 
   <human>
+   <airport-id></airport-id>                                  <!-- override virtual crew -->
    <lighting>                                                 <!-- night lighting -->
     <captain type="double">0.6</captain>
     <copilot type="double">0.6</copilot>
@@ -901,7 +912,6 @@
 
   <seat>
    <all type="bool">false</all>
-   <all-outside type="bool">false</all-outside>
    <recover type="bool">false</recover>
    <yoke type="bool">false</yoke>                             <!-- makes INS visible, by default -->
   </seat>

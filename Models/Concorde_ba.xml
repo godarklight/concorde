@@ -107,10 +107,34 @@
 <!-- ============================ -->
 <!-- Livery (1 texture per group) -->
 <!-- ============================ -->
+  
+  <!--Apply grouping removed from .ac model-->
+
+  <animation>
+   <name>Nose</name>
+   <object-name>Nose_0</object-name>
+   <object-name>Nose_1</object-name>
+  </animation>
+
+  <animation>
+   <name>Screen</name>
+   <object-name>Screen_0</object-name>
+   <object-name>Screen_1</object-name>
+  </animation>
+
+  <animation>
+   <name>Airframe</name>
+   <object-name>Hull</object-name>
+   <object-name>Upperrudder</object-name>
+   <object-name>Lowerrudder</object-name>
+   <object-name>Wing</object-name>
+  </animation>
+
+  <!-- Apply livery -->
 
   <animation>
    <type>material</type>
-   <object-name>Hull</object-name>
+   <object-name>Airframe</object-name>
    <property-base>sim/model/livery/</property-base>
    <texture-prop>texture</texture-prop>
   </animation>
@@ -121,13 +145,7 @@
    <property-base>sim/model/livery/</property-base>
    <texture-prop>texture</texture-prop>
   </animation>
-  
-  <!--Apply grouping removed from .ac model-->
-  <animation>
-    <name>Front</name>
-    <object-name>Screen_0</object-name>
-    <object-name>Screen_1</object-name>
-  </animation>
+
   
 <!-- ================ -->
 <!-- Separated models -->
@@ -174,20 +192,16 @@
    <object-name>Pillar</object-name>
    <object-name>CeilingEdge</object-name>
    <object-name>Dashboard</object-name>
-   <object-name>RoofLight1</object-name>
-   <object-name>RoofLight2</object-name>
    <object-name>AvionicsLRack</object-name>
    <object-name>AvionicsRRack</object-name>
    <object-name>AvionicsRack</object-name>
-   <object-name>RoofLight1</object-name>
-   <object-name>RoofLight2</object-name>
    <object-name>UpperPanel</object-name>
    <object-name>ConsoleLeft</object-name>
    <object-name>ConsoleRight</object-name>
    <object-name>TopConsoleLeft</object-name>
    <object-name>TopConsoleRight</object-name>
-   <object-name>CeilingPanel</object-name>
    <object-name>Dash lighting</object-name>
+   <object-name>Roof instruments</object-name>
   </animation>
 
   <animation>
@@ -382,20 +396,6 @@
       <property>systems/seat/observer2</property>
      </and>
      <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- hide side windows in cockpit view -->
-  <animation>
-   <type>select</type>
-   <object-name>Side</object-name>
-   <condition>
-    <or>
-     <not>
-      <property>sim/current-view/internal</property>
-     </not>
-     <property>controls/seat/all-outside</property>
     </or>
    </condition>
   </animation>
@@ -2475,14 +2475,16 @@
 
 <!-- SHADER effects -->
 
-  <effect>
+ <effect>
   <inherits-from>Aircraft/Concorde/Models/Effects/fuselage-reflect</inherits-from>
   <object-name>Screen_0</object-name>
   <object-name>Front_0</object-name>
- <object-name>Hull</object-name>
-  <object-name>Wing</object-name>
+  <object-name>Hull</object-name>
+  <object-name>Wheel</object-name>
   <object-name>Nose_0</object-name>
   <object-name>Nose_1</object-name>
+<!-- wing -->
+  <object-name>Wing</object-name>
   <object-name>Upperrudder</object-name>
   <object-name>Lowerrudder</object-name>
   <object-name>LOailaron</object-name>
@@ -2491,34 +2493,81 @@
   <object-name>ROailaron</object-name>
   <object-name>RMailaron</object-name>
   <object-name>RIailaron</object-name>
-   <object-name>Engine</object-name>
+<!-- engine -->
+  <object-name>Engine</object-name>
   <object-name>EngineIntake</object-name>
-  <object-name>OLImaindoor</object-name>
-  <object-name>OLOmaindoor</object-name>
-  <object-name>ORImaindoor</object-name>
-  <object-name>OROmaindoor</object-name>
-  <object-name>LIdoorclosed</object-name>
-  <object-name>LOdoorclosed</object-name>
-  <object-name>RIdoorclosed</object-name>
-  <object-name>ROdoorclosed</object-name>
+  <object-name>Intake</object-name>
+  <object-name>Back</object-name>
+  <object-name>NozzleTop1</object-name>
+  <object-name>NozzleTop2</object-name>
+  <object-name>NozzleTop3</object-name>
+  <object-name>NozzleTop4</object-name>
+  <object-name>NozzleBottom1</object-name>
+  <object-name>NozzleBottom2</object-name>
+  <object-name>NozzleBottom3</object-name>
+  <object-name>NozzleBottom4</object-name>
+<!-- front gear -->
+  <object-name>Fwheels</object-name>
+  <object-name>Fhub</object-name>
+  <object-name>FrontBogie</object-name>
+  <object-name>Fstrut</object-name>
+  <object-name>Fram</object-name>
   <object-name>OFLbigdoor</object-name>
   <object-name>OFlsmalldoor</object-name>
   <object-name>OFRbigdoor</object-name>
   <object-name>OFRsmalldoor</object-name>
+  <object-name>OFlegdoor</object-name>
   <object-name>Fucdclosed</object-name>
+  <object-name>Fsucdclosed</object-name>
+<!-- left gear -->
+  <object-name>Lmainwheels</object-name>
+  <object-name>Lmainwheels2</object-name>
+  <object-name>Lmainhub</object-name>
+  <object-name>Lpiston</object-name>
+  <object-name>LMainstrut</object-name>
+  <object-name>LMainPiston</object-name>
+  <object-name>LActuatingPiston</object-name>
+  <object-name>LMainCylinder</object-name>
+  <object-name>LActuatingCylinder</object-name>
+  <object-name>Lmainram</object-name>
+  <object-name>LMainActuator</object-name>
+  <object-name>OLImaindoor</object-name>
+  <object-name>OLOmaindoor</object-name>
+  <object-name>LIdoorclosed</object-name>
+  <object-name>LOdoorclosed</object-name>
+<!-- right gear -->
+  <object-name>Rmainwheels</object-name>
+  <object-name>Rmainwheels2</object-name>
+  <object-name>Rmainhub</object-name>
+  <object-name>Rpiston</object-name>
+  <object-name>RMainstrut</object-name>
+  <object-name>RMainPiston</object-name>
+  <object-name>RActuatingPiston</object-name>
+  <object-name>RMainCylinder</object-name>
+  <object-name>RActuatingCylinder</object-name>
+  <object-name>Rmainram</object-name>
+  <object-name>RMainActuator</object-name>
+  <object-name>ORImaindoor</object-name>
+  <object-name>OROmaindoor</object-name>
+  <object-name>RIdoorclosed</object-name>
+  <object-name>ROdoorclosed</object-name>
+<!-- tail gear -->
+  <object-name>Tailwheels</object-name>
+  <object-name>Tailstrut</object-name>
+  <object-name>Tailram</object-name>
   <object-name>Taildoorfront</object-name>
   <object-name>Littledoorleft</object-name>
   <object-name>Littledoorright</object-name>
   <object-name>Taildoorclosed</object-name>
  </effect>
 
-   <effect>
-	   <inherits-from>Aircraft/Concorde/Models/Effects/glass</inherits-from>
-	   <object-name>Cabin</object-name>
-	   <object-name>Screen_1</object-name>
-	   <object-name>Side</object-name>
-	   <object-name>Front_1</object-name>
-   </effect>
+ <effect>
+   <inherits-from>Aircraft/Concorde/Models/Effects/glass</inherits-from>
+   <object-name>Cabin</object-name>
+   <object-name>Screen_1</object-name>
+   <object-name>Side</object-name>
+   <object-name>Front_1</object-name>
+ </effect>
 
 
 <!-- =================== -->
@@ -2535,7 +2584,6 @@
 
  <animation>
   <type>material</type>
-  <object-name>CeilingEdge</object-name>
   <object-name>Dashboard</object-name>
   <object-name>Rack lighting</object-name>
   <emission>
@@ -2572,12 +2620,9 @@
 
  <animation>
   <type>material</type>
-  <object-name>RoofLight1</object-name>
-  <object-name>RoofLight2</object-name>
   <object-name>UpperPanel</object-name>
   <object-name>ConsoleLeft</object-name>
   <object-name>ConsoleRight</object-name>
-  <object-name>CeilingPanel</object-name>
   <object-name>Dash lighting</object-name>
   <emission>
    <red>0.71</red>
@@ -2604,7 +2649,7 @@
 
  <animation>
   <type>material</type>
-  <object-name>MainPanel</object-name>
+  <object-name>Panel lighting</object-name>
   <emission>
    <red>0.83</red>
    <green>0.74</green>
@@ -2615,8 +2660,8 @@
 
  <animation>
   <type>material</type>
-  <object-name>ConsoleForward</object-name>
-  <object-name>ConsoleAft</object-name>
+  <object-name>Console lighting</object-name>
+  <object-name>Pedestal lighting</object-name>
   <emission>
    <red>0.83</red>
    <green>0.74</green>

@@ -121,6 +121,10 @@ Virtualengineer.toggleexport = func {
     }
 }
 
+Virtualengineer.radioexport = func( arrival ) {
+    me.radiomanagement.radioexport( arrival );
+}
+
 Virtualengineer.reheatexport = func {
     # at first engine 2 3.
     if( !me.has_reheat() ) {

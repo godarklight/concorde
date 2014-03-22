@@ -1197,7 +1197,7 @@ NoseVisor.new = func {
 NoseVisor.init = func() {
     me.inherit_system("/instrumentation/nose-visor");
 
-    me.VISORDOWN = getprop("/sim/flaps/setting[1]");
+    me.VISORDOWN = me.noinstrument["setting"][1].getValue();
 }
 
 NoseVisor.has_nose_down = func {
@@ -1424,10 +1424,8 @@ Doors.new = func {
 
                DOORCLOSED : 0.0,
 
-# 10 s, door closed
-               flightdeck : aircraft.door.new("controls/doors/flight-deck", 10.0),
-# 4 s, deck out
-               engineerdeck : aircraft.door.new("controls/doors/engineer-deck", 4.0)
+               flightdeck : nil,
+               engineerdeck : nil
          };
 
 # user customization
@@ -1438,6 +1436,12 @@ Doors.new = func {
 
 Doors.init = func {
    me.inherit_system( "/systems/doors" );
+
+   # 10 s, door closed
+   me.flightdeck = aircraft.door.new(me.itself["root-ctrl"].getNode("flight-deck").getPath(), 10.0);
+
+   # 4 s, deck out
+   me.engineerdeck = aircraft.door.new(me.itself["root-ctrl"].getNode("engineer-deck").getPath(), 4.0);
 
    if( me.itself["root-ctrl"].getNode("flight-deck").getChild("opened").getValue() ) {
        me.flightdeck.toggle();
@@ -1454,7 +1458,7 @@ Doors.flightdeckexport = func {
        # locked in flight
        if( me.itself["root-ctrl"].getNode("flight-deck").getChild("normal").getValue() ) {
            # can open only from inside
-           if( getprop("/sim/current-view/z-offset-m") > me.INSIDEDECKZM ) {
+           if( me.noinstrument["view"].getValue() > me.INSIDEDECKZM ) {
                allowed = constant.FALSE;
            }
        }

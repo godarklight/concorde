@@ -659,7 +659,7 @@ System.new = func {
 
 System.inherit_system = func( path, subpath = "" ) {
    var fullpath = path;
-   var ctrlpath = string.replace(path,"systems","controls");
+   var ctrlpath = "";
 
    var obj = System.new();
 
@@ -670,6 +670,12 @@ System.inherit_system = func( path, subpath = "" ) {
    me.dependency = obj.dependency;
    me.itself = obj.itself;
    me.noinstrument = obj.noinstrument;
+
+
+   ctrlpath = string.replace(path,"systems","controls");
+   if( fullpath == ctrlpath ) {
+       ctrlpath = string.replace(path,"instrumentation","controls");
+   }
 
    # reserved entries
    if( subpath == "" ) {

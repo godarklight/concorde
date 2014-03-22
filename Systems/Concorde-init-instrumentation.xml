@@ -383,6 +383,26 @@
    <indicated-roll-deg alias="/orientation/roll-deg"/>
   </attitude-standby>
 
+  <audio>
+   <relations>
+    <dependency>
+     <adf>
+      <component>/instrumentation</component>
+      <subcomponent>adf</subcomponent>
+     </adf>
+     <comm>
+      <component>/instrumentation</component>
+      <subcomponent>comm</subcomponent>
+     </comm>
+     <marker>/instrumentation/marker-beacon</marker>
+     <nav>
+      <component>/instrumentation</component>
+      <subcomponent>nav</subcomponent>
+     </nav>
+    </dependency>
+   </relations>
+  </audio>
+
   <cabin-altitude>
    <serviceable type="bool" archive="y">true</serviceable>
    <setting-inhg>29.92</setting-inhg>
@@ -897,6 +917,12 @@
      <hydraulic>/systems/hydraulic/power</hydraulic>
      <wiper>/instrumentation/wiper/power</wiper>
     </dependency>
+    <noinstrument>
+     <setting>
+      <component>/sim/flaps</component>
+      <subcomponent>setting</subcomponent>
+     </setting>
+    </noinstrument>
    </relations>
   </nose-visor>
 
