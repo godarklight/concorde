@@ -47,7 +47,7 @@
  <animation>
   <type>rotate</type>
   <object-name>YokePillar</object-name>
-  <property>controls/flight/elevator-trim</property>
+  <property>controls/flight/elevator</property>
   <factor>-5</factor>
   <offset-deg>-10</offset-deg>
   <center>
@@ -58,42 +58,6 @@
   <axis>
    <x>0.0</x>
    <y>1.0</y>
-   <z>0.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>rotate</type>
-  <object-name>YokePillar</object-name>
-  <property>controls/flight/elevator</property>
-  <factor>-5</factor>
-  <offset-deg>0</offset-deg>
-  <center>
-   <x-m>0.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>0.0</z-m>
-  </center>
-  <axis>
-   <x>0.0</x>
-   <y>1.0</y>
-   <z>0.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>rotate</type>
-  <object-name>Yoke</object-name>
-  <property>controls/flight/aileron-trim</property>
-  <factor>-45</factor>
-  <offset-deg>0</offset-deg>   
-  <center>
-   <x-m>0.0</x-m>
-   <y-m>0.0</y-m>
-   <z-m>0.616</z-m>
-  </center>
-  <axis>
-   <x>1.0</x>
-   <y>0.0</y>
    <z>0.0</z>
   </axis>
  </animation>

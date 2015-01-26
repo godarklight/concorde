@@ -18,7 +18,6 @@ Virtualengineer.new = func {
    var obj = { parents : [Virtualengineer,CommonCheck,Virtualcrew,Checklist,Emergency,System], 
 
                airbleedsystem : nil,
-               autopilotsystem : nil,
                electricalsystem : nil,
                enginesystem : nil,
                fuelsystem : nil,
@@ -119,10 +118,6 @@ Virtualengineer.toggleexport = func {
         me.schedule();
         me.slowschedule();
     }
-}
-
-Virtualengineer.radioexport = func( arrival ) {
-    me.radiomanagement.radioexport( arrival );
 }
 
 Virtualengineer.reheatexport = func {
@@ -1114,6 +1109,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-main-" ~ i);
+            break;
         }
     }
 
@@ -1123,6 +1119,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-alt-" ~ i);
+            break;
         }
     }
 }

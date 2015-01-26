@@ -16,7 +16,7 @@
  <!-- ======================================= -->
 
  <!-- AUTOPILOT -->
-
+ <!--
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
    <bottom-left>
@@ -35,6 +35,7 @@
     <z-m> 1.382</z-m>
    </top-left>
   </panel>
+  -->
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot-right.xml</path>
@@ -75,7 +76,27 @@
     <z-m> 1.593</z-m>
    </top-left>
   </panel>
-
+<!--
+ <panel>
+   <path>Aircraft/Concorde/Models/Cockpit/Concorde-3d-cockpit.xml</path>
+   <bottom-left>
+    <x-m>-23.790</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 0.988</z-m>
+   </bottom-left>
+   <bottom-right>
+    <x-m>-23.790</x-m>
+    <y-m> 0.579</y-m>
+    <z-m> 0.988</z-m>
+   </bottom-right>
+   <top-left>
+    <x-m>-23.895</x-m>
+    <y-m>-0.631</y-m>
+    <z-m> 1.593</z-m>
+   </top-left>
+  </panel>
+-->
+  
  <!-- OVERHEAD -->
 
   <panel>
@@ -677,41 +698,11 @@
   </model>
 
   <model>
-   <name>VHF 1</name>
-   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
-   <offsets>
-    <x-m>-23.047</x-m>
-    <y-m>-0.077</y-m>
-    <z-m> 0.820</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>VHF 2</name>
-   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
-   <offsets>
-    <x-m>-23.047</x-m>
-    <y-m> 0.077</y-m>
-    <z-m> 0.820</z-m>
-   </offsets>
-   <overlay>
-    <params>
-     <vhf-frq>/instrumentation/comm[1]/frequencies/selected-mhz</vhf-frq>
-     <vhf-stdby>/instrumentation/comm[1]/frequencies/standby-mhz</vhf-stdby>
-     <vhf-selected>/controls/audio/comm[1]/selected</vhf-selected>
-     <vhf-selected2>/controls/audio/comm[1]/standby</vhf-selected2>
-     <vhf-knob>/controls/audio/comm[1]/knob[0]</vhf-knob>
-     <vhf-knob2>/controls/audio/comm[1]/knob[1]</vhf-knob2>
-    </params>
-   </overlay>
-  </model>
-
-  <model>
    <name>INS 3</name>
    <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
    <offsets>
     <x-m>-22.920</x-m>
-    <y-m> 0.077</y-m>
+    <y-m> 0.110</y-m>
     <z-m> 0.820</z-m>
    </offsets>
    <overlay>
@@ -732,16 +723,6 @@
      <light-battery>/instrumentation/ins[2]/light/battery</light-battery>
     </params>
    </overlay>
-  </model>
-
-  <model>
-   <name>ADF 1</name>
-   <path>Aircraft/Concorde/Instruments/pedestal/ADF.xml</path>
-   <offsets>
-    <x-m>-22.797</x-m>
-    <y-m>-0.077</y-m>
-    <z-m> 0.818</z-m>
-   </offsets>
   </model>
 
 <!-- CONSOLES -->
@@ -869,48 +850,6 @@
     <heading-deg>20</heading-deg>
     <pitch-deg>-5</pitch-deg>
     <roll-deg>24</roll-deg>
-   </offsets>
-  </model>
-
-<!-- ROOF -->
-
-  <model>
-   <name>Panel spotlight</name>
-   <path>Aircraft/Concorde/Instruments/light/panel-spotlight.xml</path>
-   <offsets>
-    <x-m>-22.3047</x-m>
-    <y-m>-0.2459</y-m>
-    <z-m> 1.7818</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Forward roof lamp</name>
-   <path>Aircraft/Concorde/Instruments/light/roof-lamp.xml</path>
-   <offsets>
-    <x-m>-21.90</x-m>
-    <y-m> 0.1</y-m>
-    <z-m> 1.815</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Panel spotlight 2</name>
-   <path>Aircraft/Concorde/Instruments/light/panel-spotlight.xml</path>
-   <offsets>
-    <x-m>-21.5032</x-m>
-    <y-m>-0.2459</y-m>
-    <z-m> 1.8243</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Rack roof lamp</name>
-   <path>Aircraft/Concorde/Instruments/light/roof-lamp.xml</path>
-   <offsets>
-    <x-m>-21.10</x-m>
-    <y-m> 0.1</y-m>
-    <z-m> 1.84</z-m>
    </offsets>
   </model>
 
@@ -1069,15 +1008,6 @@
    <object-name>Trim Cylinder</object-name>
    <object-name>Throttle Cylinder</object-name>
    <object-name>Brake Cylinder</object-name>
-   <object-name>VHF 1</object-name>
-   <object-name>VHF 2</object-name>
-   <object-name>ADF 1</object-name>
-  </animation>
-
-  <animation>
-   <name>Pedestal lighting</name>
-   <object-name>Trim Cylinder</object-name>
-   <object-name>Brake Cylinder</object-name>
   </animation>
 
   <animation>
@@ -1090,14 +1020,6 @@
   <animation>
    <name>Engineer location</name>
    <object-name>Cold Air Outlet</object-name>
-  </animation>
-
-  <animation>
-   <name>Roof instruments</name>
-   <object-name>Panel spotlight</object-name>
-   <object-name>Panel spotlight 2</object-name>
-   <object-name>Forward roof lamp</object-name>
-   <object-name>Rack roof lamp</object-name>
   </animation>
 
 </PropertyList>

@@ -9,59 +9,7 @@
 -->
 
 <PropertyList>
-
-<!-- OVERHEAD -->
-
-  <model>
-   <name>Overhead</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/overhead.xml</path>
-   <offsets>
-    <x-m>-23.54775</x-m>
-    <y-m> 0.0</y-m>
-    <z-m> 1.63709</z-m>
-   </offsets>
-  </model>
-
-
-<!-- DASH -->
-
-  <model>
-   <name>Left Top Console</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top.xml</path>
-   <offsets>
-    <x-m>-23.190</x-m>
-    <y-m>-0.893</y-m>
-    <z-m> 0.957</z-m>
-    <heading-deg>-4.5</heading-deg>
-    <pitch-deg>1.0</pitch-deg>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Panel</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/panel.xml</path>
-   <offsets>
-    <x-m>-24.04180</x-m>
-    <y-m> 0.0</y-m>
-    <z-m> 0.32554</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Right Top Console</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top-copilot.xml</path>
-   <offsets>
-    <x-m>-23.190</x-m>
-    <y-m> 0.881</y-m>
-    <z-m> 0.957</z-m>
-    <heading-deg>4.5</heading-deg>
-    <pitch-deg>1.0</pitch-deg>
-   </offsets>
-  </model>
-
-
-<!-- FLOOR -->
-
+  
   <model>
    <name>Left Captain Foot Plate</name>
    <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
@@ -69,16 +17,6 @@
     <x-m>-24.037</x-m>
     <y-m>-0.584</y-m>
     <z-m> 0.332</z-m>
-   </offsets>
-  </model>
-
-  <model>
-   <name>Left Pedestal</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/panel-pedestal.xml</path>
-   <offsets>
-    <x-m>-23.788</x-m>
-    <y-m>-0.448</y-m>
-    <z-m> 0.328</z-m>
    </offsets>
   </model>
 
@@ -103,6 +41,40 @@
   </model>
 
   <model>
+   <name>Right Copilot Foot Plate</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <offsets>
+    <x-m>-24.037</x-m>
+    <y-m> 0.593</y-m>
+    <z-m> 0.332</z-m>
+   </offsets>
+  </model>
+
+<!-- DASH -->
+
+  <model>
+   <name>Left Top Console</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top.xml</path>
+   <offsets>
+    <x-m>-23.190</x-m>
+    <y-m>-0.893</y-m>
+    <z-m> 0.957</z-m>
+    <heading-deg>-4.5</heading-deg>
+    <pitch-deg>1.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Left Pedestal</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/panel-pedestal.xml</path>
+   <offsets>
+    <x-m>-23.788</x-m>
+    <y-m>-0.448</y-m>
+    <z-m> 0.328</z-m>
+   </offsets>
+  </model>
+
+  <model>
    <name>Right Pedestal</name>
    <path>Aircraft/Concorde/Models/Interior/flightdeck/panel-pedestal.xml</path>
    <offsets>
@@ -113,25 +85,14 @@
   </model>
 
   <model>
-   <name>Right Copilot Foot Plate</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/foot-plate.xml</path>
+   <name>Right Top Console</name>
+   <path>Aircraft/Concorde/Models/Interior/flightdeck/console-top-copilot.xml</path>
    <offsets>
-    <x-m>-24.037</x-m>
-    <y-m> 0.593</y-m>
-    <z-m> 0.332</z-m>
-   </offsets>
-  </model>
-
-
-<!-- PEDESTAL -->
-
-  <model>
-   <name>Pedestal</name>
-   <path>Aircraft/Concorde/Models/Interior/flightdeck/pedestal.xml</path>
-   <offsets>
-    <x-m>-23.76710</x-m>
-    <y-m> 0.0</y-m>
-    <z-m> 0.27484</z-m>
+    <x-m>-23.190</x-m>
+    <y-m> 0.881</y-m>
+    <z-m> 0.957</z-m>
+    <heading-deg>4.5</heading-deg>
+    <pitch-deg>1.0</pitch-deg>
    </offsets>
   </model>
 
@@ -211,14 +172,7 @@
 <!-- ======== -->
 
   <animation>
-   <name>Panel lighting</name>
-   <object-name>MainPanel_1</object-name>
-   <object-name>MainPanel_0</object-name>
-  </animation>
-
-  <animation>
    <name>Dash lighting</name>
-   <object-name>CeilingPanel</object-name>
    <object-name>Left Pedestal</object-name>
    <object-name>Left Top Console</object-name>
    <object-name>Right Pedestal</object-name>
@@ -234,13 +188,7 @@
   </animation>
 
   <animation>
-   <name>Console lighting</name>
-   <object-name>Pedestal</object-name>
-  </animation>
-
-  <animation>
    <name>Rack lighting</name>
-   <object-name>CeilingEdge</object-name>
    <object-name>Observer Panel</object-name>
    <object-name>Avionics Racks</object-name>
   </animation>

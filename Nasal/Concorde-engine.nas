@@ -622,7 +622,7 @@ Rating.set_throttle = func( position ) {
 Rating.schedule = func {
    me.enginen1.schedule();
    me.supervisor();
-   me.autothrottle();
+   #me.autothrottle();
 }
 
 Rating.supervisor = func {
@@ -678,12 +678,12 @@ Rating.supervisor = func {
 Rating.autothrottle = func {
     var maxthrottle = constantaero.THROTTLEIDLE;
 
-    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
-         maxthrottle = me.level( i );
-
-         me.dependency["autothrottle"][i].getChild("u_max").setValue( maxthrottle );
-         me.dependency["automach"][i].getChild("u_max").setValue( maxthrottle );
-    }
+    #for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
+    #     maxthrottle = me.level( i );
+    #
+    #     me.dependency["autothrottle"][i].getChild("u_max").setValue( maxthrottle );
+    #     me.dependency["automach"][i].getChild("u_max").setValue( maxthrottle );
+    #}
 }
 
 Rating.level = func( index ) {

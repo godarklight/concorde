@@ -963,6 +963,7 @@ TankXML.inherit_tankXML = func {
     me.tankcontrols = props.globals.getNode("/controls/fuel").getChildren("tank");
     me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
     me.fillings = props.globals.getNode("/systems/fuel/tanks").getChildren("filling");
+    me.pumps = props.globals.getNode("/controls/fuel/pumps");
 
     me.nb_tanks = size(me.tanks);
 
@@ -970,7 +971,7 @@ TankXML.inherit_tankXML = func {
 }
 
 TankXML.initcontent = func {
-    me.inherit_initcontent();
+    me.inherit_content();
 }
 
 # fuel initialization

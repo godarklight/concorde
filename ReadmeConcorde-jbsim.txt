@@ -102,10 +102,11 @@ A mouse with 3rd (middle) button, or its emulation (left + right button), is req
 Fuel load
 ---------
 - default is maximum landing weight, 245000 lb (19000 kg fuel).
-- for alternate load, press "= f" (saved on exit in aircraft-data).
+- for alternate load, press "ctrl-I f" (saved on exit in aircraft-data).
 
 Sounds
 ------
+- see Sounds/Concorde-real-sound.xml to install real Concorde sounds.
 - voice callouts requires Festival (festival --server in a separate shell),
   set /sim/sound/voices/enabled to true.
 - to disable text display of callouts, press "shift-F12" (saved on exit in aircraft-data). 
@@ -122,7 +123,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 3.0.0 : minimal version.
+- 2.4.0 : minimal version.
 
 
 Keyboard
@@ -130,7 +131,7 @@ Keyboard
 - "alt-b"  : emergency "b"rakes.
 - "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
 - "ctrl-F" : a"F"terburner.
-- "f"      : "f"ull cockpit (all instruments).
+- "f / F"  : "f"ull cockpit (all instruments) / aircraft.
 - "alt-g"  : "g"ear standby.
 - "alt-n"  : "n"ose standby.
 - "q"      : "q"uit speed up.
@@ -139,18 +140,18 @@ Keyboard
 Views
 -----
 - "ctrl-E"       : "E"ngineer view.
+- "ctrl-J"       : Copilot view.
 - "ctrl-K"       : Observer view (floating).
 - "ctrl-L"       : Observer 2 view (floating).
 - "ctrl-O"       : "O"verhead view.
 - "ctrl-W"       : Ste"W"ard view (floating).
 - "shift-ctrl-V" : restore view pitch.
 - "shift-ctrl-X" : restore floating view.
-- "ctrl-Y"       : Copilot view.
 
 Virtual crew
 ------------
-- "ctrl-Q"       : virtual crew.
-- "shift-ctrl-Q" : abort checklist.
+- "ctrl-Z"       : virtual crew.
+- "shift-ctrl-Z" : abort checklist.
 - "shift-F12"    : show crew text.
 
 Unchanged behaviour
@@ -174,8 +175,8 @@ Same behaviour
 
 Improved behaviour
 ------------------
-- "a / A"     : speeds up BOTH speed and time.
-                Not beyond X 8. Automatically resets to 1, when above 3500 ft/min.
+- "a / A"     : speeds up BOTH speed and time. Until X 5 subsonic, X 7 supersonic;
+                automatically resets to 1, when above 3500 ft/min.
 - "ctrl-H"    : "H"eading hold.
 - "page up /  : increases / decreases speed hold, Mach hold.
    page down"
@@ -187,9 +188,9 @@ Improved behaviour
 Alternate behaviour
 -------------------
 - "ctrl-B"    : reverse thrust used as speedbrake.
+- "ctrl-I"    : menu.
 - "ctrl-T"    : altitude hold.
 - "[ / ]"     : nose used as flaps.
-- "="         : menu.
 - "left /     : move floating view in width.
    right"
 - "up /       : move floating view in length.
@@ -226,7 +227,7 @@ Engine
 - to start an engine, activate the starter, before opening the HP VALVE (overhead).
   The starter requires air bleed, either from the ground service (open 1 cross bleed valve),
   or by its adjacent running engine (open 2 cross bleed valve).
-- the starter requires AC voltage, from the ground supply ("= g").
+- the starter requires AC voltage, from the ground supply ("ctrl-I g").
 - the starter is not required in flight (relight), if enough speed :
   relight is automatic, when autoignition is on (overhead).
 
@@ -243,7 +244,7 @@ Hydraulics
 
 Radio
 -----
-- only "F12" or "= r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
+- only "ctrl-R" or "ctrl-I r" : NAV 0 (default radio menu) is reserved for interface with autopilot.
 
 
 2D panel
@@ -270,19 +271,19 @@ Virtual crew
 - a yellow crew member is not performing his checklist.
 - a white checklist is in process.
 - by default, virtual crew triggers checklists, if in flight :
-  for manual operation, press "= p s".
+  for manual operation, press "ctrl-I p s".
 - by default, virtual crew adjusts radio frequencies, if tower available in Nasal/Concorde-route.xml :
-  for manual operation, press "= p s".
+  for manual operation, press "ctrl-I p s".
 
 3D
 --
-- to activate 3D, press "= c".
+- to activate 3D, press "ctrl-I c".
 
 Captain
 -------
 - by default, Captain tasks are performed automatically :
   his answers are yellow.
-- for call by the crew member reading the checklist, press "= p s".
+- for call by the crew member reading the checklist, press "ctrl-I p s".
 
 Copilot
 -------
@@ -357,6 +358,7 @@ Engines
 
 Gear
 ....
+- "TYRE"  : tyre pressure.
 - "NOSE WHEEL"   : nose steering without hydraulics.
 
 Hydraulics
@@ -536,7 +538,7 @@ Example
 EGLL 27L - KJFK 22L, 3400 NM :
 - load the flight plan from the Doc directory.
 - acceleration 30 NM before MERLY.
-- stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "= n").
+- stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "ctrl-I n").
 - warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57600 ft (60 ft/min 2h07).
 - deceleration 250 NM (13 minutes) before LINND : INS indicates 20900 kg at LINND,
   and 15700 kg at KJFK (590 NM).
@@ -599,14 +601,16 @@ TO DO JSBSim
 Known problems
 ==============
 - data are not saved on reinit.
+- if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Known problems autopilot
 ------------------------
-- toggle INS mode, only AFTER activation of route, or use "= a".
+- toggle INS mode, only AFTER activation of route, or use "ctrl-I a".
 - NAV hold mode is sensitive to the turbulence of the ground layer.
 - heading modes are a little slow to converge, at supersonic speed.
+- at Mach 2.02, once unlocked, vertical speed hold is unstable.
 
-Known problems 3.0.0 autopilot
+Known problems 2.4.0 autopilot
 ------------------------------
 - on engagement, magnetic and true heading modes bank into the opposite direction.
 
@@ -614,11 +618,14 @@ Known problems autoland
 -----------------------
 - nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
   but EGLL 27R, KJFK 22L are wrong : to land at these airports,
-  set /controls/autoflight/real-nav to false, by "= a".
+  set /controls/autoflight/real-nav to false, by "ctrl-I a".
 
 Known problems sound
 --------------------
+- once 1 engine is shutdown, Concorde-sound.xml engines are mute, if not idle.
 - ATIS volume (VHF) changed only at the frequency swap.
+- exception through OpenAL errors (low hardware ?) means too many sounds :
+  remove for example engine start/shutdown or external sounds.
 
 Known problems OSG
 ------------------
@@ -631,7 +638,6 @@ The following artefacts are supposed to be solved by OSG :
 Secondary problems
 ==================
 - AI doesn't triggers fuel transfert of tanks 5, if tanks are interconnected.
-- if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Secondary problems FDM
 -----------------------
@@ -684,4 +690,4 @@ References
     British Airways maintenance manual.
 
 
-22 March 2014.
+18 September 2011.

@@ -3,12 +3,8 @@
 <!-- OSG lighting :
 
      - only 1 material per object (child included).
-     - Red warnings are not directly illuminated by roof.
-
-
-     Known problems :
-     ==============
-     - if no voltage, off light becomes less darker.
+     - groups are allowed.
+     - Red warnings must be outside the base group.
 -->
 
 
@@ -16,27 +12,8 @@
   <path>throttle-cylinder.ac</path> 
 
   <animation>
-   <name>Throttle</name>
-   <object-name>ThrottleBase</object-name>
-   <object-name>ThrottleIndexLeft</object-name>
-   <object-name>Throttle1</object-name>
-   <object-name>Throttle2</object-name>
-   <object-name>Throttle3</object-name>
-   <object-name>Throttle4</object-name>
-   <object-name>ThrottleIndexRight</object-name>
-   <object-name>Reverse1</object-name>
-   <object-name>Reverse2</object-name>
-   <object-name>Reverse3</object-name>
-   <object-name>Reverse4</object-name>
-   <object-name>ReheatSelector1</object-name>
-   <object-name>ReheatSelector2</object-name>
-   <object-name>ReheatSelector3</object-name>
-   <object-name>ReheatSelector4</object-name>
-  </animation> 
-
-  <animation>
    <type>material</type>
-   <object-name>Throttle</object-name>
+   <object-name>ThrottleBase</object-name>
    <emission>
     <red>0.71</red>
     <green>0.79</green>
@@ -276,9 +253,6 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle1</object-name>
-   <condition>
-    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
-   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -298,9 +272,6 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle2</object-name>
-   <condition>
-    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
-   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -320,9 +291,6 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle3</object-name>
-   <condition>
-    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
-   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
@@ -342,9 +310,6 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle4</object-name>
-   <condition>
-    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
-   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>

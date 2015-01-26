@@ -16,8 +16,6 @@ Constantaero.new = func {
                ENGINE2 : 1,
                ENGINE1 : 0,
 
-               TANKLP : 13,                                      # tank emulating LP valve
-
                INS3 : 2,
                INS2 : 1,
                INS1 : 0,
@@ -659,7 +657,7 @@ System.new = func {
 
 System.inherit_system = func( path, subpath = "" ) {
    var fullpath = path;
-   var ctrlpath = "";
+   var ctrlpath = string.replace(path,"systems","controls");
 
    var obj = System.new();
 
@@ -670,12 +668,6 @@ System.inherit_system = func( path, subpath = "" ) {
    me.dependency = obj.dependency;
    me.itself = obj.itself;
    me.noinstrument = obj.noinstrument;
-
-
-   ctrlpath = string.replace(path,"systems","controls");
-   if( fullpath == ctrlpath ) {
-       ctrlpath = string.replace(path,"instrumentation","controls");
-   }
 
    # reserved entries
    if( subpath == "" ) {
@@ -725,7 +717,6 @@ System.loadtree = func( path, table ) {
    var component = "";
    var subcomponent = "";
    var value = "";
-
    if( props.globals.getNode(path) != nil ) {
        children = props.globals.getNode(path).getChildren();
        foreach( var c; children ) {

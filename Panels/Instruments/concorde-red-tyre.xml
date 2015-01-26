@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Alarm on tyre :
-
-
-     Not supported by FDM.
--->
+<!-- Alarm on tyre -->
 
 <PropertyList>
  <name>Alarm tyre</name>
@@ -28,9 +24,31 @@
     <type>group</type>
     <condition>
      <or include="concorde-cond-voltage-bulb.xml">
-      <not>
-       <property alias="../../../../../../../params/test"/>
-      </not>
+      <and>
+       <equals>
+        <property>gear/gear[0]/tire-pressure-norm</property>
+        <value>1.0</value> 
+       </equals>
+       <equals>
+        <property>gear/gear[1]/tire-pressure-norm</property>
+        <value>1.0</value> 
+       </equals>
+       <equals>
+        <property>gear/gear[2]/tire-pressure-norm</property>
+        <value>1.0</value> 
+       </equals>
+       <equals>
+        <property>gear/gear[3]/tire-pressure-norm</property>
+        <value>1.0</value> 
+       </equals>
+       <equals>
+        <property>gear/gear[4]/tire-pressure-norm</property>
+        <value>1.0</value> 
+       </equals>
+       <not>
+        <property alias="../../../../../../../../params/test"/>
+       </not>
+      </and>
      </or>
     </condition>
 
