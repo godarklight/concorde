@@ -1109,7 +1109,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-main-" ~ i);
-            break;
+            return;
         }
     }
 
@@ -1119,7 +1119,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-alt-" ~ i);
-            break;
+            return;
         }
     }
 }

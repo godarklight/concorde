@@ -53,7 +53,7 @@ ConcordeMain.putinrelation = func {
 
    copilotcrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, flightsystem,
                              hydraulicsystem, lightingsystem, MWSsystem, voicecrew );
-   engineercrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
+   engineer.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
                               fuelsystem, hydraulicsystem, lightingsystem, voicecrew );
    voicecrew.set_relation( autopilotsystem );
 
@@ -73,7 +73,7 @@ ConcordeMain.startupcron = func {
    if( getprop( "/controls/crew/startup" ) ) {
        copilotcrew.toggleexport();
        copilothuman.wakeupexport();
-       engineercrew.toggleexport();
+       engineer.toggleexport();
        engineerhuman.wakeupexport();
        crewscreen.toggleexport();
        voicecrew.toggleexport();
@@ -165,7 +165,7 @@ ConcordeMain.sec60cron = func {
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
 #   copilotcrew.slowschedule();
-#   engineercrew.veryslowschedule();
+#   engineer.veryslowschedule();
 
    # schedule the next call
    settimer(func { me.sec60cron(); },60);
@@ -275,7 +275,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.crewscreen = Crewbox.new();
 
    globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
-   globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
+   globals.Concorde.engineer = Concorde.Virtualengineer.new();
    globals.Concorde.voicecrew = Concorde.Voice.new();
 
    globals.Concorde.copilothuman = Concorde.Copilothuman.new();
