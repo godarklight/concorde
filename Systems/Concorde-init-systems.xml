@@ -9,11 +9,16 @@
 
      Relations :
 
+     <another>
      - <dependency> is a real dependency.
      - <itself> is the system.
-     - <noinstrument> is to built the system; or for fuzzy decision of virtual crew :
+       Reserved entries : me.itself["root"] is path /systems/another.
+                          me.itself["root-ctrl"] is path /controls/another.
+     - <noinstrument> is to built the system.
+       Or for fuzzy decision of virtual crew :
        visual estimation of altitude over ground, if failure of radio altimeter;
        speed implicitly known, during a subsonic cruise.
+     </another>
 
 
      State reset :
@@ -100,7 +105,7 @@
 
     <noinstrument>
      <agl>/position/altitude-agl-ft</agl>
-     <airspeed>/velocities/airspeed-kt</airspeed>
+     <speed>/velocities/groundspeed-kt</speed>
      <temperature>/environment/temperature-degc</temperature>
     </noinstrument>
    </relations>
@@ -284,6 +289,7 @@
      </attitude>
      <dme>/instrumentation/dme[0]</dme>
      <electric>/systems/electrical/power</electric>
+     <flight>/controls/flight</flight>
      <hsi>
        <component>/instrumentation</component>
        <subcomponent>hsi</subcomponent>
@@ -559,6 +565,10 @@
      <voice>/systems/voice</voice>
     </dependency>
 
+    <itself>
+     <dialogs>/sim/gui/dialogs/Concorde</dialogs>
+    </itself>
+
     <noinstrument>
      <freeze>/sim/freeze/master</freeze>
      <speed-up>/sim/speed-up</speed-up>
@@ -648,9 +658,9 @@
 
     <noinstrument>
      <agl>/position/altitude-agl-ft</agl>
-     <airspeed>/velocities/airspeed-kt</airspeed>
      <electric>/systems/electrical/power</electric>
      <hydraulic>/systems/hydraulic/power</hydraulic>
+     <speed>/velocities/groundspeed-kt</speed>
      <temperature>/environment/temperature-degc</temperature>
     </noinstrument>
    </relations>
@@ -744,6 +754,7 @@
       <component>/systems/hydraulic/rat</component>
       <subcomponent>selector</subcomponent>
      </rat>
+     <route-manager>/autopilot/route-manager</route-manager>
      <temperature>/instrumentation/temperature[2]/indicated-tmo-degc</temperature>
      <throttle>
       <component>/controls/throttles</component>
@@ -992,7 +1003,9 @@
    </relations>
 
    <reset type="bool">false</reset>                                          <!-- for virtual engineer -->
-   <tanks include="../Nasal/Concorde-fuel.xml"/>
+   <tanks include="../Nasal/Concorde-fuel.xml">
+    <dialog></dialog>
+   </tanks>
   </fuel>
 
   <gear>
@@ -1607,7 +1620,7 @@
 
     <noinstrument>
      <agl>/position/altitude-agl-ft</agl>
-     <airspeed>/velocities/airspeed-kt</airspeed>
+     <speed>/velocities/groundspeed-kt</speed>
      <speed-up>/sim/speed-up</speed-up>
      <temperature>/environment/temperature-degc</temperature>
     </noinstrument>
@@ -1725,8 +1738,8 @@
 
     <noinstrument>
      <agl>/position/altitude-agl-ft</agl>
-     <airspeed>/velocities/airspeed-kt</airspeed>
      <presets>/sim/presets</presets>
+     <speed>/velocities/groundspeed-kt</speed>
      <weight>/instrumentation/ac-weight/weight-lb</weight>
     </noinstrument>
    </relations>

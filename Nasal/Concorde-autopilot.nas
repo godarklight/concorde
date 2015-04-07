@@ -294,7 +294,7 @@ Autopilot.lockwaypointroll = func {
             var rolldeg =  me.noinstrument["roll"].getValue();
             if( distancenm > lastnm or math.abs(rolldeg) > me.ROLLDEG ) {
                 if( me.is_lock_true() ) {
-                    setprop("/autopilot/route-manager/input","@DELETE0");
+                    me.itself["route-manager"].getChild("input").setValue("@DELETE0");
                     me.resetprediction( "true-heading-hold1" );
                 }
             }
@@ -1028,9 +1028,9 @@ Autopilot.autoland = func {
                        me.autothrottlesystem.atdiscexport();
 
                        # reset trims
-                       setprop("/controls/flight/elevator-trim",0.0);
-                       setprop("/controls/flight/rudder-trim",0.0);
-                       setprop("/controls/flight/aileron-trim",0.0);
+                       me.dependency["flight"].getChild("elevator-trim").setValue(0.0);
+                       me.dependency["flight"].getChild("rudder-trim").setValue(0.0);
+                       me.dependency["flight"].getChild("aileron-trim").setValue(0.0);
                    }
 
                    # pilot must activate autothrottle
@@ -1900,8 +1900,7 @@ Autopilot.inslight = func {
 
    me.itself["waypoint"][0].getChild("id").setValue( id[0] );
    me.itself["waypoint"][1].getChild("id").setValue( id[1] );
-   # property is not created at startup
-   me.itself["route-manager"].getNode("wp-last").getNode("id",1).setValue( id[2] );
+   me.itself["route-manager"].getNode("wp-last").getNode("id",constant.DELAYEDNODE).setValue( id[2] );
 
 
    # no more waypoint
@@ -2384,12 +2383,12 @@ Autopilot.sendnav = func( index, target ) {
    var freqmhz = 0.0;
    var radialdeg = 0.0;
 
-   freqmhz = getprop("/instrumentation/nav[" ~ index ~ "]/frequencies/selected-mhz");
-   setprop("/instrumentation/nav[" ~ target ~ "]/frequencies/selected-mhz",freqmhz);
-   freqmhz = getprop("/instrumentation/nav[" ~ index ~ "]/frequencies/standby-mhz");
-   setprop("/instrumentation/nav[" ~ target ~ "]/frequencies/standby-mhz",freqmhz);
-   radialdeg = getprop("/instrumentation/nav[" ~ index ~ "]/radials/selected-deg");
-   setprop("/instrumentation/nav[" ~ target ~ "]/radials/selected-deg",radialdeg);
+   freqmhz = me.dependency["nav"][index].getNode("frequencies/selected-mhz").getValue();
+   me.dependency["nav"][target].getNode("frequencies/selected-mhz").setValue(freqmhz);
+   freqmhz = me.dependency["nav"][index].getNode("frequencies/standby-mhz").getValue();
+   me.dependency["nav"][target].getNode("frequencies/standby-mhz").setValue(freqmhz);
+   radialdeg = me.dependency["nav"][index].getNode("radials/selected-deg").getValue();
+   me.dependency["nav"][target].getNode("radials/selected-deg").setValue(radialdeg);
 }
 
 Autopilot.apsendnavexport = func {

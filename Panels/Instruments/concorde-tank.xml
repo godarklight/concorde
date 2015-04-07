@@ -10,7 +10,7 @@
  <h-base>20</h-base>
 
  <params>
-  <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
+  <name>/consumables/fuel/tank[0]/name</name>
   <lbs-select>/consumables/fuel/tank[0]/level-lbs</lbs-select>
   <content-select>/consumables/fuel/tank[0]/content-lb</content-select>
  </params>
@@ -39,7 +39,7 @@
    <chunks>
     <chunk>
      <type>text-value</type>
-     <property alias="../../../../../params/tank-num"/>
+     <property alias="../../../../../params/name"/>
      <format>%2s</format>
     </chunk>
    </chunks>

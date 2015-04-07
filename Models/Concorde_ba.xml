@@ -68,6 +68,7 @@
 
     Known problems  :
     ==============
+    - transparent outer flame not visible with Rembrandt.
     - when retracted, front gear torque is inside closed door (could be solved by releasing the torque).
     - wow doesn't reset, when one starts in flight (filtered above 50 ft AGL).
     - because of night scaling, wrong transparency ordering of navigation and strobe lights
@@ -96,6 +97,12 @@
     var livery_update = aircraft.livery_update.new(
     "Aircraft/Concorde/Models/Liveries", 10,
     func { print("Concorde livery update") });
+
+    var model = cmdarg();
+    model.getNode("door[0]/position-x-m", 1).setValue(-18.1175);
+    model.getNode("door[0]/position-y-m", 1).setValue(-1.2947);
+    model.getNode("door[0]/position-z-m", 1).setValue(0.2577);
+    model.getNode("door[0]/jetway-hood-deg", 1).setValue(0.0);
    </load>
 
    <unload>
@@ -362,7 +369,7 @@
 
   <animation>
    <name>observer</name>
-   <object-name>Observer Seat</object-name>
+   <object-name>Observer location</object-name>
   </animation>
 
   <animation>
@@ -379,16 +386,25 @@
    </condition>
   </animation>
 
+  <animation>
+   <type>select</type>
+   <object-name>Observer Seat</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/observer</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
 <!-- OBSERVER 2 -->
 
   <animation>
-   <name>observer 2</name>
-   <object-name>Observer 2 Seat</object-name>
-  </animation>
-
-  <animation>
    <type>select</type>
-   <object-name>observer 2</object-name>
+   <object-name>Observer 2 Seat</object-name>
    <condition>
     <or>
      <and>
@@ -2569,6 +2585,18 @@
    <object-name>Front_1</object-name>
  </effect>
 
+ <effect>
+   <inherits-from>Effects/model-transparent</inherits-from>
+   <object-name>Reheat1</object-name>
+   <object-name>Reheat2</object-name>
+   <object-name>Reheat3</object-name>
+   <object-name>Reheat4</object-name>
+   <object-name>OuterFlame1</object-name>
+   <object-name>OuterFlame2</object-name>
+   <object-name>OuterFlame3</object-name>
+   <object-name>OuterFlame4</object-name>
+ </effect>
+
 
 <!-- =================== -->
 <!-- Internal animations -->
@@ -2595,28 +2623,6 @@
  </animation>
 
 <!-- isolated from a group -->
-
- <animation>
-  <type>material</type>
-  <object-name>engineer</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission>
- </animation>
-
- <animation>
-  <type>material</type>
-  <object-name>observer</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission>
- </animation>
 
  <animation>
   <type>material</type>

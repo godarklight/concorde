@@ -95,8 +95,8 @@
 
      <text>
       <halign>left</halign>
-      <live>true</live>
       <property>/systems/human/airport-phase</property>
+      <live>true</live>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -107,6 +107,11 @@
      <text>
       <property>/systems/human/airport-id</property>
       <live>true</live>
+      <color>
+       <red>0.2</red>
+       <green>0.8</green>
+       <blue>0.2</blue>
+      </color>
      </text>
     </group>
 
@@ -354,11 +359,14 @@
    <layout>hbox</layout>
 
    <button>
-    <legend>Close</legend>
-    <default>true</default>
-    <key>Esc</key>
+    <legend>Back</legend>
+    <key>b</key>
     <binding>
      <command>dialog-apply</command>
+    </binding>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
     </binding>
     <binding>
       <command>dialog-close</command>
@@ -366,12 +374,9 @@
    </button>
 
    <button>
-    <legend>Menu</legend>
-    <key>m</key>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
-    </binding>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
     <binding>
      <command>dialog-apply</command>
     </binding>

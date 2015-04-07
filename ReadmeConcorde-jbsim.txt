@@ -122,7 +122,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 3.0.0 : minimal version.
+- 3.4.0 : minimal version.
 
 
 Keyboard
@@ -519,7 +519,7 @@ Route
 -----
 East bound :
 - acceleration 30 NM before MERLY.
-- deceleration 250 NM before LINND or LYNUS.
+- deceleration 250 NM before KENDA or LYNUS.
 
 West bound :
 - acceleration at LINND.
@@ -536,9 +536,9 @@ Example
 EGLL 27L - KJFK 22L, 3400 NM :
 - load the flight plan from the Doc directory.
 - acceleration 30 NM before MERLY.
-- stable at FL500 with 71500 kg, 2h20 from LINND, at 2700 NM and 11500 kg (see "= n").
+- stable at FL500 with 71500 kg, 2h20 from KENDA, at 2700 NM and 11500 kg (see "= n").
 - warm, 275 deg 5 kt westerly, Mach 2.02, climbing slowly until 57600 ft (60 ft/min 2h07).
-- deceleration 250 NM (13 minutes) before LINND : INS indicates 20900 kg at LINND,
+- deceleration 250 NM (13 minutes) before KENDA : INS indicates 20900 kg at KENDA,
   and 15700 kg at KJFK (590 NM).
 - 8500 kg at landing.
 
@@ -598,6 +598,8 @@ TO DO JSBSim
 
 Known problems
 ==============
+- 3.4.0 audio panel : right click doesn't work (<button>2</button>).
+  Use controls/audio/crew/[member]/[radio]/volume-push.
 - data are not saved on reinit.
 
 Known problems autopilot
@@ -606,14 +608,14 @@ Known problems autopilot
 - NAV hold mode is sensitive to the turbulence of the ground layer.
 - heading modes are a little slow to converge, at supersonic speed.
 
-Known problems 3.0.0 autopilot
+Known problems 3.4.0 autopilot
 ------------------------------
 - on engagement, magnetic and true heading modes bank into the opposite direction.
 
 Known problems autoland
 -----------------------
-- nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct;
-  but EGLL 27R, KJFK 22L are wrong : to land at these airports,
+- nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct.
+  But EGLL 27R, KJFK 22L are wrong : to land at these airports,
   set /controls/autoflight/real-nav to false, by "= a".
 
 Known problems sound
@@ -630,7 +632,6 @@ The following artefacts are supposed to be solved by OSG :
 
 Secondary problems
 ==================
-- AI doesn't triggers fuel transfert of tanks 5, if tanks are interconnected.
 - if brakes, gear and nose don't work, see Nasal/Concorde-override.nas.
 
 Secondary problems FDM
@@ -639,10 +640,6 @@ Secondary problems FDM
   at Mach speeds).
 - disable yaw damper, when turbulence ?
 - oil pressure too high.
-
-Secondary problems JSBSim
--------------------------
-- AoA at 180 deg, when one breaks strongly (empty tanks).
 
 Secondary problems instruments
 ----------------------------
@@ -684,4 +681,4 @@ References
     British Airways maintenance manual.
 
 
-22 March 2014.
+4 April 2015.

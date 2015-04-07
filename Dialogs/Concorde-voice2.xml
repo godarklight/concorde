@@ -5,7 +5,7 @@
   <layout>vbox</layout>
 
   <text>
-    <label>Concorde voices</label>
+    <label>Concorde voices 2</label>
   </text>
 
   <hrule><dummy/></hrule>
@@ -131,6 +131,18 @@
 
   <group>
    <layout>hbox</layout>
+
+   <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-voice</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
 
    <button>
     <legend>Close</legend>

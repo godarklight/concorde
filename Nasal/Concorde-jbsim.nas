@@ -203,6 +203,7 @@ ConcordeMain.savedata = func {
                        "/controls/seat/yoke",
                        "/controls/voice/sound",
                        "/controls/voice/text",
+                       "/sim/user/callsign",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",

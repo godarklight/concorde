@@ -416,6 +416,8 @@ Altimeter.new = func {
 
                ADC : [ 0, 1, 1 ],
 
+               lastinhg : 29.92,
+
                serviceable : [ constant.TRUE, constant.TRUE, constant.TRUE ],
                standby : [ constant.FALSE, constant.FALSE ]
          };
@@ -441,6 +443,8 @@ Altimeter.schedule = func {
             me.failure( i, constant.FALSE );
         }
    }
+
+   me.updategui();
 }
 
 Altimeter.sensor = func( index ) {
@@ -448,6 +452,7 @@ Altimeter.sensor = func( index ) {
    var settinginhg = 0.0;
    var indication = "";
    var setting = "";
+   var setting2 = "";
    var child = nil;
 
    # sensor swap
@@ -459,12 +464,14 @@ Altimeter.sensor = func( index ) {
 
        if( me.standby[index] ) {
            indication = me.noinstrument["sensor"][index].getChild("indicated-altitude-ft").getPath();
+           setting2 = me.noinstrument["sensor"][index].getChild("setting-hpa").getPath();
            setting = me.noinstrument["sensor"][index].getChild("setting-inhg").getPath();
        }
             
        else {
            child = me.dependency["adc"][index].getChild("output");
            indication = child.getChild("altitude-ft").getPath();
+           setting2 = child.getChild("alt-setting-hpa").getPath();
            setting = child.getChild("alt-setting-inhg").getPath();
        }
 
@@ -472,6 +479,9 @@ Altimeter.sensor = func( index ) {
        child.unalias();
        child.alias( indication );
 
+       child = me.itself["root"][index].getNode("setting-hpa");
+       child.unalias();
+       child.alias( setting2 );
        child = me.itself["root"][index].getNode("setting-inhg");
        child.unalias();
        child.alias( setting );
@@ -511,6 +521,21 @@ Altimeter.failure = func( index, standbymode ) {
 
    # warning flag
    me.itself["root"][index].getChild("warning-flag").setValue( warning );
+}
+
+# update GUI of instrument setting
+Altimeter.updategui = func {
+   var currentinhg = me.itself["root"][0].getNode("setting-inhg").getValue();
+
+   if( currentinhg != me.lastinhg ) {
+       me.lastinhg = currentinhg;
+
+       var settinginhg = currentinhg;
+       var settinghpa = me.itself["root"][0].getNode("setting-hpa").getValue();
+
+       me.noinstrument["gui-hpa"].setValue(int(math.round(settinghpa)));
+       me.noinstrument["gui-inhg"].setValue(int(math.round(settinginhg*100.0))/100.0);
+   }
 }
 
 

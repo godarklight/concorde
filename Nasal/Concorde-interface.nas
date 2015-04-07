@@ -503,6 +503,9 @@ Seats.audioexport = func {
    elsif( me.itself["root"].getChild("engineer").getValue() ) {
        name = "engineer";
    }
+   elsif( me.itself["root"].getChild("observer").getValue() ) {
+       name = "observer";
+   }
    else {
        panel = constant.FALSE;
    }
@@ -518,12 +521,12 @@ Seats.audioexport = func {
 Menu = {};
 
 Menu.new = func {
-   var obj = { parents : [Menu],
+   var obj = { parents : [Menu,System],
 
 # menu handles
                autopilot : nil,
                crew : nil,
-               environment : nil,
+               environment : {},
                fuel : nil,
                ground : nil,
                instruments : {},
@@ -531,58 +534,62 @@ Menu.new = func {
                procedures : {},
                radios : nil,
                systems : nil,
+               views : nil,
                voice : {},
                menu : nil
          };
 
-    obj.init();
+   obj.init();
 
-    return obj;
+   return obj;
 };
 
 Menu.init = func {
-    me.menu = gui.Dialog.new("/sim/gui/dialogs/Concorde/menu/dialog",
-                             "Aircraft/Concorde/Dialogs/Concorde-menu.xml");
-    me.autopilot = gui.Dialog.new("/sim/gui/dialogs/Concorde/autopilot/dialog",
-                                  "Aircraft/Concorde/Dialogs/Concorde-autopilot.xml");
-    me.crew = gui.Dialog.new("/sim/gui/dialogs/Concorde/crew/dialog",
-                             "Aircraft/Concorde/Dialogs/Concorde-crew.xml");
-    me.environment = gui.Dialog.new("/sim/gui/dialogs/Concorde/environment/dialog",
-                                    "Aircraft/Concorde/Dialogs/Concorde-environment.xml");
-    me.fuel = gui.Dialog.new("/sim/gui/dialogs/Concorde/fuel/dialog",
-                             "Aircraft/Concorde/Dialogs/Concorde-fuel.xml");
-    me.ground = gui.Dialog.new("/sim/gui/dialogs/Concorde/ground/dialog",
-                               "Aircraft/Concorde/Dialogs/Concorde-ground.xml");
+   me.inherit_system("/systems/crew");
 
-    me.array( me.instruments, 3, "instruments" );
+   me.menu = me.dialog( "menu" );
+   me.autopilot = me.dialog( "autopilot" );
+   me.crew = me.dialog( "crew" );
 
-    me.navigation = gui.Dialog.new("/sim/gui/dialogs/Concorde/navigation/dialog",
-                                   "Aircraft/Concorde/Dialogs/Concorde-navigation.xml");
+   me.array( me.environment, 2, "environment" );
 
-    me.array( me.procedures, 4, "procedures" );
+   me.fuel = me.dialog( "fuel" );
+   me.ground = me.dialog( "ground" );
 
-    me.radios = gui.Dialog.new("/sim/gui/dialogs/Concorde/radios/dialog",
-                                "Aircraft/Concorde/Dialogs/Concorde-radios.xml");
-    me.systems = gui.Dialog.new("/sim/gui/dialogs/Concorde/systems/dialog",
-                                "Aircraft/Concorde/Dialogs/Concorde-systems.xml");
+   me.array( me.instruments, 3, "instruments" );
 
-    me.array( me.voice, 2, "voice" );
+   me.navigation = me.dialog( "navigation" );
+
+   me.array( me.procedures, 4, "procedures" );
+
+   me.radios = me.dialog( "radios" );
+   me.systems = me.dialog( "systems" );
+   me.views = me.dialog( "views" );
+
+   me.array( me.voice, 2, "voice" );
+}
+
+Menu.dialog = func( name ) {
+   var item = gui.Dialog.new(me.itself["dialogs"].getPath() ~ "/" ~ name ~ "/dialog",
+                             "Aircraft/Concorde/Dialogs/Concorde-" ~ name ~ ".xml");
+
+   return item;
 }
 
 Menu.array = func( table, max, name ) {
-    var j = 0;
+   var j = 0;
 
-    for( var i = 0; i < max; i=i+1 ) {
-       if( j == 0 ) {
-           j = "";
-       }
-       else {
-           j = i + 1;
-       }
+   for( var i = 0; i < max; i=i+1 ) {
+        if( j == 0 ) {
+            j = "";
+        }
+        else {
+            j = i + 1;
+        }
 
-       table[i] = gui.Dialog.new("/sim/gui/dialogs/Concorde/" ~ name ~ "[" ~ i ~ "]/dialog",
-                                 "Aircraft/Concorde/Dialogs/Concorde-" ~ name ~ j ~ ".xml");
-    }
+        table[i] = gui.Dialog.new(me.itself["dialogs"].getValue() ~ "/" ~ name ~ "[" ~ i ~ "]/dialog",
+                                  "Aircraft/Concorde/Dialogs/Concorde-" ~ name ~ j ~ ".xml");
+   }
 }
 
 
@@ -689,6 +696,19 @@ Crewbox.minimizeexport = func {
     me.itself["root"].getChild("minimized").setValue(!value);
 
     me.resettimer();
+}
+
+Crewbox.wakeupexport = func {
+    # display is minimized by timeout, or by picking 3D crew / clue.
+    if( !me.itself["root-ctrl"].getChild("timeout").getValue() and
+        !me.dependency["human"].getChild("serviceable").getValue() ) {
+        # wake up display
+        if( me.itself["root"].getChild("minimized").getValue() ) {
+            me.itself["root"].getChild("minimized").setValue(constant.FALSE);
+
+            me.resettimer();
+        }
+    }
 }
 
 Crewbox.toggleexport = func {

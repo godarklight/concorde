@@ -9,9 +9,13 @@
 
      Relations :
 
+     <another>
      - <dependency> is a real dependency.
      - <itself> is the instrument.
+       Reserved entries : me.itself["root"] is path /systems/another.
+                          me.itself["root-ctrl"] is path /controls/another.
      - <noinstrument> is to built the instrument.
+     </another>
 
 
      State reset :
@@ -52,7 +56,7 @@
      can create needle vibrations, making the IVSI unusable on some hardware.
      
      On each IVSI :
-     a) set servicable to false.
+     a) set serviceable to false.
      b) remove the comment around the alias of /velocities/vertical-speed-fps.
 -->
 
@@ -112,6 +116,7 @@
     <alpha-failure-deg type="double">0.0</alpha-failure-deg>
     <altitude-ft alias="/instrumentation/altimeter-adc[0]/indicated-altitude-ft"/>
     <alt-setting-inhg alias="/instrumentation/altimeter-adc[0]/setting-inhg"/>
+    <alt-setting-hpa alias="/instrumentation/altimeter-adc[0]/setting-hpa"/>
     <airspeed-kt alias="/instrumentation/airspeed-adc[0]/indicated-speed-kt"/>
     <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
     <beta-failure-deg type="double">0.0</beta-failure-deg>
@@ -176,6 +181,7 @@
     <alpha-failure-deg type="double">0.0</alpha-failure-deg>
     <altitude-ft alias="/instrumentation/altimeter-adc[1]/indicated-altitude-ft"/>
     <alt-setting-inhg alias="/instrumentation/altimeter-adc[1]/setting-inhg"/>
+    <alt-setting-hpa alias="/instrumentation/altimeter-adc[1]/setting-hpa"/>
     <airspeed-kt alias="/instrumentation/airspeed-adc[1]/indicated-speed-kt"/>
     <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
     <beta-failure-deg type="double">0.0</beta-failure-deg>
@@ -284,7 +290,6 @@
    <serviceable type="bool">true</serviceable>
 
    <indicated-altitude-ft alias="/instrumentation/adc[0]/output/altitude-ft"/>
-   <setting-inhg alias="/instrumentation/adc[0]/output/alt-setting-inhg"/>
 
    <relations>
     <dependency>
@@ -300,6 +305,8 @@
       <component>/instrumentation</component>
       <subcomponent>altimeter-adc</subcomponent>
      </adc>
+     <gui-hpa>/instrumentation/altimeter/setting-hpa-formatted</gui-hpa>
+     <gui-inhg>/instrumentation/altimeter/setting-inhg-formatted</gui-inhg>
      <sensor>
       <component>/instrumentation</component>
       <subcomponent>altimeter-sensor</subcomponent>
@@ -307,6 +314,10 @@
     </noinstrument>
    </relations>
 
+   <setting-inhg alias="/instrumentation/adc[0]/output/alt-setting-inhg"/>
+   <setting-inhg-formatted></setting-inhg-formatted>                       <!-- not visible by nasal, if created by GUI -->
+   <setting-hpa alias="/instrumentation/adc[0]/output/alt-setting-hpa"/>
+   <setting-hpa-formatted></setting-hpa-formatted>                         <!-- not visible by nasal, if created by GUI -->
    <standby type="bool">false</standby>
    <warning-flag type="bool">false</warning-flag>
   </altimeter>
@@ -316,6 +327,7 @@
 
    <indicated-altitude-ft alias="/instrumentation/adc[1]/output/altitude-ft"/>
    <setting-inhg alias="/instrumentation/adc[1]/output/alt-setting-inhg"/>
+   <setting-hpa alias="/instrumentation/adc[1]/output/alt-setting-hpa"/>
    <standby type="bool">false</standby>
    <warning-flag type="bool">false</warning-flag>
   </altimeter>

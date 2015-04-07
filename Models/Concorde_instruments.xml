@@ -544,27 +544,6 @@
    </top-left>
   </panel>
 
-<!-- STEWARD -->
-
-  <panel>
-   <path>Aircraft/Concorde/Panels/Concorde-steward.xml</path>
-   <bottom-left>
-    <x-m>-17.63</x-m>
-    <y-m>-0.51</y-m>
-    <z-m> 1.558</z-m>
-   </bottom-left>
-   <bottom-right>
-    <x-m>-17.63</x-m>
-    <y-m>-1.11</y-m>
-    <z-m> 1.558</z-m>
-   </bottom-right>
-   <top-left>
-    <x-m>-17.63</x-m>
-    <y-m>-0.51</y-m>
-    <z-m> 1.858</z-m>
-   </top-left>
-  </panel>
-
 
 <!-- ============ -->
 <!-- Instruments  -->
@@ -642,6 +621,44 @@
      <light-insert>/instrumentation/ins[1]/light/insert</light-insert>
      <light-hold>/instrumentation/ins[1]/light/hold</light-hold>
      <light-battery>/instrumentation/ins[1]/light/battery</light-battery>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
+   <name>Audio</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-23.402</x-m>
+    <y-m>-0.155</y-m>
+    <z-m> 0.820</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Audio 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-23.402</x-m>
+    <y-m> 0.155</y-m>
+    <z-m> 0.820</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/copilot/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/copilot/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/copilot/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/copilot/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/copilot/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/copilot/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/copilot/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/copilot/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/copilot/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/copilot/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/copilot/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/copilot/nav[1]/volume-push</nav-push2>
     </params>
    </overlay>
   </model>
@@ -735,7 +752,7 @@
   </model>
 
   <model>
-   <name>ADF 1</name>
+   <name>ADF</name>
    <path>Aircraft/Concorde/Instruments/pedestal/ADF.xml</path>
    <offsets>
     <x-m>-22.797</x-m>
@@ -872,6 +889,64 @@
    </offsets>
   </model>
 
+  <model>
+   <name>Audio 3</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-22.110</x-m>
+    <y-m> 0.529</y-m>
+    <z-m> 0.610</z-m>
+    <heading-deg>-85</heading-deg>
+    <pitch-deg>86</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/engineer/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/engineer/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/engineer/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/engineer/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/engineer/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/engineer/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/engineer/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/engineer/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/engineer/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/engineer/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/engineer/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/engineer/nav[1]/volume-push</nav-push2>
+    </params>
+   </overlay>
+  </model>
+
+<!-- OBSERVER -->
+
+  <model>
+   <name>Audio 4</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-22.380</x-m>
+    <y-m>-0.890</y-m>
+    <z-m> 1.300</z-m>
+    <heading-deg>85</heading-deg>
+    <pitch-deg>100</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/observer/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/observer/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/observer/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/observer/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/observer/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/observer/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/observer/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/observer/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/observer/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/observer/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/observer/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/observer/nav[1]/volume-push</nav-push2>
+    </params>
+   </overlay>
+  </model>
+
 <!-- ROOF -->
 
   <model>
@@ -908,9 +983,21 @@
    <name>Rack roof lamp</name>
    <path>Aircraft/Concorde/Instruments/light/roof-lamp.xml</path>
    <offsets>
-    <x-m>-21.10</x-m>
+    <x-m>-20.30</x-m>
     <y-m> 0.1</y-m>
     <z-m> 1.84</z-m>
+   </offsets>
+  </model>
+
+<!-- STEWARD -->
+
+  <model>
+   <name>Steward panel</name>
+   <path>Aircraft/Concorde/Instruments/steward/steward.xml</path>
+   <offsets>
+    <x-m>-17.622</x-m>
+    <y-m>-0.537</y-m>
+    <z-m> 1.579</z-m>
    </offsets>
   </model>
 
@@ -1066,12 +1153,14 @@
    <object-name>INS 1</object-name>
    <object-name>INS 2</object-name>
    <object-name>INS 3</object-name>
+   <object-name>Audio</object-name>
+   <object-name>Audio 2</object-name>
    <object-name>Trim Cylinder</object-name>
    <object-name>Throttle Cylinder</object-name>
    <object-name>Brake Cylinder</object-name>
    <object-name>VHF 1</object-name>
    <object-name>VHF 2</object-name>
-   <object-name>ADF 1</object-name>
+   <object-name>ADF</object-name>
   </animation>
 
   <animation>
@@ -1090,6 +1179,12 @@
   <animation>
    <name>Engineer location</name>
    <object-name>Cold Air Outlet</object-name>
+   <object-name>Audio 3</object-name>
+  </animation>
+
+  <animation>
+   <name>Observer location</name>
+   <object-name>Audio 4</object-name>
   </animation>
 
   <animation>

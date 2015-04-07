@@ -115,13 +115,13 @@ See the forum of http://www.blender.org/, message from "Bogey", subject "Update 
 and download links" (24 october 2003 6:23 pm).
 
 
-Updates (-) and additions (+) to the original model                         Author    Version
+Updates (-) and additions (+) to the original model                       Credit      Version
 ---------------------------------------------------------------------------------------------
 + tail door closed.                                                                     1.1
 + cockpit.                                                                              1.2
 - visibility of visor and nose from cockpit.                                            2.0
 - split of nozzles (reverser).                                                          2.1
-- alignment of main gear internal doors with their well.                                 ?
+- alignment of main gear internal doors with their well.
 - split of main gear wheels (spin).                                                     2.2
 - alignment to the nose tip, instead of the tail tip (VRP).                             2.3
 - split of main gear pistons (bogie compression and torsion).                           2.3
@@ -148,4 +148,4 @@ AC3D export :
 - AC3D groups are removed, to help import/export.
 
 
-22 March 2014.
+26 October 2014.

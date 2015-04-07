@@ -12,10 +12,10 @@
       <cockpit type="int">2</cockpit>
       <model type="int">4</model>
   </rating>
-  <aircraft-version>2.12</aircraft-version>
+  <aircraft-version>2.13</aircraft-version>
 
   <startup>
-   <splash-texture>Aircraft/Concorde/Concorde-splash.png</splash-texture>
+   <splash-texture>Aircraft/Concorde/Concorde-splash.png</splash-texture>            <!-- EGLL 27R -->
   </startup>
 
   <flight-model>jsb</flight-model>
@@ -86,6 +86,17 @@
 
  </sim>
 
+ <aircraft>
+  <door>
+   <x-m type="float">-19.4   </x-m>                                 <!-- left front door -->
+   <y-m type="float">  1.2947</y-m>
+   <z-m type="float">  0.2577</z-m>
+  </door>
+  <jetway-hood-deg type="float">0.0</jetway-hood-deg>
+ </aircraft>
+
+ <autopilot include="Systems/Concorde-init-autopilot.xml"/>
+
  <consumables>
   <fuel include="Systems/Concorde-init-fuel.xml"/>                  <!-- required by nasal -->
  </consumables>
@@ -128,8 +139,6 @@
   <keyboard include="Nasal/Concorde-keyboard.xml">
   </keyboard>
  </input>
-
- <autopilot include="Systems/Concorde-init-autopilot.xml"/>
 
 
 <!-- ============= -->
@@ -266,7 +275,7 @@
 
  <instrumentation include="Systems/Concorde-init-instrumentation.xml">
 
-<!-- ADF 2 (not available by GUI dialog) -->
+<!-- ADF 2 -->
 
   <adf n="1">
    <frequencies>
