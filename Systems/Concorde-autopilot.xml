@@ -731,14 +731,23 @@
   </pid-controller>
 
   <!-- .................... -->
-  <!-- vertical speed hold -->
+  <!-- vertical speed hold. -->
   <!-- .................... -->
   <pid-controller>
     <name>Vertical Speed Hold</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/sonic/altitude</prop>
-      <value>vertical-speed-hold</value>
+      <condition>
+       <and>
+        <equals>
+         <property>/autopilot/locks/sonic/altitude</property>
+         <value>vertical-speed-hold</value>
+        </equals>
+        <not>
+         <property>/systems/autopilot/state/virtual</property>
+        </not>
+       </and>
+      </condition>
     </enable>
     <input>
       <prop>/instrumentation/vertical-speed-indicator[0]/indicated-speed-fps</prop>
@@ -769,8 +778,17 @@
     <name>Vertical Speed Hold (AP2)</name>
     <debug>false</debug>
     <enable>
-      <prop>/autopilot/locks/sonic/altitude</prop>
-      <value>vertical-speed-hold-2</value>
+      <condition>
+       <and>
+        <equals>
+         <property>/autopilot/locks/sonic/altitude</property>
+         <value>vertical-speed-hold-2</value>
+        </equals>
+        <not>
+         <property>/systems/autopilot/state/virtual</property>
+        </not>
+       </and>
+      </condition>
     </enable>
     <input>
       <prop>/instrumentation/vertical-speed-indicator[1]/indicated-speed-fps</prop>
@@ -781,6 +799,45 @@
     </reference>
     <output>
       <prop>/controls/flight/elevator-trim</prop>
+    </output>
+    <config>
+      <Kp>
+        <prop>/systems/autopilot/pid/vertical-speed-hold/Kp</prop>
+      </Kp>               <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <pid-controller>
+    <name>Vertical Speed Hold (virtual crew)</name>
+    <debug>false</debug>
+    <enable>
+      <condition>
+       <and>
+        <equals>
+         <property>/autopilot/locks/sonic/altitude</property>
+         <value>vertical-speed-hold</value>
+        </equals>
+        <property>/systems/autopilot/state/virtual</property>
+       </and>
+      </condition>
+    </enable>
+    <input>
+      <prop>/velocities/vertical-speed-fps</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/settings/vertical-speed-fpm</prop>
+      <scale>0.01667</scale>
+    </reference>
+    <output>
+      <prop>/controls/flight/elevator</prop>
     </output>
     <config>
       <Kp>

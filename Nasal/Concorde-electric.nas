@@ -35,6 +35,8 @@ Electrical.new = func {
 Electrical.init = func {
    me.inherit_system("/systems/electrical");
 
+   me.parser.init_ElectricalXML("/systems/electrical");
+
    me.csd.set_rate( me.ELECSEC );
 }
 

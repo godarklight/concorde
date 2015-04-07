@@ -1015,16 +1015,8 @@ RadioManagement.radioexport = func( arrival ) {
    }
 
    if( me.nearest_airport( constant.FALSE, byuser, airport ) ) {
-       var phase = nil;
+       var phase = me.select_phase( arrival );
 
-       if( arrival ) {
-           me.state = "arrival";
-       }
-       else {
-           me.state = "departure";
-       }
-
-       phase = me.itself["airport"][ me.entry ].getNode(me.state);
        phase = me.get_phase( phase );
 
        me.set_vor( 0, nil, phase );
@@ -1183,22 +1175,50 @@ RadioManagement.set_adf = func( index, task, phase ) {
     }
 }
 
+RadioManagement.select_phase = func( arrival ) {
+   var opposite = "";
+   var phase = nil;
+
+   if( arrival ) {
+       me.state = "arrival";
+       opposite = "departure";
+   }
+
+   else {
+       me.state = "departure";
+       opposite = "arrival";
+   }
+
+   phase = me.itself["airport"][ me.entry ].getNode(me.state);
+
+   # try the opposite, if nothing
+   if( phase == nil ) {
+       phase = me.itself["airport"][ me.entry ].getNode(opposite);
+       me.state = me.state ~ " (" ~ opposite ~ ")";
+   }
+
+   if( phase == nil ) {
+       me.state = "no data";
+   }
+
+   return phase;
+}
+
 RadioManagement.get_phase = func( phase ) {
-    if( phase == nil and me.entry > me.NOENTRY ) {
-        if( me.noinstrument["speed"].getValue() < me.DESCENTFPM * constant.MINUTETOSECOND ) {
-            me.state = "arrival";
-        }
+   var arrival = constant.FALSE;
+   var default = "";
 
-        else {
-            me.state = "departure";
-        }
+   if( phase == nil and me.entry > me.NOENTRY ) {
+       if( me.noinstrument["speed"].getValue() < me.DESCENTFPM * constant.MINUTETOSECOND ) {
+           arrival = constant.TRUE;
+       }
 
-        phase = me.itself["airport"][ me.entry ].getNode(me.state);
-    }
+       phase = me.select_phase( arrival );
+   }
 
-    me.itself["root"].getChild("airport-phase").setValue( me.state );
+   me.itself["root"].getChild("airport-phase").setValue( me.state );
 
-    return phase;
+   return phase;
 }
 
 RadioManagement.is_change = func {
@@ -1213,6 +1233,7 @@ RadioManagement.nearest_airport = func( bycrew, byuser, userairport ) {
    var distancemeter = 0.0;
    var nearestmeter = me.EARTHKM * constant.KMTOMETER;
    var airport = "";
+   var child = "";
    var flight = geo.aircraft_position();
    var destination = geo.Coord.new();
 
@@ -1220,31 +1241,35 @@ RadioManagement.nearest_airport = func( bycrew, byuser, userairport ) {
    # nearest airport
    me.target = "";
    for(var i=0; i<size(me.itself["airport"]); i=i+1) {
-       airport = me.itself["airport"][ i ].getChild("airport-id").getValue();
+       child = me.itself["airport"][ i ].getChild("airport-id");
+       # <airport/>
+       if ( child != nil ) {
+            airport = child.getValue();
 
-       # user is overriding virtual crew
-       if( byuser ) {
-           if( airport == userairport ) {
-               me.target = airport;
-               nearestmeter = 0;
-               index = i;
-               break;
-           }
-       }
+            # user is overriding virtual crew
+            if( byuser ) {
+                if( airport == userairport ) {
+                    me.target = airport;
+                    nearestmeter = 0;
+                    index = i;
+                    break;
+                }
+            }
 
-       # search by virtual crew
-       else {
-           info = airportinfo( airport );
+            # search by virtual crew
+            else {
+                info = airportinfo( airport );
 
-           if( info != nil ) {
-               destination.set_latlon( info.lat, info.lon );
-               distancemeter = flight.distance_to( destination ); 
-               if( distancemeter < nearestmeter ) {
-                   me.target = airport;
-                   nearestmeter = distancemeter;
-                   index = i;
-               }
-           }
+                if( info != nil ) {
+                    destination.set_latlon( info.lat, info.lon );
+                    distancemeter = flight.distance_to( destination ); 
+                    if( distancemeter < nearestmeter ) {
+                        me.target = airport;
+                        nearestmeter = distancemeter;
+                        index = i;
+                    }
+                }
+            }
        }
    }
 

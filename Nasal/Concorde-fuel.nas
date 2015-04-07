@@ -56,8 +56,8 @@ Fuel.init = func {
     me.PUMPPMIN = me.PUMPPMIN0;
     me.PUMPLB = me.PUMPLB0;
 
-    me.tanksystem.initinstrument();
-    me.tanksystem.presetfuel();
+    me.parser.init_FuelXML("/systems/fuel");
+    me.tanksystem.init_TankXML();
 
     me.savestate();
 }
@@ -750,14 +750,14 @@ Tanks.new = func {
 }
 
 Tanks.init = func {
-    me.inherit_tankXML();
+    me.inherit_tankXML("/systems/fuel");
 }
 
 Tanks.amber_fuel = func {
    var result = constant.FALSE;
 
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        if( me.tanks[i].getChild("level-lbs").getValue() <= me.LOWLEVELLB[i] ) {
+        if( me.tankspath[i].getChild("level-lbs").getValue() <= me.LOWLEVELLB[i] ) {
             result = constant.TRUE;
             break;
         }
@@ -766,7 +766,7 @@ Tanks.amber_fuel = func {
    if( !result ) {
        # LP valve
        for( var i = 13; i <= 16; i = i+1 ) {
-            if( me.tanks[i].getChild("level-lbs").getValue() <= me.HPVALVELB ) {
+            if( me.tankspath[i].getChild("level-lbs").getValue() <= me.HPVALVELB ) {
                 result = constant.TRUE;
                 break;
             }
@@ -797,14 +797,14 @@ Tanks.inittank = func( no, contentlb, overfull, underfull, lowlevel ) {
    # optional :  must be created by XML
    if( overfull ) {
        valuelb = contentlb * me.OVERFULL;
-       me.tanks[no].getChild("over-full-lb").setValue( valuelb );
+       me.tankspath[no].getChild("over-full-lb").setValue( valuelb );
    }
    if( underfull ) {
        valuelb = contentlb * me.UNDERFULL;
-       me.tanks[no].getChild("under-full-lb").setValue( valuelb );
+       me.tankspath[no].getChild("under-full-lb").setValue( valuelb );
    }
    if( lowlevel ) {
-       me.tanks[no].getChild("low-level-lbs").setValue( me.LOWLEVELLB[no] );
+       me.tankspath[no].getChild("low-level-lbs").setValue( me.LOWLEVELLB[no] );
    }
 }
 

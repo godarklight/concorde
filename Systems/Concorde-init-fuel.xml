@@ -26,7 +26,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>1</tank-num>
+   <name>1</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="1">
@@ -34,7 +34,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>2</tank-num>
+   <name>2</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="2">
@@ -42,7 +42,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>3</tank-num>
+   <name>3</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="3">
@@ -50,7 +50,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>4</tank-num>
+   <name>4</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
 
@@ -61,7 +61,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>5</tank-num>
+   <name>5</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="5">
@@ -69,7 +69,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>6</tank-num>
+   <name>6</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="6">
@@ -77,7 +77,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>7</tank-num>
+   <name>7</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
   <tank n="7">
@@ -85,7 +85,7 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>8</tank-num>
+   <name>8</name>
    <under-full-lb>0.0</under-full-lb>
   </tank>
 
@@ -96,20 +96,20 @@
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>9</tank-num>
+   <name>9</name>
   </tank>
   <tank n="9">
    <capacity-gal_us>3989.36</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>10</tank-num>
+   <name>10</name>
   </tank>
   <tank n="10">
    <capacity-gal_us>3478.96</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
    <over-full-lb>0.0</over-full-lb>
-   <tank-num>11</tank-num>
+   <name>11</name>
   </tank>
 
 <!-- auxilliary -->
@@ -118,13 +118,13 @@
    <capacity-gal_us>743.22</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>5A</tank-num>
+   <name>5A</name>
   </tank>
   <tank n="12">
    <capacity-gal_us>743.22</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>7A</tank-num>
+   <name>7A</name>
   </tank>
 
 <!-- LP valves -->
@@ -133,25 +133,29 @@
    <capacity-gal_us>6.96</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>LP1</tank-num>
+   <hidden type="bool">true</hidden>
+   <name>LP1</name>
   </tank>
   <tank n="14">
    <capacity-gal_us>6.96</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>LP2</tank-num>
+   <hidden type="bool">true</hidden>
+   <name>LP2</name>
   </tank>
   <tank n="15">
    <capacity-gal_us>6.96</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>LP3</tank-num>
+   <hidden type="bool">true</hidden>
+   <name>LP3</name>
   </tank>
   <tank n="16">
    <capacity-gal_us>6.96</capacity-gal_us>
    <content-lb>0.0</content-lb>
    <density-ppg>6.6</density-ppg>
-   <tank-num>LP4</tank-num>
+   <hidden type="bool">true</hidden>
+   <name>LP4</name>
   </tank>
 
 </PropertyList>

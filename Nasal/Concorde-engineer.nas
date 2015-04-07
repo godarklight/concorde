@@ -858,7 +858,7 @@ Virtualengineer.enginerating = func( rating ) {
         for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
              ratingnow = me.dependency["engine-ctrl"][i].getChild("rating").getValue();
              if( ratingnow != rating and rating == constantaero.RATINGFLIGHT ) {
-                 if( !getprop("/controls/gear/gear-down") ) {
+                 if( !me.dependency["gear-ctrl"].getChild("gear-down").getValue() ) {
                      me.dependency["engine-ctrl"][i].getChild("rating").setValue(rating);
                      me.toggleclick("rating-" ~ i ~ "-" ~ rating);
                      break;
@@ -1698,8 +1698,8 @@ Navigation.schedule = func {
 
         # last
         else {
-            id = getprop("/autopilot/route-manager/wp-last/id"); 
-            distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
+            id = me.dependency["route-manager"].getNode("wp-last/id",constant.DELAYEDNODE).getValue(); 
+            distnm = me.dependency["route-manager"].getNode("wp-last/dist",constant.DELAYEDNODE).getValue(); 
         }
 
         fuelkg = me.estimatefuelkg( id, distnm );

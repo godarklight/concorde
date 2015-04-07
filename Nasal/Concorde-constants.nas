@@ -79,7 +79,7 @@ Constantaero.new = func {
                VREFFULLKT : 162,
                VREFEMPTYKT : 152,
                V1EMPTYKT : 150,                                  # guess
-               TAXIKT : 10,
+               TAXIKT : 15,
 
                MAXCRUISEFT : 50190,                              # max cruise mode 
                CRUISEFT : 50000,
@@ -283,6 +283,9 @@ Constant.new = func {
 # nasal has no boolean
                TRUE : 1.0,                             # faster than "true"/"false"
                FALSE : 0.0,
+
+# property not yet created at startup (should through XML)
+               DELAYEDNODE : 1,
 
 # ---------------
 # unit conversion
@@ -758,7 +761,7 @@ System.is_moving = func {
 
    # must exist in XML !
    var aglft = me.noinstrument["agl"].getValue();
-   var speedkt = me.noinstrument["airspeed"].getValue();
+   var speedkt = me.noinstrument["speed"].getValue();
 
    if( aglft >=  constantaero.AGLTOUCHFT or speedkt >= constantaero.TAXIKT ) {
        result = constant.TRUE;

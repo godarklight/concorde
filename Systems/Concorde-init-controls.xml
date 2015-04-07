@@ -192,6 +192,32 @@
       <volume-push type="bool">false</volume-push>
      </nav>
     </engineer>
+    <observer>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </observer>
    </crew>
   </audio>
 
@@ -246,6 +272,7 @@
   <crew>
    <captain-busy type="bool">true</captain-busy>              <!-- crew performs Captain checks -->
    <checklist type="bool">true</checklist>                    <!-- flight checklists triggers automatically -->
+   <copilot-in-command type="bool">true</copilot-in-command>  <!-- only four engine flame out -->
    <ins-alignment type="bool">true</ins-alignment>            <!-- quick alignment of INS (not real) -->
    <landing-lights type="bool">true</landing-lights>          <!-- optional in checklist -->
    <night-lighting type="bool">true</night-lighting>
