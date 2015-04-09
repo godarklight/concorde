@@ -614,7 +614,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- OVERHEAD PANEL -->
 
-  <instrument include="../../Instruments/magcompass.xml">
+  <instrument include="Aircraft/Instruments/magcompass.xml">
    <name>Magnetic Compass</name>
    <x>940</x>
    <y>524</y>
@@ -861,7 +861,7 @@ During the capture, a triangle lights below VO, LA, GL and AA, until the acquisi
 
 <!-- copy from CENTER PANEL -->
 
-  <instrument include="../../Instruments/gear-indicator.xml">
+  <instrument include="Aircraft/Instruments/gear-indicator.xml">
    <name>Warning on Gear</name>
    <condition>
     <property>controls/gear/gear-down</property>
