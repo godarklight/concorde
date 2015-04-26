@@ -5,7 +5,7 @@
   <layout>vbox</layout>
 
   <text>
-    <label>Concorde voices</label>
+    <label>Concorde voices 2</label>
   </text>
 
   <hrule><dummy/></hrule>
@@ -100,7 +100,16 @@
        </checkbox>
 
        <text>
-         <label>(requires Festival, update preferences.xml)</label>
+         <label>requires Festival</label>
+         <color>
+          <red>0.5</red>
+          <green>0.5</green>
+          <blue>0.5</blue>
+         </color>
+       </text>
+
+       <text>
+         <label>(to toggle, update preferences.xml and restart)</label>
          <color>
           <red>0.5</red>
           <green>0.5</green>
@@ -122,6 +131,18 @@
 
   <group>
    <layout>hbox</layout>
+
+   <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-voice</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
 
    <button>
     <legend>Close</legend>
