@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<!-- The external lights must :
+<!-- Concorde anti-collision lights are red (A).
+
+
+     The external lights must :
      - be centered at the model origin, where the billboard rotation happen (also required by scaling).
      - have the surface vertical, oriented to the left of aircraft (otherwise billboard makes
      the object disappear !).
@@ -15,11 +18,11 @@
 
      References
      ==========
-     http://fr.wikipedia.org/wiki/Concorde : anti-collision lights are red.
+     (A) http://fr.wikipedia.org/wiki/Concorde :
 
 
      Credits
-     .......
+     =======
      Light texture from bo105 (M. Franz).
 
 -->
@@ -109,12 +112,6 @@
  <animation>
   <type>dist-scale</type>
   <object-name>Collision</object-name>
-  <condition>
-   <greater-than>
-    <property>sim/time/sun-angle-rad</property>
-    <value>1.57</value>
-   </greater-than>
-  </condition>
   <interpolation>
    <entry>
     <ind>0</ind>

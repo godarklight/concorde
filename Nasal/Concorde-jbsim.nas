@@ -53,7 +53,7 @@ ConcordeMain.putinrelation = func {
 
    copilotcrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, flightsystem,
                              hydraulicsystem, lightingsystem, MWSsystem, voicecrew );
-   engineercrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
+   engineer.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
                               fuelsystem, hydraulicsystem, lightingsystem, voicecrew );
    voicecrew.set_relation( autopilotsystem );
 
@@ -65,13 +65,15 @@ ConcordeMain.synchronize = func {
    hydraulicsystem.set_rate( fuelsystem.PUMPSEC );
    airbleedsystem.set_rate( fuelsystem.PUMPSEC );
    enginesystem.set_rate( fuelsystem.PUMPSEC );
+   #This seems to be the correct spot for this.
+   autopilotsystem.reinitexport();
 }
 
 ConcordeMain.startupcron = func {
    if( getprop( "/controls/crew/startup" ) ) {
        copilotcrew.toggleexport();
        copilothuman.wakeupexport();
-       engineercrew.toggleexport();
+       engineer.toggleexport();
        engineerhuman.wakeupexport();
        crewscreen.toggleexport();
        voicecrew.toggleexport();
@@ -80,6 +82,8 @@ ConcordeMain.startupcron = func {
 
 # 1 seconds cron (only, to spare frame rate)
 ConcordeMain.sec1cron = func {
+   autopilotsystem.schedule();
+   autothrottlesystem.schedule();
    electricalsystem.schedule();
    hydraulicsystem.schedule();
    fuelsystem.schedule();
@@ -97,13 +101,11 @@ ConcordeMain.sec1cron = func {
    daytimeinstrument.schedule();
 
    # schedule the next call
-   settimer(func { me.sec1cron(); },fuelsystem.PUMPSEC);
+   settimer(func { me.sec1cron(); },1);
 }
 
 # 3 seconds cron
 ConcordeMain.sec3cron = func {
-   autopilotsystem.schedule();
-   autothrottlesystem.schedule();
    MWSsystem.schedule();
    flightsystem.schedule();
    fuelsystem.slowschedule();
@@ -113,24 +115,22 @@ ConcordeMain.sec3cron = func {
    crewscreen.schedule();
 
    # schedule the next call
-   settimer(func { me.sec3cron(); },autopilotsystem.AUTOPILOTSEC);
+   settimer(func { me.sec3cron(); },3);
 }
 
 # 5 seconds cron
 ConcordeMain.sec5cron = func {
    CGinstrument.schedule();
    standbyIASinstrument.schedule();
-   autopilotsystem.slowschedule();
-   autothrottlesystem.slowschedule();
    pressuresystem.schedule();
    enginesystem.slowschedule();
-   copilotcrew.fastschedule();
-   copilothuman.schedule();
-   engineerhuman.schedule();
+#   copilotcrew.fastschedule();
+#   copilothuman.schedule();
+#   engineerhuman.schedule();
    tractorexternal.schedule();
 
    # schedule the next call
-   settimer(func { me.sec5cron(); },pressuresystem.PRESSURIZESEC);
+   settimer(func { me.sec5cron(); },5);
 }
 
 # 10 seconds cron
@@ -138,14 +138,14 @@ ConcordeMain.sec10cron = func {
    MWSsystem.slowschedule();
 
    # schedule the next call
-   settimer(func { me.sec10cron(); },MWSsystem.AUXILIARYSEC);
+   settimer(func { me.sec10cron(); },10);
 }
 
 # 15 seconds cron
 ConcordeMain.sec15cron = func {
    TMOinstrument.schedule();
    GPWSsystem.slowschedule();
-   engineerhuman.slowschedule();
+#   engineerhuman.slowschedule();
 
    # schedule the next call
    settimer(func { me.sec15cron(); },15);
@@ -156,7 +156,7 @@ ConcordeMain.sec30cron = func {
    tankpressuresystem.schedule();
 
    # schedule the next call
-   settimer(func { me.sec30cron(); },tankpressuresystem.TANKSEC);
+   settimer(func { me.sec30cron(); },30);
 }
 
 # 60 seconds cron
@@ -164,8 +164,8 @@ ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
-   copilotcrew.slowschedule();
-   engineercrew.veryslowschedule();
+#   copilotcrew.slowschedule();
+#   engineer.veryslowschedule();
 
    # schedule the next call
    settimer(func { me.sec60cron(); },60);
@@ -203,7 +203,6 @@ ConcordeMain.savedata = func {
                        "/controls/seat/yoke",
                        "/controls/voice/sound",
                        "/controls/voice/text",
-                       "/sim/user/callsign",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",
@@ -243,6 +242,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.tankpressuresystem = Concorde.Pressurizetank.new();
    globals.Concorde.autopilotsystem = Concorde.Autopilot.new();
    globals.Concorde.autothrottlesystem = Concorde.Autothrottle.new();
+
    globals.Concorde.GPWSsystem = Concorde.Gpws.new();
    globals.Concorde.MWSsystem = Concorde.Mws.new();
    globals.Concorde.enginesystem = Concorde.Engine.new();
@@ -275,7 +275,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.crewscreen = Crewbox.new();
 
    globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
-   globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
+   globals.Concorde.engineer = Concorde.Virtualengineer.new();
    globals.Concorde.voicecrew = Concorde.Voice.new();
 
    globals.Concorde.copilothuman = Concorde.Copilothuman.new();
@@ -303,12 +303,6 @@ ConcordeMain.init = func {
    settimer(func { me.sec30cron(); },0);
    settimer(func { me.sec60cron(); },0);
 
-   # disable JSBSim stand alone mode
-   setprop( "fdm/jsbsim/propulsion/tank[0]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[1]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[2]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[3]/priority", 0 );
-
    # saved on exit, restored at launch
    me.savedata();
 
@@ -316,7 +310,7 @@ ConcordeMain.init = func {
    settimer(func { me.startupcron(); },2.0);
 
    # the 3D is soon visible (long by Cygwin)
-   print("concorde systems started, version ", getprop("/sim/aircraft-version"));
+   print("Concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 
 # state reset
@@ -325,6 +319,7 @@ ConcordeMain.reinit = func {
        # default is JSBSim state, which loses fuel selection.
        globals.Concorde.fuelsystem.reinitexport();
    }
+   globals.Concorde.autopilotsystem.reinitexport();
 }
 
 # object creation

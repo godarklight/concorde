@@ -35,8 +35,6 @@ Electrical.new = func {
 Electrical.init = func {
    me.inherit_system("/systems/electrical");
 
-   me.parser.init_ElectricalXML("/systems/electrical");
-
    me.csd.set_rate( me.ELECSEC );
 }
 
@@ -730,11 +728,11 @@ Wiper.motor = func {
 Lighting = {};
 
 Lighting.new = func {
-   var obj = { parents : [Lighting,System],
+   var obj = { parents : [Lighting],
 
-               compass : CompassLight.new(),
-               internal : LightLevel.new(),
-               landing : LandingLight.new()
+           compass : CompassLight.new(),
+           internal : LightLevel.new(),
+           landing : LandingLight.new()
          };
 
    obj.init();
@@ -743,11 +741,8 @@ Lighting.new = func {
 };
 
 Lighting.init = func {
-   me.inherit_system("/systems/lighting");
-
-   var strobe_switch = me.itself["root-ctrl"].getNode("strobe");
-
-   aircraft.light.new(me.itself["root-ctrl"].getNode("external/strobe").getPath(), [ 0.03, 1.20 ], strobe_switch);
+   var strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
+   aircraft.light.new("controls/lighting/external/strobe", [ 0.03, 1.20 ], strobe_switch);
 }
 
 Lighting.schedule = func {

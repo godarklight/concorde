@@ -5,7 +5,7 @@
   <layout>vbox</layout>
 
   <text>
-    <label>Concorde procedures 2</label>
+    <label>Concorde procedures</label>
   </text>
 
   <hrule><dummy/></hrule>
@@ -117,15 +117,6 @@
         </binding>
       </checkbox>
 
-      <text>
-       <label>(only day/night transition)</label>
-       <color>
-        <red>0.5</red>
-        <green>0.5</green>
-        <blue>0.5</blue>
-       </color>
-      </text>
-
       <checkbox>
         <label>adjusts VOR and ADF to nearest airport  ~</label>
         <halign>left</halign>
@@ -219,18 +210,6 @@
 
   <group>
    <layout>hbox</layout>
-
-   <button>
-    <legend>Back</legend>
-    <key>b</key>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-procedures</dialog-name>
-    </binding>
-    <binding>
-     <command>dialog-close</command>
-    </binding>
-   </button>
 
    <button>
     <legend>Close</legend>

@@ -40,11 +40,6 @@
 
      <text>
       <property>/systems/human/airport-id</property>
-      <color>
-       <red>0.2</red>
-       <green>0.8</green>
-       <blue>0.2</blue>
-      </color>
      </text>
     </group>
 
@@ -378,18 +373,6 @@
    <layout>hbox</layout>
 
    <button>
-    <legend>Back</legend>
-    <key>b</key>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
-    </binding>
-    <binding>
-      <command>dialog-close</command>
-    </binding>
-   </button>
-
-   <button>
     <legend>Close</legend>
     <default>true</default>
     <key>Esc</key>
@@ -405,9 +388,6 @@
      <command>dialog-show</command>
      <dialog-name>Concorde-procedures4</dialog-name>
     </binding>
-    <binding>
-     <command>dialog-close</command>
-    </binding>
    </button>
 
    <button>
@@ -416,6 +396,18 @@
     <binding>
      <command>dialog-show</command>
      <dialog-name>Concorde-procedures2</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Menu</legend>
+    <key>m</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
     </binding>
     <binding>
       <command>dialog-close</command>

@@ -367,19 +367,16 @@
   <button>
    <x>50</x>
    <y>0</y>
-   <legend>Back</legend>
-   <key>b</key>
+   <legend>Apply</legend>
+   <key>a</key>
+   <equal>true</equal>
    <binding>
-   <command>dialog-show</command>
-    <dialog-name>Concorde-menu</dialog-name>
-   </binding>
-   <binding>
-     <command>dialog-close</command>
+    <command>dialog-apply</command>
    </binding>
   </button>
 
   <button>
-   <x>200</x>
+   <x>280</x>
    <y>0</y>
    <legend>Close</legend>
    <default>true</default>
@@ -394,7 +391,7 @@
   </button>
 
   <button>
-   <x>450</x>
+   <x>500</x>
    <y>0</y>
    <legend>Page 2</legend>
    <key>p</key>
@@ -413,11 +410,14 @@
   <button>
    <x>600</x>
    <y>0</y>
-   <legend>Apply</legend>
-   <key>a</key>
-   <equal>true</equal>
+   <legend>Menu</legend>
+   <key>m</key>
    <binding>
-    <command>dialog-apply</command>
+   <command>dialog-show</command>
+    <dialog-name>Concorde-menu</dialog-name>
+   </binding>
+   <binding>
+     <command>dialog-close</command>
    </binding>
   </button>
 

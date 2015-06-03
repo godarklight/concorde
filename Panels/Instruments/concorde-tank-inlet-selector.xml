@@ -13,7 +13,7 @@
   <inlet-main>/controls/fuel/tank[4]/inlet-main[0]</inlet-main>
   <inlet-auto>/controls/fuel/tank[4]/inlet-auto[0]</inlet-auto>
   <inlet-static>/controls/fuel/tank[4]/inlet-static[0]</inlet-static>
-  <name>/consumables/fuel/tank[4]/name</name>
+  <tank-num>/consumables/fuel/tank[4]/tank-num</tank-num>
  </params>
 
 
@@ -70,7 +70,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>5</value>
       </equals>
      </condition>
@@ -80,7 +80,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>7</value>
       </equals>
      </condition>
@@ -144,7 +144,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>5</value>
       </equals>
      </condition>
@@ -154,7 +154,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>7</value>
       </equals>
      </condition>
@@ -187,7 +187,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>5</value>
       </equals>
      </condition>
@@ -197,7 +197,7 @@
     <transformation>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>7</value>
       </equals>
      </condition>

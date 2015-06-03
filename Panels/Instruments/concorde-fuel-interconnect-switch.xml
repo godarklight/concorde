@@ -10,7 +10,7 @@
 
  <params>
   <connect-valve>/controls/fuel/tank[5]/interconnect-valve</connect-valve>
-  <name>/consumables/fuel/tank[5]/name</name>
+  <tank-num>/controls/fuel/tank[5]/tank-num</tank-num>
  </params>
 
 
@@ -40,7 +40,7 @@
     <name>Title left</name>
     <condition>
      <equals>
-      <property alias="../../../../../../params/name"/>
+      <property alias="../../../../../../params/tank-num"/>
       <value>6</value>
      </equals>
     </condition>
@@ -104,7 +104,7 @@
     <name>Title left</name>
     <condition>
      <equals>
-      <property alias="../../../../../../params/name"/>
+      <property alias="../../../../../../params/tank-num"/>
       <value>6</value>
      </equals>
     </condition>

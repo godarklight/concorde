@@ -10,7 +10,7 @@
 <PropertyList>
   <name>Concorde-navigation</name>
   <layout>vbox</layout>
-  <width>700</width>
+  <width>450</width>
 
   <text>
     <label>Concorde navigation</label>
@@ -19,127 +19,6 @@
   <hrule><dummy/></hrule>
 
   <group>
-   <layout>hbox</layout>
-
-   <group>
-    <layout>vbox</layout>
-    <halign>center</halign>
-
-    <text>
-      <label>Radio management</label>
-    </text>
-
-    <text>
-     <label>(in Nasal/Concorde-route.xml)</label>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>0.5</blue>
-     </color>
-    </text>
-
-    <text>
-     <label>virtual crew overrides,</label>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>0.5</blue>
-     </color>
-    </text>
-
-    <text>
-     <label>once nearest airport has changed</label>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>0.5</blue>
-     </color>
-    </text>
-
-    <text>
-      <label></label>
-    </text>
-
-    <text>
-      <label></label>
-    </text>
-
-    <group>
-     <layout>hbox</layout>
-
-     <button>
-      <legend>Arrival</legend>
-      <binding>
-       <command>dialog-apply</command>
-      </binding>
-      <binding>
-        <command>nasal</command>
-        <script>globals.Concorde.engineercrew.radioexport(1);</script>
-      </binding>
-     </button>
-
-     <button>
-      <legend>Departure</legend>
-      <binding>
-       <command>dialog-apply</command>
-      </binding>
-      <binding>
-        <command>nasal</command>
-        <script>globals.Concorde.engineercrew.radioexport(0);</script>
-      </binding>
-     </button>
-    </group>
-
-    <group>
-     <layout>hbox</layout>
-
-     <text>
-      <halign>left</halign>
-      <property>/systems/human/airport-phase</property>
-      <live>true</live>
-      <color>
-       <red>0.2</red>
-       <green>0.8</green>
-       <blue>0.2</blue>
-      </color>
-     </text>
-
-     <text>
-      <property>/systems/human/airport-id</property>
-      <live>true</live>
-      <color>
-       <red>0.2</red>
-       <green>0.8</green>
-       <blue>0.2</blue>
-      </color>
-     </text>
-    </group>
-
-    <text>
-      <label></label>
-    </text>
-
-    <input>
-     <halign>left</halign>
-     <property>/controls/human/airport-id</property>
-     <label>at airport</label>
-    </input>
-
-    <text>
-     <label>nearest airport in range, if none</label>
-     <color>
-      <red>0.5</red>
-      <green>0.5</green>
-      <blue>0.5</blue>
-     </color>
-    </text>
-
-    <text>
-      <label></label>
-    </text>
-   </group>
-
-   <group>
     <layout>vbox</layout>
     <halign>center</halign>
 
@@ -221,10 +100,15 @@
        </color>
       </text>
     </group>
+  </group>
 
-    <text>
-     <label></label>
-    </text>
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
 
     <text>
      <label>Fuel consumption (kg/h)</label>
@@ -239,10 +123,15 @@
       <blue>0.2</blue>
      </color>
     </text>
+  </group>
 
-    <text>
-     <label></label>
-    </text>
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
 
     <text>
      <label>Rate (ft/minute) to reach</label>
@@ -348,7 +237,6 @@
      <property>/controls/engineer/destination-ft</property>
      <label>ft at last waypoint</label>
     </input>
-   </group>
   </group>
 
   <text>
@@ -359,14 +247,11 @@
    <layout>hbox</layout>
 
    <button>
-    <legend>Back</legend>
-    <key>b</key>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
     <binding>
      <command>dialog-apply</command>
-    </binding>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
     </binding>
     <binding>
       <command>dialog-close</command>
@@ -374,9 +259,12 @@
    </button>
 
    <button>
-    <legend>Close</legend>
-    <default>true</default>
-    <key>Esc</key>
+    <legend>Menu</legend>
+    <key>m</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
     <binding>
      <command>dialog-apply</command>
     </binding>

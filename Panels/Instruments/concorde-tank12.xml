@@ -11,7 +11,7 @@
  <h-base>160</h-base>
 
  <params>
-  <name>/consumables/fuel/tank[0]/name</name>
+  <tank-num>/consumables/fuel/tank[0]/tank-num</tank-num>
   <lbs-select>/consumables/fuel/tank[0]/level-gal_us</lbs-select>
  </params>
 
@@ -42,11 +42,11 @@
     <condition>
      <or>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>6</value>
       </equals>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>8</value>
       </equals>
      </or>
@@ -56,7 +56,7 @@
      <name>6</name>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>6</value>
       </equals>
      </condition>
@@ -75,7 +75,7 @@
      <name>8</name>
      <condition>
       <equals>
-       <property alias="../../../../../../../params/name"/>
+       <property alias="../../../../../../../params/tank-num"/>
        <value>8</value>
       </equals>
      </condition>
@@ -106,7 +106,7 @@
     <name>10</name>
     <condition>
      <equals>
-      <property alias="../../../../../../params/name"/>
+      <property alias="../../../../../../params/tank-num"/>
       <value>10</value>
      </equals>
     </condition>
@@ -135,7 +135,7 @@
     <name>11</name>
     <condition>
      <equals>
-      <property alias="../../../../../../params/name"/>
+      <property alias="../../../../../../params/tank-num"/>
       <value>11</value>
      </equals>
     </condition>

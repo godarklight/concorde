@@ -18,7 +18,6 @@ Virtualengineer.new = func {
    var obj = { parents : [Virtualengineer,CommonCheck,Virtualcrew,Checklist,Emergency,System], 
 
                airbleedsystem : nil,
-               autopilotsystem : nil,
                electricalsystem : nil,
                enginesystem : nil,
                fuelsystem : nil,
@@ -119,10 +118,6 @@ Virtualengineer.toggleexport = func {
         me.schedule();
         me.slowschedule();
     }
-}
-
-Virtualengineer.radioexport = func( arrival ) {
-    me.radiomanagement.radioexport( arrival );
 }
 
 Virtualengineer.reheatexport = func {
@@ -858,7 +853,7 @@ Virtualengineer.enginerating = func( rating ) {
         for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
              ratingnow = me.dependency["engine-ctrl"][i].getChild("rating").getValue();
              if( ratingnow != rating and rating == constantaero.RATINGFLIGHT ) {
-                 if( !me.dependency["gear-ctrl"].getChild("gear-down").getValue() ) {
+                 if( !getprop("/controls/gear/gear-down") ) {
                      me.dependency["engine-ctrl"][i].getChild("rating").setValue(rating);
                      me.toggleclick("rating-" ~ i ~ "-" ~ rating);
                      break;
@@ -1114,6 +1109,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-main-" ~ i);
+            return;
         }
     }
 
@@ -1123,6 +1119,7 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-alt-" ~ i);
+            return;
         }
     }
 }
@@ -1698,8 +1695,8 @@ Navigation.schedule = func {
 
         # last
         else {
-            id = me.dependency["route-manager"].getNode("wp-last/id",constant.DELAYEDNODE).getValue(); 
-            distnm = me.dependency["route-manager"].getNode("wp-last/dist",constant.DELAYEDNODE).getValue(); 
+            id = getprop("/autopilot/route-manager/wp-last/id"); 
+            distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
         }
 
         fuelkg = me.estimatefuelkg( id, distnm );

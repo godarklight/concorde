@@ -14,9 +14,9 @@ FuelXML.new = func {
 
                FUELSEC : 1.0,
 
-               configpath : nil,
-               iterationspath : nil,
-               systempath : nil,
+               config : nil,
+               fuel : nil,
+               iterations : nil,
 
                components : FuelComponentArray.new(),
                connections : FuelConnectionArray.new()
@@ -27,47 +27,44 @@ FuelXML.new = func {
    return obj;
 };
 
-FuelXML.init = func {
-}
-
 # creates all propagate variables
-FuelXML.init_FuelXML = func( path ) {
+FuelXML.init = func {
    var children = nil;
    var nb_children = 0;
    var component = nil;
 
-   me.systempath = props.globals.getNode(path);
-   me.configpath = me.systempath.getNode("internal/config");
-   me.iterationspath = me.systempath.getNode("internal/iterations");
+   me.config = props.globals.getNode("/systems/fuel/internal/config");
+   me.fuel = props.globals.getNode("/systems/fuel");
+   me.iterations = props.globals.getNode("/systems/fuel/internal/iterations");
 
-   children = me.configpath.getChildren("supplier");
+   children = me.config.getChildren("supplier");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_supplier( children[i] );
    }
 
-   children = me.configpath.getChildren("circuit");
+   children = me.config.getChildren("circuit");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_circuit( children[i] );
    }
 
-   children = me.configpath.getChildren("connect");
+   children = me.config.getChildren("connect");
    nb_children = size( children );
    for( i = 0; i < nb_children; i = i+1 ) {
-        me.connections.add_connect( children[i], me.components );
+        me.connections.add_connect( children[i] );
    }
 
-   children = me.configpath.getChildren("inter-connect");
+   children = me.config.getChildren("inter-connect");
    nb_children = size( children );
    for( i = 0; i < nb_children; i = i+1 ) {
-        me.connections.add_interconnect( children[i], me.components );
+        me.connections.add_interconnect( children[i] );
    }
 
-   children = me.configpath.getChildren("transfer");
+   children = me.config.getChildren("transfer");
    nb_children = size( children );
    for( i = 0; i < nb_children; i = i+1 ) {
-        me.connections.add_transfer( children[i], me.components );
+        me.connections.add_transfer( children[i] );
    }
 }
 
@@ -80,7 +77,7 @@ FuelXML.schedule = func( pumplb, tanksystem ) {
 
    me.clear();
 
-   if( me.systempath.getChild("serviceable").getValue() ) {
+   if( me.fuel.getChild("serviceable").getValue() ) {
        # one must absolutely start by suppliers !
        iter = 1;
        for( var i = 0; i < me.components.count_supplier(); i = i+1 ) {
@@ -109,7 +106,7 @@ FuelXML.schedule = func( pumplb, tanksystem ) {
             iter = iter + 1;
        }
 
-       me.iterationspath.setValue(iter);
+       me.iterations.setValue(iter);
    }
 
    me.apply( pumplb, tanksystem );
@@ -118,22 +115,18 @@ FuelXML.schedule = func( pumplb, tanksystem ) {
 FuelXML.pressurize = func( connection ) {
    var found = constant.FALSE;
    var valve = constant.FALSE;
-   var inputkind = "";
-   var outputkind = "";
    var input = nil;
-   var output = nil;
    var component = nil;
    var component2 = nil;
+   var output = nil;
 
    output = connection.get_output();
-   outputkind = connection.get_output_kind();
 
    # propagate fuel pressure
-   component2 = me.components.find( output, outputkind );
+   component2 = me.components.find( output );
    if( component2 != nil ) {
        input = connection.get_input();
-       inputkind = connection.get_input_kind();
-       component = me.components.find( input, inputkind );
+       component = me.components.find( input );
        valve = connection.valve_opened( component );
 
        if( !component2.is_propagate() ) {
@@ -311,15 +304,11 @@ FuelComponentArray.find_circuit = func( ident ) {
 }
 
 # lookup tables accelerates the search !!!
-FuelComponentArray.find = func( ident, kind ) {
+FuelComponentArray.find = func( ident ) {
    var found = constant.FALSE;
-   var result = nil;
+   var result = me.find_supplier( ident );
 
-
-   if( kind == "supplier" ) {
-       result = me.find_supplier( ident );
-   }
-   elsif( kind == "circuit" ) {
+   if( result == nil ) {
        result = me.find_circuit( ident );
    }
 
@@ -329,32 +318,6 @@ FuelComponentArray.find = func( ident, kind ) {
 
    if( !found ) {
        print("Fuel : component not found ", ident);
-   }
-
-   return result;
-}
-
-FuelComponentArray.find_kind = func( ident ) {
-   var found = constant.FALSE;
-   var result = "";
-
-   if( me.find_supplier( ident ) == nil ) {
-       if( me.find_circuit( ident ) == nil ) {
-       }
-       else {
-           result = "circuit";
-       }
-   }
-   else {
-       result = "supplier";
-   }
-
-   if( result != "" ) {
-       found = constant.TRUE;
-   }
-
-   if( !found ) {
-       print("Fuel : component kind not found ", ident);
    }
 
    return result;
@@ -640,34 +603,6 @@ FuelTank.clear = func() {
 }
 
 FuelTank.apply = func( pumpsystem, pumplb ) {
-   if( me.nb_source > 1 ) {
-       var steplb = 0.0;
-       var levellb = 0.0;
-       var flowlb = 0.0;
-
-       # destination tank almost full
-       var freelb = pumpsystem.getspacelb( me.tank_index[0] );
-
-       if( freelb < ( pumplb * me.nb_source ) ) {
-           pumplb = freelb / me.nb_source;
-       }
-
-       # source tank almost empty
-       for( var i = 0; i < me.nb_source; i = i+1 ) {
-            steplb = pumplb;
-            levellb = pumpsystem.getlevellb( me.tank_source[i] );
-            if( levellb < pumplb ) {
-                steplb = levellb;
-            }
-
-            flowlb = flowlb + steplb;
-       }
-
-       if( flowlb < ( pumplb * me.nb_source ) ) {
-           pumplb = flowlb / me.nb_source;
-       }
-   }
-
    for( var i = 0; i < me.nb_source; i = i+1 ) {
         pumpsystem.transfertanks( me.tank_index[0], me.tank_source[i], pumplb );
    }
@@ -752,40 +687,34 @@ FuelConnectionArray.new = func {
    return obj;
 };
 
-FuelConnectionArray.add_connect = func( node, components ) {
+FuelConnectionArray.add_connect = func( node ) {
    var result = nil;
    var input = node.getChild("input").getValue();
    var output = node.getChild("output").getValue();
-   var inputkind = components.find_kind( input );
-   var outputkind = components.find_kind( output );
    var valves = node.getChildren("valve");
 
-   result = FuelConnect.new( input, inputkind, output, outputkind, valves );
+   result = FuelConnect.new( input, output, valves );
    me.add( result );
 }
 
-FuelConnectionArray.add_interconnect = func( node, components ) {
+FuelConnectionArray.add_interconnect = func( node ) {
    var result = nil;
    var input = node.getChild("input").getValue();
    var output = node.getChild("output").getValue();
-   var inputkind = components.find_kind( input );
-   var outputkind = components.find_kind( output );
    var valves = node.getChildren("valve");
 
-   result = FuelInterconnect.new( input, inputkind, output, outputkind, valves );
+   result = FuelInterconnect.new( input, output, valves );
    me.add_inter( result );
 }
 
-FuelConnectionArray.add_transfer = func( node, components ) {
+FuelConnectionArray.add_transfer = func( node ) {
    var result = nil;
    var input = node.getChild("input").getValue();
    var output = node.getChild("output").getValue();
-   var inputkind = components.find_kind( input );
-   var outputkind = components.find_kind( output );
    var valves = node.getChildren("valve");
    var pumps = node.getChildren("pump");
 
-   result = FuelTransfer.new( input, inputkind, output, outputkind, valves, pumps );
+   result = FuelTransfer.new( input, output, valves, pumps );
    me.add( result );
 }
 
@@ -824,13 +753,11 @@ FuelConnectionArray.get_inter = func( index ) {
 
 FuelConnection = {};
 
-FuelConnection.new = func( input, inputkind, output, outputkind ) {
+FuelConnection.new = func( input, output ) {
    var obj = { parents : [FuelConnection],
 
            input : input,
-           input_kind : inputkind,
            output : output,
-           output_kind : outputkind,
 
            nb_valves : 0,
            valves : [],
@@ -841,14 +768,11 @@ FuelConnection.new = func( input, inputkind, output, outputkind ) {
    return obj;
 };
 
-FuelConnection.inherit_connection = func( input, inputkind, output, outputkind, allvalves ) {
-   var obj = FuelConnection.new( input, inputkind, output, outputkind );
+FuelConnection.inherit_connection = func( input, output, allvalves ) {
+   var obj = FuelConnection.new( input, output );
 
    me.input = obj.input;
    me.output = obj.output;
-
-   me.input_kind = obj.input_kind;
-   me.output_kind = obj.output_kind;
 
    me.nb_valves = obj.nb_valves;
    me.valves = obj.valves;
@@ -867,16 +791,8 @@ FuelConnection.get_input = func {
    return me.input;
 }
 
-FuelConnection.get_input_kind = func {
-   return me.input_kind;
-}
-
 FuelConnection.get_output = func {
    return me.output;
-}
-
-FuelConnection.get_output_kind = func {
-   return me.output_kind;
 }
 
 FuelConnection.get_valve = func {
@@ -909,18 +825,18 @@ FuelConnection.valve_opened = func( component ) {
 
 FuelConnect = {};
 
-FuelConnect.new = func( input, inputkind, output, outputkind, allvalves ) {
+FuelConnect.new = func( input, output, allvalves ) {
    var obj = { parents : [FuelConnect,FuelConnection]
 
          };
 
-   obj.init( input, inputkind, output, outputkind, allvalves );
+   obj.init( input, output, allvalves );
 
    return obj;
 };
 
-FuelConnect.init = func( input, inputkind, output, outputkind, allvalves ) {
-   me.inherit_connection( input, inputkind, output, outputkind, allvalves );
+FuelConnect.init = func( input, output, allvalves ) {
+   me.inherit_connection( input, output, allvalves );
 }
 
 
@@ -930,18 +846,18 @@ FuelConnect.init = func( input, inputkind, output, outputkind, allvalves ) {
 
 FuelInterconnect = {};
 
-FuelInterconnect.new = func( input, inputkind, output, outputkind, allvalves ) {
+FuelInterconnect.new = func( input, output, allvalves ) {
    var obj = { parents : [FuelInterconnect,FuelConnection]
 
          };
 
-   obj.init( input, inputkind, output, outputkind, allvalves );
+   obj.init( input, output, allvalves );
 
    return obj;
 };
 
-FuelInterconnect.init = func( input, inputkind, output, outputkind, allvalves ) {
-   me.inherit_connection( input, inputkind, output, outputkind, allvalves );
+FuelInterconnect.init = func( input, output, allvalves ) {
+   me.inherit_connection( input, output, allvalves );
 }
 
 FuelInterconnect.apply = func( componentarray, pumpsystem, pumplb ) {
@@ -967,20 +883,20 @@ FuelInterconnect.apply = func( componentarray, pumpsystem, pumplb ) {
 
 FuelTransfer = {};
 
-FuelTransfer.new = func( input, inputkind, output, outputkind, allvalves, allpumps ) {
+FuelTransfer.new = func( input, output, allvalves, allpumps ) {
    var obj = { parents : [FuelTransfer,FuelConnection],
 
                nb_pumps : 0,
                pumps : []
          };
 
-   obj.init( input, inputkind, output, outputkind, allvalves, allpumps );
+   obj.init( input, output, allvalves, allpumps );
 
    return obj;
 };
 
-FuelTransfer.init = func( input, inputkind, output, outputkind, allvalves, allpumps ) {
-   me.inherit_connection( input, inputkind, output, outputkind, allvalves );
+FuelTransfer.init = func( input, output, allvalves, allpumps ) {
+   me.inherit_connection( input, output, allvalves );
 
    me.nb_pumps = size( allpumps );
 
@@ -1030,39 +946,32 @@ TankXML.new = func {
 
                nb_tanks : 0,
 
-               controlspath : nil,
-               dialogpath : nil,
-               fillingspath : nil,
-               systempath : nil,
-               tankspath : nil
+               fillings : nil,
+               pumps : nil,
+               tankcontrols : nil,
+               tanks : nil
          };
 
     return obj;
 }
 
-TankXML.inherit_tankXML = func( path ) {
+TankXML.inherit_tankXML = func {
     var obj = TankXML.new();
 
     me.pumpsystem = obj.pumpsystem;
 
-    me.systempath = props.globals.getNode(path);
-    me.dialogpath = me.systempath.getNode("tanks/dialog");
-    me.controlspath = props.globals.getNode("/controls/fuel").getChildren("tank");
-    me.tankspath = props.globals.getNode("/consumables/fuel").getChildren("tank");
-    me.fillingspath = me.systempath.getChild("tanks").getChildren("filling");
+    me.tankcontrols = props.globals.getNode("/controls/fuel").getChildren("tank");
+    me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
+    me.fillings = props.globals.getNode("/systems/fuel/tanks").getChildren("filling");
+    me.pumps = props.globals.getNode("/controls/fuel/pumps");
 
-    me.nb_tanks = size(me.tankspath);
+    me.nb_tanks = size(me.tanks);
 
     me.initcontent();
 }
 
-TankXML.init_TankXML = func {
-    me.initinstrument();
-    me.presetfuel();
-}
-
 TankXML.initcontent = func {
-    me.inherit_initcontent();
+    me.inherit_content();
 }
 
 # fuel initialization
@@ -1070,23 +979,23 @@ TankXML.inherit_initcontent = func {
    var densityppg = 0.0;
 
    for( var i=0; i < me.nb_tanks; i=i+1 ) {
-        densityppg = me.tankspath[i].getChild("density-ppg").getValue();
-        me.CONTENTLB[me.TANKNAME[i]] = me.tankspath[i].getChild("capacity-gal_us").getValue() * densityppg;
+        densityppg = me.tanks[i].getChild("density-ppg").getValue();
+        me.CONTENTLB[me.TANKNAME[i]] = me.tanks[i].getChild("capacity-gal_us").getValue() * densityppg;
    }
 }
 
 # change by dialog
 TankXML.menu = func {
    var change = constant.FALSE;
-   var last = me.systempath.getChild("presets").getValue();
-   var comment = me.dialogpath.getValue();
+   var last = getprop("/systems/fuel/presets");
+   var comment = getprop("/systems/fuel/tanks/dialog");
 
-   for( var i=0; i < size(me.fillingspath); i=i+1 ) {
-        if( me.fillingspath[i].getChild("comment").getValue() == comment ) {
+   for( var i=0; i < size(me.fillings); i=i+1 ) {
+        if( me.fillings[i].getChild("comment").getValue() == comment ) {
             me.load( i );
 
             # for aircraft-data
-            me.systempath.getChild("presets").setValue(i);
+            setprop("/systems/fuel/presets",i);
             if( i != last ) {
                 change = constant.TRUE;
             }
@@ -1101,25 +1010,25 @@ TankXML.menu = func {
 # fuel configuration
 TankXML.presetfuel = func {
    var value = "";
-   var fuel = me.systempath.getChild("presets").getValue();
-   var dialog = me.dialogpath.getValue();
+   var fuel = getprop("/systems/fuel/presets");
+   var dialog = getprop("/systems/fuel/tanks/dialog");
 
    # default is 0
    if( fuel == nil ) {
        fuel = 0;
    }
 
-   if( fuel < 0 or fuel >= size(me.fillingspath) ) {
+   if( fuel < 0 or fuel >= size(me.fillings) ) {
        fuel = 0;
    } 
 
    # to detect change
-   me.systempath.getChild("presets").setValue(fuel);
+   setprop("/systems/fuel/presets",fuel);
 
    # copy to dialog
    if( dialog == "" or dialog == nil ) {
-       value = me.fillingspath[fuel].getChild("comment").getValue();
-       me.dialogpath.setValue(value);
+       value = me.fillings[fuel].getChild("comment").getValue();
+       setprop("/systems/fuel/tanks/dialog", value);
    }
 
    me.load( fuel );
@@ -1128,7 +1037,7 @@ TankXML.presetfuel = func {
 TankXML.load = func( fuel ) {
    var child = nil;
    var levelgalus = 0.0;
-   var presets = me.fillingspath[fuel].getChildren("tank");
+   var presets = me.fillings[fuel].getChildren("tank");
 
    for( var i=0; i < size(presets); i=i+1 ) {
         child = presets[i].getChild("level-gal_us");
@@ -1147,17 +1056,17 @@ TankXML.load = func( fuel ) {
 
 # tank initialization
 TankXML.inherit_inittank = func( no, contentlb ) {
-   me.tankspath[no].getChild("content-lb").setValue( contentlb );
+   me.tanks[no].getChild("content-lb").setValue( contentlb );
 }
 
 TankXML.initinstrument = func {
    for( var i=0; i < me.nb_tanks; i=i+1 ) {
-        me.inherit_inittank( i, me.CONTENTLB[me.TANKNAME[i]] );
+        me.inherit_inittank( i,  me.CONTENTLB[me.TANKNAME[i]] );
    }
 }
 
 TankXML.controls = func( name, switch, index = 0 ) {
-   return me.controlspath[me.TANKINDEX[name]].getChild( switch, index );
+   return me.tankcontrols[me.TANKINDEX[name]].getChild( switch, index );
 }
 
 TankXML.getlevellb = func( name ) {
@@ -1166,10 +1075,6 @@ TankXML.getlevellb = func( name ) {
 
 TankXML.getlevelkg = func( name ) {
    return me.pumpsystem.getlevelkg( me.TANKINDEX[name] );
-}
-
-TankXML.getspacelb = func( name ) {
-   return me.pumpsystem.getspacelb( me.TANKINDEX[name], me.CONTENTLB[name] );
 }
 
 TankXML.empty = func( name ) {
@@ -1199,7 +1104,7 @@ TankXML.transfertanks = func( dest, sour, pumplb ) {
 
 # fills completely a tank
 TankXML.filltank = func( dest, sour ) {
-   var pumplb = me.getspacelb( dest );
+   var pumplb = me.CONTENTLB[dest] - me.getlevellb( dest );
 
    me.pumpsystem.transfertanks( me.TANKINDEX[dest], me.CONTENTLB[dest], me.TANKINDEX[sour], pumplb );
 }
@@ -1216,8 +1121,6 @@ Pump = {};
 Pump.new = func {
    var obj = { parents : [Pump],
 
-               EMPTYGAL : 0.1,                  # if interconnect, level is never 0.0
-
                tanks : nil 
          };
 
@@ -1227,11 +1130,11 @@ Pump.new = func {
 }
 
 Pump.init = func {
-   me.tankspath = props.globals.getNode("/consumables/fuel").getChildren("tank");
+   me.tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
 }
 
 Pump.getlevel = func( index ) {
-   var tankgalus = me.tankspath[index].getChild("level-gal_us").getValue();
+   var tankgalus = me.tanks[index].getChild("level-gal_us").getValue();
 
    return tankgalus;
 }
@@ -1248,17 +1151,11 @@ Pump.getlevelkg = func( index ) {
    return tankkg;
 }
 
-Pump.getspacelb = func( index, contentlb ) {
-   var freelb = contentlb - me.getlevellb(index);
-
-   return freelb;
-}
-
 Pump.empty = func( index ) {
    var tankgal = me.getlevel(index);
    var result = constant.FALSE;
 
-   if( tankgal < me.EMPTYGAL ) {
+   if( tankgal == 0.0 ) {
        result = constant.TRUE;
    }
 
@@ -1269,7 +1166,7 @@ Pump.full = func( index, contentlb ) {
    var tanklb = me.getlevellb(index);
    var result = constant.TRUE;
 
-   if( contentlb - tanklb > me.EMPTYGAL ) {
+   if( contentlb - tanklb > 0.1 ) {
        result = constant.FALSE;
    }
 
@@ -1277,7 +1174,7 @@ Pump.full = func( index, contentlb ) {
 }
 
 Pump.setlevel = func( index, levelgalus ) {
-   me.tankspath[index].getChild("level-gal_us").setValue(levelgalus);
+   me.tanks[index].getChild("level-gal_us").setValue(levelgalus);
 }
 
 Pump.setlevellb = func( index, levellb ) {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <PropertyList>
-
+<!--
    <key n="1">
     <name>Ctrl-A</name>
     <desc>Toggle autopilot altitude lock.</desc>
@@ -14,7 +14,7 @@
      <property>/instrumentation/generic/click</property>
     </binding>
    </key>
-
+   -->
    <key n="2">
     <name>Ctrl-B</name>
     <desc>reverse thrust</desc>
@@ -53,7 +53,7 @@
     <desc>Reheat</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.engineercrew.reheatexport();</script>
+     <script>globals.Concorde.engineer.reheatexport();</script>
     </binding>
    </key>
 
@@ -62,7 +62,7 @@
     <desc>Toggle autopilot glide slope lock.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.autopilotsystem.aptoggleglideexport();</script>
+     <script>globals.Concorde.autopilotsystem.apglideexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -75,11 +75,30 @@
     <desc>Toggle autopilot heading lock.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.autopilotsystem.aptoggleheadingexport();</script>
+     <script>globals.Concorde.autopilotsystem.apheadingexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
      <property>/instrumentation/generic/click</property>
+    </binding>
+   </key>
+<!--
+   <key n="9">
+    <name>Ctrl-I</name>
+    <desc>Menu</desc>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+   </key>
+-->
+
+   <key n="10">
+    <name>Ctrl-J</name>
+    <desc>Toggle copilot view.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.seatsystem.viewexport("copilot");</script>
     </binding>
    </key>
 
@@ -106,7 +125,7 @@
     <desc>Toggle autopilot nav1 lock.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.autopilotsystem.aptogglenav1export();</script>
+     <script>globals.Concorde.autopilotsystem.apnav1export();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -128,7 +147,7 @@
     <desc>Toggle pitch hold.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.autopilotsystem.aptogglepitchexport();</script>
+     <script>globals.Concorde.autopilotsystem.appitchexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -136,48 +155,12 @@
     </binding>
    </key>
 
-   <key n="17">
-    <name>Ctrl-Q</name>
-    <desc>Toggle virtual crew.</desc>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.copilotcrew.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.copilothuman.wakeupexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.engineercrew.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.engineerhuman.wakeupexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.crewscreen.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.voicecrew.toggleexport();</script>
-    </binding>
-    <mod-shift>
-     <desc>Abort checklist.</desc>
-     <binding>
-      <command>nasal</command>
-      <script>globals.Concorde.voicecrew.abortexport();</script>
-     </binding>
-    </mod-shift>
-   </key>
-
    <key n="19">
     <name>Ctrl-S</name>
     <desc>Toggle auto-throttle lock.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.autothrottlesystem.attogglespeedexport();</script>
+     <script>globals.Concorde.autothrottlesystem.atspeedexport();</script>
     </binding>
     <binding>
      <command>property-toggle</command>
@@ -234,21 +217,48 @@
     </mod-shift>
    </key>
 
-   <key n="25">
-    <name>Ctrl-Y</name>
-    <desc>Toggle copilot view.</desc>
+   <key n="26">
+    <name>Ctrl-Z</name>
+    <desc>Toggle virtual crew.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.seatsystem.viewexport("copilot");</script>
+     <script>globals.Concorde.copilotcrew.toggleexport();</script>
     </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.copilothuman.wakeupexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.engineer.toggleexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.engineerhuman.wakeupexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.crewscreen.toggleexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.voicecrew.toggleexport();</script>
+    </binding>
+    <mod-shift>
+     <desc>Abort checklist.</desc>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.voicecrew.abortexport();</script>
+     </binding>
+    </mod-shift>
    </key>
 
-   <key n="61">
-    <name>=</name>
-    <desc>Menu</desc>
+   <key n="70">
+    <name>F</name>
+    <desc>full model</desc>
     <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
+     <command>nasal</command>
+     <script>globals.Concorde.seatsystem.fulloutsideexport();</script>
     </binding>
    </key>
 
@@ -416,14 +426,7 @@
     <repeatable type="bool">true</repeatable>
     <binding>
      <command>nasal</command>
-     <script>
-       if( !globals.Concorde.seatsystem.moveheightexport(0.01) ) {
-           if( !globals.Concorde.autothrottlesystem.datumatexport(1.0) ) {
-               # default
-               controls.incThrottle(0.01, 1.0);
-           }
-       }
-     </script>
+     <script>controls.incThrottle(0.01, 1.0);</script>
     </binding>
    </key>
 
@@ -433,14 +436,7 @@
     <repeatable type="bool">true</repeatable>
     <binding>
      <command>nasal</command>
-     <script>
-       if( !globals.Concorde.seatsystem.moveheightexport(-0.01) ) {
-           if( !globals.Concorde.autothrottlesystem.datumatexport(-1.0) ) {
-               # default
-               controls.incThrottle(-0.01, -1.0);
-           }
-       }
-     </script>
+     <script>controls.incThrottle(-0.01, -1.0);</script>
     </binding>
    </key>
 

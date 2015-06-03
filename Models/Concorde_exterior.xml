@@ -29,6 +29,7 @@
   </model>
 
 <!-- lights -->
+<!-- These old lights are bad and should feel bad
 
   <model>
    <name>Taxi turn left</name>
@@ -69,7 +70,7 @@
     <z-m>0.0</z-m>
    </offsets>
   </model>
-
+  
   <model>
    <name>Navigation tail</name>
    <path>Aircraft/Concorde/Models/Exterior/light/navigationtail.xml</path>
@@ -189,8 +190,31 @@
     <z-m>-0.272</z-m>
    </offsets>
   </model>
+-->
 
+<!-- DISABLED UNTIL I FIGURE OUT REMBRANT LIGHTING
+  <model>
+   <name>Navigation Left Source</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/navigation-left-source.xml</path>
+   <offsets>
+    <x-m>13.4</x-m>
+    <y-m>-12.315</y-m>
+    <z-m>-0.868</z-m>
+   </offsets>
+  </model>
+-->
 
+<!-- REMBRANDT TEST
+  <model>
+   <name>Navigation Left Light</name>
+   <path>Aircraft/Concorde/Models/Exterior/light/navigation-left-light.xml</path>
+   <offsets>
+    <x-m>13.4</x-m>
+    <y-m>-12.315</y-m>
+    <z-m>-0.868</z-m>
+   </offsets>
+  </model>
+-->
 <!-- wheel chocks -->
 
   <model>
@@ -205,7 +229,7 @@
 
   <model>
    <name>Front chock 2</name>
-   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock.xml</path>
+   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock2.xml</path>
    <offsets>
     <x-m>-11.753</x-m>
     <y-m>0</y-m>
@@ -215,7 +239,7 @@
 
   <model>
    <name>Left chock 1</name>
-   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock2.xml</path>
+   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock.xml</path>
    <offsets>
     <x-m>4.020</x-m>
     <y-m>-3.727</y-m>
@@ -224,8 +248,20 @@
   </model>
 
   <model>
+   <name>Left chock 2</name>
+   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock.xml</path>
+   <offsets>
+    <x-m>6.743</x-m>
+    <y-m>-3.727</y-m>
+    <z-m>-3.891</z-m>
+   </offsets>
+  </model>
+
+<!-- dissymmetry -->
+
+  <model>
    <name>Right chock 1</name>
-   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock2.xml</path>
+   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock.xml</path>
    <offsets>
     <x-m>4.010</x-m>
     <y-m>3.727</y-m>
@@ -234,28 +270,8 @@
   </model>
 
   <model>
-   <name>Left chock 2</name>
-   <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock2.xml</path>
-   <overlay>
-    <params>
-     <height>/systems/gear/gear[2]/chock-z-m</height>
-    </params>
-   </overlay>
-   <offsets>
-    <x-m>6.743</x-m>
-    <y-m>-3.727</y-m>
-    <z-m>-3.891</z-m>
-   </offsets>
-  </model>
-
-  <model>
    <name>Right chock 2</name>
    <path>Aircraft/Concorde/Models/Exterior/chock/wheel-chock2.xml</path>
-   <overlay>
-    <params>
-     <height>/systems/gear/gear[2]/chock-z-m</height>
-    </params>
-   </overlay>
    <offsets>
     <x-m>6.763</x-m>
     <y-m>3.727</y-m>
