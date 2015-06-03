@@ -8,9 +8,13 @@
 
      Relations :
 
+     <another>
      - <dependency> is a real dependency.
      - <itself> is the instrument.
+       Reserved entries : me.itself["root"] is path /systems/another.
+                          me.itself["root-ctrl"] is path /controls/another.
      - <noinstrument> is to built the instrument.
+     </another>
 
 
      State reset :
@@ -51,7 +55,7 @@
      can create needle vibrations, making the IVSI unusable on some hardware.
      
      On each IVSI :
-     a) set servicable to false.
+     a) set serviceable to false.
      b) remove the comment around the alias of /velocities/vertical-speed-fps.
 -->
 <PropertyList>
@@ -94,87 +98,94 @@
     <weight-lb type="double">0.0</weight-lb>
   </ac-weight>
   <adc n="0">
-    <serviceable type="bool">true</serviceable>
-    <data type="bool">true</data>
-    <fault type="bool">false</fault>
-    <output>
-      <alpha-deg alias="/orientation/alpha-deg"/>
-      <alpha-failure-deg type="double">0.0</alpha-failure-deg>
-      <altitude-ft alias="/instrumentation/altimeter-adc[0]/indicated-altitude-ft"/>
-      <alt-setting-inhg alias="/instrumentation/altimeter-adc[0]/setting-inhg"/>
-      <airspeed-kt alias="/instrumentation/airspeed-adc[0]/indicated-speed-kt"/>
-      <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
-      <beta-failure-deg type="double">0.0</beta-failure-deg>
-      <mmo-mach type="double">999.0</mmo-mach>
-      <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
-      <tmo-failure-degc type="double">0.0</tmo-failure-degc>
-      <static-degc alias="/environment/temperature-degc"/>
-      <static-failure-degc type="double">0.0</static-failure-degc>
-      <mach alias="/velocities/mach"/>
-      <mach-failure type="double">0.0</mach-failure>
-      <vertical-speed-fps alias="/instrumentation/ivsi-adc[0]/indicated-speed-fps"/>
-      <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
-      <vmo-kt type="double">999.0</vmo-kt>
-    </output>
-    <relations>
-      <dependency>
-        <electric>/systems/electrical/power</electric>
-        <weight>/instrumentation/ac-weight</weight>
-      </dependency>
-      <itself>
-        <adc-ctrl>/controls/adc</adc-ctrl>
-        <adc-sys>
-          <component>/controls/adc</component>
-          <subcomponent>system</subcomponent>
-        </adc-sys>
-      </itself>
-      <noinstrument>
-        <airspeed>/velocities/airspeed-kt</airspeed>
-        <alpha>/orientation/alpha-deg</alpha>
-        <altimeter>
-          <component>/instrumentation</component>
-          <subcomponent>altimeter-adc</subcomponent>
-        </altimeter>
-        <asi>
-          <component>/instrumentation</component>
-          <subcomponent>airspeed-adc</subcomponent>
-        </asi>
-        <altitude>/position/altitude-ft</altitude>
-        <beta>/fdm/jsbsim/aero/beta-deg</beta>
-        <ivsi>
-          <component>/instrumentation</component>
-          <subcomponent>ivsi-adc</subcomponent>
-        </ivsi>
-        <mach>/velocities/mach</mach>
-        <tat>fdm/jsbsim/propulsion/tat-c</tat>
-        <temperature>/environment/temperature-degc</temperature>
-        <vertical-speed>/velocities/vertical-speed-fps</vertical-speed>
-      </noinstrument>
-    </relations>
+   <serviceable type="bool">true</serviceable>
+
+   <data type="bool">true</data>
+   <fault type="bool">false</fault>
+   <output>
+    <alpha-deg alias="/orientation/alpha-deg"/>
+    <alpha-failure-deg type="double">0.0</alpha-failure-deg>
+    <altitude-ft alias="/instrumentation/altimeter-adc[0]/indicated-altitude-ft"/>
+    <alt-setting-inhg alias="/instrumentation/altimeter-adc[0]/setting-inhg"/>
+    <alt-setting-hpa alias="/instrumentation/altimeter-adc[0]/setting-hpa"/>
+    <airspeed-kt alias="/instrumentation/airspeed-adc[0]/indicated-speed-kt"/>
+    <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+    <beta-failure-deg type="double">0.0</beta-failure-deg>
+    <mmo-mach type="double">999.0</mmo-mach>
+    <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+    <tmo-failure-degc type="double">0.0</tmo-failure-degc>
+    <static-degc alias="/environment/temperature-degc"/>
+    <static-failure-degc type="double">0.0</static-failure-degc>
+    <mach alias="/velocities/mach"/>
+    <mach-failure type="double">0.0</mach-failure>
+    <vertical-speed-fps alias="/instrumentation/ivsi-adc[0]/indicated-speed-fps"/>
+    <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
+    <vmo-kt type="double">999.0</vmo-kt>
+   </output>
+
+   <relations>
+    <dependency>
+     <electric>/systems/electrical/power</electric>
+     <weight>/instrumentation/ac-weight</weight>
+    </dependency>
+
+    <itself>
+     <adc-ctrl>/controls/adc</adc-ctrl>
+     <adc-sys>
+      <component>/controls/adc</component>
+      <subcomponent>system</subcomponent>
+     </adc-sys>
+    </itself>
+
+    <noinstrument>
+     <airspeed>/velocities/airspeed-kt</airspeed>
+     <alpha>/orientation/alpha-deg</alpha>
+     <altimeter>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-adc</subcomponent>
+     </altimeter>
+     <asi>
+      <component>/instrumentation</component>
+      <subcomponent>airspeed-adc</subcomponent>
+     </asi>
+     <altitude>/position/altitude-ft</altitude>
+     <beta>/fdm/jsbsim/aero/beta-deg</beta>
+     <ivsi>
+      <component>/instrumentation</component>
+      <subcomponent>ivsi-adc</subcomponent>
+     </ivsi>
+     <mach>/velocities/mach</mach>
+     <tat>fdm/jsbsim/propulsion/tat-c</tat>
+     <temperature>/environment/temperature-degc</temperature>
+     <vertical-speed>/velocities/vertical-speed-fps</vertical-speed>
+    </noinstrument>
+   </relations>
   </adc>
   <adc n="1">
-    <serviceable type="bool">true</serviceable>
-    <data type="bool">true</data>
-    <fault type="bool">false</fault>
-    <output>
-      <alpha-deg alias="/orientation/alpha-deg"/>
-      <alpha-failure-deg type="double">0.0</alpha-failure-deg>
-      <altitude-ft alias="/instrumentation/altimeter-adc[1]/indicated-altitude-ft"/>
-      <alt-setting-inhg alias="/instrumentation/altimeter-adc[1]/setting-inhg"/>
-      <airspeed-kt alias="/instrumentation/airspeed-adc[1]/indicated-speed-kt"/>
-      <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
-      <beta-failure-deg type="double">0.0</beta-failure-deg>
-      <mmo-mach type="double">999.0</mmo-mach>
-      <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
-      <tmo-failure-degc type="double">0.0</tmo-failure-degc>
-      <static-degc alias="/environment/temperature-degc"/>
-      <static-failure-degc type="double">0.0</static-failure-degc>
-      <mach alias="/velocities/mach"/>
-      <mach-failure type="double">0.0</mach-failure>
-      <vertical-speed-fps alias="/instrumentation/ivsi-adc[1]/indicated-speed-fps"/>
-      <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
-      <vmo-kt type="double">999.0</vmo-kt>
-    </output>
+   <serviceable type="bool">true</serviceable>
+
+   <data type="bool">true</data>
+   <fault type="bool">false</fault>
+   <output>
+    <alpha-deg alias="/orientation/alpha-deg"/>
+    <alpha-failure-deg type="double">0.0</alpha-failure-deg>
+    <altitude-ft alias="/instrumentation/altimeter-adc[1]/indicated-altitude-ft"/>
+    <alt-setting-inhg alias="/instrumentation/altimeter-adc[1]/setting-inhg"/>
+    <alt-setting-hpa alias="/instrumentation/altimeter-adc[1]/setting-hpa"/>
+    <airspeed-kt alias="/instrumentation/airspeed-adc[1]/indicated-speed-kt"/>
+    <beta-deg alias="/fdm/jsbsim/aero/beta-deg"/>
+    <beta-failure-deg type="double">0.0</beta-failure-deg>
+    <mmo-mach type="double">999.0</mmo-mach>
+    <tmo-degc alias="/fdm/jsbsim/propulsion/tat-c"/>
+    <tmo-failure-degc type="double">0.0</tmo-failure-degc>
+    <static-degc alias="/environment/temperature-degc"/>
+    <static-failure-degc type="double">0.0</static-failure-degc>
+    <mach alias="/velocities/mach"/>
+    <mach-failure type="double">0.0</mach-failure>
+    <vertical-speed-fps alias="/instrumentation/ivsi-adc[1]/indicated-speed-fps"/>
+    <vertical-speed-failure-fps type="double">0.0</vertical-speed-failure-fps>
+    <vmo-kt type="double">999.0</vmo-kt>
+   </output>
   </adc>
   <adf n="0">
     <ident-audible type="bool">true</ident-audible>
@@ -251,37 +262,48 @@
     <vmo-kt type="double">999.0</vmo-kt>
   </airspeed-standby>
   <altimeter n="0">
-    <serviceable type="bool">true</serviceable>
-    <indicated-altitude-ft alias="/instrumentation/adc[0]/output/altitude-ft"/>
-    <setting-inhg alias="/instrumentation/adc[0]/output/alt-setting-inhg"/>
-    <relations>
-      <dependency>
-        <adc>
-          <component>/instrumentation</component>
-          <subcomponent>adc</subcomponent>
-        </adc>
-        <electric>/systems/electrical/power</electric>
-      </dependency>
-      <noinstrument>
-        <adc>
-          <component>/instrumentation</component>
-          <subcomponent>altimeter-adc</subcomponent>
-        </adc>
-        <sensor>
-          <component>/instrumentation</component>
-          <subcomponent>altimeter-sensor</subcomponent>
-        </sensor>
-      </noinstrument>
-    </relations>
-    <standby type="bool">false</standby>
-    <warning-flag type="bool">false</warning-flag>
+   <serviceable type="bool">true</serviceable>
+
+   <indicated-altitude-ft alias="/instrumentation/adc[0]/output/altitude-ft"/>
+
+   <relations>
+    <dependency>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>adc</subcomponent>
+     </adc>
+     <electric>/systems/electrical/power</electric>
+    </dependency>
+
+    <noinstrument>
+     <adc>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-adc</subcomponent>
+     </adc>
+     <gui-hpa>/instrumentation/altimeter/setting-hpa-formatted</gui-hpa>
+     <gui-inhg>/instrumentation/altimeter/setting-inhg-formatted</gui-inhg>
+     <sensor>
+      <component>/instrumentation</component>
+      <subcomponent>altimeter-sensor</subcomponent>
+     </sensor>
+    </noinstrument>
+   </relations>
+
+   <setting-inhg alias="/instrumentation/adc[0]/output/alt-setting-inhg"/>
+   <setting-inhg-formatted></setting-inhg-formatted>                       <!-- not visible by nasal, if created by GUI -->
+   <setting-hpa alias="/instrumentation/adc[0]/output/alt-setting-hpa"/>
+   <setting-hpa-formatted></setting-hpa-formatted>                         <!-- not visible by nasal, if created by GUI -->
+   <standby type="bool">false</standby>
+   <warning-flag type="bool">false</warning-flag>
   </altimeter>
   <altimeter n="1">
-    <serviceable type="bool">true</serviceable>
-    <indicated-altitude-ft alias="/instrumentation/adc[1]/output/altitude-ft"/>
-    <setting-inhg alias="/instrumentation/adc[1]/output/alt-setting-inhg"/>
-    <standby type="bool">false</standby>
-    <warning-flag type="bool">false</warning-flag>
+   <serviceable type="bool">true</serviceable>
+
+   <indicated-altitude-ft alias="/instrumentation/adc[1]/output/altitude-ft"/>
+   <setting-inhg alias="/instrumentation/adc[1]/output/alt-setting-inhg"/>
+   <setting-hpa alias="/instrumentation/adc[1]/output/alt-setting-hpa"/>
+   <standby type="bool">false</standby>
+   <warning-flag type="bool">false</warning-flag>
   </altimeter>
   <altimeter n="2">
     <serviceable type="bool">true</serviceable>
@@ -330,6 +352,27 @@
     <indicated-pitch-deg alias="/orientation/pitch-deg"/>
     <indicated-roll-deg alias="/orientation/roll-deg"/>
   </attitude-standby>
+
+  <audio>
+   <relations>
+    <dependency>
+     <adf>
+      <component>/instrumentation</component>
+      <subcomponent>adf</subcomponent>
+     </adf>
+     <comm>
+      <component>/instrumentation</component>
+      <subcomponent>comm</subcomponent>
+     </comm>
+     <marker>/instrumentation/marker-beacon</marker>
+     <nav>
+      <component>/instrumentation</component>
+      <subcomponent>nav</subcomponent>
+     </nav>
+    </dependency>
+   </relations>
+  </audio>
+
   <cabin-altitude>
     <serviceable type="bool" archive="y">true</serviceable>
     <setting-inhg>29.92</setting-inhg>
@@ -775,13 +818,20 @@
     <volume type="double">0.0</volume>
   </nav>
   <nose-visor>
-    <pos-norm alias="/surface-positions/flap-pos-norm"/>
-    <relations>
-      <dependency>
-        <hydraulic>/systems/hydraulic/power</hydraulic>
-        <wiper>/instrumentation/wiper/power</wiper>
-      </dependency>
-    </relations>
+   <pos-norm alias="/surface-positions/flap-pos-norm"/>
+
+   <relations>
+    <dependency>
+     <hydraulic>/systems/hydraulic/power</hydraulic>
+     <wiper>/instrumentation/wiper/power</wiper>
+    </dependency>
+    <noinstrument>
+     <setting>
+      <component>/sim/flaps</component>
+      <subcomponent>setting</subcomponent>
+     </setting>
+    </noinstrument>
+   </relations>
   </nose-visor>
   <radar>
     <!-- required by TCAS -->
@@ -871,24 +921,28 @@
     </relations>
   </tank-pressure>
   <tank-temperature>
-    <serviceable type="bool" archive="y">true</serviceable>
-    <engine-degc>15.0</engine-degc>
-    <relations>
-      <dependency>
-        <engine>
-          <component>/systems/engines</component>
-          <subcomponent>engine</subcomponent>
-        </engine>
-        <tank>
-          <component>/consumables/fuel</component>
-          <subcomponent>tank</subcomponent>
-        </tank>
-      </dependency>
-    </relations>
-    <selector type="int">0</selector>
-    <tank-degc type="double">15.0</tank-degc>
-    <fuel-degc type="double">15.0</fuel-degc>
-    <engine-degc type="double">15.0</engine-degc>
+   <serviceable type="bool" archive="y">true</serviceable>
+
+   <engine-degc>15.0</engine-degc>
+
+   <relations>
+    <dependency>
+     <engine>
+      <component>/systems/engines</component>
+      <subcomponent>engine</subcomponent>
+     </engine>
+     <tank>
+      <component>/consumables/fuel</component>
+      <subcomponent>tank</subcomponent>
+     </tank>
+    </dependency>
+    <noinstrument>
+     <temperature>/environment/temperature-degc</temperature>
+    </noinstrument>
+   </relations>
+   
+   <selector type="int">0</selector>
+   <tank-degc>15.0</tank-degc>
   </tank-temperature>
   <tas-indicator>
     <serviceable type="bool" archive="y">true</serviceable>

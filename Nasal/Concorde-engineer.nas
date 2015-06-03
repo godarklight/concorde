@@ -120,6 +120,10 @@ Virtualengineer.toggleexport = func {
     }
 }
 
+Virtualengineer.radioexport = func( arrival ) {
+    me.radiomanagement.radioexport( arrival );
+}
+
 Virtualengineer.reheatexport = func {
     # at first engine 2 3.
     if( !me.has_reheat() ) {
@@ -853,7 +857,7 @@ Virtualengineer.enginerating = func( rating ) {
         for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
              ratingnow = me.dependency["engine-ctrl"][i].getChild("rating").getValue();
              if( ratingnow != rating and rating == constantaero.RATINGFLIGHT ) {
-                 if( !getprop("/controls/gear/gear-down") ) {
+                 if( !me.dependency["gear-ctrl"].getChild("gear-down").getValue() ) {
                      me.dependency["engine-ctrl"][i].getChild("rating").setValue(rating);
                      me.toggleclick("rating-" ~ i ~ "-" ~ rating);
                      break;
@@ -1109,7 +1113,6 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-main-" ~ i);
-            break;
         }
     }
 
@@ -1119,7 +1122,6 @@ Virtualengineer.wingantiicing = func( set ) {
         if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
             me.dependency["anti-icing"].getNode(path).setValue( set );
             me.toggleclick("icing-alt-" ~ i);
-            break;
         }
     }
 }
@@ -1695,8 +1697,8 @@ Navigation.schedule = func {
 
         # last
         else {
-            id = getprop("/autopilot/route-manager/wp-last/id"); 
-            distnm = getprop("/autopilot/route-manager/wp-last/dist"); 
+            id = me.dependency["route-manager"].getNode("wp-last/id",constant.DELAYEDNODE).getValue(); 
+            distnm = me.dependency["route-manager"].getNode("wp-last/dist",constant.DELAYEDNODE).getValue(); 
         }
 
         fuelkg = me.estimatefuelkg( id, distnm );

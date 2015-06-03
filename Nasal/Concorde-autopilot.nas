@@ -232,6 +232,35 @@ Autopilot.apchannel = func {
     me.discexport();
   }
 
+# avoid strong roll near a waypoint
+Autopilot.lockwaypointroll = func {
+    var distancenm = me.itself["waypoint"][0].getChild("dist").getValue();
+
+    # next waypoint
+    if( distancenm != nil ) {
+        var lastnm = me.itself["state"].getChild("waypoint-nm").getValue();
+
+        # avoids strong roll
+        if( distancenm < me.WPTNM ) {
+
+            # pop waypoint, enough soon to avoid banking on release
+            # into the opposite direction of the next waypoint
+            var rolldeg =  me.noinstrument["roll"].getValue();
+            if( distancenm > lastnm or math.abs(rolldeg) > me.ROLLDEG ) {
+                if( me.is_lock_true() ) {
+                    me.itself["route-manager"].getChild("input").setValue("@DELETE0");
+                    me.resetprediction( "true-heading-hold1" );
+                }
+            }
+        }
+
+        # new waypoint
+        elsif( distancenm > lastnm ) {
+            me.resetprediction( "true-heading-hold1" );
+        }
+
+        me.itself["state"].getChild("waypoint-nm").setValue(distancenm);
+    }
 }
 
 Autopilot.is_autopilot_engaged = func {
@@ -433,8 +462,761 @@ Autopilot.modeland = func {
   }
 }
 
-#===AUTOPILOT MODE SETTINGS===#
-#These actually control the autopilot settings.
+# spring returns to center, once released by hand
+Autopilot.releasedatum = func {
+   if( me.itself["autoflight"].getNode("datum/altitude").getValue() != 0.0 ) {
+       # no mouse left click
+       if( !me.itself["mouse"][constantaero.AP1].getValue() ) {
+           me.itself["autoflight"].getNode("datum/altitude").setValue(0.0);
+       }
+   }
+}
+
+# datum adjust of autopilot, arguments
+# - step plus/minus 1 (fast) or 0.1 (slow)
+Autopilot.datumapexport = func( sign ) {
+   var maxcruise = constant.FALSE;
+   var value = 0.0;
+   var step = 0.0;
+   var datum = 0.0;
+   var datumold = 0.0;
+   var maxstep = 0.0;
+   var ratio = 0.0;
+   var targetfpm = 0.0;
+   var targerdeg = 0.0;
+   var targetkt = 0.0;
+   var targetft = 0.0;
+   var targetmach = 0.0;
+   var result = constant.FALSE;
+
+
+   if( me.has_lock_altitude() ) {
+       result = constant.TRUE;
+
+       maxcruise = me.autothrottlesystem.is_maxcruise();
+# TO DO : slaving to TMO not implemented
+       maxcruise = constant.FALSE;
+
+       # plus/minus 6000 ft/min (real)
+       # plus/minus 17 kt (real) : maxclimb
+       if( me.is_lock_vertical() and !maxcruise ) {
+           # 80 or 800 ft/min per second (real) : 10 or 100 ft/min per key
+           # 0.7 or 2 kt per second (real) : 10 or 100 ft/min per key
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 100.0 * sign;
+               step = 0.16667 * sign;
+           }
+           else {
+               value = 100.0 * sign;
+               step = 0.16667 * sign;
+           }
+       }
+       # plus/minus 11 deg
+       elsif( me.is_lock_pitch() ) {
+           # 0.1 or 0.5 deg per key
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 1.0 * sign;
+               step = 0.90909 * sign;
+           }
+           else {
+               value = 0.5 * sign;
+               step = 0.454545 * sign;
+           }
+       }
+       # plus/minus 600 ft (real)
+       elsif( me.is_lock_altitude() ) {
+           # 20 or 60 ft per second (real) : 10 or 50 ft per key
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 100.0 * sign;
+               step = 1.66667 * sign;
+           }
+           else {
+               value = 50.0 * sign;
+               step = 0.83333 * sign;
+           }
+       }
+       # plus/minus 20 kt (real)
+       elsif( me.is_lock_speed_pitch() ) {
+           # 0.7 or 2 kt per second (real) : 0.5 or 1 kt per key
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 5.0 * sign;
+               step = 0.25 * sign;
+           }
+           else {
+               value = 1.0 * sign;
+               step = 0.5 * sign;
+           }
+       }
+       # plus/minus 0.06 Mach (real)
+       elsif( me.is_lock_mach_pitch() ) {
+           # 0.002 or 0.007 Mach per second (real)
+           if( sign >= -0.1 and sign <= 0.1 ) {
+               value = 0.02 * sign;
+               step = 3.33333 * sign;
+           }
+           else {
+               value = 0.007 * sign;
+               step = 1.166667 * sign;
+           }
+       }
+       # default (touches cursor)
+       else {
+           value = 0.0;
+           step = 1.0 * sign;
+       }
+
+       # limited to plus/minus 10 steps
+       datum = me.itself["autoflight"].getNode("datum/altitude").getValue();
+       if( datum == nil ) {
+           datum = step;
+       }
+       else {
+           datumold = datum;
+           datum = datum + step;
+
+           # maximum value of cursor
+           if( datum > 10.0 and datumold < 10.0 ) {
+               maxstep = 10.0 - datumold;
+               ratio = maxstep / step;
+               value = ratio * value;
+               datum = 10.0;
+           }
+           # minimum value of cursor
+           elsif( datum < -10.0 and datumold > -10.0 ) {
+               maxstep = -10.0 - datumold;
+               ratio = maxstep / step;
+               value = ratio * value;
+               datum = -10.0;
+           }
+       }
+
+       if( datum >= -10.0 and datum <= 10.0 ) {
+           if( me.is_lock_vertical() and !maxcruise ) {
+               targetfpm = me.itself["settings"].getChild("vertical-speed-fpm").getValue();
+               if( targetfpm == nil ) {
+                   targetfpm = 0.0;
+               }
+               targetfpm = targetfpm + value;
+               me.verticalspeed(targetfpm);
+           }
+           elsif( me.is_lock_pitch() ) {
+               targetdeg = me.itself["settings"].getChild("target-pitch-deg").getValue();
+               targetdeg = targetdeg + value;
+               me.pitch( targetdeg );
+           }
+           elsif( me.is_lock_altitude() ) {
+               targetft = me.itself["settings"].getChild("target-altitude-ft").getValue();
+               targetft = targetft + value;
+               me.apaltitude(targetft);
+           }
+           elsif( me.is_lock_speed_pitch() ) {
+               targetkt = me.itself["settings"].getChild("target-speed-kt").getValue();
+               targetkt = targetkt + value;
+               me.autothrottlesystem.speed(targetkt);
+           }
+           elsif( me.is_lock_mach_pitch() ) {
+               targetmach = me.itself["settings"].getChild("target-mach").getValue();
+               targetmach = targetmach + value;
+               me.autothrottlesystem.mach(targetmach);
+           }
+
+           me.itself["autoflight"].getNode("datum/altitude").setValue(datum);
+       }
+   }
+
+
+   return result;
+}
+
+
+# ---------------
+# FLIGHT DIRECTOR
+# ---------------
+
+# activate autopilot
+Autopilot.fdexport = func {
+   var altitude = "";
+   var heading = "";
+   var vertical = "";
+   var horizontal = "";
+   var fd1 = me.itself["flight-director"][constantaero.AP1].getChild("engage").getValue();
+   var fd2 = me.itself["flight-director"][constantaero.AP2].getChild("engage").getValue();
+
+   if( fd1 or fd2 ) {
+       altitude = me.itself["autoflight"].getChild("altitude").getValue();
+       heading = me.itself["autoflight"].getChild("heading").getValue();
+       vertical = me.itself["autoflight"].getChild("vertical").getValue();
+       horizontal = me.itself["autoflight"].getChild("horizontal").getValue();
+
+       # pitch hold is default on activation
+       if( ( altitude == "" or altitude == nil ) and ( vertical == "" or vertical == nil ) and
+           ( heading == "" or heading == nil ) and ( horizontal == "" or horizontal == nil ) ) {
+           me.appitchexport();
+       }
+   }
+}
+
+
+# -------------
+# VERTICAL MODE
+# -------------
+
+Autopilot.apdiscverticalmode2 = func {
+   me.apdiscvertical();
+   me.apdiscaltitude();
+}
+
+# disconnect vertical mode
+Autopilot.apdiscvertical = func {
+   me.itself["autoflight"].getChild("vertical").setValue("");
+}
+
+# go around mode
+Autopilot.goaround = func {
+   # cron runs without autopilot engagement
+   if( me.is_engaged() ) {
+
+       # 2 throttles full foward during an autoland or glide slope
+       if( me.is_glide() or me.is_landing() ) {
+           if( me.autothrottlesystem.goaround() ) {
+               me.apactivatemode("heading","wing-leveler","");
+
+               # pitch at 15 deg and hold the wing level, until the next command of crew
+               me.modepitch( me.GOAROUNDDEG );
+
+               # crew control
+               me.autothrottlesystem.atdiscexport();
+
+               # throttle is being changed by autothrottle
+               me.autothrottlesystem.full();
+
+               # light on
+               me.apactivatemode("vertical","goaround");
+
+               me.apengage();
+           }
+       }
+
+       # light off
+       elsif( me.is_going_around() ) {
+           if( !me.is_pitch() or
+               me.itself["autoflight"].getChild("heading").getValue() != "wing-leveler" ) {
+               me.apdiscvertical();
+           }
+       }
+   }
+}
+
+Autopilot.is_going_around = func {
+   var result = constant.FALSE;
+
+   if( me.itself["autoflight"].getChild("vertical").getValue() == "goaround" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# CAUTION, avoids concurrent crons (stack overflow Nasal error) :
+# one may activate glide slope, then arm autoland = 2 calls.
+Autopilot.is_goaround = func {
+   var result = constant.FALSE;
+
+   if( me.itself["autoflight"].getChild("vertical2").getValue() == "goaround-armed" or me.is_going_around() ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# adjust target speed with wind
+# - target speed (kt)
+Autopilot.targetwind = func {
+   # VREF 152-162 kt
+   var weightlb = me.dependency["weight"].getChild("weight-lb").getValue();
+   var targetkt = constantaero.Vrefkt( weightlb );
+   var windkt = me.dependency["ins"][constantaero.AP1].getNode("computed/wind-speed-kt").getValue();
+
+   # wind increases lift
+   if( windkt > 0 ) {
+       var winddeg = me.dependency["ins"][constantaero.AP1].getNode("computed/wind-from-heading-deg").getValue();
+       var vordeg = me.get_nav().getNode("radials").getChild("target-radial-deg").getValue();
+       var offsetdeg = vordeg - winddeg;
+
+       offsetdeg = constant.crossnorth( offsetdeg );
+
+       # add head wind component;
+       # except tail wind (too much glide)
+       if( offsetdeg > -constant.DEG90 and offsetdeg < constant.DEG90 ) {
+           var offsetrad = offsetdeg * constant.DEGTORAD;
+           var offsetkt = windkt * math.cos( offsetrad );
+
+           targetkt = targetkt + offsetkt;
+       }
+   }
+
+   # avoid infinite gliding (too much ground effect ?)
+   me.autothrottlesystem.speed(targetkt);
+}
+
+# smooth the rebound of pitch hold during the flare
+Autopilot.targetpitch = func( targetdeg, aglft, rates ) {
+   var pitchdeg = 0.0;
+   var speedfps = 0.0;
+   var deltaft = 0.0;
+   var timesec = 0.0;
+   var deltadeg = 0.0;
+   var ratedegps = 0.0;
+   var stepdeg = 0.0;
+
+   # start from attitude
+   if( !me.is_pitch() ) {
+       pitchdeg = me.noinstrument["pitch"].getValue();
+   }
+   else {
+       pitchdeg = me.itself["settings"].getChild("target-pitch-deg").getValue();
+   }
+
+   if( pitchdeg != targetdeg ) {
+       if( targetdeg > pitchdeg ) {
+           speedfps = - me.get_ivsi().getChild("indicated-speed-fps").getValue();
+           deltaft = aglft - me.PITCHFT;
+           timesec = deltaft / speedfps;
+
+           deltadeg = targetdeg - pitchdeg;
+           ratedegps = deltadeg / timesec;
+
+           stepdeg = ratedegps * rates;
+           pitchdeg = pitchdeg + stepdeg;
+       }
+
+       # maximum
+       else {
+           pitchdeg = targetdeg;
+       }
+   }
+
+   me.modepitch( pitchdeg );
+}
+
+# autoland mode
+Autopilot.autoland = func {
+   var aglft = 0.0;
+   var pitchdeg = 0.0;
+   var verticalmode2 = "";      
+
+   # to catch the go around
+   var rates = me.GOAROUNDSEC;
+
+   me.goaround();
+
+   if( me.is_autoland() ) {
+       verticalmode2 = "goaround-armed";
+
+       # cron runs without autopilot engagement
+       if( me.is_engaged() ) {
+           aglft = me.get_radioaltimeter().getChild("indicated-altitude-ft").getValue();
+
+           # armed
+           if( me.is_land_armed() ) {
+               if( aglft <= me.AUTOLANDFT ) {
+                   me.itself["autoflight"].getChild("vertical").setValue("autoland");
+               }
+           }
+
+           # engaged
+           if( me.is_landing() ) {
+               # touch down
+               if( aglft < constantaero.AGLTOUCHFT ) {
+
+                   # gently reduce pitch
+                   if( me.noinstrument["pitch"].getValue() > 1.0 ) {
+                       rates = me.TOUCHSEC;
+
+                       # 1 deg / s
+                       pitchdeg = me.itself["settings"].getChild("target-pitch-deg").getValue();
+                       pitchdeg = pitchdeg - 0.2;
+                       me.modepitch( pitchdeg );
+                       me.autothrottlesystem.atdiscspeedmode2();
+                   }
+
+                   # safe on ground
+                   else {
+                       rates = me.SAFESEC;
+
+                       # disable autopilot
+                       verticalmode2 = "";
+                       me.apdiscexport();
+                       me.autothrottlesystem.atdiscexport();
+
+                       # reset trims
+                       me.dependency["flight"].getChild("elevator-trim").setValue(0.0);
+                       me.dependency["flight"].getChild("rudder-trim").setValue(0.0);
+                       me.dependency["flight"].getChild("aileron-trim").setValue(0.0);
+                   }
+
+                   # pilot must activate autothrottle
+                   me.autothrottlesystem.idle();
+               }
+ 
+               # triggers below 1500 ft
+               elsif( aglft > me.AUTOLANDFT ) {
+                   me.itself["autoflight"].getChild("vertical").setValue("autoland-armed");
+               }
+
+               # approach
+               else {
+                   # if activated below 1500 ft
+                   me.apdischorizontal();
+
+                   if( aglft < me.LANDINGFT ) {
+                       rates = me.FLARESEC;
+
+                       # landing pitch (flare) :
+                       # - not above 100 ft, because outside of glide slope (autoland red light).
+                       # - vertical-speed-with-throttle removes the rebound at touch down of
+                       # vertical-speed-hold.
+                       if( aglft < me.FLAREFT ) {
+                           # possible nav errors below 100 ft (example KJFK 22L, EGLL 27R) :
+                           # heading hold avoids roll outside the runway.
+                           if( !me.itself["autoflight"].getChild("real-nav").getValue() ) {
+                               if( !me.is_magnetic() ) {
+                                   me.landheadingdeg = me.noinstrument["magnetic"].getValue();
+                               }
+                               me.heading(me.landheadingdeg);
+                               me.apactivatemode("heading","dg-heading-hold");
+                           }
+                           me.modepitch( me.FLAREDEG );
+                           me.verticalspeed(me.TOUCHFPM);
+                           me.autothrottlesystem.atactivatemode("speed","vertical-speed-with-throttle");
+                       }
+
+                       # tip to landing pitch :
+                       # - sooner at 10 deg reduces the rebound.
+                       # - cannot go back, when rebound.
+                       # - glide slope with throttle is less prone to lose pitch
+                       # to catch the glide slope below.
+                       elsif( !me.autothrottlesystem.is_lock_vertical() ) {
+                           me.apactivatemode("heading","nav1-hold");
+                           me.targetpitch( me.LANDINGDEG, aglft, rates );
+                           me.autothrottlesystem.atactivatemode("speed","gs1-with-throttle");
+                       } 
+                   }
+
+                   # glide slope : cannot go back when then aircraft climbs again
+                   # (rebound caused by landing pitch), otherwise will crash to catch the glide slope.
+                   elsif( !me.autothrottlesystem.is_lock_glide() ) {
+                       me.apactivatemode("heading","nav1-hold");
+                       me.modeglide();
+
+                       # near VREF (no wind)
+                       me.targetwind();
+                       me.autothrottlesystem.atactivatemode("speed","speed-with-throttle");
+                   }
+
+                   # pilot must activate autothrottle
+                   me.autothrottlesystem.atengage();
+               }
+           }
+
+           me.apengage();
+       }
+   }
+   else {
+       if( me.is_glide() ) {
+           verticalmode2 = "goaround-armed";      
+       }
+   }
+
+   me.itself["autoflight"].getChild("vertical2").setValue(verticalmode2);
+
+   # re-schedule the next call
+   if( me.is_goaround() ) {
+       settimer(func { me.autoland(); }, rates);
+   }
+}
+
+Autopilot.landlight = func {
+   var land2 = constant.FALSE;
+   var land3 = constant.FALSE;
+   var channel1 = constant.FALSE;
+   var channel2 = constant.FALSE;
+
+   if( me.is_landing() ) {
+       channel1 = me.itself["channel"][constantaero.AP1].getChild("engage").getValue();
+       channel2 = me.itself["channel"][constantaero.AP2].getChild("engage").getValue();
+
+       if( channel1 or channel2 ) {
+           land2 = constant.TRUE;
+       }
+       if( channel1 and channel2 ) {
+           land3 = constant.TRUE;
+       }
+   }
+
+   me.itself["state"].getChild("land2").setValue(land2);
+   me.itself["state"].getChild("land3").setValue(land3);
+}
+
+Autopilot.is_landing = func {
+   var result = constant.FALSE;
+   var verticalmode = me.itself["autoflight"].getChild("vertical").getValue();
+
+   if( verticalmode == "autoland" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_land_armed = func {
+   var verticalmode = me.itself["autoflight"].getChild("vertical").getValue();
+   var result = constant.FALSE;
+
+   if( verticalmode == "autoland-armed" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_autoland = func {
+   var result = constant.FALSE;
+
+   if( me.is_landing() or me.is_land_armed() ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# autopilot autoland
+Autopilot.aplandexport = func {
+   if( !me.is_autoland() ) {
+       me.apactivatemode("vertical","autoland-armed");
+   }
+   else {
+       me.apdiscvertical();
+   }
+
+   me.apengage();
+
+   if( !me.is_goaround() ) {
+       me.autoland();
+   }
+}
+
+Autopilot.is_turbulence = func {
+   var verticalmode = me.itself["autoflight"].getChild("vertical").getValue();
+   var result = constant.FALSE;
+
+   if( verticalmode == "turbulence" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# autopilot turbulence mode
+Autopilot.apturbulenceexport = func {
+   if( !me.is_turbulence() ) {
+       me.magneticheading();
+       me.apactivatemode2("heading","dg-heading-hold","");
+       me.attitudepitch();
+       me.apactivatemode2("altitude","pitch-hold","turbulence");
+   }
+   else {
+       me.apdiscverticalmode2();
+       me.apdischeading(); 
+   }
+
+   me.apengage();
+}
+
+
+# -------------
+# ALTITUDE MODE
+# -------------
+
+# disconnect autopilot altitude
+Autopilot.apdiscaltitude = func {
+   me.itself["autoflight"].getChild("altitude").setValue("");
+
+   # switch to speed hold
+   if( me.autothrottlesystem != nil ) {
+       me.autothrottlesystem.discmaxclimb();
+   }
+}
+
+# altitude button lights, when the dialed altitude is reached.
+# altimeter light, when the dialed altitude is reached.
+Autopilot.altitudelight = func {
+   var altft = 0.0;
+   var minft = 0.0;
+   var maxft = 0.0;
+
+   if( me.is_engaged() ) {
+       if( me.is_altitude_hold() or me.is_altitude_acquire() ) {
+           altft = me.itself["autoflight"].getChild("altitude-select").getValue();
+
+           # altimeter light within 1200 ft
+           minft = altft - me.ALTIMETERFT;
+           me.itself["altimeter"].getChild("target-min-ft").setValue(minft);
+           maxft = altft + me.ALTIMETERFT;
+           me.itself["altimeter"].getChild("target-max-ft").setValue(maxft);
+
+           # no altimeter light within 50 ft
+           minft = altft - me.LIGHTFT;
+           me.itself["altimeter"].getChild("light-min-ft").setValue(minft);
+           maxft = altft + me.LIGHTFT;
+           me.itself["altimeter"].getChild("light-max-ft").setValue(maxft);
+       }
+   }
+}
+
+Autopilot.altitudelight_on = func ( altitudeft, targetft ) {
+   var result = constant.TRUE;
+
+   if( altitudeft < targetft - me.ALTIMETERFT or
+       altitudeft > targetft + me.ALTIMETERFT ) {
+       result = constant.FALSE;
+   }
+
+   return result;
+}
+
+Autopilot.altitudeacquire = func {
+   var altitudeft = 0.0;
+   var speedfpm = 0.0;
+   var mode = "";
+
+   if( me.is_engaged() ) {
+       if( me.is_altitude_acquire() ) {
+           me.altitudelight();
+
+           altitudeft = me.get_altimeter().getChild("indicated-altitude-ft").getValue();
+           if( altitudeft > me.itself["altimeter"].getChild("target-max-ft").getValue() ) {
+               speedfpm = -me.ACQUIREFPM;
+               mode = "vertical";
+           }
+           elsif( altitudeft < me.itself["altimeter"].getChild("target-min-ft").getValue() ) {
+               speedfpm = me.ACQUIREFPM;
+               mode = "vertical";
+           }
+
+           # capture
+           elsif( altitudeft > me.itself["altimeter"].getChild("light-max-ft").getValue() or
+                  altitudeft < me.itself["altimeter"].getChild("light-min-ft").getValue() ) {
+               if( !me.is_altitude_hold() ) {
+                   me.apactivatemode("altitude","altitude-hold");
+               }
+               mode = "capture";
+           }
+
+           # at level
+           else {
+               me.apactivatemode2("altitude","altitude-hold","");
+               mode = "";
+           }
+
+           # default to vertical speed hold 800 ft/min, if comes from altitude hold;
+           if( mode == "vertical" ) {
+               if( me.is_altitude_hold() ) {
+                   # pilot can change
+                   me.modeverticalspeed( speedfpm );
+               }
+           }
+
+           # nav1 can switch to magnetic
+           me.apengagealtitude();
+
+           # otherwise keep the previous vertical mode (if any),
+           # which is supposed to reach the capture level, by pilot action
+
+           # re-schedule the next call
+           if( mode != "" ) {
+               settimer(func { me.altitudeacquire(); }, me.ALTACQUIRESEC);
+           }
+       }
+   }
+}
+
+Autopilot.selectfpm = func( altitudeft, targetft ) {
+   var speedfpm = me.CLIMBFPM;
+
+   if( altitudeft > targetft ) {
+       speedfpm = me.DESCENTFPM;
+   }
+
+   me.verticalspeed(speedfpm);
+}
+
+Autopilot.has_lock_altitude = func {
+   var altitudemode = me.itself["locks"].getChild("altitude").getValue();
+   var result = constant.FALSE;
+
+   if( altitudemode != "" and altitudemode != nil ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_lock_altitude = func {
+   var altitudemode = me.itself["locks"].getChild("altitude").getValue();
+   var result = constant.FALSE;
+
+   if( altitudemode == "altitude-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# toggle altitude hold (ctrl-A)
+Autopilot.aptogglealtitudeexport = func {
+   var altitudeft = 0.0;
+   var targetft = 0.0;
+
+   if( !me.no_voltage() ) {
+       if( !me.is_vertical_speed() or me.is_altitude_acquire() ) {
+           me.apenable();
+           me.apverticalexport();
+       }
+       me.apaltitudeexport();
+
+       # avoid many manual operations
+       if( me.is_vertical_speed() ) {
+           altitudeft = me.get_altimeter().getChild("indicated-altitude-ft").getValue();
+           targetft = me.itself["autoflight"].getChild("altitude-select").getValue();
+           me.selectfpm( altitudeft, targetft );
+       }
+   }
+}
+
+Autopilot.apaltitudeselectexport = func {
+   var altitudeft = 0.0;
+
+   if( me.is_altitude_acquire() ) {
+       altitudeft = me.itself["autoflight"].getChild("altitude-select").getValue();
+       me.apaltitude(altitudeft);
+   }
+}
+
+Autopilot.is_altitude_hold = func {
+   var altitudemode = me.itself["autoflight"].getChild("altitude").getValue();
+   var result = constant.FALSE;
+
+   if( altitudemode == "altitude-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_altitude_acquire = func {
+   var verticalmode = me.itself["autoflight"].getChild("vertical").getValue();
+   var result = constant.FALSE;
 
 #---ROLL---#
 
@@ -597,15 +1379,596 @@ Autopilot.apmachpitchexport = func {
 }
 
 Autopilot.apmaxclimbexport = func {
-  if ( me.is_autopilot_engaged() ) {
-    if ( autothrottlesystem.is_autothrottle_engaged ) {
-      me.modemaxclimb();
-      me.display('altitude-display', 'CL');
-      autothrottlesystem.display('speed-display', '');
-    } else {
-      gui.popupTip("Engage autothrottle before engaging max climb");
-    }
-  }
+   if( me.autothrottlesystem.is_maxclimb() ) {          
+       me.apdiscaltitude();
+   }
+
+   # holds pitch and VMO with throttle
+   else {
+       if( !me.is_altitude_acquire() ) {
+           me.apdiscverticalmode2();
+       }
+       me.modeverticalspeedhold();
+       me.autothrottlesystem.atactivatemode("speed2","maxclimb");
+       me.maxclimb();
+   }          
+
+   me.apengage();
+}
+
+
+# ---------------
+# HORIZONTAL MODE
+# ---------------
+
+Autopilot.apdischorizontalmode2 = func {
+   me.apdischorizontal();
+   me.apdischeading();
+}
+
+# disconnect horizontal mode
+Autopilot.apdischorizontal = func {
+   me.itself["autoflight"].getChild("horizontal").setValue("");
+}
+
+Autopilot.is_waypoint = func {
+   var result = constant.FALSE;
+
+   if( me.route_active() ) {
+       var id = me.itself["waypoint"][0].getChild("id").getValue();
+
+       if( id != nil and id != "" ) {
+           result = constant.TRUE;
+       }
+   }
+
+   return result;
+}
+
+Autopilot.route_active = func {
+   var result = constant.FALSE;
+
+   # autopilot/route-manager/wp is updated only once airborne
+   if( me.itself["route-manager"].getChild("active").getValue() and
+       me.itself["route-manager"].getChild("airborne").getValue() ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.locktrue = func {
+   me.itself["locks"].getChild("heading").setValue("true-heading-hold");
+}
+
+Autopilot.is_lock_true = func {
+   var headingmode = me.itself["locks"].getChild("heading").getValue();
+   var result = constant.FALSE;
+
+   if( headingmode == "true-heading-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_true = func {
+   var headingmode = me.itself["autoflight"].getChild("heading").getValue();
+   var result = constant.FALSE;
+
+   if( headingmode == "true-heading-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.inslight = func {
+   var activation = constant.FALSE;
+   var id = ["", "", ""];
+
+   # TEMPORARY work around for 2.0.0
+   if( me.route_active() ) {
+       activation = constant.TRUE;
+
+       # each time, because the route can change
+       var wp = me.itself["route"].getChildren("wp");
+       var current_wp = me.itself["route-manager"].getChild("current-wp").getValue();
+       var nb_wp = size(wp);
+
+       # route manager doesn't update these fields
+       if( nb_wp >= 1 ) {
+           id[0] = wp[current_wp].getChild("id").getValue();
+
+           # default
+           id[1] = "";
+           id[2] = id[0];
+       }
+
+       if( current_wp + 1 < nb_wp ) {
+           id[1] = wp[current_wp + 1].getChild("id").getValue();
+       }
+
+       if( nb_wp > 0 ) {
+           id[2] = wp[nb_wp-1].getChild("id").getValue();
+       }
+   }
+
+   me.itself["waypoint"][0].getChild("id").setValue( id[0] );
+   me.itself["waypoint"][1].getChild("id").setValue( id[1] );
+   me.itself["route-manager"].getNode("wp-last").getNode("id",constant.DELAYEDNODE).setValue( id[2] );
+
+
+   # no more waypoint
+   if( me.is_ins() ) {
+
+       # simulate an INS failure, by holding the magnetic heading
+       # (cannot hold the true heading, when there are still waypoints).
+       if( me.ins_failure() ) {
+           me.apdischorizontal();
+           me.magneticheading();
+           me.lockmagnetic();
+       }
+
+       # keeps the current heading mode
+       elsif( !me.is_waypoint() ) {
+           me.apdischorizontal();
+       }
+   }
+
+   # waypoint
+   elsif( me.is_waypoint() ) {
+       # real behaviour : INS input doesn't toggle autopilot
+       if( !me.itself["autoflight"].getChild("fg-waypoint").getValue() ) {
+           # keep current heading mode, if any
+           if( !me.is_true() ) {
+               me.apengage();
+           }
+
+           # already in true heading mode : keep display coherent
+           elsif( !me.is_ins() ) {
+               me.apinsexport();
+           }
+       }
+
+       # Feedback requested by user : activation of route toggles autopilot
+       elsif( !me.routeactive ) {
+           # only when route is being activated (otherwise cannot leave INS mode)
+           if( !me.is_ins() ) {
+               me.apinsexport();
+           }
+       }
+   }
+
+
+   me.routeactive = activation;
+}
+
+Autopilot.ins_failure = func {
+   var index = 0;
+   var result = constant.FALSE;
+
+   if( me.has_engaged() ) {
+       # INS 2
+       if( me.get_hsi().getChild("nav-ins2").getValue() ) {
+           index = 1;
+       }
+
+       # INS 1
+       else {
+           index = 0;
+       }
+
+       if( me.dependency["ins"][index].getNode("light/warning").getValue() ) {
+           result = constant.TRUE;
+       }
+   }
+
+   return result;
+}
+
+Autopilot.is_ins = func {
+   var horizontalmode = me.itself["autoflight"].getChild("horizontal").getValue();
+   var result = constant.FALSE;
+
+   if( horizontalmode == "ins" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# ins mode
+Autopilot.apinsexport = func {
+   if( !me.is_ins() ) {
+       if( me.is_waypoint() ) {
+           me.apactivatemode2("heading","true-heading-hold","ins");
+       }
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+
+# ------------
+# HEADING MODE
+# ------------
+
+# disconnect heading mode
+Autopilot.apdischeading = func {
+   me.itself["autoflight"].getChild("heading").setValue("");
+
+   if( me.is_turbulence() ) {
+       me.apdiscvertical();
+   }
+}
+
+# correction of prediction filter oscillations
+Autopilot.predictioncorrection = func( name, node, mode, mindeg ) {
+   # disabled, when it amplifies oscillations :
+   # - speed up.
+   # - supersonic cruise
+   if( !me.itself["pid"].getChild("prediction-filter").getValue() or
+       me.noinstrument["speed-up"].getValue() > 1.0 or
+       me.is_supersonicpid( mode ) ) {
+       me.resetprediction( name );
+   }
+
+
+   else {
+       var erroraheaddeg = 0.0;
+       var errordeg = 0.0;
+       var offsetdeg = 0.0;
+       var deltastablesec = 0.0;
+       var deltalaunchsec = 0.0;
+       var path = "";
+
+
+       var filter = node.getChild("prediction-filter").getValue();
+
+       var stablesec = node.getChild("stable-sec").getValue();
+       var launchsec = node.getChild("launch-sec").getValue();
+       var timesec = me.noinstrument["time"].getValue();
+
+       if( stablesec > 0.0 ) {
+           deltastablesec = timesec - stablesec;
+       }
+       if( launchsec > 0.0 ) {
+           deltalaunchsec = timesec - launchsec;
+       }
+
+
+       path = me.itself["config"][me.PIDSUPERSONIC].getNode(name).getChild("input").getValue();
+       erroraheaddeg = props.globals.getNode(path).getValue();
+
+       path = me.itself["config"][me.PIDSUBSONIC].getNode(name).getChild("input").getValue();
+       errordeg = props.globals.getNode(path).getValue();
+
+       offsetdeg = errordeg - erroraheaddeg;
+       offsetdeg = math.abs( offsetdeg );
+
+
+       # would bank into the opposite direction, when engaged
+       if( deltalaunchsec <= me.PREDICTIONSEC ) {
+           deltastablesec = 0.0;
+
+           # enable filter later on a plausible prediction
+           mode = me.PIDSUPERSONIC;
+       }
+
+       # filter amplifies oscillations, once in cruise
+       elsif( offsetdeg < mindeg and deltastablesec > me.STABLESEC ) {
+           # disable filter in cruise
+           mode = me.PIDSUPERSONIC;
+       }
+
+       # hysteresis, once stable
+       elsif( !filter and offsetdeg < ( 2 * mindeg ) and deltastablesec > me.STABLESEC ) {
+           # will enable filter on a higher offset
+           mode = me.PIDSUPERSONIC;
+       }
+
+       # filter not yet stable
+       else {
+           deltastablesec = 0.0;
+       }
+
+
+       me.setprediction( name, node, mode );
+
+
+       # reset timers
+       if( deltastablesec <= 0.0 ) {
+           me.setpredictionstability( node, timesec );
+       }
+
+       if( deltalaunchsec <= 0.0 ) {
+           me.setpredictionlaunch( node, timesec );
+       }
+   }
+}
+
+Autopilot.setprediction = func( name, node, mode ) {
+   var result = constant.FALSE;
+   var child = node.getChild("input");
+   var currentpath = child.getAliasTarget().getPath();
+   var path = me.itself["config"][mode].getNode(name).getChild("input").getValue();
+
+   # update only on change
+   if( currentpath != path ) {
+       child.unalias();
+       child.alias( path );
+
+       # feedback on filter activity
+       node.getChild("prediction-filter").setValue( me.is_subsonicpid( mode ) );
+
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.resetprediction = func( name ) {
+   var node = me.itself["pid"].getNode(name);
+
+   if( me.setprediction( name, node, me.PIDSUPERSONIC ) ) {
+       me.setpredictionstability( node, 0.0 );
+       me.setpredictionlaunch( node, 0.0 );
+   }
+}
+
+Autopilot.setpredictionstability = func( node, stablesec ) {
+   node.getChild("stable-sec").setValue( stablesec );
+}
+
+Autopilot.setpredictionlaunch = func( node, launchsec ) {
+   node.getChild("launch-sec").setValue( launchsec );
+}
+
+Autopilot.trueheading = func( headingdeg ) {
+   me.itself["settings"].getChild("true-heading-deg").setValue(headingdeg);
+}
+
+# sonic true mode
+Autopilot.sonictrueheading = func {
+   var name = "true-heading-hold1";
+   var node = me.itself["pid"].getNode(name);
+   var mode = me.sonicpid();
+
+   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
+   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() );
+   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() );
+
+   # prediction filter may bank into the opposite direction, when engaged
+   me.predictioncorrection( name, node, mode, me.OSCTRACKDEG );
+
+   name = "true-heading-hold3";
+   node = me.itself["pid"].getNode(name);
+   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
+
+   # not real : FG default keyboard changes autopilot heading
+   if( me.is_lock_true() and me.istrackheading() ) {
+       headingdeg = me.itself["settings"].getChild("true-heading-deg").getValue();
+       me.itself["channel"][me.engaged_channel].getChild("heading-true-select").setValue(headingdeg);
+   }
+}
+
+# sonic magnetic mode
+Autopilot.sonicmagneticheading = func {
+   var name = "dg-heading-hold1";
+   var node = me.itself["pid"].getNode(name);
+   var mode = me.sonicpid();
+
+   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
+   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() );
+   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() );
+
+   # prediction filter amplifies oscillations
+   if( me.is_autoland() or !me.istrackheading() ) {
+       me.resetprediction( name );
+   }
+
+   else {
+       me.predictioncorrection( name, node, mode, me.OSCTRACKDEG );
+   }
+
+   name = "dg-heading-hold3";
+   node = me.itself["pid"].getNode(name);
+   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
+
+   # not real : FG default keyboard changes autopilot heading
+   if( me.is_lock_magnetic() and me.istrackheading() ) {
+       headingdeg = me.itself["settings"].getChild("heading-bug-deg").getValue();
+       me.itself["channel"][me.engaged_channel].getChild("heading-select").setValue(headingdeg);
+   }
+}
+
+# sonic nav mode
+Autopilot.sonicnavheading = func {
+   var name = "nav-hold1";
+   var node = me.itself["pid"].getNode(name);
+   var mode = me.sonicpid();
+
+   # prediction filter amplifies oscillations
+   if( me.is_autoland() or me.is_glide() ) {
+       me.resetprediction( name );
+   }
+
+   else {
+       me.predictioncorrection( name, node, mode, me.OSCNAVDEG );
+   }
+}
+
+Autopilot.sonicheadingmode = func {
+   var magpid = constant.FALSE;
+   var truepid = constant.FALSE;
+   var navpid = constant.FALSE;
+
+   if( me.is_lock_magnetic() ) {
+       me.sonicmagneticheading();
+       magpid = constant.TRUE;
+   }
+
+   elsif( me.is_lock_true() ) {
+       me.sonictrueheading();
+       truepid = constant.TRUE;
+   }
+
+   elsif( me.is_lock_nav() ) {
+       me.sonicnavheading();
+       navpid = constant.TRUE;
+   }
+
+   if( !magpid ) {
+       me.resetprediction( "dg-heading-hold1" );
+   }
+   if( !truepid ) {
+       me.resetprediction( "true-heading-hold1" );
+   }
+   if( !navpid ) {
+       me.resetprediction( "nav-hold1" );
+   }
+}
+
+Autopilot.heading = func( headingdeg ) {
+   me.itself["settings"].getChild("heading-bug-deg").setValue(headingdeg);
+}
+
+# magnetic heading
+Autopilot.magneticheading = func {
+   var headingdeg = me.noinstrument["magnetic"].getValue();
+
+   me.heading(headingdeg);
+}
+
+# heading hold
+Autopilot.apheadingholdexport = func {
+   var mode = me.itself["autoflight"].getChild("horizontal").getValue();
+
+   if( mode != "magnetic" ) {
+       me.magneticheading();
+       me.apactivatemode2("heading","dg-heading-hold","magnetic");
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+Autopilot.lockmagnetic = func {
+   me.itself["locks"].getChild("heading").setValue("dg-heading-hold");
+}
+
+Autopilot.is_lock_magnetic = func {
+   var headingmode = me.itself["locks"].getChild("heading").getValue();
+   var result = constant.FALSE;
+
+   if( headingmode == "dg-heading-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.is_magnetic = func {
+   var headingmode = me.itself["autoflight"].getChild("heading").getValue();
+   var result = constant.FALSE;
+
+   if( headingmode == "dg-heading-hold" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+Autopilot.has_lock_heading = func {
+   var headingmode = me.itself["autoflight"].getChild("heading").getValue();
+   var result = constant.FALSE;
+
+   if( headingmode != "" and headingmode != nil ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# toggle heading hold (ctrl-H)
+Autopilot.aptoggleheadingexport = func {
+   if( !me.no_voltage() ) {
+       # disable speed hold, if any
+       if( me.is_lock_magnetic() ) {
+           me.apdischorizontalmode2();
+           me.apengage();
+       }
+       else {
+           me.apenable();
+           me.apheadingholdexport();
+       }
+   }
+}
+
+Autopilot.istrackheading = func {
+   var result = constant.FALSE;
+
+   if( me.itself["autoflight"].getChild("horizontal").getValue() == "track-heading" ) {
+       result = constant.TRUE;
+   }
+
+  return result;
+}
+
+Autopilot.apsendheadingexport = func {
+   var headingdeg = 0.0;
+
+   if( me.istrackheading() ) {
+       if( me.is_engaged() ) {
+           if( !me.itself["channel"][me.engaged_channel].getChild("track-push").getValue() ) {
+               me.apactivatemode("heading","dg-heading-hold");
+               headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-select").getValue();
+               me.heading(headingdeg);
+           }
+           else {
+               me.apactivatemode("heading","true-heading-hold");
+               headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-true-select").getValue();
+               me.trueheading(headingdeg);
+           }
+       }
+   }
+}
+
+# autopilot heading
+Autopilot.apheadingexport = func {
+   if( !me.istrackheading() ) {
+       me.apactivatemode("horizontal","track-heading");
+       me.apsendheadingexport();
+   }
+   else {
+       me.apdischorizontalmode2();
+   }
+
+   me.apengage();
+}
+
+Autopilot.is_vor = func {
+   var horizontalmode = me.itself["autoflight"].getChild("horizontal").getValue();
+   var result = constant.FALSE;
+
+   if( horizontalmode == "vor" ) {
+       result = constant.TRUE;
+   }
+
+   return result;
+}
+
+# VOR loc
+Autopilot.modevorloc = func {
+   if( me.is_nav() and !me.is_glide() ) {
+       me.itself["autoflight"].getChild("horizontal").setValue("vor");
+   }
 }
 
 Autopilot.apspeedpitchexport = func {
@@ -620,13 +1983,16 @@ Autopilot.apspeedpitchexport = func {
   }
 }
 
-Autopilot.apaltitudeholdexport = func {
-  if ( me.is_autopilot_engaged() ) {
-    me.is_holding_altitude = 1;
-    me.holdaltitude();
-    me.modealtitudehold();
-    me.display('altitude-display', 'AH');
-  }
+Autopilot.sendnav = func( index, target ) {
+   var freqmhz = 0.0;
+   var radialdeg = 0.0;
+
+   freqmhz = me.dependency["nav"][index].getNode("frequencies/selected-mhz").getValue();
+   me.dependency["nav"][target].getNode("frequencies/selected-mhz").setValue(freqmhz);
+   freqmhz = me.dependency["nav"][index].getNode("frequencies/standby-mhz").getValue();
+   me.dependency["nav"][target].getNode("frequencies/standby-mhz").setValue(freqmhz);
+   radialdeg = me.dependency["nav"][index].getNode("radials/selected-deg").getValue();
+   me.dependency["nav"][target].getNode("radials/selected-deg").setValue(radialdeg);
 }
 
 Autopilot.apaltitudeexport = func {

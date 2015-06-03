@@ -6,8 +6,8 @@
 
     <fileheader>
         <author> </author>
-        <filecreationdate> 14 August 2010 </filecreationdate>
-        <version> 1.13 </version>
+        <filecreationdate> 22 October 2011 </filecreationdate>
+        <version> 1.14 </version>
         <description>Aerospatiale/British Aerospace Concorde</description>
 
         <license>
@@ -31,8 +31,6 @@
         <note>Pushback.</note>
 
         <limitation>Model uses flaps as nose.</limitation>
-        <limitation>Cross feed by additional tanks :
-                    engine may run out of fuel above X 3 speed-up.</limitation>
         <limitation>Without an additional PID, above Mach 1,
                     autopilot heading hold would lock with a right roll.</limitation>
         <limitation>Air intake failure only on the 4 engines at once.</limitation>
@@ -973,6 +971,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>0</feed>
             <feed>13</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -998,6 +997,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>1</feed>
             <feed>14</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1023,6 +1023,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>2</feed>
             <feed>15</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1048,6 +1049,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>3</feed>
             <feed>16</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1297,6 +1299,7 @@
             - not empty, to avoid stop at launch.
             - can feed 75000 kg/h per engine (takeoff with reheat X 3 speed up) :
               25000 x 3 / 3600 = 46 lb content, if supplied every 1 s from other tanks.
+            - not used in stand alone mode.
         </documentation>
 
         <tank type="FUEL">

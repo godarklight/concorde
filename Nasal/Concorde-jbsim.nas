@@ -203,6 +203,7 @@ ConcordeMain.savedata = func {
                        "/controls/seat/yoke",
                        "/controls/voice/sound",
                        "/controls/voice/text",
+                       "/sim/user/callsign",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",
@@ -302,6 +303,12 @@ ConcordeMain.init = func {
    settimer(func { me.sec15cron(); },0);
    settimer(func { me.sec30cron(); },0);
    settimer(func { me.sec60cron(); },0);
+
+   # disable JSBSim stand alone mode
+   setprop( "fdm/jsbsim/propulsion/tank[0]/priority", 0 );
+   setprop( "fdm/jsbsim/propulsion/tank[1]/priority", 0 );
+   setprop( "fdm/jsbsim/propulsion/tank[2]/priority", 0 );
+   setprop( "fdm/jsbsim/propulsion/tank[3]/priority", 0 );
 
    # saved on exit, restored at launch
    me.savedata();

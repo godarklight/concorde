@@ -1021,22 +1021,20 @@ Airconditioning.schedule = func {
         # one supposes quick cooling by RAM air, when no mass flow.
         me.apply(me.itself["group"][i].getChild("inlet-degc").getPath(),inletdegc);
         me.apply(me.itself["group"][i].getChild("duct-degc").getPath(),ductdegc);
-        
-        # Added an override, for some reason when the tank runs out of fuel it goes NaN. This makes it only show the error once
-        # air bleed transfers heat to fuel
-        if ( ! me.enginetempoverride ) {
-            tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
-            if ( tankdegc == nil ) {
-                me.enginetempoverride = 1;
-                tankdegc = 15;
-            }
-        } else {
-            tankdegc = 15;
-        }
-        fueldegc = tankdegc;
 
-        if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
-            fueldegc = fueldegc + ( inletdegc - tankdegc ) * me.FUELHEATING;
+        if( me.dependency["tank"][i].getChild("empty").getValue() ) {
+            # outside air temperature, once empty
+            fueldegc = me.ramairdegc;
+        }
+        else {
+            # may return a NaN, when tank is empty
+            tankdegc = me.dependency["tank"][i].getChild("temperature_degC").getValue();
+
+            # air bleed transfers heat to fuel
+            fueldegc = tankdegc;
+            if( me.dependency["airbleed"][i].getChild("fuel-valve").getValue() ) {
+                fueldegc = fueldegc + ( inletdegc - tankdegc ) * me.FUELHEATING;
+            }
         }
         me.apply(me.dependency["engine"][i].getChild("fuel-degc").getPath(),fueldegc);
    }
@@ -1222,10 +1220,21 @@ TankTemperature.selectorexport = func {
 }
 
 TankTemperature.schedule = func {
-   if ( ! Airconditioning.enginetempoverride ) {
-     interpolate( me.itself["root"].getChild("tank-degc").getPath(), me.dependency["tank"][me.selector].getChild("temperature_degC").getValue(), me.AIRSEC );
-   } else {
-     interpolate( me.itself["root"].getChild("tank-degc").getPath(), 15, me.AIRSEC );
+   var tankdegc = 0.0;
+
+   # once empty, outside air temperature
+   if( me.dependency["tank"][me.selector].getChild("empty").getValue() ) {
+       tankdegc = me.noinstrument["temperature"].getValue();
    }
-   interpolate( me.itself["root"].getChild("engine-degc").getPath(), me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(), me.AIRSEC );
+   else {
+       # may return a Nan, once empty
+       tankdegc = me.dependency["tank"][me.selector].getChild("temperature_degC").getValue();
+   }
+
+   interpolate( me.itself["root"].getChild("tank-degc").getPath(), tankdegc,
+                me.AIRSEC );
+
+   interpolate( me.itself["root"].getChild("engine-degc").getPath(),
+                me.dependency["engine"][me.selector].getChild("fuel-degc").getValue(),
+                me.AIRSEC );
 }

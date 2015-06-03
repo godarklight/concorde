@@ -439,11 +439,27 @@
  <group>
 
   <button>
-   <x>105</x>
+   <x>75</x>
    <y>10</y>
-   <legend>OK</legend>
+   <legend>Back</legend>
+   <equal>true</equal>
+   <key>b</key>
+   <binding>
+    <command>dialog-show</command>
+    <dialog-name>Concorde-menu</dialog-name>
+   </binding>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>175</x>
+   <y>10</y>
+   <legend>Close</legend>
    <default>true</default>
    <equal>true</equal>
+   <key>Esc</key>
    <binding>
     <command>dialog-apply</command>
    </binding>
@@ -457,37 +473,28 @@
   </button>
 
   <button>
-   <x>205</x>
-   <y>10</y>
-   <legend>Apply</legend>
-   <equal>true</equal>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
-   </binding>
-  </button>
-
-  <button>
-   <x>305</x>
+   <x>375</x>
    <y>10</y>
    <legend>Reset</legend>
    <equal>true</equal>
+   <key>r</key>
    <binding>
     <command>dialog-update</command>
    </binding>
   </button>
 
   <button>
-   <x>405</x>
+   <x>475</x>
    <y>10</y>
-   <legend>Cancel</legend>
+   <legend>Apply</legend>
    <equal>true</equal>
-   <key>Esc</key>
+   <key>a</key>
    <binding>
-    <command>dialog-close</command>
+    <command>dialog-apply</command>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </button>
 

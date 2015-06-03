@@ -92,97 +92,135 @@
     </wing>
   </anti-ice>
   <audio>
-    <cancel type="bool">false</cancel>
-    <comm n="0">
-      <selected type="bool">true</selected>
-      <standby type="bool">false</standby>
-    </comm>
-    <comm n="1">
-      <selected type="bool">true</selected>
-      <standby type="bool">false</standby>
-    </comm>
-    <crew>
-      <captain>
-        <adf n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-          <!-- knob disabled -->
-        </adf>
-        <adf n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </adf>
-        <comm n="0">
-          <volume type="double">0.6</volume>
-          <!-- FG default -->
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <comm n="1">
-          <volume type="double">0.6</volume>
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <nav n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-        <nav n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-      </captain>
-      <copilot>
-        <adf n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </adf>
-        <adf n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </adf>
-        <comm n="0">
-          <volume type="double">0.6</volume>
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <comm n="1">
-          <volume type="double">0.6</volume>
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <nav n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-        <nav n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-      </copilot>
-      <engineer>
-        <adf n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </adf>
-        <adf n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </adf>
-        <comm n="0">
-          <volume type="double">0.6</volume>
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <comm n="1">
-          <volume type="double">0.6</volume>
-          <volume-push type="bool">false</volume-push>
-        </comm>
-        <nav n="0">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-        <nav n="1">
-          <volume type="double">0.0</volume>
-          <volume-push type="bool">false</volume-push>
-        </nav>
-      </engineer>
-    </crew>
+   <adf n="0">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <knob n="2" type="double">0.0</knob>
+   </adf>
+   <adf n="1">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <knob n="2" type="double">0.0</knob>
+   </adf>
+   <cancel type="bool">false</cancel>
+   <comm n="0">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <selected type="bool">true</selected>
+    <standby type="bool">false</standby>
+   </comm>
+   <comm n="1">
+    <knob n="0" type="double">0.0</knob>                      <!-- 3D instrument -->
+    <knob n="1" type="double">0.0</knob>
+    <selected type="bool">true</selected>
+    <standby type="bool">false</standby>
+   </comm>
+   <crew>
+    <captain>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>            <!-- knob disabled -->
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>                      <!-- FG default -->
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </captain>
+    <copilot>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </copilot>
+    <engineer>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </engineer>
+    <observer>
+     <adf n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <adf n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </adf>
+     <comm n="0">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <comm n="1">
+      <volume type="double">0.6</volume>
+      <volume-push type="bool">false</volume-push>
+     </comm>
+     <nav n="0">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+     <nav n="1">
+      <volume type="double">0.0</volume>
+      <volume-push type="bool">false</volume-push>
+     </nav>
+    </observer>
+   </crew>
   </audio>
   <autoflight>
     <altitude/>
@@ -239,30 +277,22 @@
     <activ type="bool">false</activ>
   </copilot>
   <crew>
-    <captain-busy type="bool">true</captain-busy>
-    <!-- crew performs Captain checks -->
-    <checklist type="bool">true</checklist>
-    <!-- flight checklists triggers automatically -->
-    <ins-alignment type="bool">true</ins-alignment>
-    <!-- quick alignment of INS (not real) -->
-    <landing-lights type="bool">true</landing-lights>
-    <!-- optional in checklist -->
-    <night-lighting type="bool">true</night-lighting>
-    <presets type="int">0</presets>
-    <!-- taxi -->
-    <radio type="bool">true</radio>
-    <!-- tower ADF and VOR -->
-    <recall type="bool">false</recall>
-    <!-- recall detection -->
-    <startup type="bool">false</startup>
-    <!-- inactiv on startup -->
-    <steering>
-      <pedal type="bool">false</pedal>
-      <wheel alias="/fdm/jsbsim/systems/NWS/engaged"/>
-    </steering>
-    <timeout type="bool">true</timeout>
-    <!-- of 10 seconds -->
-    <timeout-s type="double">10.0</timeout-s>
+   <captain-busy type="bool">true</captain-busy>              <!-- crew performs Captain checks -->
+   <checklist type="bool">true</checklist>                    <!-- flight checklists triggers automatically -->
+   <copilot-in-command type="bool">true</copilot-in-command>  <!-- only four engine flame out -->
+   <ins-alignment type="bool">true</ins-alignment>            <!-- quick alignment of INS (not real) -->
+   <landing-lights type="bool">true</landing-lights>          <!-- optional in checklist -->
+   <night-lighting type="bool">true</night-lighting>
+   <presets type="int">0</presets>                            <!-- taxi -->
+   <radio type="bool">true</radio>                            <!-- tower ADF and VOR -->
+   <recall type="bool">false</recall>                         <!-- recall detection -->
+   <startup type="bool">false</startup>                       <!-- inactiv on startup -->
+   <steering>
+    <pedal type="bool">false</pedal>
+    <wheel alias="/fdm/jsbsim/systems/NWS/engaged"/>
+   </steering>
+   <timeout type="bool">true</timeout>                        <!-- of 10 seconds -->
+   <timeout-s type="double">10.0</timeout-s>
   </crew>
   <doors>
     <flight-deck>
@@ -712,47 +742,61 @@
     </tank>
   </fuel>
   <gear>
-    <antiskid>
-      <channel type="bool">true</channel>
-      <!-- channel 1 -->
-      <test type="bool">false</test>
-    </antiskid>
-    <brake-emergency type="bool">false</brake-emergency>
-    <!-- normal brakes -->
-    <brake-parking-lever type="bool">false</brake-parking-lever>
-    <brake-pos-norm type="double">0.0</brake-pos-norm>
-    <!-- 3D lever position -->
-    <hydraulic type="bool">true</hydraulic>
-    <!-- not neutral -->
-    <steering>
-      <channel type="bool">true</channel>
-      <!-- channel 1 -->
-      <hydraulic type="bool">true</hydraulic>
-      <!-- reset -->
-      <test type="bool">false</test>
-    </steering>
-    <time>
-      <main>
-        <door-opened>0.17</door-opened>
-        <lower-gear>0.17</lower-gear>
-        <gear-locked>0.83</gear-locked>
-        <close-door>0.83</close-door>
-      </main>
-      <tail>
-        <open-door>0.17</open-door>
-        <close-door>0.50</close-door>
-        <gear-locked>0.83</gear-locked>
-      </tail>
-    </time>
-    <wheel-chocks type="bool">false</wheel-chocks>
+   <antiskid>
+    <channel type="bool">true</channel>                       <!-- channel 1 -->
+    <test type="bool">false</test>
+   </antiskid>
+   <brake-emergency type="bool">false</brake-emergency>       <!-- normal brakes -->
+   <brake-parking-lever type="bool">false</brake-parking-lever>
+   <brake-pos-norm type="double">0.0</brake-pos-norm>         <!-- 3D lever position -->
+   <chocks>
+    <gear n="0">                                              <!-- front gear -->
+     <compression-max-norm type="double">1.94</compression-max-norm>      <!-- max take off -->
+     <compression-min-norm type="double">1.15</compression-min-norm>      <!-- min fuel -->
+     <offset-max-m type="double"> 0.05</offset-max-m>
+     <offset-min-m type="double">-0.19</offset-min-m>
+    </gear>
+    <gear n="1">                                              <!-- front wing gear -->
+     <compression-max-norm type="double">0.205</compression-max-norm>     <!-- max fuel -->
+     <compression-min-norm type="double">0.080</compression-min-norm>     <!-- min fuel -->
+     <offset-max-m type="double"> 0.08</offset-max-m>
+     <offset-min-m type="double"> 0.03</offset-min-m>
+    </gear>
+    <gear n="2">                                              <!-- aft wing gear -->
+     <compression-max-norm type="double">0.207</compression-max-norm>     <!-- max fuel -->
+     <compression-min-norm type="double">0.120</compression-min-norm>     <!-- min fuel -->
+     <offset-max-m type="double"> 0.10</offset-max-m>
+     <offset-min-m type="double"> 0.07</offset-min-m>
+    </gear>
+   </chocks>
+   <hydraulic type="bool">true</hydraulic>                    <!-- not neutral -->
+   <steering>
+    <channel type="bool">true</channel>                       <!-- channel 1 -->
+    <hydraulic type="bool">true</hydraulic>                   <!-- reset -->
+    <test type="bool">false</test>
+   </steering>
+   <time>
+    <main>    
+     <door-opened>0.17</door-opened>
+     <lower-gear>0.17</lower-gear>
+     <gear-locked>0.83</gear-locked>
+     <close-door>0.83</close-door>
+    </main>    
+    <tail>    
+     <open-door>0.17</open-door>
+     <close-door>0.50</close-door>
+     <gear-locked>0.83</gear-locked>
+    </tail>    
+   </time>
+   <wheel-chocks type="bool">false</wheel-chocks>
   </gear>
   <human>
-    <lighting>
-      <!-- night lighting -->
-      <captain type="double">0.6</captain>
-      <copilot type="double">0.6</copilot>
-      <engineer type="double">0.6</engineer>
-    </lighting>
+   <airport-id></airport-id>                                  <!-- override virtual crew -->
+   <lighting>                                                 <!-- night lighting -->
+    <captain type="double">0.6</captain>
+    <copilot type="double">0.6</copilot>
+    <engineer type="double">0.6</engineer>
+   </lighting>
   </human>
   <hydraulic>
     <brake-test type="bool">false</brake-test>
@@ -955,11 +999,9 @@
     </system>
   </pressurization>
   <seat>
-    <all type="bool">false</all>
-    <all-outside type="bool">false</all-outside>
-    <recover type="bool">false</recover>
-    <yoke type="bool">false</yoke>
-    <!-- makes INS visible, by default -->
+   <all type="bool">false</all>
+   <recover type="bool">false</recover>
+   <yoke type="bool">false</yoke>                             <!-- makes INS visible, by default -->
   </seat>
   <temperature>
     <group n="0">

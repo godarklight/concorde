@@ -6,12 +6,22 @@
 -->
 <PropertyList>
   <locks>
-    <autothrottle>
-      <!-- 1 autothrottle per engine -->
-      <engine n="0"/>
-      <engine n="1"/>
-      <engine n="2"/>
-      <engine n="3"/>
-    </autothrottle>
+   <autothrottle>                                    <!-- 1 autothrottle per engine -->
+    <engine n="0"></engine>
+    <engine n="1"></engine>
+    <engine n="2"></engine>
+    <engine n="3"></engine>
+   </autothrottle>
+   <route-manager>
+    <wp-last>
+     <dist></dist>
+     <id></id>
+    </wp-last>
+   </route-manager>
+   <sonic>                                           <!-- 1 PID for subsonic, 1 PID for supersonic -->
+    <altitude></altitude>
+    <heading></heading>
+    <speed></speed>
+   </sonic>
   </locks>
 </PropertyList>
