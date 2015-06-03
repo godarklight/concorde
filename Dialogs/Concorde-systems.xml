@@ -369,18 +369,21 @@
   <y>10</y>
 
   <button>
-   <x>40</x>
+   <x>60</x>
    <y>0</y>
-   <legend>Apply</legend>
-   <key>a</key>
-   <equal>true</equal>
+   <legend>Back</legend>
+   <key>b</key>
    <binding>
-    <command>dialog-apply</command>
+    <command>dialog-show</command>
+    <dialog-name>Concorde-menu</dialog-name>
+   </binding>
+   <binding>
+     <command>dialog-close</command>
    </binding>
   </button>
 
   <button>
-   <x>375</x>
+   <x>365</x>
    <y>0</y>
    <legend>Close</legend>
    <default>true</default>
@@ -395,19 +398,15 @@
   </button>
 
   <button>
-   <x>695</x>
+   <x>685</x>
    <y>0</y>
-   <legend>Menu</legend>
-   <key>m</key>
+   <legend>Apply</legend>
+   <key>a</key>
+   <equal>true</equal>
    <binding>
-    <command>dialog-show</command>
-    <dialog-name>Concorde-menu</dialog-name>
-   </binding>
-   <binding>
-     <command>dialog-close</command>
+    <command>dialog-apply</command>
    </binding>
   </button>
-
  </group>
 
 </PropertyList>

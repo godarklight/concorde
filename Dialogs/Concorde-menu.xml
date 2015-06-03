@@ -11,6 +11,10 @@
 
   <hrule><dummy/></hrule>
 
+  <text>
+    <label></label>
+  </text>
+
   <group>
     <layout>hbox</layout>
 
@@ -143,8 +147,20 @@
     </button>
 
     <button>
+      <legend>1 Views</legend>
+      <key>1</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-views</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
       <legend>Voice</legend>
-      <key>v</key>
+     <key>v</key>
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-voice</dialog-name>
@@ -168,6 +184,10 @@
 
     <empty><stretch>true</stretch></empty>
   </group>
+
+  <text>
+    <label></label>
+  </text>
 
   <text>
     <label></label>

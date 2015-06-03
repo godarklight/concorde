@@ -414,6 +414,18 @@
    <layout>hbox</layout>
 
    <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
     <legend>Close</legend>
     <default>true</default>
     <key>Esc</key>
@@ -429,17 +441,8 @@
      <command>dialog-show</command>
      <dialog-name>Concorde-voice2</dialog-name>
     </binding>
-   </button>
-
-   <button>
-    <legend>Menu</legend>
-    <key>m</key>
     <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
-    </binding>
-    <binding>
-      <command>dialog-close</command>
+     <command>dialog-close</command>
     </binding>
    </button>
   </group>

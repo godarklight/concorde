@@ -3,6 +3,7 @@
 <PropertyList>
   <name>Concorde-ground</name>
   <layout>vbox</layout>
+  <width>450</width>
 
   <text>
     <label>Concorde ground</label>
@@ -12,10 +13,13 @@
 
   <group>
     <layout>vbox</layout>
-    <halign>center</halign>
 
     <text>
       <label>Ground supply</label>
+    </text>
+
+    <text>
+      <label></label>
     </text>
 
     <group>
@@ -75,6 +79,10 @@
       <label>Gear</label>
     </text>
 
+    <text>
+      <label></label>
+    </text>
+
     <group>
       <layout>hbox</layout>
 
@@ -112,6 +120,10 @@
       <label>Pushback</label>
     </text>
 
+    <text>
+      <label></label>
+    </text>
+
     <checkbox>
       <label>Call (release brakes once connected)</label>
       <halign>left</halign>
@@ -139,6 +151,14 @@
       </color>
     </text>
 
+    <input>
+     <halign>left</halign>
+     <property>/sim/user/callsign</property>
+     <height>25</height>
+     <pref-width>250</pref-width>
+     <label>Call sign  ~</label>
+    </input>
+
   </group>
 
   <text>
@@ -153,11 +173,14 @@
    <layout>hbox</layout>
 
    <button>
-    <legend>Close</legend>
-    <default>true</default>
-    <key>Esc</key>
+    <legend>Back</legend>
+    <key>b</key>
     <binding>
       <command>dialog-apply</command>
+    </binding>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
     </binding>
     <binding>
       <command>dialog-close</command>
@@ -165,12 +188,9 @@
    </button>
 
    <button>
-    <legend>Menu</legend>
-    <key>m</key>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
-    </binding>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
     <binding>
       <command>dialog-apply</command>
     </binding>

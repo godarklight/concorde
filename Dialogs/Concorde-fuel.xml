@@ -36,6 +36,7 @@
       <value>supersonic cruise</value>
       <value>supersonic descent (auxiliary)</value>
       <value>low level (trim)</value>
+      <value>low level (cross feed)</value>
     </combo>
   </group>
 
@@ -103,41 +104,36 @@
   <group>
     <layout>hbox</layout>
 
-    <group>
-      <layout>hbox</layout>
-      <empty><stretch>true</stretch></empty>
-
-      <button>
-        <legend>Fill</legend>
-        <key>f</key>
-        <binding>
-          <command>dialog-apply</command>
-        </binding>
-        <binding>
-          <command>nasal</command>
-          <script>globals.Concorde.fuelsystem.menuexport();</script>
-        </binding>
-        <binding>
-          <command>dialog-close</command>
-        </binding>
-      </button>
-
-      <button>
-        <legend>Close</legend>
-        <default>true</default>
-        <key>Esc</key>
-        <binding>
-          <command>dialog-close</command>
-        </binding>
-      </button>
-    </group>
-
     <button>
-      <legend>Menu</legend>
-      <key>m</key>
+      <legend>Back</legend>
+      <key>b</key>
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-menu</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Close</legend>
+      <default>true</default>
+      <key>Esc</key>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Fill</legend>
+      <key>f</key>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.fuelsystem.menuexport();</script>
       </binding>
       <binding>
         <command>dialog-close</command>
