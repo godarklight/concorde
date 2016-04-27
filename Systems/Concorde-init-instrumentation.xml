@@ -462,7 +462,6 @@
     <noinstrument>
      <altitude>/position/altitude-ft</altitude>
      <speed-up>/sim/speed-up</speed-up>
-     <warp>/sim/time/warp</warp>
     </noinstrument>
    </relations>
   </clock>
@@ -572,33 +571,33 @@
   <fuel-consumed n="0">
    <relations>
     <dependency>
-     <engine>
-      <component>/engines</component>
+     <propulsion>
+      <component>/fdm/jsbsim/propulsion</component>
       <subcomponent>engine</subcomponent>
-     </engine>
+     </propulsion>
     </dependency>
-
-    <noinstrument>
-     <speed-up>/sim/speed-up</speed-up>
-    </noinstrument>
    </relations>
 
    <reset type="bool">false</reset>                                        <!-- by virtual engineer -->
+   <reset-kg type="double">0.0</reset-kg>                                  <!-- total at reset -->
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
 
   <fuel-consumed n="1">
    <reset type="bool">false</reset>
+   <reset-kg type="double">0.0</reset-kg>
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
 
   <fuel-consumed n="2">
    <reset type="bool">false</reset>
+   <reset-kg type="double">0.0</reset-kg>
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
 
   <fuel-consumed n="3">
    <reset type="bool">false</reset>
+   <reset-kg type="double">0.0</reset-kg>
    <total-kg type="double">0.0</total-kg>
   </fuel-consumed>
 

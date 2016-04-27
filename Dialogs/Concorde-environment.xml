@@ -58,7 +58,44 @@
          </color>
         </text>
       </group>
+
+      <button>
+       <enabled alias="/sim/rendering/shaders/skydome"/>
+       <legend>ALS</legend>
+       <key>a</key>
+       <binding>
+       <command>dialog-show</command>
+        <dialog-name>Concorde-environment3</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
     </group>
+
+   <text>
+    <label></label>
+   </text>
+
+   <text>
+    <label></label>
+   </text>
+
+   <group>
+    <layout>hbox</layout>
+
+    <button>
+     <legend>Icing</legend>
+     <key>i</key>
+     <binding>
+      <command>dialog-show</command>
+      <dialog-name>Concorde-environment2</dialog-name>
+     </binding>
+     <binding>
+      <command>dialog-close</command>
+      </binding>
+     </button>
+   </group>
 
   </group>
 
@@ -97,18 +134,6 @@
     </binding>
     <binding>
       <command>dialog-close</command>
-    </binding>
-   </button>
-
-   <button>
-    <legend>Icing</legend>
-     <key>i</key>
-    <binding>
-    <command>dialog-show</command>
-     <dialog-name>Concorde-environment2</dialog-name>
-    </binding>
-    <binding>
-     <command>dialog-close</command>
     </binding>
    </button>
   </group>

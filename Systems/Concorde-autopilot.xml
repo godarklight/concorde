@@ -58,26 +58,26 @@
      <filter-gain>0.0</filter-gain>
   </predict-simple>
 
-  <predict-simple>
+  <!--predict-simple>
      <input>/autopilot/internal/true-heading-error-deg</input>
      <output>/autopilot/internal/true-heading-error-deg-15-sec</output>
      <seconds>15.0</seconds>
      <filter-gain>0.0</filter-gain>
-  </predict-simple>
+  </predict-simple-->
 
-  <predict-simple>
+  <!--predict-simple>
      <input>/autopilot/internal/nav1-heading-error-deg</input>
      <output>/autopilot/internal/nav1-heading-error-deg-15-sec</output>
      <seconds>15.0</seconds>
      <filter-gain>0.0</filter-gain>
-  </predict-simple>
+  </predict-simple-->
 
-  <predict-simple>
+  <!--predict-simple>
      <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
      <output>/autopilot/internal/fdm-heading-bug-error-deg-15-sec</output>
      <seconds>15.0</seconds>
      <filter-gain>0.0</filter-gain>
-  </predict-simple>
+  </predict-simple-->
 
 
   <!-- =============================================================== -->

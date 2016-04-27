@@ -30,6 +30,7 @@ Virtualengineer.new = func {
                nightlighting2 : Nightlighting.new(),
                radiomanagement : RadioManagement.new(),
                radiomanagement2 : RadioManagement.new(),
+               destination : DestinationDialog.new(),
 
                FUELSEC : 15.0,
                CRUISESEC : 10.0,
@@ -40,7 +41,6 @@ Virtualengineer.new = func {
 
                SAFEFT : 1500.0,
 
-               altitudeft : 0.0,
                aglft : 0.0,
 
                CLIMBFPM : 100,
@@ -53,8 +53,6 @@ Virtualengineer.new = func {
 
                speedmach : 0.0,
 
-               speedkt : 0.0,
-
                ANTIICEOFF : 0,
  
                MAXPERCENT : 53.6,                                # maximum on ground
@@ -62,6 +60,8 @@ Virtualengineer.new = func {
 
                FOGMETER : 1000,                                  # visibility
 
+               RESETKG : 0,
+               
                FOGDEGC : -3,
                ICEDEGC : 0
          };
@@ -123,6 +123,14 @@ Virtualengineer.toggleexport = func {
 
 Virtualengineer.radioexport = func( arrival ) {
     me.radiomanagement.radioexport( arrival );
+}
+
+Virtualengineer.ordernavaidexport = func {
+   me.destination.filldialog();
+}
+
+Virtualengineer.getnavaidexport = func {
+   me.destination.getnavaid();
 }
 
 Virtualengineer.reheatexport = func {
@@ -212,10 +220,10 @@ Virtualengineer.supervisor = func {
     if( me.itself["root-ctrl"].getChild("activ").getValue() ) {
         me.rates = me.TAKEOFFSEC;
 
-        me.speedkt = me.noinstrument["airspeed"].getValue();
+        me.airspeedperception( constant.FALSE );
         me.speedmach = me.noinstrument["mach"].getValue();
         me.aglft = me.noinstrument["agl"].getValue();
-        me.altitudeft = me.noinstrument["altitude"].getValue();
+        me.altitudeperception( constant.FALSE );
 
         me.set_checklist();
         me.set_emergency();
@@ -393,7 +401,7 @@ Virtualengineer.transsonic = func {
 
         # waits
         else {
-            me.done();
+            me.done_allways();
         }
     }
 
@@ -404,7 +412,7 @@ Virtualengineer.transsonic = func {
 
         # waits
         else {
-            me.done();
+            me.done_allways();
         }
     }
 
@@ -759,11 +767,17 @@ Virtualengineer.fourengineflameoutmach1 = func {
 # ENGINES
 # -------
 Virtualengineer.taxioutboard = func {
-    for( i = constantaero.ENGINE2; i <= constantaero.ENGINE3; i=i+1 ) {
-         if( me.can() ) {
-             # taxi with outboard engines
-             me.hpvalve( i, constant.FALSE );
+    # optional in checklist
+    if( me.dependency["crew-ctrl"].getChild("stop-engine23").getValue() ) {
+        for( i = constantaero.ENGINE2; i <= constantaero.ENGINE3; i=i+1 ) {
+             if( me.can() ) {
+                 # taxi with outboard engines
+                 me.hpvalve( i, constant.FALSE );
+             }
          }
+    }
+    else {
+        me.voicecrew.terminalinit();
     }
 }
 
@@ -1075,7 +1089,7 @@ Virtualengineer.staticheater = func( set ) {
              if( me.dependency["anti-icing"].getNode(path).getValue() != set ) {
                  if( set and me.is_supersonic() ) {
                      # waits
-                     me.done();
+                     me.done_allways();
                  }
 
                  else {
@@ -1558,9 +1572,11 @@ Virtualengineer.fuelconsumed = func {
 
 Virtualengineer.resetfuelconsumed = func( index ) {
     if( me.can() ) {
-        if( !me.dependency["fuel-consumed"][index].getChild("reset").getValue() ) {
-            me.dependency["fuel-consumed"][index].getChild("reset").setValue( constant.TRUE );
-            me.toggleclick("fuel-consumed-" ~ index);
+        if( me.dependency["fuel-consumed"][index].getChild("total-kg").getValue() > me.RESETKG ) {
+            if( !me.dependency["fuel-consumed"][index].getChild("reset").getValue() ) {
+                me.dependency["fuel-consumed"][index].getChild("reset").setValue( constant.TRUE );
+                me.toggleclick("fuel-consumed-" ~ index);
+            }
         }
     }
 }
@@ -1706,8 +1722,8 @@ Navigation.schedule = func {
         speedfpm = me.estimatespeedfpm( id, distnm, targetft );
 
         # display for FDM debug, or navigation
-        me.itself["waypoint"][i].getChild("fuel-kg").setValue(fuelkg);
-        me.itself["waypoint"][i].getChild("speed-fpm").setValue(speedfpm);
+        me.itself["waypoint"][i].getChild("fuel-kg").setValue(int(math.round(fuelkg)));
+        me.itself["waypoint"][i].getChild("speed-fpm").setValue(int(math.round(speedfpm)));
    }
 }
 

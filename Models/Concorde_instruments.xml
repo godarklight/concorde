@@ -626,6 +626,37 @@
   </model>
 
   <model>
+   <name>TMO</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/temperature.xml</path>
+   <offsets>
+    <x-m>-23.565</x-m>
+    <y-m>-0.155</y-m>
+    <z-m> 0.825</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>TMO 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/temperature.xml</path>
+   <offsets>
+    <x-m>-23.565</x-m>
+    <y-m> 0.155</y-m>
+    <z-m> 0.825</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <failure-flag>/instrumentation/temperature[1]/failure-flag</failure-flag>
+     <isa-failure-flag>/instrumentation/temperature[1]/isa-failure-flag</isa-failure-flag>
+     <tmo-sel>/instrumentation/temperature[1]/indicated-tmo-degc</tmo-sel>
+     <static-sel>/instrumentation/temperature[1]/indicated-static-degc</static-sel>
+     <isa-sel>/instrumentation/temperature[1]/isa-degc</isa-sel>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
    <name>Audio</name>
    <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
    <offsets>
@@ -757,6 +788,16 @@
    <offsets>
     <x-m>-22.797</x-m>
     <y-m>-0.077</y-m>
+    <z-m> 0.818</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>UHF</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/UHF.xml</path>
+   <offsets>
+    <x-m>-22.797</x-m>
+    <y-m> 0.077</y-m>
     <z-m> 0.818</z-m>
    </offsets>
   </model>
@@ -1153,6 +1194,8 @@
    <object-name>INS 1</object-name>
    <object-name>INS 2</object-name>
    <object-name>INS 3</object-name>
+   <object-name>TMO</object-name>
+   <object-name>TMO 2</object-name>
    <object-name>Audio</object-name>
    <object-name>Audio 2</object-name>
    <object-name>Trim Cylinder</object-name>
@@ -1161,6 +1204,7 @@
    <object-name>VHF 1</object-name>
    <object-name>VHF 2</object-name>
    <object-name>ADF</object-name>
+   <object-name>UHF</object-name>
   </animation>
 
   <animation>

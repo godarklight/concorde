@@ -12,7 +12,7 @@
       <cockpit type="int">2</cockpit>
       <model type="int">4</model>
   </rating>
-  <aircraft-version>2.13</aircraft-version>
+  <aircraft-version>2.14</aircraft-version>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.png</splash-texture>            <!-- EGLL 27R -->
@@ -26,6 +26,9 @@
    <autopilot>
     <path>Aircraft/Concorde/Systems/Concorde-autopilot.xml</path>
    </autopilot>
+   <property-rule n="101">
+    <path>Aircraft/Concorde/Systems/als/Concorde-lights.xml</path>
+   </property-rule>
   </systems> 
 
   <instrumentation>

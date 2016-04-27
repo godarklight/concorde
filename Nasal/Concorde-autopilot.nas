@@ -806,6 +806,38 @@ Autopilot.datumapexport = func( sign ) {
    return result;
 }
 
+# manual setting of heading with knob
+Autopilot.headingknobexport = func( sign ) {
+   var headingdeg = 0.0;
+
+   if( me.has_lock_heading() ) {
+       result = constant.TRUE;
+       
+       if( me.istrackheading() ) {
+           if( me.is_lock_magnetic() ) {
+               headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-select").getValue();
+               
+               headingdeg = headingdeg + 1 * sign;
+               headingdeg = constant.truncatenorth( headingdeg );
+               
+               me.itself["channel"][me.engaged_channel].getChild("heading-select").setValue(headingdeg);
+               
+               me.heading(headingdeg);
+           }
+           elsif( me.is_lock_true() ) {
+               headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-true-select").getValue();
+               
+               headingdeg = headingdeg + 1* sign;
+               headingdeg = constant.truncatenorth( headingdeg );
+               
+               me.itself["channel"][me.engaged_channel].getChild("heading-true-select").setValue(headingdeg);
+               
+               me.trueheading(headingdeg);
+           }
+       }
+   }
+}
+
 
 # ---------------
 # FLIGHT DIRECTOR

@@ -8,6 +8,33 @@
 
 
 
+# =================
+# OVERRIDING JSBSIM
+# =================
+
+ConcordeJSBsim = {};
+
+ConcordeJSBsim.new = func {
+   var obj = { parents : [ConcordeJSBsim,System]
+         };
+
+   obj.init();
+
+   return obj;
+}
+
+ConcordeJSBsim.init = func {
+   me.inherit_system("/systems/flight");
+}
+
+ConcordeJSBsim.specific = func {
+   # disable JSBSim stand alone mode
+   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
+        me.itself["tank"][i].getChild("priority").setValue( 0 );
+   }
+}
+
+
 # ==============
 # INITIALIZATION
 # ==============
@@ -193,10 +220,23 @@ ConcordeMain.savedata = func {
                        "/controls/crew/presets",
                        "/controls/crew/radio",
                        "/controls/crew/startup",
+                       "/controls/crew/stop-engine23",
                        "/controls/crew/timeout",
                        "/controls/crew/timeout-s",
+                       "/controls/environment/als/lights",
                        "/controls/environment/rain",
                        "/controls/environment/smoke",
+                       "/controls/human/destination/category/diversion",
+                       "/controls/human/destination/category/everything",
+                       "/controls/human/destination/category/historical",
+                       "/controls/human/destination/category/other",
+                       "/controls/human/destination/category/regular",
+                       "/controls/human/destination/filter/navaid",
+                       "/controls/human/destination/filter/range",
+                       "/controls/human/destination/show",
+                       "/controls/human/destination/sort/distance",
+                       "/controls/human/destination/sort/ident",
+                       "/controls/human/destination/sort/name",
                        "/controls/fuel/reinit",
                        "/controls/tractor/distance-m",
                        "/controls/seat/recover",
@@ -204,6 +244,7 @@ ConcordeMain.savedata = func {
                        "/controls/voice/sound",
                        "/controls/voice/text",
                        "/sim/user/callsign",
+                       "/systems/flight/presets",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",
@@ -232,6 +273,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.constant = Concorde.Constant.new();
    globals.Concorde.constantaero = Concorde.Constantaero.new();
    globals.Concorde.constantISA = Concorde.ConstantISA.new();
+   globals.Concorde.FDM = Concorde.ConcordeJSBsim.new();
 
    globals.Concorde.electricalsystem = Concorde.Electrical.new();
    globals.Concorde.hydraulicsystem = Concorde.Hydraulic.new();
@@ -294,6 +336,9 @@ ConcordeMain.init = func {
    me.putinrelation();
    me.synchronize();
 
+   # JSBSim specific
+   globals.Concorde.FDM.specific();
+
    # schedule the 1st call
    settimer(func { me.sec1cron(); },0);
    settimer(func { me.sec3cron(); },0);
@@ -303,19 +348,13 @@ ConcordeMain.init = func {
    settimer(func { me.sec30cron(); },0);
    settimer(func { me.sec60cron(); },0);
 
-   # disable JSBSim stand alone mode
-   setprop( "fdm/jsbsim/propulsion/tank[0]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[1]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[2]/priority", 0 );
-   setprop( "fdm/jsbsim/propulsion/tank[3]/priority", 0 );
-
    # saved on exit, restored at launch
    me.savedata();
 
    # waits that systems are ready
    settimer(func { me.startupcron(); },2.0);
 
-   # the 3D is soon visible (long by Cygwin)
+   # the 3D is soon visible
    print("concorde systems started, version ", getprop("/sim/aircraft-version"));
 }
 

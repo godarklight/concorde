@@ -277,13 +277,14 @@
    <landing-lights type="bool">true</landing-lights>          <!-- optional in checklist -->
    <night-lighting type="bool">true</night-lighting>
    <presets type="int">0</presets>                            <!-- taxi -->
-   <radio type="bool">true</radio>                            <!-- tower ADF and VOR -->
+   <radio type="bool">true</radio>                            <!-- nearest ADF and VOR -->
    <recall type="bool">false</recall>                         <!-- recall detection -->
    <startup type="bool">false</startup>                       <!-- inactiv on startup -->
    <steering>
     <pedal type="bool">false</pedal>
-    <wheel alias="/fdm/jsbsim/systems/NWS/engaged"/>
+    <wheel alias="/fdm/jsbsim/systems/hydraulics/nws-engaged"/>
    </steering>
+   <stop-engine23 type="bool">false</stop-engine23>           <!-- optional in checklist -->
    <timeout type="bool">true</timeout>                        <!-- of 10 seconds -->
    <timeout-s type="double">10.0</timeout-s>
   </crew>
@@ -463,6 +464,9 @@
   </engines>
 
   <environment>
+   <als>
+    <lights type="bool">true</lights>
+   </als>
    <rain type="bool">false</rain>                             <!-- not visible from cockpit -->
    <smoke type="bool">true</smoke>
   </environment>
@@ -733,6 +737,26 @@
 
   <human>
    <airport-id></airport-id>                                  <!-- override virtual crew -->
+   <destination>
+    <category>
+     <diversion type="bool">false</diversion>
+     <everything type="bool">true</everything>
+     <historical type="bool">false</historical>
+     <other type="bool">false</other>
+     <regular type="bool">false</regular>
+    </category>
+    <show type="bool">false</show>                            <!-- show airport name -->
+    <filter>
+     <navaid type="bool">true</navaid>                        <!-- with navaid -->
+     <range type="bool">true</range>                          <!-- withing 200 NM -->
+    </filter>
+    <sort>
+     <distance type="bool">false</distance>
+     <ident type="bool">false</ident>
+     <name type="bool">true</name>
+    </sort>
+    <unknown type="bool">false</unknown>                      <!-- disable log message -->
+   </destination>
    <lighting>                                                 <!-- night lighting -->
     <captain type="double">0.6</captain>
     <copilot type="double">0.6</copilot>

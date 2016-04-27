@@ -122,19 +122,11 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-- 3.4.0 : minimal version.
+2016.1.1 : minimal version.
 
 
 Keyboard
 ========
-- "alt-b"  : emergency "b"rakes.
-- "ctrl-D" : "D"isconnects the autopilot (button A/P DISC on the yoke).
-- "ctrl-F" : a"F"terburner.
-- "f"      : "f"ull cockpit (all instruments).
-- "alt-g"  : "g"ear standby.
-- "alt-n"  : "n"ose standby.
-- "q"      : "q"uit speed up.
-- "y"      : "y"oke.
 
 Views
 -----
@@ -155,49 +147,61 @@ Virtual crew
 
 Unchanged behaviour
 -------------------
-- "left / : changes autopilot heading.
-   right"
-- "x / X" : zooms in the small fonts; reset with "ctrl-X".
+- "x / X"        : zooms in the small fonts.
+                   Reset with "ctrl-X".
 
 Same behaviour
 --------------
-- "b / B"  : brakes / parking brakes.
-- "g / G"  : gear.
-- "s"      : engine start.
-- "S"      : swaps between Captain and Center 2D panels.
-- "ctrl-A" : "A"ltitude acquire.
-- "ctrl-G" : "G"lide slope.
-- "ctrl-N" : "N"av 1 hold.
-- "ctrl-P" : "P"itch hold.
-- "ctrl-S" : autothrottle.
-- "F12"    : radio frequencies.
+- "ctrl-A"       : "A"ltitude acquire.
+- "b / B"        : "b"rakes / parking "B"rakes.
+- "g / G"        : "g"ear.
+- "ctrl-G"       : "G"lide slope.
+- "ctrl-N"       : "N"av 1 hold.
+- "ctrl-P"       : "P"itch hold.
+- "s"            : engine "s"tart.
+- "S"            : "S"waps between Captain and Center 2D panels.
+- "ctrl-S"       : autothrottle.
+- "F12"          : radio frequencies.
 
 Improved behaviour
 ------------------
-- "a / A"     : speeds up BOTH speed and time.
-                Not beyond X 8. Automatically resets to 1, when above 3500 ft/min.
-- "ctrl-H"    : "H"eading hold.
-- "page up /  : increases / decreases speed hold, Mach hold.
+- "a / A"        : speeds up BOTH speed and time (not beyond X 8).
+                   Automatically resets to 1, when above 3500 ft/min.
+- "ctrl-H"       : "H"eading hold.
+- "left /        : autopilot track heading (knob).
+   right"
+- "up /          : increases / decreases (datum) autopilot altitude.
+   down"           Altitude hold, vertical speed hold, pitch hold, speed hold with pitch, Mach hold with pitch.
+- "page up /     : increases / decreases (datum) speed hold, Mach hold.
    page down"
-- "up /       : increases / decreases (fast) altitude hold, vertical speed hold, pitch hold,
-   down"        speed hold with pitch, Mach hold with pitch.
-- "home /     : increases / decreases (slow) altitude hold, vertical speed hold, pitch hold,
-   end"         speed hold with pitch, Mach hold with pitch.
 
 Alternate behaviour
 -------------------
-- "ctrl-B"    : reverse thrust used as speedbrake.
-- "ctrl-T"    : altitude hold.
-- "[ / ]"     : nose used as flaps.
-- "="         : menu.
-- "left /     : move floating view in width.
+- "ctrl-B"       : reverse thrust (used as speed"B"rake).
+- "ctrl-T"       : al"T"itude hold.
+- "[ / ]"        : nose used as flaps.
+- "="            : menu.
+- "left /        : move floating view in width.
    right"
-- "up /       : move floating view in length.
+- "up /          : move floating view in length.
    down"
-- "home /     : move floating view in length (fast).
-   end"
-- "page up /  : move floating view in height.
+- "page up /     : move floating view in height.
    page down"
+   
+Additional behaviour
+--------------------
+- "alt-b"        : emergency "b"rakes.
+- "ctrl-D"       : "D"isconnects the autopilot (button A/P DISC on the yoke).
+- "ctrl-F"       : a"F"terburner.
+- "f"            : "f"ull cockpit (all instruments).
+- "alt-g"        : "g"ear standby.
+- "alt-n"        : "n"ose standby.
+- "q"            : "q"uit speed up.
+- "y"            : "y"oke.
+- "ctrl up /     : increases / decreases (datum) autopilot altitude (slow).
+   ctrl dow        Altitude hold, vertical speed hold, pitch hold, speed hold with pitch, Mach hold with pitch.
+- "ctrl up /     : move floating view in length (fast).
+   ctrl down"
 
 
 Mouse
@@ -301,211 +305,211 @@ Alarms
 Not listed warning lights are not yet implemented.
 
 Sound
------
-- beep    : amber or red warning.
-- beep (continuous) : loss of MWS.
-- beep (repeated)   : press red warnings on MWS, or press cancel audio.
-- horn    : too low speed.
-- pull-up : excessive descent speed; too low gear at approach, nose not down at touch down.
-- rattle  : overspeed.
-- siren   : loss of autopilot.
-- whistle : JSBSim stall, aft center of gravity warning, underspeed.
+-------------------------------------------------------------------------------
+- beep                   : amber or red warning.
+- beep (continuous)      : loss of MWS.
+- beep (repeated)        : press red warnings on MWS, or press cancel audio.
+- horn                   : too low speed.
+- pull-up                : excessive descent speed; too low gear at approach, nose not down at touch down.
+- rattle                 : overspeed.
+- siren                  : loss of autopilot.
+- whistle                : JSBSim stall, aft center of gravity warning, underspeed.
 
 Red
----
-- "AP"    : instrument failure, abnormal pitch, abnormal AoA.
-- "AT"    : instrument failure, autothrottle expected.
-- "AUTO LAND" : autothrottle expected, ILS missing, outside path at touch down.
-- "INS"   : INS not aligned, or in failure.
-- "M/CG"  : center of gravity outside of corridor.
-- "TERRAIN"   : excessive descent speed; too low gear at approach, nose not down at touch down.
+-------------------------------------------------------------------------------
+- "AP"                   : instrument failure, abnormal pitch, abnormal AoA.
+- "AT"                   : instrument failure, autothrottle expected.
+- "AUTO LAND"            : autothrottle expected, ILS missing, outside path at touch down.
+- "INS"                  : INS not aligned, or in failure.
+- "M/CG"                 : center of gravity outside of corridor.
+- "TERRAIN"              : excessive descent speed; too low gear at approach, nose not down at touch down.
 
-Overhead
-........
-- "ADS"   : ADC failure.
-- "DOORS" : ground supply.
-- "ELEC"  : electrical failure.
-- "ENG"   : engine stopped.
-- "FEEL"  : no green and blue hydraulics.
-- "ICE"   : engine and wing anti-icing expected.
-- "INS"   : INS not aligned, or in failure.
-- "INT"   : intake without hydraulics.
-- "PFC"   : electrical failure, or no green or blue hydraulics.
-- "PRESS" : pressurization failure, no air conditioning.
-- "THROT" : throttle failure.
+              Overhead
 
-Brakes
-......
-- "FWD"   : brake overheat.
-- "REAR"  : brake overheat.
-- "WHEEL" : brake overheat.
+- "ADS"                  : ADC failure.
+- "DOORS"                : ground supply.
+- "ELEC"                 : electrical failure.
+- "ENG"                  : engine stopped.
+- "FEEL"                 : no green and blue hydraulics.
+- "ICE"                  : engine and wing anti-icing expected.
+- "INS"                  : INS not aligned, or in failure.
+- "INT"                  : intake without hydraulics.
+- "PFC"                  : electrical failure, or no green or blue hydraulics.
+- "PRESS"                : pressurization failure, no air conditioning.
+- "THROT"                : throttle failure.
 
-Doors
-.....
-- "MISC HATCHES" : ground supply.
+                Brakes
 
-Electrical
-..........
-- "DC ESS BUS"   : no voltage from AC essential bus and battery.
-- "DC MAIN BUS"  : no voltage from AC main bus.
-- "FAIL"   : electrical failure.
+- "FWD"                  : brake overheat.
+- "REAR"                 : brake overheat.
+- "WHEEL"                : brake overheat.
 
-Engines
-.......
-- "INTAKE" : no hydraulics.
-- "THROT"  : throttle failure.
+                 Doors
 
-Gear
-....
-- "NOSE WHEEL"   : nose steering without hydraulics.
+- "MISC HATCHES"         : ground supply.
 
-Hydraulics
-..........
-- "BRAKES FAIL" : no normal brakes (no green hydraulics).
+            Electrical
 
-INS
-...
-- "WARN"   : not aligned, or in failure.
+- "DC ESS BUS"           : no voltage from AC essential bus and battery.
+- "DC MAIN BUS"          : no voltage from AC main bus.
+- "FAIL"                 : electrical failure.
 
-Pressurization
-..............
-- "EXCESS ALT" : cabine under pressure.
-- "OVER PRESS" : cabine over pressure.
+               Engines
+
+- "INTAKE"               : no hydraulics.
+- "THROT"                : throttle failure.
+
+                  Gear
+
+- "NOSE WHEEL"           : nose steering without hydraulics.
+
+            Hydraulics
+
+- "BRAKES FAIL"          : no normal brakes (no green hydraulics).
+
+                   INS
+
+- "WARN"                 : not aligned, or in failure.
+
+        Pressurization
+
+- "EXCESS ALT"           : cabine under pressure.
+- "OVER PRESS"           : cabine over pressure.
 
 Amber
------
-- "ATT"  : excessive attitude.
-- "CTY"  : reheat at takeoff.
-- "DH"   : decision altitude.
+-------------------------------------------------------------------------------
+- "ATT"                  : excessive attitude.
+- "CTY"                  : reheat at takeoff.
+- "DH"                   : decision altitude.
 
-Overhead
-........
-- "ADC"  : ADC failure.
-- "ELEC" : electrical failure.
-- "FUEL" : fuel failure.
-- "HYD"  : hydraulical failure.
-- "INHIBIT" : all MWS lights inhibited, except red PFC and ENG.
-- "INT"  : intake lost its main hydraulics.
+              Overhead
 
-ADC
-...
-- "ADC"  : ADC failure.
+- "ADC"                  : ADC failure.
+- "ELEC"                 : electrical failure.
+- "FUEL"                 : fuel failure.
+- "HYD"                  : hydraulical failure.
+- "INHIBIT"              : all MWS lights inhibited, except red PFC and ENG.
+- "INT"                  : intake lost its main hydraulics.
 
-Electrical
-..........
-- "AC ESS BUS"   : no voltage from main bus.
-- "AC MAIN BUS"  : no voltage from generator.
-- "BATT ISOLATE" : battery disconnected.
-- "CSD"  : constant speed drive disconnected.
-- "GEN"  : generator disconnected from main bus.
+                   ADC
 
-Engines
-.......
-- "HYD"  : intake lost its main hydraulics.
+- "ADC"                  : ADC failure.
 
-Fuel
-....
-- "LOW LEVEL" : collector tank low.
-- "LOW PRESSURE"  : no fuel pump, empty tank, LP valve not open.
-- "TANK PRESSURE" : air bleed failure.
+            Electrical
 
-Hydraulics
-..........
-- "BRAKES EMER" : parking or emergency brakes (no green hydraulics).
-- "L/PRESS"     : pump disconnected, engine stopped.
+- "AC ESS BUS"           : no voltage from main bus.
+- "AC MAIN BUS"          : no voltage from generator.
+- "BATT ISOLATE"         : battery disconnected.
+- "CSD"                  : constant speed drive disconnected.
+- "GEN"                  : generator disconnected from main bus.
 
-INS
-...
-- "ALERT"  : 1 minute until next waypoint.
-- "BAT"    : no AC voltage.
-- "REMOTE" : waypoint insert to all INS.
+               Engines
+
+- "HYD"                  : intake lost its main hydraulics.
+
+                  Fuel
+
+- "LOW LEVEL"            : collector tank low.
+- "LOW PRESSURE"         : no fuel pump, empty tank, LP valve not open.
+- "TANK PRESSURE"        : air bleed failure.
+
+            Hydraulics
+
+- "BRAKES EMER"          : parking or emergency brakes (no green hydraulics).
+- "L/PRESS"              : pump disconnected, engine stopped.
+
+                   INS
+
+- "ALERT"                : 1 minute until next waypoint.
+- "BAT"                  : no AC voltage.
+- "REMOTE"               : waypoint insert to all INS.
 
 Yellow
-------
-- "ILS"  : missing ILS.
+-------------------------------------------------------------------------------
+- "ILS"                  : missing ILS.
 
-Air conditioning
-................
-- "COMPARATOR" : no air conditioning on group 3 or 4.
+      Air conditioning
 
-Electrical
-..........
-- "FAIL" : no hydraulical pressure (green circuit), emergency generator isolated.
+- "COMPARATOR"           : no air conditioning on group 3 or 4.
 
-Engines
-.......
-- "START PUMP" : starter / relight activated.
+            Electrical
 
-Fuel
-....
-- "ACC"  : no fuel pump.
-- "LOW PRESSURE" : engine fuel pump stopped, empty tank.
+- "FAIL"                 : no hydraulical pressure (green circuit), emergency generator isolated.
 
-INS
-...
-- "R NAV" : update by DME.
+               Engines
+
+- "START PUMP"           : starter / relight activated.
+
+                  Fuel
+
+- "ACC"                  : no fuel pump.
+- "LOW PRESSURE"         : engine fuel pump stopped, empty tank.
+
+                   INS
+
+- "R NAV"                : update by DME.
 
 Blue
-----
-- "REV"  : reverse thrust.
+-------------------------------------------------------------------------------
+- "REV"                  : reverse thrust.
 
-Overhead
-........
-- "EXTENDED" : landing light not retracted.
-- "ICE " : ice condition detected.
+              Overhead
 
-ADC
-...
-- "TEST" : test completed.
+- "EXTENDED"             : landing light not retracted.
+- "ICE "                 : ice condition detected.
 
-Engines
-.......
-- "OPEN" : flight reverse armed.
+                   ADC
 
-Hydraulics
-..........
-- "SELECTED" : emegercy generator selected.
-- "TEST"     : RAM Air Turbine test.
+- "TEST"                 : test completed.
+
+               Engines
+
+- "OPEN"                 : flight reverse armed.
+
+            Hydraulics
+
+- "SELECTED"             : emegercy generator selected.
+- "TEST"                 : RAM Air Turbine test.
 
 Green
------
+-------------------------------------------------------------------------------
 - clear to go (above N2) : armed by takeoff monitor (bug on fuel flow).
-- "LAND 1" : autoland with 1 autopilot.
-- "LAND 2" : autoland with 2 autopilots.
+- "LAND 1"               : autoland with 1 autopilot.
+- "LAND 2"               : autoland with 2 autopilots.
 
-Overhead
-........
-- "IGV PRESS" : engine anti-icing activated.
+              Overhead
 
-Engines
-.......
-- "LH IGN" : engine ignition.
-- "LO"     : low schedule.
-- "RH IGN" : engine ignition.
+- "IGV PRESS"            : engine anti-icing activated.
 
-Hydraulics
-..........
-- "R.A.T." : RAM Air Turbine deployed.
+               Engines
 
-INS
-...
-- READY/NAV" : aligned.
+- "LH IGN"               : engine ignition.
+- "LO"                   : low schedule.
+- "RH IGN"               : engine ignition.
+
+            Hydraulics
+
+- "R.A.T."               : RAM Air Turbine deployed.
+
+                   INS
+
+- READY/NAV"             : aligned.
 
 White
------
-- CLB : climb engine rating.
-- CRS : cruise engine rating.
-- TO  : takeoff engine rating.
+-------------------------------------------------------------------------------
+- CLB                    : climb engine rating.
+- CRS                    : cruise engine rating.
+- TO                     : takeoff engine rating.
 
-Electrical
-..........
+            Electrical
+
 - "GROUND PWR AVAILABLE" : electrical power from ground supply.
 
-Engines
-.......
-- "F/O" : flyover schedule.
-- "HI"  : high schedule.
-- "MID" : mid schedule.
+               Engines
+
+- "F/O"                  : flyover schedule.
+- "HI"                   : high schedule.
+- "MID"                  : mid schedule.
 
 
 Consumption
@@ -602,20 +606,21 @@ Known problems
   Use controls/audio/crew/[member]/[radio]/volume-push.
 - data are not saved on reinit.
 
+Known problems route manager
+----------------------------
+- input departure and arrival, only after loading flight plan (WITHOUT departure and arrival).
+- toggle INS mode, only AFTER activation of route, or use "= a".
+
 Known problems autopilot
 ------------------------
-- toggle INS mode, only AFTER activation of route, or use "= a".
 - NAV hold mode is sensitive to the turbulence of the ground layer.
 - heading modes are a little slow to converge, at supersonic speed.
-
-Known problems 3.4.0 autopilot
-------------------------------
 - on engagement, magnetic and true heading modes bank into the opposite direction.
 
 Known problems autoland
 -----------------------
 - nav must be accurate until 0 ft AGL : KSFO 28R, RJAA 34L are correct.
-  But EGLL 27R, KJFK 22L are wrong : to land at these airports,
+  When airport is not accurate (examples : EGLL, KBGR, KBOS, KJFK),
   set /controls/autoflight/real-nav to false, by "= a".
 
 Known problems sound
@@ -681,4 +686,4 @@ References
     British Airways maintenance manual.
 
 
-4 April 2015.
+2nd April 2016.

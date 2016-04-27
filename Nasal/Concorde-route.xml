@@ -14,8 +14,8 @@
 
      Maiden flights :
 
-     - http://www.concordesst.com/history/events/001maiden.html
-     - http://www.concordesst.com/history/events/002maiden.html : landing at EGVA.
+     - http://www.concordesst.com/history/events/001maiden.html : LFBO.
+     - http://www.concordesst.com/history/events/002maiden.html : EGTG, landing at EGVA.
 
      Operational history (1976-2003) :
 
@@ -26,46 +26,14 @@
 <PropertyList>
 
 
-<!-- ============== -->
-<!-- Maiden flights -->
-<!-- ============== -->
-
-   <airport n="0">       <!-- Filton -->
-    <airport-id type="string">EGTG</airport-id>
-    <arrival>
-     <adf n="0">
-      <selected-khz type="int">325</selected-khz>                        <!-- Filton -->
-     </adf>
-    </arrival>
-    <departure>
-     <adf n="0">
-      <selected-khz type="int">325</selected-khz>                        <!-- Filton -->
-     </adf>
-     <adf n="1">
-      <selected-khz type="int">386</selected-khz>                        <!-- Brize Norton -->
-     </adf>
-    </departure>
-   </airport>
-
-   <airport n="1">       <!-- Toulouse -->
-    <airport-id type="string">LFBO</airport-id>
-    <arrival>
-     <adf n="0">
-      <selected-khz type="int">406</selected-khz>                        <!-- Toulouse -->
-     </adf>
-     <vor n="0">
-      <selected-mhz type="double">117.70</selected-mhz>                  <!-- Toulouse -->
-     </vor>
-    </arrival>
-   </airport>
-
-
 <!-- ================ -->
 <!-- Regular services -->
 <!-- ================ -->
 
-   <airport n="2">       <!-- London -->
+   <airport n="0">
+    <name>London</name>
     <airport-id type="string">EGLL</airport-id>
+    <regular type="bool">true</regular>
     <arrival>
      <adf n="0">
       <selected-khz type="int">352</selected-khz>                        <!-- Woodley -->
@@ -98,8 +66,10 @@
     </departure>
    </airport>
 
-   <airport n="3">       <!-- New York -->
+   <airport n="1">
+    <name>New York</name>
     <airport-id type="string">KJFK</airport-id>
+    <regular type="bool">true</regular>
     <arrival>
      <adf n="0">
       <selected-khz type="int">414</selected-khz>                        <!-- Bridge -->
@@ -108,11 +78,11 @@
       <selected-khz type="int">275</selected-khz>                        <!-- Babylon -->
      </adf>
      <vor n="0">
-      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Canarsie -->
-      <standby-mhz type="double">110.90</standby-mhz>                    <!-- 04L -->
+      <selected-mhz type="double">115.90</selected-mhz>                  <!-- Kennedy -->
+      <standby-mhz type="double">111.50</standby-mhz>                    <!-- 13L -->
      </vor>
      <vor n="1">
-      <selected-mhz type="double">115.90</selected-mhz>                  <!-- J. F. Kennedy -->
+      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Canarsie -->
       <standby-mhz type="double">111.35</standby-mhz>                    <!-- 31L -->
      </vor>
     </arrival>
@@ -124,30 +94,34 @@
       <selected-khz type="int">275</selected-khz>                        <!-- Babylon -->
      </adf>
      <vor n="0">
-      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Canarsie -->
+      <selected-mhz type="double">115.90</selected-mhz>                  <!-- Kennedy -->
      </vor>
      <vor n="1">
-      <selected-mhz type="double">115.90</selected-mhz>                  <!-- J. F. Kennedy -->
+      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Canarsie -->
      </vor>
     </departure>
    </airport>
 
-   <airport n="4">       <!-- Paris -->
+   <airport n="2">
+    <name>Paris</name>
     <airport-id type="string">LFPG</airport-id>
+    <regular type="bool">true</regular>
     <arrival>
      <vor n="0">
-      <selected-mhz type="double">117.05</selected-mhz>                  <!-- Ch. de Gaulle -->
+      <selected-mhz type="double">117.05</selected-mhz>                  <!-- Charles de Gaulle -->
      </vor>
     </arrival>
     <departure>
      <vor n="0">
-      <selected-mhz type="double">117.05</selected-mhz>                  <!-- Ch. de Gaulle -->
+      <selected-mhz type="double">117.05</selected-mhz>                  <!-- Charles de Gaulle -->
      </vor>
     </departure>
    </airport>
 
-   <airport n="5">       <!-- Barbados -->
+   <airport n="3">
+    <name>Barbados</name>
     <airport-id type="string">TBPB</airport-id>
+    <regular type="bool">true</regular>
     <arrival>
      <adf n="0">
       <selected-khz type="int">345</selected-khz>                        <!-- Adams -->
@@ -163,8 +137,10 @@
 <!-- Diversion -->
 <!-- ========= -->
 
-   <airport n="6">       <!-- Halifax -->
+   <airport n="4">
+    <name>Halifax</name>
     <airport-id type="string">CYHZ</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">385</selected-khz>                        <!-- Bluenose -->
@@ -175,8 +151,10 @@
     </arrival>
    </airport>
 
-   <airport n="7">       <!-- Gander -->
+   <airport n="5">
+    <name>Gander</name>
     <airport-id type="string">CYQX</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">280</selected-khz>                        <!-- Gander -->
@@ -187,8 +165,10 @@
     </arrival>
    </airport>
 
-   <airport n="8">       <!-- Montreal -->
+   <airport n="6">
+    <name>Montreal</name>
     <airport-id type="string">CYUL</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">348</selected-khz>                        <!-- Rockland -->
@@ -199,13 +179,17 @@
     </arrival>
    </airport>
 
-   <airport n="9">       <!-- Cardiff -->
+   <airport n="7">
+    <name>Cardiff</name>
     <airport-id type="string">EGFF</airport-id>
+    <diversion type="bool">true</diversion>
     <!-- none -->
    </airport>
 
-   <airport n="10">      <!-- Gatwick -->
+   <airport n="8">
+    <name>Gatwick</name>
     <airport-id type="string">EGKK</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">365</selected-khz>                        <!-- Gatwick -->
@@ -213,8 +197,10 @@
     </arrival>
    </airport>
 
-   <airport n="11">      <!-- Shannon -->
+   <airport n="9">
+    <name>Shannon</name>
     <airport-id type="string">EINN</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">395</selected-khz>                        <!-- Foynes -->
@@ -225,8 +211,10 @@
     </arrival>
    </airport>
 
-   <airport n="12">      <!-- Atlantic City -->
+   <airport n="10">
+    <name>Atlantic City</name>
     <airport-id type="string">KACY</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">363</selected-khz>                        <!-- Rainbow -->
@@ -237,8 +225,10 @@
     </arrival>
    </airport>
 
-   <airport n="13">      <!-- Windsor Locks -->
+   <airport n="11">
+    <name>Windsor Locks</name>
     <airport-id type="string">KBDL</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">257</selected-khz>                        <!-- Waterbury -->
@@ -249,32 +239,77 @@
     </arrival>
    </airport>
 
-   <airport n="14">      <!-- Bangor -->
+   <airport n="12">
+    <name>Bangor</name>
     <airport-id type="string">KBGR</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">272</selected-khz>                        <!-- Old town -->
      </adf>
+     <adf n="1">
+      <selected-khz type="int">348</selected-khz>                        <!-- Burnham -->
+     </adf>
      <vor n="0">
+      <selected-mhz type="double">109.50</selected-mhz>                  <!-- 15/33 -->
+     </vor>
+     <vor n="1">
       <selected-mhz type="double">114.80</selected-mhz>                  <!-- Bangor -->
      </vor>
     </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">272</selected-khz>                        <!-- Old town -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">348</selected-khz>                        <!-- Burnham -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">114.80</selected-mhz>                  <!-- Bangor -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="15">      <!-- Boston -->
+   <airport n="13">
+    <name>Boston</name>
     <airport-id type="string">KBOS</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">382</selected-khz>                        <!-- Lindy -->
      </adf>
+     <adf n="1">
+      <selected-khz type="int">251</selected-khz>                        <!-- Shaker Hill -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">112.70</selected-mhz>                  <!-- Boston -->
+      <standby-mhz type="double">110.70</standby-mhz>                    <!-- 33L -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">112.50</selected-mhz>                  <!-- Lawrence -->
+      <standby-mhz type="double">110.30</standby-mhz>                    <!-- 04R / 22L -->
+     </vor>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">382</selected-khz>                        <!-- Lindy -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">251</selected-khz>                        <!-- Shaker Hill -->
+     </adf>
      <vor n="0">
       <selected-mhz type="double">112.70</selected-mhz>                  <!-- Boston -->
      </vor>
-    </arrival>
+     <vor n="1">
+      <selected-mhz type="double">112.50</selected-mhz>                  <!-- Lawrence -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="16">      <!-- Newark -->
+   <airport n="14">
+    <name>Newark</name>
     <airport-id type="string">KEWR</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">254</selected-khz>                        <!-- Chatham -->
@@ -285,8 +320,10 @@
     </arrival>
    </airport>
 
-   <airport n="17">      <!-- Lajes -->
+   <airport n="15">
+    <name>Lajes</name>
     <airport-id type="string">LPLA</airport-id>
+    <diversion type="bool">true</diversion>
     <arrival>
      <adf n="0">
       <selected-khz type="int">341</selected-khz>                        <!-- Lajes -->
@@ -302,8 +339,10 @@
 <!-- Historical services -->
 <!-- =================== -->
 
-   <airport n="18">      <!-- Toronto -->
+   <airport n="16">
+    <name>Toronto</name>
     <airport-id type="string">CYYZ</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">368</selected-khz>                        <!-- Queensway -->
@@ -314,8 +353,10 @@
     </arrival>
    </airport>
 
-   <airport n="19">      <!-- Dakar -->
+   <airport n="17">
+    <name>Dakar</name>
     <airport-id type="string">GOOY</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">323</selected-khz>                        <!-- Dakar -->
@@ -326,8 +367,10 @@
     </arrival>
    </airport>
 
-   <airport n="20">      <!-- Dallas Forth Worth -->
+   <airport n="18">
+    <name>Dallas Forth Worth</name>
     <airport-id type="string">KDFW</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">287</selected-khz>                        <!-- Redbird -->
@@ -338,8 +381,10 @@
     </arrival>
    </airport>
 
-   <airport n="21">      <!-- Washington Dulles -->
+   <airport n="19">
+    <name>Washington Dulles</name>
     <airport-id type="string">KIAD</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">323</selected-khz>                        <!-- Georgetown -->
@@ -353,8 +398,10 @@
     </arrival>
    </airport>
 
-   <airport n="22">      <!-- Miami -->
+   <airport n="20">
+    <name>Miami</name>
     <airport-id type="string">KMIA</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">242</selected-khz>                        <!-- Plantation -->
@@ -365,8 +412,10 @@
     </arrival>
    </airport>
 
-   <airport n="23">      <!-- Santa Maria -->
+   <airport n="21">
+    <name>Santa Maria</name>
     <airport-id type="string">LPAZ</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">323</selected-khz>                        <!-- Santa Maria -->
@@ -377,8 +426,10 @@
     </arrival>
    </airport>
 
-   <airport n="24">      <!-- Mexico -->
+   <airport n="22">
+    <name>Mexico</name>
     <airport-id type="string">MMMX</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">359</selected-khz>                        <!-- Tepexpan -->
@@ -389,8 +440,10 @@
     </arrival>
    </airport>
 
-   <airport n="25">      <!-- Bahrain -->
+   <airport n="23">
+    <name>Bahrain</name>
     <airport-id type="string">OBBI</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">395</selected-khz>                        <!-- Bahrain -->
@@ -401,8 +454,10 @@
     </arrival>
    </airport>
 
-   <airport n="26">      <!-- Rio de Janeiro -->
+   <airport n="24">
+    <name>Rio de Janeiro</name>
     <airport-id type="string">SBGL</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">330</selected-khz>                        <!-- Ilha -->
@@ -413,8 +468,10 @@
     </arrival>
    </airport>
 
-   <airport n="27">      <!-- Caracas -->
+   <airport n="25">
+    <name>Caracas</name>
     <airport-id type="string">SVMI</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">292</selected-khz>                        <!-- Maiquetia -->
@@ -425,8 +482,10 @@
     </arrival>
    </airport>
 
-   <airport n="28">      <!-- Singapore -->
+   <airport n="26">
+    <name>Singapore</name>
     <airport-id type="string">WSSS</airport-id>
+    <historical type="bool">true</historical>
     <arrival>
      <adf n="0">
       <selected-khz type="int">232</selected-khz>                        <!-- Bedok -->
@@ -442,7 +501,8 @@
 <!-- Charter UK -->
 <!-- ========== -->
 
-   <airport n="29">      <!-- Belfast -->
+   <airport n="27">
+    <name>Belfast</name>
     <airport-id type="string">EGAA</airport-id>
     <arrival>
      <adf n="0">
@@ -454,7 +514,8 @@
     </arrival>
    </airport>
 
-   <airport n="30">      <!-- Birmingham -->
+   <airport n="28">
+    <name>Birmingham</name>
     <airport-id type="string">EGBB</airport-id>
     <arrival>
      <adf n="0">
@@ -463,7 +524,8 @@
     </arrival>
    </airport>
 
-   <airport n="31">      <!-- Manchester -->
+   <airport n="29">
+    <name>Manchester</name>
     <airport-id type="string">EGCC</airport-id>
     <arrival>
      <adf n="0">
@@ -475,7 +537,8 @@
     </arrival>
    </airport>
 
-   <airport n="32">      <!-- Finningley -->
+   <airport n="30">
+    <name>Finningley</name>
     <airport-id type="string">EGCN</airport-id>
     <arrival>
      <adf n="0">
@@ -484,17 +547,20 @@
     </arrival>
    </airport>
 
-   <airport n="33">      <!-- Boscombe Down -->
+   <airport n="31">
+    <name>Boscombe Down</name>
     <airport-id type="string">EGDM</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="34">      <!-- Yeovilton -->
+   <airport n="32">
+    <name>Yeovilton</name>
     <airport-id type="string">EGDY</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="35">      <!-- Machrihanish -->
+   <airport n="33">
+    <name>Machrihanish</name>
     <airport-id type="string">EGEC</airport-id>
     <arrival>
      <adf n="0">
@@ -506,51 +572,60 @@
     </arrival>
    </airport>
 
-   <airport n="36">      <!-- Luton -->
+   <airport n="34">
+    <name>Luton</name>
     <airport-id type="string">EGGW</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="37">      <!-- Liverpool -->
+   <airport n="35">
+    <name>Liverpool</name>
     <airport-id type="string">EGGP</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="38">      <!-- Bournemouth -->
+   <airport n="36">
+    <name>Bournemouth</name>
     <airport-id type="string">EGHH</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="39">      <!-- St Mawgan -->
+   <airport n="37">
+    <name>St Mawgan</name>
     <airport-id type="string">EGHQ</airport-id>
     <!-- unknown -->
    </airport>
 
-   <airport n="40">      <!-- Farnborough -->
+   <airport n="38">
+    <name>Farnborough</name>
     <airport-id type="string">EGLF</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="41">      <!-- Manston -->
+   <airport n="39">
+    <name>Manston</name>
     <airport-id type="string">EGMH</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="42">      <!-- Humberside -->
+   <airport n="40">
+    <name>Humberside</name>
     <airport-id type="string">EGNJ</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="43">      <!-- Leeds -->
+   <airport n="41">
+    <name>Leeds</name>
     <airport-id type="string">EGNM</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">402</selected-khz>                      <!-- Leeds Bradford -->
+      <selected-khz type="int">402.5</selected-khz>                      <!-- Leeds Bradford -->
      </adf>
     </arrival>
    </airport>
 
-   <airport n="44">      <!-- Newcastle -->
+   <airport n="42">
+    <name>Newcastle</name>
     <airport-id type="string">EGNT</airport-id>
     <arrival>
      <vor n="0">
@@ -559,22 +634,26 @@
     </arrival>
    </airport>
 
-   <airport n="45">      <!-- Teeside -->
+   <airport n="43">
+    <name>Teeside</name>
     <airport-id type="string">EGNV</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="46">      <!-- East Midlands -->
+   <airport n="44">
+    <name>East Midlands</name>
     <airport-id type="string">EGNX</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="47">      <!-- Llanbedr -->
+   <airport n="45">
+    <name>Llanbedr</name>
     <airport-id type="string">EGOD</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="48">      <!-- Aberdeen -->
+   <airport n="46">
+    <name>Aberdeen</name>
     <airport-id type="string">EGPD</airport-id>
     <arrival>
      <adf n="0">
@@ -586,7 +665,8 @@
     </arrival>
    </airport>
 
-   <airport n="49">      <!-- Glasgow -->
+   <airport n="47">
+    <name>Glasgow</name>
     <airport-id type="string">EGPF</airport-id>
     <arrival>
      <adf n="0">
@@ -598,7 +678,8 @@
     </arrival>
    </airport>
 
-   <airport n="50">      <!-- Edinburgh -->
+   <airport n="48">
+    <name>Edinburgh</name>
     <airport-id type="string">EGPH</airport-id>
     <arrival>
      <adf n="0">
@@ -607,7 +688,8 @@
     </arrival>
    </airport>
 
-   <airport n="51">      <!-- Prestwick -->
+   <airport n="49">
+    <name>Prestwick</name>
     <airport-id type="string">EGPK</airport-id>
     <arrival>
      <adf n="0">
@@ -616,7 +698,8 @@
     </arrival>
    </airport>
 
-   <airport n="52">      <!-- Kinloss -->
+   <airport n="50">
+    <name>Kinloss</name>
     <airport-id type="string">EGQK</airport-id>
     <arrival>
      <adf n="0">
@@ -625,12 +708,14 @@
     </arrival>
    </airport>
 
-   <airport n="53">      <!-- Leuchars -->
+   <airport n="51">
+    <name>Leuchars</name>
     <airport-id type="string">EGQL</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="54">      <!-- Stansted -->
+   <airport n="52">
+    <name>Stansted</name>
     <airport-id type="string">EGSS</airport-id>
     <arrival>
      <adf n="0">
@@ -642,22 +727,44 @@
     </arrival>
    </airport>
 
-   <airport n="55">      <!-- Exeter -->
+   <airport n="53">
+    <name>Exeter</name>
     <airport-id type="string">EGTE</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="56">      <!-- Mildenhall -->
+   <airport n="54">
+    <name>Filton</name>
+    <airport-id type="string">EGTG</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">325</selected-khz>                        <!-- Filton -->
+     </adf>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">325</selected-khz>                        <!-- Filton -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">386</selected-khz>                        <!-- Brize Norton -->
+     </adf>
+    </departure>
+   </airport>
+
+   <airport n="55">>
+    <name>Mildenhall</name>
     <airport-id type="string">EGUN</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="57">      <!-- Fairford -->
+   <airport n="56">
+    <name>Fairford</name>
     <airport-id type="string">EGVA</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="58">      <!-- Brize Norton -->
+   <airport n="57">
+    <name>Brize Norton</name>
     <airport-id type="string">EGVN</airport-id>
     <arrival>
      <adf n="0">
@@ -666,7 +773,8 @@
     </arrival>
    </airport>
 
-   <airport n="59">      <!-- Coltishall -->
+   <airport n="58">
+    <name>Coltishall</name>
     <airport-id type="string">EGYC</airport-id>
     <!-- unknown -->
    </airport>
@@ -676,7 +784,8 @@
 <!-- Charter Africa -->
 <!-- ============== -->
 
-   <airport n="60">      <!-- Ouagadougou -->
+   <airport n="59">
+    <name>Ouagadougou</name>
     <airport-id type="string">DFFD</airport-id>
     <arrival>
      <adf n="0">
@@ -688,11 +797,12 @@
     </arrival>
    </airport>
 
-   <airport n="61">      <!-- Abidjan -->
+   <airport n="60">
+    <name>Abidjan</name>
     <airport-id type="string">DIAP</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">294</selected-khz>                      <!-- Abidjan Felix Houphouet Boigny -->
+      <selected-khz type="int">294.2</selected-khz>                      <!-- Abidjan Felix Houphouet Boigny -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">114.30</selected-mhz>                  <!-- Abidjan -->
@@ -700,7 +810,8 @@
     </arrival>
    </airport>
 
-   <airport n="62">      <!-- Yamoussoukro -->
+   <airport n="61">
+    <name>Yamoussoukro</name>
     <airport-id type="string">DIYO</airport-id>
     <arrival>
      <adf n="0">
@@ -712,7 +823,8 @@
     </arrival>
    </airport>
 
-   <airport n="63">      <!-- Lagos -->
+   <airport n="62">
+    <name>Lagos</name>
     <airport-id type="string">DNMM</airport-id>
     <arrival>
      <vor n="0">
@@ -721,7 +833,8 @@
     </arrival>
    </airport>
 
-   <airport n="64">      <!-- Tunis -->
+   <airport n="63">
+    <name>Tunis</name>
     <airport-id type="string">DTTA</airport-id>
     <arrival>
      <adf n="0">
@@ -733,7 +846,8 @@
     </arrival>
    </airport>
 
-   <airport n="65">      <!-- Djerba -->
+   <airport n="64">
+    <name>Djerba</name>
     <airport-id type="string">DTTJ</airport-id>
     <arrival>
      <vor n="0">
@@ -742,7 +856,8 @@
     </arrival>
    </airport>
 
-   <airport n="66">      <!-- Tozeur -->
+   <airport n="65">
+    <name>Tozeur</name>
     <airport-id type="string">DTTZ</airport-id>
     <arrival>
      <adf n="0">
@@ -754,7 +869,8 @@
     </arrival>
    </airport>
 
-   <airport n="67">      <!-- Lomé -->
+   <airport n="66">
+    <name>Lome</name>
     <airport-id type="string">DXXX</airport-id>
     <arrival>
      <adf n="0">
@@ -766,11 +882,12 @@
     </arrival>
    </airport>
 
-   <airport n="68">      <!-- Cape Town -->
+   <airport n="67">
+    <name>Cape Town</name>
     <airport-id type="string">FACT</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">462</selected-khz>                      <!-- Cape Town -->
+      <selected-khz type="int">462.5</selected-khz>                      <!-- Cape Town -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">115.70</selected-mhz>                  <!-- Cape Town -->
@@ -778,7 +895,8 @@
     </arrival>
    </airport>
 
-   <airport n="69">      <!-- Johannesburg -->
+   <airport n="68">
+    <name>Johannesburg</name>
     <airport-id type="string">FAJS</airport-id>
     <arrival>
      <adf n="0">
@@ -790,7 +908,8 @@
     </arrival>
    </airport>
 
-   <airport n="70">      <!-- Bangui -->
+   <airport n="69">
+    <name>Bangui</name>
     <airport-id type="string">FEFF</airport-id>
     <arrival>
      <vor n="0">
@@ -799,7 +918,8 @@
     </arrival>
    </airport>
 
-   <airport n="71">      <!-- Mauritius -->
+   <airport n="70">
+    <name>Mauritius</name>
     <airport-id type="string">FIMP</airport-id>
     <arrival>
      <adf n="0">
@@ -811,11 +931,12 @@
     </arrival>
    </airport>
 
-   <airport n="72">      <!-- Douala -->
+   <airport n="71">
+    <name>Douala</name>
     <airport-id type="string">FKKD</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">398</selected-khz>                      <!-- Douala -->
+      <selected-khz type="int">398.5</selected-khz>                      <!-- Douala -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">112.90</selected-mhz>                  <!-- Douala -->
@@ -823,7 +944,8 @@
     </arrival>
    </airport>
 
-   <airport n="73">      <!-- Lusaka -->
+   <airport n="72">
+    <name>Lusaka</name>
     <airport-id type="string">FLLS</airport-id>
     <arrival>
      <adf n="0">
@@ -835,7 +957,8 @@
     </arrival>
    </airport>
 
-   <airport n="74">      <!-- Moroni -->
+   <airport n="73">
+    <name>Moroni</name>
     <airport-id type="string">FMCH</airport-id>
     <arrival>
      <vor n="0">
@@ -844,7 +967,8 @@
     </arrival>
    </airport>
 
-   <airport n="75">      <!-- Réunion -->
+   <airport n="74">
+    <name>Reunion</name>
     <airport-id type="string">FMEE</airport-id>
     <arrival>
      <adf n="0">
@@ -856,7 +980,8 @@
     </arrival>
    </airport>
 
-   <airport n="76">      <!-- Antananarivo -->
+   <airport n="75">
+    <name>Antananarivo</name>
     <airport-id type="string">FMMI</airport-id>
     <arrival>
      <vor n="0">
@@ -865,7 +990,8 @@
     </arrival>
    </airport>
 
-   <airport n="77">      <!-- Libreville -->
+   <airport n="76">
+    <name>Libreville</name>
     <airport-id type="string">FOOL</airport-id>
     <arrival>
      <vor n="0">
@@ -874,7 +1000,8 @@
     </arrival>
    </airport>
 
-   <airport n="78">      <!-- Seychelles -->
+   <airport n="77">
+    <name>Seychelles</name>
     <airport-id type="string">FSIA</airport-id>
     <arrival>
      <adf n="0">
@@ -886,7 +1013,8 @@
     </arrival>
    </airport>
 
-   <airport n="79">      <!-- Harare -->
+   <airport n="78">
+    <name>Harare</name>
     <airport-id type="string">FVHA</airport-id>
     <arrival>
      <adf n="0">
@@ -898,7 +1026,8 @@
     </arrival>
    </airport>
 
-   <airport n="80">      <!-- Kinshasa -->
+   <airport n="79">
+    <name>Kinshasa</name>
     <airport-id type="string">FZAA</airport-id>
     <arrival>
      <adf n="0">
@@ -910,7 +1039,8 @@
     </arrival>
    </airport>
 
-   <airport n="81">      <!-- Bamako -->
+   <airport n="80">
+    <name>Bamako</name>
     <airport-id type="string">GABS</airport-id>
     <arrival>
      <adf n="0">
@@ -922,7 +1052,8 @@
     </arrival>
    </airport>
 
-   <airport n="82">      <!-- Monrovia -->
+   <airport n="81">
+    <name>Monrovia</name>
     <airport-id type="string">GLRB</airport-id>
     <arrival>
      <adf n="0">
@@ -934,7 +1065,8 @@
     </arrival>
    </airport>
 
-   <airport n="83">      <!-- Casablanca -->
+   <airport n="82">
+    <name>Casablanca</name>
     <airport-id type="string">GMMN</airport-id>
     <arrival>
      <vor n="0">
@@ -943,7 +1075,8 @@
     </arrival>
    </airport>
 
-   <airport n="84">      <!-- Marrakech -->
+   <airport n="83">
+    <name>Marrakech</name>
     <airport-id type="string">GMMX</airport-id>
     <arrival>
      <adf n="0">
@@ -955,7 +1088,8 @@
     </arrival>
    </airport>
 
-   <airport n="85">      <!-- Tangier -->
+   <airport n="84">
+    <name>Tangier</name>
     <airport-id type="string">GMTT</airport-id>
     <arrival>
      <vor n="0">
@@ -964,7 +1098,8 @@
     </arrival>
    </airport>
 
-   <airport n="86">      <!-- Conakry -->
+   <airport n="85">
+    <name>Conakry</name>
     <airport-id type="string">GUCY</airport-id>
     <arrival>
      <adf n="0">
@@ -976,7 +1111,8 @@
     </arrival>
    </airport>
 
-   <airport n="87">      <!-- Bujumbura -->
+   <airport n="86">
+    <name>Bujumbura</name>
     <airport-id type="string">HBBA</airport-id>
     <arrival>
      <adf n="0">
@@ -988,7 +1124,8 @@
     </arrival>
    </airport>
 
-   <airport n="88">      <!-- Djibouti -->
+   <airport n="87">
+    <name>Djibouti</name>
     <airport-id type="string">HDAM</airport-id>
     <arrival>
      <adf n="0">
@@ -1000,7 +1137,8 @@
     </arrival>
    </airport>
 
-   <airport n="89">      <!-- Cairo -->
+   <airport n="88">
+    <name>Cairo</name>
     <airport-id type="string">HECA</airport-id>
     <arrival>
      <adf n="0">
@@ -1012,7 +1150,8 @@
     </arrival>
    </airport>
 
-   <airport n="90">      <!-- Luxor -->
+   <airport n="89">
+    <name>Luxor</name>
     <airport-id type="string">HELX</airport-id>
     <arrival>
      <adf n="0">
@@ -1024,7 +1163,8 @@
     </arrival>
    </airport>
 
-   <airport n="91">      <!-- Aswan -->
+   <airport n="90">
+    <name>Aswan</name>
     <airport-id type="string">HESN</airport-id>
     <arrival>
      <vor n="0">
@@ -1033,11 +1173,12 @@
     </arrival>
    </airport>
 
-   <airport n="92">      <!-- Nairobi -->
+   <airport n="91">
+    <name>Nairobi</name>
     <airport-id type="string">HKJK</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">329</selected-khz>                      <!-- Athi River -->
+      <selected-khz type="int">329.5</selected-khz>                      <!-- Athi River -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">113.10</selected-mhz>                  <!-- Nairobi -->
@@ -1045,7 +1186,8 @@
     </arrival>
    </airport>
 
-   <airport n="93">      <!-- Mombasa -->
+   <airport n="92">
+    <name>Mombasa</name>
     <airport-id type="string">HKMO</airport-id>
     <arrival>
      <adf n="0">
@@ -1057,7 +1199,8 @@
     </arrival>
    </airport>
 
-   <airport n="94">      <!-- Kigali -->
+   <airport n="93">
+    <name>Kigali</name>
     <airport-id type="string">HRYR</airport-id>
     <arrival>
      <vor n="0">
@@ -1066,7 +1209,8 @@
     </arrival>
    </airport>
 
-   <airport n="95">      <!-- Kilimanjaro -->
+   <airport n="94">
+    <name>Kilimanjaro</name>
     <airport-id type="string">HTKJ</airport-id>
     <arrival>
      <adf n="0">
@@ -1083,7 +1227,8 @@
 <!-- Charter The Americas -->
 <!-- ==================== -->
 
-   <airport n="96">      <!-- Edmonton -->
+   <airport n="95">
+    <name>Edmonton</name>
     <airport-id type="string">CYEG</airport-id>
     <arrival>
      <adf n="0">
@@ -1095,7 +1240,8 @@
     </arrival>
    </airport>
 
-   <airport n="97">      <!-- Ottawa -->
+   <airport n="96">
+    <name>Ottawa</name>
     <airport-id type="string">CYOW</airport-id>
     <arrival>
      <adf n="0">
@@ -1107,7 +1253,8 @@
     </arrival>
    </airport>
 
-   <airport n="98">      <!-- Québec -->
+   <airport n="97">
+    <name>Quebec</name>
     <airport-id type="string">CYQB</airport-id>
     <arrival>
      <adf n="0">
@@ -1119,7 +1266,8 @@
     </arrival>
    </airport>
 
-   <airport n="99">      <!-- Moncton -->
+   <airport n="98">
+    <name>Moncton</name>
     <airport-id type="string">CYQM</airport-id>
     <arrival>
      <adf n="0">
@@ -1131,7 +1279,8 @@
     </arrival>
    </airport>
 
-   <airport n="100">     <!-- Regina -->
+   <airport n="99">
+    <name>Regina</name>
     <airport-id type="string">CYQR</airport-id>
     <arrival>
      <adf n="0">
@@ -1140,7 +1289,8 @@
     </arrival>
    </airport>
 
-   <airport n="101">     <!-- Abbotsford -->
+   <airport n="100">
+    <name>Abbotsford</name>
     <airport-id type="string">CYXX</airport-id>
     <arrival>
      <adf n="0">
@@ -1149,7 +1299,8 @@
     </arrival>
    </airport>
 
-   <airport n="102">     <!-- Calgary -->
+   <airport n="101">
+    <name>Calgary</name>
     <airport-id type="string">CYYC</airport-id>
     <arrival>
      <adf n="0">
@@ -1161,7 +1312,8 @@
     </arrival>
    </airport>
 
-   <airport n="103">     <!-- Goose Bay -->
+   <airport n="102">
+    <name>Goose Bay</name>
     <airport-id type="string">CYYR</airport-id>
     <arrival>
      <adf n="0">
@@ -1173,7 +1325,8 @@
     </arrival>
    </airport>
 
-   <airport n="104">     <!-- Andrews AFB -->
+   <airport n="103">
+    <name>Andrews AFB</name>
     <airport-id type="string">KADW</airport-id>
     <arrival>
      <adf n="0">
@@ -1185,9 +1338,9 @@
      <vor n="0">
       <selected-mhz type="double">113.10</selected-mhz>                  <!-- Andrews -->
       <standby-mhz type="double">110.50</standby-mhz>                    <!-- 01R / 19L -->
+     </vor>
      <vor n="1">
       <selected-mhz type="double">111.00</selected-mhz>                  <!-- Washington -->
-     </vor>
      </vor>
     </arrival>
     <departure>
@@ -1206,7 +1359,8 @@
     </departure>
    </airport>
 
-   <airport n="105">     <!-- Albany -->
+   <airport n="104">
+    <name>Albany</name>
     <airport-id type="string">KALB</airport-id>
     <arrival>
      <adf n="0">
@@ -1239,7 +1393,8 @@
     </departure>
    </airport>
 
-   <airport n="106">     <!-- Atlanta -->
+   <airport n="105">
+    <name>Atlanta</name>
     <airport-id type="string">KATL</airport-id>
     <arrival>
      <adf n="0">
@@ -1273,18 +1428,18 @@
     </departure>
    </airport>
 
-   <airport n="107">     <!-- Austin -->
+   <airport n="106">
+    <name>Austin</name>
     <airport-id type="string">KAUS</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">232</selected-khz>                        <!-- Birdy -->
-     </adf>
-     <adf n="1">
       <selected-khz type="int">332</selected-khz>                        <!-- Georgetown -->
      </adf>
      <vor n="0">
-      <selected-mhz type="double">112.80</selected-mhz>                  <!-- Centex -->
       <standby-mhz type="double">110.95</standby-mhz>                    <!-- 17R / 35L -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">112.80</selected-mhz>                  <!-- Centex -->
      </vor>
     </arrival>
     <departure>
@@ -1297,27 +1452,63 @@
     </departure>
    </airport>
 
-   <airport n="108">     <!-- Asheville -->
+   <airport n="107">
+    <name>Asheville</name>
     <airport-id type="string">KAVL</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">379</selected-khz>                        <!-- Broad River -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">408</selected-khz>                        <!-- Lake Keowee -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">112.20</selected-mhz>                  <!-- Sugarloaf Mountain -->
+      <standby-mhz type="double">110.90</standby-mhz>                    <!-- 16 -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">108.80</selected-mhz>                  <!-- Snowbird -->
+      <standby-mhz type="double">110.50</standby-mhz>                    <!-- 34 -->
+     </vor>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">379</selected-khz>                        <!-- Broad River -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">408</selected-khz>                        <!-- Lake Keowee -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">112.20</selected-mhz>                  <!-- Sugarloaf Mountain -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">108.80</selected-mhz>                  <!-- Snowbird -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="109">     <!-- Hartford / Springfield  -->
+   <airport n="108">
+    <name>Hartford / Springfield</name>
     <airport-id type="string">KBDL</airport-id>
    </airport>
 
-   <airport n="110">     <!-- Nashville -->
+   <airport n="109">
+    <name>Nashville</name>
     <airport-id type="string">KBNA</airport-id>
    </airport>
 
-   <airport n="111">     <!-- Battle Creek -->
+   <airport n="110">
+    <name>Battle Creek</name>
     <airport-id type="string">KBTL</airport-id>
    </airport>
 
-   <airport n="112">     <!-- Buffalo -->
+   <airport n="111">
+    <name>Buffalo</name>
     <airport-id type="string">KBUF</airport-id>
    </airport>
 
-   <airport n="113">     <!-- Baltimore -->
+   <airport n="112">
+    <name>Baltimore</name>
     <airport-id type="string">KBWI</airport-id>
     <arrival>
      <adf n="0">
@@ -1350,19 +1541,23 @@
     </departure>
    </airport>
 
-   <airport n="114">     <!-- Charleston -->
+   <airport n="113">
+    <name>Charleston</name>
     <airport-id type="string">KCHS</airport-id>
    </airport>
 
-   <airport n="115">     <!-- Cleveland -->
+   <airport n="114">
+    <name>Cleveland</name>
     <airport-id type="string">KCLE</airport-id>
    </airport>
 
-   <airport n="116">     <!-- Colombus -->
+   <airport n="115">
+    <name>Colombus</name>
     <airport-id type="string">KCMH</airport-id>
    </airport>
 
-   <airport n="117">     <!-- Colorado Springs -->
+   <airport n="116">
+    <name>Colorado Springs</name>
     <airport-id type="string">KCOS</airport-id>
     <arrival>
      <adf n="0">
@@ -1396,15 +1591,18 @@
     </departure>
    </airport>
 
-   <airport n="118">     <!-- Cincinnati -->
+   <airport n="117">
+    <name>Cincinnati</name>
     <airport-id type="string">KCVG</airport-id>
    </airport>
 
-   <airport n="119">     <!-- Dayton -->
+   <airport n="118">     <!-- Dayton -->
+    <name>Dayton</name>
     <airport-id type="string">KDAY</airport-id>
    </airport>
 
-   <airport n="120">     <!-- Denver -->
+   <airport n="119">
+    <name>Denver</name>
     <airport-id type="string">KDEN</airport-id>
     <arrival>
      <vor n="0">
@@ -1425,14 +1623,15 @@
     </departure>
    </airport>
 
-   <airport n="121">     <!-- Detroit -->
+   <airport n="120">
+    <name>Detroit</name>
     <airport-id type="string">KDTW</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">419</selected-khz>                        <!-- Grosse Ile -->
+      <selected-khz type="int">223</selected-khz>                        <!-- Alaina -->
      </adf>
      <adf n="1">
-      <selected-khz type="int">398</selected-khz>                        <!-- Golf -->
+      <selected-khz type="int">419</selected-khz>                        <!-- Grosse Ile -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">113.40</selected-mhz>                  <!-- Detroit -->
@@ -1444,10 +1643,10 @@
     </arrival>
     <departure>
      <adf n="0">
-      <selected-khz type="int">419</selected-khz>                        <!-- Grosse Ile -->
+      <selected-khz type="int">223</selected-khz>                        <!-- Alaina -->
      </adf>
      <adf n="1">
-      <selected-khz type="int">398</selected-khz>                        <!-- Golf -->
+      <selected-khz type="int">419</selected-khz>                        <!-- Grosse Ile -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">113.40</selected-mhz>                  <!-- Detroit -->
@@ -1458,19 +1657,23 @@
     </departure>
    </airport>
 
-   <airport n="122">     <!-- Houston Ellington -->
+   <airport n="121">
+    <name>Houston Ellington</name>
     <airport-id type="string">KEFD</airport-id>
    </airport>
 
-   <airport n="123">     <!-- Fort Lauderdale -->
+   <airport n="122">     <!-- Fort Lauderdale -->
+    <name>Fort Lauderdale</name>
     <airport-id type="string">KFLL</airport-id>
    </airport>
 
-   <airport n="124">     <!-- Houston -->
+   <airport n="123">
+    <name>Houston Intercontinental</name>
     <airport-id type="string">KIAH</airport-id>
    </airport>
 
-   <airport n="125">     <!-- Indianapolis -->
+   <airport n="124">
+    <name>Indianapolis</name>
     <airport-id type="string">KIND</airport-id>
     <arrival>
      <adf n="0">
@@ -1503,7 +1706,8 @@
     </departure>
    </airport>
 
-   <airport n="126">     <!-- Jackson -->
+   <airport n="125">
+    <name>Jackson</name>
     <airport-id type="string">KJAN</airport-id>
     <arrival>
      <adf n="0">
@@ -1530,11 +1734,13 @@
     </departure>
    </airport>
 
-   <airport n="127">     <!-- Jacksonville -->
+   <airport n="126">
+    <name>Jacksonville</name>
     <airport-id type="string">KJAX</airport-id>
    </airport>
 
-   <airport n="128">     <!-- Las Vegas -->
+   <airport n="127">
+    <name>Las Vegas</name>
     <airport-id type="string">KLAS</airport-id>
     <arrival>
      <vor n="0">
@@ -1555,23 +1761,28 @@
     </departure>
    </airport>
 
-   <airport n="129">     <!-- Lubbock -->
+   <airport n="128">
+    <name>Lubbock</name>
     <airport-id type="string">KLBB</airport-id>
    </airport>
 
-   <airport n="130">     <!-- Lexington -->
+   <airport n="129">
+    <name>Lexington</name>
     <airport-id type="string">KLEX</airport-id>
    </airport>
 
-   <airport n="131">     <!-- Little Rock -->
+   <airport n="130">
+    <name>Little Rock</name>
     <airport-id type="string">KLIT</airport-id>
    </airport>
 
-   <airport n="132">     <!-- Midland / Odessa -->
+   <airport n="131">
+    <name>Midland / Odessa</name>
     <airport-id type="string">KMAF</airport-id>
    </airport>
 
-   <airport n="133">     <!-- Kansas City -->
+   <airport n="132">
+    <name>Kansas City</name>
     <airport-id type="string">KMCI</airport-id>
     <arrival>
      <adf n="0">
@@ -1605,19 +1816,23 @@
     </departure>
    </airport>
 
-   <airport n="134">     <!-- Ontario -->
+   <airport n="133">
+    <name>Orlando</name>
     <airport-id type="string">KMCO</airport-id>
    </airport>
 
-   <airport n="135">     <!-- Harrisburg -->
+   <airport n="134">
+    <name>Harrisburg</name>
     <airport-id type="string">KMDT</airport-id>
    </airport>
 
-   <airport n="136">     <!-- New Orleans -->
+   <airport n="135">
+    <name>New Orleans</name>
     <airport-id type="string">KMSY</airport-id>
    </airport>
 
-   <airport n="137">     <!-- Oakland -->
+   <airport n="136">
+    <name>Oakland</name>
     <airport-id type="string">KOAK</airport-id>
     <arrival>
      <adf n="0">
@@ -1645,23 +1860,58 @@
     </departure>
    </airport>
 
-   <airport n="138">     <!-- Oklahoma City -->
+   <airport n="137">
+    <name>Oklahoma City</name>
     <airport-id type="string">KOKC</airport-id>
    </airport>
 
-   <airport n="139">     <!-- Omaha -->
+   <airport n="138">
+    <name>Omaha</name>
     <airport-id type="string">KOMA</airport-id>
    </airport>
 
-   <airport n="140">     <!-- Ontario -->
+   <airport n="139">
+    <name>Ontario</name>
     <airport-id type="string">KONT</airport-id>
    </airport>
 
-   <airport n="141">     <!-- Chicago -->
+   <airport n="140">
+    <name>Chicago</name>
     <airport-id type="string">KRFD</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">375</selected-khz>                        <!-- Janesville -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">404</selected-khz>                        <!-- Lake Lawn -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">110.80</selected-mhz>                  <!-- Rockford -->
+      <standby-mhz type="double">109.55</standby-mhz>                    <!-- 07 -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">114.30</selected-mhz>                  <!-- Janesville -->
+      <standby-mhz type="double">109.30</standby-mhz>                    <!-- 01 -->
+     </vor>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">375</selected-khz>                        <!-- Janesville -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">404</selected-khz>                        <!-- Lake Lawn -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">110.80</selected-mhz>                  <!-- Rockford -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">114.30</selected-mhz>                  <!-- Janesville -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="142">     <!-- Oshkosh -->
+   <airport n="141">
+    <name>Oshkosh</name>
     <airport-id type="string">KOSH</airport-id>
     <arrival>
      <adf n="0">
@@ -1694,7 +1944,8 @@
     </departure>
    </airport>
 
-   <airport n="143">     <!-- Portland -->
+   <airport n="142">
+    <name>Portland</name>
     <airport-id type="string">KPDX</airport-id>
     <arrival>
      <adf n="0">
@@ -1727,19 +1978,53 @@
     </departure>
    </airport>
 
-   <airport n="144">     <!-- Pittsburgh -->
+   <airport n="143">
+    <name>Pittsburgh</name>
     <airport-id type="string">KPIT</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">287</selected-khz>                        <!-- Mc Keesport -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">272</selected-khz>                        <!-- Castle -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">112.00</selected-mhz>                  <!-- Montour -->
+      <standby-mhz type="double">108.90</standby-mhz>                    <!-- 10R / 28L -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">110.00</selected-mhz>                  <!-- Allegheny -->
+      <standby-mhz type="double">111.30</standby-mhz>                    <!-- 32 -->
+     </vor>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">287</selected-khz>                        <!-- Mc Keesport -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">272</selected-khz>                        <!-- Castle -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">112.00</selected-mhz>                  <!-- Montour -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">110.00</selected-mhz>                  <!-- Allegheny -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="145">     <!-- Hampton -->
+   <airport n="144">
+    <name>Hampton</name>
     <airport-id type="string">KPHF</airport-id>
    </airport>
 
-   <airport n="146">     <!-- Philadelphia -->
+   <airport n="145">
+    <name>Philadelphia</name>
     <airport-id type="string">KPHL</airport-id>
    </airport>
 
-   <airport n="147">     <!-- Phoenix -->
+   <airport n="146">
+    <name>Phoenix</name>
     <airport-id type="string">KPHX</airport-id>
     <arrival>
      <adf n="0">
@@ -1772,23 +2057,58 @@
     </departure>
    </airport>
 
-   <airport n="148">     <!-- Providence -->
+   <airport n="147">
+    <name>Providence</name>
     <airport-id type="string">KPVD</airport-id>
    </airport>
 
-   <airport n="149">     <!-- Raleigh -->
+   <airport n="148">
+    <name>Raleigh</name>
     <airport-id type="string">KRDU</airport-id>
    </airport>
 
-   <airport n="150">     <!-- Fort Myers -->
+   <airport n="149">
+    <name>Fort Myers</name>
     <airport-id type="string">KRSW</airport-id>
    </airport>
 
-   <airport n="151">     <!-- Newburgh Stewart -->
+   <airport n="150">
+    <name>Newburgh Stewart</name>
     <airport-id type="string">KSWF</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">261</selected-khz>                        <!-- Stanwyck -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">335</selected-khz>                        <!-- Neely -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">117.60</selected-mhz>                  <!-- Kingston -->
+      <standby-mhz type="double">110.10</standby-mhz>                    <!-- 09 -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">116.10</selected-mhz>                  <!-- Huguenot -->
+      <standby-mhz type="double">109.95</standby-mhz>                    <!-- 27 -->
+     </vor>
+    </arrival>
+    <departure>
+     <adf n="0">
+      <selected-khz type="int">261</selected-khz>                        <!-- Stanwyck -->
+     </adf>
+     <adf n="1">
+      <selected-khz type="int">335</selected-khz>                        <!-- Neely -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">117.60</selected-mhz>                  <!-- Kingston -->
+     </vor>
+     <vor n="1">
+      <selected-mhz type="double">116.10</selected-mhz>                  <!-- Huguenot -->
+     </vor>
+    </departure>
    </airport>
 
-   <airport n="152">     <!-- Kingston -->
+   <airport n="151">
+    <name>Kingston</name>
     <airport-id type="string">MKJP</airport-id>
     <arrival>
      <adf n="0">
@@ -1800,7 +2120,8 @@
     </arrival>
    </airport>
 
-   <airport n="153">     <!-- Montego Bay -->
+   <airport n="152">
+    <name>Montego Bay</name>
     <airport-id type="string">MKJS</airport-id>
     <arrival>
      <adf n="0">
@@ -1812,7 +2133,8 @@
     </arrival>
    </airport>
 
-   <airport n="154">     <!-- Acapulco -->
+   <airport n="153">
+    <name>Acapulco</name>
     <airport-id type="string">MMAA</airport-id>
     <arrival>
      <vor n="0">
@@ -1821,7 +2143,8 @@
     </arrival>
    </airport>
 
-   <airport n="155">     <!-- Port-au-Prince -->
+   <airport n="154">
+    <name>Port-au-Prince</name>
     <airport-id type="string">MTPP</airport-id>
     <arrival>
      <adf n="0">
@@ -1833,7 +2156,8 @@
     </arrival>
    </airport>
 
-   <airport n="156">     <!-- Havana -->
+   <airport n="155">
+    <name>Havana</name>
     <airport-id type="string">MUHA</airport-id>
     <arrival>
      <vor n="0">
@@ -1842,7 +2166,8 @@
     </arrival>
    </airport>
 
-   <airport n="157">     <!-- Grand Cayman -->
+   <airport n="156">
+    <name>Grand Cayman</name>
     <airport-id type="string">MWCR</airport-id>
     <arrival>
      <adf n="0">
@@ -1854,7 +2179,8 @@
     </arrival>
    </airport>
 
-   <airport n="158">     <!-- Nassau -->
+   <airport n="157">
+    <name>Nassau</name>
     <airport-id type="string">MYNN</airport-id>
     <arrival>
      <adf n="0">
@@ -1866,7 +2192,8 @@
     </arrival>
    </airport>
 
-   <airport n="159">     <!-- Anchorage -->
+   <airport n="158">
+    <name>Anchorage</name>
     <airport-id type="string">PANC</airport-id>
     <arrival>
      <adf n="0">
@@ -1900,18 +2227,19 @@
     </departure>
    </airport>
 
-   <airport n="160">     <!-- Kailua-Kona -->
+   <airport n="159">
+    <name>Kailua-Kona</name>
     <airport-id type="string">PHKO</airport-id>
     <arrival>
      <adf n="0">
       <selected-khz type="int">339</selected-khz>                        <!-- Bradshaw -->
      </adf>
      <vor n="0">
-      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Upolu Point -->
+      <selected-mhz type="double">112.10</selected-mhz>                  <!-- Kona -->
       <standby-mhz type="double">109.70</standby-mhz>                    <!-- 17 -->
      </vor>
      <vor n="1">
-      <selected-mhz type="double">112.10</selected-mhz>                  <!-- Kona -->
+      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Upolu Point -->
      </vor>
     </arrival>
     <departure>
@@ -1922,13 +2250,13 @@
       <selected-mhz type="double">112.10</selected-mhz>                  <!-- Kona -->
      </vor>
      <vor n="1">
-      <selected-mhz type="double">113.30</selected-mhz>                  <!-- Kamuela -->
-      <standby-mhz type="double">112.30</standby-mhz>                    <!-- Upolu Point -->
+      <selected-mhz type="double">112.30</selected-mhz>                  <!-- Upolu Point -->
      </vor>
     </departure>
    </airport>
 
-   <airport n="161">     <!-- Honolulu -->
+   <airport n="160">
+    <name>Honolulu</name>
     <airport-id type="string">PHNL</airport-id>
     <arrival>
      <adf n="0">
@@ -1962,7 +2290,8 @@
     </departure>
    </airport>
 
-   <airport n="162">     <!-- Buenos Aires -->
+   <airport n="161">
+    <name>Buenos Aires</name>
     <airport-id type="string">SAEZ</airport-id>
     <arrival>
      <vor n="0">
@@ -1971,16 +2300,19 @@
     </arrival>
    </airport>
 
-   <airport n="163">     <!-- Iguassu -->
+   <airport n="162">
+    <name>Iguassu</name>
     <airport-id type="string">SARI</airport-id>
-   <arrival>
+    <uncertain type="bool">true</uncertain>
+    <arrival>
      <vor n="0">
       <selected-mhz type="double">141.10</selected-mhz>                  <!-- Cataratas del Iguazu -->
      </vor>
     </arrival>
    </airport>
 
-   <airport n="164">     <!-- Brasilia -->
+   <airport n="163">
+    <name>Brasilia</name>
     <airport-id type="string">SBBR</airport-id>
     <arrival>
      <adf n="0">
@@ -1995,7 +2327,8 @@
     </arrival>
    </airport>
 
-   <airport n="165">     <!-- Recife -->
+   <airport n="164">
+    <name>Recife</name>
     <airport-id type="string">SBRF</airport-id>
     <arrival>
      <vor n="0">
@@ -2004,12 +2337,14 @@
     </arrival>
    </airport>
 
-   <airport n="166">     <!-- Barreirinhas -->
+   <airport n="165">
+    <name>Barreirinhas</name>
     <airport-id type="string">SBRR</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="167">     <!-- Bogota -->
+   <airport n="166">
+    <name>Bogota</name>
     <airport-id type="string">SKBO</airport-id>
     <arrival>
      <adf n="0">
@@ -2021,7 +2356,8 @@
     </arrival>
    </airport>
 
-   <airport n="168">     <!-- Cayenne -->
+   <airport n="167">
+    <name>Cayenne</name>
     <airport-id type="string">SOCA</airport-id>
     <arrival>
      <adf n="0">
@@ -2033,7 +2369,8 @@
     </arrival>
    </airport>
 
-   <airport n="169">     <!-- Lima -->
+   <airport n="168">
+    <name>Lima</name>
     <airport-id type="string">SPIM</airport-id>
     <arrival>
      <vor n="0">
@@ -2042,7 +2379,8 @@
     </arrival>
    </airport>
 
-   <airport n="170">     <!-- Montevideo -->
+   <airport n="169">
+    <name>Montevideo</name>
     <airport-id type="string">SUMU</airport-id>
     <arrival>
      <adf n="0">
@@ -2054,7 +2392,8 @@
     </arrival>
    </airport>
 
-   <airport n="171">     <!-- Antigua -->
+   <airport n="170">
+    <name>Antigua</name>
     <airport-id type="string">TAPA</airport-id>
     <arrival>
      <adf n="0">
@@ -2066,7 +2405,8 @@
     </arrival>
    </airport>
 
-   <airport n="172">     <!-- Fort de France -->
+   <airport n="171">
+    <name>Fort de France</name>
     <airport-id type="string">TFFF</airport-id>
     <arrival>
      <adf n="0">
@@ -2078,7 +2418,8 @@
     </arrival>
    </airport>
 
-   <airport n="173">     <!-- Pointe-à-Pitre -->
+   <airport n="172">
+    <name>Pointe-a-Pitre</name>
     <airport-id type="string">TFFR</airport-id>
     <arrival>
      <adf n="0">
@@ -2090,7 +2431,8 @@
     </arrival>
    </airport>
 
-   <airport n="174">     <!-- Grenada -->
+   <airport n="173">
+    <name>Grenada</name>
     <airport-id type="string">TGPY</airport-id>
     <arrival>
      <adf n="0">
@@ -2102,7 +2444,8 @@
     </arrival>
    </airport>
 
-   <airport n="175">     <!-- Puerto Rico -->
+   <airport n="174">
+    <name>Puerto Rico</name>
     <airport-id type="string">TJSJ</airport-id>
     <arrival>
      <adf n="0">
@@ -2132,7 +2475,8 @@
     </departure>
    </airport>
 
-   <airport n="176">     <!-- Aruba -->
+   <airport n="175">
+    <name>Aruba</name>
     <airport-id type="string">TNCA</airport-id>
     <arrival>
      <vor n="0">
@@ -2141,7 +2485,8 @@
     </arrival>
    </airport>
 
-   <airport n="177">     <!-- Port of Spain -->
+   <airport n="176">
+    <name>Port of Spain</name>
     <airport-id type="string">TTPP</airport-id>
     <arrival>
      <adf n="0">
@@ -2153,7 +2498,8 @@
     </arrival>
    </airport>
 
-   <airport n="178">     <!-- Bermuda -->
+   <airport n="177">
+    <name>Bermuda</name>
     <airport-id type="string">TXKF</airport-id>
     <arrival>
      <vor n="0">
@@ -2167,7 +2513,8 @@
 <!-- Charter Australasia -->
 <!-- =================== -->
 
-   <airport n="179">     <!-- Fiji -->
+   <airport n="178">
+    <name>Fiji</name>
     <airport-id type="string">NFFN</airport-id>
     <arrival>
      <adf n="0">
@@ -2179,11 +2526,12 @@
     </arrival>
    </airport>
 
-   <airport n="180">     <!-- Papeete -->
+   <airport n="179">
+    <name>Papeete</name>
     <airport-id type="string">NTAA</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">377</selected-khz>                      <!-- Moorea -->
+      <selected-khz type="int">377.5</selected-khz>                      <!-- Moorea -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">112.90</selected-mhz>                  <!-- Tahiti Faa -->
@@ -2191,7 +2539,8 @@
     </arrival>
    </airport>
 
-   <airport n="181">     <!-- Hao -->
+   <airport n="180">
+    <name>Hao</name>
     <airport-id type="string">NTTO</airport-id>
     <arrival>
      <adf n="0">
@@ -2203,7 +2552,8 @@
     </arrival>
    </airport>
 
-   <airport n="182">     <!-- Nouméa -->
+   <airport n="181">
+    <name>Nouméa</name>
     <airport-id type="string">NWWM</airport-id>
     <arrival>
      <adf n="0">
@@ -2215,7 +2565,8 @@
     </arrival>
    </airport>
 
-   <airport n="183">     <!-- Auckland -->
+   <airport n="182">
+    <name>Auckland</name>
     <airport-id type="string">NZAA</airport-id>
     <arrival>
      <adf n="0">
@@ -2227,7 +2578,8 @@
     </arrival>
    </airport>
 
-   <airport n="184">     <!-- Christchurch -->
+   <airport n="183">
+    <name>Christchurch</name>
     <airport-id type="string">NZCH</airport-id>
     <arrival>
      <adf n="0">
@@ -2239,7 +2591,8 @@
     </arrival>
    </airport>
 
-   <airport n="185">     <!-- Easter Island -->
+   <airport n="184">
+    <name>Easter Island</name>
     <airport-id type="string">SCIP</airport-id>
     <arrival>
      <adf n="0">
@@ -2251,7 +2604,8 @@
     </arrival>
    </airport>
 
-   <airport n="186">     <!-- Brisbane -->
+   <airport n="185">
+    <name>Brisbane</name>
     <airport-id type="string">YBBN</airport-id>
     <arrival>
      <adf n="0">
@@ -2263,7 +2617,8 @@
     </arrival>
    </airport>
 
-   <airport n="187">     <!-- Darwin -->
+   <airport n="186">
+    <name>Darwin</name>
     <airport-id type="string">YPDN</airport-id>
     <arrival>
      <adf n="0">
@@ -2275,7 +2630,8 @@
     </arrival>
    </airport>
 
-   <airport n="188">     <!-- Learmonth -->
+   <airport n="187">
+    <name>Learmonth</name>
     <airport-id type="string">YPLM</airport-id>
     <arrival>
      <adf n="0">
@@ -2287,7 +2643,8 @@
     </arrival>
    </airport>
 
-   <airport n="189">     <!-- Perth -->
+   <airport n="188">
+    <name>Perth</name>
     <airport-id type="string">YPPH</airport-id>
     <arrival>
      <adf n="0">
@@ -2299,7 +2656,8 @@
     </arrival>
    </airport>
 
-   <airport n="190">     <!-- Sydney -->
+   <airport n="189">
+    <name>Sydney</name>
     <airport-id type="string">YSSY</airport-id>
     <arrival>
      <adf n="0">
@@ -2316,7 +2674,8 @@
 <!-- Charter Europe and Middle East -->
 <!-- ============================== -->
 
-   <airport n="191">     <!-- Kangerlussuaq -->
+   <airport n="190">
+    <name>Kangerlussuaq</name>
     <airport-id type="string">BGSF</airport-id>
     <arrival>
      <adf n="0">
@@ -2325,7 +2684,8 @@
     </arrival>
    </airport>
 
-   <airport n="192">     <!-- Keflavík -->
+   <airport n="191">
+    <name>Keflavik</name>
     <airport-id type="string">BIKF</airport-id>
     <arrival>
      <adf n="0">
@@ -2337,7 +2697,8 @@
     </arrival>
    </airport>
 
-   <airport n="193">     <!-- Brussels -->
+   <airport n="192">
+    <name>Brussels</name>
     <airport-id type="string">EBBR</airport-id>
     <arrival>
      <adf n="0">
@@ -2349,7 +2710,8 @@
     </arrival>
    </airport>
 
-   <airport n="194">     <!-- Charleroi -->
+   <airport n="193">
+    <name>Charleroi</name>
     <airport-id type="string">EBCI</airport-id>
     <arrival>
      <adf n="0">
@@ -2361,7 +2723,8 @@
     </arrival>
    </airport>
 
-   <airport n="195">     <!-- Liège -->
+   <airport n="194">
+    <name>Liege</name>
     <airport-id type="string">EBLG</airport-id>
     <arrival>
      <adf n="0">
@@ -2373,16 +2736,18 @@
     </arrival>
    </airport>
 
-   <airport n="196">     <!-- Ostend -->
+   <airport n="195">
+    <name>Ostend</name>
     <airport-id type="string">EBOS</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">399</selected-khz>                      <!-- Oostende -->
+      <selected-khz type="int">399.5</selected-khz>                      <!-- Oostende -->
      </adf>
     </arrival>
    </airport>
 
-   <airport n="197">     <!-- Frankfurt -->
+   <airport n="196">
+    <name>Frankfurt</name>
     <airport-id type="string">EDDF</airport-id>
     <arrival>
      <adf n="0">
@@ -2394,7 +2759,8 @@
     </arrival>
    </airport>
 
-   <airport n="198">     <!-- Münster -->
+   <airport n="197">
+    <name>Munster</name>
     <airport-id type="string">EDDG</airport-id>
     <arrival>
      <adf n="0">
@@ -2403,7 +2769,8 @@
     </arrival>
    </airport>
 
-   <airport n="199">     <!-- Hamburg -->
+   <airport n="198">
+    <name>Hamburg</name>
     <airport-id type="string">EDDH</airport-id>
     <arrival>
      <adf n="0">
@@ -2415,11 +2782,12 @@
     </arrival>
    </airport>
 
-   <airport n="200">     <!-- Cologne -->
+   <airport n="199">
+    <name>Cologne</name>
     <airport-id type="string">EDDK</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">300</selected-khz>                      <!-- Koln / Bonn -->
+      <selected-khz type="int">300.5</selected-khz>                      <!-- Koln / Bonn -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">112.15</selected-mhz>                  <!-- Koln / Bonn -->
@@ -2427,7 +2795,8 @@
     </arrival>
    </airport>
 
-   <airport n="201">     <!-- Munich -->
+   <airport n="200">
+    <name>Munich</name>
     <airport-id type="string">EDDM</airport-id>
     <arrival>
      <adf n="0">
@@ -2439,7 +2808,8 @@
     </arrival>
    </airport>
 
-   <airport n="202">     <!-- Nuremberg -->
+   <airport n="201">
+    <name>Nuremberg</name>
     <airport-id type="string">EDDN</airport-id>
     <arrival>
      <adf n="0">
@@ -2448,7 +2818,8 @@
     </arrival>
    </airport>
 
-   <airport n="203">     <!-- Leipzig -->
+   <airport n="202">
+    <name>Leipzig</name>
     <airport-id type="string">EDDP</airport-id>
     <arrival>
      <adf n="0">
@@ -2460,7 +2831,8 @@
     </arrival>
    </airport>
 
-   <airport n="204">     <!-- Berlin -->
+   <airport n="203">
+    <name>Berlin</name>
     <airport-id type="string">EDDT</airport-id>
     <arrival>
      <adf n="0">
@@ -2472,7 +2844,8 @@
     </arrival>
    </airport>
 
-   <airport n="205">     <!-- Hanover -->
+   <airport n="204">
+    <name>Hanover</name>
     <airport-id type="string">EDDV</airport-id>
     <arrival>
      <adf n="0">
@@ -2481,7 +2854,8 @@
     </arrival>
    </airport>
 
-   <airport n="206">     <!-- Helsinki -->
+   <airport n="205">
+    <name>Helsinki</name>
     <airport-id type="string">EFHK</airport-id>
     <arrival>
      <adf n="0">
@@ -2493,7 +2867,8 @@
     </arrival>
    </airport>
 
-   <airport n="207">     <!-- Ivalo -->
+   <airport n="206">
+    <name>Ivalo</name>
     <airport-id type="string">EFIV</airport-id>
     <arrival>
      <adf n="0">
@@ -2502,7 +2877,8 @@
     </arrival>
    </airport>
 
-   <airport n="208">     <!-- Rovaniemi -->
+   <airport n="207">
+    <name>Rovaniemi</name>
     <airport-id type="string">EFRO</airport-id>
     <arrival>
      <adf n="0">
@@ -2514,7 +2890,8 @@
     </arrival>
    </airport>
 
-   <airport n="209">     <!-- Turku -->
+   <airport n="208">
+    <name>Turku</name>
     <airport-id type="string">EFTU</airport-id>
     <arrival>
      <adf n="0">
@@ -2526,7 +2903,8 @@
     </arrival>
    </airport>
 
-   <airport n="210">     <!-- Amsterdam -->
+   <airport n="209">
+    <name>Amsterdam</name>
     <airport-id type="string">EHAM</airport-id>
     <arrival>
      <vor n="0">
@@ -2535,7 +2913,8 @@
     </arrival>
    </airport>
 
-   <airport n="211">     <!-- Dublin -->
+   <airport n="210">
+    <name>Dublin</name>
     <airport-id type="string">EIDW</airport-id>
     <arrival>
      <adf n="0">
@@ -2547,7 +2926,8 @@
     </arrival>
    </airport>
 
-   <airport n="212">     <!-- Aarhus -->
+   <airport n="211">
+    <name>Aarhus</name>
     <airport-id type="string">EKAH</airport-id>
     <arrival>
      <adf n="0">
@@ -2556,7 +2936,8 @@
     </arrival>
    </airport>
 
-   <airport n="213">     <!-- Copenhagen -->
+   <airport n="212">
+    <name>Copenhagen</name>
     <airport-id type="string">EKCH</airport-id>
     <arrival>
      <vor n="0">
@@ -2565,7 +2946,8 @@
     </arrival>
    </airport>
 
-   <airport n="214">     <!-- Billund -->
+   <airport n="213">
+    <name>Billund</name>
     <airport-id type="string">EKBI</airport-id>
     <arrival>
      <adf n="0">
@@ -2574,7 +2956,8 @@
     </arrival>
    </airport>
 
-   <airport n="215">     <!-- Aalborg -->
+   <airport n="214">
+    <name>Aalborg</name>
     <airport-id type="string">EKYT</airport-id>
     <arrival>
      <vor n="0">
@@ -2583,7 +2966,8 @@
     </arrival>
    </airport>
 
-   <airport n="216">     <!-- Luxembourg -->
+   <airport n="215">
+    <name>Luxembourg</name>
     <airport-id type="string">ELLX</airport-id>
     <arrival>
      <adf n="0">
@@ -2595,7 +2979,8 @@
     </arrival>
    </airport>
 
-   <airport n="217">     <!-- Bergen -->
+   <airport n="216">
+    <name>Bergen</name>
     <airport-id type="string">ENBR</airport-id>
     <arrival>
      <adf n="0">
@@ -2607,12 +2992,15 @@
     </arrival>
    </airport>
 
-   <airport n="218">     <!-- Oslo -->
+   <airport n="217">
+    <name>Oslo</name>
     <airport-id type="string">ENFB</airport-id>
+    <uncertain type="bool">true</uncertain>
     <!-- none -->
    </airport>
 
-   <airport n="219">     <!-- Stavanger -->
+   <airport n="218">
+    <name>Stavanger</name>
     <airport-id type="string">ENZV</airport-id>
     <arrival>
      <adf n="0">
@@ -2624,7 +3012,8 @@
     </arrival>
    </airport>
 
-   <airport n="220">     <!-- Warsaw -->
+   <airport n="219">
+    <name>Warsaw</name>
     <airport-id type="string">EPWA</airport-id>
     <arrival>
      <adf n="0">
@@ -2636,7 +3025,8 @@
     </arrival>
    </airport>
 
-   <airport n="221">     <!-- Göteborg -->
+   <airport n="220">
+    <name>Goteborg</name>
     <airport-id type="string">ESGG</airport-id>
     <arrival>
      <vor n="0">
@@ -2645,7 +3035,8 @@
     </arrival>
    </airport>
 
-   <airport n="222">     <!-- Västerås -->
+   <airport n="221">
+    <name>Vasteras</name>
     <airport-id type="string">ESOW</airport-id>
     <arrival>
      <vor n="0">
@@ -2654,7 +3045,8 @@
     </arrival>
    </airport>
 
-   <airport n="223">     <!-- Stockholm -->
+   <airport n="222">
+    <name>Stockholm</name>
     <airport-id type="string">ESSA</airport-id>
     <arrival>
      <adf n="0">
@@ -2666,7 +3058,8 @@
     </arrival>
    </airport>
 
-   <airport n="224">     <!-- Las Palmas -->
+   <airport n="223">
+    <name>Las Palmas</name>
     <airport-id type="string">GCLP</airport-id>
     <arrival>
      <vor n="0">
@@ -2675,7 +3068,8 @@
     </arrival>
    </airport>
 
-   <airport n="225">     <!-- Lanzarote -->
+   <airport n="224">
+    <name>Lanzarote</name>
     <airport-id type="string">GCRR</airport-id>
     <arrival>
      <adf n="0">
@@ -2687,7 +3081,8 @@
     </arrival>
    </airport>
 
-   <airport n="226">     <!-- Tenerife -->
+   <airport n="225">
+    <name>Tenerife</name>
     <airport-id type="string">GCXO</airport-id>
     <arrival>
      <adf n="0">
@@ -2699,7 +3094,8 @@
     </arrival>
    </airport>
 
-   <airport n="227">     <!-- Larnaca -->
+   <airport n="226">
+    <name>Larnaca</name>
     <airport-id type="string">LCLK</airport-id>
     <arrival>
      <adf n="0">
@@ -2711,7 +3107,8 @@
     </arrival>
    </airport>
 
-   <airport n="228">     <!-- Albacete -->
+   <airport n="227">
+    <name>Albacete</name>
     <airport-id type="string">LEAB</airport-id>
     <arrival>
      <adf n="0">
@@ -2723,19 +3120,27 @@
     </arrival>
    </airport>
 
-   <airport n="229">     <!-- Barcelona -->
+   <airport n="228">
+    <name>Barcelona</name>
     <airport-id type="string">LEBL</airport-id>
     <arrival>
      <adf n="0">
+      <selected-khz type="int">338</selected-khz>                        <!-- preferences.xml -->
+     </adf>
+     <adf n="1">
       <selected-khz type="int">380</selected-khz>                        <!-- Villanueva -->
      </adf>
      <vor n="0">
+      <selected-mhz type="double">109.50</selected-mhz>                  <!-- preferences.xml -->
+     </vor>
+     <vor n="1">
       <selected-mhz type="double">112.00</selected-mhz>                  <!-- Sabadell -->
      </vor>
     </arrival>
    </airport>
 
-   <airport n="230">     <!-- Badajoz -->
+   <airport n="229">
+    <name>Badajoz</name>
     <airport-id type="string">LEBZ</airport-id>
     <arrival>
      <adf n="0">
@@ -2747,7 +3152,8 @@
     </arrival>
    </airport>
 
-   <airport n="231">     <!-- Ibiza -->
+   <airport n="230">
+    <name>Ibiza</name>
     <airport-id type="string">LEIB</airport-id>
     <arrival>
      <adf n="0">
@@ -2759,7 +3165,8 @@
     </arrival>
    </airport>
 
-   <airport n="232">     <!-- Madrid -->
+   <airport n="231">
+    <name>Madrid</name>
     <airport-id type="string">LEMD</airport-id>
     <arrival>
      <adf n="0">
@@ -2770,8 +3177,9 @@
      </vor>
     </arrival>
    </airport>
-
-   <airport n="233">     <!-- Málaga -->
+   
+   <airport n="232">
+    <name>Malaga</name>
     <airport-id type="string">LEMG</airport-id>
     <arrival>
      <adf n="0">
@@ -2782,8 +3190,9 @@
      </vor>
     </arrival>
    </airport>
-
-   <airport n="234">     <!-- Santiago de Compostela -->
+   
+   <airport n="233">
+    <name>Santiago de Compostela</name>
     <airport-id type="string">LEST</airport-id>
     <arrival>
      <adf n="0">
@@ -2794,8 +3203,9 @@
      </vor>
     </arrival>
    </airport>
-
-   <airport n="235">     <!-- Valladolid -->
+   
+   <airport n="234">
+    <name>Valladolid</name>
     <airport-id type="string">LEVD</airport-id>
     <arrival>
      <adf n="0">
@@ -2803,8 +3213,9 @@
      </adf>
     </arrival>
    </airport>
-
-   <airport n="236">     <!-- Seville -->
+   
+   <airport n="235">
+    <name>Seville</name>
     <airport-id type="string">LEZL</airport-id>
     <arrival>
      <adf n="0">
@@ -2816,7 +3227,8 @@
     </arrival>
    </airport>
 
-   <airport n="237">     <!-- Bordeaux -->
+   <airport n="236">
+    <name>Bordeaux</name>
     <airport-id type="string">LFBD</airport-id>
     <arrival>
      <adf n="0">
@@ -2828,7 +3240,8 @@
     </arrival>
    </airport>
 
-   <airport n="238">     <!-- Poitiers -->
+   <airport n="237">
+    <name>Poitiers</name>
     <airport-id type="string">LFBI</airport-id>
     <arrival>
      <adf n="0">
@@ -2840,7 +3253,21 @@
     </arrival>
    </airport>
 
-   <airport n="239">     <!-- Tarbes -->
+   <airport n="238">
+    <name>Toulouse</name>
+    <airport-id type="string">LFBO</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">406</selected-khz>                        <!-- Toulouse -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">117.70</selected-mhz>                  <!-- Toulouse -->
+     </vor>
+    </arrival>
+   </airport>
+
+   <airport n="239">
+    <name>Tarbes</name>
     <airport-id type="string">LFBT</airport-id>
     <arrival>
      <adf n="0">
@@ -2852,7 +3279,8 @@
     </arrival>
    </airport>
 
-   <airport n="240">     <!-- Biarritz -->
+   <airport n="240">
+    <name>Biarritz</name>
     <airport-id type="string">LFBZ</airport-id>
     <arrival>
      <adf n="0">
@@ -2864,12 +3292,14 @@
     </arrival>
    </airport>
 
-   <airport n="241">     <!-- Metz -->
+   <airport n="241">
+    <name>Metz</name>
     <airport-id type="string">LFJL</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="242">     <!-- Bastia -->
+   <airport n="242">
+    <name>Bastia</name>
     <airport-id type="string">LFKB</airport-id>
     <arrival>
      <vor n="0">
@@ -2878,7 +3308,8 @@
     </arrival>
    </airport>
 
-   <airport n="243">     <!-- Clermont-Ferrand -->
+   <airport n="243">
+    <name>Clermont-Ferrand</name>
     <airport-id type="string">LFLC</airport-id>
     <arrival>
      <vor n="0">
@@ -2887,7 +3318,8 @@
     </arrival>
    </airport>
 
-   <airport n="244">     <!-- Lyon -->
+   <airport n="244">
+    <name>Lyon</name>
     <airport-id type="string">LFLL</airport-id>
     <arrival>
      <vor n="0">
@@ -2896,17 +3328,20 @@
     </arrival>
    </airport>
 
-   <airport n="245">     <!-- Grenoble -->
+   <airport n="245">
+    <name>Grenoble</name>
     <airport-id type="string">LFLS</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="246">     <!-- Vichy -->
+   <airport n="246">
+    <name>Vichy</name>
     <airport-id type="string">LFLV</airport-id>
     <!-- none -->
    </airport>
 
-   <airport n="247">     <!-- Châteauroux -->
+   <airport n="247">
+    <name>Chateauroux</name>
     <airport-id type="string">LFLX</airport-id>
     <arrival>
      <adf n="0">
@@ -2915,7 +3350,8 @@
     </arrival>
    </airport>
 
-   <airport n="248">     <!-- Marseille -->
+   <airport n="248">
+    <name>Marseille</name>
     <airport-id type="string">LFML</airport-id>
     <arrival>
      <vor n="0">
@@ -2924,7 +3360,8 @@
     </arrival>
    </airport>
 
-   <airport n="249">     <!-- Nice -->
+   <airport n="249">
+    <name>Nice</name>
     <airport-id type="string">LFMN</airport-id>
     <arrival>
      <adf n="0">
@@ -2936,7 +3373,8 @@
     </arrival>
    </airport>
 
-   <airport n="250">     <!-- Montpellier -->
+   <airport n="250">
+    <name>Montpellier</name>
     <airport-id type="string">LFMT</airport-id>
     <arrival>
      <vor n="0">
@@ -2945,7 +3383,8 @@
     </arrival>
    </airport>
 
-   <airport n="251">     <!-- Beauvais -->
+   <airport n="251">
+    <name>Beauvais</name>
     <airport-id type="string">LFOB</airport-id>
     <arrival>
      <vor n="0">
@@ -2954,7 +3393,8 @@
     </arrival>
    </airport>
 
-   <airport n="252">     <!-- Tours -->
+   <airport n="252">
+    <name>Tours</name>
     <airport-id type="string">LFOT</airport-id>
     <arrival>
      <adf n="0">
@@ -2966,7 +3406,8 @@
     </arrival>
    </airport>
 
-   <airport n="253">     <!-- Paris Le Bourget -->
+   <airport n="253">
+    <name>Paris Le Bourget</name>
     <airport-id type="string">LFPB</airport-id>
     <arrival>
      <vor n="0">
@@ -2975,7 +3416,8 @@
     </arrival>
    </airport>
 
-   <airport n="254">     <!-- Paris Orly -->
+   <airport n="254">
+    <name>Paris Orly</name>
     <airport-id type="string">LFPO</airport-id>
     <arrival>
      <adf n="0">
@@ -2987,7 +3429,8 @@
     </arrival>
    </airport>
 
-   <airport n="255">     <!-- Cambrai -->
+   <airport n="255">
+    <name>Cambrai</name>
     <airport-id type="string">LFQI</airport-id>
     <arrival>
      <vor n="0">
@@ -2996,7 +3439,8 @@
     </arrival>
    </airport>
 
-   <airport n="256">     <!-- Lille -->
+   <airport n="256">
+    <name>Lille</name>
     <airport-id type="string">LFQQ</airport-id>
     <arrival>
      <vor n="0">
@@ -3005,7 +3449,8 @@
     </arrival>
    </airport>
 
-   <airport n="257">     <!-- Brest -->
+   <airport n="257">
+    <name>Brest</name>
     <airport-id type="string">LFRB</airport-id>
     <arrival>
      <adf n="0">
@@ -3014,7 +3459,8 @@
     </arrival>
    </airport>
 
-   <airport n="258">     <!-- Nantes -->
+   <airport n="258">
+    <name>Nantes</name>
     <airport-id type="string">LFRS</airport-id>
     <arrival>
      <adf n="0">
@@ -3026,7 +3472,8 @@
     </arrival>
    </airport>
 
-   <airport n="259">     <!-- Mulhouse -->
+   <airport n="259">
+    <name>Mulhouse</name>
     <airport-id type="string">LFSB</airport-id>
     <arrival>
      <adf n="0">
@@ -3038,7 +3485,8 @@
     </arrival>
    </airport>
 
-   <airport n="260">     <!-- Dijon -->
+   <airport n="260">
+    <name>Dijon</name>
     <airport-id type="string">LFSD</airport-id>
     <arrival>
      <vor n="0">
@@ -3047,7 +3495,8 @@
     </arrival>
    </airport>
 
-   <airport n="261">     <!-- Epinal -->
+   <airport n="261">
+    <name>Epinal</name>
     <airport-id type="string">LFSG</airport-id>
     <arrival>
      <vor n="0">
@@ -3056,7 +3505,8 @@
     </arrival>
    </airport>
 
-   <airport n="262">     <!-- Reims -->
+   <airport n="262">
+    <name>Reims</name>
     <airport-id type="string">LFSR</airport-id>
     <arrival>
      <vor n="0">
@@ -3065,7 +3515,8 @@
     </arrival>
    </airport>
 
-   <airport n="263">     <!-- Strasbourg -->
+   <airport n="263">
+    <name>Strasbourg</name>
     <airport-id type="string">LFST</airport-id>
     <arrival>
      <vor n="0">
@@ -3074,12 +3525,14 @@
     </arrival>
    </airport>
 
-   <airport n="264">     <!-- Athens -->
+   <airport n="264">
+    <name>Athens</name>
     <airport-id type="string">LGAT</airport-id>
     <!-- closed -->
    </airport>
 
-   <airport n="265">     <!-- Budapest -->
+   <airport n="265">
+    <name>Budapest</name>
     <airport-id type="string">LHBP</airport-id>
     <arrival>
      <adf n="0">
@@ -3091,7 +3544,8 @@
     </arrival>
    </airport>
 
-   <airport n="266">     <!-- Pescara -->
+   <airport n="266">
+    <name>Pescara</name>
     <airport-id type="string">LIBP</airport-id>
     <arrival>
      <vor n="0">
@@ -3100,7 +3554,8 @@
     </arrival>
    </airport>
 
-   <airport n="267">     <!-- Milan Malpensa -->
+   <airport n="267">
+    <name>Milan Malpensa</name>
     <airport-id type="string">LIMC</airport-id>
     <arrival>
      <adf n="0">
@@ -3112,11 +3567,12 @@
     </arrival>
    </airport>
 
-   <airport n="268">     <!-- Turin -->
+   <airport n="268">
+    <name>Turin</name>
     <airport-id type="string">LIMF</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">392</selected-khz>                      <!-- Torino -->
+      <selected-khz type="int">392.5</selected-khz>                      <!-- Torino -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">114.50</selected-mhz>                  <!-- Torino -->
@@ -3124,7 +3580,8 @@
     </arrival>
    </airport>
 
-   <airport n="269">     <!-- Milan Linate -->
+   <airport n="269">
+    <name>Milan Linate</name>
     <airport-id type="string">LIML</airport-id>
     <arrival>
      <adf n="0">
@@ -3136,7 +3593,8 @@
     </arrival>
    </airport>
 
-   <airport n="270">     <!-- Bologna -->
+   <airport n="270">
+    <name>Bologna</name>
     <airport-id type="string">LIPE</airport-id>
     <arrival>
      <adf n="0">
@@ -3148,16 +3606,18 @@
     </arrival>
    </airport>
 
-   <airport n="271">     <!-- Ancona -->
+   <airport n="271">
+    <name>Ancona</name>
     <airport-id type="string">LIPY</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">357</selected-khz>                      <!-- Falconara -->
+      <selected-khz type="int">357.5</selected-khz>                      <!-- Falconara -->
      </adf>
     </arrival>
    </airport>
 
-   <airport n="272">     <!-- Rome Fiumicino -->
+   <airport n="272">
+    <name>Rome Fiumicino</name>
     <airport-id type="string">LIRF</airport-id>
     <arrival>
      <adf n="0">
@@ -3169,7 +3629,8 @@
     </arrival>
    </airport>
 
-   <airport n="273">     <!-- Pisa -->
+   <airport n="273">
+    <name>Pisa</name>
     <airport-id type="string">LIRP</airport-id>
     <arrival>
      <adf n="0">
@@ -3181,7 +3642,8 @@
     </arrival>
    </airport>
 
-   <airport n="274">     <!-- Venice -->
+   <airport n="274">
+    <name>Venice</name>
     <airport-id type="string">LIPZ</airport-id>
     <arrival>
      <adf n="0">
@@ -3193,7 +3655,8 @@
     </arrival>
    </airport>
 
-   <airport n="275">     <!-- Prague -->
+   <airport n="275">
+    <name>Prague</name>
     <airport-id type="string">LKPR</airport-id>
     <arrival>
      <adf n="0">
@@ -3205,7 +3668,8 @@
     </arrival>
    </airport>
 
-   <airport n="276">     <!-- Tel Aviv -->
+   <airport n="276">
+    <name>Tel Aviv</name>
     <airport-id type="string">LLBG</airport-id>
     <arrival>
      <adf n="0">
@@ -3217,7 +3681,8 @@
     </arrival>
    </airport>
 
-   <airport n="277">     <!-- Haifa -->
+   <airport n="277">
+    <name>Haifa</name>
     <airport-id type="string">LLHA</airport-id>
     <arrival>
      <adf n="0">
@@ -3226,7 +3691,8 @@
     </arrival>
    </airport>
 
-   <airport n="278">     <!-- Malta -->
+   <airport n="278">
+    <name>Malta</name>
     <airport-id type="string">LMML</airport-id>
     <arrival>
      <adf n="0">
@@ -3235,7 +3701,8 @@
     </arrival>
    </airport>
 
-   <airport n="279">     <!-- Graz -->
+   <airport n="279">
+    <name>Graz</name>
     <airport-id type="string">LOWG</airport-id>
     <arrival>
      <adf n="0">
@@ -3247,7 +3714,8 @@
     </arrival>
    </airport>
 
-   <airport n="280">     <!-- Klagenfurt -->
+   <airport n="280">
+    <name>Klagenfurt</name>
     <airport-id type="string">LOWK</airport-id>
     <arrival>
      <adf n="0">
@@ -3259,7 +3727,8 @@
     </arrival>
    </airport>
 
-   <airport n="281">     <!-- Linz -->
+   <airport n="281">
+    <name>Linz</name>
     <airport-id type="string">LOWL</airport-id>
     <arrival>
      <adf n="0">
@@ -3271,7 +3740,8 @@
     </arrival>
    </airport>
 
-   <airport n="282">     <!-- Salzburg -->
+   <airport n="282">
+    <name>Salzburg</name>
     <airport-id type="string">LOWS</airport-id>
     <arrival>
      <adf n="0">
@@ -3283,7 +3753,8 @@
     </arrival>
    </airport>
 
-   <airport n="283">     <!-- Vienna -->
+   <airport n="283">
+    <name>Vienna</name>
     <airport-id type="string">LOWW</airport-id>
     <arrival>
      <adf n="0">
@@ -3295,7 +3766,8 @@
     </arrival>
    </airport>
 
-   <airport n="284">     <!-- Faro -->
+   <airport n="284">
+    <name>Faro</name>
     <airport-id type="string">LPFR</airport-id>
     <arrival>
      <adf n="0">
@@ -3307,7 +3779,8 @@
     </arrival>
    </airport>
 
-   <airport n="285">     <!-- Lisbon -->
+   <airport n="285">
+    <name>Lisbon</name>
     <airport-id type="string">LPPT</airport-id>
     <arrival>
      <adf n="0">
@@ -3319,7 +3792,8 @@
     </arrival>
    </airport>
 
-   <airport n="286">     <!-- Oporto -->
+   <airport n="286">
+    <name>Oporto</name>
     <airport-id type="string">LPPR</airport-id>
     <arrival>
      <adf n="0">
@@ -3331,7 +3805,8 @@
     </arrival>
    </airport>
 
-   <airport n="287">     <!-- Geneva -->
+   <airport n="287">
+    <name>Geneva</name>
     <airport-id type="string">LSGG</airport-id>
     <arrival>
      <adf n="0">
@@ -3343,7 +3818,8 @@
     </arrival>
    </airport>
 
-   <airport n="288">     <!-- Ankara -->
+   <airport n="288">
+    <name>Ankara</name>
     <airport-id type="string">LTAC</airport-id>
     <arrival>
      <adf n="0">
@@ -3355,7 +3831,8 @@
     </arrival>
    </airport>
 
-   <airport n="289">     <!-- Istanbul -->
+   <airport n="289">
+    <name>Istanbul</name>
     <airport-id type="string">LTBA</airport-id>
     <arrival>
      <vor n="0">
@@ -3364,7 +3841,8 @@
     </arrival>
    </airport>
 
-   <airport n="290">     <!-- Bratislava -->
+   <airport n="290">
+    <name>Bratislava</name>
     <airport-id type="string">LZIB</airport-id>
     <arrival>
      <adf n="0">
@@ -3376,7 +3854,8 @@
     </arrival>
    </airport>
 
-   <airport n="291">     <!-- Dhahran -->
+   <airport n="291">
+    <name>Dhahran</name>
     <airport-id type="string">OEDR</airport-id>
     <arrival>
      <vor n="0">
@@ -3385,7 +3864,8 @@
     </arrival>
    </airport>
 
-   <airport n="292">     <!-- Jeddah -->
+   <airport n="292">
+    <name>Jeddah</name>
     <airport-id type="string">OEJN</airport-id>
     <arrival>
      <vor n="0">
@@ -3394,7 +3874,8 @@
     </arrival>
    </airport>
 
-   <airport n="293">     <!-- Riyadh -->
+   <airport n="293">
+    <name>Riyadh</name>
     <airport-id type="string">OERK</airport-id>
     <arrival>
      <vor n="0">
@@ -3403,7 +3884,8 @@
     </arrival>
    </airport>
 
-   <airport n="294">     <!-- Kish -->
+   <airport n="294">
+    <name>Kish</name>
     <airport-id type="string">OIBK</airport-id>
     <arrival>
      <adf n="0">
@@ -3415,7 +3897,8 @@
     </arrival>
    </airport>
 
-   <airport n="295">     <!-- Amman -->
+   <airport n="295">
+    <name>Amman</name>
     <airport-id type="string">OJAI</airport-id>
     <arrival>
      <adf n="0">
@@ -3427,7 +3910,8 @@
     </arrival>
    </airport>
 
-   <airport n="296">     <!-- Aqaba -->
+   <airport n="296">
+    <name>Aqaba</name>
     <airport-id type="string">OJAQ</airport-id>
     <arrival>
      <adf n="0">
@@ -3439,7 +3923,8 @@
     </arrival>
    </airport>
 
-   <airport n="297">     <!-- Kuwait -->
+   <airport n="297">
+    <name>Kuwait</name>
     <airport-id type="string">OKBK</airport-id>
     <arrival>
      <vor n="0">
@@ -3448,7 +3933,8 @@
     </arrival>
    </airport>
 
-   <airport n="298">     <!-- Beirut -->
+   <airport n="298">
+    <name>Beirut</name>
     <airport-id type="string">OLBA</airport-id>
     <arrival>
      <adf n="0">
@@ -3460,7 +3946,8 @@
     </arrival>
    </airport>
 
-   <airport n="299">     <!-- Abu Dhabi -->
+   <airport n="299">
+    <name>Abu Dhabi</name>
     <airport-id type="string">OMAA</airport-id>
     <arrival>
      <vor n="0">
@@ -3469,7 +3956,8 @@
     </arrival>
    </airport>
 
-   <airport n="300">     <!-- Dubai -->
+   <airport n="300">
+    <name>Dubai</name>
     <airport-id type="string">OMDB</airport-id>
     <arrival>
      <vor n="0">
@@ -3478,7 +3966,8 @@
     </arrival>
    </airport>
 
-   <airport n="301">     <!-- Muscat -->
+   <airport n="301">
+    <name>Muscat</name>
     <airport-id type="string">OOMS</airport-id>
     <arrival>
      <vor n="0">
@@ -3487,7 +3976,8 @@
     </arrival>
    </airport>
 
-   <airport n="302">     <!-- Sana'a -->
+   <airport n="302">
+    <name>Sana'a</name>
     <airport-id type="string">OYSN</airport-id>
     <arrival>
      <adf n="0">
@@ -3499,7 +3989,8 @@
     </arrival>
    </airport>
 
-   <airport n="303">     <!-- Saint Petersburg -->
+   <airport n="303">
+    <name>Saint Petersburg</name>
     <airport-id type="string">ULLI</airport-id>
     <arrival>
      <adf n="0">
@@ -3511,7 +4002,8 @@
     </arrival>
    </airport>
 
-   <airport n="304">     <!-- Novosibirsk -->
+   <airport n="304">
+    <name>Novosibirsk</name>
     <airport-id type="string">UNNT</airport-id>
     <arrival>
      <adf n="0">
@@ -3523,8 +4015,10 @@
     </arrival>
    </airport>
 
-   <airport n="305">     <!-- Moscow -->
+   <airport n="305">
+    <name>Moscow</name>
     <airport-id type="string">UUEE</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <adf n="0">
       <selected-khz type="int">380</selected-khz>                        <!-- Sheremetyevo -->
@@ -3540,7 +4034,8 @@
 <!-- Charter Far East -->
 <!-- ================ -->
 
-   <airport n="306">     <!-- Tehran -->
+   <airport n="306">
+    <name>Tehran</name>
     <airport-id type="string">OIII</airport-id>
     <arrival>
      <vor n="0">
@@ -3549,7 +4044,8 @@
     </arrival>
    </airport>
 
-   <airport n="307">     <!-- Islamabad -->
+   <airport n="307">
+    <name>Islamabad</name>
     <airport-id type="string">OPRN</airport-id>
     <arrival>
      <adf n="0">
@@ -3561,7 +4057,8 @@
     </arrival>
    </airport>
 
-   <airport n="308">     <!-- Guam -->
+   <airport n="308">
+    <name>Guam</name>
     <airport-id type="string">PGUM</airport-id>
     <arrival>
      <adf n="0">
@@ -3573,7 +4070,8 @@
     </arrival>
    </airport>
 
-   <airport n="309">     <!-- Osaka Kansai -->
+   <airport n="309">
+    <name>Osaka Kansai</name>
     <airport-id type="string">RJBB</airport-id>
     <arrival>
      <adf n="0">
@@ -3585,11 +4083,12 @@
     </arrival>
    </airport>
 
-   <airport n="310">     <!-- Nagasaki -->
+   <airport n="310">
+    <name>Nagasaki</name>
     <airport-id type="string">RJFU</airport-id>
     <arrival>
      <adf n="0">
-      <selected-khz type="int">342</selected-khz>                      <!-- Omura -->
+      <selected-khz type="int">342.5</selected-khz>                      <!-- Omura -->
      </adf>
      <vor n="0">
       <selected-mhz type="double">116.60</selected-mhz>                  <!-- Nagasaki -->
@@ -3597,8 +4096,10 @@
     </arrival>
    </airport>
 
-   <airport n="311">     <!-- Tokyo -->
+   <airport n="311">
+    <name>Tokyo</name>
     <airport-id type="string">RJTT</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <adf n="0">
       <selected-khz type="int">337</selected-khz>                        <!-- Haneda -->
@@ -3609,7 +4110,8 @@
     </arrival>
    </airport>
 
-   <airport n="312">     <!-- Tashkent -->
+   <airport n="312">
+    <name>Tashkent</name>
     <airport-id type="string">UTTT</airport-id>
     <arrival>
      <adf n="0">
@@ -3621,7 +4123,8 @@
     </arrival>
    </airport>
 
-   <airport n="313">     <!-- Mumbai -->
+   <airport n="313">
+    <name>Mumbai</name>
     <airport-id type="string">VABB</airport-id>
     <arrival>
      <vor n="0">
@@ -3630,7 +4133,8 @@
     </arrival>
    </airport>
 
-   <airport n="314">     <!-- Colombo -->
+   <airport n="314">
+    <name>Colombo</name>
     <airport-id type="string">VCBI</airport-id>
     <arrival>
      <vor n="0">
@@ -3639,7 +4143,8 @@
     </arrival>
    </airport>
 
-   <airport n="315">     <!-- Kolkata -->
+   <airport n="315">
+    <name>Kolkata</name>
     <airport-id type="string">VECC</airport-id>
     <arrival>
      <adf n="0">
@@ -3651,7 +4156,8 @@
     </arrival>
    </airport>
 
-   <airport n="316">     <!-- Dhaka -->
+   <airport n="316">
+    <name>Dhaka</name>
     <airport-id type="string">VGZR</airport-id>
     <arrival>
      <adf n="0">
@@ -3663,7 +4169,8 @@
     </arrival>
    </airport>
 
-   <airport n="317">     <!-- Hong Kong -->
+   <airport n="317">
+    <name>Hong Kong</name>
     <airport-id type="string">VHHH</airport-id>
     <arrival>
      <adf n="0">
@@ -3675,7 +4182,8 @@
     </arrival>
    </airport>
 
-   <airport n="318">     <!-- Delhi -->
+   <airport n="318">
+    <name>Delhi</name>
     <airport-id type="string">VIDP</airport-id>
     <arrival>
      <adf n="0">
@@ -3687,7 +4195,8 @@
     </arrival>
    </airport>
 
-   <airport n="319">     <!-- Kathmandu -->
+   <airport n="319">
+    <name>Kathmandu</name>
     <airport-id type="string">VNKT</airport-id>
     <arrival>
      <adf n="0">
@@ -3699,7 +4208,8 @@
     </arrival>
    </airport>
 
-   <airport n="320">     <!-- Chennai -->
+   <airport n="320">
+    <name>Chennai</name>
     <airport-id type="string">VOMM</airport-id>
     <arrival>
      <adf n="0">
@@ -3711,7 +4221,8 @@
     </arrival>
    </airport>
 
-   <airport n="321">     <!-- Bangkok -->
+   <airport n="321">
+    <name>Bangkok</name>
     <airport-id type="string">VTBD</airport-id>
     <arrival>
      <adf n="0">
@@ -3723,7 +4234,8 @@
     </arrival>
    </airport>
 
-   <airport n="322">     <!-- Chiang Mai -->
+   <airport n="322">
+    <name>Chiang Mai</name>
     <airport-id type="string">VTCC</airport-id>
     <arrival>
      <adf n="0">
@@ -3735,7 +4247,8 @@
     </arrival>
    </airport>
 
-   <airport n="323">     <!-- Denpasar -->
+   <airport n="323">
+    <name>Denpasar</name>
     <airport-id type="string">WADD</airport-id>
     <arrival>
      <adf n="0">
@@ -3747,8 +4260,10 @@
     </arrival>
    </airport>
 
-   <airport n="324">     <!-- Jakarta -->
+   <airport n="324">
+    <name>Jakarta</name>
     <airport-id type="string">WIHH</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <adf n="0">
       <selected-khz type="int">215</selected-khz>                        <!-- Halim Perdanakusuma -->
@@ -3759,7 +4274,8 @@
     </arrival>
    </airport>
 
-   <airport n="325">     <!-- Kuala Lumpur -->
+   <airport n="325">
+    <name>Kuala Lumpur</name>
     <airport-id type="string">WMKK</airport-id>
     <arrival>
      <vor n="0">
@@ -3768,7 +4284,8 @@
     </arrival>
    </airport>
 
-   <airport n="326">     <!-- Beijing -->
+   <airport n="326">
+    <name>Beijing</name>
     <airport-id type="string">ZBAA</airport-id>
     <arrival>
      <adf n="0">
@@ -3780,7 +4297,8 @@
     </arrival>
    </airport>
 
-   <airport n="327">     <!-- Tianjin -->
+   <airport n="327">
+    <name>Tianjin</name>
     <airport-id type="string">ZBTJ</airport-id>
     <arrival>
      <adf n="0">
@@ -3797,40 +4315,82 @@
 <!-- Known stops -->
 <!-- =========== -->
 
-   <airport n="328">     <!-- Vancouver -->
+   <airport n="328">
+    <name>Vancouver</name>
     <airport-id type="string">CYVR</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">368</selected-khz>                        <!-- Sea Island -->
+     </adf>
+     <vor n="0">
+      <selected-mhz type="double">115.90</selected-mhz>                  <!-- Vancouver -->
+     </vor>
+    </arrival>
    </airport>
 
-   <airport n="329">     <!-- St. John's -->
+   <airport n="329">
+    <name>St. John's</name>
     <airport-id type="string">CYYT</airport-id>
+    <arrival>
+     <vor n="0">
+      <selected-mhz type="double">113.50</selected-mhz>                  <!-- Torbay -->
+     </vor>
+    </arrival>
    </airport>
 
-   <airport n="330">     <!-- Berlin -->
+   <airport n="330">
+    <name>Berlin</name>
     <airport-id type="string">EDDB</airport-id>
+    <arrival>
+     <adf n="0">
+      <selected-khz type="int">362</selected-khz>                        <!-- Schonefeld -->
+     </adf>
+    </arrival>
    </airport>
 
-   <airport n="331">     <!-- Seattle -->
+   <airport n="331">
+    <name>Seattle</name>
     <airport-id type="string">KBFI</airport-id>
    </airport>
 
-   <airport n="332">     <!-- Reno -->
+   <airport n="332">
+    <name>Reno</name>
     <airport-id type="string">KRNO</airport-id>
    </airport>
 
-   <airport n="333">     <!-- Tampa -->
+   <airport n="333">
+    <name>Tampa</name>
     <airport-id type="string">KTPA</airport-id>
    </airport>
 
-   <airport n="334">     <!-- Zurich -->
+   <airport n="334">
+    <name>Zurich</name>
     <airport-id type="string">LSZH</airport-id>
+    <arrival>
+     <vor n="0">
+      <selected-mhz type="double">110.05</selected-mhz>                  <!-- Zurich East -->
+     </vor>
+    </arrival>
    </airport>
 
-   <airport n="335">     <!-- San José -->
+   <airport n="335">
+    <name>San Jose</name>
     <airport-id type="string">MROC</airport-id>
+    <arrival>
+     <vor n="0">
+      <selected-mhz type="double">115.70</selected-mhz>                  <!-- El Coco -->
+     </vor>
+    </arrival>
    </airport>
 
-   <airport n="336">     <!-- Ushuaia -->
+   <airport n="336">
+    <name>Ushuaia</name>
     <airport-id type="string">SAWH</airport-id>
+    <arrival>
+     <vor n="0">
+      <selected-mhz type="double">113.70</selected-mhz>                  <!-- Ushuaia -->
+     </vor>
+    </arrival>
    </airport>
 
 
@@ -3840,12 +4400,16 @@
 
 <!-- service by many airports -->
 
-   <airport n="337">     <!-- Montreal -->
+   <airport n="337">
+    <name>Montreal</name>
     <airport-id type="string">CYMX</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
-   <airport n="338">     <!-- Chicago -->
+   <airport n="338">
+    <name>Chicago</name>
     <airport-id type="string">KORD</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <adf n="0">
       <selected-khz type="int">350</selected-khz>                        <!-- Deana -->
@@ -3863,8 +4427,10 @@
     </arrival>
    </airport>
 
-   <airport n="339">     <!-- Iguassu -->
+   <airport n="339">
+    <name>Iguassu</name>
     <airport-id type="string">SBFI</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <adf n="0">
       <selected-khz type="int">395</selected-khz>                        <!-- Iguacu -->
@@ -3875,23 +4441,31 @@
     </arrival>
    </airport>
 
-   <airport n="340">     <!-- Moscow -->
+   <airport n="340">
+    <name>Moscow</name>
     <airport-id type="string">UUDD</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
-   <airport n="341">     <!-- Moscow -->
+   <airport n="341">
+    <name>Moscow</name>
     <airport-id type="string">UUWW</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
 
 <!-- opening -->
 
-   <airport n="342">     <!-- Tokyo -->
+   <airport n="342">
+    <name>Tokyo</name>
     <airport-id type="string">RJAA</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
-   <airport n="343">     <!-- Jakarta -->
+   <airport n="343">
+    <name>Jakarta</name>
     <airport-id type="string">WIII</airport-id>
+    <uncertain type="bool">true</uncertain>
     <arrival>
      <vor n="0">
       <selected-mhz type="double">114.60</selected-mhz>                  <!-- Jakarta -->
@@ -3902,12 +4476,16 @@
 
 <!-- replacement -->
 
-   <airport n="344">     <!-- Oslo -->
+   <airport n="344">
+    <name>Oslo</name>
     <airport-id type="string">ENGM</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
-   <airport n="345">     <!-- Athens -->
+   <airport n="345">
+    <name>Athens</name>
     <airport-id type="string">LGAV</airport-id>
+    <uncertain type="bool">true</uncertain>
    </airport>
 
 
@@ -3915,8 +4493,10 @@
 <!-- Non-historical airport -->
 <!-- ====================== -->
 
-   <airport n="346">     <!-- San Francisco -->
+   <airport n="346">
+    <name>San Francisco</name>
     <airport-id type="string">KSFO</airport-id>
+    <non-historical type="bool">true</non-historical>                    <!-- exclude from list -->
     <!-- to keep default of preferences.xml -->
    </airport>
 

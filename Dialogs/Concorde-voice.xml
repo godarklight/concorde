@@ -45,6 +45,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/callout</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -67,6 +68,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/display/captain</property>
+      <halign>left</halign>
       <color>
        <red>0.8</red>
        <green>0.8</green>
@@ -85,6 +87,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/display/copilot</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -103,6 +106,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/display/engineer</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -232,7 +236,11 @@
       </text>
 
       <text>
-        <label>Full throttle (aborted landing)</label>
+        <label>Full throttle</label>
+      </text>
+
+      <text>
+        <label>(aborted landing)</label>
       </text>
 
       <text>
@@ -340,6 +348,10 @@
 
       <text>
         <label>Shutdown engines 2 and 3</label>
+      </text>
+
+      <text>
+        <label>(optional)</label>
       </text>
 
       <text>

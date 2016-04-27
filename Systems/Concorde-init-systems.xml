@@ -171,7 +171,7 @@
 
    <config n="0">
     <dg-heading-hold1>
-     <input>/autopilot/internal/fdm-heading-bug-error-deg-15-sec</input>
+     <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
      <Kp type="double">-1.0</Kp>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
@@ -180,10 +180,10 @@
      <Kp type="double">0.1</Kp>
     </dg-heading-hold3>
     <nav-hold1>
-     <input>/autopilot/internal/nav1-heading-error-deg-15-sec</input>
+     <input>/autopilot/internal/nav1-heading-error-deg</input>
     </nav-hold1>
     <true-heading-hold1>
-     <input type="string">/autopilot/internal/true-heading-error-deg-15-sec</input>
+     <input type="string">/autopilot/internal/true-heading-error-deg</input>
      <Kp type="double">-1.0</Kp>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
@@ -229,7 +229,7 @@
 
    <pid>
     <dg-heading-hold1>
-     <input alias="/autopilot/internal/fdm-heading-bug-error-deg-15-sec"/>
+     <input alias="/autopilot/internal/fdm-heading-bug-error-deg"/>
      <Kp type="double">-1.0</Kp>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
@@ -241,14 +241,14 @@
      <Kp type="double">0.1</Kp>
     </dg-heading-hold3>
     <nav-hold1>
-     <input alias="/autopilot/internal/nav1-heading-error-deg-15-sec"/>
+     <input alias="/autopilot/internal/nav1-heading-error-deg"/>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
      <stable-sec type="double">0.0</stable-sec>
     </nav-hold1>
     <prediction-filter type="bool">true</prediction-filter>                  <!-- no debug -->
     <true-heading-hold1>
-     <input alias="/autopilot/internal/true-heading-error-deg-15-sec"/>
+     <input alias="/autopilot/internal/true-heading-error-deg"/>
      <Kp type="double">-1.0</Kp>
      <launch-sec type="double">0.0</launch-sec>
      <prediction-filter type="bool">true</prediction-filter>
@@ -503,6 +503,7 @@
 
    <relations>
     <dependency>
+     <airspeed>/instrumentation/airspeed-indicator[1]</airspeed>
      <altimeter>/instrumentation/altimeter[1]</altimeter>
      <channel>/controls/flight/channel</channel>
      <crew>/systems/crew</crew>
@@ -706,10 +707,12 @@
       <component>/controls/adc</component>
       <subcomponent>system</subcomponent>
      </adc>
+     <airspeed>/instrumentation/airspeed-indicator[1]</airspeed>
      <air-bleed>
       <component>/controls/pneumatic</component>
       <subcomponent>engine</subcomponent>
      </air-bleed>
+     <altimeter>/instrumentation/altimeter[2]</altimeter>
      <anti-icing>/controls/anti-ice</anti-icing>
      <audio>/controls/audio</audio>
      <autoflight>/controls/autoflight</autoflight>
@@ -945,6 +948,7 @@
   </engines>
 
   <flight>
+   <gravity alias="/fdm/jsbsim/systems/hydraulics/elevon-gravity"/>          <!-- on ground -->
    <pfcu>
     <inner-stuck alias="/fdm/jsbsim/fcs/elevator-actuator/malfunction/fail_stuck"/>
     <inner-zero alias="/fdm/jsbsim/fcs/elevator-actuator/malfunction/fail_zero"/>
@@ -963,6 +967,10 @@
     <itself>
      <channel>/controls/flight/channel</channel>
      <pfcu>/systems/flight/pfcu</pfcu>
+     <tank>
+      <component>/fdm/jsbsim/propulsion</component>
+      <subcomponent>tank</subcomponent>
+     </tank>
     </itself>
 
     <noinstrument>
@@ -1081,6 +1089,8 @@
     <stowe-norm type="double">0.0</stowe-norm>
     <teeth type="bool">false</teeth>                                         <!-- doesn't talk -->
    </copilot>
+   
+   <dialog></dialog>
 
    <engineer>
     <eyes type="bool">true</eyes>
@@ -1092,6 +1102,12 @@
     <stowe-norm type="double">0.0</stowe-norm>
     <teeth type="bool">false</teeth>
    </engineer>
+   
+   <list></list>                                                             <!-- dialog list -->
+   <radio-adf></radio-adf>
+   <radio-id></radio-id>
+   <radio-phase></radio-phase>
+   <radio-vor></radio-vor>
 
    <relations>
     <dependency>
@@ -1147,9 +1163,10 @@
 
    <power>
     <blue type="bool">false</blue>
+    <flight type="bool">false</flight>
     <gear type="bool">false</gear>
     <green type="bool">false</green>
-    <steering alias="/fdm/jsbsim/systems/NWS/hydraulics"/>
+    <steering-off alias="/fdm/jsbsim/systems/hydraulics/nws-unable"/>
     <yellow type="bool">false</yellow>
    </power>
 

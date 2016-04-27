@@ -29,7 +29,6 @@ Pitch
 The original 3D model had a pitch and a longer front gear :
 - the fuselage is always horizontal (B).
 - the pitch seems to exist (C)(D) at empty load.
-- the front gear seems longer in flight (piston extended) (E).
 
 
 Gear
@@ -99,7 +98,7 @@ References
 (D) http://www.concordesst.com/video/98airtoair.mov :
     British Airways clip.
 
-(E) http://www.airliners.net/open.file/0441886/L/ :
+    http://www.airliners.net/open.file/0441886/L/ :
     G-BOAE, by Harm Rutten.
 
     http://www.eflightmanuals.com/ :
@@ -117,28 +116,28 @@ and download links" (24 october 2003 6:23 pm).
 
 Updates (-) and additions (+) to the original model                       Credit      Version
 ---------------------------------------------------------------------------------------------
-+ tail door closed.                                                                     1.1
-+ cockpit.                                                                              1.2
-- visibility of visor and nose from cockpit.                                            2.0
-- split of nozzles (reverser).                                                          2.1
-- alignment of main gear internal doors with their well.
-- split of main gear wheels (spin).                                                     2.2
-- alignment to the nose tip, instead of the tail tip (VRP).                             2.3
-- split of main gear pistons (bogie compression and torsion).                           2.3
-- higher side stays and stearing unit (front gear compression).                         2.3
-- horizontal fuselage, without pitch (flat cockpit).                                    2.3
-- centered axis of front window (to match overhead).                                    2.4
-- split of primary nozzles (reheat off texture).                                        2.4
-- shift aft the texture of front doors.                                                 2.5
-+ visor well.                                                                           2.6
-- conversion of .rgb to .png.                                             C. Schmitt    2.8
-+ exhaust.                                                                C. Schmitt    2.8
-- split of main gear cylinders (compression).                                           2.9
-- deeper wells to fit the gears.                                                        2.9
-- make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
-- make the nosetip seperate in the model.                                 C. Schmitt    2.9
-+ dummy cabin.                                                            E. Huminiuc   2.11
 + door to passenger area                                                                2.12
++ dummy cabin.                                                            E. Huminiuc   2.11
+- make the nosetip seperate in the model.                                 C. Schmitt    2.9
+- make nose, visor and beginning of hull symmetrical.                     C. Schmitt    2.9
+- deeper wells to fit the gears.                                                        2.9
+- split of main gear cylinders (compression).                                           2.9
++ exhaust.                                                                C. Schmitt    2.8
+- conversion of .rgb to .png.                                             C. Schmitt    2.8
++ visor well.                                                                           2.6
+- shift aft the texture of front doors.                                                 2.5
+- split of primary nozzles (reheat off texture).                                        2.4
+- centered axis of front window (to match overhead).                                    2.4
+- horizontal fuselage, without pitch (flat cockpit).                                    2.3
+- higher side stays and stearing unit (front gear compression).                         2.3
+- split of main gear pistons (bogie compression and torsion).                           2.3
+- alignment to the nose tip, instead of the tail tip (VRP).                             2.3
+- split of main gear wheels (spin).                                                     2.2
+- alignment of main gear internal doors with their well.
+- split of nozzles (reverser).                                                          2.1
+- visibility of visor and nose from cockpit.                                            2.0
++ cockpit.                                                                              1.2
++ tail door closed.                                                                     1.1
 
 
 
@@ -148,4 +147,4 @@ AC3D export :
 - AC3D groups are removed, to help import/export.
 
 
-26 October 2014.
+12 September 2015.

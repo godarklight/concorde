@@ -199,6 +199,11 @@
     <prop>/systems/hydraulic/sensors/steering</prop>
   </circuit>
 
+  <circuit>
+    <name>Flight Controls</name>
+    <prop>/systems/hydraulic/sensors/flight</prop>
+  </circuit>
+
 
   <!-- ======================== -->
   <!-- connect in power sources -->
@@ -480,6 +485,23 @@
     <switch>
       <prop>/controls/gear/steering/hydraulic</prop>
     </switch>
+  </connection>
+
+  <!-- Flight Controls -->
+
+  <connection>
+    <input>Blue</input>
+    <output>Flight Controls</output>
+  </connection>
+
+  <connection>
+    <input>Green</input>
+    <output>Flight Controls</output>
+  </connection>
+
+  <connection>
+    <input>Yellow</input>
+    <output>Flight Controls</output>
   </connection>
 
 </PropertyList>
