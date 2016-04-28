@@ -15,7 +15,7 @@
     <halign>center</halign>
 
     <text>
-      <label>Settings</label>
+      <label>Settings  ~</label>
     </text>
 
     <text>
@@ -72,8 +72,16 @@
        <label></label>
       </text>
 
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
       <checkbox>
-        <label>landing lights  ~</label>
+        <label>landing lights</label>
         <halign>left</halign>
         <property>/controls/crew/landing-lights</property>
         <binding>
@@ -81,8 +89,51 @@
          <property>/controls/crew/landing-lights</property>
         </binding>
       </checkbox>
-     </group>
 
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <checkbox>
+        <label>stop engines 2 and 3</label>
+        <halign>left</halign>
+        <property>/controls/crew/stop-engine23</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/crew/stop-engine23</property>
+        </binding>
+      </checkbox>
+
+      <text>
+       <label>(after landing)</label>
+       <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+       </color>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+     </group>
+     
      <group>
       <layout>vbox</layout>
 
@@ -97,7 +148,7 @@
       <input>
        <halign>left</halign>
        <property>/controls/tractor/distance-m</property>
-       <label>Pushback distance (m)  ~</label>
+       <label>Pushback distance (m)</label>
        <binding>
         <command>dialog-apply</command>
        </binding>
@@ -108,7 +159,7 @@
       </text>
 
       <checkbox>
-        <label>adjusts night lighting  ~</label>
+        <label>adjusts night lighting</label>
         <halign>left</halign>
         <property>/controls/crew/night-lighting</property>
         <binding>
@@ -127,7 +178,7 @@
       </text>
 
       <checkbox>
-        <label>adjusts VOR and ADF to nearest airport  ~</label>
+        <label>adjusts VOR and ADF to nearest airport</label>
         <halign>left</halign>
         <property>/controls/crew/radio</property>
         <binding>
@@ -155,7 +206,7 @@
       </text>
 
       <checkbox>
-        <label>performs Captain checks (not real)  ~</label>
+        <label>performs Captain checks (not real)</label>
         <halign>left</halign>
         <property>/controls/crew/captain-busy</property>
         <binding>
@@ -165,7 +216,7 @@
       </checkbox>
 
       <checkbox>
-        <label>triggers flight checklists  ~</label>
+        <label>triggers flight checklists</label>
         <halign>left</halign>
         <property>/controls/crew/checklist</property>
         <binding>
@@ -182,7 +233,7 @@
         <layout>hbox</layout>
 
        <text>
-        <label>starts from  ~</label>
+        <label>starts from</label>
        </text>
 
        <combo>
@@ -195,7 +246,7 @@
       </group>
 
       <checkbox>
-        <label>activ on startup  ~</label>
+        <label>activ on startup</label>
         <halign>left</halign>
         <property>/controls/crew/startup</property>
         <binding>

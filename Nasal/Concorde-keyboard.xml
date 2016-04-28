@@ -357,21 +357,6 @@
     </mod-shift>
    </key>
 
-   <key n="356">
-    <name>Left</name>
-    <desc>Move aileron left or adjust AP heading or move floating view left.</desc>
-    <repeatable type="bool">true</repeatable>
-    <binding>
-     <command>nasal</command>
-     <script>
-       if( !globals.Concorde.seatsystem.movewidthexport(-0.01) ) {
-           # default
-           controls.incAileron(-0.05, -1.0)
-       }
-     </script>
-    </binding>
-   </key>
-
    <key n="357">
     <name>Up</name>
     <desc>Increase elevator or autopilot altitude or move floating view front.</desc>
@@ -450,32 +435,29 @@
        if( !globals.Concorde.seatsystem.movelengthexport(-0.1) ) {
            if( !globals.Concorde.autopilotsystem.datumapexport(0.1) ) {
                # default
-               trim = getprop("/controls/flight/elevator-trim");
-               trim = trim + 0.001;
-               setprop("/controls/flight/elevator-trim",trim);
            }
        }
-     </script>
-    </binding>
+      </script>
+     </binding>
+    </mod-ctrl>
    </key>
 
-   <key n="363">
-    <name>End</name>
-    <desc>Decrease elevator trim or move floating view aft (fast).</desc>
+   <key n="359">
+    <name>Down</name>
+    <desc>Decrease autopilot pitch (slow) or move floating view aft (fast)</desc>
     <repeatable type="bool">true</repeatable>
-    <binding>
-     <command>nasal</command>
-     <script>
+    <mod-ctrl>
+     <binding>
+      <command>nasal</command>
+      <script>
        if( !globals.Concorde.seatsystem.movelengthexport(0.1) ) {
            if( !globals.Concorde.autopilotsystem.datumapexport(-0.1) ) {
                # default
-               trim = getprop("/controls/flight/elevator-trim");
-               trim = trim - 0.001;
-               setprop("/controls/flight/elevator-trim",trim);
            }
        }
-     </script>
-    </binding>
+      </script>
+     </binding>
+    </mod-ctrl>
    </key>
 
 </PropertyList>

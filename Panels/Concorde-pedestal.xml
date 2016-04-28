@@ -50,29 +50,6 @@ override those by providing <w>..</w> and <h>..</h> properties with the
 
  <instruments>
 
-<!-- TEMPERATURES -->
-
-  <instrument include="Instruments/concorde-temperature.xml">
-   <name>OAT/TMO temperatures</name>
-   <condition>
-    <or>
-     <and>
-      <property>/sim/current-view/internal</property>
-      <property>/systems/seat/captain</property>
-      <less-than>
-       <property>/sim/current-view/goal-pitch-offset-deg</property>
-       <value>-30</value>
-      </less-than>
-     </and>
-     <property>/controls/seat/all</property>
-    </or>
-   </condition>
-   <x>125</x>
-   <y>500</y>
-   <w>210</w>
-   <h>175</h>
-  </instrument>
-
   <instrument include="Instruments/concorde-datum.xml">
    <name>Datum adjust unit</name>
    <condition>
@@ -93,7 +70,7 @@ override those by providing <w>..</w> and <h>..</h> properties with the
     </or>
    </condition>
    <x>345</x>
-   <y>545</y>
+   <y>581</y>
    <w>210</w>
    <h>84</h>
   </instrument>

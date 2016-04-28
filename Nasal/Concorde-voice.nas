@@ -787,25 +787,42 @@ Voice.userground = func {
     var curairport = me.noinstrument["presets"].getChild("airport-id").getValue();
     var currunway = me.noinstrument["presets"].getChild("runway").getValue();
 
-
+    
     # user has started all engines
     if( me.is_allengines() ) {
-        if( !me.is_taxiway() and !me.is_holding() ) {
-            me.takeoffinit();
-        }
-
-        # user has relocated on ground
-        if( !me.is_takeoff() and !me.is_holding() ) {
-            # flight may trigger at FG startup !
-            if( curairport != me.airport or currunway != me.runway ) {
-                me.takeoffinit();
+        if( me.is_landing() ) {
+            # when missed by callout
+            if( me.speedkt < me.acceleration.velocitykt( 20 ) ) {
+                me.landingend();
             }
         }
+        
+        # taxi with all engines, without AI
+        elsif( me.is_taxiway() ) {
+        }
+        
+        # taxi with all engines
+        elsif( me.is_terminal() ) {
+        }
+       
+        else {
+            if( !me.is_taxiway() and !me.is_holding() ) {
+                me.takeoffinit();
+            }
 
-        # user has set parking brakes at runway threshold
-        if( me.is_takeoff() ) {
-            if( me.dependency["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
-                me.holdinginit();
+            # user has relocated on ground
+            if( !me.is_takeoff() and !me.is_holding() ) {
+                # flight may trigger at FG startup !
+                if( curairport != me.airport or currunway != me.runway ) {
+                    me.takeoffinit();
+                }
+            }
+
+            # user has set parking brakes at runway threshold
+            if( me.is_takeoff() ) {
+                if( me.dependency["gear-ctrl"].getChild("brake-parking-lever").getValue() ) {
+                    me.holdinginit();
+                }
             }
         }
     }
@@ -1799,12 +1816,18 @@ Voice.landingpilot = func {
    elsif( me.automata2 == "40kt" ) {
        if( me.speedkt < me.acceleration.velocitykt( 20 ) ) {
            me.automata2 = me.pilotcall( "20kt" );
-           if( me.has_AI() ) {
-               me.afterlandinginit();
-           }
-
-           me.taxiwayinit();
+           # wake up AI
+           me.landingend();
        }
+   }
+}
+
+Voice.landingend = func {
+   if( me.has_AI() ) {
+       me.afterlandinginit();
+   }
+   else {
+       me.taxiwayinit();
    }
 }
 

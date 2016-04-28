@@ -1,6 +1,4 @@
-# WARNING :
-# - nasal overriding may not work on some platforms (Cygwin).
-# - put all code in comment to recover the default behaviour.
+# put all code in comment to recover the default behaviour.
 
 
 # ========================
@@ -79,7 +77,10 @@ controls.flapsDown = func( sign ) {
 override_applyBrakes = controls.applyBrakes;
 
 controls.applyBrakes = func(v, which = 0) {
-    if( globals.Concorde.hydraulicsystem.brakes_pedals( v ) ) {
+    if( globals.Concorde.hydraulicsystem == nil ) {
+        override_applyBrakes( v, which );
+    }
+    elsif( globals.Concorde.hydraulicsystem.brakes_pedals( v ) ) {
         # default
         override_applyBrakes( v, which );
     }
@@ -105,4 +106,67 @@ controls.startEngine = func {
     override_startEngine();
 
     globals.Concorde.enginesystem.cutoffexport();
+}
+
+
+# overrides keyboard for autopilot adjustment or floating view.
+
+override_incElevator = controls.incElevator;
+
+controls.incElevator = func {
+    var sign = 1.0;
+    
+    if( arg[0] < 0.0 ) {
+	sign = -1.0;
+    }
+    
+    if( globals.Concorde.seatsystem == nil ) {
+        override_incElevator(arg[0], arg[1]);
+    }
+    elsif( !globals.Concorde.seatsystem.movelengthexport(-0.01 * sign) ) {
+        if( !globals.Concorde.autopilotsystem.datumapexport(1.0 * sign) ) {
+            # default
+            override_incElevator(arg[0], arg[1]);
+        }
+    }
+}
+
+override_incAileron = controls.incAileron;
+
+controls.incAileron = func {
+    var sign = 1.0;
+    
+    if( arg[0] < 0.0 ) {
+	sign = -1.0;
+    }
+    
+    if( globals.Concorde.seatsystem == nil ) {
+        override_incAileron(arg[0], arg[1]);
+    }
+    elsif( !globals.Concorde.seatsystem.movewidthexport(0.01 * sign) ) {
+        if( !globals.Concorde.autopilotsystem.headingknobexport(1.0 * sign) ) {
+            # default
+            override_incAileron(arg[0], arg[1]);
+        }
+    }
+}
+
+override_incThrottle = controls.incThrottle;
+
+controls.incThrottle = func {
+    var sign = 1.0;
+    
+    if( arg[0] < 0.0 ) {
+	sign = -1.0;
+    }
+    
+    if( globals.Concorde.seatsystem == nil ) {
+        override_incThrottle(arg[0], arg[1]);
+    }
+    elsif( !globals.Concorde.seatsystem.moveheightexport(0.01 * sign) ) {
+        if( !globals.Concorde.autothrottlesystem.datumapexport(1.0 * sign) ) {
+            # default
+            override_incThrottle(arg[0], arg[1]);
+        }
+    }
 }

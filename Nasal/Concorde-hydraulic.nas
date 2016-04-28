@@ -140,12 +140,23 @@ Hydraulic.has_gear = func {
    return result;
 }
 
-Hydraulic.has_steering = func {
-   var result = 0.0;
+Hydraulic.has_no_steering = func {
+   var result = 1.0;
    var steeringpsi = me.itself["sensors"].getChild("steering").getValue();
    if( steeringpsi == nil ) steeringpsi = 0;
    if( steeringpsi >= me.HYDFAILUREPSI ) {
-       result = 1.0;
+       result = 0.0;
+   }
+
+   return result;
+}
+
+Hydraulic.has_flight = func {
+   var result = constant.FALSE;
+   var steeringpsi = me.itself["sensors"].getChild("flight").getValue();
+   if( steeringpsi == nil ) steeringpsi = 0;
+   if( steeringpsi >= me.HYDFAILUREPSI ) {
+       result = constant.TRUE;
    }
 
    return result;
@@ -171,7 +182,8 @@ Hydraulic.schedule = func {
    me.itself["power"].getChild("yellow").setValue( me.has_yellow() );
 
    me.itself["power"].getChild("gear").setValue( me.has_gear() );
-   me.itself["power"].getChild("steering").setValue( me.has_steering() );
+   me.itself["power"].getChild("steering-off").setValue( me.has_no_steering() );
+   me.itself["power"].getChild("flight").setValue( me.has_flight() );
 }
 
 
@@ -1226,6 +1238,11 @@ Flight = {};
 Flight.new = func {
    var obj = { parents : [Flight,System], 
 
+               elevondown : 0.0,                             # by gravity
+               
+               POSNEUTRAL : 0.0,
+               POSDOWN : 1.0,
+               
                FLIGHTSEC : 3.0,                              # refresh rate
 
                WINDKT : 40
@@ -1238,6 +1255,9 @@ Flight.new = func {
 
 Flight.init = func() {
     me.inherit_system("/systems/flight");
+    
+    # bind jsbsim property
+    me.itself["root"].getChild("gravity").setValue( me.elevondown );
 }
 
 Flight.resetexport = func {
@@ -1314,6 +1334,7 @@ Flight.schedule = func {
 }
 
 Flight.monitoring = func {
+   var gravity = me.POSNEUTRAL;
    var pfcu_inner = constant.FALSE;
    var pfcu_outer = constant.FALSE;
    var pfcu_rudder = constant.FALSE;
@@ -1334,7 +1355,6 @@ Flight.monitoring = func {
        }
    }
 
-
    # surfaces float into the wind
    if( me.noinstrument["airspeed"].getValue() > me.WINDKT ) {
        me.itself["pfcu"].getChild("inner-zero").setValue( pfcu_inner );
@@ -1347,14 +1367,24 @@ Flight.monitoring = func {
    }
 
    # without wind and hydraulics, surfaces fall down
+   # http://www.concordesst.com/flightsys.html
    else {
+       if( !me.dependency["hydraulic"].getChild("flight").getValue() ) {
+           gravity = me.POSDOWN;
+       }
+       
        me.itself["pfcu"].getChild("inner-zero").setValue( constant.FALSE );
        me.itself["pfcu"].getChild("outer-zero").setValue( constant.FALSE );
        me.itself["pfcu"].getChild("rudder-zero").setValue( constant.FALSE );
 
-       me.itself["pfcu"].getChild("inner-stuck").setValue( pfcu_inner );
-       me.itself["pfcu"].getChild("outer-stuck").setValue( pfcu_outer );
-       me.itself["pfcu"].getChild("rudder-stuck").setValue( pfcu_rudder );
+       me.itself["pfcu"].getChild("inner-stuck").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("outer-stuck").setValue( constant.FALSE );
+       me.itself["pfcu"].getChild("rudder-stuck").setValue( constant.FALSE );
+   }
+   
+   if( me.elevondown != gravity ) {
+       me.elevondown = gravity;
+       interpolate(me.itself["root"].getChild("gravity").getPath(),me.elevondown,me.FLIGHTSEC);
    }
 }
 

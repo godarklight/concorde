@@ -37,13 +37,10 @@ Virtualcopilot.new = func {
                VLA15KT : 250.0,
                MARGINKT : 25.0,
 
-               speedkt : 0.0,
-
                FL41FT : 41000.0,
                FL15FT : 15000.0,
 
                aglft : 0.0,
-               altitudeft : 0.0,
 
                STEPFTPM : 100.0,
                GLIDEFTPM : -1500.0,                           # best glide (guess)
@@ -167,8 +164,8 @@ Virtualcopilot.unexpected = func {
    if( me.itself["root-ctrl"].getChild("activ").getValue() ) {
        me.set_checklist();
 
-       me.speedkt = me.noinstrument["airspeed"].getValue();
-       me.altitudeft = me.noinstrument["altitude"].getValue();
+       me.airspeedperception( constant.TRUE );
+       me.altitudeperception( constant.TRUE );
 
        # 4 engines flame out
        me.engine4flameout();
@@ -222,8 +219,8 @@ Virtualcopilot.engine4flameout = func {
 Virtualcopilot.normal = func {
     me.rates = me.TAKEOFFSEC;
 
-    me.speedkt = me.noinstrument["airspeed"].getValue();
-    me.altitudeft = me.noinstrument["altitude"].getValue();
+    me.airspeedperception( constant.FALSE );
+    me.altitudeperception( constant.FALSE );
     me.aglft = me.noinstrument["agl"].getValue();
 
 

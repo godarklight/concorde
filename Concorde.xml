@@ -598,18 +598,15 @@
         </contact>
     </ground_reactions>
 
-    <system name="Nose Wheel Steering">
-     <property>systems/NWS/engaged</property>
-     <property value="1">systems/NWS/hydraulics</property>
-
+    <system name="Hydraulics">
      <channel name="Nose Wheel Steering">
-        <scheduled_gain name="systems/NWS/pedal-cmd">
+        <scheduled_gain name="systems/hydraulics/nws-pedal-cmd">
          <documentation>
               default is rudder pedal (flight).
          </documentation>
          <input>fcs/rudder-cmd-norm</input>
          <table>
-          <independentVar lookup="row">systems/NWS/engaged</independentVar>
+          <independentVar lookup="row">systems/hydraulics/nws-engaged</independentVar>
            <tableData>
               0      1.0
               1      0.0
@@ -618,29 +615,62 @@
          <output>fcs/rudder-pedal-norm</output>
         </scheduled_gain>
 
-        <scheduled_gain name="systems/NWS/steer-cmd">
+        <scheduled_gain name="systems/hydraulics/nws-steer-cmd">
          <documentation>
-              - default is no wheel steering (flight).
-              - default is hydraulics.
+              - default is not engaged (flight).
+              - default is able (hydraulics).
               - rudder steering at 10 deg.
          </documentation>
          <input>fcs/rudder-cmd-norm</input>
          <table>
-          <independentVar lookup="row">systems/NWS/engaged</independentVar>
-          <independentVar lookup="column">systems/NWS/hydraulics</independentVar>
+          <independentVar lookup="row">systems/hydraulics/nws-engaged</independentVar>
+          <independentVar lookup="column">systems/hydraulics/nws-unable</independentVar>
            <tableData>
                      0.0      1.0
-              0     -0.0     -0.171
-              1     -0.0     -1.0
+              0     -0.171   -0.0
+              1     -1.0     -0.0
            </tableData>
          </table>
          <output>fcs/steer-cmd-norm</output>
-      </scheduled_gain>
+        </scheduled_gain>
+     </channel>
+
+     <channel name="Pitch Hydraulics">
+        <scheduled_gain name="systems/hydraulics/elevator-yoke-cmd">
+         <documentation>
+              default is yoke (flight).
+         </documentation>
+         <input>fcs/elevator-cmd-norm</input>
+         <table>
+          <independentVar lookup="row">systems/hydraulics/elevon-gravity</independentVar>
+           <tableData>
+              0      1.0
+              1      0.0
+           </tableData>
+         </table>
+         <output>fcs/elevator-yoke-norm</output>
+        </scheduled_gain>
+     </channel>
+
+     <channel name="Roll Hydraulics">
+        <scheduled_gain name="systems/hydraulics/aileron-yoke-cmd">
+         <documentation>
+              default is yoke (flight).
+         </documentation>
+         <input>fcs/aileron-cmd-norm</input>
+         <table>
+          <independentVar lookup="row">systems/hydraulics/elevon-gravity</independentVar>
+           <tableData>
+              0      1.0
+              1      0.0
+           </tableData>
+         </table>
+         <output>fcs/aileron-yoke-norm</output>
+        </scheduled_gain>
      </channel>
     </system>
     
     <system name="Tractor">
-     <property>/sim/model/pushback/target-speed-fps</property>
      <channel name="Tractor">
 
       <switch name="systems/pushback/linked">
@@ -686,7 +716,7 @@
      <channel name="Pitch">
 
         <summer name="Pitch Trim Sum">
-            <input>fcs/elevator-cmd-norm</input>
+            <input>fcs/elevator-yoke-norm</input>
             <input>fcs/pitch-trim-cmd-norm</input>
             <clipto>
                 <min>-1.0000</min>
@@ -724,7 +754,7 @@
      <channel name="Roll">
 
         <summer name="Roll Trim Sum">
-            <input>fcs/aileron-cmd-norm</input>
+            <input>fcs/aileron-yoke-norm</input>
             <input>fcs/roll-trim-cmd-norm</input>
             <clipto>
                 <min>-1.0000</min>
@@ -958,9 +988,6 @@
               => real engine diameter is 1.65 m = (11 - 7.7) / 2.
             - Thruster center 3/4 of length (2428 in.), aligned with engines.
         </documentation>
-
-        <property>fcs/ground-idle</property>
-        <property>fcs/intake-subsonic-pos</property>
 
         <engine file="Olympus593Mrk610">
             <location unit="IN">

@@ -15,7 +15,7 @@
     </key>
     <key>
       <name>left/right</name>
-      <desc>autopilot heading</desc>
+      <desc>autopilot track heading (knob)</desc>
     </key>
     <key>
       <name></name>
@@ -23,23 +23,23 @@
     </key>
     <key>
       <name>up/down</name>
-      <desc>increase/decrease autopilot altitude</desc>
+      <desc>increase/decrease (datum) autopilot altitude</desc>
     </key>
     <key>
       <name></name>
       <desc>floating view front/aft</desc>
     </key>
     <key>
-      <name>home/end</name>
-      <desc>increase/decrease autopilot altitude (slow)</desc>
+      <name>ctrl up/down</name>
+      <desc>increase/decrease (datum) autopilot altitude (slow)</desc>
     </key>
     <key>
-     <name></name>
-     <desc>floating view front/aft (fast)</desc>
+      <name></name>
+      <desc>floating view front/aft (fast)</desc>
     </key>
     <key>
       <name>page up/down</name>
-      <desc>increase/decrease autothrottle speed</desc>
+      <desc>increase/decrease (datum) autothrottle speed</desc>
     </key>
     <key>
       <name></name>
@@ -176,9 +176,7 @@
 
 <!-- FDM ops -->
 
-    <text>
- ________________________Procedures_________________________
- Takeoff (408000 lb) :
+<text> Takeoff (408000 lb) :
             nose 5 deg, afterburner, V1 165 kt,
             VR 195 kt, pitch 13.5 deg at rotation, V2 220 kt.
             trim before engaging autopilot.
@@ -232,7 +230,6 @@
 
  max range : supersonic 3550 nm, subsonic 2760 nm
  fuel flow : 20.5 tons/hour at Mach 2
- max temperature : 127 degC on nose
-    </text>
+ max temperature : 127 degC on nose</text>
 
 </PropertyList>

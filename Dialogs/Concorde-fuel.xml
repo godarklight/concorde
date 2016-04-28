@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 
-<!-- WARNING : The combo must correspond to the comment field in
-               Aircraft/Concorde/Nasal/Concorde-fuel.xml.
--->
-
 <PropertyList>
   <name>Concorde-fuel</name>
   <layout>vbox</layout>
@@ -28,15 +24,15 @@
     <combo>
       <pref-width>300</pref-width>
       <property>/systems/fuel/tanks/dialog</property>
-      <value>max landing</value>
-      <value>max takeoff</value>
-      <value>min fuel</value>
-      <value>max fuel</value>
-      <value>supersonic climb</value>
-      <value>supersonic cruise</value>
-      <value>supersonic descent (auxiliary)</value>
-      <value>low level (trim)</value>
-      <value>low level (cross feed)</value>
+      <value alias="/systems/fuel/tanks/filling[0]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[1]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[2]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[3]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[4]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[5]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[6]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[7]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[8]/comment"/>
     </combo>
   </group>
 

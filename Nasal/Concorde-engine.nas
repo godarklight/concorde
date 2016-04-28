@@ -576,6 +576,7 @@ Rating.new = func {
                THROTTLETAKEOFF : 1.0,                         # N2 105.7 % (106.0 in Engines file)
                THROTTLECLIMB : 0.980,                         # N2 105.1 %
                THROTTLECRUISE : 0.967,                        # N2 104.5 % (guess)
+               THROTTLEREVERSEGROUND : 0.433,                 # N2 98 %
 
                GEARLEFT : 1,
                GEARRIGHT : 3
@@ -691,7 +692,13 @@ Rating.level = func( index ) {
 
     # autoland first
     if( me.is_takeoff( index ) ) {
-        maxthrottle = me.THROTTLETAKEOFF;
+        if( me.itself["root-ctrl"][index].getChild("reverser").getValue() ) {
+            maxthrottle = me.THROTTLEREVERSEGROUND;
+        }
+        else
+        {
+            maxthrottle = me.THROTTLETAKEOFF;
+        }
     }
 
     # flight

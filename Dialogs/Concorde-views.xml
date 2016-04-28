@@ -234,6 +234,10 @@
     </button>
   </group>
 
+  <text>
+    <label></label>
+  </text>
+
   <group>
     <stretch>true</stretch>
     <layout>hbox</layout>
@@ -253,6 +257,17 @@
        <script>setprop("/sim/current-view/view-number", "3");</script>
       </binding>
     </button>
+
+    <text>
+     <halign>hleft</halign>
+     <property>/sim/tower/airport-id</property>
+     <live>true</live>
+     <color>
+      <red>0.2</red>
+      <green>0.8</green>
+      <blue>0.2</blue>
+     </color>
+    </text>
 
     <button>
       <pref-width>130</pref-width>

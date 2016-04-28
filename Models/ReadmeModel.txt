@@ -31,7 +31,6 @@ Pitch
 The original 3D model had a pitch and a longer front gear :
 - the fuselage is always horizontal (B).
 - the pitch seems to exist (C)(D) at empty load.
-- the front gear seems longer in flight (piston extended) (E).
 
 
 Gear
@@ -107,7 +106,7 @@ References
 (D) http://www.concordesst.com/video/98airtoair.mov :
     British Airways clip.
 
-(E) http://www.airliners.net/open.file/0441886/L/ :
+    http://www.airliners.net/open.file/0441886/L/ :
     G-BOAE, by Harm Rutten.
 
     http://www.eflightmanuals.com/ :

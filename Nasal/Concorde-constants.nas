@@ -54,6 +54,8 @@ Constantaero.new = func {
                SCHEDULEAPPROACH : 1,
                SCHEDULENORMAL : 0,
 
+               RADIONM : 200,                                    # radio range
+               
                FULLLB : 408000,
                LANDINGLB : 245000,
                EMPTYLB : 203000,
@@ -386,6 +388,17 @@ Constant.crossnorth = func( offsetdeg ) {
        offsetdeg = offsetdeg - me.DEG360;
    }
    elsif( offsetdeg < - me.DEG180 ) {
+       offsetdeg = offsetdeg + me.DEG360;
+   }
+
+   return offsetdeg;
+}
+
+Constant.truncatenorth = func( offsetdeg ) {
+   if( offsetdeg > me.DEG360 ) {
+       offsetdeg = offsetdeg - me.DEG360;
+   }
+   elsif( offsetdeg < 0 ) {
        offsetdeg = offsetdeg + me.DEG360;
    }
 

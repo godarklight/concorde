@@ -28,9 +28,14 @@ Virtualcrew.new = func {
                taskend : constant.TRUE,
                taskground : constant.FALSE,
                taskcrew : constant.FALSE,
+               taskallways : constant.FALSE,
   
                activ : constant.FALSE,
                running : constant.FALSE,
+               
+               altitudeft : 0.0,
+
+               speedkt : 0.0,
 
                state : ""
          };
@@ -54,6 +59,7 @@ Virtualcrew.inherit_virtualcrew = func( path ) {
     me.taskend = obj.taskend;
     me.taskground = obj.taskground;
     me.taskcrew = obj.taskcrew;
+    me.taskallways = obj.taskallways;
 
     me.activ = obj.activ;
     me.running = obj.running;
@@ -90,6 +96,11 @@ Virtualcrew.done_crew = func( message = "" ) {
     me.taskcrew = constant.TRUE;
 
     me.done( message );
+}
+
+Virtualcrew.done_allways = func {
+    # cannot complete, but must perform allways tasks
+    me.taskallways = constant.TRUE;
 }
 
 Virtualcrew.log = func( message ) {
@@ -194,11 +205,33 @@ Virtualcrew.completed = func {
 Virtualcrew.has_completed = func {
     var result = constant.FALSE;
 
-    if( me.can() ) {
+    # except if still something to do, or allways tasks
+    if( me.can() and !me.taskallways ) {
         result = me.is_completed();
     }
 
+    me.taskallways = constant.FALSE;
+ 
     return result;
+}
+
+Virtualcrew.altitudeperception = func( emergency ) {
+   if( me.dependency["altimeter"].getChild("serviceable").getValue() and !emergency ) {
+       me.altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue()
+   }
+   else {
+       me.altitudeft = me.noinstrument["altitude"].getValue();
+   }
+}
+
+Virtualcrew.airspeedperception = func( emergency ) {
+   if( me.dependency["airspeed"].getChild("serviceable").getValue() and
+       !me.dependency["airspeed"].getChild("failure-flag").getValue() and !emergency ) {
+       me.speedkt = me.dependency["airspeed"].getChild("indicated-speed-kt").getValue()
+   }
+   else {
+       me.speedkt = me.noinstrument["airspeed"].getValue();
+   }
 }
 
 
@@ -980,9 +1013,6 @@ RadioManagement.new = func {
 
                autopilotsystem : nil,
 
-               EARTHKM : 20000,                  # largest distance between 2 points on earth surface
-               RANGENM : 200,                    # range to change the radio frequencies
-
                DESCENTFPM : -100,
 
                target : "",
@@ -1102,9 +1132,15 @@ RadioManagement.set_vor = func( index, task ) {
                     task.toggleclick("vor " ~ index);
                 }
             }
-
+            
             if( change ) {
                 me.autopilotsystem.apsendnavexport();
+                
+                # feedback of AI activity
+                if( index == 0 ) {
+                    me.itself["root"].getChild("radio-vor").setValue( me.target );
+                    me.feedback();
+                }
             }
         }
     }
@@ -1117,6 +1153,7 @@ RadioManagement.set_adf = func( index, task ) {
         var adf = phase.getChildren("adf");
 
         if( index < size( adf ) ) {
+            var change = constant.FALSE;
             var frequency = nil;
             var frequencykhz = 0;
             var currentkhz = 0;
@@ -1129,6 +1166,7 @@ RadioManagement.set_adf = func( index, task ) {
 
                 if( currentkhz != frequencykhz ) {
                     me.dependency["adf"][index].getNode("frequencies/standby-khz").setValue(frequencykhz);
+                    change = constant.TRUE;
                 }
             }
 
@@ -1140,6 +1178,14 @@ RadioManagement.set_adf = func( index, task ) {
                 if( currentkhz != frequencykhz ) {
                     me.dependency["adf"][index].getNode("frequencies/selected-khz").setValue(frequencykhz);
                     task.toggleclick("adf " ~ index);
+                }
+            }
+
+            if( change ) {
+                # feedback of AI activity
+                if( index == 0 ) {
+                    me.itself["root"].getChild("radio-adf").setValue( me.target );
+                    me.feedback();
                 }
             }
         }
@@ -1165,16 +1211,16 @@ RadioManagement.get_phase = func {
 RadioManagement.is_change = func {
    var result = constant.FALSE;
    var index = me.NOENTRY;
-   var distancemeter = 0.0;
-   var nearestmeter = me.EARTHKM * constant.KMTOMETER;
+   var distancenm = 0.0;
+   var nearestnm = me.NOENTRY;
    var airport = "";
    var info = nil;
    var flight = geo.aircraft_position();
    var destination = geo.Coord.new();
-
+   
 
    # nearest airport
-   me.target = "";
+   nearestid = "";
    for(var i=0; i<size(me.itself["airport"]); i=i+1) {
        airport = me.itself["airport"][ i ].getChild("airport-id").getValue();
        info = airportinfo( airport );
@@ -1196,12 +1242,25 @@ RadioManagement.is_change = func {
        if( me.tower != me.target ) {
            me.entry = index;
 
+           me.target = nearestid;
            me.itself["root"].getChild("airport-id").setValue( me.target );
 
            result = constant.TRUE;
        }
    }
 
+
+   return result;
+}
+
+RadioManagement.getAirport = func( index, path ) {
+   var result = constant.FALSE;
+   var child = nil;
+
+   child = me.itself["airport"][ index ].getChild(path);
+   if( child != nil ) {
+       result = child.getValue();
+   }
 
    return result;
 }

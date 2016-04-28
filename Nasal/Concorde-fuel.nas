@@ -1011,7 +1011,6 @@ TotalFuel.init = func {
 # total of fuel in kg
 TotalFuel.schedule = func {
    var fuelgalus = 0.0;
-   var speedup = me.noinstrument["speed-up"].getValue();
 
    # last total
    var tanksgalus = me.itself["root"].getChild("total-gal_us").getValue();
@@ -1029,16 +1028,17 @@ TotalFuel.schedule = func {
    var fuelkg = fuelgalus * constant.GALUSTOKG;
 
 
-   # ==========================================================
+   # ======================================================================
    # - MUST BE CONSTANT with speed up : pumping is accelerated.
    # - not real, used to check errors in pumping.
-   # ==========================================================
+   # - JSBSim consumes more with speed up, at the same indicated fuel flow.
+   # ======================================================================
    var stepkg = tankskg - fuelkg;
-   var fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC * speedup );
+   var fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC );
    var fuelkgph = fuelkgpmin * constant.HOURTOMINUTE;
 
    # not real
-   me.itself["root"].getChild("fuel-flow-kg_ph").setValue(fuelkgph);
+   me.itself["root"].getChild("fuel-flow-kg_ph").setValue(int(math.round(fuelkgph)));
 }
 
 
@@ -1065,30 +1065,43 @@ FuelConsumed.init = func {
 }
 
 FuelConsumed.schedule = func {
+   me.reset();
+   me.compute();
+}
+
+FuelConsumed.compute = func {
+   var resetkg = 0.0;
+   var usedkg = 0.0;
    var totalkg = 0.0;
-   var flowlbph = 0.0;
-   var flowkgps = 0.0;
-   var stepkg = 0.0;
-   var totalkg = 0.0;
-   var speedup = me.noinstrument["speed-up"].getValue();
+   var usedlb = 0.0;
 
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        totalkg = me.itself["root"][i].getChild("total-kg").getValue();
+        resetkg = me.itself["root"][i].getChild("reset-kg").getValue();
+        
+        usedlb = me.dependency["propulsion"][i].getChild("fuel-used-lbs").getValue();
+        usedkg = usedlb * constant.LBTOKG;
 
-        # flow meter inside engine
-        flowlbph = me.dependency["engine"][i].getChild("fuel-flow_pph").getValue();
-        flowkgps = flowlbph * constant.LBTOKG / constant.HOURTOSECOND;
-        stepkg = flowkgps * me.STEPSEC * speedup;
-
-        totalkg = totalkg + stepkg;
+        totalkg = usedkg - resetkg;
         me.itself["root"][i].getChild("total-kg").setValue( totalkg );
    }
+   
+   me.reset();
 }
 
 FuelConsumed.reset = func {
+   var usedkg = 0.0;
+   var usedlb = 0.0;
+   
    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-        me.itself["root"][i].getChild("total-kg").setValue( me.RESETKG );
-        me.itself["root"][i].getChild("reset").setValue( constant.FALSE );
+        if( me.itself["root"][i].getChild("reset").getValue() ) {
+            me.itself["root"][i].getChild("total-kg").setValue( me.RESETKG );
+        
+            usedlb = me.dependency["propulsion"][i].getChild("fuel-used-lbs").getValue();
+            usedkg = usedlb * constant.LBTOKG;
+            me.itself["root"][i].getChild("reset-kg").setValue( usedkg );
+        
+            me.itself["root"][i].getChild("reset").setValue( constant.FALSE );
+        }
    }
 }
 

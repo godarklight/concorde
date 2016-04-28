@@ -3,7 +3,7 @@
 <PropertyList>
   <name>Concorde-procedures2</name>
   <layout>vbox</layout>
-  <width>700</width>
+  <width>600</width>
 
   <text>
     <label>Concorde procedures</label>
@@ -36,33 +36,13 @@
      <layout>hbox</layout>
 
      <text>
-       <label>vor adf :</label>
-     </text>
-
-     <text>
-      <property>/systems/human/airport-id</property>
-      <color>
-       <red>0.2</red>
-       <green>0.8</green>
-       <blue>0.2</blue>
-      </color>
-     </text>
-    </group>
-
-    <text>
-      <label></label>
-    </text>
-
-    <group>
-     <layout>hbox</layout>
-
-     <text>
        <label>processing :</label>
      </text>
 
      <text>
       <live>true</live>
       <property>/systems/voice/display/processing</property>
+      <halign>left</halign>
       <color>
        <red>0.8</red>
        <green>0.2</green>
@@ -81,6 +61,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/display/completed</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -103,6 +84,7 @@
      <text>
       <live>true</live>
       <property>/systems/copilot/state-last</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -121,6 +103,7 @@
      <text>
       <live>true</live>
       <property>/systems/engineer/state-last</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>

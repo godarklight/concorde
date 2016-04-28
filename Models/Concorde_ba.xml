@@ -2136,6 +2136,22 @@
 
  <animation>
   <type>rotate</type>
+  <object-name>Right2Elevon</object-name>
+  <property>systems/flight/gravity</property>
+  <factor>-23.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>
+  <axis>
+   <x1-m>14.008</x1-m>
+   <y1-m>12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>6.746</y2-m>
+   <z2-m>-0.303</z2-m>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/right-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
@@ -2157,6 +2173,24 @@
   <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m>13.965</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-0.182</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RIailaron</object-name> <!-- inner elevon : no flap -->
+  <property>systems/flight/gravity</property>
+  <factor>9</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
@@ -2212,6 +2246,22 @@
 
  <animation>
   <type>rotate</type>
+  <object-name>Left2Elevon</object-name>
+  <property>systems/flight/gravity</property>
+  <factor>23.5</factor> <!-- max real is 23.5 deg -->
+  <offset-deg>0</offset-deg>
+  <axis>
+   <x1-m>14.008</x1-m>
+   <y1-m>-12.036</y1-m>
+   <z1-m>-0.852</z1-m>
+   <x2-m>13.992</x2-m>
+   <y2-m>-6.746</y2-m>
+   <z2-m>-0.303</z2-m>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/left-aileron-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
@@ -2233,6 +2283,24 @@
   <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
   <property>surface-positions/elevator-pos-norm</property>
   <factor>8</factor> <!-- max real is 9 deg -->
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m>13.965</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-0.182</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LIailaron</object-name> <!-- inner elevon : no flap -->
+  <property>systems/flight/gravity</property>
+  <factor>9</factor> <!-- max real is 9 deg -->
   <offset-deg>0</offset-deg>
   <center>
    <x-m>13.965</x-m>
