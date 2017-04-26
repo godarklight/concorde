@@ -12,8 +12,8 @@
      - unit (meter) is the same than Blender (add 0.2 in length to the landing light cone).
      - white material makes them visible at night.
      - scaling makes them more visible at night.
-
-
+     
+     
      Credits
      =======
      Light texture from bo105 (M. Franz).
@@ -51,69 +51,6 @@
    <blue>1.0</blue>
    <factor-prop>instrumentation/generic/factor</factor-prop>
   </emission> 
- </animation>
-
- <animation>
-  <type>translate</type>
-  <object-name>MainLanding</object-name>
-  <offset-m>-10.856</offset-m>
-  <axis>
-   <x>1.0</x>
-   <y>0.0</y>
-   <z>0.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>translate</type>
-  <object-name>MainLanding</object-name>
-  <offset-m>-1.553</offset-m>
-  <axis>
-   <x>0.0</x>
-   <y>1.0</y>
-   <z>0.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>translate</type>
-  <object-name>MainLanding</object-name>
-  <offset-m>-0.272</offset-m>
-  <axis>
-   <x>0.0</x>
-   <y>0.0</y>
-   <z>1.0</z>
-  </axis>
- </animation>
-
- <animation>
-  <type>rotate</type>
-  <object-name>MainLanding</object-name>
-  <property>controls/lighting/external/main-landing[0]/norm</property>
-  <interpolation>
-   <entry>
-     <ind>0.0</ind>
-     <dep>0.0</dep>
-   </entry>
-   <entry>
-     <ind>1.0</ind>
-     <dep>0.0</dep>
-   </entry>
-   <entry>
-     <ind>1.2</ind>
-     <dep>-10.0</dep>
-   </entry>
-  </interpolation>   
-  <center>
-   <x-m>0</x-m>
-   <y-m>0</y-m>
-   <z-m>0</z-m>
-  </center>
-  <axis>
-   <x>0</x>
-   <y>1</y>
-   <z>0</z>
-  </axis>
  </animation>
 
  <animation>

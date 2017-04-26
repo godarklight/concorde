@@ -45,7 +45,7 @@ Range :
     3550 nm supersonic, 2760 nm subsonic (Mach 0.95 FL300) (C).
     6582 km [3550 nm] with FAR fuel reserves and payload of 19500 lb (F).
     6228 km [3360 nm] with FAR fuel reserves and maximum payload (F).
-Duration : Paris / New York 3h45 (D), London Heathrow / New York 3h50 (E).
+Duration : London Heathrow / New York 3h50 (E).
 Maximum operating altitude : 60000 ft (C).
 Maximum total temperature (TMO) : 127 degC on nose.
 
@@ -59,7 +59,7 @@ Takeoff
 
 Subsonic cruise
 ---------------
-- Mach 0.93 at FL250, or Mach 0.95 at FL260 (full load) (B).
+- Mach 0.95 at FL260 (full load) (G).
 
 Supersonic climb
 ----------------
@@ -81,7 +81,7 @@ Supersonic cruise
 
 Supersonic descent
 ------------------
-- decelerate speed until 325-380 kt before starting the descent (B).
+- decelerate speed until 350 kt before starting the descent (G).
 - deceleration is started at 250 NM : 165 NM from Mach 2.0 FL580 to Mach 1.0 at FL350 (A3).
 - maintain the 50 ft climb rate to accelerate the deceleration.
 - maintain the 325-380 kt speed during the descent.
@@ -106,8 +106,7 @@ Fuel load
 
 Sounds
 ------
-- voice callouts requires Festival (festival --server in a separate shell),
-  set /sim/sound/voices/enabled to true.
+- for voice callouts, set /sim/sound/voices/enabled to true.
 - to disable text display of callouts, press "shift-F12" (saved on exit in aircraft-data). 
 
 Frame rate
@@ -122,7 +121,7 @@ electric, hydraulic, pressurization, air bleed, temperature.
 
 Known compatibility
 -------------------
-2016.1.1 : minimal version.
+2017.1.1 : minimal version.
 
 
 Keyboard
@@ -198,10 +197,14 @@ Additional behaviour
 - "alt-n"        : "n"ose standby.
 - "q"            : "q"uit speed up.
 - "y"            : "y"oke.
+- "ctrl left /   : move floating view in width (fast).
+   ctrl right"
 - "ctrl up /     : increases / decreases (datum) autopilot altitude (slow).
    ctrl dow        Altitude hold, vertical speed hold, pitch hold, speed hold with pitch, Mach hold with pitch.
 - "ctrl up /     : move floating view in length (fast).
    ctrl down"
+- "ctrl page up /: move floating view in height (fast).
+   ctrl page down"
 
 
 Mouse
@@ -271,7 +274,7 @@ Virtual crew
 ============
 - the virtual crew operates parallely to the voice callouts.
 - a green crew member is performing his checklist.
-- a yellow crew member is not performing his checklist.
+  Green fades when crew member is not performing his checklist.
 - a white checklist is in process.
 - by default, virtual crew triggers checklists, if in flight :
   for manual operation, press "= p s".
@@ -602,8 +605,6 @@ TO DO JSBSim
 
 Known problems
 ==============
-- 3.4.0 audio panel : right click doesn't work (<button>2</button>).
-  Use controls/audio/crew/[member]/[radio]/volume-push.
 - data are not saved on reinit.
 
 Known problems route manager
@@ -666,16 +667,11 @@ References
 
 (A4) http://www.airliners.net/discussions/tech_ops/read.main/60137/ :
 
-(B) http://denis-camus.club.fr/Concorde/PM2C_V2_MANUAL.exe :
-    scan of an Air France ops manual (in French).
-
 (C) http://www.titanic.com/story/159/Concorde/ :
-
-(D) http://www.concorde-jet.com/ :
 
 (E) http://www.alpa.org/alpa/DesktopModules/ViewDocument.aspx?DocumentID=814 :
 
-(F) http://www.aeroflight.co.uk/types/international/aerospat-bac/concorde/concorde.htm :
+(F) http://www.aeroflight.co.uk/aircraft/types/type-details/aerospatialebac-concorde.htm :
 
 (G) http://concorde.docs.free.fr/ :
 
@@ -686,4 +682,4 @@ References
     British Airways maintenance manual.
 
 
-2nd April 2016.
+1st April 2017.

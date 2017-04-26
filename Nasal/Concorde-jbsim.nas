@@ -15,22 +15,18 @@
 ConcordeJSBsim = {};
 
 ConcordeJSBsim.new = func {
-   var obj = { parents : [ConcordeJSBsim,System]
+   var obj = { parents : [ConcordeJSBsim,System.new("/systems/flight")],
+   
+               DISABLETANK : 0
          };
 
-   obj.init();
-
    return obj;
-}
-
-ConcordeJSBsim.init = func {
-   me.inherit_system("/systems/flight");
 }
 
 ConcordeJSBsim.specific = func {
    # disable JSBSim stand alone mode
    for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
-        me.itself["tank"][i].getChild("priority").setValue( 0 );
+        me.itself["tank"][i].getChild("priority").setValue( me.DISABLETANK );
    }
 }
 
@@ -82,7 +78,9 @@ ConcordeMain.putinrelation = func {
                              hydraulicsystem, lightingsystem, MWSsystem, voicecrew );
    engineercrew.set_relation( airbleedsystem, autopilotsystem, electricalsystem, enginesystem,
                               fuelsystem, hydraulicsystem, lightingsystem, voicecrew );
-   voicecrew.set_relation( autopilotsystem );
+   voicecrew.set_relation( autopilotsystem, copilothuman, engineerhuman );
+   crewcrew.set_relation( airbleedsystem, autopilotsystem, autothrottlesystem, electricalsystem, fuelsystem,
+                          crewscreen, copilotcrew, engineercrew, voicecrew, copilothuman, engineerhuman );
 
    engineerhuman.set_relation( seatsystem );
 }
@@ -95,14 +93,7 @@ ConcordeMain.synchronize = func {
 }
 
 ConcordeMain.startupcron = func {
-   if( getprop( "/controls/crew/startup" ) ) {
-       copilotcrew.toggleexport();
-       copilothuman.wakeupexport();
-       engineercrew.toggleexport();
-       engineerhuman.wakeupexport();
-       crewscreen.toggleexport();
-       voicecrew.toggleexport();
-   }
+   crewcrew.startupexport();
 }
 
 # 1 seconds cron (only, to spare frame rate)
@@ -173,6 +164,7 @@ ConcordeMain.sec15cron = func {
    TMOinstrument.schedule();
    GPWSsystem.slowschedule();
    engineerhuman.slowschedule();
+   enginesystem.veryslowschedule();
 
    # schedule the next call
    settimer(func { me.sec15cron(); },15);
@@ -191,7 +183,7 @@ ConcordeMain.sec60cron = func {
    electricalsystem.slowschedule();
    airbleedsystem.slowschedule();
    antiicingsystem.slowschedule();
-   copilotcrew.slowschedule();
+   copilotcrew.veryslowschedule();
    engineercrew.veryslowschedule();
 
    # schedule the next call
@@ -214,18 +206,25 @@ ConcordeMain.savedata = func {
                        "/controls/captain/countdown",
                        "/controls/crew/captain-busy",
                        "/controls/crew/checklist",
+                       "/controls/crew/disable",
                        "/controls/crew/ins-alignment",
-                       "/controls/crew/landing-lights",
+                       "/controls/crew/landing-lights/as-required",
+                       "/controls/crew/landing-lights/set",
+                       "/controls/crew/landing-lights/taxi",
                        "/controls/crew/night-lighting",
                        "/controls/crew/presets",
-                       "/controls/crew/radio",
+                       "/controls/crew/radio/set",
+                       "/controls/crew/radio/ignore",
                        "/controls/crew/startup",
+                       "/controls/crew/state/fuel",
                        "/controls/crew/stop-engine23",
                        "/controls/crew/timeout",
                        "/controls/crew/timeout-s",
                        "/controls/environment/als/lights",
+                       "/controls/environment/contrails",
                        "/controls/environment/rain",
                        "/controls/environment/smoke",
+                       "/controls/environment/vortex/visible",
                        "/controls/human/destination/category/diversion",
                        "/controls/human/destination/category/everything",
                        "/controls/human/destination/category/historical",
@@ -237,14 +236,19 @@ ConcordeMain.savedata = func {
                        "/controls/human/destination/sort/distance",
                        "/controls/human/destination/sort/ident",
                        "/controls/human/destination/sort/name",
+                       "/controls/human/lighting/captain",
+                       "/controls/human/lighting/center",
+                       "/controls/human/lighting/copilot",
+                       "/controls/human/lighting/engineer",
                        "/controls/fuel/reinit",
                        "/controls/tractor/distance-m",
                        "/controls/seat/recover",
                        "/controls/seat/yoke",
+                       "/controls/voice/disable",
                        "/controls/voice/sound",
                        "/controls/voice/text",
+                       "/sim/sound/concorde/external",
                        "/sim/user/callsign",
-                       "/systems/flight/presets",
                        "/systems/fuel/presets",
                        "/systems/human/serviceable",
                        "/systems/seat/position/gear-front/x-m",
@@ -319,6 +323,7 @@ ConcordeMain.instantiate = func {
    globals.Concorde.copilotcrew = Concorde.Virtualcopilot.new();
    globals.Concorde.engineercrew = Concorde.Virtualengineer.new();
    globals.Concorde.voicecrew = Concorde.Voice.new();
+   globals.Concorde.crewcrew = Crew.new();
 
    globals.Concorde.copilothuman = Concorde.Copilothuman.new();
    globals.Concorde.engineerhuman = Concorde.Engineerhuman.new();
@@ -350,7 +355,7 @@ ConcordeMain.init = func {
 
    # saved on exit, restored at launch
    me.savedata();
-
+   
    # waits that systems are ready
    settimer(func { me.startupcron(); },2.0);
 

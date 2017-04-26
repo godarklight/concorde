@@ -16,7 +16,7 @@
 Fuel = {};
 
 Fuel.new = func {
-   var obj = { parents : [Fuel,System], 
+   var obj = { parents : [Fuel,System.new("/systems/fuel")], 
 
                tanksystem : Tanks.new(),
                parser : FuelXML.new(),
@@ -31,11 +31,8 @@ Fuel.new = func {
 # at Mach 2, trim tank 10 only feeds 2 supply tanks 5 and 7 : 45200 lb/h, or 6.3 lb/s per tank.
                PUMPLBPSEC : 25,                                              # 25 lb/s for 1 pump.
 
-               PUMPPMIN0 : 0.0,                                              # time step
-               PUMPPMIN : 0.0,                                               # speed up
-
-               PUMPLB0 : 0.0,                                                # rate for step
-               PUMPLB : 0.0,                                                 # speed up
+               PUMPPMIN : 0.0,
+               PUMPLB : 0.0,
 
 # auto trim limits
                FORWARDKG : 24000,
@@ -49,12 +46,11 @@ Fuel.new = func {
 }
 
 Fuel.init = func {
-    me.inherit_system("/systems/fuel");
+    var PUMPPMIN0 = constant.MINUTETOSECOND / me.PUMPSEC;
+    var PUMPLB0 = me.PUMPLBPSEC * me.PUMPSEC;
 
-    me.PUMPPMIN0 = constant.MINUTETOSECOND / me.PUMPSEC;
-    me.PUMPLB0 = me.PUMPLBPSEC * me.PUMPSEC;
-    me.PUMPPMIN = me.PUMPPMIN0;
-    me.PUMPLB = me.PUMPLB0;
+    me.PUMPPMIN = PUMPPMIN0;
+    me.PUMPLB = PUMPLB0;
 
     me.parser.init_FuelXML("/systems/fuel");
     me.tanksystem.init_TankXML();
@@ -67,17 +63,6 @@ Fuel.amber_fuel = func {
 }
 
 Fuel.schedule = func {
-   var speedup = me.noinstrument["speed-up"].getValue();
-
-   if( speedup > 1 ) {
-       me.PUMPPMIN = me.PUMPPMIN0 / speedup;
-       me.PUMPLB = me.PUMPLB0 * speedup;
-   }
-   else {
-       me.PUMPPMIN = me.PUMPPMIN0;
-       me.PUMPLB = me.PUMPLB0;
-   }
-
    me.pumping();
 }
 
@@ -97,6 +82,8 @@ Fuel.menuexport = func {
    me.savestate();
 
    me.itself["root"].getChild("reset").setValue( change );
+   
+   me.fasttrim( me.presets ); 
 }
 
 Fuel.reinitexport = func {
@@ -108,6 +95,73 @@ Fuel.reinitexport = func {
    me.itself["root"].getChild("reset").setValue( constant.TRUE );
 
    me.savestate();
+}
+
+# adjust CG at fuel loading
+Fuel.fasttrim = func( fuelpreset ) {
+   var speedmach = me.noinstrument["mach"].getValue();
+   
+   if( speedmach > constantaero.CLIMBMACH ) {
+       var ratio = 0.0;
+       var pumpgalus = 0.0;
+       
+       # landing
+       if( fuelpreset == 0 ) {
+           pumpgalus = 2100;
+           ratio = me.cg_ratio( speedmach, constantaero.REHEATMACH );
+       }
+       
+       # takeoff
+       elsif( fuelpreset == 1 ) {
+           pumpgalus = 490;
+           ratio = me.cg_ratio( speedmach, constantaero.SUBSONICMACH );
+       }
+       
+       # climb
+       elsif( fuelpreset == 4 ) {
+           pumpgalus = 1400;
+           ratio = me.cg_ratio( speedmach, constantaero.SUBSONICMACH );
+       }
+       
+       # cruise
+       elsif( fuelpreset == 5 ) {
+           pumpgalus = 2950;
+           ratio = me.cg_ratio( speedmach, constantaero.REHEATMACH );
+       }
+       
+       # descent
+       elsif( fuelpreset == 6 ) {
+           pumpgalus = 2450;
+           ratio = me.cg_ratio( speedmach, constantaero.REHEATMACH );
+       }
+       
+       # low level
+       elsif( fuelpreset == 7 ) {
+           pumpgalus = 600;
+           ratio = me.cg_ratio( speedmach, constantaero.SUBSONICMACH );
+       }
+       
+       else {
+           print("unable to trim tank 9");
+       }
+       
+       pumpgalus = pumpgalus * ratio;
+
+       if( pumpgalus > 0.0 ) {
+           me.tanksystem.transfertanks( "11", "9", pumpgalus * constant.GALUSTOLB );
+       }
+   }
+}
+
+Fuel.cg_ratio = func( speedmach, maxmach ) {
+   var ratio = 1.0;
+   
+   if( speedmach < maxmach ) {
+       # climb corridor
+       ratio = ( speedmach - constantaero.CLIMBMACH ) / ( maxmach - constantaero.CLIMBMACH );
+   }
+   
+   return ratio;
 }
 
 Fuel.savestate = func {
@@ -721,16 +775,16 @@ Tanks = {};
 
 Tanks.new = func {
 # tank contents, to be initialised from XML
-   var obj = { parents : [Tanks,TankXML], 
+   var obj = { parents : [Tanks,TankXML.new("/systems/fuel")], 
 
-               CONTENTLB : { "1" : 0.0, "2" : 0.0, "3" : 0.0, "4" : 0.0, "5" : 0.0, "6" : 0.0, "7" : 0.0,
-                             "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0,
-                            "LP1" : 0.0, "LP2" : 0.0, "LP3" : 0.0, "LP4" : 0.0 },
-               TANKINDEX : { "1" : 0, "2" : 1, "3" : 2, "4" : 3, "5" : 4, "6" : 5, "7" : 6,
-                             "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12,
-                            "LP1" : 13, "LP2" : 14, "LP3" : 15, "LP4" : 16 },
-               TANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A",
-                            "LP1", "LP2", "LP3", "LP4" ],
+               cCONTENTLB : { "1" : 0.0, "2" : 0.0, "3" : 0.0, "4" : 0.0, "5" : 0.0, "6" : 0.0, "7" : 0.0,
+                              "8" : 0.0, "9" : 0.0, "10" : 0.0, "11" : 0.0, "5A" : 0.0, "7A" : 0.0,
+                                  "LP1" : 0.0, "LP2" : 0.0, "LP3" : 0.0, "LP4" : 0.0 },
+               cTANKINDEX : { "1" : 0, "2" : 1, "3" : 2, "4" : 3, "5" : 4, "6" : 5, "7" : 6,
+                              "8" : 7, "9" : 8, "10" : 9, "11" : 10, "5A" : 11, "7A" : 12,
+                                  "LP1" : 13, "LP2" : 14, "LP3" : 15, "LP4" : 16 },
+               cTANKNAME : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "5A", "7A",
+                             "LP1", "LP2", "LP3", "LP4" ],
 
                OVERFULL : 0.97,
                OVERFULL : 0.97,
@@ -743,14 +797,22 @@ Tanks.new = func {
 
                HPVALVELB : 30.0                                              # fuel low pressure
          };
-
+    
     obj.init();
-
+    
     return obj;
 }
 
+# fuel initialization
 Tanks.init = func {
-    me.inherit_tankXML("/systems/fuel");
+   me.set_content( me.cCONTENTLB, me.cTANKINDEX, me.cTANKNAME );
+
+   me.AFTTRIMLB["1"] = me.CONTENTLB["1"] * me.AFTTRIM;
+   me.AFTTRIMLB["4"] = me.CONTENTLB["4"] * me.AFTTRIM;
+
+   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
+       me.LOWLEVELLB[i] = me.CONTENTLB[me.TANKNAME[i]] * me.LOWLEVEL;
+   }
 }
 
 Tanks.amber_fuel = func {
@@ -774,18 +836,6 @@ Tanks.amber_fuel = func {
    }
 
    return result;
-}
-
-# fuel initialization
-Tanks.initcontent = func {
-   me.inherit_initcontent();
-
-   me.AFTTRIMLB["1"] = me.CONTENTLB["1"] * me.AFTTRIM;
-   me.AFTTRIMLB["4"] = me.CONTENTLB["4"] * me.AFTTRIM;
-
-   for( var i=0; i < constantaero.NBENGINES; i=i+1 ) {
-       me.LOWLEVELLB[i] = me.CONTENTLB[me.TANKNAME[i]] * me.LOWLEVEL;
-   }
 }
 
 # tank initialization
@@ -860,7 +910,7 @@ Tanks.lowlevel = func {
 Pressurizetank = {};
 
 Pressurizetank.new = func {
-   var obj = { parents : [Pressurizetank,System],
+   var obj = { parents : [Pressurizetank,System.new("/systems/tank")],
 
                diffpressure : TankPressure.new(),
 
@@ -876,8 +926,6 @@ Pressurizetank.new = func {
 };
 
 Pressurizetank.init = func {
-    me.inherit_system("/systems/tank");
-
     me.diffpressure.set_rate( me.TANKSEC );
 }
 
@@ -921,7 +969,7 @@ Pressurizetank.schedule = func {
 TankPressure = {};
 
 TankPressure.new = func {
-   var obj = { parents : [TankPressure,System],
+   var obj = { parents : [TankPressure,System.new("/instrumentation/tank-pressure")],
 
                TANKSEC : 30.0,                         # refresh rate
 
@@ -932,14 +980,8 @@ TankPressure.new = func {
                LOWPSI : -1.75
          };
 
-   obj.init();
-
    return obj;
 };
-
-TankPressure.init = func {
-    me.inherit_system("/instrumentation/tank-pressure");
-}
 
 TankPressure.set_rate = func( rates ) {
     me.TANKSEC = rates;
@@ -990,7 +1032,7 @@ TankPressure.schedule = func {
 TotalFuel = {};
 
 TotalFuel.new = func {
-   var obj = { parents : [TotalFuel,System],
+   var obj = { parents : [TotalFuel,System.new("/instrumentation/fuel")],
 
                STEPSEC : 1.0,                     # 3 s would be enough, but needs 1 s for kg/h
 
@@ -1003,8 +1045,6 @@ TotalFuel.new = func {
 };
 
 TotalFuel.init = func {
-   me.inherit_system("/instrumentation/fuel");
-
    me.nb_tanks = size(me.dependency["tank"]);
 }
 
@@ -1036,7 +1076,7 @@ TotalFuel.schedule = func {
    var stepkg = tankskg - fuelkg;
    var fuelkgpmin = stepkg * constant.MINUTETOSECOND / ( me.STEPSEC );
    var fuelkgph = fuelkgpmin * constant.HOURTOMINUTE;
-
+   
    # not real
    me.itself["root"].getChild("fuel-flow-kg_ph").setValue(int(math.round(fuelkgph)));
 }
@@ -1048,21 +1088,15 @@ TotalFuel.schedule = func {
 FuelConsumed = {};
 
 FuelConsumed.new = func {
-   var obj = { parents : [FuelConsumed,System],
+   var obj = { parents : [FuelConsumed,System.new("/instrumentation", "fuel-consumed")],
 
                STEPSEC : 3.0,
  
                RESETKG : 0
          };
 
-   obj.init();
-
    return obj;
 };
-
-FuelConsumed.init = func {
-   me.inherit_system("/instrumentation", "fuel-consumed");
-}
 
 FuelConsumed.schedule = func {
    me.reset();
@@ -1112,7 +1146,7 @@ FuelConsumed.reset = func {
 AircraftWeight = {};
 
 AircraftWeight.new = func {
-   var obj = { parents : [AircraftWeight,System],
+   var obj = { parents : [AircraftWeight,System.new("/instrumentation/ac-weight")],
 
                clear : constant.TRUE,
 
@@ -1123,14 +1157,8 @@ AircraftWeight.new = func {
                fueldatumkg : 0.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-AircraftWeight.init = func {
-   me.inherit_system("/instrumentation/ac-weight");
-}
 
 AircraftWeight.schedule = func {
    var consumedkg = 0.0;

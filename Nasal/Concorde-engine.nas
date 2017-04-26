@@ -11,13 +11,14 @@
 Engine = {};
 
 Engine.new = func {
-   var obj = { parents : [Engine,System],
+   var obj = { parents : [Engine,System.new("/systems/engines","engine")],
 
                enginecontrol : EngineControl.new(),
                airdoor : AirDoor.new(),
                bucket : Bucket.new(),
                intake : Intake.new(),
                rating : Rating.new(),
+               smoke : Smoke.new(),
                throttles : EngineThrottle.new(),
 
                CUTOFFSEC : 1.0,
@@ -25,14 +26,8 @@ Engine.new = func {
                OILPSI : 15.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-Engine.init = func {
-    me.inherit_system("/systems/engines","engine");
-}
 
 Engine.amber_intake = func( index ) {
     return me.intake.amber_intake( index );
@@ -111,6 +106,10 @@ Engine.slowschedule = func {
     me.intake.schedule();
 }
 
+Engine.veryslowschedule = func {
+    me.smoke.schedule();
+}
+
 Engine.cutoffcron = func {
    for( var i=0; i<constantaero.NBENGINES; i=i+1 ) {
        # engine start by user
@@ -179,16 +178,10 @@ Engine.start = func {
 EngineThrottle = {};
 
 EngineThrottle.new = func {
-   var obj = { parents : [EngineThrottle,System]
+   var obj = { parents : [EngineThrottle,System.new("/systems/engines","engine")]
              };
 
-   obj.init();
-
    return obj;
-}
-
-EngineThrottle.init = func {
-    me.inherit_system("/systems/engines","engine");
 }
 
 EngineThrottle.red_throttle = func {
@@ -242,7 +235,7 @@ EngineThrottle.schedule = func {
 EngineControl = {};
 
 EngineControl.new = func {
-   var obj = { parents : [EngineControl,System],
+   var obj = { parents : [EngineControl,System.new("/systems/engines","engine")],
 
            rating : Rating.new(),
 
@@ -267,13 +260,7 @@ EngineControl.new = func {
            value : ""
          };
 
-   obj.init();
-
    return obj;
-}
-
-EngineControl.init = func {
-    me.inherit_system("/systems/engines","engine");
 }
 
 EngineControl.schedule = func {
@@ -415,7 +402,7 @@ EngineControl.is_speedhigh = func {
 EngineN1 = {};
 
 EngineN1.new = func {
-   var obj = { parents : [EngineN1,System],
+   var obj = { parents : [EngineN1,System.new("/systems/engines","engine")],
 
                TRANSITSEC : 2.5,                              # duration of transit sound
 
@@ -439,14 +426,8 @@ EngineN1.new = func {
                ENGINE4KT : 60.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-EngineN1.init = func {
-    me.inherit_system("/systems/engines","engine");
-}
 
 EngineN1.get_throttle = func( position ) {
     var maxthrottle = constantaero.THROTTLEMAX;
@@ -568,7 +549,7 @@ EngineN1.transitsound = func {
 Rating = {};
 
 Rating.new = func {
-   var obj = { parents : [Rating,System],
+   var obj = { parents : [Rating,System.new("/systems/engines","engine")],
 
                enginen1 : EngineN1.new(),
 
@@ -582,14 +563,8 @@ Rating.new = func {
                GEARRIGHT : 3
          };
 
-   obj.init();
-
    return obj;
 };
-
-Rating.init = func {
-   me.inherit_system("/systems/engines","engine");
-}
 
 Rating.set_throttle = func( position ) {
    var maxthrottle = constantaero.THROTTLEIDLE;
@@ -745,7 +720,7 @@ Rating.is_climb = func( index ) {
 Bucket = {};
 
 Bucket.new = func {
-   var obj = { parents : [Bucket,System],
+   var obj = { parents : [Bucket,System.new("/systems/engines","engine")],
 
                TRANSITSEC : 6.0,                                   # reverser transit in 6 s
                BUCKETSEC : 1.0,                                    # refresh rate
@@ -767,22 +742,20 @@ Bucket.new = func {
    return obj;
 };
 
+Bucket.init = func {
+   var denom = me.SUPERSONICMACH - me.SUBSONICMACH;
+
+   me.set_rate( me.BUCKETSEC );
+
+   me.COEF = me.TAKEOFFDEG / denom;
+}
+
 Bucket.set_rate = func( rates ) {
    var offsetdeg = me.REVERSERDEG - me.TAKEOFFDEG;
 
    me.BUCKETSEC = rates;
 
    me.RATEDEG = offsetdeg * ( me.BUCKETSEC / me.TRANSITSEC );
-}
-
-Bucket.init = func {
-   me.inherit_system("/systems/engines","engine");
-
-   var denom = me.SUPERSONICMACH - me.SUBSONICMACH;
-
-   me.set_rate( me.BUCKETSEC );
-
-   me.COEF = me.TAKEOFFDEG / denom;
 }
 
 Bucket.reverseexport = func {
@@ -955,20 +928,14 @@ Bucket.position = func {
 AirDoor = {};
 
 AirDoor.new = func {
-   var obj = { parents : [AirDoor,System],
+   var obj = { parents : [AirDoor,System.new("/systems/engines","engine")],
 
                ENGINESMACH : 0.26,
                ENGINE4KT : 220.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-AirDoor.init = func {
-   me.inherit_system("/systems/engines","engine");
-}
 
 # air door position
 AirDoor.schedule = func {
@@ -1021,7 +988,7 @@ AirDoor.schedule = func {
 Intake = {};
 
 Intake.new = func {
-   var obj = { parents : [Intake,System],
+   var obj = { parents : [Intake,System.new("/systems/engines","engine")],
 
            MAXRAMP : 50.0,
            MINRAMP : 0.0,
@@ -1047,8 +1014,6 @@ Intake.new = func {
 };
 
 Intake.init = func {
-   me.inherit_system("/systems/engines","engine");
-
    me.OFFSETMACH = me.MAXMACH - me.MINMACH;
 }
 
@@ -1215,5 +1180,48 @@ Intake.superramp = func( ratio, target, present ) {
 Intake.subramp = func( ratio, target, present ) {
    var result = present + ( target - present ) * ratio;
 
+   return result;
+}
+
+
+# =====
+# SMOKE
+# =====
+
+Smoke = {};
+
+Smoke.new = func {
+   var obj = { parents : [Smoke,System.new("/systems/environment")],
+
+               SMOKEGROUNDSEC : 120.0,
+               SMOKEFLIGHTSEC : 12.0,
+               
+               SMOKEGROUNDFEET : 25.0,
+               SMOKEFLIGHTFEET : 20.0
+         };
+
+   return obj;
+};
+
+Smoke.schedule = func {
+   var lifesec = 0.0;
+   var sizefeet = 0.0;
+   var altitudeft = me.noinstrument["altitude"].getValue();
+
+   lifesec = me.ratio( altitudeft, constantaero.LANDINGFT, me.SMOKEFLIGHTSEC, me.SMOKEGROUNDSEC );
+   sizefeet = me.ratio( altitudeft, constantaero.LANDINGFT, me.SMOKEFLIGHTFEET, me.SMOKEGROUNDFEET );
+
+   me.itself["root"].getChild("smoke-sec").setValue(lifesec);
+   me.itself["root"].getChild("smoke-feet").setValue(sizefeet);
+}
+
+Smoke.ratio = func( altitudeft, maxft, minvalue, maxvalue ) {
+   var result = minvalue;
+
+   # spread with wind
+   if( altitudeft <= maxft ) {
+       result = ( ( maxft - altitudeft ) / maxft ) * ( maxvalue - minvalue ) + minvalue;
+   }
+   
    return result;
 }

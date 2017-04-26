@@ -11,7 +11,7 @@
 Pressurization = {};
 
 Pressurization.new = func {
-   var obj = { parents : [Pressurization,System],
+   var obj = { parents : [Pressurization,System.new("/systems/pressurization")],
 
                diffpressure : Differentialpressure.new(),
 
@@ -70,8 +70,6 @@ Pressurization.new = func {
 };
 
 Pressurization.init = func {
-    me.inherit_system("/systems/pressurization");
-
     me.LEAKINHG = me.LEAKINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
     me.DEPRESSURIZEINHG = me.DEPRESSURIZEINHGPM / ( constant.MINUTETOSECOND / me.PRESSURIZESEC );
 
@@ -210,7 +208,7 @@ Pressurization.flow = func( stepinhg, mininhg ) {
     }
 
     me.outflowinhg = me.cabininhg - me.targetinhg;
-    me.outflowinhg = constant.clip( - stepinhg, stepinhg, me.outflowinhg );
+    me.outflowinhg = math.clamp( me.outflowinhg, - stepinhg, stepinhg );
 
     me.cabininhg = me.cabininhg - me.outflowinhg;
 
@@ -486,21 +484,15 @@ Pressurization.schedule = func {
 Differentialpressure = {};
 
 Differentialpressure.new = func {
-   var obj = { parents : [Differentialpressure,System],
+   var obj = { parents : [Differentialpressure,System.new("/instrumentation/differential-pressure")],
 
                DIFFSEC : 5.0,
 
                OVERPRESSUREPSI : 11.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-Differentialpressure.init = func {
-    me.inherit_system("/instrumentation/differential-pressure");
-}
 
 Differentialpressure.set_rate = func( rates ) {
     me.DIFFSEC = rates;
@@ -533,7 +525,7 @@ Differentialpressure.schedule = func {
 Airbleed = {};
 
 Airbleed.new = func {
-   var obj = { parents : [Airbleed,System],
+   var obj = { parents : [Airbleed,System.new("/systems/air-bleed")],
 
                airconditioning : Airconditioning.new(),
 
@@ -547,14 +539,8 @@ Airbleed.new = func {
                adjacent : { 0 : 1, 1 : 0, 2 : 3, 3 : 2  }
          };
 
-   obj.init();
-
    return obj;
 };
-
-Airbleed.init = func {
-    me.inherit_system("/systems/air-bleed");
-}
 
 Airbleed.set_rate = func( rates ) {
     me.AIRSEC = rates;
@@ -764,7 +750,7 @@ Airbleed.has_pressure = func( name, index ) {
 Airconditioning = {};
 
 Airconditioning.new = func {
-   var obj = { parents : [Airconditioning,System],
+   var obj = { parents : [Airconditioning,System.new("/systems/temperature")],
 
                fueltank : TankTemperature.new(),
 
@@ -803,14 +789,8 @@ Airconditioning.new = func {
                               "    4" : "cabin-rear-degc" }
          };
 
-   obj.init();
-
    return obj;
 };
-
-Airconditioning.init = func {
-    me.inherit_system("/systems/temperature");
-}
 
 Airconditioning.set_rate = func( rates ) {
     me.AIRSEC = rates;
@@ -1192,21 +1172,15 @@ Airconditioning.adjustvalve = func( index ) {
 TankTemperature = {};
 
 TankTemperature.new = func {
-   var obj = { parents : [TankTemperature,System],
+   var obj = { parents : [TankTemperature,System.new("/instrumentation/tank-temperature")],
 
                AIRSEC : 1.0,
 
                selector : 0
          };
 
-   obj.init();
-
    return obj;
 };
-
-TankTemperature.init = func {
-   me.inherit_system("/instrumentation/tank-temperature");
-}
 
 TankTemperature.set_rate = func( rates ) {
    me.AIRSEC = rates;

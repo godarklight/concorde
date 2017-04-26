@@ -29,8 +29,6 @@
 
  <path>ADF.ac</path> 
 
-<!-- ROOF FLUORESCENT LIGHTING -->
-
  <animation>
   <name>ADF</name>
   <object-name>Plate</object-name>
@@ -51,11 +49,22 @@
  <animation>
   <type>material</type>
   <object-name>ADF</object-name>
+  <condition>
+   <or>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+    <less-than-equals>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </less-than-equals>
+   </or>
+  </condition>
   <emission>
-   <red>0.71</red>
-   <green>0.79</green>
-   <blue>0.87</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
+   <red-prop>systems/lighting/color/flood/red</red-prop>
+   <green-prop>systems/lighting/color/flood/green</green-prop>
+   <blue-prop>systems/lighting/color/flood/blue</blue-prop>
+   <factor-prop>systems/lighting/level/panel/center</factor-prop>
   </emission> 
  </animation> 
 
@@ -97,7 +106,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -137,7 +146,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -198,15 +207,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>Selector</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq"/>
-    <step>100</step>
+    <factor>-100</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -214,29 +221,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob"/>
-    <step>100</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq"/>
-    <step>-100</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob"/>
-    <step>-100</step>
+    <factor>-100</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -247,15 +232,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorDecimal</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq"/>
-    <step>10</step>
+    <factor>-10</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -263,29 +246,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob-decimal"/>
-    <step>10</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq"/>
-    <step>-10</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob-decimal"/>
-    <step>-10</step>
+    <factor>-10</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -296,15 +257,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorUnit</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq"/>
-    <step>1.0</step>
+    <factor>-1.0</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -312,29 +271,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob-unit"/>
-    <step>1.0</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq"/>
-    <step>-1.0</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob-unit"/>
-    <step>-1.0</step>
+    <factor>-1.0</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -401,15 +338,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>Selector2</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq2"/>
-    <step>100</step>
+    <factor>-100</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -417,29 +352,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob2"/>
-    <step>100</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq2"/>
-    <step>-100</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob2"/>
-    <step>-100</step>
+    <factor>-100</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -450,15 +363,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorDecimal2</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq2"/>
-    <step>10</step>
+    <factor>-10</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -466,29 +377,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob2-decimal"/>
-    <step>10</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq2"/>
-    <step>-10</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob2-decimal"/>
-    <step>-10</step>
+    <factor>-10</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -499,15 +388,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorUnit2</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-frq2"/>
-    <step>1.0</step>
+    <factor>-1.0</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -515,29 +402,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/adf-knob2-unit"/>
-    <step>1.0</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-frq2"/>
-    <step>-1.0</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/adf-knob2-unit"/>
-    <step>-1.0</step>
+    <factor>-1.0</factor>
     <wrap>0</wrap>
    </binding>
    <binding>

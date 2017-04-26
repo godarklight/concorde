@@ -11,7 +11,7 @@
 Hydraulic = {};
 
 Hydraulic.new = func {
-   var obj = { parents : [Hydraulic,System], 
+   var obj = { parents : [Hydraulic,System.new("/systems/hydraulic")], 
 
                parser : HydraulicXML.new(),
                ground : HydGround.new(),
@@ -29,8 +29,6 @@ Hydraulic.new = func {
 }
 
 Hydraulic.init = func() {
-    me.inherit_system("/systems/hydraulic");
-
     me.brakes.set_rate( me.HYDSEC );
 }
 
@@ -193,7 +191,7 @@ Hydraulic.schedule = func {
 HydGround = {};
 
 HydGround.new = func {
-   var obj = { parents : [HydGround,System], 
+   var obj = { parents : [HydGround,System.new("/systems/hydraulic")], 
 
                pumps : [ [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ],     # Y-Y
                          [ constant.TRUE , constant.FALSE, constant.FALSE, constant.TRUE  ],     # G-B
@@ -203,13 +201,7 @@ HydGround.new = func {
                          [ constant.FALSE, constant.TRUE , constant.TRUE , constant.FALSE ] ]    # Y-Y
          };
 
-    obj.init();
-
     return obj;
-}
-
-HydGround.init = func() {
-    me.inherit_system("/systems/hydraulic");
 }
 
 HydGround.schedule = func {
@@ -254,16 +246,10 @@ HydGround.schedule = func {
 WheelChocks = {};
 
 WheelChocks.new = func {
-   var obj = { parents : [WheelChocks,System] 
+   var obj = { parents : [WheelChocks,System.new("/systems/brakes")] 
          };
 
-   obj.init();
-
    return obj;
-}
-
-WheelChocks.init = func {
-    me.inherit_system("/systems/brakes");
 }
 
 WheelChocks.toggle = func {
@@ -312,7 +298,7 @@ WheelChocks.meter = func( index ) {
 Brakes = {};
 
 Brakes.new = func {
-   var obj = { parents : [Brakes,System], 
+   var obj = { parents : [Brakes,System.new("/systems/brakes")], 
 
                heat : BrakesHeat.new(),
                wheelchock : WheelChocks.new(),
@@ -344,8 +330,6 @@ Brakes.new = func {
 }
 
 Brakes.init = func {
-    me.inherit_system("/systems/brakes");
-
     me.set_rate( me.HYDSEC );
 
     # sets 3D lever from brake-parking-lever flag in Concorde-set.xml file
@@ -693,7 +677,7 @@ Brakes.truncate = func( pressurepsi, maxpsi ) {
 BrakesHeat = {};
 
 BrakesHeat.new = func {
-   var obj = { parents : [BrakesHeat,System], 
+   var obj = { parents : [BrakesHeat,System.new("/systems/brakes")], 
 
                COOLSEC : 1000,                             # ( 500 - 15 ) degc / 2 hours
                HYDSEC : 1.0,
@@ -718,8 +702,6 @@ BrakesHeat.new = func {
 }
 
 BrakesHeat.init = func {
-    me.inherit_system("/systems/brakes");
-
     me.set_rate( me.HYDSEC );
 
     me.tempdegc = me.itself["root"].getChild("temperature-degc").getValue();
@@ -838,19 +820,13 @@ BrakesHeat.curvereset = func {
 Rat = {};
 
 Rat.new = func {
-   var obj = { parents : [Rat, System],
+   var obj = { parents : [Rat, System.new("/systems/hydraulic")],
 
                TESTSEC : 2.5,
                DEPLOYSEC : 1.5
          };
 
-   obj.init();
-
    return obj;
-}
-
-Rat.init = func() {
-    me.inherit_system("/systems/hydraulic");
 }
 
 Rat.testexport = func {
@@ -906,23 +882,21 @@ Rat.deploy = func {
 Gear = {};
 
 Gear.new = func {
-   var obj = { parents : [Gear, System],
+   var obj = { parents : [Gear, System.new("/systems/gear")],
 
                damper : PitchDamper.new(),
 
-               STEERINGKT : 15,
+               STEERINGKT : 40,
 
                GEARSEC : 5.0
          };
 
    obj.init();
-
+   
    return obj;
 }
 
 Gear.init = func {
-    me.inherit_system("/systems/gear");
-
     settimer( func { me.schedule(); }, me.GEARSEC );
 }
 
@@ -938,7 +912,7 @@ Gear.steeringexport = func {
        }
    }
 
-   me.dependency["steering"].getChild("wheel").setValue(result);
+   me.itself["root"].getNode("steering").getChild("wheel").setValue(result);
 }
 
 Gear.schedule = func {
@@ -1020,7 +994,7 @@ Gear.standbyexport = func {
 PitchDamper = {};
 
 PitchDamper.new = func {
-   var obj = { parents : [PitchDamper,System],
+   var obj = { parents : [PitchDamper,System.new("/systems/gear")],
 
                wow : WeightSwitch.new(),
 
@@ -1038,13 +1012,7 @@ PitchDamper.new = func {
                field : { "left" : "bogie-left-deg", "right" : "bogie-right-deg" }
          };
 
-   obj.init();
-
    return obj;
-}
-
-PitchDamper.init = func {
-    me.inherit_system("/systems/gear");
 }
 
 PitchDamper.schedule = func {
@@ -1116,7 +1084,7 @@ PitchDamper.damper = func( name ) {
 WeightSwitch = {};
 
 WeightSwitch.new = func {
-  var  obj = { parents : [WeightSwitch,System],
+  var  obj = { parents : [WeightSwitch,System.new("/instrumentation/weight-switch")],
 
                AIRSEC : 15.0,
                TOUCHSEC : 0.2,                                      # to detect touch down
@@ -1130,13 +1098,7 @@ WeightSwitch.new = func {
                ground : { "left" : constant.TRUE, "right" : constant.TRUE }
          };
 
-   obj.init();
-
    return obj;
-}
-
-WeightSwitch.init = func {
-    me.inherit_system("/instrumentation/weight-switch");
 }
 
 WeightSwitch.schedule = func {
@@ -1196,7 +1158,7 @@ WeightSwitch.bogie = func( name ) {
 NoseVisor = {};
 
 NoseVisor.new = func {
-   var obj = { parents : [NoseVisor, System],
+   var obj = { parents : [NoseVisor, System.new("/instrumentation/nose-visor")],
 
                VISORDOWN : 0.0
          };
@@ -1207,9 +1169,7 @@ NoseVisor.new = func {
 };
 
 NoseVisor.init = func() {
-    me.inherit_system("/instrumentation/nose-visor");
-
-    me.VISORDOWN = me.noinstrument["setting"][1].getValue();
+   me.VISORDOWN = me.noinstrument["setting"][1].getValue();
 }
 
 NoseVisor.has_nose_down = func {
@@ -1288,7 +1248,7 @@ NoseVisor.standbyexport = func {
 Flight = {};
 
 Flight.new = func {
-   var obj = { parents : [Flight,System], 
+   var obj = { parents : [Flight,System.new("/systems/flight")], 
 
                elevondown : 0.0,                             # by gravity
                
@@ -1306,8 +1266,6 @@ Flight.new = func {
 }
 
 Flight.init = func() {
-    me.inherit_system("/systems/flight");
-    
     # bind jsbsim property
     me.itself["root"].getChild("gravity").setValue( me.elevondown );
 }
@@ -1448,7 +1406,7 @@ Flight.monitoring = func {
 Doors = {};
 
 Doors.new = func {
-   var obj = { parents : [Doors,System],
+   var obj = { parents : [Doors,System.new("/systems/doors")],
 
                INSIDEDECKZM : 10.60,
 
@@ -1465,8 +1423,6 @@ Doors.new = func {
 };
 
 Doors.init = func {
-   me.inherit_system( "/systems/doors" );
-
    # 10 s, door closed
    me.flightdeck = aircraft.door.new(me.itself["root-ctrl"].getNode("flight-deck").getPath(), 10.0);
 
@@ -1519,7 +1475,7 @@ Doors.engineerdeckexport = func {
 Tractor = {};
 
 Tractor.new = func {
-   var obj = { parents : [Tractor,System],
+   var obj = { parents : [Tractor,System.new("/systems/tractor")],
 
                TRACTORSEC : 10.0,
 
@@ -1534,15 +1490,8 @@ Tractor.new = func {
                initial : nil
              };
 
-# user customization
-   obj.init();
-
    return obj;
 };
-
-Tractor.init = func {
-   me.inherit_system( "/systems/tractor" );
-}
 
 Tractor.schedule = func {
    if( me.itself["root-ctrl"].getChild("pushback").getValue() ) {

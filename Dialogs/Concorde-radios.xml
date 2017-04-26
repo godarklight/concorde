@@ -8,19 +8,32 @@
 
  <name>Concorde-radios</name>
  <width>600</width>
- <height>330</height>
+ <height>380</height>
  <modal>false</modal>
 
  <text>
   <x>10</x>
-  <y>300</y>
+  <y>340</y>
   <label>Concorde Frequencies</label>
  </text>
 
+ <button>
+  <x>575</x>
+  <y>355</y>
+  <width>16</width>
+  <height>16</height>
+  <legend></legend>
+  <keynum>27</keynum>
+  <border>2</border>
+  <binding>
+   <command>dialog-close</command>
+  </binding>
+ </button>
+
  <!-- headers -->
  <group>
-  <x>0</x>
-  <y>280</y>
+  <x>10</x>
+  <y>300</y>
   <text>
    <x>75</x>
    <label>Selected</label>
@@ -36,7 +49,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>240</y>
 
   <text>
@@ -96,7 +109,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>210</y>
 
   <text>
@@ -156,7 +169,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>180</y>
 
   <text>
@@ -226,7 +239,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>150</y>
 
   <text>
@@ -296,7 +309,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>120</y>
 
   <text>
@@ -366,7 +379,7 @@
  </group>
 
  <group>
-  <x>0</x>
+  <x>10</x>
   <y>90</y>
 
   <text>
@@ -437,10 +450,13 @@
  
 
  <group>
+  <y>10</y>
 
   <button>
-   <x>75</x>
-   <y>10</y>
+   <x>50</x>
+   <y>0</y>
+   <width>60</width>
+   <height>30</height>
    <legend>Back</legend>
    <equal>true</equal>
    <key>b</key>
@@ -454,8 +470,40 @@
   </button>
 
   <button>
-   <x>175</x>
-   <y>10</y>
+   <x>200</x>
+   <y>0</y>
+   <width>60</width>
+   <height>30</height>
+   <legend>Reset</legend>
+   <equal>true</equal>
+   <key>r</key>
+   <binding>
+    <command>dialog-update</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>350</x>
+   <y>0</y>
+   <width>60</width>
+   <height>30</height>
+   <legend>Apply</legend>
+   <equal>true</equal>
+   <key>a</key>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
+   </binding>
+  </button>
+
+  <button>
+   <x>500</x>
+   <y>0</y>
+   <width>60</width>
+   <height>30</height>
    <legend>Close</legend>
    <default>true</default>
    <equal>true</equal>
@@ -469,32 +517,6 @@
    </binding>
    <binding>
     <command>dialog-close</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>375</x>
-   <y>10</y>
-   <legend>Reset</legend>
-   <equal>true</equal>
-   <key>r</key>
-   <binding>
-    <command>dialog-update</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>475</x>
-   <y>10</y>
-   <legend>Apply</legend>
-   <equal>true</equal>
-   <key>a</key>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.autopilotsystem.apsendnavexport();</script>
    </binding>
   </button>
 

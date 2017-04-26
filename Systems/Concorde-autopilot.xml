@@ -13,20 +13,8 @@
      Solved by a rudder trim, which unlocks the roll at supersonic speeds.
      - increasing sensitivity reduces waddling at Mach 2 : 1 subsonic PID and
      1 supersonic PID.
-     - looking ahead accelerates the convergence of heading modes.
+     - clamping bank angle accelerates the convergence of heading modes.
      - clamping roll rate smooths heading modes.
-
-
-     Heading modes :
-     .............
-     As looking ahead amplifies oscillations :
-     - not used with supersonic.
-     - not used with autoland.
-     - not used with glide slope.
-     - on mode engagement, nasal delays looking ahead, until the heading error is plausible.
-     - once heading is stable, nasal stops looking ahead.
-
-     Looking ahead can be disabled with /systems/autopilot/pid/prediction-filter.
 
 
 
@@ -57,27 +45,6 @@
      <seconds>5.0</seconds>
      <filter-gain>0.0</filter-gain>
   </predict-simple>
-
-  <!--predict-simple>
-     <input>/autopilot/internal/true-heading-error-deg</input>
-     <output>/autopilot/internal/true-heading-error-deg-15-sec</output>
-     <seconds>15.0</seconds>
-     <filter-gain>0.0</filter-gain>
-  </predict-simple-->
-
-  <!--predict-simple>
-     <input>/autopilot/internal/nav1-heading-error-deg</input>
-     <output>/autopilot/internal/nav1-heading-error-deg-15-sec</output>
-     <seconds>15.0</seconds>
-     <filter-gain>0.0</filter-gain>
-  </predict-simple-->
-
-  <!--predict-simple>
-     <input>/autopilot/internal/fdm-heading-bug-error-deg</input>
-     <output>/autopilot/internal/fdm-heading-bug-error-deg-15-sec</output>
-     <seconds>15.0</seconds>
-     <filter-gain>0.0</filter-gain>
-  </predict-simple-->
 
 
   <!-- =============================================================== -->

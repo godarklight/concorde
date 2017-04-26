@@ -366,7 +366,6 @@ HydComponentArray.get_circuit = func( index ) {
 # for inheritance, the component must be the last of parents.
 HydComponent = {};
 
-# not called by child classes !!!
 HydComponent.new = func {
    var obj = { parents : [HydComponent],
 
@@ -381,13 +380,6 @@ HydComponent.new = func {
 
    return obj;
 };
-
-HydComponent.inherit_hydcomponent = func {
-   var obj = HydComponent.new();
-
-   me.NOGALUS = obj.NOGALUS;
-   me.NOPSI = obj.NOPSI;
-}
 
 HydComponent.set_rate = func( rates ) {
    me.HYDSEC = rates;
@@ -439,7 +431,7 @@ HydComponent.inertia = func( prop, value ) {
 HydSupplier = {};
 
 HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) {
-   var obj = { parents : [HydSupplier,HydComponent],
+   var obj = { parents : [HydSupplier,HydComponent.new()],
 
                value : 0.0,
 
@@ -458,8 +450,6 @@ HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) 
 };
 
 HydSupplier.init = func( rates ) {
-   me.inherit_hydcomponent();
-
    me.set_rate( rates );
 }
 
@@ -559,7 +549,7 @@ HydSupplier.apply = func {
 HydCircuit = {};
 
 HydCircuit.new = func( contentnode, allprops, rates ) {
-   var obj = { parents : [HydCircuit,HydComponent],
+   var obj = { parents : [HydCircuit,HydComponent.new()],
 
                contentgalus : 0.0,
 
@@ -579,8 +569,6 @@ HydCircuit.new = func( contentnode, allprops, rates ) {
 };
 
 HydCircuit.init = func( contentnode, allprops, rates ) {
-   me.inherit_hydcomponent();
-
    me.set_rate( rates );
 
    if( contentnode != nil ) {

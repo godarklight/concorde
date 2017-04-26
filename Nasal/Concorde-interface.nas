@@ -10,7 +10,7 @@
 Seats = {};
 
 Seats.new = func {
-   var obj = { parents : [Seats,System],
+   var obj = { parents : [Seats,System.new("/systems/seat")],
 
                audio : AudioPanel.new(),
                rail : SeatRail.new(),
@@ -40,14 +40,12 @@ Seats.init = func {
    var child = nil;
    var name = "";
 
-   me.inherit_system("/systems/seat");
-
 
    # retrieve the index as created by FG
    for( var i = me.CAPTINDEX; i < size(me.dependency["views"]); i=i+1 ) {
         child = me.dependency["views"][i].getChild("name");
 
-        # nasal doesn't see yet the views of preferences.xml
+        # nasal doesn't see yet the views of defaults.xml
         if( child != nil ) {
             name = child.getValue();
             if( name == "Engineer View" ) {
@@ -521,9 +519,10 @@ Seats.audioexport = func {
 Menu = {};
 
 Menu.new = func {
-   var obj = { parents : [Menu,System],
+   var obj = { parents : [Menu,System.new("/systems/crew")],
                
 # menu handles
+               ai : nil,
                autopilot : nil,
                crew : nil,
                environment : {},
@@ -533,6 +532,7 @@ Menu.new = func {
                navigation : {},
                procedures : {},
                radios : nil,
+               sound : nil,
                systems : nil,
                views : nil,
                voice : {},
@@ -545,13 +545,12 @@ Menu.new = func {
 };
 
 Menu.init = func {
-   me.inherit_system("/systems/crew");
-
    me.menu = me.dialog( "menu" );
+   me.ai = me.dialog( "ai" );
    me.autopilot = me.dialog( "autopilot" );
    me.crew = me.dialog( "crew" );
 
-   me.array( me.environment, 3, "environment" );
+   me.array( me.environment, 4, "environment" );
 
    me.fuel = me.dialog( "fuel" );
    me.ground = me.dialog( "ground" );
@@ -560,9 +559,10 @@ Menu.init = func {
 
    me.array( me.navigation, 2, "navigation" );
 
-   me.array( me.procedures, 4, "procedures" );
+   me.array( me.procedures, 8, "procedures" );
 
    me.radios = me.dialog( "radios" );
+   me.sound = me.dialog( "sound" );
    me.systems = me.dialog( "systems" );
    me.views = me.dialog( "views" );
 
@@ -600,7 +600,7 @@ Menu.array = func( table, max, name ) {
 Crewbox = {};
 
 Crewbox.new = func {
-   var obj = { parents : [Crewbox,System],
+   var obj = { parents : [Crewbox,System.new("/systems/crew")],
 
            MENUSEC : 3.0,
 
@@ -624,8 +624,6 @@ Crewbox.new = func {
 };
 
 Crewbox.init = func {
-    me.inherit_system("/systems/crew");
-
     me.resize();
 
     setlistener(me.noinstrument["startup"].getPath(), crewboxresizecron);
@@ -712,10 +710,15 @@ Crewbox.wakeupexport = func {
 }
 
 Crewbox.toggleexport = func {
-    # 2D feedback
-    if( !me.dependency["human"].getChild("serviceable").getValue() ) {
+    if( me.itself["root"].getChild("serviceable").getValue() ) {
+        # 2D feedback, even with 3D crew
         me.itself["root"].getChild("minimized").setValue(constant.FALSE);
-        me.resettimer();
+        if( !me.dependency["human"].getChild("serviceable").getValue() ) {
+            me.resettimer();
+        }
+    }
+    else {
+        me.itself["root"].getChild("minimized").setValue(constant.TRUE);
     }
 
     # to accelerate display
@@ -826,12 +829,12 @@ Crewbox.sendtext = func( index, green, white, text ) {
 
     # dark green
     elsif( green ) {
-        box.write( text, 0, 0.7, 0 );
+        box.write( text, 0.0, 0.7, 0.0 );
     }
 
-    # dark yellow
+    # fading green
     else {
-        box.write( text, 0.7, 0.7, 0 );
+        box.write( text, 0.1, 0.4, 0.1 );
     }
 }
 
@@ -876,7 +879,7 @@ Crewbox.clear = func {
 Voicebox = {};
 
 Voicebox.new = func {
-   var obj = { parents : [Voicebox,System],
+   var obj = { parents : [Voicebox,System.new("/systems/voice")],
 
                seetext : constant.TRUE,
 
@@ -884,13 +887,7 @@ Voicebox.new = func {
                textbox : screen.window.new( nil, -200, 1, 10 )
    };
 
-   obj.init();
-
    return obj;
-}
-
-Voicebox.init = func {
-   me.inherit_system("/systems/voice");
 }
 
 Voicebox.schedule = func {
@@ -946,7 +943,7 @@ Voicebox.sendtext = func( text, engineer = 0, captain = 0, force = 0 ) {
 DestinationDialog = {};
 
 DestinationDialog.new = func {
-   var obj = { parents : [DestinationDialog,System],
+   var obj = { parents : [DestinationDialog,System.new("/systems/human")],
                
                airports : {}
          };
@@ -957,8 +954,6 @@ DestinationDialog.new = func {
 };
 
 DestinationDialog.init = func {
-   me.inherit_system("/systems/human");
-   
    me.filldialog();
 }
 
@@ -1027,13 +1022,6 @@ DestinationDialog.filldialog = func {
             distancenm = int(distancemeter / constant.NMTOMETER);
             
             include = constant.TRUE;      
-            
-            child = me.itself["airport"][ i ].getChild("non-historical");
-            if( child != nil ) {
-                if( child.getValue() ) {
-                    include = constant.FALSE;
-                }
-            }
             
             if( include and categoryRegular ) {
 		include = me.getService( i, "regular" );

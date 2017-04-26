@@ -7,7 +7,9 @@
    - gear is suppposed not audible with engines.
 
 
-   CAUTION for ears : external sound level is kept intentionally reasonable !
+   CAUTION for ears :
+   - external sound level is kept intentionally reasonable !
+   - to replace external sounds by cockpit sounds, set /sim/sound/concorde/external to true.
 
 
    N1 :
@@ -115,7 +117,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[0]/running</property>
     </and>
    </condition>
@@ -138,7 +143,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[1]/running</property>     
     </and>
    </condition>
@@ -161,7 +169,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[2]/running</property>     
     </and>
    </condition>
@@ -184,7 +195,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[3]/running</property>     
     </and>
    </condition>
@@ -207,7 +221,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[0]/running</property>
      <less-than>
       <property>/engines/engine[0]/n1</property>
@@ -243,7 +260,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[1]/running</property>     
      <less-than>
       <property>/engines/engine[1]/n1</property>
@@ -279,7 +299,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[2]/running</property>     
      <less-than>
       <property>/engines/engine[2]/n1</property>
@@ -315,7 +338,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <property>/engines/engine[3]/running</property>     
      <less-than>
       <property>/engines/engine[3]/n1</property>
@@ -351,7 +377,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <greater-than>
       <property>/surface-positions/flap-pos-norm</property>
       <property n="1">/sim/flaps/setting[1]</property>           <!-- until noose is streamlined -->
@@ -393,7 +422,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <or>
       <property>/engines/engine[0]/running</property>
       <property>/engines/engine[1]/running</property>     
@@ -435,7 +467,10 @@
    <mode>looped</mode>
    <condition>
     <and>
-     <property>/sim/current-view/internal</property>
+     <or>
+      <property>/sim/current-view/internal</property>
+      <property>/sim/sound/concorde/external</property>
+     </or>
      <or>
       <property>/engines/engine[2]/running</property>     
       <property>/engines/engine[3]/running</property>     
@@ -482,6 +517,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[0]/running</property>
      <less-than>
       <property>/engines/engine[0]/n1</property>
@@ -519,6 +557,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[1]/running</property>     
      <less-than>
@@ -558,6 +599,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[2]/running</property>     
      <less-than>
       <property>/engines/engine[2]/n1</property>
@@ -596,6 +640,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[3]/running</property>     
      <less-than>
       <property>/engines/engine[3]/n1</property>
@@ -633,6 +680,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[0]/running</property>
      <less-than>
@@ -680,6 +730,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[1]/running</property>
      <less-than>
       <property>/engines/engine[1]/n1</property>
@@ -725,6 +778,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[2]/running</property>     
      <less-than>
@@ -772,6 +828,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[3]/running</property>     
      <less-than>
       <property>/engines/engine[3]/n1</property>
@@ -818,6 +877,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[0]/running</property>
      <less-than>
       <property>/engines/engine[0]/n1</property>
@@ -861,6 +923,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[1]/running</property>     
      <less-than>
@@ -906,6 +971,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[2]/running</property>     
      <less-than>
       <property>/engines/engine[2]/n1</property>
@@ -949,6 +1017,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[3]/running</property>     
      <less-than>
@@ -994,6 +1065,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[0]/running</property>
      <or>
       <greater-than-equals>
@@ -1031,6 +1105,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <property>/engines/engine[1]/running</property>     
      <or>
@@ -1070,6 +1147,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[2]/running</property>     
      <or>
       <greater-than-equals>
@@ -1108,6 +1188,9 @@
      <not>
       <property>/sim/current-view/internal</property>
      </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
+     </not>
      <property>/engines/engine[3]/running</property>     
      <or>
       <greater-than-equals>
@@ -1145,6 +1228,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <or>
       <property>/engines/engine[0]/running</property>
@@ -1191,6 +1277,9 @@
     <and>
      <not>
       <property>/sim/current-view/internal</property>
+     </not>
+     <not>
+      <property>/sim/sound/concorde/external</property>
      </not>
      <or>
       <property>/engines/engine[2]/running</property>     
@@ -1356,7 +1445,7 @@
     <z>0.0</z>
    </position>
    <volume>
-    <max>0.5</max>
+    <max>0.1</max>
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
@@ -1381,7 +1470,7 @@
     <z>0.0</z>
    </position>
    <volume>
-    <max>0.5</max>
+    <max>0.1</max>
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
@@ -1406,7 +1495,7 @@
     <z>0.0</z>
    </position>
    <volume>
-    <max>0.5</max>
+    <max>0.1</max>
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
@@ -1431,7 +1520,7 @@
     <z>0.0</z>
    </position>
    <volume>
-    <max>0.5</max>
+    <max>0.1</max>
    </volume>
    <reference-dist>500.0</reference-dist>
    <max-dist>8000.0</max-dist>
@@ -1722,6 +1811,9 @@
     <y>0.0</y>
     <z>0.0</z>
    </position>
+   <volume>
+    <max>0.5</max>
+   </volume>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </door>
@@ -1738,6 +1830,9 @@
     <y>0.0</y>
     <z>0.0</z>
    </position>
+   <volume>
+    <max>0.4</max>
+   </volume>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </click>
@@ -1756,6 +1851,9 @@
     <y>0.0</y>
     <z>0.0</z>
    </position>
+   <volume>
+    <max>0.4</max>
+   </volume>
    <reference-dist>2.0</reference-dist>
    <max-dist>10.0</max-dist>
   </click>

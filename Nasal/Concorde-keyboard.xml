@@ -141,27 +141,7 @@
     <desc>Toggle virtual crew.</desc>
     <binding>
      <command>nasal</command>
-     <script>globals.Concorde.copilotcrew.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.copilothuman.wakeupexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.engineercrew.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.engineerhuman.wakeupexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.crewscreen.toggleexport();</script>
-    </binding>
-    <binding>
-     <command>nasal</command>
-     <script>globals.Concorde.voicecrew.toggleexport();</script>
+     <script>globals.Concorde.crewcrew.toggleexport();</script>
     </binding>
     <mod-shift>
      <desc>Abort checklist.</desc>
@@ -347,6 +327,21 @@
     </mod-shift>
    </key>
 
+   <key n="356">
+    <name>Left</name>
+    <desc>Move floating view left (fast)</desc>
+    <mod-ctrl>
+     <binding>
+      <command>nasal</command>
+      <script>
+       if( !globals.Concorde.seatsystem.movewidthexport(-0.1) ) {
+           # default
+       }
+      </script>
+     </binding>
+    </mod-ctrl>
+   </key>
+
    <key n="357">
     <name>Up</name>
     <desc>Increase autopilot pitch (slow) or move floating view front (fast)</desc>
@@ -358,6 +353,21 @@
            if( !globals.Concorde.autopilotsystem.datumapexport(0.1) ) {
                # default
            }
+       }
+      </script>
+     </binding>
+    </mod-ctrl>
+   </key>
+
+   <key n="358">
+    <name>Right</name>
+    <desc>Move floating view right (fast)</desc>
+    <mod-ctrl>
+     <binding>
+      <command>nasal</command>
+      <script>
+       if( !globals.Concorde.seatsystem.movewidthexport(0.1) ) {
+           # default
        }
       </script>
      </binding>
@@ -376,6 +386,36 @@
            if( !globals.Concorde.autopilotsystem.datumapexport(-0.1) ) {
                # default
            }
+       }
+      </script>
+     </binding>
+    </mod-ctrl>
+   </key>
+
+   <key n="360">
+    <name>PageUp</name>
+    <desc>Move floating view up (fast)</desc>
+    <mod-ctrl>
+     <binding>
+      <command>nasal</command>
+      <script>
+       if( !globals.Concorde.seatsystem.moveheightexport(0.1) ) {
+           # default
+       }
+      </script>
+     </binding>
+    </mod-ctrl>
+   </key>
+
+   <key n="361">
+    <name>PageUp</name>
+    <desc>Move floating view down (fast)</desc>
+    <mod-ctrl>
+     <binding>
+      <command>nasal</command>
+      <script>
+       if( !globals.Concorde.seatsystem.moveheightexport(-0.1) ) {
+           # default
        }
       </script>
      </binding>

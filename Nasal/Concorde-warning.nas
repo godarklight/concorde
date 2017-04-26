@@ -11,7 +11,7 @@
 Gpws = {};
 
 Gpws.new = func {
-   var obj = { parents : [Gpws,System],
+   var obj = { parents : [Gpws,System.new("/systems/gpws")],
 
                RADIOFT : 2500,
                TAKEOFFFT : 700,
@@ -23,16 +23,8 @@ Gpws.new = func {
                TAXIFTPS : -5                            # not null on taxi
          };
 
-   obj.init();
-
    return obj;
 };
-
-Gpws.init = func {
-   me.inherit_system("/systems/gpws");
-
-   me.decision_init();
-}
 
 Gpws.schedule = func {
    me.sound_terrain();
@@ -149,7 +141,7 @@ Gpws.decision_reset = func {
 Icedetection = {};
 
 Icedetection.new = func {
-   var obj = { parents : [Icedetection,System],
+   var obj = { parents : [Icedetection,System.new("/systems/anti-icing")],
 
 # airframe heating is ignored
                temperaturedegc : {},
@@ -168,8 +160,6 @@ Icedetection.new = func {
 };
 
 Icedetection.init = func {
-   me.inherit_system("/systems/anti-icing");
-
    me.loadmodel();
 
    me.maxclouds = size( me.noinstrument["cloud"] );
@@ -268,7 +258,7 @@ Icedetection.runmodel = func {
 Mws = {};
 
 Mws.new = func {
-   var obj = { parents : [Mws,System],
+   var obj = { parents : [Mws,System.new("/systems/mws")],
 
            adcinstrument : nil,
            cginstrument : nil,
@@ -322,8 +312,6 @@ Mws.new = func {
 };
 
 Mws.init = func {
-   me.inherit_system("/systems/mws");
-
    me.nbambers = size( me.amberwords );
    me.nbamber4s = size( me.amber4words );
 

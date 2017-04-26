@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<!-- sun<?xml version="1.0"?> -->
 
 <!-- intialize systems :
 
@@ -228,12 +228,10 @@
    <!-- default is subsonic -->
 
    <pid>
+    <bank-prediction type="bool">true</bank-prediction>
     <dg-heading-hold1>
      <input alias="/autopilot/internal/fdm-heading-bug-error-deg"/>
      <Kp type="double">-1.0</Kp>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
     </dg-heading-hold1>
@@ -242,17 +240,10 @@
     </dg-heading-hold3>
     <nav-hold1>
      <input alias="/autopilot/internal/nav1-heading-error-deg"/>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
     </nav-hold1>
-    <prediction-filter type="bool">true</prediction-filter>                  <!-- no debug -->
     <true-heading-hold1>
      <input alias="/autopilot/internal/true-heading-error-deg"/>
      <Kp type="double">-1.0</Kp>
-     <launch-sec type="double">0.0</launch-sec>
-     <prediction-filter type="bool">true</prediction-filter>
-     <stable-sec type="double">0.0</stable-sec>
      <u_min type="double">-30.0</u_min>
      <u_max type="double">30.0</u_max>
     </true-heading-hold1>
@@ -521,8 +512,14 @@
       <component>/instrumentation</component>
       <subcomponent>ins</subcomponent>
      </ins>
+     <ins-computed>/instrumentation/ins[1]/computed</ins-computed>
+     <ivsi>/instrumentation/vertical-speed-indicator[1]</ivsi>
+     <landing-lights>/controls/crew/landing-lights</landing-lights>
      <lighting>/controls/lighting/external</lighting>
+     <mach>/instrumentation/mach-indicator[1]</mach>
      <mws>/controls/mws</mws>
+     <nose>/instrumentation/nose-visor/pos-norm</nose>
+     <radio-altimeter>/instrumentation/radio-altimeter[1]</radio-altimeter>
      <steering>/controls/gear/steering</steering>
      <to-monitor>/instrumentation/takeoff-monitor</to-monitor>
      <tractor>/systems/tractor</tractor>
@@ -536,8 +533,10 @@
      <altitude>/position/altitude-ft</altitude>
      <mach>/velocities/mach</mach>
      <speed-up>/sim/speed-up</speed-up>
+     <sun>/sim/time/sun-angle-rad</sun>
      <time>/sim/time/gmt-string</time>
      <user>/sim/user/callsign</user>
+     <visibility>/environment/visibility-m</visibility>
     </noinstrument>
    </relations>
 
@@ -547,6 +546,8 @@
   </copilot>
 
   <crew>
+   <serviceable type="bool">true</serviceable>
+   
    <completed type="bool">false</completed>                                  <!-- checklist not completed by a crew member -->
    <dialog type="string"></dialog>
    <minimized type="bool">true</minimized>
@@ -562,18 +563,30 @@
      <copilot-ctrl>/controls/copilot</copilot-ctrl>
      <engineer>/systems/engineer</engineer>
      <engineer-ctrl>/controls/engineer</engineer-ctrl>
+     <filling>
+      <component>/systems/fuel/tanks</component>
+      <subcomponent>filling</subcomponent>
+     </filling>
+     <fuel>/systems/fuel/tanks/dialog</fuel>
      <human>/systems/human</human>
+     <human-ctrl>/controls/human</human-ctrl>
      <voice>/systems/voice</voice>
     </dependency>
 
     <itself>
+     <crew-presets>
+      <component>/systems/crew/presets</component>
+      <subcomponent>label</subcomponent>
+     </crew-presets>
      <dialogs>/sim/gui/dialogs/Concorde</dialogs>
+     <menu>/sim/menubar/default/menu[10]/item[9]</menu>
     </itself>
 
     <noinstrument>
      <freeze>/sim/freeze/master</freeze>
      <speed-up>/sim/speed-up</speed-up>
      <startup>/sim/startup/ysize</startup>
+     <state>/sim/aircraft-state</state>
     </noinstrument>
    </relations>
 
@@ -687,6 +700,7 @@
    </cg>
 
    <navigation>
+    <elapsed-hours type="double">0.0</elapsed-hours>
     <wp n="0">
      <fuel-kg type="double">-999.0</fuel-kg>                                <!-- estimated fuel -->
      <speed-fpm type="double">0.0</speed-fpm>                               <!-- to acquired altitude -->
@@ -745,24 +759,29 @@
       <subcomponent>fuel-consumed</subcomponent>
      </fuel-consumed>
      <fuel-sys>/systems/fuel</fuel-sys>
+     <gear>/gear/gear[0]/position-norm</gear>
      <gear-ctrl>/controls/gear</gear-ctrl>
      <ins>
       <component>/instrumentation</component>
       <subcomponent>ins</subcomponent>
      </ins>
-     <ivsi>/instrumentation/vertical-speed-indicator[0]</ivsi>
+     <ins-computed>/instrumentation/ins[2]/computed</ins-computed>
+     <ivsi>/instrumentation/vertical-speed-indicator[1]</ivsi>
      <lighting>/controls/lighting</lighting>
+     <mach>/instrumentation/mach-indicator[2]</mach>
      <nose>/instrumentation/nose-visor/pos-norm</nose>
      <rat>
       <component>/systems/hydraulic/rat</component>
       <subcomponent>selector</subcomponent>
      </rat>
+     <radio-altimeter>/instrumentation/radio-altimeter[1]</radio-altimeter>
      <route-manager>/autopilot/route-manager</route-manager>
      <temperature>/instrumentation/temperature[2]/indicated-tmo-degc</temperature>
      <throttle>
       <component>/controls/throttles</component>
       <subcomponent>throttle</subcomponent>
      </throttle>
+     <time>/sim/time/elapsed-sec</time>
      <tractor>/systems/tractor</tractor>
      <voice>/systems/voice</voice>
      <waypoint>
@@ -946,6 +965,17 @@
 
    <transit type="double">0.0</transit>
   </engines>
+  
+  <environment>
+   <relations>   
+    <noinstrument>
+     <altitude>/position/altitude-agl-ft</altitude>
+    </noinstrument>
+   </relations>
+   
+   <smoke-feet type="double">25.0</smoke-feet>                               <!-- cloud spreading -->
+   <smoke-sec type="double">120.0</smoke-sec>                                <!-- stay a long time over the runway -->
+  </environment>
 
   <flight>
    <gravity alias="/fdm/jsbsim/systems/hydraulics/elevon-gravity"/>          <!-- on ground -->
@@ -979,6 +1009,12 @@
      <hydraulic>/systems/hydraulic/power</hydraulic>
     </noinstrument>
    </relations>
+   
+   <vortex>
+    <airspeed-kt type="int">250</airspeed-kt>                                <!-- take off -->
+    <cl-squared type="double">0.60</cl-squared>                              <!-- flare -->
+    <humidity-percent type="int">80</humidity-percent>                       <!-- damp day -->
+   </vortex>
   </flight>
  
   <fuel>
@@ -1006,6 +1042,7 @@
     </itself>
 
     <noinstrument>
+     <mach>/velocities/mach</mach>
      <speed-up>/sim/speed-up</speed-up>
     </noinstrument>
    </relations>
@@ -1047,6 +1084,10 @@
      <pitch>/orientation/pitch-deg</pitch>
     </noinstrument>
    </relations>
+   
+   <steering>
+    <wheel alias="/fdm/jsbsim/systems/hydraulics/nws-engaged"/>
+   </steering>
   </gear>
 
   <gpws>
@@ -1118,9 +1159,11 @@
      <crew>/controls/crew</crew>
      <lighting>/controls/lighting/crew</lighting>
      <lighting-captain>/controls/lighting/crew/captain</lighting-captain>
+     <lighting-center>/controls/lighting/crew/center</lighting-center>
      <lighting-copilot>/controls/lighting/crew/copilot</lighting-copilot>
      <lighting-engineer>/controls/lighting/crew/engineer</lighting-engineer>
      <engineer>/systems/seat/position/engineer</engineer>
+     <radio>/controls/crew/radio</radio>
      <seat>/systems/seat</seat>
      <sound>/sim/sound/voices</sound>
      <voice>/systems/voice</voice>
@@ -1139,12 +1182,14 @@
      <copilot>/systems/human/copilot</copilot>
      <engineer>/systems/human/engineer</engineer>
      <lighting>/controls/human/lighting</lighting>
+     <sun>/systems/human/sun</sun>
     </itself>
 
     <noinstrument>
      <airspeed>/velocities/groundspeed-kt</airspeed>
      <agl>/position/altitude-agl-ft</agl>
      <altitude>/position/altitude-ft</altitude>
+     <presets>/sim/presets</presets>
      <speed>/velocities/vertical-speed-fps</speed>
      <sun>/sim/time/sun-angle-rad</sun>
     </noinstrument>
@@ -1223,35 +1268,50 @@
 
   <lighting>
    <serviceable type="bool" archive="y">true</serviceable>
-
-   <level>
+    
+   <color>
+    <flood>
+     <red type="double">0.83</red>
+     <green type="double">0.74</green>
+     <blue type="double">0.38</blue>
+    </flood>
+    <fluorescent>
+     <red type="double">0.66</red>
+     <green type="double">0.68</green>
+     <blue type="double">0.64</blue>
+    </fluorescent>
+   </color>
+       
+   <level>                                                                   <!-- computed 2D light -->
     <engineer>
+     <ambient type="double">0.0</ambient>                                    <!-- 3D warning lights -->
      <deck type="double">0.0</deck>
+     <deck-ambient type="double">0.0</deck-ambient>                          <!-- 3D warning lights -->
      <panel type="double">0.0</panel>
     </engineer>
-    <flood>
-     <captain type="double">0.0</captain>
-     <center type="double">0.0</center>
-     <copilot type="double">0.0</copilot>
-    </flood>
     <human>
      <copilot type="double">0.0</copilot>
      <engineer type="double">0.0</engineer>
     </human>
+    <observer>
+     <ambient type="double">0.0</ambient>                                    <!-- 3D warning lights -->
+     <panel type="double">0.0</panel>
+    </observer>
     <panel>
      <center type="double">0.0</center>
-     <console type="double">0.0</console>
+     <center-ambient type="double">0.0</center-ambient>                      <!-- 3D warning lights -->
      <main type="double">0.0</main>
     </panel>
     <roof type="double">0.0</roof>
     <roof-ambient type="double">0.0</roof-ambient>                           <!-- 3D warning lights -->
+    <roof-rack type="double">0.0</roof-rack>
    </level>
 
    <relations>
     <dependency>
      <asi>/instrumentation/airspeed-indicator[0]</asi>
      <electric>/systems/electrical/power</electric>
-     <radio-altimeter>/instrumentation/radio-altimeter[0]</radio-altimeter>
+     <weight>/instrumentation/weight-switch</weight>
     </dependency>
 
     <itself>
@@ -1269,6 +1329,7 @@
     </itself>
 
     <noinstrument>
+     <altitude>/position/altitude-ft</altitude>
      <sun>/sim/time/sun-angle-rad</sun>
     </noinstrument>
    </relations>
@@ -1707,20 +1768,15 @@
 
    <relations>
     <dependency>
-     <asi>/instrumentation/airspeed-indicator[1]</asi>
+     <airspeed>/instrumentation/airspeed-indicator[1]</airspeed>
      <altimeter>/instrumentation/altimeter[1]</altimeter>
      <attitude>/instrumentation/attitude-indicator[1]</attitude>
      <autopilot>/systems/autopilot/state</autopilot>
      <autoflight>/controls/autoflight</autoflight>
      <captain-ctrl>/controls/captain</captain-ctrl>
-     <copilot-3d>/systems/human/copilot</copilot-3d>
      <copilot-ctrl>/controls/copilot</copilot-ctrl>
      <crew>/systems/crew</crew>
      <crew-ctrl>/controls/crew</crew-ctrl>
-     <crew-presets>
-      <component>/systems/crew/presets</component>
-      <subcomponent>label</subcomponent>
-     </crew-presets>
      <engine>
       <component>/engines</component>
       <subcomponent>engine</subcomponent>
@@ -1730,15 +1786,15 @@
       <subcomponent>engine</subcomponent>
      </engine-ctrl>
      <engineer>/systems/engineer</engineer>
-     <engineer-3d>/systems/human/engineer</engineer-3d>
      <engineer-ctrl>/controls/engineer</engineer-ctrl>
-     <gear>/gear/gear[0]</gear>
+     <gear>/gear/gear[0]/position-norm</gear>
      <gear-ctrl>/controls/gear</gear-ctrl>
-     <ins>/instrumentation/ins[0]/computed</ins>                            <!-- HSI -->
-     <ivsi>/instrumentation/vertical-speed-indicator[0]</ivsi>
+     <human>/systems/human</human>
+     <ins-computed>/instrumentation/ins[1]/computed</ins-computed>          <!-- HSI -->
+     <ivsi>/instrumentation/vertical-speed-indicator[1]</ivsi>
      <mach>/instrumentation/mach-indicator[1]</mach>
      <nav>/instrumentation/nav[0]</nav>
-     <nose>/instrumentation/nose-visor</nose>
+     <nose>/instrumentation/nose-visor/pos-norm</nose>
      <radio-altimeter>/instrumentation/radio-altimeter[1]</radio-altimeter>
     </dependency>
 
@@ -1750,11 +1806,13 @@
      <callout>/systems/voice/callouts</callout>
      <checklist>/systems/voice/checklists</checklist>
      <display>/systems/voice/display</display>
+     <menu>/sim/menubar/default/menu[10]/item[15]</menu>
      <sound>/sim/sound/voices</sound>
     </itself>
 
     <noinstrument>
      <agl>/position/altitude-agl-ft</agl>
+     <airspeed>/velocities/airspeed-kt</airspeed>
      <presets>/sim/presets</presets>
      <speed>/velocities/groundspeed-kt</speed>
      <weight>/instrumentation/ac-weight/weight-lb</weight>

@@ -273,16 +273,23 @@
    <captain-busy type="bool">true</captain-busy>              <!-- crew performs Captain checks -->
    <checklist type="bool">true</checklist>                    <!-- flight checklists triggers automatically -->
    <copilot-in-command type="bool">true</copilot-in-command>  <!-- only four engine flame out -->
+   <disable type="bool">false</disable>
    <ins-alignment type="bool">true</ins-alignment>            <!-- quick alignment of INS (not real) -->
-   <landing-lights type="bool">true</landing-lights>          <!-- optional in checklist -->
+   <landing-lights>
+    <as-required type="bool">true</as-required>               <!-- only low visibility -->
+    <set type="bool">true</set>                               <!-- optional in checklist -->
+    <taxi type="bool">false</taxi>                            <!-- only ground -->
+   </landing-lights>
    <night-lighting type="bool">true</night-lighting>
    <presets type="int">0</presets>                            <!-- taxi -->
-   <radio type="bool">true</radio>                            <!-- nearest ADF and VOR -->
+   <radio>
+    <ignore>ENBR</ignore>                                     <!-- keep frequencies in defaults.xml -->
+    <set type="bool">true</set>                               <!-- nearest ADF and VOR -->
+   </radio>
    <recall type="bool">false</recall>                         <!-- recall detection -->
    <startup type="bool">false</startup>                       <!-- inactiv on startup -->
    <steering>
     <pedal type="bool">false</pedal>
-    <wheel alias="/fdm/jsbsim/systems/hydraulics/nws-engaged"/>
    </steering>
    <stop-engine23 type="bool">false</stop-engine23>           <!-- optional in checklist -->
    <timeout type="bool">true</timeout>                        <!-- of 10 seconds -->
@@ -467,8 +474,20 @@
    <als>
     <lights type="bool">true</lights>
    </als>
+   <contrails type="bool">true</contrails>
    <rain type="bool">false</rain>                             <!-- not visible from cockpit -->
+   <rembrandt>                                                <!-- light is allways visible -->
+    <cockpit type="int">0</cockpit>
+    <external type="int">0</external>
+    <gear-well type="int">0</gear-well>
+    <landing type="int">0</landing>
+    <panel type="int">0</panel>
+   </rembrandt>
    <smoke type="bool">true</smoke>
+   <vortex>
+    <visible type="bool">true</visible>
+    <test type="bool">false</test>
+   </vortex>
   </environment>
 
   <flight>
@@ -745,11 +764,11 @@
      <other type="bool">false</other>
      <regular type="bool">false</regular>
     </category>
-    <show type="bool">false</show>                            <!-- show airport name -->
     <filter>
      <navaid type="bool">true</navaid>                        <!-- with navaid -->
      <range type="bool">true</range>                          <!-- withing 200 NM -->
     </filter>
+    <show type="bool">false</show>                            <!-- show airport name -->
     <sort>
      <distance type="bool">false</distance>
      <ident type="bool">false</ident>
@@ -759,6 +778,7 @@
    </destination>
    <lighting>                                                 <!-- night lighting -->
     <captain type="double">0.6</captain>
+    <center type="double">0.6</center>
     <copilot type="double">0.6</copilot>
     <engineer type="double">0.6</engineer>
    </lighting>
@@ -813,7 +833,7 @@
      <low type="bool">false</low>
     </afcs>
     <captain>
-     <flood-light type="double">0.0</flood-light>             <!-- the real light -->
+     <flood-light type="double">0.0</flood-light>             <!-- the emitted light -->
      <flood-norm type="double">0.0</flood-norm>               <!-- the knob -->
      <low type="bool">false</low>
      <test type="bool">false</test>
@@ -1012,7 +1032,7 @@
   </throttles>
 
   <tractor>
-   <distance-m type="double">-10.0</distance-m>
+   <distance-m type="double">-40.0</distance-m>
    <pushback type="bool">false</pushback>
   </tractor>
 
@@ -1021,6 +1041,7 @@
   </transponder>
 
   <voice>
+   <disable type="bool">false</disable>
    <sound type="bool">true</sound>
    <text type="bool">true</text>                              <!-- Festival not installed -->
   </voice>

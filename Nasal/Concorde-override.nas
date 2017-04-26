@@ -92,6 +92,7 @@ override_applyParkingBrake = controls.applyParkingBrake;
 
 controls.applyParkingBrake = func(v) {
     if (!v) { return; }
+    if( globals.Concorde.hydraulicsystem == nil ) { return; }
     globals.Concorde.hydraulicsystem.brakesparkingexport();
     var p = "/controls/gear/brake-parking-lever";
     var i = getprop(p);
@@ -124,7 +125,7 @@ controls.incElevator = func {
         override_incElevator(arg[0], arg[1]);
     }
     elsif( !globals.Concorde.seatsystem.movelengthexport(-0.01 * sign) ) {
-        if( !globals.Concorde.autopilotsystem.datumatexport(1.0 * sign) ) {
+        if( !globals.Concorde.autopilotsystem.datumapexport(1.0 * sign) ) {
             # default
             override_incElevator(arg[0], arg[1]);
         }

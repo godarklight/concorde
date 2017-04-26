@@ -58,32 +58,15 @@
  </animation>
 
  <animation>
-  <name>AllSeat</name>
-  <object-name>MovingSeat</object-name>
-  <object-name>RailCopilot</object-name>
- </animation>
-
- <animation>
   <type>material</type>
   <object-name>MovingSeat</object-name>
   <property-base>sim/model/livery/</property-base>
   <texture-prop>texture-seat</texture-prop>
  </animation>
 
- <animation>
-  <type>material</type>
-  <object-name>AllSeat</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
-
 <!-- raises the armrest to reach the pedestal -->
 
- <animation>
+ <!--animation>
   <type>rotate</type>
   <object-name>ArmrestLeft</object-name>
   <offset-deg>80</offset-deg>   
@@ -100,7 +83,7 @@
    <y>1.0</y>
    <z>0.0</z>
   </axis>
- </animation>
+ </animation-->
  
  <animation>
   <type>translate</type>

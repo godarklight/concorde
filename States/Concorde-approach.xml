@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <name type="string" n="0">approach</name>
+
+   <overlay>
+    <controls>
+     <autoflight>
+      <altitude-select type="int">10000</altitude-select>
+      <speed-select type="int">250</speed-select>
+     </autoflight>
+     <gear>
+      <brake-parking-lever type="bool">false</brake-parking-lever>
+      <gear-down type="bool">false</gear-down>
+     </gear>
+    </controls>
+    <instrumentation>
+     <ins n="1">
+      <control>
+       <selector type="int">3</selector>
+      </control>
+     </ins>
+    </instrumentation>
+    <sim>
+     <presets>
+      <airspeed-kt type="double">250</airspeed-kt>
+      <altitude-ft type="double">10000</altitude-ft>
+      <offset-distance-nm type="double">30</offset-distance-nm>
+     </presets>
+    </sim>
+   </overlay>
+
+</PropertyList>

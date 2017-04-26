@@ -3,11 +3,30 @@
 <PropertyList>
   <name>Concorde-environment</name>
   <layout>vbox</layout>
-  <width>500</width>
+  <width>550</width>
 
-  <text>
-    <label>Concorde environment</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde environment</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -15,29 +34,69 @@
     <layout>vbox</layout>
     <halign>center</halign>
 
-    <text>
-      <label>Visual effects  ~</label>
-    </text>
+   <text>
+    <label>Visual effects  ~</label>
+   </text>
 
-    <text>
-      <label></label>
-    </text>
+   <text>
+    <label></label>
+   </text>
 
-    <group>
+   <text>
+    <label></label>
+   </text>
+
+   <group>
       <layout>hbox</layout>
-
-      <checkbox>
-        <halign>left</halign>
-        <label>smoke</label>
-        <property>/controls/environment/smoke</property>
-        <binding>
-         <command>property-toggle</command>
-         <property>/controls/environment/smoke</property>
-        </binding>
-      </checkbox>
 
       <group>
         <layout>vbox</layout>
+
+        <checkbox>
+         <halign>left</halign>
+         <label>contrails</label>
+         <property>/controls/environment/contrails</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/environment/contrails</property>
+         </binding>
+        </checkbox>
+
+        <text>
+         <label></label>
+        </text>
+
+        <checkbox>
+         <halign>left</halign>
+         <label>smoke</label>
+         <property>/controls/environment/smoke</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/environment/smoke</property>
+         </binding>
+        </checkbox>
+
+        <text>
+         <label></label>
+        </text>
+
+        <checkbox>
+         <halign>left</halign>
+         <label>wing vortex</label>
+         <property>/controls/environment/vortex/visible</property>
+         <binding>
+          <command>property-toggle</command>
+          <property>/controls/environment/vortex/visible</property>
+         </binding>
+        </checkbox>
+      </group>
+
+      <group>
+        <layout>vbox</layout>
+
+        <text>
+         <label></label>
+        </text>
 
         <checkbox>
           <halign>left</halign>
@@ -57,6 +116,10 @@
           <blue>0.5</blue>
          </color>
         </text>
+
+        <text>
+         <label></label>
+        </text>
       </group>
 
       <button>
@@ -71,36 +134,29 @@
         <command>dialog-close</command>
        </binding>
       </button>
-    </group>
 
-   <text>
-    <label></label>
-   </text>
-
-   <text>
-    <label></label>
-   </text>
-
-   <group>
-    <layout>hbox</layout>
-
-    <button>
-     <legend>Icing</legend>
-     <key>i</key>
-     <binding>
-      <command>dialog-show</command>
-      <dialog-name>Concorde-environment2</dialog-name>
-     </binding>
-     <binding>
-      <command>dialog-close</command>
-      </binding>
-     </button>
+      <button>
+       <enabled alias="/sim/rendering/rembrandt/enabled"/>
+       <legend>Rembrandt</legend>
+       <key>r</key>
+       <binding>
+       <command>dialog-show</command>
+        <dialog-name>Concorde-environment4</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
    </group>
 
   </group>
 
   <text>
-    <label></label>
+   <label></label>
+  </text>
+
+  <text>
+   <label></label>
   </text>
 
   <text>
@@ -122,6 +178,21 @@
     </binding>
     <binding>
       <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Page 2</legend>
+    <key>p</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-environment2</dialog-name>
+    </binding>
+    <binding>
+     <command>dialog-close</command>
     </binding>
    </button>
 

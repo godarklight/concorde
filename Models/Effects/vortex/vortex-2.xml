@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <type>normal</type>
+    <name>Concorde right wing vortex</name>
+    <texture>vortex.png</texture>
+    <emissive>false</emissive>
+    <lighting>true</lighting>
+
+    <offsets>
+      <x-m>0</x-m>
+      <y-m>0</y-m>
+      <z-m>0</z-m>
+    </offsets>
+
+    <condition>
+     <and>
+      <not>
+       <property>/sim/current-view/internal</property>
+      </not>
+      <or>
+       <and>
+        <property>/controls/environment/vortex/visible</property>
+        <greater-than>
+         <property>/environment/relative-humidity</property>
+         <property n="1">/systems/flight/vortex/humidity-percent</property>
+        </greater-than>
+        <greater-than>
+         <property>/fdm/jsbsim/aero/cl-squared</property>
+         <property n="1">/systems/flight/vortex/cl-squared</property>
+        </greater-than>
+        <less-than>
+         <property>/velocities/airspeed-kt</property>
+         <property n="1">/systems/flight/vortex/airspeed-kt</property>
+        </less-than>
+       </and>
+       <property>/controls/environment/vortex/test</property>
+      </or>
+     </and>
+    </condition>
+
+    <attach>local</attach>
+
+    <placer>
+      <type>segments</type>                                          <!-- delta shaped -->
+      <vertex n="0">
+        <x-m> 0</x-m>
+        <y-m> 0</y-m>
+        <z-m> 0</z-m>
+        </vertex>
+      <vertex n="1">
+        <x-m> 3.0</x-m>
+        <y-m> 1.5</y-m>
+        <z-m> 0</z-m>
+      </vertex>
+      <vertex n="2">
+        <x-m> 6.0</x-m>
+        <y-m> 3.0</y-m>
+        <z-m> 0</z-m>
+      </vertex>
+      <vertex n="3">
+        <x-m> 8.0</x-m>
+        <y-m> 5.0</y-m>
+        <z-m> 0</z-m>
+      </vertex>
+     </placer>
+
+    <shooter>
+      <theta-min-deg>0</theta-min-deg>                               <!-- along segment -->
+      <theta-max-deg>180</theta-max-deg>
+      <phi-min-deg>0</phi-min-deg>
+      <phi-max-deg>0</phi-max-deg>
+      <speed-mps>
+         <value>1</value>
+        <spread>0,5</spread>                                         <!-- attempt to spread the fog -->
+      </speed-mps>
+      <rotation-speed>
+        <x-max-deg-sec>10</x-max-deg-sec>                            <!-- light rotation, in the wing turbulence -->
+        <x-min-deg-sec>0</x-min-deg-sec>
+        <y-max-deg-sec>0</y-max-deg-sec>
+        <y-min-deg-sec>10</y-min-deg-sec>
+        <z-max-deg-sec>0</z-max-deg-sec>
+        <z-min-deg-sec>0</z-min-deg-sec>
+      </rotation-speed>
+    </shooter>
+
+    <counter>
+      <particles-per-sec>
+       <property>/orientation/alpha-deg</property>
+       <factor>25</factor>                                           <!-- 300 at 12 degrees -->
+      </particles-per-sec>
+    </counter>
+
+    <align>billboard</align>
+
+    <particle>
+      <start>
+        <color>
+          <red>
+            <value>1.0</value>
+          </red>
+          <green>
+            <value>1.0</value>
+          </green>
+          <blue>
+            <value>1.0</value>
+          </blue>
+          <alpha>
+            <value>0.5</value>                                       <!-- fog -->
+          </alpha>
+        </color>
+        <size>
+          <value>0.10</value>
+        </size>
+      </start>
+      <end>
+        <color>
+          <red>
+            <value>0.9</value>                                       <!-- dilution -->
+          </red>
+          <green>
+            <value>0.9</value>
+          </green>
+          <blue>
+            <value>0.9</value>
+          </blue>
+          <alpha>
+            <value>0.1</value>                                       <!-- barely visible -->
+          </alpha>
+        </color>
+        <size>
+          <value>4</value>                                           <!-- condensation layer -->
+        </size>
+      </end>
+      <life-sec>
+        <value>0.2</value>                                           <!-- fog over the wind -->
+      </life-sec>
+      <mass-kg>0.1</mass-kg>                                         <!-- lightly lighter than air -->
+      <radius-m>0.2</radius-m>
+    </particle>
+
+    <program>
+      <fluid>air</fluid>
+      <gravity>true</gravity>
+      <wind>false</wind>
+    </program>
+
+</PropertyList>

@@ -56,28 +56,11 @@
   <object-name>Boggie</object-name>
  </animation>
 
- <animation>
-  <name>AllSeat</name>
-  <object-name>MovingSeat</object-name>
-  <object-name>RailCaptain</object-name>
- </animation>
-
  <animation> 
   <type>material</type> 
   <object-name>MovingSeat</object-name>
   <property-base>sim/model/livery/</property-base> 
   <texture-prop>texture-seat</texture-prop> 
- </animation> 
-
- <animation>
-  <type>material</type>
-  <object-name>AllSeat</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
  </animation> 
 
 <!-- raises the armrest to reach the pedestal -->

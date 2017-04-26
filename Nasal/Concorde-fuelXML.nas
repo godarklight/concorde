@@ -1018,7 +1018,7 @@ FuelTransfer.valve_opened = func( component ) {
 
 TankXML = {};
 
-TankXML.new = func {
+TankXML.new = func( path ) {
 # tank contents, to be initialised from XML
    var obj = { parents : [TankXML], 
 
@@ -1037,14 +1037,12 @@ TankXML.new = func {
                tankspath : nil
          };
 
+    obj.init( path );
+    
     return obj;
 }
 
-TankXML.inherit_tankXML = func( path ) {
-    var obj = TankXML.new();
-
-    me.pumpsystem = obj.pumpsystem;
-
+TankXML.init = func( path ) {
     me.systempath = props.globals.getNode(path);
     me.dialogpath = me.systempath.getNode("tanks/dialog");
     me.controlspath = props.globals.getNode("/controls/fuel").getChildren("tank");
@@ -1052,8 +1050,6 @@ TankXML.inherit_tankXML = func( path ) {
     me.fillingspath = me.systempath.getChild("tanks").getChildren("filling");
 
     me.nb_tanks = size(me.tankspath);
-
-    me.initcontent();
 }
 
 TankXML.init_TankXML = func {
@@ -1061,14 +1057,14 @@ TankXML.init_TankXML = func {
     me.presetfuel();
 }
 
-TankXML.initcontent = func {
-    me.inherit_initcontent();
-}
-
 # fuel initialization
-TankXML.inherit_initcontent = func {
+TankXML.set_content = func( argLB, argINDEX, argNAME ) {
    var densityppg = 0.0;
 
+   me.CONTENTLB = argLB;
+   me.TANKINDEX = argINDEX;
+   me.TANKNAME = argNAME;
+   
    for( var i=0; i < me.nb_tanks; i=i+1 ) {
         densityppg = me.tankspath[i].getChild("density-ppg").getValue();
         me.CONTENTLB[me.TANKNAME[i]] = me.tankspath[i].getChild("capacity-gal_us").getValue() * densityppg;

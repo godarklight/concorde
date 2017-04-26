@@ -158,7 +158,7 @@ VMO.speed165t = func( altitudeft ) {
 AirDataComputer = {};
 
 AirDataComputer.new = func {
-   var obj = { parents : [AirDataComputer,System],
+   var obj = { parents : [AirDataComputer,System.new("/instrumentation","adc")],
 
                vmo : VMO.new(),
 
@@ -169,17 +169,12 @@ AirDataComputer.new = func {
                ivsi_instrument : [ constant.TRUE, constant.TRUE ],
                ivsi_status : [ constant.TRUE, constant.TRUE ],
 
+               last_instrument : [ constant.FALSE, constant.FALSE ],
                last_status : [ constant.TRUE, constant.TRUE ]
              };
 
-   obj.init();
-
    return obj;
 };
-
-AirDataComputer.init = func {
-   me.inherit_system("/instrumentation","adc");
-}
 
 AirDataComputer.amber_adc = func {
     var result = constant.FALSE;
@@ -330,7 +325,6 @@ AirDataComputer.ivsisensor = func( index ) {
     if( me.itself["adc-ctrl"].getChild("ivsi-in-cruise").getValue() and
         ( me.itself["root"][index].getNode("output/altitude-ft").getValue() > constantaero.CRUISEFT ) ) {
         me.ivsi_instrument[index] = constant.TRUE;
-        change = constant.TRUE;
 
         path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
     }
@@ -338,7 +332,6 @@ AirDataComputer.ivsisensor = func( index ) {
     # toggles IVSI instrument
     elsif( me.itself["adc-sys"][index].getChild("ivsi-emulated").getValue() != me.ivsi_instrument[index] ) {
         me.ivsi_instrument[index] = me.itself["adc-sys"][index].getChild("ivsi-emulated").getValue();
-        change = constant.TRUE;
 
         if( me.ivsi_instrument[index] ) {
             path = me.noinstrument["ivsi"][index].getChild("indicated-speed-fps").getPath();
@@ -372,7 +365,8 @@ AirDataComputer.ivsisensor = func( index ) {
         }
     }
 
-    if( change ) {
+    # only alias change
+    if( change or ( me.ivsi_instrument[index] != me.last_instrument[index] ) ) {
         child = me.itself["root"][index].getNode("output/vertical-speed-fps");
         if( me.itself["adc-ctrl"].getChild("ivsi-log").getValue() ) {
             print( "alias " ~ child.getPath() ~ " to " ~ path );
@@ -380,6 +374,8 @@ AirDataComputer.ivsisensor = func( index ) {
         child.unalias();
         child.alias( path );
     }
+    
+    me.last_instrument[index] = me.ivsi_instrument[index];
 }
 
 # speed of sound
@@ -412,7 +408,7 @@ AirDataComputer.getsoundkt = func( child ) {
 Altimeter = {};
 
 Altimeter.new = func {
-   var obj = { parents : [Altimeter,System],
+   var obj = { parents : [Altimeter,System.new("/instrumentation","altimeter")],
 
                ADC : [ 0, 1, 1 ],
 
@@ -422,14 +418,8 @@ Altimeter.new = func {
                standby : [ constant.FALSE, constant.FALSE ]
          };
 
-   obj.init();
-
    return obj;
 };
-
-Altimeter.init = func {
-   me.inherit_system("/instrumentation","altimeter");
-}
 
 Altimeter.schedule = func {
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
@@ -546,20 +536,14 @@ Altimeter.updategui = func {
 Airspeed = {};
 
 Airspeed.new = func {
-   var obj = { parents : [Airspeed,System],
+   var obj = { parents : [Airspeed,System.new("/instrumentation","airspeed-indicator")],
 
                serviceable : [ constant.TRUE, constant.TRUE ],
                standby : [ constant.FALSE, constant.FALSE ]
          };
 
-   obj.init();
-
    return obj;
 };
-
-Airspeed.init = func {
-   me.inherit_system("/instrumentation","airspeed-indicator");
-}
 
 Airspeed.schedule = func {
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
@@ -640,19 +624,13 @@ Airspeed.failure = func( index ) {
 StandbyAirspeed = {};
 
 StandbyAirspeed.new = func {
-   var obj = { parents : [StandbyAirspeed,System],
+   var obj = { parents : [StandbyAirspeed,System.new("/instrumentation/airspeed-standby")],
 
                vmo : VMO.new()
          };
 
-   obj.init();
-
    return obj;
 };
-
-StandbyAirspeed.init = func {
-   me.inherit_system("/instrumentation/airspeed-standby");
-}
 
 # maximum operating speed (kt)
 StandbyAirspeed.schedule = func {
@@ -674,17 +652,11 @@ StandbyAirspeed.schedule = func {
 VerticalSpeed = {};
 
 VerticalSpeed.new = func {
-   var obj = { parents : [VerticalSpeed,System]
+   var obj = { parents : [VerticalSpeed,System.new("/instrumentation","vertical-speed-indicator")]
          };
-
-   obj.init();
 
    return obj;
 };
-
-VerticalSpeed.init = func {
-   me.inherit_system("/instrumentation","vertical-speed-indicator");
-}
 
 VerticalSpeed.schedule = func {
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
@@ -722,7 +694,7 @@ VerticalSpeed.failure = func( index ) {
 Centergravity= {};
 
 Centergravity.new = func {
-   var obj = { parents : [Centergravity,System],
+   var obj = { parents : [Centergravity,System.new("/instrumentation","cg")],
 
                C0stationin : 736.22,                   # 18.7 m from nose
                C0in : 1089,                            # C0  90'9"
@@ -750,14 +722,8 @@ Centergravity.new = func {
                cgmax : 0.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-Centergravity.init = func {
-   me.inherit_system("/instrumentation","cg");
-}
 
 Centergravity.red_cg = func {
    var result = constant.FALSE;
@@ -1128,7 +1094,7 @@ Centergravity.interpolateweight = func( weightlb ) {
 Machmeter= {};
 
 Machmeter.new = func {
-   var obj = { parents : [Machmeter,System],
+   var obj = { parents : [Machmeter,System.new("/instrumentation","mach-indicator")],
 
                ADC : [ 0, 1, 0 ],
 
@@ -1150,14 +1116,8 @@ Machmeter.new = func {
                machmin : 0.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-Machmeter.init = func {
-   me.inherit_system("/instrumentation","mach-indicator");
-}
 
 Machmeter.schedule = func {
    for( var i = 0; i < constantaero.NBINS; i = i+1 ) {
@@ -1366,17 +1326,11 @@ Machmeter.min = func( cgpercent ) {
 AccelerometerAOA = {};
 
 AccelerometerAOA.new = func {
-   var obj = { parents : [AccelerometerAOA,System]
+   var obj = { parents : [AccelerometerAOA,System.new("/instrumentation","accelerometer-aoa")]
          };
-
-   obj.init();
 
    return obj;
 };
-
-AccelerometerAOA.init = func {
-   me.inherit_system("/instrumentation","accelerometer-aoa");
-}
 
 AccelerometerAOA.schedule = func {
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
@@ -1414,17 +1368,11 @@ AccelerometerAOA.failure = func( index ) {
 Temperature = {};
 
 Temperature.new = func {
-   var obj = { parents : [Temperature,System]
+   var obj = { parents : [Temperature,System.new("/instrumentation", "temperature")]
          };
-
-   obj.init();
 
    return obj;
 };
-
-Temperature.init = func {
-   me.inherit_system("/instrumentation", "temperature");
-}
 
 Temperature.schedule = func {
    for( var i = 0; i < constantaero.NBAUTOPILOTS; i = i+1 ) {
@@ -1484,19 +1432,13 @@ Temperature.isa = func( index ) {
 Markerbeacon = {};
 
 Markerbeacon.new = func {
-   var obj = { parents : [Markerbeacon,System],
+   var obj = { parents : [Markerbeacon,System.new("/instrumentation/marker-beacon")],
 
                TESTSEC : 1.5
          };
 
-   obj.init();
-
    return obj;
 };
-
-Markerbeacon.init = func {
-   me.inherit_system("/instrumentation/marker-beacon");
-}
 
 # test of marker beacon lights
 Markerbeacon.testexport = func {
@@ -1549,7 +1491,7 @@ Markerbeacon.testmarker = func {
 Generic = {};
 
 Generic.new = func {
-   var obj = { parents : [Generic,System],
+   var obj = { parents : [Generic,System.new("/instrumentation/generic")],
 
                generic : aircraft.light.new("/instrumentation/generic",[ 1.5,0.2 ])
          };
@@ -1560,8 +1502,6 @@ Generic.new = func {
 };
 
 Generic.init = func {
-   me.inherit_system("/instrumentation/generic");
-
    me.generic.toggle();
 }
 
@@ -1584,19 +1524,13 @@ Generic.toggleclick = func {
 Transponder = {};
 
 Transponder.new = func {
-   var obj = { parents : [Transponder,System],
+   var obj = { parents : [Transponder,System.new("/instrumentation/transponder")],
 
                TESTSEC : 15
          };
 
-   obj.init();
-
    return obj;
 };
-
-Transponder.init = func {
-   me.inherit_system("/instrumentation/transponder");
-}
 
 Transponder.testexport = func {
    if( me.itself["root"].getChild("serviceable").getValue() ) {
@@ -1621,17 +1555,11 @@ Transponder.test = func {
 AudioPanel = {};
 
 AudioPanel.new = func {
-   var obj = { parents : [AudioPanel,System]
+   var obj = { parents : [AudioPanel,System.new("/instrumentation/audio")]
          };
-
-   obj.init();
 
    return obj;
 };
-
-AudioPanel.init = func {
-   me.inherit_system("/instrumentation/audio");
-}
 
 AudioPanel.headphones = func( marker, panel, seat ) {
    var audio = nil;
@@ -1679,7 +1607,7 @@ AudioPanel.send = func( adf1, adf2, comm1, comm2, nav1, nav2, marker ) {
 Daytime = {};
 
 Daytime.new = func {
-   var obj = { parents : [Daytime,System],
+   var obj = { parents : [Daytime,System.new("/instrumentation/clock")],
 
                SPEEDUPSEC : 1.0,
 
@@ -1695,8 +1623,6 @@ Daytime.new = func {
 }
 
 Daytime.init = func {
-    me.inherit_system("/instrumentation/clock");
-
     var climbftpsec = me.CLIMBFTPMIN / constant.MINUTETOSECOND;
 
     me.MAXSTEPFT = climbftpsec * me.SPEEDUPSEC;

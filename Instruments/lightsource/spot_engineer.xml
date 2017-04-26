@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<!-- default cone is down.
+
+     Lights down engineer table, from roof.
+-->
+
+<PropertyList>
+
+<path>spot_light.ac</path>
+
+ <animation>
+  <type>light</type>
+  <light-type>spot</light-type>
+  <name>SpotWhite</name>
+  <object-name>Cone</object-name>
+  <nopreview/>
+  <position>
+   <x-m>0.0</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </position>
+  <direction>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>-1.0</z>
+  </direction>
+  <ambient>
+   <r>0.03</r>
+   <g>0.03</g>
+   <b>0.03</b>
+   <a>1.0</a>
+  </ambient>
+  <diffuse>
+   <r>0.7</r>
+   <g>0.7</g>
+   <b>0.6</b>
+   <a>1.0</a>
+  </diffuse>
+  <specular>
+   <r>0.7</r>
+   <g>0.7</g>
+   <b>0.7</b>
+   <a>1.0</a>
+  </specular>
+  <dim-factor>
+   <property>controls/lighting/crew/engineer/spot-light</property>
+   <!--expression /-->
+   <!--interpolation /-->
+   <factor>1</factor>
+   <offset>0</offset>
+   <min>0</min>
+   <max>1</max>
+  </dim-factor>
+  <attenuation>
+   <c>1.0</c>
+   <l>0.002</l>
+   <q>0.00005</q>
+  </attenuation>
+  <exponent>30.0</exponent>
+  <cutoff>39</cutoff>
+  <near-m>0.1</near-m>
+  <far-m>1.5</far-m>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Cone</object-name>
+  <condition>
+   <and>
+    <property>/sim/rendering/rembrandt/enabled</property>
+    <greater-than>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </greater-than>
+   </and>
+  </condition>
+ </animation>
+
+</PropertyList>
+

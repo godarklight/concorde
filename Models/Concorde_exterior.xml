@@ -1,8 +1,22 @@
 <?xml version="1.0"?>
 
+<!-- 
+
+     References :
+     ==========
+     - http://www.airliners.net/photo/British-Airways/Aerospatiale-BAC-Concorde-102/449351/L :
+     
+     landing lights.
+
+     - http://www.airliners.net/photo/British-Airways/Aerospatiale-BAC-Concorde-102/449349/L :
+     
+     taxi lights.
+
+-->
+
 <PropertyList>
 
-<!-- wipers -->
+<!-- WIPERS -->
 
   <model>
    <name>Left Wiper</name>
@@ -28,15 +42,20 @@
    </offsets>
   </model>
 
-<!-- lights -->
+  
+<!-- LIGHTS -->
 
+  <!-- taxi turn -->
+  
   <model>
    <name>Taxi turn left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxiturnleft.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-23.807</x-m>
+    <y-m> -0.740</y-m>
+    <z-m> -0.369</z-m>
+    <heading-deg>-2</heading-deg>
+    <roll-deg>43</roll-deg>
    </offsets>
   </model>
 
@@ -44,12 +63,16 @@
    <name>Taxi turn right</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxiturnright.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-23.807</x-m>
+    <y-m>  0.740</y-m>
+    <z-m> -0.369</z-m>
+    <heading-deg>2</heading-deg>
+    <roll-deg>-43</roll-deg>
    </offsets>
   </model>
 
+  <!-- navigation -->
+  
   <model>
    <name>Navigation left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/navigationleft.xml</path>
@@ -80,6 +103,8 @@
    </offsets>
   </model>
 
+  <!-- collision -->
+  
   <model>
    <name>Collision left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/collisionleft.xml</path>
@@ -110,13 +135,39 @@
    </offsets>
   </model>
 
+  <!-- taxi -->
+  
   <model>
    <name>Taxi left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxileft.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-13.406</x-m>
+    <y-m>-0.386</y-m>
+    <z-m>-1.066</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi left in flight</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/taxilight_left.xml</path>
+   <offsets>
+    <x-m>-13.406</x-m>
+    <y-m>-0.386</y-m>
+    <z-m>-1.066</z-m>                                    <!-- center of reflector -->
+    <heading-deg>3</heading-deg>                         <!-- 30 degrees -->
+    <pitch-deg>-6</pitch-deg>                            <!-- don't light fuselage -->
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi left on ground</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/taxilight_left_ground.xml</path>
+   <offsets>
+    <x-m>-13.406</x-m>
+    <y-m>-0.386</y-m>
+    <z-m>-1.066</z-m>
+    <heading-deg>3</heading-deg>
+    <pitch-deg>-6</pitch-deg>
    </offsets>
   </model>
 
@@ -124,9 +175,9 @@
    <name>Taxi cone left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxiconeleft.xml</path>
    <offsets>
-    <x-m>-13.335</x-m>
+    <x-m>-13.405</x-m>
     <y-m>-0.386</y-m>
-    <z-m>-1.056</z-m>
+    <z-m>-0.906</z-m>
    </offsets>
   </model>
 
@@ -134,9 +185,33 @@
    <name>Taxi right</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxiright.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-13.406</x-m>
+    <y-m> 0.386</y-m>
+    <z-m>-1.066</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi right in flight</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/taxilight_right.xml</path>
+   <offsets>
+    <x-m>-13.406</x-m>
+    <y-m> 0.386</y-m>
+    <z-m>-1.066</z-m>
+    <heading-deg>-3</heading-deg>
+    <pitch-deg>-6</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Taxi right on ground</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/taxilight_right_ground.xml</path>
+   <offsets>
+    <x-m>-13.406</x-m>
+    <y-m> 0.386</y-m>
+    <z-m>-1.066</z-m>
+    <heading-deg>-3</heading-deg>
+    <pitch-deg>-6</pitch-deg>
    </offsets>
   </model>
 
@@ -144,19 +219,32 @@
    <name>Taxi cone right</name>
    <path>Aircraft/Concorde/Models/Exterior/light/taxiconeright.xml</path>
    <offsets>
-    <x-m>-13.335</x-m>
+    <x-m>-13.405</x-m>
     <y-m> 0.386</y-m>
-    <z-m>-1.056</z-m>
+    <z-m>-0.906</z-m>
    </offsets>
   </model>
 
+  <!-- landing -->
+  
   <model>
    <name>Landing left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/landingleft.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-10.551</x-m>
+    <y-m>-1.553</y-m>
+    <z-m>-0.172</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing left on ground</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/landinglight_left.xml</path>
+   <offsets>
+    <x-m>-10.551</x-m>
+    <y-m>-1.553</y-m>
+    <z-m>-0.172</z-m>
+    <heading-deg>7</heading-deg>
    </offsets>
   </model>
 
@@ -164,9 +252,9 @@
    <name>Landing cone left</name>
    <path>Aircraft/Concorde/Models/Exterior/light/landingconeleft.xml</path>
    <offsets>
-    <x-m>-10.659</x-m>
+    <x-m>-10.549</x-m>
     <y-m>-1.553</y-m>
-    <z-m>-0.272</z-m>
+    <z-m>-0.012</z-m>
    </offsets>
   </model>
 
@@ -174,9 +262,20 @@
    <name>Landing right</name>
    <path>Aircraft/Concorde/Models/Exterior/light/landingright.xml</path>
    <offsets>
-    <x-m>0.0</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
+    <x-m>-10.551</x-m>
+    <y-m> 1.553</y-m>
+    <z-m>-0.172</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Landing right on ground</name>
+   <path>Aircraft/Concorde/Models/Exterior/lightsource/landinglight_right.xml</path>
+   <offsets>
+    <x-m>-10.551</x-m>
+    <y-m> 1.553</y-m>
+    <z-m>-0.172</z-m>
+    <heading-deg>-7</heading-deg>
    </offsets>
   </model>
 
@@ -184,14 +283,14 @@
    <name>Landing cone right</name>
    <path>Aircraft/Concorde/Models/Exterior/light/landingconeright.xml</path>
    <offsets>
-    <x-m>-10.659</x-m>
+    <x-m>-10.549</x-m>
     <y-m> 1.553</y-m>
-    <z-m>-0.272</z-m>
+    <z-m>-0.012</z-m>
    </offsets>
   </model>
 
 
-<!-- wheel chocks -->
+<!-- WHEEL CHOCKS -->
 
   <model>
    <name>Front chock 1</name>

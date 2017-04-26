@@ -10,14 +10,15 @@
 Voice = {};
 
 Voice.new = func {
-   var obj = { parents : [Voice,Checklist,Emergency,Callout,System],
+   var obj = { parents : [Voice,Callout.new(),State.new(),Emergency.new("/systems/voice")],
 
                autopilotsystem : nil,
 
-               flightlevel : Altitudeperception.new(),
-               acceleration : Speedperception.new(),
+               phase : Voicephase.new("/systems/voice"),
+               sensor : Voicesensor.new("/systems/voice"),
+               intelligence : VoiceAI.new(),
                crewvoice : Crewvoice.new(),
-               lastcheck : Checklist.new(),
+               lastcheck : Checklist.new("/systems/voice"),
 
                MODIFYSEC : 15.0,                                 # to modify something
                ABSENTSEC : 15.0,                                 # less attention
@@ -27,104 +28,31 @@ Voice.new = func {
 
                ready : constant.FALSE,
 
-               CLIMBFPM : 100,
-               DECAYFPM : -50,                                   # not zero, to avoid false alarm
-               DESCENTFPM : -100,
-               FINALFPM : -1000,
+               AGLLEVELFT : { "2500ft" : 2500, "1000ft" : 1000, "800ft" : 800, "500ft" : 500, "400ft" : 400, "300ft" : 300,
+                              "200ft" : 200, "100ft" : 100, "50ft" : 50, "40ft" : 40, "30ft" : 30, "20ft" : 20, "15ft" : 15 },
 
-               AGL2500FT : 2500,
-               AGL1000FT : 1000,
-               AGL800FT : 800,
-               AGL500FT : 500,
-               AGL400FT : 400,
-               AGL300FT : 300,
-               AGL200FT : 200,
-               AGL100FT : 100,
-               AGL50FT : 50,
-               AGL40FT : 40,
-               AGL30FT : 30,
-               AGL20FT : 20,
-               AGL15FT : 15,
-
-               altitudeft : 0.0,
-               lastaltitudeft : 0.0,
                altitudeselect : constant.FALSE,
                selectft : 0.0,
                delayselectftsec : 0,
                vertical : "",
 
-               aglft : 0.0,
                category : constant.FALSE,
                alert : constant.FALSE,
                decision : constant.FALSE,
                decisiontogo : constant.FALSE,
 
-               mach : 0.0,
-
-               V240KT : 240.0,
-               V100KT : 100.0,
-               AIRSPEEDKT : 60.0,
+               SPEEDLEVELKT : { "240kt" : 240, "100kt" : 100, "60kt" : 60 },
 
                v1 : constant.FALSE,
                v2 : constant.FALSE,
-
-               speedkt : 0.0,
-               lastspeedkt : 0.0,
-               groundkt : 0.0,
 
                FLAREDEG : 12.5,
 
                fueltransfert : constant.FALSE,
 
-               gear : 0.0,
-               lastgear : 0.0,
-               nose : 0.0,
-               lastnose : 0.0,
-
                airport : "",
                runway : "",
 
-               # pilot in command
-               captaintakeoff : {},
-               captainafterstart : {},
-               captaintaxi : {},
-               captainbeforetakeoff : {},
-               captainaftertakeoff : {},
-               captainallways : {},
-
-               # pilot not in command
-               pilottakeoff : {},
-               pilotclimb : {},
-               pilotlanding : {},
-               pilotgoaround : {},
-               pilotbeforestart : {},
-               pilotpushback : {},
-               pilotafterstart : {},
-               allwaystakeoff : {},
-               allwayslanding : {},
-               allwaysflight : {},
-               allways : {},
-
-               # engineer
-               engineertakeoff : {},
-               engineerflight : {},
-               engineerclimb : {},
-               engineertranssonic : {},
-               engineerdescent : {},
-               engineerapproach : {},
-               engineerlanding : {},
-               engineerbeforelanding : {},
-               engineerafterlanding : {},
-               engineerparking : {},
-               engineerstopover : {},
-               engineercockpit : {},
-               engineerbeforestart : {},
-               engineerpushback : {},
-               engineertaxi : {},
-               engineerbeforetakeoff : {},
-               engineeraftertakeoff : {},
-
-               aborted : constant.FALSE,
                real : constant.FALSE,                            # real checklist
                automata : "",
                automata2 : ""
@@ -136,128 +64,63 @@ Voice.new = func {
 }
 
 Voice.init = func {
-   var path = "/systems/voice";
-
-   me.inherit_system( path );
-   me.inherit_checklist( path );
-   me.inherit_emergency( path );
-   me.inherit_callout();
-
    me.selectft = me.dependency["autoflight"].getChild("altitude-select").getValue();
 
-   me.inittext();
-
-   me.presetcrew();
-
    me.callout = "holding";
+   
    settimer( func { me.schedule(); }, constant.HUMANSEC );
 }
 
-Voice.inittable = func( path, table ) {
-   var key = "";
-   var text = "";
-   var node = props.globals.getNode(path).getChildren("message");
-
-   for( var i=0; i < size(node); i=i+1 ) {
-        key = node[i].getChild("action").getValue();
-        text = node[i].getChild("text").getValue();
-        table[key] = text;
-   }
-}
-
-Voice.inittext = func {
-   me.inittable(me.itself["checklist"].getNode("beforetakeoff/engineer[0]").getPath(), me.engineerbeforetakeoff );
-   me.inittable(me.itself["checklist"].getNode("beforetakeoff/captain[0]").getPath(), me.captainbeforetakeoff );
-
-   me.inittable(me.itself["callout"].getNode("takeoff/captain").getPath(), me.captaintakeoff );
-
-   me.inittable(me.itself["callout"].getNode("takeoff/pilot[0]").getPath(), me.pilottakeoff );
-   me.inittable(me.itself["callout"].getNode("takeoff/pilot[1]").getPath(), me.pilotclimb );
-   me.inittable(me.itself["callout"].getNode("takeoff/pilot[2]").getPath(), me.allwaystakeoff );
-   me.inittable(me.itself["callout"].getNode("takeoff/engineer[0]").getPath(), me.engineertakeoff );
-
-   me.inittable(me.itself["checklist"].getNode("aftertakeoff/engineer[0]").getPath(), me.engineeraftertakeoff );
-   me.inittable(me.itself["checklist"].getNode("aftertakeoff/captain[0]").getPath(), me.captainaftertakeoff );
-
-   me.inittable(me.itself["callout"].getNode("flight/pilot[0]").getPath(), me.allwaysflight );
-   me.inittable(me.itself["callout"].getNode("flight/engineer[0]").getPath(), me.engineerflight );
-
-   me.inittable(me.itself["checklist"].getNode("climb/engineer[0]").getPath(), me.engineerclimb );
-
-   me.inittable(me.itself["checklist"].getNode("transsonic/engineer[0]").getPath(), me.engineertranssonic );
-
-   me.inittable(me.itself["checklist"].getNode("descent/engineer[0]").getPath(), me.engineerdescent );
-
-   me.inittable(me.itself["checklist"].getNode("approach/engineer[0]").getPath(), me.engineerapproach );
-
-   me.inittable(me.itself["checklist"].getNode("beforelanding/engineer").getPath(), me.engineerbeforelanding );
-
-   me.inittable(me.itself["callout"].getNode("landing/pilot[0]").getPath(), me.pilotlanding );
-   me.inittable(me.itself["callout"].getNode("landing/pilot[1]").getPath(), me.allwayslanding );
-   me.inittable(me.itself["callout"].getNode("landing/engineer[0]").getPath(), me.engineerlanding );
-
-   me.inittable(me.itself["callout"].getNode("goaround/pilot[0]").getPath(), me.pilotgoaround );
-
-   me.inittable(me.itself["checklist"].getNode("afterlanding/engineer[0]").getPath(), me.engineerafterlanding );
-
-   me.inittable(me.itself["checklist"].getNode("parking/engineer[0]").getPath(), me.engineerparking );
-
-   me.inittable(me.itself["checklist"].getNode("stopover/engineer[0]").getPath(), me.engineerstopover );
-
-   me.inittable(me.itself["checklist"].getNode("cockpit/engineer[0]").getPath(), me.engineercockpit );
-
-   me.inittable(me.itself["checklist"].getNode("beforestart/pilot[0]").getPath(), me.pilotbeforestart );
-   me.inittable(me.itself["checklist"].getNode("beforestart/engineer[0]").getPath(), me.engineerbeforestart );
-
-   me.inittable(me.itself["checklist"].getNode("pushback/pilot[0]").getPath(), me.pilotpushback );
-   me.inittable(me.itself["checklist"].getNode("pushback/engineer[0]").getPath(), me.engineerpushback );
-
-   me.inittable(me.itself["checklist"].getNode("afterstart/pilot[0]").getPath(), me.pilotafterstart );
-   me.inittable(me.itself["checklist"].getNode("afterstart/captain[0]").getPath(), me.captainafterstart );
-
-   me.inittable(me.itself["checklist"].getNode("taxi/engineer[0]").getPath(), me.engineertaxi );
-   me.inittable(me.itself["checklist"].getNode("taxi/captain[0]").getPath(), me.captaintaxi );
-
-   me.inittable(me.itself["checklist"].getNode("all/captain[0]").getPath(), me.captainallways );
-
-   me.inittable(me.itself["callout"].getNode("all/pilot[0]").getPath(), me.allways );
-}
-
-Voice.presetcrew = func {
-   var value = me.dependency["crew-ctrl"].getChild("presets").getValue();
-   var dialog = me.dependency["crew-presets"][value].getValue();
-
-   # copy to dialog
-   me.dependency["crew"].getChild("dialog").setValue(dialog);
-}
-
-Voice.set_relation = func( autopilot ) {
+Voice.set_relation = func( autopilot, copilot, engineer ) {
     me.autopilotsystem = autopilot;
+    
+    me.crewvoice.set_relation( copilot, engineer );
 }
 
 Voice.set_rates = func( steps ) {
     me.rates = steps;
 
-    me.flightlevel.set_rates( me.rates );
-    me.acceleration.set_rates( me.rates );
+    me.phase.set_rates( me.rates );
+}
+
+# disable at startup
+Voice.startupexport = func {
+   var disable = me.itself["root-ctrl"].getChild("disable").getValue();
+   
+   # disable voice at startup
+   if( disable ) {
+       me.set_service(constant.FALSE);
+   }
 }
 
 Voice.crewtextexport = func {
     me.crewvoice.textexport();
 }
 
-Voice.menuexport = func {
-   var label = me.dependency["crew"].getChild("dialog").getValue();
-
-   for( var i=0; i < size(me.dependency["crew-presets"]); i=i+1 ) {
-        if( me.dependency["crew-presets"][i].getValue() == label ) {
-
-            # for aicraft-data
-            me.dependency["crew-ctrl"].getChild("presets").setValue(i);
-
-            break;
-        }
+# enable crew
+Voice.serviceexport = func {
+   if( !me.dependency["crew"].getChild("serviceable").getValue() ) {
+       me.nochecklistinit();
    }
+}
+
+# enable voice
+Voice.enableexport = func {
+   var disable = me.itself["root-ctrl"].getChild("disable").getValue();
+   var serviceable = !disable;
+       
+   me.set_service(serviceable);
+}
+
+Voice.toggleexport = func {
+   if( me.dependency["crew"].getChild("serviceable").getValue() ) {
+       me.groundexport();
+   }
+}
+
+Voice.set_service = func( serviceable ) {
+   me.itself["root"].getChild("serviceable").setValue(serviceable);
+   me.itself["menu"].getChild("enabled").setValue(serviceable);
 }
 
 
@@ -265,7 +128,7 @@ Voice.menuexport = func {
 # ground checklists not in flight
 # -------------------------------
 Voice.afterlandingexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        var result = constant.FALSE;
 
        # abort takeoff
@@ -295,7 +158,7 @@ Voice.afterlandingexport = func {
 }
 
 Voice.parkingexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_terminal() ) {
            me.parkinginit();
        }
@@ -303,7 +166,7 @@ Voice.parkingexport = func {
 }
 
 Voice.stopoverexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        # at FG start, default is holding without checklist.
        if( me.is_gate() or ( me.is_holding() or me.is_takeoff() ) ) {
            me.set_startup();
@@ -313,7 +176,7 @@ Voice.stopoverexport = func {
 }
 
 Voice.externalexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.externalinit();
        }
@@ -321,7 +184,7 @@ Voice.externalexport = func {
 }
 
 Voice.preliminaryexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.preliminaryinit();
        }
@@ -329,7 +192,7 @@ Voice.preliminaryexport = func {
 }
 
 Voice.cockpitexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.cockpitinit();
        }
@@ -337,7 +200,7 @@ Voice.cockpitexport = func {
 }
 
 Voice.beforestartexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.beforestartinit();
        }
@@ -345,7 +208,7 @@ Voice.beforestartexport = func {
 }
 
 Voice.enginestartexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.enginestartinit();
        }
@@ -353,7 +216,7 @@ Voice.enginestartexport = func {
 }
 
 Voice.pushbackexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_gate() ) {
            me.pushbackinit();
        }
@@ -361,7 +224,7 @@ Voice.pushbackexport = func {
 }
 
 Voice.afterstartexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_started() ) {
            me.afterstartinit();
        }
@@ -369,7 +232,7 @@ Voice.afterstartexport = func {
 }
 
 Voice.taxiexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        # at FG start, default is holding without checklist.
        if( me.is_started() or ( me.is_holding() or me.is_takeoff() ) ) {
            me.set_startup();
@@ -379,7 +242,7 @@ Voice.taxiexport = func {
 }
 
 Voice.beforetakeoffexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        if( me.is_holding() or me.is_takeoff() ) {
            me.set_startup();
            me.beforetakeoffinit();
@@ -387,8 +250,48 @@ Voice.beforetakeoffexport = func {
    }
 }
 
-Voice.toggleexport = func {
-   if( me.has_AI() ) {
+
+# ------------------------------------------
+# flight checklists can be trained on ground
+# ------------------------------------------
+Voice.aftertakeoffexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.aftertakeoffinit();
+   }
+}
+
+Voice.climbexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.climbinit();
+   }
+}
+
+Voice.transsonicexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.transsonicinit();
+   }
+}
+
+Voice.descentexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.descentinit();
+   }
+}
+
+Voice.approachexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.approachinit();
+   }
+}
+
+Voice.beforelandingexport = func {
+   if( me.intelligence.has_crew() ) {
+       me.beforelandinginit();
+   }
+}
+
+Voice.groundexport = func {
+   if( me.intelligence.has_AI() ) {
        var presets = me.dependency["crew-ctrl"].getChild("presets").getValue();
 
        if( presets == 0 ) {
@@ -406,58 +309,18 @@ Voice.toggleexport = func {
 }
 
 
-# ------------------------------------------
-# flight checklists can be trained on ground
-# ------------------------------------------
-Voice.aftertakeoffexport = func {
-   if( me.has_crew() ) {
-       me.aftertakeoffinit();
-   }
-}
-
-Voice.climbexport = func {
-   if( me.has_crew() ) {
-       me.climbinit();
-   }
-}
-
-Voice.transsonicexport = func {
-   if( me.has_crew() ) {
-       me.transsonicinit();
-   }
-}
-
-Voice.descentexport = func {
-   if( me.has_crew() ) {
-       me.descentinit();
-   }
-}
-
-Voice.approachexport = func {
-   if( me.has_crew() ) {
-       me.approachinit();
-   }
-}
-
-Voice.beforelandingexport = func {
-   if( me.has_crew() ) {
-       me.beforelandinginit();
-   }
-}
-
-
 # --------------------
 # emergency procedures
 # --------------------
 Voice.fourengineflameoutexport = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        me.nochecklistinit();
        me.fourengineflameoutinit();
    }
 }
 
 Voice.fourengineflameoutmach1export = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        me.nochecklistinit();
        me.fourengineflameoutmach1init();
    }
@@ -471,8 +334,6 @@ Voice.abortexport = func {
    me.nochecklistinit();
 
    me.captainfeedback("abort");
-
-   me.aborted = constant.TRUE;
 }
 
 
@@ -508,24 +369,38 @@ Voice.landingexport = func {
 # voice checks
 # ------------
 Voice.captainfeedback = func( action ) {
-   me.crewvoice.nowcaptain( action, me.captainallways );
+   if( me.is_state() ) {
+       # no voice
+   }
+   
+   else {
+       me.crewvoice.nowmember( action, "captain", "allways" );
+   }
 }
 
 Voice.captaincheck = func( action ) {
-   if( me.is_aftertakeoff() ) {
-       me.crewvoice.nowcaptain( action, me.captainaftertakeoff );
-   }
-
-   elsif( me.is_afterstart() ) {
-       me.crewvoice.nowcaptain( action, me.captainafterstart );
-   }
-
-   elsif( me.is_taxi() ) {
-       me.crewvoice.nowcaptain( action, me.captaintaxi );
+   if( me.is_state() ) {
+       # no voice
    }
 
    elsif( me.is_beforetakeoff() ) {
-       me.crewvoice.nowcaptain( action, me.captainbeforetakeoff );
+       me.crewvoice.nowmember( action, "captain", "beforetakeoff" );
+   }
+   
+   elsif( me.is_aftertakeoff() ) {
+       me.crewvoice.nowmember( action, "captain", "aftertakeoff" );
+   }
+
+   elsif( me.is_afterstart() ) {
+       me.crewvoice.nowmember( action, "captain", "afterstart" );
+   }
+
+   elsif( me.is_taxi() ) {
+       me.crewvoice.nowmember( action, "captain", "taxi" );
+   }
+
+   elsif( me.is_afterlanding() ) {
+       me.crewvoice.nowmember( action, "captain", "afterlanding" );
    }
 
    else {
@@ -533,83 +408,91 @@ Voice.captaincheck = func( action ) {
    }
 }
 
-
-
 Voice.pilotcheck = func( action, argument = "" ) {
-   me.itself["root"].getChild("argument").setValue( argument );
-
-   if( me.is_beforestart() ) {
-       me.crewvoice.nowpilot( action, me.pilotbeforestart );
+   if( me.is_state() ) {
+       # no voice
    }
-
-   elsif( me.is_pushback() ) {
-       me.crewvoice.nowpilot( action, me.pilotpushback );
-   }
-
-   elsif( me.is_afterstart() ) {
-       me.crewvoice.nowpilot( action, me.pilotafterstart );
-   }
-
+   
    else {
-       print("check not found : ", action);
+       me.itself["root"].getChild("argument").setValue( argument );
+
+       if( me.is_beforestart() ) {
+           me.crewvoice.nowmember( action, "pilot", "beforestart" );
+       }
+
+       elsif( me.is_pushback() ) {
+           me.crewvoice.nowmember( action, "pilot", "pushback" );
+       }
+
+       elsif( me.is_afterstart() ) {
+           me.crewvoice.nowmember( action, "pilot", "afterstart" );
+       }
+
+       else {
+           print("pilot check not found : ", action);
+       }
    }
 }
 
 Voice.engineercheck = func( action ) {
-   if( me.is_aftertakeoff() ) {
-       me.crewvoice.nowengineer( action, me.engineeraftertakeoff );
+   if( me.is_state() ) {
+       # no voice
+   }
+   
+   elsif( me.is_aftertakeoff() ) {
+       me.crewvoice.nowmember( action, "engineer", "aftertakeoff" );
    }
 
    elsif( me.is_climb() ) {
-       me.crewvoice.nowengineer( action, me.engineerclimb );
+       me.crewvoice.nowmember( action, "engineer", "climb" );
    }
 
    elsif( me.is_transsonic() ) {
-       me.crewvoice.nowengineer( action, me.engineertranssonic );
+       me.crewvoice.nowmember( action, "engineer", "transsonic" );
    }
 
    elsif( me.is_descent() ) {
-       me.crewvoice.nowengineer( action, me.engineerdescent );
+       me.crewvoice.nowmember( action, "engineer", "descent" );
    }
 
    elsif( me.is_approach() ) {
-       me.crewvoice.nowengineer( action, me.engineerapproach );
+       me.crewvoice.nowmember( action, "engineer", "approach" );
    }
 
    elsif( me.is_beforelanding() ) {
-       me.crewvoice.nowengineer( action, me.engineerbeforelanding );
+       me.crewvoice.nowmember( action, "engineer", "beforelanding" );
    }
 
    elsif( me.is_afterlanding() ) {
-       me.crewvoice.nowengineer( action, me.engineerafterlanding );
+       me.crewvoice.nowmember( action, "engineer", "afterlanding" );
    }
 
    elsif( me.is_parking() ) {
-       me.crewvoice.nowengineer( action, me.engineerparking );
+       me.crewvoice.nowmember( action, "engineer", "parking" );
    }
 
    elsif( me.is_stopover() ) {
-       me.crewvoice.nowengineer( action, me.engineerstopover );
+       me.crewvoice.nowmember( action, "engineer", "stopover" );
    }
 
    elsif( me.is_cockpit() ) {
-       me.crewvoice.nowengineer( action, me.engineercockpit );
+       me.crewvoice.nowmember( action, "engineer", "cockpit" );
    }
 
    elsif( me.is_beforestart() ) {
-       me.crewvoice.nowengineer( action, me.engineerbeforestart );
+       me.crewvoice.nowmember( action, "engineer", "beforestart" );
    }
 
    elsif( me.is_pushback() ) {
-       me.crewvoice.nowengineer( action, me.engineerpushback );
+       me.crewvoice.nowmember( action, "engineer", "pushback" );
    }
 
    elsif( me.is_taxi() ) {
-       me.crewvoice.nowengineer( action, me.engineertaxi );
+       me.crewvoice.nowmember( action, "engineer", "taxi" );
    }
 
    elsif( me.is_beforetakeoff() ) {
-       me.crewvoice.nowengineer( action, me.engineerbeforetakeoff );
+       me.crewvoice.nowmember( action, "engineer", "beforetakeoff" );
    }
 
    else {
@@ -625,15 +508,15 @@ Voice.pilotcall = func( action ) {
    var result = "";
 
    if( me.is_holding() or me.is_takeoff() or me.is_aftertakeoff() ) {
-       result = me.crewvoice.steppilot( action, me.pilottakeoff );
+       result = me.crewvoice.stepmember( action, "pilot", "takeoff" );
    }
 
    elsif( me.is_beforelanding() or me.is_landing() ) {
-       result = me.crewvoice.steppilot( action, me.pilotlanding );
+       result = me.crewvoice.stepmember( action, "pilot", "landing" );
    }
 
    elsif( me.is_goaround() ) {
-       result = me.crewvoice.steppilot( action, me.pilotgoaround );
+       result = me.crewvoice.stepmember( action, "pilot", "goaround" );
    }
 
    else {
@@ -647,7 +530,7 @@ Voice.captaincall = func( action ) {
    var result = "";
 
    if( me.is_holding() ) {
-       result = me.crewvoice.stepcaptain( action, me.captaintakeoff );
+       result = me.crewvoice.stepmember( action, "captain", "takeoff" );
    }
 
    else {
@@ -661,11 +544,11 @@ Voice.engineercall = func( action ) {
    var result = "";
 
    if( me.is_holding() or me.is_takeoff() or me.is_aftertakeoff() ) {
-       result = me.crewvoice.stepengineer( action, me.engineertakeoff );
+       result = me.crewvoice.stepmember( action, "engineer", "takeoff" );
    }
 
    elsif( me.is_beforelanding() or me.is_landing() ) {
-       result = me.crewvoice.stepengineer( action, me.engineerlanding );
+       result = me.crewvoice.stepmember( action, "engineer", "landing" );
    }
 
    else {
@@ -681,18 +564,9 @@ Voice.schedule = func {
        me.set_rates( me.ABSENTSEC );
 
        me.vertical = me.dependency["autoflight"].getChild("vertical").getValue();
-       me.mach = me.dependency["mach"].getChild("indicated-mach").getValue();
-       me.speedkt = me.dependency["asi"].getChild("indicated-speed-kt").getValue();
-       me.groundkt = me.dependency["ins"].getChild("ground-speed-fps").getValue() * constant.FPSTOKT;
-       me.altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue();
-       me.aglft = me.dependency["radio-altimeter"].getChild("indicated-altitude-ft").getValue();
-       me.speedfpm = me.dependency["ivsi"].getChild("indicated-speed-fps").getValue() * constant.MINUTETOSECOND;
-       me.gear = me.dependency["gear"].getChild("position-norm").getValue();
-       me.nose = me.dependency["nose"].getChild("pos-norm").getValue();
-
-       # 1 cycle
-       me.flightlevel.schedule( me.speedfpm );
-       me.acceleration.schedule( me.speedkt, me.lastspeedkt );
+       
+       me.phase.schedule();
+       me.sensor.schedule();
 
        me.crewvoice.schedule();
 
@@ -702,8 +576,6 @@ Voice.schedule = func {
        me.whichchecklist();
 
        me.playvoices();
-
-       me.snapshot();
    }
 
    else {
@@ -713,7 +585,7 @@ Voice.schedule = func {
        me.nochecklistinit();
        me.noemergencyinit();
    }
-
+   
    settimer( func { me.schedule(); }, me.rates );
 }
 
@@ -731,7 +603,7 @@ Voice.nextcallout = func {
    elsif( me.is_goaround() ) {
        me.goaround();
    }
-   elsif( !me.on_ground() ) {
+   elsif( !me.phase.on_ground() ) {
        me.flight();
    }
 }
@@ -751,28 +623,28 @@ Voice.whichcallout = func {
    }
 
    # checklists required all crew members.
-   elsif( !me.on_ground() ) {
+   elsif( !me.phase.on_ground() ) {
        me.userair();
    }
 }
 
 Voice.whichchecklist = func {
-   if( me.has_crew() ) {
+   if( me.intelligence.has_crew() ) {
        # AI triggers automatically checklists
-       if( me.has_AI() and !me.is_emergency() ) {
+       if( me.intelligence.has_AI() and !me.is_emergency() ) {
 
            # aircraft is climbing
-           if( me.is_climbing() ) {
+           if( me.phase.is_climb_threshold() ) {
                me.crewclimb();
            }
 
            # aircraft is descending
-           elsif( me.is_descending() ) {
+           elsif( me.phase.is_descent_threshold() ) {
                me.crewdescent();
            }
 
            # aircraft cruise
-           elsif( !me.on_ground() ) {
+           elsif( !me.phase.on_ground() ) {
                me.crewcruise();
            }
        }
@@ -789,10 +661,10 @@ Voice.userground = func {
 
     
     # user has started all engines
-    if( me.is_allengines() ) {
+    if( me.sensor.is_allengines() ) {
         if( me.is_landing() ) {
             # when missed by callout
-            if( me.speedkt < me.acceleration.velocitykt( 20 ) ) {
+            if( me.phase.is_speed_below( 20 ) ) {
                 me.landingend();
             }
         }
@@ -828,7 +700,7 @@ Voice.userground = func {
     }
 
     # user has stopped all engines
-    elsif( me.is_noengines() ) {
+    elsif( me.sensor.is_noengines() ) {
         me.gateinit();
     }
 
@@ -845,13 +717,13 @@ Voice.userground = func {
 
 Voice.userair = func {
     # aircraft is climbing
-    if( me.is_climbing() and me.aglft > constantaero.CLIMBFT ) {
+    if( me.phase.is_climb_threshold() and me.phase.is_agl_climb() ) {
         me.flightinit();
     }
 
     # aircraft is descending
-    elsif( me.is_descending() ) {
-        if( me.is_approaching() ) {
+    elsif( me.phase.is_descent_threshold() ) {
+        if( me.phase.is_altitude_approach() ) {
             me.landinginit();
         }
 
@@ -867,14 +739,14 @@ Voice.userair = func {
 }
 
 Voice.crewcruise = func {
-    if( me.is_cruising() ) {
+    if( me.phase.is_altitude_cruise() ) {
         # waits for checklist end
         if( !me.is_transsonic() ) {
             me.cruiseclimbinit();
         }
     }
 
-    elsif( me.is_cruisingsubsonic() ) {
+    elsif( me.phase.is_mach_climb() ) {
         me.flightinit();
     }
 
@@ -884,7 +756,7 @@ Voice.crewcruise = func {
 }
 
 Voice.crewclimb = func {
-    if( me.is_cruising() ) {
+    if( me.phase.is_altitude_cruise() ) {
         # waits for checklist end
         if( !me.is_transsonic() ) {
             me.cruiseclimbinit();
@@ -892,12 +764,12 @@ Voice.crewclimb = func {
     }
 
     # transsonic
-    elsif( me.is_supersonic() ) {
+    elsif( me.phase.is_mach_supersonic() ) {
         me.transsonicinit();
     }
 
     # subsonic
-    elsif( me.is_cruisingsubsonic() ) {
+    elsif( me.phase.is_mach_climb() ) {
         if( !me.lastcheck.is_climb() ) {
             me.climbinit();
         }
@@ -911,7 +783,7 @@ Voice.crewclimb = func {
 
 Voice.crewdescent = func {
     # landing
-    if( me.aglft < constantaero.LANDINGFT ) {
+    if( me.phase.is_agl_landing() ) {
         # impossible just after a takeoff, must climb enough
         if( !me.is_takeoff() ) {
             if( !me.lastcheck.is_beforelanding() ) {
@@ -921,53 +793,16 @@ Voice.crewdescent = func {
     }
 
     # approaching
-    elsif( me.is_approaching() ) {
+    elsif( me.phase.is_altitude_approach() ) {
         if( !me.lastcheck.is_approach() ) {
             me.approachinit();
         }
     }
 
     # ending cruise
-    elsif( me.is_supersonic() ) {
+    elsif( me.phase.is_mach_supersonic() ) {
         me.descentinit();
     }
-}
-
-Voice.has_AI = func {
-   var result = constant.FALSE;
-
-   # AI triggers flight checklists
-   if( me.dependency["crew-ctrl"].getChild("checklist").getValue() ) {
-       result = me.has_crew();
-   }
-
-   return result;
-}
-
-Voice.has_crew = func {
-   var result = constant.FALSE;
-
-   if( me.itself["root"].getChild("serviceable").getValue() ) {
-       if( me.dependency["copilot-ctrl"].getChild("activ").getValue() and
-           me.dependency["engineer-ctrl"].getChild("activ").getValue() ) {
-           result = constant.TRUE;
-       }
-   }
-
-   return result;
-}
-
-Voice.has_reheat = func {
-    var augmentation = constant.FALSE;
-
-    for( var i = 0; i < constantaero.NBENGINES; i = i+1 ) {
-         if( me.dependency["engine-ctrl"][i].getChild("reheat").getValue() ) {
-             augmentation = constant.TRUE;
-             break;
-         }
-    }
-
-    return augmentation;
 }
 
 Voice.sendcallout = func {
@@ -986,12 +821,6 @@ Voice.sendemergency = func {
    me.itself["root"].getChild("real").setValue(me.real);
 }
 
-Voice.snapshot = func {
-   me.lastspeedkt = me.speedkt;
-   me.lastaltitudeft = me.altitudeft;
-   me.lastnose = me.nose;
-}
-
 Voice.playvoices = func {
    if( me.crewvoice.willplay() ) {
        me.set_rates( constant.HUMANSEC );
@@ -1000,19 +829,12 @@ Voice.playvoices = func {
    me.crewvoice.playvoices( me.rates );
 }
 
-Voice.Vkt = func( minkt, maxkt ) {
-    var weightlb = me.noinstrument["weight"].getValue();
-    var valuekt = constantaero.Vkt( weightlb, minkt, maxkt );
-
-    return valuekt;
-}
-
 Voice.calloutinit = func( state, state2, state3 ) {
    me.callout = state;
    me.automata = state2;
    me.automata2 = state3;
 
-   me.flightlevel.setlevel( me.altitudeft );
+   me.phase.set_level();
 
    me.sendcallout();
 }
@@ -1038,7 +860,7 @@ Voice.checklistinit = func( state, real ) {
        }
    }
 
-   me.not_completed();
+   me.unset_completed();
 
    me.sendchecklist();
 }
@@ -1062,7 +884,7 @@ Voice.emergencyinit = func( state, real ) {
        }
    }
 
-   me.not_completed();
+   me.unset_completed();
 
    me.sendemergency();
 }
@@ -1080,7 +902,7 @@ Voice.nochecklistinit = func {
 }
 
 Voice.nocalloutinit = func {
-   me.calloutinit( "not serviceable", "", "" );
+   me.calloutinit( "voice is disabled", "", "" );
 }
 
 
@@ -1448,26 +1270,26 @@ Voice.takeoff = func {
 }
 
 Voice.takeoffallways = func {
-   if( !me.on_ground() ) {
-       if( me.speedfpm < me.DECAYFPM ) {
-           me.crewvoice.stepallways( "negativvsi", me.allwaystakeoff, constant.TRUE );
+   if( !me.phase.on_ground() ) {
+       if( me.phase.is_climb_decay() ) {
+           me.crewvoice.stepmember( "negativvsi", "allways", "takeoff", constant.TRUE );
        }
 
-       elsif( me.speedkt < constantaero.APPROACHKT and
-              (  me.acceleration.climbdecrease() or
+       elsif( me.phase.is_speed_approach() and
+              (  me.phase.is_climb_decrease() or
                  ( me.v2 and
-                   me.speedkt < me.acceleration.velocitykt( me.Vkt( constantaero.V2EMPTYKT,
-                                                                    constantaero.V2FULLKT ) ) ) ) ) {
-           me.crewvoice.stepallways( "airspeeddecay", me.allwaystakeoff, constant.TRUE );
+                   me.phase.is_speed_below( me.sensor.Vkt( constantaero.V2EMPTYKT,
+                                                           constantaero.V2FULLKT ) ) ) ) ) {
+           me.crewvoice.stepmember( "airspeeddecay", "allways", "takeoff", constant.TRUE );
        }
    }
 }
 
 Voice.takeoffclimb = func {
    if( me.automata2 == "takeoff" ) {
-       if( me.is_climbing() and me.aglft > constantaero.LIFTOFFFT ) {
-           me.automata2 = me.crewvoice.steppilot( "liftoff", me.pilotclimb );
-           if( me.has_AI() ) {
+       if( me.phase.is_climb_threshold() and me.phase.is_agl_liftoff() ) {
+           me.automata2 = me.crewvoice.stepmember( "liftoff", "pilot", "climb" );
+           if( me.intelligence.has_AI() ) {
                me.aftertakeoffinit();
            }
        }
@@ -1476,50 +1298,50 @@ Voice.takeoffclimb = func {
 
 Voice.takeoffpilot = func {
    if( me.automata == "takeoff" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.AIRSPEEDKT ) ) {
+       if( me.phase.is_speed_above( me.SPEEDLEVELKT["60kt"] ) ) {
            me.automata = me.pilotcall( "airspeed" );
        }
    }
 
    elsif( me.automata == "airspeed" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.V100KT ) ) {
+       if( me.phase.is_speed_above( me.SPEEDLEVELKT["100kt"] ) ) {
            me.automata = me.pilotcall( "100kt" );
            me.engineercall( "100kt" );
        }
    }
 
    elsif( me.automata == "100kt" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.Vkt( constantaero.V1EMPTYKT,
-                                                             constantaero.V1FULLKT ) ) ) {
+       if( me.phase.is_speed_above( me.sensor.Vkt( constantaero.V1EMPTYKT,
+                                                   constantaero.V1FULLKT ) ) ) {
            me.automata = me.pilotcall( "V1" );
            me.v1 = constant.TRUE;
        }
    }
 
    elsif( me.automata == "V1" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.Vkt( constantaero.VREMPTYKT,
-                                                             constantaero.VRFULLKT ) ) ) {
+       if( me.phase.is_speed_above( me.sensor.Vkt( constantaero.VREMPTYKT,
+                                                   constantaero.VRFULLKT ) ) ) {
            me.automata = me.pilotcall( "VR" );
        }
    }
 
    elsif( me.automata == "VR" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.Vkt( constantaero.V2EMPTYKT,
-                                                             constantaero.V2FULLKT ) ) ) {
+       if( me.phase.is_speed_above( me.sensor.Vkt( constantaero.V2EMPTYKT,
+                                                   constantaero.V2FULLKT ) ) ) {
            me.automata = me.pilotcall( "V2" );
            me.v2 = constant.TRUE;
        }
    }
 
    elsif( me.automata == "V2" ) {
-       if( me.speedkt >= me.acceleration.velocitykt( me.V240KT ) ) {
+       if( me.phase.is_speed_above( me.SPEEDLEVELKT["240kt"] ) ) {
            me.automata = me.pilotcall( "240kt" );
        }
    }
 
    # aborted takeoff
    if( me.automata != "takeoff" ) {
-       if( me.speedkt < me.acceleration.velocitykt( 20 ) ) {
+       if( me.phase.is_speed_below( 20 ) ) {
            me.takeoffinit( constant.TRUE );
        }
    }
@@ -1576,7 +1398,7 @@ Voice.flightallways = func {
        }
        elsif( me.delayselectftsec > 0 ) {
            if( me.delayselectftsec >= me.MODIFYSEC ) {
-               if( me.crewvoice.stepallways( "altitudeset", me.allwaysflight ) ) {
+               if( me.crewvoice.stepmember( "altitudeset", "allways", "flight" ) ) {
                    me.delayselectftsec = 0;
                }
            }
@@ -1589,39 +1411,39 @@ Voice.flightallways = func {
        if( !me.altitudeselect ) { 
            if( me.vertical == "altitude-acquire" ) {
                if( me.autopilotsystem.is_engaged() and
-                   !me.autopilotsystem.altitudelight_on( me.altitudeft, me.selectft ) ) {
+                   !me.autopilotsystem.altitudelight_on( me.phase.get_altitudeft(), me.selectft ) ) {
                    me.altitudeselect = constant.TRUE;
                }
            }
        }
        else { 
            if( me.autopilotsystem.is_engaged() and
-               me.autopilotsystem.altitudelight_on( me.altitudeft, me.selectft ) ) {
-               if( me.crewvoice.stepallways( "1000fttogo", me.allwaysflight ) ) {
+               me.autopilotsystem.altitudelight_on( me.phase.get_altitudeft(), me.selectft ) ) {
+               if( me.crewvoice.stepmember( "1000fttogo", "allways", "flight" ) ) {
                    me.altitudeselect = constant.FALSE;
                }
            }       
        }
 
 
-       if( me.flightlevel.levelchange( me.altitudeft ) ) {
-           me.crewvoice.stepallways( "altimetercheck", me.allwaysflight );
+       if( me.phase.is_altitude_level() ) {
+           me.crewvoice.stepmember( "altimetercheck", "allways", "flight" );
 
            if( me.dependency["engineer"].getNode("cg/forward").getValue() ) {
                me.fueltransfert = constant.TRUE;
-               me.crewvoice.stepengineer( "cgforward", me.engineerflight );
+               me.crewvoice.stepmember( "cgforward", "engineer", "flight" );
            }
            elsif( me.dependency["engineer"].getNode("cg/aft").getValue() ) {
                me.fueltransfert = constant.TRUE;
-               me.crewvoice.stepengineer( "cgaft", me.engineerflight );
+               me.crewvoice.stepmember( "cgaft", "engineer", "flight" );
            }
            else {
                me.fueltransfert = constant.FALSE;
-               me.crewvoice.stepengineer( "cgcorrect", me.engineerflight );
+               me.crewvoice.stepmember( "cgcorrect", "engineer", "flight" );
            }
        }
-       elsif( me.flightlevel.transitionchange( me.altitudeft ) ) {
-           me.crewvoice.stepallways( "transition", me.allwaysflight );
+       elsif( me.phase.is_altitude_transition() ) {
+           me.crewvoice.stepmember( "transition", "allways", "flight" );
        }
 
        # fuel transfert is completed :
@@ -1635,9 +1457,9 @@ Voice.flightallways = func {
            if( ( me.autopilotsystem.is_engaged() and
                ( me.autopilotsystem.is_altitude_acquire() or
                  me.autopilotsystem.is_altitude_hold() ) ) or
-               me.is_cruising() or me.is_approaching() ) {
+               me.phase.is_altitude_cruise() or me.phase.is_altitude_approach() ) {
                me.fueltransfert = constant.FALSE;
-               me.crewvoice.stepengineer( "cgcorrect", me.engineerflight );
+               me.crewvoice.stepmember( "cgcorrect", "engineer", "flight" );
            }
        }
    } 
@@ -1799,22 +1621,22 @@ Voice.landingpilot = func {
        }
    }
    elsif( me.automata2 == "glideslope" ) {
-       if( me.speedkt < me.acceleration.velocitykt( 100 ) ) {
+       if( me.phase.is_speed_below( 100 ) ) {
            me.automata2 = me.pilotcall( "100kt" );
        }
    }
    elsif( me.automata2 == "100kt" ) {
-       if( me.speedkt < me.acceleration.velocitykt( 75 ) ) {
+       if( me.phase.is_speed_below( 75 ) ) {
            me.automata2 = me.pilotcall( "75kt" );
        }
    }
    elsif( me.automata2 == "75kt" ) {
-       if( me.speedkt < me.acceleration.velocitykt( 40 ) ) {
+       if( me.phase.is_speed_below( 40 ) ) {
            me.automata2 = me.pilotcall( "40kt" );
        }
    }
    elsif( me.automata2 == "40kt" ) {
-       if( me.speedkt < me.acceleration.velocitykt( 20 ) ) {
+       if( me.phase.is_speed_below( 20 ) ) {
            me.automata2 = me.pilotcall( "20kt" );
            # wake up AI
            me.landingend();
@@ -1823,7 +1645,7 @@ Voice.landingpilot = func {
 }
 
 Voice.landingend = func {
-   if( me.has_AI() ) {
+   if( me.intelligence.has_AI() ) {
        me.afterlandinginit();
    }
    else {
@@ -1833,71 +1655,71 @@ Voice.landingend = func {
 
 Voice.landingengineer = func {
    if( me.automata == "landing" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL2500FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["2500ft"] ) ) {
            me.automata = me.engineercall( "2500ft" );
        }
    }
 
    elsif( me.automata == "2500ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL1000FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["1000ft"] ) ) {
            me.automata = me.engineercall( "1000ft" );
        }
    }
 
    elsif( me.automata == "1000ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL800FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["800ft"] ) ) {
            me.automata = me.engineercall( "800ft" );
        }
    }
 
    elsif( me.automata == "800ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL500FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["500ft"] ) ) {
            me.automata = me.engineercall( "500ft" );
        }
    }
 
    elsif( me.automata == "500ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL400FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["400ft"] ) ) {
            me.automata = me.engineercall( "400ft" );
        }
    }
 
    elsif( me.automata == "400ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL300FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["300ft"] ) ) {
            me.automata = me.engineercall( "300ft" );
        }
    }
 
    elsif( me.automata == "300ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL200FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["200ft"] ) ) {
            me.automata = me.engineercall( "200ft" );
        }
    }
 
    elsif( me.automata == "200ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL100FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["100ft"] ) ) {
            me.automata = me.engineercall( "100ft" );
        }
    }
 
    elsif( me.automata == "100ft" ) {
-       me.landingtouchdown( me.AGL50FT );
+       me.landingtouchdown( me.AGLLEVELFT["50ft"] );
    }
 
    elsif( me.automata == "50ft" ) {
-       me.landingtouchdown( me.AGL40FT );
+       me.landingtouchdown( me.AGLLEVELFT["40ft"] );
    }
 
    elsif( me.automata == "40ft" ) {
-       me.landingtouchdown( me.AGL30FT );
+       me.landingtouchdown( me.AGLLEVELFT["30ft"] );
    }
 
    elsif( me.automata == "30ft" ) {
-       me.landingtouchdown( me.AGL20FT );
+       me.landingtouchdown( me.AGLLEVELFT["20ft"] );
    }
 
    elsif( me.automata == "20ft" ) {
-       if( me.aglft < me.flightlevel.climbft( me.AGL15FT ) ) {
+       if( me.phase.is_agl_below_level( me.AGLLEVELFT["15ft"] ) ) {
            me.automata = me.engineercall( "15ft" );
        }
    }
@@ -1905,19 +1727,19 @@ Voice.landingengineer = func {
 
 # can be faster
 Voice.landingtouchdown = func( limitft ) {
-   if( 15 <= limitft and me.aglft < me.flightlevel.climbft( me.AGL15FT ) ) {
+   if( 15 <= limitft and me.phase.is_agl_below_level( me.AGLLEVELFT["15ft"] ) ) {
        me.automata = me.engineercall( "15ft" );
    }
-   elsif( 20 <= limitft and me.aglft < me.flightlevel.climbft( me.AGL20FT ) ) {
+   elsif( 20 <= limitft and me.phase.is_agl_below_level( me.AGLLEVELFT["20ft"] ) ) {
        me.automata = me.engineercall( "20ft" );
    }
-   elsif( 30 <= limitft and me.aglft < me.flightlevel.climbft( me.AGL30FT ) ) {
+   elsif( 30 <= limitft and me.phase.is_agl_below_level( me.AGLLEVELFT["30ft"] ) ) {
        me.automata = me.engineercall( "30ft" );
    }
-   elsif( 40 <= limitft and me.aglft < me.flightlevel.climbft( me.AGL40FT ) ) {
+   elsif( 40 <= limitft and me.phase.is_agl_below_level( me.AGLLEVELFT["40ft"] ) ) {
        me.automata = me.engineercall( "40ft" );
    }
-   elsif( 50 <= limitft and me.aglft < me.flightlevel.climbft( me.AGL50FT ) ) {
+   elsif( 50 <= limitft and me.phase.is_agl_below_level( me.AGLLEVELFT["50ft"] ) ) {
        me.automata = me.engineercall( "50ft" );
    }
 }
@@ -1931,7 +1753,7 @@ Voice.landingallways = func {
    }
    elsif( me.delayselectftsec > 0 ) {
        if( me.delayselectftsec >= me.MODIFYSEC ) {
-           if( me.crewvoice.stepallways( "goaroundset", me.allwayslanding ) ) {
+           if( me.crewvoice.stepmember( "goaroundset", "allways", "landing" ) ) {
                me.delayselectftsec = 0;
            }
        }
@@ -1940,50 +1762,48 @@ Voice.landingallways = func {
        }
    }
 
-   if( me.aglft < me.AGL100FT and
+   if( me.phase.is_agl_below( me.AGLLEVELFT["100ft"] ) and
        me.dependency["attitude"].getChild("indicated-pitch-deg").getValue() > me.FLAREDEG ) {
-       me.crewvoice.stepallways( "attitude", me.allwayslanding, constant.TRUE );
+       me.crewvoice.stepmember( "attitude", "allways", "landing", constant.TRUE );
    }
 
-   elsif( me.aglft < me.AGL1000FT and me.speedfpm < me.FINALFPM ) {
-       me.crewvoice.stepallways( "vsiexcess", me.allwayslanding, constant.TRUE );
+   elsif( me.phase.is_agl_below( me.AGLLEVELFT["1000ft"] ) and me.phase.is_descent_final() ) {
+       me.crewvoice.stepmember( "vsiexcess", "allways", "landing", constant.TRUE );
    }
 
    elsif( !me.category and me.dependency["autopilot"].getChild("land3").getValue() ) {
-       me.crewvoice.stepallways( "category3", me.allwayslanding );
+       me.crewvoice.stepmember( "category3", "allways", "landing" );
        me.category = constant.TRUE;
    }
 
    elsif( !me.category and me.dependency["autopilot"].getChild("land2").getValue() ) {
-       me.crewvoice.stepallways( "category2", me.allwayslanding );
+       me.crewvoice.stepmember( "category2", "allways", "landing" );
        me.category = constant.TRUE;
    }
 
    elsif( !me.alert and me.dependency["autopilot"].getChild("land2").getValue() and
-          me.aglft < me.flightlevel.climbft( me.AGL300FT ) ) {
-       me.crewvoice.stepallways( "alertheight", me.allwayslanding );
+          me.phase.is_agl_below_level( me.AGLLEVELFT["300ft"] ) ) {
+       me.crewvoice.stepmember( "alertheight", "allways", "landing" );
        me.alert = constant.TRUE;
    }
 
    elsif( !me.decisiontogo and
-          me.aglft <
-          me.flightlevel.climbft( me.dependency["radio-altimeter"].getChild("decision-ft").getValue() + me.AGL100FT ) ) {
-       me.crewvoice.stepallways( "100fttogo", me.allwayslanding );
+          me.phase.is_agl_below_level( me.dependency["radio-altimeter"].getChild("decision-ft").getValue() + me.AGLLEVELFT["100ft"] ) ) {
+       me.crewvoice.stepmember( "100fttogo", "allways", "landing" );
        me.decisiontogo = constant.TRUE;
    }
 
    elsif( me.decisiontogo and !me.decision and
-          me.aglft <
-          me.flightlevel.climbft( me.dependency["radio-altimeter"].getChild("decision-ft").getValue() ) ) {
-       me.crewvoice.stepallways( "decisionheight", me.allwayslanding );
+          me.phase.is_agl_below_level( me.dependency["radio-altimeter"].getChild("decision-ft").getValue() ) ) {
+       me.crewvoice.stepmember( "decisionheight", "allways", "landing" );
        me.decision = constant.TRUE;
    }
 
-   elsif( me.aglft < me.AGL1000FT and !me.decision and
-         ( me.acceleration.finaldecrease() or
-           me.speedkt < me.acceleration.velocitykt( me.Vkt( constantaero.VREFEMPTYKT,
-                                                            constantaero.VREFFULLKT ) ) ) ) {
-       me.crewvoice.stepallways( "approachspeed", me.allwayslanding, constant.TRUE );
+   elsif( me.phase.is_agl_below( me.AGLLEVELFT["1000ft"] ) and !me.decision and
+         ( me.phase.is_final_decrease() or
+           me.phase.is_speed_below( me.sensor.Vkt( constantaero.VREFEMPTYKT,
+                                                   constantaero.VREFFULLKT ) ) ) ) {
+       me.crewvoice.stepmember( "approachspeed", "allways", "landing", constant.TRUE );
    }
 }
 
@@ -2007,9 +1827,9 @@ Voice.goaround = func {
    me.set_rates( constant.HUMANSEC );
 
    if( me.automata == "goaround" ) {
-       if( me.speedfpm > 0 ) {
+       if( me.phase.is_climb_visible() ) {
            me.automata = me.pilotcall( "positivclimb" );
-           if( me.has_AI() ) {
+           if( me.intelligence.has_AI() ) {
                me.aftertakeoffinit();
            }
 
@@ -2035,30 +1855,30 @@ Voice.goaround = func {
 Voice.checkallways = func {
    var change = constant.FALSE;
 
-   if( me.nose != me.lastnose or me.gear != me.lastgear ) {
+   if( me.sensor.is_nose_change() or me.sensor.is_gear_change() ) {
        change = constant.TRUE;
-       if( me.nose == constantaero.NOSEDOWN and me.gear == constantaero.GEARDOWN ) {
-           if( !me.crewvoice.stepallways( "5greens", me.allways ) ) {
+       if( me.sensor.is_nose_down() and me.sensor.is_gear_down() ) {
+           if( !me.crewvoice.stepmember( "5greens", "allways", "allways" ) ) {
                change = constant.FALSE;
            }
        }
 
        if( change ) {
-           me.lastnose = me.nose;
+           me.sensor.snapshot_nose();
        }
    }
 
-   if( me.gear != me.lastgear ) {
+   if( me.sensor.is_gear_change() ) {
        change = constant.TRUE;
        # on pull of lever
-       if( me.lastgear == constantaero.GEARDOWN and me.gear < constantaero.GEARDOWN ) {
-           if( !me.crewvoice.stepallways( "gearup", me.allways ) ) {
+       if( me.sensor.is_lastgear_down() and !me.sensor.is_gear_down() ) {
+           if( !me.crewvoice.stepmember( "gearup", "allways", "allways" ) ) {
                change = constant.FALSE;
            }
        }
 
        if( change ) {
-           me.lastgear = me.gear;
+           me.sensor.snapshot_gear();
        }
    }
 }
@@ -2095,100 +1915,167 @@ Voice.fourengineflameoutmach1init = func {
 }
 
 
-Voice.on_ground = func {
+# ========
+# VOICE AI 
+# ========
+
+VoiceAI = {};
+
+VoiceAI.new = func {
+   var obj = { parents : [VoiceAI,System.new("/systems/voice")]
+         };
+
+   return obj;
+}
+
+VoiceAI.has_AI = func {
    var result = constant.FALSE;
 
-   if( me.aglft < constantaero.AGLTOUCHFT ) {
-       result = constant.TRUE;
+   # AI triggers flight checklists
+   if( me.dependency["crew-ctrl"].getChild("checklist").getValue() ) {
+       result = me.has_crew();
    }
 
    return result;
 }
 
-Voice.is_climbing = func {
+VoiceAI.has_crew = func {
    var result = constant.FALSE;
 
-   if( me.speedfpm > me.CLIMBFPM ) {
-       result = constant.TRUE;
+   if( me.itself["root"].getChild("serviceable").getValue() ) {
+       if( me.dependency["copilot-ctrl"].getChild("activ").getValue() and
+           me.dependency["engineer-ctrl"].getChild("activ").getValue() ) {
+           result = constant.TRUE;
+       }
    }
 
    return result;
 }
 
-Voice.is_cruisingsubsonic = func {
-   var result = constant.FALSE;
 
-   if( me.mach > constantaero.CLIMBMACH ) {
-       result = constant.TRUE;
+# ==========
+# VOICE WORD 
+# ==========
+
+Voiceword = {};
+
+Voiceword.new = func {
+   var obj = { parents : [Voiceword,System.new("/systems/voice")],
+
+               # pilot in command
+               captain :  { "takeoff" : {}, "afterstart" : {}, "taxi" : {}, "beforetakeoff" : {}, "aftertakeoff" : {}, "afterlanding" : {}, "allways" : {} },
+
+               # pilot not in command
+               pilot :  { "takeoff" : {}, "climb" : {}, "landing" : {}, "goaround" : {}, "beforestart" : {}, "pushback" : {}, "afterstart" : {} },
+               
+               allways : { "takeoff" : {}, "landing" : {}, "flight" : {}, "allways" : {} },
+
+               engineer : { "takeoff" : {}, "flight" : {}, "climb" : {}, "transsonic" : {}, "descent" : {}, "approach" : {}, "landing" : {},
+                            "beforelanding" : {}, "afterlanding" : {}, "parking" : {}, "stopover" : {}, "cockpit" : {}, "beforestart" : {},
+                            "pushback" : {}, "taxi" : {}, "beforetakeoff" : {}, "aftertakeoff" : {} }
+         };
+
+   obj.init();
+   
+   return obj;
+}
+
+Voiceword.init = func {
+   me.inittext();
+}
+
+Voiceword.inittable = func( path, table ) {
+   var key = "";
+   var text = "";
+   var node = props.globals.getNode(path).getChildren("message");
+
+   for( var i=0; i < size(node); i=i+1 ) {
+        key = node[i].getChild("action").getValue();
+        text = node[i].getChild("text").getValue();
+        table[key] = text;
    }
-
-   return result;
 }
 
-Voice.is_supersonic = func {
-   var result = constant.FALSE;
+Voiceword.inittext = func {
+   me.inittable(me.itself["checklist"].getNode("beforetakeoff/engineer[0]").getPath(), me.engineer["beforetakeoff"] );
+   me.inittable(me.itself["checklist"].getNode("beforetakeoff/captain[0]").getPath(), me.captain["beforetakeoff"] );
 
-   if( me.mach >= constantaero.SOUNDMACH ) {
-       result = constant.TRUE;
+   me.inittable(me.itself["callout"].getNode("takeoff/captain").getPath(), me.captain["takeoff"] );
+
+   me.inittable(me.itself["callout"].getNode("takeoff/pilot[0]").getPath(), me.pilot["takeoff"] );
+   me.inittable(me.itself["callout"].getNode("takeoff/pilot[1]").getPath(), me.pilot["climb"] );
+   me.inittable(me.itself["callout"].getNode("takeoff/pilot[2]").getPath(), me.allways["takeoff"] );
+   me.inittable(me.itself["callout"].getNode("takeoff/engineer[0]").getPath(), me.engineer["takeoff"] );
+
+   me.inittable(me.itself["checklist"].getNode("aftertakeoff/engineer[0]").getPath(), me.engineer["aftertakeoff"] );
+   me.inittable(me.itself["checklist"].getNode("aftertakeoff/captain[0]").getPath(), me.captain["aftertakeoff"] );
+
+   me.inittable(me.itself["callout"].getNode("flight/pilot[0]").getPath(), me.allways["flight"] );
+   me.inittable(me.itself["callout"].getNode("flight/engineer[0]").getPath(), me.engineer["flight"] );
+
+   me.inittable(me.itself["checklist"].getNode("climb/engineer[0]").getPath(), me.engineer["climb"] );
+
+   me.inittable(me.itself["checklist"].getNode("transsonic/engineer[0]").getPath(), me.engineer["transsonic"] );
+
+   me.inittable(me.itself["checklist"].getNode("descent/engineer[0]").getPath(), me.engineer["descent"] );
+
+   me.inittable(me.itself["checklist"].getNode("approach/engineer[0]").getPath(), me.engineer["approach"] );
+
+   me.inittable(me.itself["checklist"].getNode("beforelanding/engineer").getPath(), me.engineer["beforelanding"] );
+
+   me.inittable(me.itself["callout"].getNode("landing/pilot[0]").getPath(), me.pilot["landing"] );
+   me.inittable(me.itself["callout"].getNode("landing/pilot[1]").getPath(), me.allways["landing"] );
+   me.inittable(me.itself["callout"].getNode("landing/engineer[0]").getPath(), me.engineer["landing"] );
+
+   me.inittable(me.itself["callout"].getNode("goaround/pilot[0]").getPath(), me.pilot["goaround"] );
+
+   me.inittable(me.itself["checklist"].getNode("afterlanding/engineer[0]").getPath(), me.engineer["afterlanding"] );
+   me.inittable(me.itself["checklist"].getNode("afterlanding/captain[0]").getPath(), me.captain["afterlanding"] );
+
+   me.inittable(me.itself["checklist"].getNode("parking/engineer[0]").getPath(), me.engineer["parking"] );
+
+   me.inittable(me.itself["checklist"].getNode("stopover/engineer[0]").getPath(), me.engineer["stopover"] );
+
+   me.inittable(me.itself["checklist"].getNode("cockpit/engineer[0]").getPath(), me.engineer["cockpit"] );
+
+   me.inittable(me.itself["checklist"].getNode("beforestart/pilot[0]").getPath(), me.pilot["beforestart"] );
+   me.inittable(me.itself["checklist"].getNode("beforestart/engineer[0]").getPath(), me.engineer["beforestart"] );
+
+   me.inittable(me.itself["checklist"].getNode("pushback/pilot[0]").getPath(), me.pilot["pushback"] );
+   me.inittable(me.itself["checklist"].getNode("pushback/engineer[0]").getPath(), me.engineer["pushback"] );
+
+   me.inittable(me.itself["checklist"].getNode("afterstart/pilot[0]").getPath(), me.pilot["afterstart"] );
+   me.inittable(me.itself["checklist"].getNode("afterstart/captain[0]").getPath(), me.captain["afterstart"] );
+
+   me.inittable(me.itself["checklist"].getNode("taxi/engineer[0]").getPath(), me.engineer["taxi"] );
+   me.inittable(me.itself["checklist"].getNode("taxi/captain[0]").getPath(), me.captain["taxi"] );
+
+   me.inittable(me.itself["checklist"].getNode("all/captain[0]").getPath(), me.captain["allways"] );
+
+   me.inittable(me.itself["callout"].getNode("all/pilot[0]").getPath(), me.allways["allways"] );
+}
+
+Voiceword.get_word = func( member, phase ) {
+   if( member == "captain" ) {
+       return me.captain[phase];
    }
-
-   return result;
-}
-
-Voice.is_cruising = func {
-   var result = constant.FALSE;
-
-   if( me.altitudeft >= constantaero.CRUISEFT ) {
-       result = constant.TRUE;
+   
+   elsif( member == "pilot" ) {
+       return me.pilot[phase];
    }
-
-   return result;
-}
-
-Voice.is_descending = func {
-   var result = constant.FALSE;
-
-   if( me.speedfpm < me.DESCENTFPM ) {
-       result = constant.TRUE;
+   
+   elsif( member == "allways" ) {
+       return me.allways[phase];
    }
-
-   return result;
-}
-
-Voice.is_approaching = func {
-   var result = constant.FALSE;
-
-   if( me.aglft < constantaero.APPROACHFT ) {
-       result = constant.TRUE;
+   
+   elsif( member == "engineer" ) {
+       return me.engineer[phase];
    }
-
-   return result;
-}
-
-Voice.is_allengines = func {
-    var result = constant.TRUE;
-
-    for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
-         if( !me.dependency["engine"][i].getChild("running").getValue() ) {
-             result = constant.FALSE;
-             break;
-         }
-    }
-
-    return result;
-}
-
-Voice.is_noengines = func {
-    var result = constant.TRUE;
-
-    for( var i = 0; i < constantaero.NBENGINES; i = i + 1 ) {
-         if( me.dependency["engine"][i].getChild("running").getValue() ) {
-             result = constant.FALSE;
-             break;
-         }
-    }
-
-    return result;
+   
+   else {
+       print( "word " ~ phase ~ " not found for " ~ member );
+       return "";
+   }
 }
 
 
@@ -2199,10 +2086,14 @@ Voice.is_noengines = func {
 Crewvoice = {};
 
 Crewvoice.new = func {
-   var obj = { parents : [Crewvoice,System],
+   var obj = { parents : [Crewvoice,System.new("/systems/voice")],
 
+               copilothuman : nil,
+               engineerhuman : nil,
+
+               word : Voiceword.new(),
                voicebox : Voicebox.new(),
-
+               
                CONVERSATIONSEC : 4.0,                            # until next message
                REPEATSEC : 4.0,                                  # between 2 messages
 
@@ -2221,8 +2112,8 @@ Crewvoice.new = func {
 
                asynchronous : constant.FALSE,
 
-               hearsound : constant.FALSE,
-               hearvoice : constant.FALSE
+               hearvoice : constant.FALSE,
+               seevoice : constant.FALSE
          };
 
    obj.init();
@@ -2231,9 +2122,8 @@ Crewvoice.new = func {
 }
 
 Crewvoice.init = func {
-   me.inherit_system("/systems/voice");
-
-   me.hearsound = me.itself["sound"].getChild("enabled").getValue();
+   # translate phrase into sound
+   me.hearvoice = me.itself["sound"].getChild("enabled").getValue();
 }
 
 Crewvoice.textexport = func {
@@ -2248,12 +2138,63 @@ Crewvoice.textexport = func {
    }
 }
 
+Crewvoice.set_relation = func( copilot, engineer ) {
+    me.copilothuman = copilot;
+    me.engineerhuman = engineer;
+}
+
 Crewvoice.schedule = func {
-   if( me.hearsound ) {
-       me.hearvoice = me.itself["root-ctrl"].getNode("sound").getValue();
-   }
+   # translate phrase into animation
+   me.seevoice = me.dependency["human"].getChild("serviceable").getValue();
 
    me.voicebox.schedule();
+}
+
+Crewvoice.stepmember = func( state, member, phase, repeat = 0 ) {
+   if( member == "pilot" ) {
+       me.steppilot( state, me.word.get_word( member, phase ) );
+   }
+   
+   elsif( member == "engineer" ) {
+       me.stepengineer( state, me.word.get_word( member, phase ) );
+    }
+   
+   elsif( member == "captain" ) {
+       me.stepcaptain( state, me.word.get_word( member, phase ) );
+   }
+   
+   elsif( member == "allways" ) {
+       me.stepallways( state, me.word.get_word( member, phase ), repeat );
+   }
+   
+   else {
+       print( "step " ~ state ~ " not found for " ~ member ~ " at " ~ phase );
+   }
+}
+
+Crewvoice.nowmember = func( state, member, phase ) {
+   var found = constant.TRUE;
+   
+   if( member == "pilot" ) {
+       me.steppilot( state, me.word.get_word( member, phase ) );
+   }
+   
+   elsif( member == "engineer" ) {
+       me.stepengineer( state, me.word.get_word( member, phase ) );
+    }
+   
+   elsif( member == "captain" ) {
+       me.stepcaptain( state, me.word.get_word( member, phase ) );
+   }
+   
+   else {
+       found = constant.FALSE;
+       print( "now " ~ state ~ " not found for " ~ member ~ " at " ~ phase );
+   }
+
+   if( found ) {
+       me.playvoices( constant.HUMANSEC );
+   }
 }
 
 Crewvoice.stepallways = func( state, table, repeat = 0 ) {
@@ -2292,12 +2233,6 @@ Crewvoice.steppilot = func( state, table ) {
    return state;
 }
 
-Crewvoice.nowpilot = func( state, table ) {
-   me.steppilot( state, table );
-
-   me.playvoices( constant.HUMANSEC );
-}
-
 Crewvoice.talkpilot = func( phrase ) {
    if( me.phrase != "" ) {
        print("phrase overflow : ", phrase);
@@ -2322,12 +2257,6 @@ Crewvoice.stepengineer = func( state, table ) {
    return state;
 }
 
-Crewvoice.nowengineer = func( state, table ) {
-   me.stepengineer( state, table );
-
-   me.playvoices( constant.HUMANSEC );
-}
-
 Crewvoice.talkengineer = func( phrase ) {
    if( me.phraseengineer != "" ) {
        print("engineer phrase overflow : ", phrase);
@@ -2347,12 +2276,6 @@ Crewvoice.stepcaptain = func( state, table ) {
    me.asynchronous = constant.TRUE;
 
    return state;
-}
-
-Crewvoice.nowcaptain = func( state, table ) {
-   me.stepcaptain( state, table );
-
-   me.playvoices( constant.HUMANSEC );
 }
 
 Crewvoice.talkcaptain = func( phrase ) {
@@ -2384,10 +2307,7 @@ Crewvoice.playvoices = func( rates ) {
        if( me.phrase != "" ) {
            me.itself["display"].getChild("copilot").setValue(me.phrase);
 
-           if( me.hearvoice ) {
-               me.itself["sound"].getChild("copilot").setValue(me.phrase);
-               me.dependency["copilot-3d"].getNode("teeth").setValue(constant.TRUE);
-           }
+           me.sendvoices( me.phrase, "copilot" );
            me.voicebox.sendtext(me.phrase);
            me.phrase = "";
 
@@ -2406,10 +2326,7 @@ Crewvoice.playvoices = func( rates ) {
        if( me.phraseengineer != "" ) {
            me.itself["display"].getChild("engineer").setValue(me.phraseengineer);
 
-           if( me.hearvoice ) {
-               me.itself["sound"].getChild("pilot").setValue(me.phraseengineer);
-               me.dependency["engineer-3d"].getNode("teeth").setValue(constant.TRUE);
-           }
+           me.sendvoices( me.phraseengineer, "engineer" );
            me.voicebox.sendtext(me.phraseengineer, constant.TRUE);
            me.phraseengineer = "";
        }
@@ -2423,9 +2340,7 @@ Crewvoice.playvoices = func( rates ) {
        if( me.phrasecaptain != "" ) {
            me.itself["display"].getChild("captain").setValue(me.phrasecaptain);
 
-           if( me.hearvoice ) {
-               me.itself["sound"].getChild("pilot").setValue(me.phrasecaptain);
-           }
+           me.sendvoices( me.phrasecaptain, "captain" );
            me.voicebox.sendtext(me.phrasecaptain, constant.FALSE, constant.TRUE);
            me.phrasecaptain = "";
        }
@@ -2441,268 +2356,24 @@ Crewvoice.playvoices = func( rates ) {
    me.asynchronous = constant.FALSE;
 }
 
-
-# ================
-# SPEED PERCEPTION
-# ================
-
-Speedperception = {};
-
-Speedperception.new = func {
-   var obj = { parents : [Speedperception],
-
-               ratiostep : 0.0,                                  # rates
-
-               DECAYKT : 0.0,
-               FINALKT : 0.0,
-
-               reactionkt : 0.0,
-
-               DECAYKTPS : -2.0,                                 # climb
-               FINALKTPS : -3.0                                  # descent
-         };
-
-   obj.init();
-
-   return obj;
-}
-
-Speedperception.init = func {
-}
-
-Speedperception.set_rates = func( rates ) {
-    me.ratiostep = rates / constant.HUMANSEC;
-
-    me.DECAYKT = me.DECAYKTPS * rates;
-    me.FINALKT = me.FINALKTPS * rates;
-}
-
-Speedperception.schedule = func( speedkt, lastspeedkt ) {
-    me.reactionkt = speedkt - lastspeedkt;
-}
-
-Speedperception.climbdecrease = func {
-    var result = constant.FALSE;
-
-    if( me.reactionkt < me.DECAYKT ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Speedperception.finaldecrease = func {
-    var result = constant.FALSE;
-
-    if( me.reactionkt < me.FINALKT ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Speedperception.velocitykt = func( speedkt ) {
-    var valuekt = speedkt - me.reactionkt * me.ratiostep;
-
-    return valuekt;
-}
-
-
-# ===================
-# ALTITUDE PERCEPTION
-# ===================
-
-Altitudeperception = {};
-
-Altitudeperception.new = func {
-   var obj = { parents : [Altitudeperception],
-
-               ratio1s : 0.0,                                    # 1 s
-               ratiostep : 0.0,                                  # rates
-
-               FLIGHTLEVELFT : 10000,  
-               MARGINFT : 200,                                   # for altitude detection
-
-               MAXFT : 0.0,
-
-               reactionft : 0.0,
-
-               level10000 : 0,                                   # current flight level
-               levelabove : constant.TRUE,                       # above sea level
-               levelbelow : constant.FALSE,
-               transition : constant.FALSE                       # below transition level
-         };
-
-   obj.init();
-
-   return obj;
-}
-
-Altitudeperception.init = func {
-   me.ratio1s = 1 / constant.HUMANSEC;
-}
-
-Altitudeperception.set_rates = func( steps ) {
-   me.ratiostep = steps / constant.HUMANSEC;
-
-   me.MAXFT = constantaero.MAXFPM * steps / constant.MINUTETOSECOND;
-}
-
-Altitudeperception.schedule = func( speedfpm ) {
-   me.reactionft = speedfpm / constant.MINUTETOSECOND;
-}
-
-Altitudeperception.climbft = func( altitudeft ) {
-   # adds 1 seconds for better matching
-   var valueft = altitudeft - me.reactionft * ( me.ratiostep + me.ratio1s );
-
-   return valueft;
-}
-
-Altitudeperception.insideft = func( altitudeft, targetft ) {
-    var result = constant.FALSE;
-
-    if( altitudeft >= targetft - me.MAXFT and altitudeft <= targetft + me.MAXFT  ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Altitudeperception.inside = func {
-    var result = constant.FALSE;
-
-    if( !me.levelabove and !me.levelbelow ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Altitudeperception.aboveft = func( altitudeft, targetft, marginft ) {
-    var result = constant.FALSE;
-
-    if( altitudeft > targetft + marginft  ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Altitudeperception.belowft = func( altitudeft, targetft, marginft ) {
-    var result = constant.FALSE;
-
-    if( altitudeft < targetft - marginft  ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Altitudeperception.setlevel = func( altitudeft ) {
-   var levelft = 0.0;
-
-   # default
-   var level = 0;
-
-   if( altitudeft >= 10000 and altitudeft < 20000 ) {
-       level = 1;
+Crewvoice.sendvoices = func( sentphrase, sentcrew ) {
+   if( me.hearvoice ) {
+       var voice = "pilot";
+       
+       if( sentcrew == "copilot" ) {
+           voice = "copilot";
+       }
+       
+       me.itself["sound"].getChild(voice).setValue(sentphrase);
    }
-   elsif( altitudeft >= 20000 and altitudeft < 30000 ) {
-       level = 2;
-   }
-   elsif( altitudeft >= 30000 and altitudeft < 40000 ) {
-       level = 3;
-   }
-   elsif( altitudeft >= 40000 and altitudeft < 50000 ) {
-       level = 4;
-   }
-   elsif( altitudeft >= 50000 ) {
-       level = 5;
-   }
-
-   me.level10000 = level;
-
-   # snapshot
-   levelft = me.level10000 * me.FLIGHTLEVELFT;
-   me.levelabove = me.aboveft( altitudeft, levelft, me.MARGINFT );
-   me.levelbelow = me.belowft( altitudeft, levelft, me.MARGINFT );
-
-   if( altitudeft > constantaero.TRANSITIONFT ) {
-       me.transition = constant.TRUE;
-   }
-   else {
-       me.transition = constant.FALSE;
-   }
-}
-
-Altitudeperception.levelchange = func( altitudeft ) {
-   var level = 0;
-   var previousft = 0.0;
-   var nextft = 0.0;
-   var currentft = 0.0;
-   var below = constant.FALSE;
-   var above = constant.FALSE;
-   var result = constant.FALSE;
-
-   # reaches lower flight level
-   if( me.level10000 > 0 ) {
-       level = me.level10000 - 1;
-       previousft = me.climbft( level * me.FLIGHTLEVELFT );
-       if( altitudeft < previousft ) {
-           result = constant.TRUE;
-           me.level10000 = level;
-           me.levelabove= constant.FALSE;
-           me.levelbelow = constant.TRUE;
+   
+   if( me.seevoice ) {
+       # no animation for captain
+       if( sentcrew == "copilot" ) {
+           me.copilothuman.moothcron( sentphrase );
+       }
+       elsif( sentcrew == "engineer" ) {
+           me.engineerhuman.moothcron( sentphrase );
        }
    }
-
-   # reaches higher flight level
-   if( !result ) {
-       level = me.level10000 + 1;
-       nextft = me.climbft( level * me.FLIGHTLEVELFT );
-       if( altitudeft > nextft ) {
-           result = constant.TRUE;
-           me.level10000 = level;
-           me.levelabove = constant.TRUE;
-           me.levelbelow = constant.FALSE;
-       }
-   }
-
-   # crosses current flight level
-   if( !result and me.level10000 > 0 ) {
-       currentft = me.climbft( me.level10000 * me.FLIGHTLEVELFT );
-
-       below = me.belowft( altitudeft, currentft, me.MARGINFT );
-       above = me.aboveft( altitudeft, currentft, me.MARGINFT );
-
-       if( me.levelabove and below ) {
-           result = constant.TRUE;
-           me.levelabove= constant.FALSE;
-           me.levelbelow = constant.TRUE;
-       }
-       elsif( me.levelbelow and above ) {
-           result = constant.TRUE;
-           me.levelabove = constant.TRUE;
-           me.levelbelow = constant.FALSE;
-       }
-       else {
-           result = constant.FALSE;
-       }
-   }
-
-   return result;
-}
-
-Altitudeperception.transitionchange = func( altitudeft ) {
-   var result = constant.FALSE;
-   var levelft = me.climbft( constantaero.TRANSITIONFT );
-
-   if( ( !me.transition and me.aboveft( altitudeft, levelft, me.MARGINFT ) ) or
-       ( me.transition and me.belowft( altitudeft, levelft, me.MARGINFT ) ) ) {
-       me.transition = !me.transition;
-       result = constant.TRUE;
-   }
-
-   return result;
 }

@@ -607,14 +607,14 @@ ElecSupplier.new = func( kind, prop, rpm, volts, nb_charges, amps ) {
                value : 0.0,
 
                kind : kind,
-               rpm : rpm,
+               rpmchild : props.globals.getNode(rpm,constant.DELAYEDNODE),
                volts : volts,
-               propcharge : "",
+               propcharge : nil,
                amps : amps,
 
-               props : prop
+               propchilds : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
-
+   
    obj.init( nb_charges );
 
    return obj;
@@ -624,13 +624,13 @@ ElecSupplier.init = func( nb_charges ) {
    me.inherit_eleccomponent();
 
    if( me.is_battery() ) {
-       me.propcharge = "/systems/electrical/suppliers/battery-amps[" ~ nb_charges ~ "]";
+       me.propcharge = props.globals.getNode("/systems/electrical/suppliers/battery-amps[" ~ nb_charges ~ "]");
    }
 }
 
 # present voltage
 ElecSupplier.get_volts = func {
-   var value = getprop(me.props);
+   var value = me.propchilds.getValue();
 
    if( value == nil ) {
        value = me.NOVOLT;
@@ -670,7 +670,7 @@ ElecSupplier.supply = func {
    }
 
    elsif( me.is_alternator() ) {
-       me.value = getprop(me.rpm);
+       me.value = me.rpmchild.getValue();
        if( me.value == nil ) {
            me.value = me.NOVOLT;
        }
@@ -702,10 +702,10 @@ ElecSupplier.clear = func() {
 }
 
 ElecSupplier.apply = func {
-   setprop(me.props, me.value);
+   me.propchilds.setValue(me.value);
 
    if( me.is_battery() ) {
-       setprop(me.propcharge, me.amps);
+       me.propcharge.setValue(me.amps);
    }
 }
 
@@ -739,7 +739,7 @@ ElecTransformer.new = func( allvolts, prop ) {
 
                ratio : 0,
 
-               prop : prop
+               propchild : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
 
    obj.init( allvolts );
@@ -779,7 +779,7 @@ ElecTransformer.clear = func() {
 }
 
 ElecTransformer.apply = func {
-   setprop(me.prop,me.value);
+   me.propchild.setValue(me.value);
 }
 
 
@@ -795,7 +795,7 @@ ElecBus.new = func( allprops ) {
                values : [],
 
                nb_props : 0,
-               props : []
+               propchilds : []
          };
 
    obj.init( allprops );
@@ -809,7 +809,7 @@ ElecBus.init = func( allprops ) {
    me.nb_props = size( allprops );
 
    for( var i = 0; i < me.nb_props; i = i+1 ) {
-        append( me.props, allprops[i].getValue() );
+        append( me.propchilds, props.globals.getNode(allprops[i].getValue(),constant.DELAYEDNODE) );
         append( me.values, me.NOVOLT );
    }
 }
@@ -851,11 +851,8 @@ ElecBus.clear = func() {
 }
 
 ElecBus.apply = func {
-   var state = "";
-
    for( var i = 0; i < me.nb_props; i = i+1 ) {
-        state = me.props[i];
-        setprop(state, me.values[i]);
+        me.propchilds[i].setValue(me.values[i]);
    }
 }
 
@@ -871,7 +868,7 @@ ElecOutput.new = func( prop ) {
 
                value : 0.0,
 
-               props : prop
+               propchilds : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
 
    obj.inherit_eleccomponent();
@@ -903,7 +900,7 @@ ElecOutput.clear = func() {
 }
 
 ElecOutput.apply = func {
-   setprop(me.props,me.value);
+   me.propchilds.setValue(me.value);
 }
 
 
@@ -972,9 +969,14 @@ ElecConnector.new = func( input, inputkind, output, outputkind, prop ) {
                input_kind : inputkind,
                output : output,
                output_kind : outputkind,
-               prop : prop
+               propchild : nil
          };
-
+         
+   # switch is optional
+   if( prop != "" ) {
+       obj.propchild = props.globals.getNode(prop,constant.DELAYEDNODE);
+   }
+   
    return obj;
 };
 
@@ -998,8 +1000,8 @@ ElecConnector.get_switch = func {
     var switch = constant.TRUE;
 
     # switch is optional, on by default
-    if( me.prop != "" ) {
-        switch = getprop(me.prop);
+    if( me.propchild != nil ) {
+        switch = me.propchild.getValue();
     }
 
     return switch;

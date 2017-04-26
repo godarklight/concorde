@@ -16,7 +16,6 @@
 
 
     Animations :
-     - WARNING, many AC3D groups simplify object selection, with LOD and lighting.
      - x y z Blender => x z y animation.
      - 1 blender unit = 1 m.
     - CAUTION : when multiple objects per animation, behaviour may depend of ordering of animations.
@@ -53,10 +52,6 @@
 
     Angles of secondary nozzle.
 
-    - http://www.planepictures.net/netshow.php?id=41163 :
-
-    Cockpit night lighting, by J.P. Lemaire.
-
 
     TO DO :
     =====
@@ -68,16 +63,10 @@
 
     Known problems  :
     ==============
-    - transparent outer flame not visible with Rembrandt.
     - when retracted, front gear torque is inside closed door (could be solved by releasing the torque).
     - wow doesn't reset, when one starts in flight (filtered above 50 ft AGL).
     - because of night scaling, wrong transparency ordering of navigation and strobe lights
       may become visible : impossible to satisfy all possible orientations.
-    - as Nasal interpolate is not always round, 0.1 offset on landing light position :
-      0.0 1.0 becomes 0.1 0.9.
-    - pseudo lighting : no shadow, flood illuminates not only the panel surface,
-      no distinct flood for captain / center / copilot dash.
-    - fuselage wall doesn't stop rotation of observer seat.
 
 -->
 
@@ -153,267 +142,23 @@
    <texture-prop>texture</texture-prop>
   </animation>
 
-  
-<!-- ================ -->
-<!-- Separated models -->
-<!-- ================ -->
-
-  <model>
-   <name>Instruments</name>
-   <path>Aircraft/Concorde/Models/Concorde_instruments.xml</path>
-  </model>
-
-  <model>
-   <name>Interior</name>
-   <path>Aircraft/Concorde/Models/Concorde_interior.xml</path>
-  </model>
-
-  <model>
-   <name>Exterior</name>
-   <path>Aircraft/Concorde/Models/Concorde_exterior.xml</path>
-  </model>
-
-  <model>
-   <name>Effects</name>
-   <path>Aircraft/Concorde/Models/Concorde_effects.xml</path>
-  </model>
-
-  <model>
-   <name>Pushback</name>
-   <path>Models/Airport/Pushback/Goldhofert.xml</path>
-   <offsets>
-    <x-m>-11.80</x-m>
-    <y-m>0</y-m>
-    <z-m>-4.60</z-m>
-   </offsets>
-  </model>
-
 
 <!-- =============== -->
 <!-- Level Of Detail -->
 <!-- =============== -->
 
   <animation>
-   <name>flightdeck</name>
+   <name>LOD cockpit</name>
    <object-name>Cockpit</object-name>
    <object-name>Pillar</object-name>
-   <object-name>CeilingEdge</object-name>
-   <object-name>Dashboard</object-name>
-   <object-name>AvionicsLRack</object-name>
-   <object-name>AvionicsRRack</object-name>
-   <object-name>AvionicsRack</object-name>
-   <object-name>UpperPanel</object-name>
-   <object-name>ConsoleLeft</object-name>
-   <object-name>ConsoleRight</object-name>
-   <object-name>TopConsoleLeft</object-name>
-   <object-name>TopConsoleRight</object-name>
-   <object-name>Dash lighting</object-name>
-   <object-name>Roof instruments</object-name>
+   <object-name>HullInside</object-name>
   </animation>
 
   <animation>
    <type>range</type>
-   <object-name>flightdeck</object-name>
+   <object-name>LOD cockpit</object-name>
    <min-m>0</min-m>
    <max-m>100</max-m>
-  </animation>
-
-<!-- CAPTAIN -->
-
-  <animation>
-   <name>captain</name>
-   <object-name>Captain location</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>captain</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/captain</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- BOTH -->
-
-  <animation>
-   <name>both</name>
-   <object-name>Overhead instruments</object-name>
-   <object-name>Center instruments</object-name>
-   <object-name>Pedestal instruments</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>both</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <or>
-       <property>systems/seat/captain</property>
-       <property>systems/seat/copilot</property>
-      </or>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- COPILOT -->
-
-  <animation>
-   <name>copilot</name>
-   <object-name>Copilot location</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>copilot</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/copilot</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>Copilot Seat</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>systems/human/serviceable</property>
-      <property>controls/copilot/activ</property>
-     </and>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/copilot</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- ENGINEER -->
-
-  <animation>
-   <name>engineer</name>
-   <object-name>Engineer location</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>engineer</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/engineer</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- seat is visible in engineer view, except if moved. -->
-
-  <animation>
-   <type>select</type>
-   <object-name>Engineer Seat</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>systems/human/serviceable</property>
-      <property>controls/engineer/activ</property>
-      <or>
-       <not>
-        <property>sim/current-view/internal</property>
-       </not>
-       <not>
-        <property>systems/seat/engineer</property>
-       </not>
-      </or>
-     </and>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/engineer</property>
-      <equals>
-       <property>systems/human/engineer/stowe-norm</property>
-       <value>0</value>
-      </equals>
-      <equals>
-       <property>systems/human/engineer/seat-deg</property>
-       <value>0</value>
-      </equals>
-      <equals>
-       <property>systems/human/engineer/seat-x-m</property>
-       <value>0</value>
-      </equals>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- OBSERVER -->
-
-  <animation>
-   <name>observer</name>
-   <object-name>Observer location</object-name>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>observer</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/observer</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-  <animation>
-   <type>select</type>
-   <object-name>Observer Seat</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/observer</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
-  </animation>
-
-<!-- OBSERVER 2 -->
-
-  <animation>
-   <type>select</type>
-   <object-name>Observer 2 Seat</object-name>
-   <condition>
-    <or>
-     <and>
-      <property>sim/current-view/internal</property>
-      <property>systems/seat/observer2</property>
-     </and>
-     <property>controls/seat/all</property>
-    </or>
-   </condition>
   </animation>
 
 
@@ -2557,6 +2302,7 @@
   </axis>
  </animation>
 
+
 <!-- SHADER effects -->
 
  <effect>
@@ -2659,89 +2405,49 @@
    <object-name>Reheat2</object-name>
    <object-name>Reheat3</object-name>
    <object-name>Reheat4</object-name>
+   <object-name>InnerFlame1</object-name>
+   <object-name>InnerFlame2</object-name>
+   <object-name>InnerFlame3</object-name>
+   <object-name>InnerFlame4</object-name>
    <object-name>OuterFlame1</object-name>
    <object-name>OuterFlame2</object-name>
    <object-name>OuterFlame3</object-name>
    <object-name>OuterFlame4</object-name>
  </effect>
 
+  
+<!-- ================ -->
+<!-- Separated models -->
+<!-- ================ -->
 
-<!-- =================== -->
-<!-- Internal animations -->
-<!-- =================== -->
+  <model>
+   <name>Interior</name>
+   <path>Aircraft/Concorde/Models/Concorde_interior.xml</path>
+  </model>
+    
+  <model>
+   <name>Crew</name>
+   <path>Aircraft/Concorde/Models/Concorde_crew.xml</path>
+  </model>
 
-<!-- OSG lighting :
+  <model>
+   <name>Exterior</name>
+   <path>Aircraft/Concorde/Models/Concorde_exterior.xml</path>
+  </model>
 
-     - only 1 material per object (child included).
-     - groups are allowed.
--->
+  <model>
+   <name>Effects</name>
+   <path>Aircraft/Concorde/Models/Concorde_effects.xml</path>
+  </model>
 
-<!-- FLUORESCENT LIGHTS -->
-
- <animation>
-  <type>material</type>
-  <object-name>Dashboard</object-name>
-  <object-name>Rack lighting</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission>
- </animation>
-
-<!-- isolated from a group -->
-
- <animation>
-  <type>material</type>
-  <object-name>UpperPanel</object-name>
-  <object-name>ConsoleLeft</object-name>
-  <object-name>ConsoleRight</object-name>
-  <object-name>Dash lighting</object-name>
-  <emission>
-   <red>0.71</red>
-   <green>0.79</green>
-   <blue>0.87</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission>
- </animation>
-
- <animation>
-  <type>material</type>
-  <object-name>Cockpit</object-name>
-  <object-name>Pillar</object-name>
-  <object-name>Cockpit lighting</object-name>
-  <emission>
-   <red>0.46</red>
-   <green>0.46</green>
-   <blue>0.44</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission>
- </animation>
-
-<!-- FLOOD LIGHTING (only if no roof light) -->
-
- <animation>
-  <type>material</type>
-  <object-name>Panel lighting</object-name>
-  <emission>
-   <red>0.83</red>
-   <green>0.74</green>
-   <blue>0.38</blue>
-   <factor-prop>systems/lighting/level/panel/main</factor-prop>
-  </emission>
- </animation>
-
- <animation>
-  <type>material</type>
-  <object-name>Console lighting</object-name>
-  <object-name>Pedestal lighting</object-name>
-  <emission>
-   <red>0.83</red>
-   <green>0.74</green>
-   <blue>0.38</blue>
-   <factor-prop>systems/lighting/level/panel/console</factor-prop>
-  </emission>
- </animation>
+  <model>
+   <name>Pushback</name>
+   <path>Models/Airport/Pushback/Goldhofert.xml</path>
+   <offsets>
+    <x-m>-11.80</x-m>
+    <y-m>0</y-m>
+    <z-m>-4.60</z-m>
+   </offsets>
+  </model>
 
 </PropertyList>

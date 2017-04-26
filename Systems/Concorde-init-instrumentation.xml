@@ -2,7 +2,7 @@
 
 <!-- Initialize instrumentation  :
 
-     - WARNING : this file inherits from preferences.xml.
+     - WARNING : this file inherits from defaults.xml.
      - avoids nasal nil values or non-member error.
      - nasal instruments are also serviceable.
 
@@ -67,7 +67,7 @@
 
    <alpha-deg alias="/instrumentation/adc[0]/output/alpha-deg"/>
    <failure-flag type="bool">false</failure-flag>
-   <g alias="/accelerations/nlf"/>
+   <g alias="/fdm/jsbsim/accelerations/Nz"/>
 
    <relations>
     <dependency>
@@ -85,7 +85,7 @@
 
    <alpha-deg alias="/instrumentation/adc[1]/output/alpha-deg"/>
    <failure-flag type="bool">false</failure-flag>
-   <g alias="/accelerations/nlf"/>
+   <g alias="/fdm/jsbsim/accelerations/Nz"/>
   </accelerometer-aoa>
 
   <ac-weight>

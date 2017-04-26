@@ -15,12 +15,10 @@
 Autopilot = {};
 
 Autopilot.new = func {
-   var obj = { parents : [Autopilot,System],
+   var obj = { parents : [Autopilot,System.new("/systems/autopilot")],
 
                autothrottlesystem : nil,
 
-               PREDICTIONSEC : 6.0,
-               STABLESEC : 3.0,
                AUTOPILOTSEC : 3.0,                            # refresh rate
                ALTACQUIRESEC : 2.0,
                MAXCLIMBSEC : 1.0,
@@ -43,12 +41,13 @@ Autopilot.new = func {
                LIGHTFT : 50.0,
 
                PITCHDEG : 20.0,                               # max pitch
+               BANKTRACKDEG : 5.0,                            # track error for clamping bank angle
+               BANKNAVDEG : 5.0,                              # nav error for clamping bank angle
                ALPHADEG : 17.5,                               # max alpha
                ROLLDEG : 1.0,                                 # roll to swap to next waypoint
-               OSCTRACKDEG : 0.5,                             # gap between track heading and prediction filter, before oscillations
-               OSCNAVDEG : 0.5,                               # gap between nav hold and prediction filter, before oscillations
 
-               WPTNM : 4.0,                                   # distance to swap to next waypoint
+               WPTSUPERSONICNM : 30.0,                        # distance to swap to next waypoint
+               WPTSUBSONICNM : 4.0,
                VORNM : 3.0,                                   # distance to inhibate VOR
 
                GOAROUNDDEG : 15.0,
@@ -65,6 +64,9 @@ Autopilot.new = func {
                PIDSUPERSONIC : 1,
                PIDSUBSONIC : 0,
 
+               BANKMAX : 1.0,
+               BANKCLAMP : 0.1667,
+               
                landheadingdeg : 0.0,
 
                routeactive : constant.FALSE,
@@ -79,15 +81,13 @@ Autopilot.new = func {
 };
 
 Autopilot.init = func {
-   me.inherit_system("/systems/autopilot");
-
    me.reinitexport();
    me.apdiscexport();
 }
 
 Autopilot.reinitexport = func {
    # - NAV 0 is reserved for autopilot.
-   # - copy NAV 0-1 from preferences.xml to 1-2.
+   # - copy NAV 0-1 from defaults.xml to 1-2.
    me.sendnav( 1, 2 );
    me.sendnav( 0, 1 );
 }
@@ -284,10 +284,19 @@ Autopilot.lockwaypointroll = func {
 
     # next waypoint
     if( distancenm != nil ) {
+        var thresholdnm = 0.0;
         var lastnm = me.itself["state"].getChild("waypoint-nm").getValue();
+        
+        if( me.is_subsonic() ) {
+            thresholdnm = me.WPTSUBSONICNM;
+        }
+        else {
+            # stronger winds
+            thresholdnm = me.WPTSUPERSONICNM;
+        }
 
         # avoids strong roll
-        if( distancenm < me.WPTNM ) {
+        if( distancenm < thresholdnm ) {
 
             # pop waypoint, enough soon to avoid banking on release
             # into the opposite direction of the next waypoint
@@ -295,14 +304,12 @@ Autopilot.lockwaypointroll = func {
             if( distancenm > lastnm or math.abs(rolldeg) > me.ROLLDEG ) {
                 if( me.is_lock_true() ) {
                     me.itself["route-manager"].getChild("input").setValue("@DELETE0");
-                    me.resetprediction( "true-heading-hold1" );
                 }
             }
         }
 
         # new waypoint
         elsif( distancenm > lastnm ) {
-            me.resetprediction( "true-heading-hold1" );
         }
 
         me.itself["state"].getChild("waypoint-nm").setValue(distancenm);
@@ -818,7 +825,7 @@ Autopilot.headingknobexport = func( sign ) {
                headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-select").getValue();
                
                headingdeg = headingdeg + 1 * sign;
-               headingdeg = constant.truncatenorth( headingdeg );
+               headingdeg = geo.normdeg( headingdeg );
                
                me.itself["channel"][me.engaged_channel].getChild("heading-select").setValue(headingdeg);
                
@@ -828,7 +835,7 @@ Autopilot.headingknobexport = func( sign ) {
                headingdeg = me.itself["channel"][me.engaged_channel].getChild("heading-true-select").getValue();
                
                headingdeg = headingdeg + 1* sign;
-               headingdeg = constant.truncatenorth( headingdeg );
+               headingdeg = geo.normdeg( headingdeg );
                
                me.itself["channel"][me.engaged_channel].getChild("heading-true-select").setValue(headingdeg);
                
@@ -953,7 +960,7 @@ Autopilot.targetwind = func {
        var vordeg = me.get_nav().getNode("radials").getChild("target-radial-deg").getValue();
        var offsetdeg = vordeg - winddeg;
 
-       offsetdeg = constant.crossnorth( offsetdeg );
+       offsetdeg = geo.normdeg180( offsetdeg );
 
        # add head wind component;
        # except tail wind (too much glide)
@@ -2042,126 +2049,36 @@ Autopilot.apdischeading = func {
    }
 }
 
-# correction of prediction filter oscillations
-Autopilot.predictioncorrection = func( name, node, mode, mindeg ) {
+Autopilot.bankprediction = func( name, mode, mindeg ) {
+   var factor = me.BANKMAX;
+   
    # disabled, when it amplifies oscillations :
    # - speed up.
    # - supersonic cruise
-   if( !me.itself["pid"].getChild("prediction-filter").getValue() or
+   if( !me.itself["pid"].getChild("bank-prediction").getValue() or
        me.noinstrument["speed-up"].getValue() > 1.0 or
        me.is_supersonicpid( mode ) ) {
-       me.resetprediction( name );
    }
 
 
    else {
-       var erroraheaddeg = 0.0;
        var errordeg = 0.0;
        var offsetdeg = 0.0;
-       var deltastablesec = 0.0;
-       var deltalaunchsec = 0.0;
        var path = "";
 
 
-       var filter = node.getChild("prediction-filter").getValue();
-
-       var stablesec = node.getChild("stable-sec").getValue();
-       var launchsec = node.getChild("launch-sec").getValue();
-       var timesec = me.noinstrument["time"].getValue();
-
-       if( stablesec > 0.0 ) {
-           deltastablesec = timesec - stablesec;
-       }
-       if( launchsec > 0.0 ) {
-           deltalaunchsec = timesec - launchsec;
-       }
-
-
        path = me.itself["config"][me.PIDSUPERSONIC].getNode(name).getChild("input").getValue();
-       erroraheaddeg = props.globals.getNode(path).getValue();
-
-       path = me.itself["config"][me.PIDSUBSONIC].getNode(name).getChild("input").getValue();
        errordeg = props.globals.getNode(path).getValue();
 
-       offsetdeg = errordeg - erroraheaddeg;
-       offsetdeg = math.abs( offsetdeg );
+       offsetdeg = math.abs( errordeg );
 
-
-       # would bank into the opposite direction, when engaged
-       if( deltalaunchsec <= me.PREDICTIONSEC ) {
-           deltastablesec = 0.0;
-
-           # enable filter later on a plausible prediction
-           mode = me.PIDSUPERSONIC;
-       }
-
-       # filter amplifies oscillations, once in cruise
-       elsif( offsetdeg < mindeg and deltastablesec > me.STABLESEC ) {
-           # disable filter in cruise
-           mode = me.PIDSUPERSONIC;
-       }
-
-       # hysteresis, once stable
-       elsif( !filter and offsetdeg < ( 2 * mindeg ) and deltastablesec > me.STABLESEC ) {
-           # will enable filter on a higher offset
-           mode = me.PIDSUPERSONIC;
-       }
-
-       # filter not yet stable
-       else {
-           deltastablesec = 0.0;
-       }
-
-
-       me.setprediction( name, node, mode );
-
-
-       # reset timers
-       if( deltastablesec <= 0.0 ) {
-           me.setpredictionstability( node, timesec );
-       }
-
-       if( deltalaunchsec <= 0.0 ) {
-           me.setpredictionlaunch( node, timesec );
+       if( offsetdeg < mindeg ) {
+           # clamping
+           factor = me.BANKCLAMP
        }
    }
-}
-
-Autopilot.setprediction = func( name, node, mode ) {
-   var result = constant.FALSE;
-   var child = node.getChild("input");
-   var currentpath = child.getAliasTarget().getPath();
-   var path = me.itself["config"][mode].getNode(name).getChild("input").getValue();
-
-   # update only on change
-   if( currentpath != path ) {
-       child.unalias();
-       child.alias( path );
-
-       # feedback on filter activity
-       node.getChild("prediction-filter").setValue( me.is_subsonicpid( mode ) );
-
-       result = constant.TRUE;
-   }
-
-   return result;
-}
-
-Autopilot.resetprediction = func( name ) {
-   var node = me.itself["pid"].getNode(name);
-
-   if( me.setprediction( name, node, me.PIDSUPERSONIC ) ) {
-       me.setpredictionstability( node, 0.0 );
-       me.setpredictionlaunch( node, 0.0 );
-   }
-}
-
-Autopilot.setpredictionstability = func( node, stablesec ) {
-   node.getChild("stable-sec").setValue( stablesec );
-}
-
-Autopilot.setpredictionlaunch = func( node, launchsec ) {
-   node.getChild("launch-sec").setValue( launchsec );
+   
+   return factor;
 }
 
 Autopilot.trueheading = func( headingdeg ) {
@@ -2173,13 +2090,11 @@ Autopilot.sonictrueheading = func {
    var name = "true-heading-hold1";
    var node = me.itself["pid"].getNode(name);
    var mode = me.sonicpid();
+   var factor = me.bankprediction( name, mode, me.BANKTRACKDEG );
 
    node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
-   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() );
-   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() );
-
-   # prediction filter may bank into the opposite direction, when engaged
-   me.predictioncorrection( name, node, mode, me.OSCTRACKDEG );
+   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() * factor );
+   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() * factor );
 
    name = "true-heading-hold3";
    node = me.itself["pid"].getNode(name);
@@ -2197,19 +2112,19 @@ Autopilot.sonicmagneticheading = func {
    var name = "dg-heading-hold1";
    var node = me.itself["pid"].getNode(name);
    var mode = me.sonicpid();
+   var factor = 0.0;
 
-   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
-   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() );
-   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() );
-
-   # prediction filter amplifies oscillations
    if( me.is_autoland() or !me.istrackheading() ) {
-       me.resetprediction( name );
+       factor = me.BANKMAX;
    }
 
    else {
-       me.predictioncorrection( name, node, mode, me.OSCTRACKDEG );
+       factor = me.bankprediction( name, mode, me.BANKTRACKDEG );
    }
+
+   node.getChild("Kp").setValue( me.itself["config"][mode].getNode(name).getChild("Kp").getValue() );
+   node.getChild("u_min").setValue( me.itself["config"][mode].getNode(name).getChild("u_min").getValue() * factor );
+   node.getChild("u_max").setValue( me.itself["config"][mode].getNode(name).getChild("u_max").getValue() * factor );
 
    name = "dg-heading-hold3";
    node = me.itself["pid"].getNode(name);
@@ -2227,14 +2142,14 @@ Autopilot.sonicnavheading = func {
    var name = "nav-hold1";
    var node = me.itself["pid"].getNode(name);
    var mode = me.sonicpid();
+   var factor = 0.0;
 
-   # prediction filter amplifies oscillations
    if( me.is_autoland() or me.is_glide() ) {
-       me.resetprediction( name );
+       factor = me.BANKMAX;
    }
 
    else {
-       me.predictioncorrection( name, node, mode, me.OSCNAVDEG );
+       factor = me.bankprediction( name, mode, me.BANKNAVDEG );
    }
 }
 
@@ -2256,16 +2171,6 @@ Autopilot.sonicheadingmode = func {
    elsif( me.is_lock_nav() ) {
        me.sonicnavheading();
        navpid = constant.TRUE;
-   }
-
-   if( !magpid ) {
-       me.resetprediction( "dg-heading-hold1" );
-   }
-   if( !truepid ) {
-       me.resetprediction( "true-heading-hold1" );
-   }
-   if( !navpid ) {
-       me.resetprediction( "nav-hold1" );
    }
 }
 

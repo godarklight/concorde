@@ -11,19 +11,13 @@
 Compass = {};
 
 Compass.new = func {
-   var obj = { parents : [Compass,System],
+   var obj = { parents : [Compass,System.new("/instrumentation","compass")],
 
                ok : [ constant.TRUE, constant.TRUE ]
              };
 
-   obj.init();
-
    return obj;
 };
-
-Compass.init = func {
-   me.inherit_system("/instrumentation","compass");
-}
 
 Compass.toggleexport = func {
    var source = nil;
@@ -93,17 +87,11 @@ Compass.get_source = func( index ) {
 HSI = {};
 
 HSI.new = func {
-   var obj = { parents : [HSI,System]
+   var obj = { parents : [HSI,System.new("/instrumentation","hsi")]
              };
-
-   obj.init();
 
    return obj;
 };
-
-HSI.init = func {
-   me.inherit_system("/instrumentation","hsi");
-}
 
 HSI.toggleexport = func {
    var path = "";

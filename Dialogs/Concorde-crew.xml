@@ -3,105 +3,116 @@
 <PropertyList>
   <name>Concorde-crew</name>
   <layout>vbox</layout>
-  <width>450</width>
+  <width>500</width>
   
-  <text>
-    <label>Concorde crew</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde crew</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
   <group>
-    <layout>vbox</layout>
+   <enabled alias="/systems/voice/serviceable"/>
+   <layout>vbox</layout>
 
-    <text>
-      <label>Status</label>
-    </text>
+   <text>
+    <label>Status  ~</label>
+   </text>
+
+   <group>
+    <layout>hbox</layout>
 
     <group>
      <layout>vbox</layout>
      <halign>left</halign>
 
-     <group>
-      <layout>hbox</layout>
-
-      <group>
-       <layout>vbox</layout>
-       <halign>left</halign>
-
-       <checkbox>
-         <label>Timeout of display  ~</label>
-         <property>/controls/crew/timeout</property>
-         <binding>
-          <command>property-toggle</command>
-          <property>/controls/crew/timeout</property>
-         </binding>
-         <binding>
-          <command>nasal</command>
-          <script>globals.Concorde.crewscreen.wakeupexport();</script>
-         </binding>
-       </checkbox>
-      </group>
-
-      <group>
-       <layout>vbox</layout>
-       <halign>left</halign>
-
-       <input>
-         <property>/controls/crew/timeout-s</property>
-         <label>seconds  ~</label>
-       </input>
-      </group>
-     </group>
-
-     <text>
-      <label></label>
-     </text>
-
      <checkbox>
-      <halign>left</halign>
-      <label>3D  ~</label>
-      <property>/systems/human/serviceable</property>
+      <label>Timeout of display</label>
+      <property>/controls/crew/timeout</property>
       <binding>
        <command>property-toggle</command>
-       <property>/systems/human/serviceable</property>
+       <property>/controls/crew/timeout</property>
       </binding>
       <binding>
        <command>nasal</command>
        <script>globals.Concorde.crewscreen.wakeupexport();</script>
       </binding>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.copilothuman.wakeupexport();</script>
-      </binding>
-      <binding>
-       <command>nasal</command>
-       <script>globals.Concorde.engineerhuman.wakeupexport();</script>
-      </binding>
      </checkbox>
     </group>
-
-    <text>
-      <label></label>
-    </text>
-
-    <text>
-      <label>Views</label>
-    </text>
 
     <group>
-     <layout>hbox</layout>
+     <layout>vbox</layout>
+     <halign>left</halign>
 
-     <checkbox>
-       <halign>left</halign>
-       <label>Show yoke ~</label>
-       <property>/controls/seat/yoke</property>
-       <binding>
-        <command>property-toggle</command>
-        <property>/controls/seat/yoke</property>
-       </binding>
-     </checkbox>
+     <input>
+      <property>/controls/crew/timeout-s</property>
+      <label>seconds</label>
+     </input>
     </group>
+   </group>
+
+   <text>
+    <label></label>
+   </text>
+
+   <checkbox>
+    <halign>left</halign>
+    <label>3D</label>
+    <property>/systems/human/serviceable</property>
+    <binding>
+     <command>property-toggle</command>
+     <property>/systems/human/serviceable</property>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.crewscreen.wakeupexport();</script>
+    </binding>
+    <binding>
+     <command>nasal</command>
+     <script>globals.Concorde.crewcrew.wakeupexport();</script>
+    </binding>
+   </checkbox>
+
+   <text>
+    <label></label>
+   </text>
+  </group>
+
+  <group>
+    <layout>vbox</layout>
+
+    <text>
+      <label>Show  ~</label>
+    </text>
+
+    <checkbox>
+     <halign>left</halign>
+     <label>Yoke</label>
+     <property>/controls/seat/yoke</property>
+     <binding>
+      <command>property-toggle</command>
+      <property>/controls/seat/yoke</property>
+     </binding>
+    </checkbox>
 
     <text>
       <label></label>

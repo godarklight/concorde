@@ -15,7 +15,7 @@
 Autothrottle = {};
 
 Autothrottle.new = func {
-   var obj = { parents : [Autothrottle,System],
+   var obj = { parents : [Autothrottle,System.new("/systems/autothrottle")],
 
                SPEEDACQUIRESEC : 2.0,
 
@@ -34,8 +34,6 @@ Autothrottle.new = func {
 }
 
 Autothrottle.init = func {
-   me.inherit_system("/systems/autothrottle");
-
    me.atdiscexport();
 }
 

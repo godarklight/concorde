@@ -14,8 +14,8 @@
 
 Virtualcrew = {};
 
-Virtualcrew.new = func {
-   var obj = { parents : [Virtualcrew,System], 
+Virtualcrew.new = func( path ) {
+   var obj = { parents : [Virtualcrew,State.new(),CommonCheck.new(path)], 
 
                generic : Generic.new(),
 
@@ -37,39 +37,18 @@ Virtualcrew.new = func {
 
                speedkt : 0.0,
 
-               state : ""
+               activity : ""
          };
-
+    
     return obj;
-}
-
-Virtualcrew.inherit_virtualcrew = func( path ) {
-    me.inherit_system( path );
-
-    var obj = Virtualcrew.new();
-
-    me.generic = obj.generic;
-
-    me.GROUNDSEC = obj.GROUNDSEC;
-    me.CREWSEC = obj.CREWSEC;
-    me.TASKSEC = obj.TASKSEC;
-    me.DELAYSEC = obj.DELAYSEC;
-
-    me.task = obj.task;
-    me.taskend = obj.taskend;
-    me.taskground = obj.taskground;
-    me.taskcrew = obj.taskcrew;
-    me.taskallways = obj.taskallways;
-
-    me.activ = obj.activ;
-    me.running = obj.running;
-    me.state = obj.state;
 }
 
 Virtualcrew.toggleclick = func( message = "" ) {
     me.done( message );
 
-    me.generic.toggleclick();
+    if( !me.is_state() ) {
+        me.generic.toggleclick();
+    }
 }
 
 Virtualcrew.done = func( message = "" ) {
@@ -104,15 +83,17 @@ Virtualcrew.done_allways = func {
 }
 
 Virtualcrew.log = func( message ) {
-    me.state = me.state ~ " " ~ message;
+    if( !me.is_state() ) {
+        me.activity = me.activity ~ " " ~ message;
+    }
 }
 
 Virtualcrew.getlog = func {
-    return me.state;
+    return me.activity;
 }
 
 Virtualcrew.reset = func {
-    me.state = "";
+    me.activity = "";
     me.activ = constant.FALSE;
     me.running = constant.FALSE;
 
@@ -157,7 +138,14 @@ Virtualcrew.reset_end = func {
 }
 
 Virtualcrew.can = func {
-    return !me.task;
+    var result = constant.FALSE;
+    
+    # when restoring a state, tasks are immediate
+    if( !me.task or me.is_state() ) {
+        result = constant.TRUE;
+    }
+    
+    return result;
 }
 
 Virtualcrew.randoms = func( steps ) {
@@ -215,492 +203,6 @@ Virtualcrew.has_completed = func {
     return result;
 }
 
-Virtualcrew.altitudeperception = func( emergency ) {
-   if( me.dependency["altimeter"].getChild("serviceable").getValue() and !emergency ) {
-       me.altitudeft = me.dependency["altimeter"].getChild("indicated-altitude-ft").getValue()
-   }
-   else {
-       me.altitudeft = me.noinstrument["altitude"].getValue();
-   }
-}
-
-Virtualcrew.airspeedperception = func( emergency ) {
-   if( me.dependency["airspeed"].getChild("serviceable").getValue() and
-       !me.dependency["airspeed"].getChild("failure-flag").getValue() and !emergency ) {
-       me.speedkt = me.dependency["airspeed"].getChild("indicated-speed-kt").getValue()
-   }
-   else {
-       me.speedkt = me.noinstrument["airspeed"].getValue();
-   }
-}
-
-
-# =======
-# CALLOUT
-# =======
-
-Callout = {};
-
-Callout.new = func {
-   var obj = { parents : [Callout], 
-
-               callout : "holding"                   # otherwise startup is a long time without callout
-             };
-
-   return obj;
-}
-
-Callout.inherit_callout = func {
-    var obj = Callout.new();
-
-    me.callout = obj.callout;
-}
-
-Callout.is_flight = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "flight" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_landing = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "landing" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_goaround = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "goaround" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_taxiway = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "taxiway" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_terminal = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "terminal" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_gate = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "gate" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_holding = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "holding" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Callout.is_takeoff = func {
-    var result = constant.FALSE;
-
-    if( me.callout == "takeoff" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-
-# =========
-# CHECKLIST
-# =========
-
-Checklist = {};
-
-Checklist.new = func {
-   var obj = { parents : [Checklist,System], 
-
-               checklist : ""
-             };
-
-   return obj;
-}
-
-Checklist.inherit_checklist = func( path ) {
-    var obj = Checklist.new();
-
-    me.checklist = obj.checklist;
-
-    me.inherit_system( path );
-}
-
-Checklist.set_checklist = func {
-    me.checklist = me.dependency["voice"].getChild("checklist").getValue();
-}
-
-Checklist.is_nochecklist = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_aftertakeoff = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "aftertakeoff" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_climb = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "climb" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_transsonic = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "transsonic" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_cruiseclimb = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "cruiseclimb" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_descent = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "descent" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_approach = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "approach" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_beforelanding = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "beforelanding" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_afterlanding = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "afterlanding" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_parking = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "parking" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_stopover = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "stopover" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_external = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "external" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_preliminary = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "preliminary" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_cockpit = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "cockpit" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_beforestart = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "beforestart" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_enginestart = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "enginestart" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_pushback = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "pushback" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_started = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "started" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_afterstart = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "afterstart" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_taxi = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "taxi" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_runway = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "runway" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_beforetakeoff = func {
-    var result = constant.FALSE;
-
-    if( me.checklist == "beforetakeoff" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.set_startup = func {
-    me.dependency["crew"].getChild("startup").setValue( constant.TRUE );
-}
-
-Checklist.not_startup = func {
-    me.dependency["crew"].getChild("startup").setValue( constant.FALSE );
-}
-
-Checklist.set_completed = func {
-    me.dependency["crew"].getChild("completed").setValue( constant.TRUE );
-}
-
-Checklist.not_completed = func {
-    me.dependency["crew"].getChild("completed").setValue( constant.FALSE );
-
-    # reset keyboard detection
-    me.dependency["crew-ctrl"].getChild("recall").setValue( constant.FALSE );
-}
-
-Checklist.is_completed = func {
-    var result = constant.FALSE;
-
-    if( me.dependency["crew"].getChild("completed").getValue() ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_busy = func {
-    var result = constant.FALSE;
-
-    if( me.dependency["crew-ctrl"].getChild("captain-busy").getValue() ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_recall = func {
-    var result = constant.FALSE;
-
-    if( me.dependency["crew-ctrl"].getChild("recall").getValue() ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Checklist.is_startup = func {
-    var result = constant.FALSE;
-
-    if( me.dependency["crew"].getChild("startup").getValue() ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-
-# =========
-# EMERGENCY
-# =========
-
-Emergency = {};
-
-Emergency.new = func {
-   var obj = { parents : [Emergency,System], 
-
-               emergency : ""
-             };
-
-   return obj;
-}
-
-Emergency.inherit_emergency = func( path ) {
-    var obj = Emergency.new();
-
-    me.emergency = obj.emergency;
-
-    me.inherit_system( path );
-}
-
-Emergency.set_emergency = func {
-    me.emergency = me.dependency["voice"].getChild("emergency").getValue();
-}
-
-Emergency.is_emergency = func {
-    var result = constant.FALSE;
-
-    if( me.emergency != "" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Emergency.is_fourengineflameout = func {
-    var result = constant.FALSE;
-
-    if( me.emergency == "fourengineflameout" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
-Emergency.is_fourengineflameoutmach1 = func {
-    var result = constant.FALSE;
-
-    if( me.emergency == "fourengineflameoutmach1" ) {
-        result = constant.TRUE;
-    }
-
-    return result;
-}
-
 
 # =============
 # COMMON CHECKS
@@ -708,15 +210,11 @@ Emergency.is_fourengineflameoutmach1 = func {
 
 CommonCheck = {};
 
-CommonCheck.new = func {
-    var obj = { parents : [CommonCheck,System] 
+CommonCheck.new = func( path ) {
+    var obj = { parents : [CommonCheck,Emergency.new(path)] 
               };
 
     return obj;
-}
-
-CommonCheck.inherit_commoncheck = func( path ) {
-    me.inherit_system( path );
 }
 
 # ----------
@@ -739,20 +237,12 @@ CommonCheck.ins = func( index, mode ) {
 AsynchronousCheck = {};
 
 AsynchronousCheck.new = func {
-   var obj = { parents : [AsynchronousCheck],
+   var obj = { parents : [AsynchronousCheck,System.new("/systems/human")],
 
-               completed : constant.TRUE
+               completedasync : constant.TRUE
              };
 
    return obj;
-}
-
-AsynchronousCheck.inherit_asynchronouscheck = func( path ) {
-   me.inherit_system( path );
-
-   var obj = AsynchronousCheck.new();
-
-   me.completed = obj.completed;
 }
 
 AsynchronousCheck.is_change = func {
@@ -769,13 +259,13 @@ AsynchronousCheck.is_allowed = func {
 
 # once night lighting, virtual crew must switch again lights.
 AsynchronousCheck.set_task = func {
-   me.completed = constant.FALSE;
+   me.completedasync = constant.FALSE;
 }
 
 AsynchronousCheck.has_task = func {
    var result = constant.FALSE;
 
-   if( me.is_allowed() and ( me.is_change() or !me.completed ) ) {
+   if( me.is_allowed() and ( me.is_change() or !me.completedasync ) ) {
        result = constant.TRUE;
    }
    else {
@@ -786,7 +276,7 @@ AsynchronousCheck.has_task = func {
 }
 
 AsynchronousCheck.set_completed = func {
-   me.completed = constant.TRUE;
+   me.completedasync = constant.TRUE;
 }
 
 
@@ -797,7 +287,7 @@ AsynchronousCheck.set_completed = func {
 Nightlighting = {};
 
 Nightlighting.new = func {
-   var obj = { parents : [Nightlighting,AsynchronousCheck,System],
+   var obj = { parents : [Nightlighting,AsynchronousCheck.new()],
 
                lightingsystem : nil,
 
@@ -811,20 +301,14 @@ Nightlighting.new = func {
                night : constant.FALSE
          };
 
-  obj.init();
-
   return obj;
-}
-
-Nightlighting.init = func {
-    me.inherit_asynchronouscheck("/systems/human");
 }
 
 Nightlighting.set_relation = func( lighting ) {
     me.lightingsystem = lighting;
 }
 
-Nightlighting.copilot = func( task ) {
+Nightlighting.copilot_task = func( task ) {
    # optional
    if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
 
@@ -870,7 +354,7 @@ Nightlighting.copilot = func( task ) {
    }
 }
 
-Nightlighting.captain = func( task ) {
+Nightlighting.captain_task = func( task ) {
    # optional
    if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
 
@@ -913,7 +397,7 @@ Nightlighting.captain = func( task ) {
    }
 }
 
-Nightlighting.engineer = func( task ) {
+Nightlighting.engineer_task = func( task ) {
    # optional
    if( me.dependency["crew"].getChild("night-lighting").getValue() ) {
 
@@ -929,6 +413,15 @@ Nightlighting.engineer = func( task ) {
                    me.dependency["lighting-engineer"].getChild("flood-norm").setValue( me.lightlevel );
                    me.lightingsystem.floodexport();
                    task.toggleclick("flood-light");
+               }
+           }
+
+           if( task.can() ) {
+               me.light( "center" );
+               if( me.dependency["lighting-center"].getChild("flood-norm").getValue() != me.lightlevel ) {
+                   me.dependency["lighting-center"].getChild("flood-norm").setValue( me.lightlevel );
+                   me.lightingsystem.floodexport();
+                   task.toggleclick("center-light");
                }
            }
 
@@ -974,8 +467,10 @@ Nightlighting.light = func( path ) {
 
 Nightlighting.is_change = func {
    var change = constant.FALSE;
-
-   if( me.is_night() ) {
+   var altitudeft = me.noinstrument["altitude"].getValue();
+   var sunrad = me.noinstrument["sun"].getValue();
+   
+   if( constant.is_lighting( sunrad, altitudeft ) ) {
        if( !me.night ) {
            me.night = constant.TRUE;
            change = constant.TRUE;
@@ -987,18 +482,8 @@ Nightlighting.is_change = func {
            change = constant.TRUE;
        }
    }
-
+   
    return change;
-}
-
-Nightlighting.is_night = func {
-   var result = constant.FALSE;
-
-   if( me.noinstrument["sun"].getValue() > constant.NIGHTRAD ) {
-       result = constant.TRUE;
-   }
-
-   return result;
 }
 
 
@@ -1009,13 +494,13 @@ Nightlighting.is_night = func {
 RadioManagement = {};
 
 RadioManagement.new = func {
-   var obj = { parents : [RadioManagement,AsynchronousCheck,System],
+   var obj = { parents : [RadioManagement,AsynchronousCheck.new()],
 
                autopilotsystem : nil,
 
                DESCENTFPM : -100,
 
-               state : "",
+               activity : "",
                target : "",
                tower : "",
 
@@ -1023,14 +508,8 @@ RadioManagement.new = func {
                entry : -1
          };
 
-   obj.init();
-
    return obj;
 };
-
-RadioManagement.init = func {
-   me.inherit_asynchronouscheck("/systems/human");
-}
 
 RadioManagement.set_relation = func( autopilot ) {
    me.autopilotsystem = autopilot;
@@ -1044,7 +523,7 @@ RadioManagement.radioexport = func( arrival ) {
        byuser = constant.TRUE;
    }
 
-   if( me.nearest_airport( constant.FALSE, byuser, airport ) ) {
+   if( me.nearest_airport( constant.FALSE, byuser ) ) {
        var phase = me.select_phase( arrival );
 
        phase = me.get_phase( phase );
@@ -1060,9 +539,9 @@ RadioManagement.radioexport = func( arrival ) {
    }
 }
 
-RadioManagement.copilot = func( task ) {
+RadioManagement.copilot_task = func( task ) {
    # optional
-   if( me.dependency["crew"].getChild("radio").getValue() ) {
+   if( me.dependency["radio"].getChild("set").getValue() ) {
        if( me.has_task() ) {
            me.set_task();
 
@@ -1078,9 +557,9 @@ RadioManagement.copilot = func( task ) {
    }
 }
 
-RadioManagement.captain = func( task ) {
+RadioManagement.captain_task = func( task ) {
    # optional
-   if( me.dependency["crew"].getChild("radio").getValue() ) {
+   if( me.dependency["radio"].getChild("set").getValue() ) {
        if( me.has_task() ) {
            me.set_task();
 
@@ -1096,9 +575,9 @@ RadioManagement.captain = func( task ) {
    }
 }
 
-RadioManagement.engineer = func( task ) {
+RadioManagement.engineer_task = func( task ) {
    # optional
-   if( me.dependency["crew"].getChild("radio").getValue() ) {
+   if( me.dependency["radio"].getChild("set").getValue() ) {
        if( me.has_task() ) {
            me.set_task();
 
@@ -1259,25 +738,25 @@ RadioManagement.select_phase = func( arrival ) {
    var phase = nil;
 
    if( arrival ) {
-       me.state = "arrival";
+       me.activity = "arrival";
        opposite = "departure";
    }
 
    else {
-       me.state = "departure";
+       me.activity = "departure";
        opposite = "arrival";
    }
 
-   phase = me.itself["airport"][ me.entry ].getNode(me.state);
+   phase = me.itself["airport"][ me.entry ].getNode(me.activity);
 
    # try the opposite, if nothing
    if( phase == nil ) {
        phase = me.itself["airport"][ me.entry ].getNode(opposite);
-       me.state = me.state ~ " (" ~ opposite ~ ")";
+       me.activity = me.activity ~ " (" ~ opposite ~ ")";
    }
 
    if( phase == nil ) {
-       me.state = "no data";
+       me.activity = "no data";
    }
 
    return phase;
@@ -1295,18 +774,36 @@ RadioManagement.get_phase = func( phase ) {
        phase = me.select_phase( arrival );
    }
 
-   me.itself["root"].getChild("airport-phase").setValue( me.state );
+   me.itself["root"].getChild("airport-phase").setValue( me.activity );
 
    return phase;
 }
 
 RadioManagement.is_change = func {
-   var result = me.nearest_airport( constant.TRUE, constant.FALSE, "" );
+   var result = me.nearest_airport( constant.TRUE, constant.FALSE );
 
    return result;
 }
 
-RadioManagement.nearest_airport = func( bycrew, byuser, userairport ) {
+RadioManagement.nearest_airport = func( bycrew, byuser ) {
+   var result = constant.FALSE;
+   var ignoreid = me.dependency["radio"].getChild("ignore").getValue();
+   var curairport = me.noinstrument["presets"].getChild("airport-id").getValue();;
+   var userairport = me.itself["root-ctrl"].getChild("airport-id").getValue();
+
+   # keep frequencies in defaults.xml, except when input by user
+   if( curairport == ignoreid and !byuser and userairport == "" ) {
+       me.itself["root"].getChild("airport-id").setValue( ignoreid );
+       me.itself["root"].getChild("airport-phase").setValue( "keep defaults.xml" );
+   }
+   else {
+       result = me.get_nearest_airport( bycrew, byuser, userairport );
+   }
+
+   return result;
+}
+
+RadioManagement.get_nearest_airport = func( bycrew, byuser, userairport ) {
    var found = constant.FALSE;
    var has_navaid = constant.FALSE;
    var result = constant.FALSE;
@@ -1338,7 +835,7 @@ RadioManagement.nearest_airport = func( bycrew, byuser, userairport ) {
                     break;
                 }
             }
-
+            
             # search by virtual crew
             else {
                 has_navaid = constant.TRUE;
@@ -1440,4 +937,376 @@ RadioManagement.set_completed = func {
    me.tower = me.target;
 
    me.completed = constant.TRUE;
+}
+
+
+# =================
+# ASYNCHRONOUS CREW
+# =================
+
+AsynchronousCrew = {};
+
+AsynchronousCrew.new = func( path ) {
+    var obj = { parents : [AsynchronousCrew,System.new(path)], 
+    
+                nightlighting : Nightlighting.new(),
+                radiomanagement : RadioManagement.new()
+              };
+
+    return obj;
+}
+
+AsynchronousCrew.set_relation = func( autopilot, lighting ) {
+    me.nightlighting.set_relation( lighting );
+    me.radiomanagement.set_relation( autopilot );
+}
+
+AsynchronousCrew.radioexport = func( arrival ) {
+    me.radiomanagement.radioexport( arrival );
+}
+
+AsynchronousCrew.set_task = func {
+    me.nightlighting.set_task();
+    me.radiomanagement.set_task();
+}
+
+AsynchronousCrew.do_task = func( member, crewmember ) {
+    if( member == "copilot" ) {
+        me.nightlighting.copilot_task( crewmember );
+        me.radiomanagement.copilot_task( crewmember );
+    }
+    
+    elsif( member == "engineer" ) {
+        me.nightlighting.engineer_task( crewmember );
+        me.radiomanagement.engineer_task( crewmember );
+    }
+    
+    elsif( member == "captain" ) {
+        if( me.is_busy() ) {
+            me.nightlighting.captain_task( crewmember );
+            me.radiomanagement.captain_task( crewmember );
+        }
+    }
+}
+
+AsynchronousCrew.is_busy = func {
+    var result = constant.FALSE;
+
+    if( me.dependency["crew-ctrl"].getChild("captain-busy").getValue() ) {
+        result = constant.TRUE;
+    }
+
+    return result;
+}
+
+
+# ====
+# CREW
+# ====
+
+Crew = {};
+
+Crew.new = func {
+   var obj = { parents : [Crew,System.new("/systems/crew")],
+
+               airbleedsystem : nil,
+               autopilotsystem : nil,
+               autothrottlesystem : nil,
+               electricalsystem : nil,
+               fuelsystem : nil,
+               
+               crewscreen : nil,
+               
+               copilotcrew : nil,
+               engineercrew : nil,
+               voicecrew : nil,
+               
+               copilothuman : nil,
+               engineerhuman : nil,
+                
+               STATESEC : 2.0
+   };
+
+   obj.init();
+
+   return obj;
+}
+
+Crew.init = func {
+   me.presetcrew();
+}
+
+Crew.presetcrew = func {
+   var dialog = me.get_preset();
+
+   # copy to dialog
+   me.itself["root"].getChild("dialog").setValue(dialog);
+}
+
+Crew.set_relation = func( airbleed, autopilot, autothrottle, electrical, fuel,
+                          crew, copilot, engineer, voice, copilot2, engineer2 ) {
+   me.airbleedsystem = airbleed;
+   me.autopilotsystem = autopilot;
+   me.autothrottlesystem = autothrottle;
+   me.electricalsystem = electrical;
+   me.fuelsystem = fuel;
+    
+   me.crewscreen = crew;
+    
+   me.copilotcrew = copilot;
+   me.engineercrew = engineer;    
+   me.voicecrew = voice;
+    
+   me.copilothuman = copilot2;
+   me.engineerhuman = engineer2;
+}
+
+# disable at startup
+Crew.startupexport = func {
+   if( !me.statecron() ) {
+       me.startup();
+   }
+   
+   # disable voice at startup
+   me.voicecrew.startupexport();
+   
+   # disable crew at startup
+   if( me.itself["root-ctrl"].getChild("disable").getValue() ) {
+       me.set_service(constant.FALSE);
+       
+       me.copilotcrew.serviceexport();
+       me.engineercrew.serviceexport();
+   }
+}
+
+# enable crew
+Crew.enableexport = func {
+   var disable = me.itself["root-ctrl"].getChild("disable").getValue();
+   var serviceable = !disable;
+  
+   me.set_service(serviceable);
+   
+   me.voicecrew.serviceexport();
+   
+   me.copilotcrew.serviceexport();
+   me.engineercrew.serviceexport();
+   
+   if( !serviceable ) {
+       # clear crew status
+       me.crewscreen.toggleexport();
+   }
+}
+
+Crew.presetexport = func {
+   var label = me.itself["root"].getChild("dialog").getValue();
+
+   for( var i=0; i < size(me.itself["crew-presets"]); i=i+1 ) {
+        if( me.itself["crew-presets"][i].getValue() == label ) {
+
+            # for aicraft-data
+            me.itself["root-ctrl"].getChild("presets").setValue(i);
+
+            break;
+        }
+   }
+}
+
+Crew.toggleexport = func {
+   me.copilotcrew.toggleexport();
+   me.copilothuman.wakeupexport();
+   me.engineercrew.toggleexport();
+   me.engineerhuman.wakeupexport();
+    
+   me.voicecrew.toggleexport();
+   
+   me.crewscreen.toggleexport();
+}
+
+Crew.wakeupexport = func {
+   me.copilothuman.wakeupexport();
+   me.engineerhuman.wakeupexport();
+}
+
+Crew.set_service = func( serviceable ) {
+   me.itself["root"].getChild("serviceable").setValue(serviceable);
+   me.itself["menu"].getChild("enabled").setValue(serviceable);
+}
+
+Crew.startup = func {
+   var disable = me.itself["root-ctrl"].getChild("disable").getValue();
+   
+   # automatic startup
+   if( !disable and me.itself["root-ctrl"].getChild("startup").getValue() ) {
+       me.crewscreen.toggleexport();
+       
+       me.toggleexport();
+       
+       var dialog = me.get_preset();
+       print("virtual crew activ from " ~ dialog);
+   }
+}
+
+Crew.get_preset = func {
+   var value = me.itself["root-ctrl"].getChild("presets").getValue();
+   var dialog = me.itself["crew-presets"][value].getValue();
+   
+   return dialog;
+}
+
+Crew.statecron = func {
+   var found = constant.TRUE;
+   var result = constant.FALSE;
+   var state = "";
+   
+   if( me.noinstrument["state"] != nil ) {
+       state = me.noinstrument["state"].getValue();
+   }
+   
+   if( state == "takeoff" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.send_fuel( 1 );
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "climb" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.autopilotsystem.aptogglealtitudeexport();
+           me.autopilotsystem.aptoggleheadingexport();
+       
+           me.autothrottlesystem.attogglespeedexport();
+           me.autothrottlesystem.atmachexport();
+           
+           me.send_fuel( 4 );
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "cruise" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.autopilotsystem.aptogglealtitudeexport();
+           me.autopilotsystem.aptoggleheadingexport();
+       
+           me.autothrottlesystem.attogglespeedexport();
+           me.autothrottlesystem.atmachexport();
+           
+           me.send_fuel( 5 );           
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "descent" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.autopilotsystem.aptogglealtitudeexport();
+           me.autopilotsystem.aptoggleheadingexport();
+       
+           me.autothrottlesystem.attogglespeedexport();
+           me.autothrottlesystem.atmachexport();
+           
+           me.send_fuel( 6 );           
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "approach" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.autopilotsystem.aptogglealtitudeexport();
+           me.autopilotsystem.aptoggleheadingexport();
+       
+           me.autothrottlesystem.attogglespeedexport();
+           
+           me.send_fuel( 0 );           
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "landing" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.autopilotsystem.aptogglealtitudeexport();
+           me.autopilotsystem.aptoggleheadingexport();
+       
+           me.autothrottlesystem.attogglespeedexport();
+           
+           me.send_fuel( 0 );           
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   elsif( state == "parking" ) {
+       me.electricalsystem.groundserviceexport();
+       me.airbleedsystem.groundserviceexport();
+       me.airbleedsystem.reargroundserviceexport();
+           
+       me.send_fuel( 7 );           
+       me.send_state( state );
+           
+       result = constant.TRUE;
+   }
+   
+   elsif( state == "stopover" ) {
+       me.electricalsystem.groundserviceexport();
+       me.airbleedsystem.groundserviceexport();
+       me.airbleedsystem.reargroundserviceexport();
+           
+       me.send_fuel( 3 );           
+       me.send_state( state );
+           
+       result = constant.TRUE;
+   }
+   
+   elsif( state == "taxi" ) {
+       if( me.electricalsystem.is_ready() ) {
+           me.send_fuel( 1 );           
+           me.send_state( state );
+           
+           result = constant.TRUE;
+       }
+   }
+   
+   else {
+       found = constant.FALSE;       
+       result = constant.TRUE;
+   }
+   
+   if( !result ) {
+       # waits for systems initialization
+       settimer(func { me.statecron(); },me.STATESEC);
+   }
+   
+   return found;
+}
+
+Crew.send_state = func( targetstate ) {
+   var message = "";
+   
+   # disable voice feedback
+   me.voicecrew.set_state( constant.TRUE );
+   
+   me.copilotcrew.stateexport( targetstate );
+   me.engineercrew.stateexport( targetstate );
+   
+   # enable voice feedback
+   me.voicecrew.set_state( constant.FALSE );
+   
+   message = "concorde state set at " ~ targetstate;
+   print(message);
+}
+
+Crew.send_fuel = func( preset ) {
+   var comment = me.dependency["filling"][preset].getChild("comment").getValue();
+       
+   me.dependency["fuel"].setValue(comment);
+   me.fuelsystem.menuexport();
 }

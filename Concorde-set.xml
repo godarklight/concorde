@@ -12,7 +12,18 @@
       <cockpit type="int">2</cockpit>
       <model type="int">4</model>
   </rating>
-  <aircraft-version>2.14</aircraft-version>
+  <aircraft-version>2.15</aircraft-version>
+
+  <tags>
+   <tag>1970s</tag>
+   <tag>afterburner</tag>
+   <tag>delta</tag>
+   <tag>jet</tag>
+   <tag>rembrandt</tag>
+   <tag>retractable-gear</tag>
+   <tag>supersonic</tag>
+   <tag>transport</tag>
+  </tags>
 
   <startup>
    <splash-texture>Aircraft/Concorde/Concorde-splash.png</splash-texture>            <!-- EGLL 27R -->
@@ -55,6 +66,18 @@
   
   <model>
    <path>Aircraft/Concorde/Models/Concorde_ba.xml</path>
+   <door n="0">
+    <position-x-m type="float"> 13.13</position-x-m>                <!-- left front door -->
+    <position-y-m type="float"> -1.20</position-y-m>
+    <position-z-m type="float">  0.26</position-z-m>
+    <jetway-hood-deg type="float">0.0</jetway-hood-deg>
+   </door>
+   <door n="1">
+    <position-x-m type="float"> 26.65</position-x-m>                <!-- left middle door -->
+    <position-y-m type="float"> -1.32</position-y-m>
+    <position-z-m type="float">  0.60</position-z-m>
+    <jetway-hood-deg type="float">0.0</jetway-hood-deg>
+   </door>
    <pushback>
     <enabled type="bool">false</enabled>
     <kp type="double">1500</kp>
@@ -87,22 +110,38 @@
    <callsign type="string">Speedbird Concorde 1</callsign>
   </user>
 
+  
+<!-- State options at command line.
+  
+     Must also call virtual crew procedures, executed once.
+-->
+  
+  <state include="States/Concorde-takeoff.xml" n="0"/>
+  <state include="States/Concorde-climb.xml" n="1"/>
+  <state include="States/Concorde-cruise.xml" n="2"/>
+  <state include="States/Concorde-descent.xml" n="3"/>
+  <state include="States/Concorde-approach.xml" n="4"/>
+  <state include="States/Concorde-landing.xml" n="5"/>
+  <state include="States/Concorde-parking.xml" n="6"/>
+  <state include="States/Concorde-stopover.xml" n="7"/>
+  <state include="States/Concorde-taxi.xml" n="8"/>
  </sim>
-
- <aircraft>
-  <door>
-   <x-m type="float">-19.4   </x-m>                                 <!-- left front door -->
-   <y-m type="float">  1.2947</y-m>
-   <z-m type="float">  0.2577</z-m>
-  </door>
-  <jetway-hood-deg type="float">0.0</jetway-hood-deg>
- </aircraft>
 
  <autopilot include="Systems/Concorde-init-autopilot.xml"/>
 
  <consumables>
   <fuel include="Systems/Concorde-init-fuel.xml"/>                  <!-- required by nasal -->
  </consumables>
+
+ <payload>
+  <weight>
+   <name type="string">Payload</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[0]"/>
+   <arm-in alias="/fdm/jsbsim/inertia/pointmass-location-X-inches[0]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">29500.0</max-lb>
+  </weight>
+ </payload>
 
  <limits include="Nasal/Concorde-limits.xml"/>
 
@@ -124,6 +163,7 @@
    <file>Aircraft/Concorde/Nasal/Concorde-navigation.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-instrument.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-warning.nas</file>
+   <file>Aircraft/Concorde/Nasal/Concorde-perception.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-crew.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-copilot.nas</file>
    <file>Aircraft/Concorde/Nasal/Concorde-engineer.nas</file>

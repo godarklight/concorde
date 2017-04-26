@@ -18,82 +18,76 @@
 Crewhuman = {};
 
 # not called by child classes !!!
-Crewhuman.new = func {
-   var obj = { parents : [Crewhuman,System],
+Crewhuman.new = func( path, member, voice ) {
+   var obj = { parents : [Crewhuman,System.new("/systems/human")],
 
-           crew : nil,
-           crewcontrol : nil,
+               crew : nil,
+               crewcontrol : nil,
 
-           HEADSEC : 45.0,
-           EYEMAXSEC : 7.0,                              # human eye blinks every 3 - 7 s
-           EYEMINSEC : 3.0,
-           WAITSEC : 3.0,
-           CHARACTERSEC : 0.15,
-           BLINKSEC : 0.15,
-           STOPSEC : -999.0,
+               HEADSEC : 45.0,
+               EYEMAXSEC : 7.0,                              # human eye blinks every 3 - 7 s
+               EYEMINSEC : 3.0,
+               WAITSEC : 3.0,
+               BLINKSEC : 0.15,
+               STOPSEC : -999.0,
 
-           heads : 0.0,
+               WORDPERMINUTE : 100,                          # slow
+               CHARACTERPERWORD : 5,                         # average English
+               CHARACTERPERSEC : 0.0,
+               
+               heads : 0.0,
 
-           TURNDEG : 60.0,
-           RAISEDEG : 15.0,
-           FORWARDSDEG : 0.0,
+               TURNDEG : 60.0,
+               RAISEDEG : 15.0,
+               FORWARDSDEG : 0.0,
 
-           MUSCLEDEGPSEC : 8.0,
+               MUSCLEDEGPSEC : 8.0,
 
-           crewpath : "",
-           crewvoice : "",
+               crewpath : "",
+               crewvoice : "",
 
-           mooth : nil,
+               sleephead : constant.TRUE,
+               sleepeye : constant.TRUE,
 
-           sleephead : constant.TRUE,
-           sleepeye : constant.TRUE,
-
-           movehead : constant.FALSE,
-           openeye : constant.TRUE
+               movehead : constant.FALSE,
+               openeye : constant.TRUE
          };
 
-   obj.init();
+   obj.init( path, member, voice );
 
    return obj;
 }
 
-Crewhuman.init = func {
-}
-
-Crewhuman.inherit_crewhuman = func( path, member, voice ) {
-   # child will also have to inherit from System
-   me.inherit_system("/systems/human");
-
-   var obj = Crewhuman.new();
-
-   me.HEADSEC  = obj.HEADSEC;
-   me.EYEMAXSEC = obj.EYEMAXSEC;
-   me.EYEMINSEC = obj.EYEMINSEC;
-   me.WAITSEC = obj.WAITSEC;
-   me.CHARACTERSEC = obj.CHARACTERSEC;
-   me.BLINKSEC = obj.BLINKSEC;
-   me.STOPSEC = obj.STOPSEC;
-   me.heads = obj.heads;
-   me.TURNDEG = obj.TURNDEG;
-   me.RAISEDEG = obj.RAISEDEG;
-   me.FORWARDSDEG = obj.FORWARDSDEG;
-   me.MUSCLEDEGPSEC = obj.MUSCLEDEGPSEC;
+Crewhuman.init = func( path, member, voice ) {
    me.crewpath = path;
    me.crewvoice = voice;
-   me.mooth = obj.mooth;
-   me.sleephead = obj.sleephead;
-   me.sleepeye = obj.sleepeye;
-   me.movehead = obj.movehead;
-   me.openeye = obj.openeye;
+   
+   me.CHARACTERPERSEC = ( me.WORDPERMINUTE * me.CHARACTERPERWORD ) / constant.MINUTETOSECOND;
 
    me.crew = props.globals.getNode( me.crewpath );
    me.crewcontrol = props.globals.getNode("/controls/" ~ member);
 
-   me.listenmooth();
-
    # must wait for initialization
    settimer(func { me.eyescron(); }, 0);
    settimer(func { me.headcron(); }, 0);
+}
+
+Crewhuman.wakeupexport = func {
+   me.wakeup();
+}
+
+Crewhuman.schedule = func {
+   var headset = constant.TRUE;
+   var headgear = 1;
+
+   # headset less used during these phases
+   if( me.dependency["voice"].getChild("callout").getValue() == "gate" or
+       me.dependency["voice"].getChild("checklist").getValue() == "cruiseclimb" ) {
+       headset = constant.FALSE;
+       headgear = 0;
+   }
+
+   me.crew.getChild("headset").setValue( headset );
 }
 
 Crewhuman.wakeup = func {
@@ -103,30 +97,11 @@ Crewhuman.wakeup = func {
    if( me.sleephead ) {
        me.headcron();
    }
-
-   me.listenmooth();
 }
 
-Crewhuman.wakeupexport = func {
-   me.wakeup();
-}
-
-Crewhuman.schedule = func {
-   var headset = constant.TRUE;
-
-   # headset less used during these phases
-   if( me.dependency["voice"].getChild("callout").getValue() == "gate" or
-       me.dependency["voice"].getChild("checklist").getValue() == "cruiseclimb" ) {
-       headset = constant.FALSE;
-   }
-
-   me.crew.getChild("headset").setValue( headset );
-}
-
-Crewhuman.talkrates = func {
+Crewhuman.talkrates = func( phrase ) {
    # opens the mooth according to phrase length
-   var phrase = me.dependency["sound"].getChild(me.crewvoice).getValue();
-   var steps = size( phrase ) * me.CHARACTERSEC;
+   var steps = size( phrase ) / me.CHARACTERPERSEC;
 
    return steps;
 }
@@ -159,7 +134,6 @@ Crewhuman.eyesrates = func {
 
    else {
        me.sleepeye = constant.TRUE;
-       me.removemooth();
        steps = me.STOPSEC;
    }
  
@@ -199,16 +173,17 @@ Crewhuman.headrates = func {
 
    else {
        me.sleephead = constant.TRUE;
-       me.removemooth();
        steps = me.STOPSEC;
    }
  
    return steps;
 }
 
-Crewhuman.moothcron = func {
-   var steps = me.talkrates();
+Crewhuman.moothcron = func( phrase ) {
+   var steps = me.talkrates( phrase );
 
+   me.crew.getChild("teeth").setValue(constant.TRUE);
+   
    settimer(func { me.endtalk(); }, steps);
 }
 
@@ -228,19 +203,6 @@ Crewhuman.headcron = func {
    }
 }
 
-Crewhuman.listenmooth = func {
-   if( me.mooth == nil ) {
-       me.mooth = setlistener(me.crewpath ~ "/teeth", func { me.moothcron(); });
-   }
-}
-
-Crewhuman.removemooth = func {
-   if( me.mooth != nil ) {
-       removelistener(me.mooth);
-       me.mooth = nil;
-   }
-}
-
 
 # =============
 # HUMAN COPILOT
@@ -248,16 +210,10 @@ Crewhuman.removemooth = func {
 Copilothuman = {};
 
 Copilothuman.new = func {
-   var obj = { parents : [Copilothuman,Crewhuman,System]
+   var obj = { parents : [Copilothuman,Crewhuman.new("/systems/human/copilot", "copilot", "copilot")]
          };
 
-   obj.init();
-
    return obj;
-}
-
-Copilothuman.init = func {
-   me.inherit_crewhuman( "/systems/human/copilot", "copilot", "copilot" );
 }
 
 
@@ -267,29 +223,35 @@ Copilothuman.init = func {
 Engineerhuman = {};
 
 Engineerhuman.new = func {
-   var obj = { parents : [Engineerhuman,Crewhuman,System],
+   var obj = { parents : [Engineerhuman,Crewhuman.new("/systems/human/engineer", "engineer", "pilot")],
 
                seat : Engineerseat.new()
          };
 
-   obj.init();
-
    return obj;
-}
-
-Engineerhuman.init = func {
-   me.inherit_crewhuman( "/systems/human/engineer", "engineer", "pilot" );
 }
 
 Engineerhuman.set_relation = func( seat ) {
    me.seat.set_relation( seat );
 }
 
+Engineerhuman.wakeupexport = func {
+   me.wakeup();
+   
+   # reset seat
+   me.slowschedule();
+}
+
 Engineerhuman.slowschedule = func {
    # 15 s is enough time, to interpolate each step
    if( me.crewcontrol.getChild("activ").getValue() ) {
+       # move the seat, only with 3D crew
        if( me.itself["root"].getChild("serviceable").getValue() ) {
            me.seat.schedule();
+       }
+       
+       else {
+           me.seat.reset();
        }
    }
 
@@ -307,12 +269,13 @@ Engineerhuman.slowschedule = func {
 Engineerseat = {};
 
 Engineerseat.new = func {
-   var obj = { parents : [Engineerseat,Callout,System],
+   var obj = { parents : [Engineerseat,Callout.new(),System.new("/systems/human")],
 
                seatsystem : nil,
 
                SEATDEGPSEC : 25.0,
-               BOGGIESEC : 5.0,
+
+               BOGGIEMPSEC : 0.08,
 
                TAKEOFFDEG : 360,                                        # towards pedestal
                FLIGHTDEG : 270,
@@ -321,8 +284,8 @@ Engineerseat.new = func {
 
                STATICDEG : 0,
 
-               TAKEOFFM : 0.40,                                         # near pedestal
-               FLIGHTM : 0.0,
+               TAKEOFFM : 0.36,                                         # near pedestal
+                FLIGHTM : 0.0,
 
                headm : 0.0,
 
@@ -335,9 +298,6 @@ Engineerseat.new = func {
 }
 
 Engineerseat.init = func {
-   me.inherit_system("/systems/human");
-   me.inherit_callout();
-
    me.headdeg = me.dependency["engineer"].getChild("heading-deg").getValue();
 }
 
@@ -363,7 +323,8 @@ Engineerseat.schedule = func {
    # takeoff position
    if( me.is_rotating() ) {
        if( me.itself["engineer"].getChild("stowe-norm").getValue() == me.FLIGHTM ) {
-           targetdeg = me.TAKEOFFDEG; 
+           targetdeg = me.TAKEOFFDEG;
+           
            targetm = me.TAKEOFFM; 
 
            # rotation, then translation, in 2 distinct steps
@@ -412,7 +373,7 @@ Engineerseat.rotate = func( targetdeg, clear ) {
 
         # correction by engineer view rotation
         movementdeg = targetdeg - viewdeg;
-        movementdeg = constant.crossnorth( movementdeg );
+        movementdeg = geo.normdeg180( movementdeg );
         movementsec = math.abs( movementdeg / me.SEATDEGPSEC );
     }
 
@@ -431,7 +392,7 @@ Engineerseat.rotate = func( targetdeg, clear ) {
 Engineerseat.translate = func( targetm ) {
     me.headm = targetm;
 
-    interpolate(me.itself["engineer"].getChild("seat-x-m").getPath(), me.headm, me.BOGGIESEC );
+    interpolate(me.itself["engineer"].getChild("seat-x-m").getPath(), me.headm, targetm / me.BOGGIEMPSEC );
 }
 
 Engineerseat.rotateclear = func {
@@ -452,7 +413,7 @@ Engineerseat.translateclear = func {
 SeatRail = {};
 
 SeatRail.new = func {
-   var obj = { parents : [SeatRail,System],
+   var obj = { parents : [SeatRail,System.new("/systems/human")],
 
                RAILSEC : 5.0,
 
@@ -462,13 +423,7 @@ SeatRail.new = func {
                PARK : 1.0
          };
 
-   obj.init();
-
    return obj;
-}
-
-SeatRail.init = func {
-   me.inherit_system("/systems/human");
 }
 
 SeatRail.toggle = func( seat ) {

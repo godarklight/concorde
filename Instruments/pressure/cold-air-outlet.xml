@@ -6,6 +6,17 @@
  <animation>
   <type>material</type>
   <object-name>ColdAirOutlet</object-name>
+  <condition>
+   <or>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+    <less-than-equals>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </less-than-equals>
+   </or>
+  </condition>
   <emission>
    <red>0.83</red>
    <green>0.74</green>

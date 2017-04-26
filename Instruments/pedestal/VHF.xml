@@ -44,11 +44,22 @@
  <animation>
   <type>material</type>
   <object-name>VHF</object-name>
+  <condition>
+   <or>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+    <less-than-equals>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </less-than-equals>
+   </or>
+  </condition>
   <emission>
-   <red>0.71</red>
-   <green>0.79</green>
-   <blue>0.87</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
+   <red-prop>systems/lighting/color/flood/red</red-prop>
+   <green-prop>systems/lighting/color/flood/green</green-prop>
+   <blue-prop>systems/lighting/color/flood/blue</blue-prop>
+   <factor-prop>systems/lighting/level/panel/center</factor-prop>
   </emission> 
  </animation> 
 
@@ -67,14 +78,14 @@
    <green>1.0</green>
    <blue>0.2</blue>
    <factor-prop alias="../../../params/vhf-selected"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>1.0</red>
    <green>1.0</green>
    <blue>0.2</blue>
    <factor-prop alias="../../../params/vhf-selected"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -89,14 +100,14 @@
    <green>1.0</green>
    <blue>0.2</blue>
    <factor-prop alias="../../../params/vhf-selected2"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>1.0</red>
    <green>1.0</green>
    <blue>0.2</blue>
    <factor-prop alias="../../../params/vhf-selected2"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -161,7 +172,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -178,7 +189,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -257,7 +268,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -274,7 +285,7 @@
    <red>1.0</red>
    <green>1.0</green>
    <blue>1.0</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation>
 
@@ -400,18 +411,16 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>Selector</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <condition>
      <property alias="../../../../../params/vhf-selected"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-frq"/>
-    <step>1</step>
+    <factor>-1</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -424,7 +433,7 @@
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-stdby"/>
-    <step>1</step>
+    <factor>-1</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -432,45 +441,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-knob"/>
-    <step>1</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <condition>
-     <property alias="../../../../../params/vhf-selected"/>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-frq"/>
-    <step>-1</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <not>
-      <property alias="../../../../../../params/vhf-selected"/>
-     </not>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-stdby"/>
-    <step>-1</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-knob"/>
-    <step>-1</step>
+    <factor>-1</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -481,18 +452,16 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorDecimal</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <condition>
      <property alias="../../../../../params/vhf-selected"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-frq"/>
-    <step>0.01</step>
+    <factor>-0.01</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -505,7 +474,7 @@
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-stdby"/>
-    <step>0.01</step>
+    <factor>-0.01</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -513,45 +482,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-knob"/>
-    <step>0.01</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <condition>
-     <property alias="../../../../../params/vhf-selected"/>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-frq"/>
-    <step>-0.01</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <not>
-      <property alias="../../../../../../params/vhf-selected"/>
-     </not>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-stdby"/>
-    <step>-0.01</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-knob"/>
-    <step>-0.01</step>
+    <factor>-0.01</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -598,18 +529,16 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorStandby.001</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <condition>
      <property alias="../../../../../params/vhf-selected2"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-frq"/>
-    <step>1</step>
+    <factor>-1</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -622,7 +551,7 @@
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-stdby"/>
-    <step>1</step>
+    <factor>-1</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -630,45 +559,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-knob2"/>
-    <step>1</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <condition>
-     <property alias="../../../../../params/vhf-selected2"/>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-frq"/>
-    <step>-1</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <not>
-      <property alias="../../../../../../params/vhf-selected2"/>
-     </not>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-stdby"/>
-    <step>-1</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-knob2"/>
-    <step>-1</step>
+    <factor>-1</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
@@ -679,18 +570,16 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>SelectorDecimalStandby</object-name>
   <action>
-   <button>0</button>
-   <repeatable>true</repeatable>
    <binding>
     <condition>
      <property alias="../../../../../params/vhf-selected2"/>
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-frq"/>
-    <step>0.01</step>
+    <factor>-0.01</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -703,7 +592,7 @@
     </condition>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-stdby"/>
-    <step>0.01</step>
+    <factor>-0.01</factor>
     <min>100</min>
     <max>400</max>
     <wrap>0</wrap>
@@ -711,45 +600,7 @@
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/vhf-knob2"/>
-    <step>0.01</step>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>/instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <repeatable>true</repeatable>
-   <binding>
-    <condition>
-     <property alias="../../../../../params/vhf-selected2"/>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-frq"/>
-    <step>-0.01</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <condition>
-     <not>
-      <property alias="../../../../../../params/vhf-selected2"/>
-     </not>
-    </condition>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-stdby"/>
-    <step>-0.01</step>
-    <min>100</min>
-    <max>400</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/vhf-knob2"/>
-    <step>-0.01</step>
+    <factor>-0.01</factor>
     <wrap>0</wrap>
    </binding>
    <binding>
