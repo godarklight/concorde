@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <name type="string" n="0">landing</name>
+
+   <overlay>
+    <controls>
+     <autoflight>
+      <altitude-select type="int">3500</altitude-select>
+      <speed-select type="int">190</speed-select>
+      <flight-director>
+       <engage type="bool">true</engage>
+      </flight-director>
+     </autoflight>
+     <flight>
+      <flaps type="double">1.0</flaps>
+     </flight>
+     <gear>
+      <brake-parking-lever type="bool">false</brake-parking-lever>
+     </gear>
+    </controls>
+    <instrumentation>
+     <ins n="0">
+      <control>
+       <selector type="int">3</selector>
+      </control>
+     </ins>
+    </instrumentation>
+    <sim>
+     <presets>
+      <airspeed-kt type="double">250</airspeed-kt>
+      <altitude-ft type="double">3500</altitude-ft>
+      <offset-distance-nm type="double">10</offset-distance-nm>
+     </presets>
+    </sim>
+   </overlay>
+
+</PropertyList>

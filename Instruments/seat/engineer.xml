@@ -1,7 +1,7 @@
 <?xml version="1.0" ?> 
 
-<!--
-     The engineer seat must match the engineer view (rotation).
+<!-- - the engineer seat must match the engineer view (rotation).
+     - auto smooth is disabled (except rail).
 -->
 
 
@@ -60,17 +60,6 @@
   <property-base>sim/model/livery/</property-base>
   <texture-prop>texture-seat</texture-prop>
  </animation>
-
- <animation>
-  <type>material</type>
-  <object-name>AllSeat</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
 
 <!-- the condition rotates once -->
 
@@ -168,7 +157,7 @@
 
  <animation>
   <type>pick</type>
-  <object-name>Seat</object-name>
+  <object-name>TopSeat</object-name>
   <action>
    <button>0</button>
    <repeatable>false</repeatable>

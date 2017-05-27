@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <name type="string" n="0">descent</name>
+
+   <overlay>
+    <controls>
+     <autoflight>
+      <altitude-select type="int">57000</altitude-select>
+     </autoflight>
+     <gear>
+      <brake-parking-lever type="bool">false</brake-parking-lever>
+      <gear-down type="bool">false</gear-down>
+     </gear>
+    </controls>
+    <instrumentation>
+     <ins n="1">
+      <control>
+       <selector type="int">3</selector>
+      </control>
+     </ins>
+    </instrumentation>
+    <sim>
+     <presets>
+      <airspeed-kt type="double">340</airspeed-kt>                     <!-- stay below mach 2.0 -->
+      <altitude-ft type="double">57000</altitude-ft>
+      <offset-distance-nm type="double">250</offset-distance-nm>
+     </presets>
+    </sim>
+   </overlay>
+
+</PropertyList>

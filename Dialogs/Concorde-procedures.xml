@@ -4,9 +4,28 @@
   <name>Concorde-procedures</name>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde procedures</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde procedures</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -35,28 +54,13 @@
      <layout>hbox</layout>
 
      <text>
-       <label>vor adf :</label>
-     </text>
-
-     <text>
-      <property>/systems/human/airport-id</property>
-     </text>
-    </group>
-
-    <text>
-      <label></label>
-    </text>
-
-    <group>
-     <layout>hbox</layout>
-
-     <text>
        <label>processing :</label>
      </text>
 
      <text>
       <live>true</live>
       <property>/systems/voice/display/processing</property>
+      <halign>left</halign>
       <color>
        <red>0.8</red>
        <green>0.2</green>
@@ -75,6 +79,7 @@
      <text>
       <live>true</live>
       <property>/systems/voice/display/completed</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -97,6 +102,7 @@
      <text>
       <live>true</live>
       <property>/systems/copilot/state-last</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -115,6 +121,7 @@
      <text>
       <live>true</live>
       <property>/systems/engineer/state-last</property>
+      <halign>left</halign>
       <color>
        <red>0.2</red>
        <green>0.8</green>
@@ -373,9 +380,12 @@
    <layout>hbox</layout>
 
    <button>
-    <legend>Close</legend>
-    <default>true</default>
-    <key>Esc</key>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
     <binding>
       <command>dialog-close</command>
     </binding>
@@ -387,6 +397,9 @@
     <binding>
      <command>dialog-show</command>
      <dialog-name>Concorde-procedures4</dialog-name>
+    </binding>
+    <binding>
+     <command>dialog-close</command>
     </binding>
    </button>
 
@@ -403,12 +416,9 @@
    </button>
 
    <button>
-    <legend>Menu</legend>
-    <key>m</key>
-    <binding>
-     <command>dialog-show</command>
-     <dialog-name>Concorde-menu</dialog-name>
-    </binding>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
     <binding>
       <command>dialog-close</command>
     </binding>

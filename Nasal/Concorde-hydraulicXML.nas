@@ -14,9 +14,9 @@ HydraulicXML.new = func {
 
                HYDSEC : 1.0,
 
-               config : nil,
-               hydraulic : nil,
-               iterations : nil,
+               configpath : nil,
+               hydraulicpath : nil,
+               iterationspath : nil,
 
                components : HydComponentArray.new(),
                connections : HydConnectionArray.new()
@@ -33,11 +33,11 @@ HydraulicXML.init = func {
    var nb_children = 0;
    var component = nil;
 
-   me.config = props.globals.getNode("/systems/hydraulic/internal/config");
-   me.hydraulic = props.globals.getNode("/systems/hydraulic");
-   me.iterations = props.globals.getNode("/systems/hydraulic/internal/iterations");
+   me.hydraulicpath = props.globals.getNode("/systems/hydraulic");
+   me.configpath = me.hydraulicpath.getNode("internal/config");
+   me.iterationspath = me.hydraulicpath.getNode("internal/iterations");
 
-   children = me.config.getChildren("supplier");
+   children = me.configpath.getChildren("supplier");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_supplier( children[i], me.HYDSEC );
@@ -45,7 +45,7 @@ HydraulicXML.init = func {
         component.fill();
    }
 
-   children = me.config.getChildren("circuit");
+   children = me.configpath.getChildren("circuit");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_circuit( children[i], me.HYDSEC );
@@ -53,10 +53,10 @@ HydraulicXML.init = func {
         component.fill();
    }
 
-   children = me.config.getChildren("connection");
+   children = me.configpath.getChildren("connection");
    nb_children = size( children );
    for( i = 0; i < nb_children; i = i+1 ) {
-        me.connections.add( children[i] );
+        me.connections.add( children[i], me.components );
    }
 }
 
@@ -77,7 +77,7 @@ HydraulicXML.schedule = func {
         component.pressurize();
    }
 
-   if( me.hydraulic.getChild("serviceable").getValue() ) {
+   if( me.hydraulicpath.getChild("serviceable").getValue() ) {
         iter = 0;
         remain = constant.TRUE;
         while( remain ) {
@@ -91,7 +91,7 @@ HydraulicXML.schedule = func {
             iter = iter + 1;
        }
 
-       me.iterations.setValue(iter);
+       me.iterationspath.setValue(iter);
    }
 
    # failure : no pressure
@@ -108,15 +108,18 @@ HydraulicXML.schedule = func {
 HydraulicXML.pressurize = func( connection ) {
    var found = constant.FALSE;
    var switch = constant.FALSE;
+   var inputkind = "";
+   var outputkind = "";
    var input = nil;
+   var output = nil;
    var component = nil;
    var component2 = nil;
-   var output = nil;
 
    output = connection.get_output();
+   outputkind = connection.get_output_kind();
 
    # propagate pressure
-   component2 = me.components.find( output );
+   component2 = me.components.find( output, outputkind );
    if( component2 != nil ) {
        if( !component2.is_propagate() ) {
            switch = connection.get_switch();
@@ -129,7 +132,8 @@ HydraulicXML.pressurize = func( connection ) {
 
             else {
                 input = connection.get_input();
-                component = me.components.find( input );
+                inputkind = connection.get_input_kind();
+                component = me.components.find( input, inputkind );
                 if( component != nil ) {
 
                     # input knows its pressure
@@ -148,7 +152,8 @@ HydraulicXML.pressurize = func( connection ) {
            # reservoir can accept pressurization
            if( switch ) {
                input = connection.get_input();
-               component = me.components.find( input );
+               inputkind = connection.get_input_kind();
+               component = me.components.find( input, inputkind );
                if( component != nil ) {
 
                    # input knows its pressure
@@ -289,11 +294,14 @@ HydComponentArray.find_circuit = func( ident ) {
 }
 
 # lookup tables accelerates the search !!!
-HydComponentArray.find = func( ident ) {
+HydComponentArray.find = func( ident, kind ) {
    var found = constant.FALSE;
-   var result = me.find_supplier( ident );
+   var result = nil;
 
-   if( result == nil ) {
+   if( kind == "supplier" ) {
+       result = me.find_supplier( ident );
+   }
+   elsif( kind == "circuit" ) {
        result = me.find_circuit( ident );
    }
 
@@ -302,7 +310,33 @@ HydComponentArray.find = func( ident ) {
    }
 
    if( !found ) {
-       print("Hydraulic : component not found ", ident);
+       print("Hydraulic : component not found ", ident, " (", kind, ")");
+   }
+
+   return result;
+}
+
+HydComponentArray.find_kind = func( ident ) {
+   var found = constant.FALSE;
+   var result = "";
+
+   if( me.find_supplier( ident ) == nil ) {
+       if( me.find_circuit( ident ) == nil ) {
+       }
+       else {
+           result = "circuit";
+       }
+   }
+   else {
+       result = "supplier";
+   }
+
+   if( result != "" ) {
+       found = constant.TRUE;
+   }
+
+   if( !found ) {
+       print("Hydraulic : component kind not found ", ident);
    }
 
    return result;
@@ -332,7 +366,6 @@ HydComponentArray.get_circuit = func( index ) {
 # for inheritance, the component must be the last of parents.
 HydComponent = {};
 
-# not called by child classes !!!
 HydComponent.new = func {
    var obj = { parents : [HydComponent],
 
@@ -347,13 +380,6 @@ HydComponent.new = func {
 
    return obj;
 };
-
-HydComponent.inherit_hydcomponent = func {
-   var obj = HydComponent.new();
-
-   me.NOGALUS = obj.NOGALUS;
-   me.NOPSI = obj.NOPSI;
-}
 
 HydComponent.set_rate = func( rates ) {
    me.HYDSEC = rates;
@@ -405,7 +431,7 @@ HydComponent.inertia = func( prop, value ) {
 HydSupplier = {};
 
 HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) {
-   var obj = { parents : [HydSupplier,HydComponent],
+   var obj = { parents : [HydSupplier,HydComponent.new()],
 
                value : 0.0,
 
@@ -424,8 +450,6 @@ HydSupplier.new = func( kind, prop, source, factor, minpsi, psi, galus, rates ) 
 };
 
 HydSupplier.init = func( rates ) {
-   me.inherit_hydcomponent();
-
    me.set_rate( rates );
 }
 
@@ -525,7 +549,7 @@ HydSupplier.apply = func {
 HydCircuit = {};
 
 HydCircuit.new = func( contentnode, allprops, rates ) {
-   var obj = { parents : [HydCircuit,HydComponent],
+   var obj = { parents : [HydCircuit,HydComponent.new()],
 
                contentgalus : 0.0,
 
@@ -545,8 +569,6 @@ HydCircuit.new = func( contentnode, allprops, rates ) {
 };
 
 HydCircuit.init = func( contentnode, allprops, rates ) {
-   me.inherit_hydcomponent();
-
    me.set_rate( rates );
 
    if( contentnode != nil ) {
@@ -651,12 +673,14 @@ HydConnectionArray.new = func {
    return obj;
 };
 
-HydConnectionArray.add = func( node ) {
+HydConnectionArray.add = func( node, components ) {
    var prop = "";
    var child = nil;
    var result = nil;
    var input = node.getChild("input").getValue();
    var output = node.getChild("output").getValue();
+   var inputkind = components.find_kind( input );
+   var outputkind = components.find_kind( output );
    var switch = node.getNode("switch");
 
    if( switch != nil ) {
@@ -667,7 +691,7 @@ HydConnectionArray.add = func( node ) {
        }
    }
 
-   result = HydConnection.new( input, output, prop );
+   result = HydConnection.new( input, inputkind, output, outputkind, prop );
    append(me.connections, result);
 
    me.nb_connections = me.nb_connections + 1;
@@ -688,11 +712,13 @@ HydConnectionArray.get = func( index ) {
 
 HydConnection = {};
 
-HydConnection.new = func( input, output, prop ) {
+HydConnection.new = func( input, inputkind, output, outputkind, prop ) {
    var obj = { parents : [HydConnection],
 
                input : input,
+               input_kind : inputkind,
                output : output,
+               output_kind : outputkind,
                prop : prop
          };
 
@@ -703,8 +729,16 @@ HydConnection.get_input = func {
    return me.input;
 }
 
+HydConnection.get_input_kind = func {
+   return me.input_kind;
+}
+
 HydConnection.get_output = func {
    return me.output;
+}
+
+HydConnection.get_output_kind = func {
+   return me.output_kind;
 }
 
 HydConnection.get_switch = func {

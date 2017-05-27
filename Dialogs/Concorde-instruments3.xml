@@ -7,21 +7,34 @@
 
  <name>Concorde-instruments3</name>
  <width>700</width>
- <height>600</height>
+ <height>560</height>
  <modal>false</modal>
 
  <text>
-  <x>10</x>
-  <y>570</y>
+  <x>30</x>
+  <y>520</y>
   <label>Concorde Instruments</label>
  </text>
 
+ <button>
+  <x>675</x>
+  <y>535</y>
+  <width>16</width>
+  <height>16</height>
+  <legend></legend>
+  <keynum>27</keynum>
+  <border>2</border>
+  <binding>
+   <command>dialog-close</command>
+  </binding>
+ </button>
+
  <group>
-  <y>540</y>
+  <y>500</y>
 
   <text>
-   <x>100</x>
-   <label>(Uncheck an instrument to fail it.)</label>
+   <x>370</x>
+   <label>Uncheck an instrument to fail it.</label>
    <color>
      <red>0.5</red>
      <green>0.5</green>
@@ -36,16 +49,16 @@
 
  <text>
   <x>30</x>
-  <y>470</y>
+  <y>440</y>
   <label>Engineer</label>
  </text>
 
 
  <group>
-  <y>400</y>
+  <y>370</y>
 
   <checkbox>
-   <x>470</x>
+   <x>490</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -57,10 +70,10 @@
 
 
  <group>
-  <y>370</y>
+  <y>340</y>
 
   <checkbox>
-   <x>10</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -69,7 +82,7 @@
   </checkbox>
 
   <checkbox>
-   <x>240</x>
+   <x>260</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -81,10 +94,10 @@
 
 
  <group>
-  <y>340</y>
+  <y>310</y>
 
   <checkbox>
-   <x>10</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -93,7 +106,7 @@
   </checkbox>
 
   <checkbox>
-   <x>240</x>
+   <x>260</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -102,7 +115,7 @@
   </checkbox>
 
   <checkbox>
-   <x>470</x>
+   <x>490</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -114,10 +127,10 @@
 
 
  <group>
-  <y>310</y>
+  <y>280</y>
 
   <checkbox>
-   <x>470</x>
+   <x>490</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -129,10 +142,10 @@
 
 
  <group>
-  <y>280</y>
+  <y>250</y>
 
   <checkbox>
-   <x>470</x>
+   <x>490</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -144,10 +157,10 @@
 
 
  <group>
-  <y>250</y>
+  <y>220</y>
 
   <checkbox>
-   <x>10</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -158,10 +171,10 @@
  </group>
 
  <group>
-  <y>190</y>
+  <y>160</y>
 
   <checkbox>
-   <x>10</x>
+   <x>30</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -170,7 +183,7 @@
   </checkbox>
 
   <checkbox>
-   <x>240</x>
+   <x>260</x>
    <y>0</y>
    <width>20</width>
    <height>20</height>
@@ -187,8 +200,27 @@
   <y>10</y>
 
   <button>
-   <x>50</x>
+   <x>70</x>
    <y>0</y>
+   <width>60</width>
+   <height>35</height>
+   <legend>Back</legend>
+   <equal>true</equal>
+   <key>b</key>
+   <binding>
+    <command>dialog-show</command>
+    <dialog-name>Concorde-menu</dialog-name>
+   </binding>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>230</x>
+   <y>0</y>
+   <width>60</width>
+   <height>35</height>
    <legend>Apply</legend>
     <key>a</key>
    <equal>true</equal>
@@ -198,23 +230,10 @@
   </button>
 
   <button>
-   <x>280</x>
+   <x>390</x>
    <y>0</y>
-   <legend>Close</legend>
-   <default>true</default>
-   <equal>true</equal>
-   <key>Esc</key>
-   <binding>
-    <command>dialog-apply</command>
-   </binding>
-   <binding>
-    <command>dialog-close</command>
-   </binding>
-  </button>
-
-  <button>
-   <x>500</x>
-   <y>0</y>
+   <width>80</width>
+   <height>35</height>
    <legend>Page 1</legend>
    <key>p</key>
    <binding>
@@ -230,13 +249,16 @@
   </button>
 
   <button>
-   <x>600</x>
+   <x>570</x>
    <y>0</y>
-   <legend>Menu</legend>
-   <key>m</key>
+   <width>60</width>
+   <height>35</height>
+   <legend>Close</legend>
+   <default>true</default>
+   <equal>true</equal>
+   <key>Esc</key>
    <binding>
-   <command>dialog-show</command>
-    <dialog-name>Concorde-menu</dialog-name>
+    <command>dialog-apply</command>
    </binding>
    <binding>
     <command>dialog-close</command>

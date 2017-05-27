@@ -11,7 +11,7 @@
 Electrical = {};
 
 Electrical.new = func {
-   var obj = { parents : [Electrical,System],
+   var obj = { parents : [Electrical,System.new("/systems/electrical")],
 
                relight : EmergencyRelight.new(),
                parser : ElectricalXML.new(),
@@ -33,7 +33,7 @@ Electrical.new = func {
 };
 
 Electrical.init = func {
-   me.inherit_system("/systems/electrical");
+   me.parser.init_ElectricalXML("/systems/electrical");
 
    me.csd.set_rate( me.ELECSEC );
 }
@@ -356,21 +356,15 @@ Electrical.has_transformer_26ac = func( output ) {
 ConstantSpeedDrive = {};
 
 ConstantSpeedDrive.new = func {
-   var obj = { parents : [ConstantSpeedDrive,System],
+   var obj = { parents : [ConstantSpeedDrive,System.new("/systems/electrical")],
 
                ELECSEC : 1.0,                                 # refresh rate
    
                LOWPSI : 30.0
          };
 
-   obj.init();
-
    return obj;
 };
-
-ConstantSpeedDrive.init = func {
-   me.inherit_system("/systems/electrical");
-}
 
 ConstantSpeedDrive.set_rate = func( rates ) {
    me.ELECSEC = rates;
@@ -454,19 +448,13 @@ ConstantSpeedDrive.schedule = func {
 EmergencyRelight = {};
 
 EmergencyRelight.new = func {
-   var obj = { parents : [EmergencyRelight,System],
+   var obj = { parents : [EmergencyRelight,System.new("/systems/electrical")],
 
                switches : [ -1, 1, 3, 2, 0 ]                     # maps selector to relight (-1 is off)
          };
 
-   obj.init();
-
    return obj;
 };
-
-EmergencyRelight.init = func {
-   me.inherit_system("/systems/electrical");
-}
 
 EmergencyRelight.engineexport = func( engine ) {
    # switch off
@@ -511,7 +499,7 @@ EmergencyRelight.selectorexport = func {
 DCVoltmeter = {};
 
 DCVoltmeter.new = func {
-   var obj = { parents : [DCVoltmeter,System],
+   var obj = { parents : [DCVoltmeter,System.new("/instrumentation/voltmeter-dc")],
 
                ELECSEC : 1.0,                                 # refresh rate
 
@@ -520,14 +508,8 @@ DCVoltmeter.new = func {
                selector : 0
          };
 
-   obj.init();
-
    return obj;
 };
-
-DCVoltmeter.init = func {
-   me.inherit_system("/instrumentation/voltmeter-dc");
-}
 
 DCVoltmeter.set_rate = func( rates ) {
    me.ELECSEC = rates;
@@ -572,7 +554,7 @@ DCVoltmeter.selectorexport = func {
 ACVoltmeter = {};
 
 ACVoltmeter.new = func {
-   var obj = { parents : [ACVoltmeter,System],
+   var obj = { parents : [ACVoltmeter,System.new("/instrumentation/voltmeter-ac")],
 
                ELECSEC : 1.0,                                 # refresh rate
 
@@ -584,14 +566,8 @@ ACVoltmeter.new = func {
                selector : 0
          };
 
-   obj.init();
-
    return obj;
 };
-
-ACVoltmeter.init = func {
-   me.inherit_system("/instrumentation/voltmeter-ac");
-}
 
 ACVoltmeter.set_rate = func( rates ) {
    me.ELECSEC = rates;
@@ -642,7 +618,7 @@ ACVoltmeter.selectorexport = func {
 Wiper = {};
 
 Wiper.new = func {
-   var obj = { parents : [Wiper, System],
+   var obj = { parents : [Wiper, System.new("/instrumentation/wiper")],
 
                noseinstrument : nil,
 
@@ -659,14 +635,8 @@ Wiper.new = func {
                WIPEROFF : 0
          };
 
-   obj.init();
-
    return obj;
 };
-
-Wiper.init = func {
-   me.inherit_system("/instrumentation/wiper");
-}
 
 Wiper.set_relation = func( nose ) {
    me.noseinstrument = nose;
@@ -728,11 +698,11 @@ Wiper.motor = func {
 Lighting = {};
 
 Lighting.new = func {
-   var obj = { parents : [Lighting],
+   var obj = { parents : [Lighting,System.new("/systems/lighting")],
 
-           compass : CompassLight.new(),
-           internal : LightLevel.new(),
-           landing : LandingLight.new()
+               compass : CompassLight.new(),
+               internal : LightLevel.new(),
+               landing : LandingLight.new()
          };
 
    obj.init();
@@ -741,8 +711,9 @@ Lighting.new = func {
 };
 
 Lighting.init = func {
-   var strobe_switch = props.globals.getNode("controls/lighting/strobe", constant.FALSE);
-   aircraft.light.new("controls/lighting/external/strobe", [ 0.03, 1.20 ], strobe_switch);
+   var strobe_switch = me.itself["root-ctrl"].getNode("strobe");
+
+   aircraft.light.new(me.itself["root-ctrl"].getNode("external/strobe").getPath(), [ 0.03, 1.20 ], strobe_switch);
 }
 
 Lighting.schedule = func {
@@ -775,7 +746,7 @@ Lighting.roofexport = func {
 CompassLight = {};
 
 CompassLight.new = func {
-   var obj = { parents : [CompassLight, System],
+   var obj = { parents : [CompassLight, System.new("/systems/lighting")],
 
                BRIGHTNORM : 1.0,
                DIMNORM : 0.5,
@@ -790,8 +761,6 @@ CompassLight.new = func {
 }
 
 CompassLight.init = func {
-   me.inherit_system("/systems/lighting");
-
    me.norm = me.itself["overhead"].getChild("compass-norm").getValue();
 }
 
@@ -826,27 +795,19 @@ CompassLight.illuminateexport = func( level ) {
 LandingLight = {};
 
 LandingLight.new = func {
-   var obj = { parents : [LandingLight,System],
+   var obj = { parents : [LandingLight,System.new("/systems/lighting")],
 
                EXTENDSEC : 8.0,                                # time to extend a landing light
-               ROTATIONSEC : 2.0,                              # time to rotate a landing light
+               LANDINGSEC : 2.0,                               # time to rotate a landing light
  
-               ROTATIONNORM : 1.2,
+               LANDINGNORM : 1.2,                              # compensate attitude at landing (landing taxi only)
                EXTENDNORM : 1.0,
                ERRORNORM : 0.1,                                # Nasal interpolate may not reach 1.0
-               RETRACTNORM : 0.0,
-
-               MAXKT : 365.0                                   # speed of automatic blowback
+               RETRACTNORM : 0.0
          };
-
-   obj.init();
 
    return obj;
 };
-
-LandingLight.init = func {
-   me.inherit_system("/systems/lighting");
-}
 
 LandingLight.schedule = func {
    if( me.itself["root"].getChild("serviceable").getValue() ) {
@@ -866,19 +827,24 @@ LandingLight.landingextended = func {
             extension = constant.TRUE;
             break;
         }
-        if( me.itself["landing-taxi"][i].getChild("norm").getValue() > 0 or
-            me.itself["landing-taxi"][i].getChild("extend").getValue() ) {
-            extension = constant.TRUE;
-            break;
-        }
    }
 
+   if( !extension ) {
+       for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1) {
+            if( me.itself["landing-taxi"][i].getChild("norm").getValue() > 0 or
+                me.itself["landing-taxi"][i].getChild("extend").getValue() ) {
+                extension = constant.TRUE;
+                break;
+            }
+       }
+   }
+   
    return extension;
 }
 
 # automatic blowback
 LandingLight.landingblowback = func {
-   if( me.dependency["asi"].getChild("indicated-speed-kt").getValue() > me.MAXKT ) {
+   if( me.dependency["asi"].getChild("indicated-speed-kt").getValue() > constantaero.BLOWBACKKT ) {
        for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1) {
             if( me.itself["main-landing"][i].getChild("extend").getValue() ) {
                 me.itself["main-landing"][i].getChild("extend").setValue(constant.FALSE);
@@ -895,9 +861,9 @@ LandingLight.landingrotate = func {
    # ground taxi
    var target = me.EXTENDNORM;
 
-   # pitch at approach
-   if( me.dependency["radio-altimeter"].getChild("indicated-altitude-ft").getValue() > constantaero.AGLTOUCHFT ) {
-       target = me.ROTATIONNORM;
+   # pitch at approach (landing taxi only)
+   if( !me.dependency["weight"].getChild("wow").getValue() ) {
+       target = me.LANDINGNORM;
    }
 
    return target;
@@ -910,8 +876,8 @@ LandingLight.landingmotor = func( light, present, target ) {
        if( target == me.EXTENDNORM ) {
            durationsec = me.EXTENDSEC;
        }
-       elsif( target == me.ROTATIONNORM ) {
-           durationsec = me.EXTENDSEC + me.ROTATIONSEC;
+       elsif( target == me.LANDINGNORM ) {
+           durationsec = me.EXTENDSEC + me.LANDINGSEC;
        }
        else {
            durationsec = 0.0;
@@ -922,17 +888,17 @@ LandingLight.landingmotor = func( light, present, target ) {
        if( target == me.RETRACTNORM ) {
            durationsec = me.EXTENDSEC;
        }
-       elsif( target == me.ROTATIONNORM ) {
-           durationsec = me.ROTATIONSEC;
+       elsif( target == me.LANDINGNORM ) {
+           durationsec = me.LANDINGSEC;
        }
        else {
            durationsec = 0.0;
        }
    }
 
-   elsif( present > me.ROTATIONNORM - me.ERRORNORM ) {
+   elsif( present > me.LANDINGNORM - me.ERRORNORM ) {
        if( target == me.RETRACTNORM ) {
-           durationsec = me.ROTATIONSEC + me.EXTENDSEC;
+           durationsec = me.LANDINGSEC + me.EXTENDSEC;
        }
        elsif( target == me.EXTENDNORM ) {
            durationsec = me.EXTENDSEC;
@@ -968,7 +934,7 @@ LandingLight.extendexport = func {
 
        for( var i=0; i < constantaero.NBAUTOPILOTS; i=i+1 ) {
             if( me.itself["main-landing"][i].getChild("extend").getValue() ) {
-                value = target;
+                value = me.EXTENDNORM;
             }
             else {
                 value = me.RETRACTNORM;
@@ -1007,7 +973,7 @@ LandingLight.extendexport = func {
 LightLevel = {};
 
 LightLevel.new = func {
-   var obj = { parents : [LightLevel,System],
+   var obj = { parents : [LightLevel,System.new("/systems/lighting")],
 
 # internal lights
                LIGHTFULL : 1.0,
@@ -1021,33 +987,27 @@ LightLevel.new = func {
                fluorescent : "roof-light",
                fluorescentnorm : "roof-norm",
 
-               floods : [ "captain/flood-light", "copilot/flood-light",
+               lights : [ "captain/flood-light", "copilot/flood-light",
                           "center/flood-light", "engineer/flood-light",
                           "engineer/spot-light" ],
-               floodnorms : [ "captain/flood-norm", "copilot/flood-norm",
-                              "center/flood-norm", "engineer/flood-norm",
-                              "engineer/spot-norm" ],
-               nbfloods : 5,
+               knobs : [ "captain/flood-norm", "copilot/flood-norm",
+                         "center/flood-norm", "engineer/flood-norm",
+                          "engineer/spot-norm" ],
+               nbknobs : 5,
 
                powerfailure : constant.FALSE,
 
-               lights : {},
+               levels : {},
                FLOODCAPTAIN : 0,
                FLOODCOPILOT : 1,
                FLOODCENTER : 2,
                FLOODENGINEER : 3,
-               FLOODENGINEERSPOT : 4,
+               SPOTENGINEER : 4,
                FLUOROOF : 5
          };
 
-   obj.init();
-
    return obj;
 };
-
-LightLevel.init = func {
-   me.inherit_system("/systems/lighting");
-}
 
 LightLevel.floodexport = func {
    me.floodrecover();
@@ -1060,7 +1020,7 @@ LightLevel.roofexport = func {
        value = me.LIGHTFULL;
 
        # no blend with flood
-       me.floodfailure();
+       me.floodfailure( constant.TRUE );
    }
    else {
        value = me.LIGHTNO;
@@ -1099,68 +1059,73 @@ LightLevel.mixing = func {
 
 
    # current light levels
-   for( var i=0; i < me.nbfloods; i=i+1 ) {
-        me.lights[i] = me.itself["crew"].getNode(me.floods[i]).getValue();
+   for( var i=0; i < me.nbknobs; i=i+1 ) {
+        me.levels[i] = me.itself["crew"].getNode(me.lights[i]).getValue();
    }
-   me.lights[me.FLUOROOF] = me.itself["crew"].getNode(me.fluorescent).getValue();
+   me.levels[me.FLUOROOF] = me.itself["crew"].getNode(me.fluorescent).getValue();
 
+
+   level = me.levels[me.FLUOROOF];
+   me.itself["level"].getNode("human/engineer").setValue( level );
+   me.itself["level"].getNode("roof").setValue( level );
+   me.itself["level"].getNode("roof-ambient").setValue( me.ambient( level ) );
 
    # computes the highest light
-   level = me.lights[me.FLUOROOF];
-   me.itself["level"].getNode("roof").setValue( level );
-
-   # makes visible 3D warning lights by night
-   if( me.is_night() ) {
-       level = level * me.LIGHTAMBIENT;
-   }
-   else {
-       level = me.LIGHTNO;
-   }
-   me.itself["level"].getNode("roof-ambient").setValue( level );
-
-   level = me.lights[me.FLOODCAPTAIN];
-   level = constant.intensity( level, me.lights[me.FLOODCENTER] );
-   level = constant.intensity( level, me.lights[me.FLOODCOPILOT] );
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
-   me.itself["level"].getNode("human/copilot").setValue( level );
+   # dash panel illuminated by pilot + copilot
+   level = me.levels[me.FLOODCAPTAIN];
+   level = constant.intensity( level, me.levels[me.FLOODCOPILOT] );
    me.itself["level"].getNode("panel/main").setValue( level );
 
-   level = me.lights[me.FLOODCAPTAIN];
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
-   me.itself["level"].getNode("flood/captain").setValue( level );
-
-   level = me.lights[me.FLOODCOPILOT];
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
-   me.itself["level"].getNode("flood/copilot").setValue( level );
-
-   level = me.lights[me.FLOODCENTER];
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
-   me.itself["level"].getNode("flood/center").setValue( level );
+   level = me.levels[me.FLOODCENTER];
    me.itself["level"].getNode("panel/center").setValue( level );
-   me.itself["level"].getNode("panel/console").setValue( level );
+   me.itself["level"].getNode("panel/center-ambient").setValue( me.ambient( level ) );
 
-   level = me.lights[me.FLOODENGINEER];
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
-   me.itself["level"].getNode("human/engineer").setValue( level );
+   # engineer panel illuminated by flood + roof
+   level = me.levels[me.FLOODENGINEER];
+   level = constant.intensity( level, me.levels[me.FLUOROOF] );
    me.itself["level"].getNode("engineer/panel").setValue( level );
+   me.itself["level"].getNode("engineer/ambient").setValue( me.ambient( level ) );
 
-   level = me.lights[me.FLOODENGINEERSPOT];
-   level = constant.intensity( level, me.lights[me.FLUOROOF] );
+   # engineer deck illuminated by spot + roof
+   level = me.levels[me.SPOTENGINEER];
+   level = constant.intensity( level, me.levels[me.FLOODENGINEER] );
+   level = constant.intensity( level, me.levels[me.FLUOROOF] );
    me.itself["level"].getNode("engineer/deck").setValue( level );
+   me.itself["level"].getNode("engineer/deck-ambient").setValue( me.ambient( level ) );
+}
+
+LightLevel.ambient = func ( level ) {
+   var result = 0.0;
+   
+   # makes visible 3D warning lights by night
+   if( constant.is_lighting( me.noinstrument["sun"].getValue(), me.noinstrument["altitude"].getValue() ) ) {
+       result = level * me.LIGHTAMBIENT;
+   }
+   else {
+       result = me.LIGHTNO;
+   }
+   
+   return result;
 }
 
 LightLevel.failure = func {
    me.fluofailure();
-   me.floodfailure();
+   me.floodfailure( constant.FALSE );
 }
 
 LightLevel.fluofailure = func {
    me.itself["crew"].getNode(me.fluorescent).setValue(me.LIGHTNO);
 }
 
-LightLevel.floodfailure = func {
-   for( var i=0; i < me.nbfloods; i=i+1 ) {
-        me.itself["crew"].getNode(me.floods[i]).setValue(me.LIGHTNO);
+LightLevel.floodfailure = func( partial ) {
+   if( partial ) {
+       me.itself["crew"].getNode(me.lights[me.FLOODENGINEER]).setValue(me.LIGHTNO);
+       me.itself["crew"].getNode(me.lights[me.SPOTENGINEER]).setValue(me.LIGHTNO);
+   }
+   else {
+       for( var i=0; i < me.nbknobs; i=i+1 ) {
+            me.itself["crew"].getNode(me.lights[i]).setValue(me.LIGHTNO);
+       }
    }
 }
 
@@ -1176,10 +1141,18 @@ LightLevel.fluorecover = func {
 }
 
 LightLevel.floodrecover = func {
-   if( !me.itself["crew"].getChild("roof").getValue() and !me.powerfailure ) {
-       for( var i=0; i < me.nbfloods; i=i+1 ) {
-            # may change a flood light, during a fluo lighting
-            me.failurerecover(me.floodnorms[i],me.floods[i],me.invisible);
+   if( !me.powerfailure ) {
+       if( !me.itself["crew"].getChild("roof").getValue() ) {
+           for( var i=0; i < me.nbknobs; i=i+1 ) {
+                # may change a flood light, during a fluo lighting
+                me.failurerecover(me.knobs[i],me.lights[i],me.invisible);
+           }
+       }
+       else {
+           # may change a flood light, during a fluo lighting
+           me.failurerecover(me.knobs[me.FLOODCAPTAIN],me.lights[me.FLOODCAPTAIN],me.invisible);
+           me.failurerecover(me.knobs[me.FLOODCOPILOT],me.lights[me.FLOODCOPILOT],me.invisible);
+           me.failurerecover(me.knobs[me.FLOODCENTER],me.lights[me.FLOODCENTER],me.invisible);
        }
    }
 }
@@ -1201,16 +1174,6 @@ LightLevel.failurerecover = func( propnorm, proplight, offset ) {
    }
 }
 
-LightLevel.is_night = func {
-   var result = constant.FALSE;
-
-   if( me.noinstrument["sun"].getValue() > constant.NIGHTRAD ) {
-       result = constant.TRUE;
-   }
-
-   return result;
-}
-
 
 # ==========
 # ANTI-ICING
@@ -1224,19 +1187,13 @@ LightLevel.is_night = func {
 Antiicing = {};
 
 Antiicing.new = func {
-   var obj = { parents : [Antiicing,System],
+   var obj = { parents : [Antiicing,System.new("/systems/anti-icing")],
 
                detector : Icedetection.new()
          };
 
-   obj.init();
-
    return obj;
 };
-
-Antiicing.init = func {
-    me.inherit_system("/systems/anti-icing");
-}
 
 Antiicing.red_ice = func {
     var result = constant.FALSE;

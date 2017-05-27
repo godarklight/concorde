@@ -14,36 +14,48 @@
       <desc>raise/lower nose</desc>
     </key>
     <key>
+      <name>=</name>
+      <desc>menu</desc>
+    </key>
+    <key>
       <name>left/right</name>
-      <desc>autopilot heading</desc>
+      <desc>autopilot track heading (knob)</desc>
     </key>
     <key>
       <name></name>
       <desc>floating view left/right</desc>
     </key>
     <key>
+      <name>ctrl left/right</name>
+      <desc>floating view left/right (fast)</desc>
+    </key>
+    <key>
       <name>up/down</name>
-      <desc>increase/decrease autopilot altitude</desc>
+      <desc>increase/decrease (datum) autopilot altitude</desc>
     </key>
     <key>
       <name></name>
       <desc>floating view front/aft</desc>
     </key>
     <key>
-      <name>home/end</name>
-      <desc>increase/decrease autopilot altitude (slow)</desc>
+      <name>ctrl up/down</name>
+      <desc>increase/decrease (datum) autopilot altitude (slow)</desc>
     </key>
     <key>
-     <name></name>
-     <desc>floating view front/aft (fast)</desc>
+      <name></name>
+      <desc>floating view front/aft (fast)</desc>
     </key>
     <key>
       <name>page up/down</name>
-      <desc>increase/decrease autothrottle speed</desc>
+      <desc>increase/decrease (datum) autothrottle speed</desc>
     </key>
     <key>
       <name></name>
       <desc>floating view up/down</desc>
+    </key>
+    <key>
+      <name>ctrl page up/down</name>
+      <desc>floating view up/down (fast)</desc>
     </key>
     <key>
       <name>F12</name>
@@ -62,8 +74,8 @@
       <desc>emergency brakes</desc>
     </key>
     <key>
-      <name>f/F</name>
-      <desc>full cockpit/aircraft</desc>
+      <name>f</name>
+      <desc>full cockpit</desc>
     </key>
     <key>
       <name>alt-g</name>
@@ -118,14 +130,6 @@
       <desc>heading hold</desc>
     </key>
     <key>
-      <name>ctrl-I</name>
-      <desc>menu</desc>
-    </key>
-    <key>
-      <name>ctrl-J</name>
-      <desc>copilot view</desc>
-    </key>
-    <key>
       <name>ctrl-K</name>
       <desc>observer (floating) view</desc>
     </key>
@@ -144,6 +148,14 @@
     <key>
       <name>ctrl-P</name>
       <desc>pitch hold</desc>
+    </key>
+    <key>
+      <name>ctrl-Q</name>
+      <desc>virtual crew</desc>
+    </key>
+    <key>
+      <name>shift-ctrl-Q</name>
+      <desc>abort checklist</desc>
     </key>
     <key>
       <name>ctrl-S</name>
@@ -166,19 +178,13 @@
       <desc>restore floating view</desc>
     </key>
     <key>
-      <name>ctrl-Z</name>
-      <desc>virtual crew</desc>
-    </key>
-    <key>
-      <name>shift-ctrl-Z</name>
-      <desc>abort checklist</desc>
+      <name>ctrl-Y</name>
+      <desc>copilot view</desc>
     </key>
 
 <!-- FDM ops -->
 
-    <text>
- ________________________Procedures_________________________
- Takeoff (408000 lb) :
+<text> Takeoff (408000 lb) :
             nose 5 deg, afterburner, V1 165 kt,
             VR 195 kt, pitch 13.5 deg at rotation, V2 220 kt.
             trim before engaging autopilot.
@@ -232,7 +238,6 @@
 
  max range : supersonic 3550 nm, subsonic 2760 nm
  fuel flow : 20.5 tons/hour at Mach 2
- max temperature : 127 degC on nose
-    </text>
+ max temperature : 127 degC on nose</text>
 
 </PropertyList>

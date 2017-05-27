@@ -93,10 +93,21 @@
  <animation>
   <type>material</type>
   <object-name>AllPilot</object-name>
+  <condition>
+   <or>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+    <less-than-equals>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </less-than-equals>
+   </or>
+  </condition>
   <emission>
-   <red>0.53</red>
-   <green>0.44</green>
-   <blue>0.08</blue>
+   <red>0.66</red>
+   <green>0.68</green>
+   <blue>0.64</blue>
    <factor-prop>systems/lighting/level/human/engineer</factor-prop>
   </emission> 
  </animation> 
@@ -105,6 +116,8 @@
   <type>pick</type>
   <object-name>AllPilot</object-name>
   <action>
+   <button>0</button>
+   <repeatable>false</repeatable>
    <binding>
     <command>nasal</command>
     <script>globals.Concorde.crewscreen.minimizeexport();</script>

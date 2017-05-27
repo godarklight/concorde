@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
 
-<!-- Sim initialization.
--->
+<!-- sim initialization. -->
 
 <PropertyList include="Concorde-views.xml">
 
-<!-- avoids hysteresis (easier to detect state) :
-     - 33 % visor down.
-     - 67 % nose 5 degrees.
-     - 100 % nose 12 degrees.
+  <!-- avoids hysteresis (easier to detect state) :
+       - 33 % visor down.
+       - 67 % nose 5 degrees.
+       - 100 % nose 12 degrees.
 
-     The nose is used as flaps (additional drag, without lift).
+       The nose is used as flaps (additional drag, without lift).
 
-     The real flaps is the delta wing, which creates more lift at low speed by high pitch.
--->
+       The real flaps is the delta wing, which creates more lift at low speed by high pitch.
+  -->
 
   <flaps>
    <setting>0.0</setting>
@@ -22,14 +21,16 @@
    <setting>1.0</setting>
   </flaps>
 
-<!-- near plane -->
+  <gui>
+   <dialogs>
+    <Concorde></Concorde>                                              <!-- path creation for nasal -->
+   </dialogs>
+  </gui>
 
-<!-- CVS only
-  <rendering>
-   <camera-group>
-    <znear type="double">0.1</znear>
-   </camera-group>
-  </rendering>
--->
-
+  <sound>
+   <concorde>
+    <external type="bool">true</external>                              <!-- cockpit sound in external views -->
+   </concorde>
+  </sound>
+  
 </PropertyList>

@@ -4,27 +4,10 @@
   <path>trim-cylinder.ac</path> 
 
   <animation>
-   <type>material</type>
-   <object-name>TrimCylinder</object-name>
-   <emission>
-    <red>0.71</red>
-    <green>0.79</green>
-    <blue>0.87</blue>
-    <factor-prop>systems/lighting/level/roof</factor-prop>
-   </emission>
-  </animation>
-
-  <animation>
    <type>rotate</type>
    <object-name>PitchTrimWheel</object-name>
    <property>controls/flight/elevator-trim</property>
    <factor>540</factor>
-   <condition>
-    <equals>
-     <property>/autopilot/locks/altitude</property>
-     <value></value>
-    </equals>
-   </condition>
    <center>
     <x-m>0.0</x-m>
     <y-m>0.0</y-m>
@@ -38,28 +21,14 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>PitchTrimWheel</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/elevator-trim</property>
-     <step>0.003</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/flight/elevator-trim</property>
-     <step>-0.003</step>
-     <min>0</min>
+     <factor>-0.003</factor>
+     <min>-1</min>
      <max>1</max>
      <wrap>0</wrap>
     </binding>
@@ -84,28 +53,14 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>YawTrimWheel</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/rudder-trim</property>
-     <step>0.003</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/flight/rudder-trim</property>
-     <step>-0.003</step>
-     <min>0</min>
+     <factor>-0.003</factor>
+     <min>-1</min>
      <max>1</max>
      <wrap>0</wrap>
     </binding>
@@ -128,28 +83,14 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>RollTrimWheel</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/flight/aileron-trim</property>
-     <step>0.003</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/flight/aileron-trim</property>
-     <step>-0.003</step>
-     <min>0</min>
+     <factor>-0.003</factor>
+     <min>-1</min>
      <max>1</max>
      <wrap>0</wrap>
     </binding>

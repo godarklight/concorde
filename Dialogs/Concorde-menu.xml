@@ -5,11 +5,34 @@
   <modal>false</modal>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde menu</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde menu</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
+
+  <text>
+    <label></label>
+  </text>
 
   <group>
     <layout>hbox</layout>
@@ -39,6 +62,7 @@
     </button>
 
     <button>
+      <enabled alias="/controls/crew/disable"/>     <!-- fill space -->
       <legend>Environment</legend>
       <key>e</key>
       <binding>
@@ -75,11 +99,12 @@
     </button>
 
     <button>
-      <legend>Instrument</legend>
-      <key>i</key>
+      <enabled alias="/systems/crew/serviceable"/>
+      <legend>Navigation</legend>
+      <key>n</key>
       <binding>
        <command>dialog-show</command>
-       <dialog-name>Concorde-instruments</dialog-name>
+       <dialog-name>Concorde-navigation</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>
@@ -95,6 +120,7 @@
     <layout>hbox</layout>
 
     <button>
+      <enabled alias="/controls/crew/disable"/>
       <legend>Navigation</legend>
       <key>n</key>
       <binding>
@@ -107,6 +133,7 @@
     </button>
 
     <button>
+      <enabled alias="/systems/crew/serviceable"/>
       <legend>Procedures</legend>
       <key>p</key>
       <binding>
@@ -131,11 +158,11 @@
     </button>
 
     <button>
-      <legend>System</legend>
+      <legend>Sound</legend>
       <key>s</key>
       <binding>
        <command>dialog-show</command>
-       <dialog-name>Concorde-systems</dialog-name>
+       <dialog-name>Concorde-sound</dialog-name>
       </binding>
       <binding>
         <command>dialog-close</command>
@@ -143,6 +170,19 @@
     </button>
 
     <button>
+      <legend>1 Views</legend>
+      <key>1</key>
+      <binding>
+       <command>dialog-show</command>
+       <dialog-name>Concorde-views</dialog-name>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <enabled alias="/systems/voice/serviceable"/>
       <legend>Voice</legend>
       <key>v</key>
       <binding>
@@ -174,6 +214,10 @@
   </text>
 
   <text>
+    <label></label>
+  </text>
+
+  <text>
     <label>press the first letter, or escape/return</label>
     <color>
       <red>0.5</red>
@@ -187,7 +231,16 @@
   </text>
 
   <text>
-    <label>~  fields are saved on exit in aircraft-data</label>
+    <label>~  fields are saved on exit</label>
+    <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.5</blue>
+    </color>
+  </text>
+
+  <text>
+    <label>(to reset, remove .fgfs/aircraft-data/Concorde.xml)</label>
     <color>
       <red>0.5</red>
       <green>0.5</green>

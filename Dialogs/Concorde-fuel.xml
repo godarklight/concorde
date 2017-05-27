@@ -1,16 +1,31 @@
 <?xml version="1.0"?>
 
-<!-- WARNING : The combo must correspond to the comment field in
-               Aircraft/Concorde/Nasal/Concorde-fuel.xml.
--->
-
 <PropertyList>
   <name>Concorde-fuel</name>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde fuel</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde fuel</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -28,14 +43,15 @@
     <combo>
       <pref-width>300</pref-width>
       <property>/systems/fuel/tanks/dialog</property>
-      <value>max landing</value>
-      <value>max takeoff</value>
-      <value>min fuel</value>
-      <value>max fuel</value>
-      <value>supersonic climb</value>
-      <value>supersonic cruise</value>
-      <value>supersonic descent (auxiliary)</value>
-      <value>low level (trim)</value>
+      <value alias="/systems/fuel/tanks/filling[0]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[1]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[2]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[3]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[4]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[5]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[6]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[7]/comment"/>
+      <value alias="/systems/fuel/tanks/filling[8]/comment"/>
     </combo>
   </group>
 
@@ -67,6 +83,17 @@
 
   <text>
    <label>after change (or use virtual engineer) :</label>
+   <enabled alias="/systems/crew/serviceable"/>
+   <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+   </color>
+  </text>
+
+  <text>
+   <label>after change :</label>
+   <enabled alias="/controls/crew/disable"/>
    <color>
     <red>0.5</red>
     <green>0.5</green>
@@ -97,48 +124,56 @@
   </text>
 
   <text>
+   <label>--state option overrides the filling</label>
+   <color>
+    <red>0.5</red>
+    <green>0.5</green>
+    <blue>0.5</blue>
+   </color>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
     <label></label>
   </text>
 
   <group>
     <layout>hbox</layout>
 
-    <group>
-      <layout>hbox</layout>
-      <empty><stretch>true</stretch></empty>
-
-      <button>
-        <legend>Fill</legend>
-        <key>f</key>
-        <binding>
-          <command>dialog-apply</command>
-        </binding>
-        <binding>
-          <command>nasal</command>
-          <script>globals.Concorde.fuelsystem.menuexport();</script>
-        </binding>
-        <binding>
-          <command>dialog-close</command>
-        </binding>
-      </button>
-
-      <button>
-        <legend>Close</legend>
-        <default>true</default>
-        <key>Esc</key>
-        <binding>
-          <command>dialog-close</command>
-        </binding>
-      </button>
-    </group>
-
     <button>
-      <legend>Menu</legend>
-      <key>m</key>
+      <legend>Back</legend>
+      <key>b</key>
       <binding>
        <command>dialog-show</command>
        <dialog-name>Concorde-menu</dialog-name>
       </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Fill</legend>
+      <key>f</key>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+      <binding>
+        <command>nasal</command>
+        <script>globals.Concorde.fuelsystem.menuexport();</script>
+      </binding>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+
+    <button>
+      <legend>Close</legend>
+      <default>true</default>
+      <key>Esc</key>
       <binding>
         <command>dialog-close</command>
       </binding>

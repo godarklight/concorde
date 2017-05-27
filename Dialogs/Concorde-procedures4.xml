@@ -4,9 +4,28 @@
   <name>Concorde-procedures4</name>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde procedures</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde procedures 2</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -15,7 +34,7 @@
     <halign>center</halign>
 
     <text>
-      <label>Settings</label>
+      <label>Settings  ~</label>
     </text>
 
     <text>
@@ -31,6 +50,7 @@
 
      <group>
       <layout>vbox</layout>
+      <halign>left</halign>
 
       <checkbox>
         <label>Copilot</label>
@@ -72,17 +92,82 @@
        <label></label>
       </text>
 
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
       <checkbox>
-        <label>landing lights  ~</label>
+        <label>set landing lights</label>
         <halign>left</halign>
-        <property>/controls/crew/landing-lights</property>
+        <property>/controls/crew/landing-lights/set</property>
         <binding>
          <command>property-toggle</command>
-         <property>/controls/crew/landing-lights</property>
+         <property>/controls/crew/landing-lights/set</property>
         </binding>
       </checkbox>
-     </group>
 
+      <button>
+       <legend>Landing lights</legend>
+       <key>l</key>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-procedures6</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <checkbox>
+        <label>stop engines 2 and 3</label>
+        <halign>left</halign>
+        <property>/controls/crew/stop-engine23</property>
+        <binding>
+         <command>property-toggle</command>
+         <property>/controls/crew/stop-engine23</property>
+        </binding>
+      </checkbox>
+
+      <text>
+       <label>(after landing)</label>
+       <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+       </color>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+     </group>
+   
+     <vrule/>
+     
      <group>
       <layout>vbox</layout>
 
@@ -97,7 +182,7 @@
       <input>
        <halign>left</halign>
        <property>/controls/tractor/distance-m</property>
-       <label>Pushback distance (m)  ~</label>
+       <label>Pushback distance (m)</label>
        <binding>
         <command>dialog-apply</command>
        </binding>
@@ -108,7 +193,7 @@
       </text>
 
       <checkbox>
-        <label>adjusts night lighting  ~</label>
+        <label>adjusts night lighting</label>
         <halign>left</halign>
         <property>/controls/crew/night-lighting</property>
         <binding>
@@ -117,36 +202,50 @@
         </binding>
       </checkbox>
 
+      <button>
+       <legend>Night lighting</legend>
+       <key>n</key>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-procedures5</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
+
+      <text>
+       <label></label>
+      </text>
+
       <checkbox>
-        <label>adjusts VOR and ADF to nearest airport  ~</label>
+        <label>adjusts VOR / ADF to nearest airport</label>
         <halign>left</halign>
-        <property>/controls/crew/radio</property>
+        <property>/controls/crew/radio/set</property>
         <binding>
          <command>property-toggle</command>
-         <property>/controls/crew/radio</property>
+         <property>/controls/crew/radio/set</property>
         </binding>
       </checkbox>
 
-      <text>
-        <label>(in Nasal/Concorde-route.xml)</label>
-        <color>
-         <red>0.5</red>
-         <green>0.5</green>
-         <blue>0.5</blue>
-        </color>
-      </text>
+      <button>
+       <legend>VOR / ADF</legend>
+       <key>v</key>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-procedures7</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
 
       <text>
-        <label>only ground and above FL 100</label>
-        <color>
-         <red>0.5</red>
-         <green>0.5</green>
-         <blue>0.5</blue>
-        </color>
+       <label></label>
       </text>
 
       <checkbox>
-        <label>performs Captain checks (not real)  ~</label>
+        <label>performs Captain checks (not real)</label>
         <halign>left</halign>
         <property>/controls/crew/captain-busy</property>
         <binding>
@@ -156,7 +255,7 @@
       </checkbox>
 
       <checkbox>
-        <label>triggers flight checklists  ~</label>
+        <label>triggers flight checklists</label>
         <halign>left</halign>
         <property>/controls/crew/checklist</property>
         <binding>
@@ -169,24 +268,8 @@
        <label></label>
       </text>
 
-      <group>
-        <layout>hbox</layout>
-
-       <text>
-        <label>starts from  ~</label>
-       </text>
-
-       <combo>
-        <pref-width>200</pref-width>
-        <property>/systems/crew/dialog</property>
-        <value>takeoff</value>
-        <value>taxi</value>
-        <value>stopover</value>
-       </combo>
-      </group>
-
       <checkbox>
-        <label>activ on startup  ~</label>
+        <label>is activ on startup (ground only)</label>
         <halign>left</halign>
         <property>/controls/crew/startup</property>
         <binding>
@@ -194,6 +277,18 @@
          <property>/controls/crew/startup</property>
         </binding>
       </checkbox>
+
+      <button>
+       <legend>Ground</legend>
+       <key>g</key>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-procedures8</dialog-name>
+       </binding>
+       <binding>
+        <command>dialog-close</command>
+       </binding>
+      </button>
 
      </group>
 
@@ -212,15 +307,23 @@
    <layout>hbox</layout>
 
    <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-procedures</dialog-name>
+    </binding>
+    <binding>
+     <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
     <legend>Close</legend>
     <default>true</default>
     <key>Esc</key>
     <binding>
       <command>dialog-apply</command>
-    </binding>
-    <binding>
-      <command>nasal</command>
-      <script>globals.Concorde.voicecrew.menuexport();</script>
     </binding>
     <binding>
       <command>dialog-close</command>

@@ -1,11 +1,20 @@
 <?xml version="1.0"?>
 
+<!-- enabled items can be disabled by nasal. -->
+
 <PropertyList>
 
   <default>
    <menu n="10">
      <label>Concorde</label>
       <enabled type="bool">true</enabled>
+      <item>
+       <label>AI</label>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-ai</dialog-name>
+       </binding>
+      </item>
       <item>
        <label>Autopilot</label>
        <binding>
@@ -42,7 +51,7 @@
        </binding>
       </item>
       <item>
-       <label>Instrument</label>
+       <label>Instruments</label>
        <binding>
         <command>dialog-show</command>
         <dialog-name>Concorde-instruments</dialog-name>
@@ -64,6 +73,7 @@
       </item>
       <item>
        <label>Procedures</label>
+       <enabled type="bool">true</enabled>
        <binding>
         <command>dialog-show</command>
         <dialog-name>Concorde-procedures</dialog-name>
@@ -84,14 +94,29 @@
        </binding>
       </item>
       <item>
-       <label>System</label>
+       <label>Sound</label>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-sound</dialog-name>
+       </binding>
+      </item>
+      <item>
+       <label>Systems</label>
        <binding>
         <command>dialog-show</command>
         <dialog-name>Concorde-systems</dialog-name>
        </binding>
       </item>
       <item>
+       <label>Views</label>
+       <binding>
+        <command>dialog-show</command>
+        <dialog-name>Concorde-views</dialog-name>
+       </binding>
+      </item>
+      <item>
        <label>Voice</label>
+       <enabled type="bool">true</enabled>
        <binding>
         <command>dialog-show</command>
         <dialog-name>Concorde-voice</dialog-name>

@@ -3,8 +3,12 @@
 <!-- OSG lighting :
 
      - only 1 material per object (child included).
-     - groups are allowed.
-     - Red warnings must be outside the base group.
+     - Red warnings are not directly illuminated by roof.
+
+
+     Known problems :
+     ==============
+     - if no voltage, off light becomes less darker.
 -->
 
 
@@ -12,13 +16,43 @@
   <path>throttle-cylinder.ac</path> 
 
   <animation>
-   <type>material</type>
+   <name>Throttle</name>
    <object-name>ThrottleBase</object-name>
+   <object-name>ThrottleIndexLeft</object-name>
+   <object-name>Throttle1</object-name>
+   <object-name>Throttle2</object-name>
+   <object-name>Throttle3</object-name>
+   <object-name>Throttle4</object-name>
+   <object-name>ThrottleIndexRight</object-name>
+   <object-name>Reverse1</object-name>
+   <object-name>Reverse2</object-name>
+   <object-name>Reverse3</object-name>
+   <object-name>Reverse4</object-name>
+   <object-name>ReheatSelector1</object-name>
+   <object-name>ReheatSelector2</object-name>
+   <object-name>ReheatSelector3</object-name>
+   <object-name>ReheatSelector4</object-name>
+  </animation> 
+
+  <animation>
+   <type>material</type>
+   <object-name>Throttle</object-name>
+   <condition>
+    <or>
+     <not>
+      <property>/sim/rendering/rembrandt/enabled</property>
+     </not>
+     <less-than-equals>
+      <property>/sim/rendering/shaders/lights</property>
+      <property n="1">controls/environment/rembrandt/cockpit</property>
+     </less-than-equals>
+    </or>
+   </condition>
    <emission>
-    <red>0.71</red>
-    <green>0.79</green>
-    <blue>0.87</blue>
-    <factor-prop>systems/lighting/level/roof</factor-prop>
+    <red-prop>systems/lighting/color/flood/red</red-prop>
+    <green-prop>systems/lighting/color/flood/green</green-prop>
+    <blue-prop>systems/lighting/color/flood/blue</blue-prop>
+    <factor-prop>systems/lighting/level/panel/center</factor-prop>
    </emission> 
   </animation> 
 
@@ -133,27 +167,13 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>Throttle1</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/engines/engine[0]/throttle-manual</property>
-     <step>0.1</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/engines/engine[0]/throttle-manual</property>
-     <step>-0.1</step>
+     <factor>-0.1</factor>
      <min>0</min>
      <max>1</max>
      <wrap>0</wrap>
@@ -162,27 +182,13 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>Throttle2</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/engines/engine[1]/throttle-manual</property>
-     <step>0.1</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/engines/engine[1]/throttle-manual</property>
-     <step>-0.1</step>
+     <factor>-0.1</factor>
      <min>0</min>
      <max>1</max>
      <wrap>0</wrap>
@@ -191,27 +197,13 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>Throttle3</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/engines/engine[2]/throttle-manual</property>
-     <step>0.1</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/engines/engine[2]/throttle-manual</property>
-     <step>-0.1</step>
+     <factor>-0.1</factor>
      <min>0</min>
      <max>1</max>
      <wrap>0</wrap>
@@ -220,27 +212,13 @@
   </animation>
 
   <animation>
-   <type>pick</type>
+   <type>knob</type>
    <object-name>Throttle4</object-name>
    <action>
-    <button>0</button>
-    <repeatable>true</repeatable>
     <binding>
      <command>property-adjust</command>
      <property>controls/engines/engine[3]/throttle-manual</property>
-     <step>0.1</step>
-     <min>0</min>
-     <max>1</max>
-     <wrap>0</wrap>
-    </binding>
-   </action>
-   <action>
-    <button>1</button>
-    <repeatable>true</repeatable>
-    <binding>
-     <command>property-adjust</command>
-     <property>controls/engines/engine[3]/throttle-manual</property>
-     <step>-0.1</step>
+     <factor>-0.1</factor>
      <min>0</min>
      <max>1</max>
      <wrap>0</wrap>
@@ -253,76 +231,88 @@
   <animation>
    <type>material</type>
    <object-name>RedThrottle1</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
     <blue>1.0</blue>
     <factor-prop>systems/throttles/throttle[0]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </ambient> 
    <emission>
     <red>1.0</red>
     <green>1.0</green>
     <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[0]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </emission> 
   </animation> 
 
   <animation>
    <type>material</type>
    <object-name>RedThrottle2</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
     <blue>1.0</blue>
     <factor-prop>systems/throttles/throttle[1]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </ambient> 
    <emission>
     <red>1.0</red>
     <green>1.0</green>
     <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[1]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </emission> 
   </animation> 
 
   <animation>
    <type>material</type>
    <object-name>RedThrottle3</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
     <blue>1.0</blue>
     <factor-prop>systems/throttles/throttle[2]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </ambient> 
    <emission>
     <red>1.0</red>
     <green>1.0</green>
     <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[2]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </emission> 
   </animation> 
 
   <animation>
    <type>material</type>
    <object-name>RedThrottle4</object-name>
+   <condition>
+    <not include="../../Panels/Instruments/concorde-cond-voltage-bulb.xml"/>
+   </condition>
    <ambient>
     <red>1.0</red>
     <green>1.0</green>
     <blue>1.0</blue>
     <factor-prop>systems/throttles/throttle[3]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </ambient> 
    <emission>
     <red>1.0</red>
     <green>1.0</green>
     <blue>0.2</blue>
     <factor-prop>systems/throttles/throttle[3]/failure</factor-prop>
-    <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+    <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
    </emission> 
   </animation> 
 

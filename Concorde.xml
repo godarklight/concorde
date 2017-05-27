@@ -6,8 +6,8 @@
 
     <fileheader>
         <author> </author>
-        <filecreationdate> 14 August 2010 </filecreationdate>
-        <version> 1.13 </version>
+        <filecreationdate> 20 June 2015 </filecreationdate>
+        <version> 1.15 </version>
         <description>Aerospatiale/British Aerospace Concorde</description>
 
         <license>
@@ -31,8 +31,6 @@
         <note>Pushback.</note>
 
         <limitation>Model uses flaps as nose.</limitation>
-        <limitation>Cross feed by additional tanks :
-                    engine may run out of fuel above X 3 speed-up.</limitation>
         <limitation>Without an additional PID, above Mach 1,
                     autopilot heading hold would lock with a right roll.</limitation>
         <limitation>Air intake failure only on the 4 engines at once.</limitation>
@@ -462,8 +460,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 50000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 15000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 40000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 40800.0000 </damping_coeff>
             <max_steer unit="DEG"> 60.0000 </max_steer>
             <brake_group> NONE </brake_group>
             <retractable>1</retractable>
@@ -477,8 +475,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> LEFT </brake_group>
             <retractable>1</retractable>
@@ -492,8 +490,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> LEFT </brake_group>
             <retractable>1</retractable>
@@ -507,8 +505,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> RIGHT </brake_group>
             <retractable>1</retractable>
@@ -522,8 +520,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> RIGHT </brake_group>
             <retractable>1</retractable>
@@ -537,8 +535,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000.0000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 122400.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 40800.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> NONE </brake_group>
             <retractable>1</retractable>
@@ -598,18 +596,15 @@
         </contact>
     </ground_reactions>
 
-    <system name="Nose Wheel Steering">
-     <property>systems/NWS/engaged</property>
-     <property value="1">systems/NWS/hydraulics</property>
-
+    <system name="Hydraulics">
      <channel name="Nose Wheel Steering">
-        <scheduled_gain name="systems/NWS/pedal-cmd">
+        <scheduled_gain name="systems/hydraulics/nws-pedal-cmd">
          <documentation>
               default is rudder pedal (flight).
          </documentation>
          <input>fcs/rudder-cmd-norm</input>
          <table>
-          <independentVar lookup="row">systems/NWS/engaged</independentVar>
+          <independentVar lookup="row">systems/hydraulics/nws-engaged</independentVar>
            <tableData>
               0      1.0
               1      0.0
@@ -618,29 +613,62 @@
          <output>fcs/rudder-pedal-norm</output>
         </scheduled_gain>
 
-        <scheduled_gain name="systems/NWS/steer-cmd">
+        <scheduled_gain name="systems/hydraulics/nws-steer-cmd">
          <documentation>
-              - default is no wheel steering (flight).
-              - default is hydraulics.
+              - default is not engaged (flight).
+              - default is able (hydraulics).
               - rudder steering at 10 deg.
          </documentation>
          <input>fcs/rudder-cmd-norm</input>
          <table>
-          <independentVar lookup="row">systems/NWS/engaged</independentVar>
-          <independentVar lookup="column">systems/NWS/hydraulics</independentVar>
+          <independentVar lookup="row">systems/hydraulics/nws-engaged</independentVar>
+          <independentVar lookup="column">systems/hydraulics/nws-unable</independentVar>
            <tableData>
                      0.0      1.0
-              0     -0.0     -0.171
-              1     -0.0     -1.0
+              0     -0.171   -0.0
+              1     -1.0     -0.0
            </tableData>
          </table>
          <output>fcs/steer-cmd-norm</output>
-      </scheduled_gain>
+        </scheduled_gain>
+     </channel>
+
+     <channel name="Pitch Hydraulics">
+        <scheduled_gain name="systems/hydraulics/elevator-yoke-cmd">
+         <documentation>
+              default is yoke (flight).
+         </documentation>
+         <input>fcs/elevator-cmd-norm</input>
+         <table>
+          <independentVar lookup="row">systems/hydraulics/elevon-gravity</independentVar>
+           <tableData>
+              0      1.0
+              1      0.0
+           </tableData>
+         </table>
+         <output>fcs/elevator-yoke-norm</output>
+        </scheduled_gain>
+     </channel>
+
+     <channel name="Roll Hydraulics">
+        <scheduled_gain name="systems/hydraulics/aileron-yoke-cmd">
+         <documentation>
+              default is yoke (flight).
+         </documentation>
+         <input>fcs/aileron-cmd-norm</input>
+         <table>
+          <independentVar lookup="row">systems/hydraulics/elevon-gravity</independentVar>
+           <tableData>
+              0      1.0
+              1      0.0
+           </tableData>
+         </table>
+         <output>fcs/aileron-yoke-norm</output>
+        </scheduled_gain>
      </channel>
     </system>
     
     <system name="Tractor">
-     <property>/sim/model/pushback/target-speed-fps</property>
      <channel name="Tractor">
 
       <switch name="systems/pushback/linked">
@@ -686,7 +714,7 @@
      <channel name="Pitch">
 
         <summer name="Pitch Trim Sum">
-            <input>fcs/elevator-cmd-norm</input>
+            <input>fcs/elevator-yoke-norm</input>
             <input>fcs/pitch-trim-cmd-norm</input>
             <clipto>
                 <min>-1.0000</min>
@@ -724,7 +752,7 @@
      <channel name="Roll">
 
         <summer name="Roll Trim Sum">
-            <input>fcs/aileron-cmd-norm</input>
+            <input>fcs/aileron-yoke-norm</input>
             <input>fcs/roll-trim-cmd-norm</input>
             <clipto>
                 <min>-1.0000</min>
@@ -959,9 +987,6 @@
             - Thruster center 3/4 of length (2428 in.), aligned with engines.
         </documentation>
 
-        <property>fcs/ground-idle</property>
-        <property>fcs/intake-subsonic-pos</property>
-
         <engine file="Olympus593Mrk610">
             <location unit="IN">
                 <x> 1734.0000 </x>
@@ -973,6 +998,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>0</feed>
             <feed>13</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -998,6 +1024,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>1</feed>
             <feed>14</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1023,6 +1050,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>2</feed>
             <feed>15</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1048,6 +1076,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>3</feed>
             <feed>16</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1297,6 +1326,7 @@
             - not empty, to avoid stop at launch.
             - can feed 75000 kg/h per engine (takeoff with reheat X 3 speed up) :
               25000 x 3 / 3600 = 46 lb content, if supplied every 1 s from other tanks.
+            - not used in stand alone mode.
         </documentation>
 
         <tank type="FUEL">

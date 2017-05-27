@@ -16,6 +16,8 @@ Constantaero.new = func {
                ENGINE2 : 1,
                ENGINE1 : 0,
 
+               TANKLP : 13,                                      # tank emulating LP valve
+
                INS3 : 2,
                INS2 : 1,
                INS1 : 0,
@@ -54,6 +56,8 @@ Constantaero.new = func {
                SCHEDULEAPPROACH : 1,
                SCHEDULENORMAL : 0,
 
+               RADIONM : 200,                                    # radio range
+               
                FULLLB : 408000,
                LANDINGLB : 245000,
                EMPTYLB : 203000,
@@ -65,6 +69,7 @@ Constantaero.new = func {
                SUBSONICMACH : 0.95,
                CLIMBMACH : 0.7,
 
+               BLOWBACKKT : 365,                                 # landing lights
                NOSEKT : 270,
                APPROACHKT : 250,
                GEARKT : 220,
@@ -77,7 +82,7 @@ Constantaero.new = func {
                VREFFULLKT : 162,
                VREFEMPTYKT : 152,
                V1EMPTYKT : 150,                                  # guess
-               TAXIKT : 10,
+               TAXIKT : 15,
 
                MAXCRUISEFT : 50190,                              # max cruise mode 
                CRUISEFT : 50000,
@@ -268,19 +273,27 @@ Constant = {};
 Constant.new = func {
    var obj = { parents : [Constant],
 
-               NIGHTRAD : 1.57,                        # sun below horizon
-
 # artificial intelligence
                HUMANSEC : 1.0,                         # human reaction time
 
-# angles
+               LIGHTINGGRAD : 1.50,                    # night lighting on ground
+
+# angle
                DEG360 : 360,
                DEG180 : 180,
                DEG90 : 90,
 
+               NIGHTRAD : 1.57,                        # sun below horizon
+
+# altitude
+               DELTASUNKM : 1,
+
 # nasal has no boolean
                TRUE : 1.0,                             # faster than "true"/"false"
                FALSE : 0.0,
+
+# property not yet created at startup (should through XML)
+               DELAYEDNODE : 1,
 
 # ---------------
 # unit conversion
@@ -341,17 +354,6 @@ Constant.init = func {
    me.F0TOCELSIUS = - me.CELSIUS0TOF * me.FTOCELSIUS;
 }
 
-Constant.clip = func( min, max, value ) {
-   if( value < min ) {
-       value = min;
-   }
-   elsif( value > max ) {
-       value = max;
-   }
-
-   return value;
-}
-
 Constant.intensity = func( value, max ) {
    if( value < max ) {
        value = max;
@@ -380,18 +382,6 @@ Constant.not = func( value ) {
    return result;
 }
 
-# north crossing
-Constant.crossnorth = func( offsetdeg ) {
-   if( offsetdeg > me.DEG180 ) {
-       offsetdeg = offsetdeg - me.DEG360;
-   }
-   elsif( offsetdeg < - me.DEG180 ) {
-       offsetdeg = offsetdeg + me.DEG360;
-   }
-
-   return offsetdeg;
-}
-
 Constant.fahrenheit_to_celsius = func ( degf ) {
    var degc = me.FTOCELSIUS * degf + me.F0TOCELSIUS;
 
@@ -411,6 +401,54 @@ Constant.newtonsoundmps= func( temperaturedegc ) {
     var speedmps = math.sqrt(dPdRo);
 
     return speedmps;
+}
+
+Constant.is_duskdawn = func( sunrad ) {
+   var result = me.FALSE;
+   
+   # not during day
+   if( sunrad > me.NIGHTRAD ) {
+       result = constant.TRUE;
+   }
+   
+   return result;
+}
+
+Constant.is_lighting = func( sunrad, altitudeft ) {
+   var result = me.FALSE;
+   
+   # not during day
+   if( me.is_duskdawn( sunrad ) ) {
+       var thresholdrad = 0.0;
+       var deltadeg = constant.deltasundeg( altitudeft );
+   
+       # sun is lower on ground
+       thresholdrad = me.LIGHTINGGRAD + deltadeg * me.DEGTORAD;
+   
+       if( sunrad > thresholdrad ) {
+           result = me.TRUE;
+       }
+   }
+   
+   return result;
+}
+
+# NASA TM X-1646
+# On the computation of solar elevation angles and the determination of sunrise and sunset times.
+# Harold M. Woolf.
+# September 1968.
+# http://ntrs.nasa.gov/
+Constant.deltasundeg = func( altitudeft ) {
+   var altitudekm = 0.0;
+   var resultdeg = 0.0;
+
+   altitudekm = ( altitudeft * me.FEETTOMETER ) / me.KMTOMETER;
+   
+   if( altitudekm >= me.DELTASUNKM ) {
+       resultdeg = -1.76459 * math.pow( altitudekm, 0.40795 );
+   }
+   
+   return resultdeg;
 }
 
 
@@ -636,7 +674,7 @@ ConstantISA.temperature_degc = func( altitudeft ) {
 System = {};
 
 # not called by child classes !!!
-System.new = func {
+System.new = func( path, subpath = "" ) {
    var obj = { parents : [System],
 
                SYSSEC : 0.0,                               # to be defined !
@@ -652,22 +690,20 @@ System.new = func {
                noinstrument : {}
          };
 
+   obj.init( path, subpath );
+
    return obj;
 };
 
-System.inherit_system = func( path, subpath = "" ) {
+System.init = func( path, subpath ) {
    var fullpath = path;
-   var ctrlpath = string.replace(path,"systems","controls");
+   var ctrlpath = "";
 
-   var obj = System.new();
 
-   me.SYSSEC = obj.SYSSEC;
-   me.ready = obj.ready;
-   me.RELOCATIONFT = obj.RELOCATIONFT;
-   me.altitudeseaft = obj.altitudeseaft;
-   me.dependency = obj.dependency;
-   me.itself = obj.itself;
-   me.noinstrument = obj.noinstrument;
+   ctrlpath = string.replace(path,"systems","controls");
+   if( fullpath == ctrlpath ) {
+       ctrlpath = string.replace(path,"instrumentation","controls");
+   }
 
    # reserved entries
    if( subpath == "" ) {
@@ -717,6 +753,7 @@ System.loadtree = func( path, table ) {
    var component = "";
    var subcomponent = "";
    var value = "";
+
    if( props.globals.getNode(path) != nil ) {
        children = props.globals.getNode(path).getChildren();
        foreach( var c; children ) {
@@ -749,7 +786,7 @@ System.is_moving = func {
 
    # must exist in XML !
    var aglft = me.noinstrument["agl"].getValue();
-   var speedkt = me.noinstrument["airspeed"].getValue();
+   var speedkt = me.noinstrument["speed"].getValue();
 
    if( aglft >=  constantaero.AGLTOUCHFT or speedkt >= constantaero.TAXIKT ) {
        result = constant.TRUE;
@@ -788,16 +825,6 @@ System.is_ready = func {
     }
 
     return me.ready;
-}
-
-System.speed_ratesec = func( steps ) {
-   var speedup = me.noinstrument["speed-up"].getValue();
-
-   if( speedup > 1 ) {
-       steps = steps / speedup;
-   }
-
-   return steps;
 }
 
 System.speed_timesec = func( steps ) {
