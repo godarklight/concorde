@@ -1,5 +1,7 @@
 <?xml version="1.0" ?> 
 
+<!-- auto smooth is disabled (except rail). -->
+
 <PropertyList> 
  <path>seat-engineer.ac</path> 
 
@@ -55,17 +57,6 @@
   <property-base>sim/model/livery/</property-base>
   <texture-prop>texture-seat</texture-prop>
  </animation>
-
- <animation>
-  <type>material</type>
-  <object-name>AllSeat</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
 
 <!-- installed with an angle -->
 

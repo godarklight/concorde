@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <name type="string" n="0">cruise</name>
+
+   <overlay>
+    <controls>
+     <autoflight>
+      <altitude-select type="int">50000</altitude-select>
+     </autoflight>
+     <gear>
+      <brake-parking-lever type="bool">false</brake-parking-lever>
+      <gear-down type="bool">false</gear-down>
+     </gear>
+    </controls>
+    <instrumentation>
+     <ins n="1">
+      <control>
+       <selector type="int">3</selector>
+      </control>
+     </ins>
+    </instrumentation>
+    <sim>
+     <presets>
+      <airspeed-kt type="double">420</airspeed-kt>                     <!-- stay below mach 2.0 -->
+      <altitude-ft type="double">50000</altitude-ft>
+     </presets>
+    </sim>
+   </overlay>
+
+</PropertyList>

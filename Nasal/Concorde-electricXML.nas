@@ -12,9 +12,9 @@ ElectricalXML = {};
 ElectricalXML.new = func {
    var obj = { parents : [ElectricalXML],
 
-               config : nil,
-               electrical : nil,
-               iterations : nil,
+               configpath : nil,
+               electricalpath : nil,
+               iterationspath : nil,
 
                forced : 0,
 
@@ -27,19 +27,22 @@ ElectricalXML.new = func {
    return obj;
 };
 
-# creates all propagate variables
 ElectricalXML.init = func {
+}
+
+# creates all propagate variables
+ElectricalXML.init_ElectricalXML = func( path ) {
    var children = nil;
    var nb_children = 0;
    var component = nil;
 
-   me.config = props.globals.getNode("/systems/electrical/internal/config");
-   me.electrical = props.globals.getNode("/systems/electrical");
-   me.iterations = props.globals.getNode("/systems/electrical/internal/iterations");
+   me.electricalpath = props.globals.getNode(path);
+   me.configpath = me.electricalpath.getNode("internal/config");
+   me.iterationspath = me.electricalpath.getNode("iterations",constant.DELAYEDNODE);
 
-   me.forced = props.globals.getNode("/systems/electrical/internal/iterations-forced").getValue();
+   me.forced = me.electricalpath.getNode("internal/iterations-forced").getValue();
 
-   children = me.config.getChildren("supplier");
+   children = me.configpath.getChildren("supplier");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_supplier( children[i] );
@@ -47,7 +50,7 @@ ElectricalXML.init = func {
         component.charge();
    }
 
-   children = me.config.getChildren("transformer");
+   children = me.configpath.getChildren("transformer");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_transformer( children[i] );
@@ -55,7 +58,7 @@ ElectricalXML.init = func {
         component.charge();
    }
 
-   children = me.config.getChildren("bus");
+   children = me.configpath.getChildren("bus");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_bus( children[i] );
@@ -63,7 +66,7 @@ ElectricalXML.init = func {
         component.charge();
    }
 
-   children = me.config.getChildren("output");
+   children = me.configpath.getChildren("output");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
         me.components.add_output( children[i] );
@@ -71,10 +74,10 @@ ElectricalXML.init = func {
         component.charge();
    }
 
-   children = me.config.getChildren("connector");
+   children = me.configpath.getChildren("connector");
    nb_children = size( children );
    for( var i = 0; i < nb_children; i = i+1 ) {
-        me.connectors.add( children[i] );
+        me.connectors.add( children[i], me.components );
    }
 }
 
@@ -102,7 +105,7 @@ ElectricalXML.schedule = func {
         component.supply();
    }
 
-   if( me.electrical.getChild("serviceable").getValue() ) {
+   if( me.electricalpath.getChild("serviceable").getValue() ) {
         iter = 0;
         remain = constant.TRUE;
         while( remain ) {
@@ -126,7 +129,7 @@ ElectricalXML.schedule = func {
             iter = iter + 1;
        }
 
-       me.iterations.setValue(iter);
+       me.iterationspath.setValue(iter);
    }
 
    # failure : no voltage
@@ -154,15 +157,18 @@ ElectricalXML.supply = func( connector ) {
    var volts = 0.0;
    var found = constant.FALSE;
    var switch = constant.FALSE;
+   var inputkind = "";
+   var outputkind = "";
    var input = nil;
+   var output = nil;
    var component = nil;
    var component2 = nil;
-   var output = nil;
 
    output = connector.get_output();
+   outputkind = connector.get_output_kind();
 
    # propagate voltage
-   component2 = me.components.find( output );
+   component2 = me.components.find( output, outputkind );
    if( component2 != nil ) {
        if( !component2.is_propagate() ) {
            switch = connector.get_switch();
@@ -175,7 +181,8 @@ ElectricalXML.supply = func( connector ) {
 
             else {
                 input = connector.get_input();
-                component = me.components.find( input );
+                inputkind = connector.get_input_kind();
+                component = me.components.find( input, inputkind );
                 if( component != nil ) {
 
                     # input knows its voltage
@@ -196,7 +203,8 @@ ElectricalXML.supply = func( connector ) {
                # voltages in parallel : if no voltage, can accept another connection
                if( switch ) {
                    input = connector.get_input();
-                   component = me.components.find( input );
+                   inputkind = connector.get_input_kind();
+                   component = me.components.find( input, inputkind );
                    if( component != nil ) {
 
                        # input knows its voltage
@@ -420,19 +428,20 @@ ElecComponentArray.find_output = func( ident ) {
 }
 
 # lookup tables accelerates the search !!!
-ElecComponentArray.find = func( ident ) {
+ElecComponentArray.find = func( ident, kind ) {
    var found = constant.FALSE;
-   var result = me.find_supplier( ident );
+   var result = nil;
 
-   if( result == nil ) {
+   if( kind == "supplier" ) { 
+       result = me.find_supplier( ident );
+   }
+   elsif( kind == "transformer" ) {
        result = me.find_transformer( ident );
    }
-
-   if( result == nil ) {
+   elsif( kind == "bus" ) {
        result = me.find_bus( ident );
    }
-
-   if( result == nil ) {
+   elsif( kind == "output" ) {
        result = me.find_output( ident );
    }
 
@@ -442,6 +451,43 @@ ElecComponentArray.find = func( ident ) {
 
    if( !found ) {
        print("Electrical : component not found ", ident);
+   }
+
+   return result;
+}
+
+ElecComponentArray.find_kind = func( ident ) {
+   var found = constant.FALSE;
+   var result = "";
+
+   if( me.find_supplier( ident ) == nil ) {
+       if( me.find_transformer( ident ) == nil ) {
+           if( me.find_bus( ident ) == nil ) {
+               if( me.find_output( ident ) == nil ) {
+               }
+               else {
+                   result = "output";
+               }
+           }
+           else {
+               result = "bus";
+           }
+           
+       }
+       else {
+           result = "transformer";
+       }
+   }
+   else {
+      result = "supplier";
+   }
+
+   if( result != "" ) {
+       found = constant.TRUE;
+   }
+
+   if( !found ) {
+       print("Electrical : component kind not found ", ident);
    }
 
    return result;
@@ -561,14 +607,14 @@ ElecSupplier.new = func( kind, prop, rpm, volts, nb_charges, amps ) {
                value : 0.0,
 
                kind : kind,
-               rpm : rpm,
+               rpmchild : props.globals.getNode(rpm,constant.DELAYEDNODE),
                volts : volts,
-               propcharge : "",
+               propcharge : nil,
                amps : amps,
 
-               props : prop
+               propchilds : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
-
+   
    obj.init( nb_charges );
 
    return obj;
@@ -578,13 +624,13 @@ ElecSupplier.init = func( nb_charges ) {
    me.inherit_eleccomponent();
 
    if( me.is_battery() ) {
-       me.propcharge = "/systems/electrical/suppliers/battery-amps[" ~ nb_charges ~ "]";
+       me.propcharge = props.globals.getNode("/systems/electrical/suppliers/battery-amps[" ~ nb_charges ~ "]");
    }
 }
 
 # present voltage
 ElecSupplier.get_volts = func {
-   var value = getprop(me.props);
+   var value = me.propchilds.getValue();
 
    if( value == nil ) {
        value = me.NOVOLT;
@@ -624,7 +670,7 @@ ElecSupplier.supply = func {
    }
 
    elsif( me.is_alternator() ) {
-       me.value = getprop(me.rpm);
+       me.value = me.rpmchild.getValue();
        if( me.value == nil ) {
            me.value = me.NOVOLT;
        }
@@ -656,10 +702,10 @@ ElecSupplier.clear = func() {
 }
 
 ElecSupplier.apply = func {
-   setprop(me.props, me.value);
+   me.propchilds.setValue(me.value);
 
    if( me.is_battery() ) {
-       setprop(me.propcharge, me.amps);
+       me.propcharge.setValue(me.amps);
    }
 }
 
@@ -693,7 +739,7 @@ ElecTransformer.new = func( allvolts, prop ) {
 
                ratio : 0,
 
-               prop : prop
+               propchild : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
 
    obj.init( allvolts );
@@ -733,7 +779,7 @@ ElecTransformer.clear = func() {
 }
 
 ElecTransformer.apply = func {
-   setprop(me.prop,me.value);
+   me.propchild.setValue(me.value);
 }
 
 
@@ -749,7 +795,7 @@ ElecBus.new = func( allprops ) {
                values : [],
 
                nb_props : 0,
-               props : []
+               propchilds : []
          };
 
    obj.init( allprops );
@@ -763,7 +809,7 @@ ElecBus.init = func( allprops ) {
    me.nb_props = size( allprops );
 
    for( var i = 0; i < me.nb_props; i = i+1 ) {
-        append( me.props, allprops[i].getValue() );
+        append( me.propchilds, props.globals.getNode(allprops[i].getValue(),constant.DELAYEDNODE) );
         append( me.values, me.NOVOLT );
    }
 }
@@ -805,11 +851,8 @@ ElecBus.clear = func() {
 }
 
 ElecBus.apply = func {
-   var state = "";
-
    for( var i = 0; i < me.nb_props; i = i+1 ) {
-        state = me.props[i];
-        setprop(state, me.values[i]);
+        me.propchilds[i].setValue(me.values[i]);
    }
 }
 
@@ -825,7 +868,7 @@ ElecOutput.new = func( prop ) {
 
                value : 0.0,
 
-               props : prop
+               propchilds : props.globals.getNode(prop,constant.DELAYEDNODE)
          };
 
    obj.inherit_eleccomponent();
@@ -857,7 +900,7 @@ ElecOutput.clear = func() {
 }
 
 ElecOutput.apply = func {
-   setprop(me.props,me.value);
+   me.propchilds.setValue(me.value);
 }
 
 
@@ -877,7 +920,9 @@ ElecConnectorArray.new = func {
    return obj;
 };
 
-ElecConnectorArray.add = func( node ) {
+ElecConnectorArray.add = func( node, components ) {
+   var inputkind = "";
+   var outputkind = "";
    var prop = "";
    var child = nil;
    var result = nil;
@@ -893,7 +938,10 @@ ElecConnectorArray.add = func( node ) {
        }
    }
 
-   result = ElecConnector.new( input, output, prop );
+   inputkind = components.find_kind( input );
+   outputkind = components.find_kind( output );
+
+   result = ElecConnector.new( input, inputkind, output, outputkind, prop );
    append(me.connectors, result);
 
    me.nb_connectors = me.nb_connectors + 1;
@@ -914,14 +962,21 @@ ElecConnectorArray.get = func( index ) {
 
 ElecConnector = {};
 
-ElecConnector.new = func( input, output, prop ) {
+ElecConnector.new = func( input, inputkind, output, outputkind, prop ) {
    var obj = { parents : [ElecConnector],
 
                input : input,
+               input_kind : inputkind,
                output : output,
-               prop : prop
+               output_kind : outputkind,
+               propchild : nil
          };
-
+         
+   # switch is optional
+   if( prop != "" ) {
+       obj.propchild = props.globals.getNode(prop,constant.DELAYEDNODE);
+   }
+   
    return obj;
 };
 
@@ -929,16 +984,24 @@ ElecConnector.get_input = func {
    return me.input;
 }
 
+ElecConnector.get_input_kind = func {
+   return me.input_kind;
+}
+
 ElecConnector.get_output = func {
    return me.output;
+}
+
+ElecConnector.get_output_kind = func {
+   return me.output_kind;
 }
 
 ElecConnector.get_switch = func {
     var switch = constant.TRUE;
 
     # switch is optional, on by default
-    if( me.prop != "" ) {
-        switch = getprop(me.prop);
+    if( me.propchild != nil ) {
+        switch = me.propchild.getValue();
     }
 
     return switch;

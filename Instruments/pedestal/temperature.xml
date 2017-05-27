@@ -25,8 +25,6 @@
  </params>
 
 
-<!-- ROOF FLUORESCENT LIGHTING -->
-
  <animation>
   <name>Temperature</name>
   <object-name>Plate</object-name>
@@ -40,14 +38,24 @@
  <animation>
   <type>material</type>
   <object-name>Temperature</object-name>
+  <condition>
+   <or>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+    <less-than-equals>
+     <property>/sim/rendering/shaders/lights</property>
+     <property n="1">controls/environment/rembrandt/cockpit</property>
+    </less-than-equals>
+   </or>
+  </condition>
   <emission>
-   <red>0.71</red>
-   <green>0.79</green>
-   <blue>0.87</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
+   <red-prop>systems/lighting/color/flood/red</red-prop>
+   <green-prop>systems/lighting/color/flood/green</green-prop>
+   <blue-prop>systems/lighting/color/flood/blue</blue-prop>
+   <factor-prop>systems/lighting/level/panel/center</factor-prop>
   </emission> 
  </animation> 
-
 
  <!-- TMO DISPLAY -->
  

@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <!-- Concorde instrumentation :
 
      - 2 DME (always visible) to bypass the limitation of switching frequencies.
@@ -10,6 +11,8 @@
      Mk-viii is not used, because aural warnings of Concorde are simpler.
      To power Mk-viii, connect its electrical output to 26 volts.
 -->
+
+
 <!--
 **********************************************************************
 This file selects the instrumentation modules that should be available.
@@ -29,191 +32,189 @@ file, these values will be used (they are hardcoded).
 
 **********************************************************************
 -->
+
 <PropertyList>
-  <adf>
-    <!-- 1st needle -->
+
+  <adf>                                                                      <!-- 1st needle -->
     <name>adf</name>
     <number>0</number>
   </adf>
-  <adf>
-    <!-- 2nd needle -->
+
+  <adf>                                                                      <!-- 2nd needle -->
     <name>adf</name>
     <number>1</number>
   </adf>
-  <airspeed-indicator>
-    <!-- ADC 1 sensor -->
+
+  <airspeed-indicator>                                                       <!-- ADC 1 sensor -->
     <name>airspeed-adc</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[2]/total-pressure-inhg</total-pressure>
-    <!--<total-pressure>/systems/pitot[2]/measured-total-pressure-inhg</total-pressure>-->
+    <total-pressure>/systems/pitot[2]/measured-total-pressure-inhg</total-pressure>
     <static-pressure>/systems/static[2]/pressure-inhg</static-pressure>
   </airspeed-indicator>
-  <airspeed-indicator>
-    <!-- ADC 2 sensor -->
+
+  <airspeed-indicator>                                                       <!-- ADC 2 sensor -->
     <name>airspeed-adc</name>
     <number>1</number>
-    <total-pressure>/systems/pitot[1]/total-pressure-inhg</total-pressure>
-    <!--<total-pressure>/systems/pitot[1]/measured-total-pressure-inhg</total-pressure>-->
+    <total-pressure>/systems/pitot[1]/measured-total-pressure-inhg</total-pressure>
     <static-pressure>/systems/static[1]/pressure-inhg</static-pressure>
   </airspeed-indicator>
+
   <airspeed-indicator>
     <name>airspeed-sensor</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
-    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
+    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
+
   <airspeed-indicator>
     <name>airspeed-sensor</name>
     <number>1</number>
-    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
-    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
+    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
+
   <airspeed-indicator>
     <name>airspeed-standby</name>
     <number>0</number>
-    <total-pressure>/systems/pitot[0]/total-pressure-inhg</total-pressure>
-    <!--<total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>-->
+    <total-pressure>/systems/pitot[0]/measured-total-pressure-inhg</total-pressure>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </airspeed-indicator>
-  <altimeter>
-    <!-- ADC 1 sensor -->
+
+  <altimeter>                                                                <!-- ADC 1 sensor -->
     <name>altimeter-adc</name>
     <number>0</number>
     <static-pressure>/systems/static[2]/pressure-inhg</static-pressure>
-    <encode-mode-c type="bool">true</encode-mode-c>
   </altimeter>
-  <altimeter>
-    <!-- ADC 2 sensor -->
+
+  <altimeter>                                                                <!-- ADC 2 sensor -->
     <name>altimeter-adc</name>
     <number>1</number>
     <static-pressure>/systems/static[1]/pressure-inhg</static-pressure>
   </altimeter>
+
   <altimeter>
     <name>altimeter-sensor</name>
     <number>0</number>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </altimeter>
+
   <altimeter>
     <name>altimeter-sensor</name>
     <number>1</number>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </altimeter>
+
   <altimeter>
     <name>altimeter-standby</name>
     <number>0</number>
     <static-pressure>/systems/static[0]/pressure-inhg</static-pressure>
   </altimeter>
-  <altimeter>
-    <!-- vented to cabin pressure -->
+
+  <altimeter>                                                                <!-- vented to cabin pressure -->
     <name>cabin-altitude</name>
     <number>0</number>
     <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </altimeter>
+
   <clock>
     <name>clock</name>
     <number>0</number>
   </clock>
-  <dme>
-    <!-- 1st distance -->
+
+  <dme>                                                                      <!-- 1st distance -->
     <name>dme</name>
     <number>0</number>
   </dme>
-  <dme>
-    <!-- 2nd distance -->
+
+  <dme>                                                                      <!-- 2nd distance -->
     <name>dme</name>
     <number>1</number>
   </dme>
+
   <encoder>
     <name>encoder</name>
     <number>0</number>
     <static-port>/systems/static</static-port>
   </encoder>
-  <gps>
-    <!-- required by autopilot -->
+
+  <gps>                                                                      <!-- required by autopilot -->
     <name>gps</name>
     <number>0</number>
   </gps>
-  <heading-indicator>
-    <!-- required by autopilot ? -->
+
+  <heading-indicator>                                                        <!-- required by autopilot ? -->
     <name>heading-indicator</name>
     <number>0</number>
     <suction>/systems/vacuum/suction-inhg</suction>
   </heading-indicator>
-  <inst-vertical-speed-indicator>
-    <!-- 1st ADC sensor -->
+
+  <inst-vertical-speed-indicator>                                            <!-- 1st ADC sensor -->
     <name>ivsi-adc</name>
     <number>0</number>
   </inst-vertical-speed-indicator>
-  <inst-vertical-speed-indicator>
-    <!-- 2nd ADC sensor -->
+
+  <inst-vertical-speed-indicator>                                            <!-- 2nd ADC sensor -->
     <name>ivsi-adc</name>
     <number>1</number>
   </inst-vertical-speed-indicator>
-  <!--
+
+<!--
   <KT-70>
     <name>kt-70</name>
     <number>0</number>
   </KT-70>
 -->
+
   <magnetic-compass>
     <name>magnetic-compass</name>
     <number>0</number>
   </magnetic-compass>
+
   <marker-beacon>
     <name>marker-beacon</name>
     <number>0</number>
   </marker-beacon>
-  <nav-radio>
-    <!-- reserved for autopilot -->
+
+  <nav-radio>                                                                <!-- reserved for autopilot -->
     <name>nav</name>
     <number>0</number>
   </nav-radio>
-  <nav-radio>
-    <!-- 1st needle -->
+
+  <nav-radio>                                                                <!-- 1st needle -->
     <name>nav</name>
     <number>1</number>
   </nav-radio>
-  <nav-radio>
-    <!-- 2nd needle -->
+
+  <nav-radio>                                                                <!-- 2nd needle -->
     <name>nav</name>
     <number>2</number>
   </nav-radio>
+
   <radar>
     <name>radar</name>
     <number>0</number>
   </radar>
-  <slip-skid-ball>
-    <name>slip-skid-ball</name>
-    <number>0</number>
-  </slip-skid-ball>
+
   <tcas>
-    <name>tcas</name>
-    <number>0</number>
+     <name>tcas</name>
+     <number>0</number>
   </tcas>
+
   <transponder>
-    <name type="string">transponder</name>
-    <number type="int">0</number>
-    <mode type="int">1</mode> <!-- 0 = Mode A, 1 = Mode C, 2 = Mode S -->
-    <bus-volts type="double">8.0</bus-volts>
-    <encoder-path type="string">/instrumentation/altimeter-adc</encoder-path>
-    <kt70-compatibility type="bool">0</kt70-compatibility>
+    <name>transponder</name>
+    <number>0</number>
+    <mode-c-altitude>/instrumentation/encoder/mode-c-alt-ft</mode-c-altitude>
   </transponder>
+
   <turn-indicator>
     <name>turn-indicator</name>
     <number>0</number>
   </turn-indicator>
-  <vertical-speed-indicator>
-    <!-- vented to cabin pressure -->
-    <name>vertical-speed-ap</name>
-    <number>0</number>
-    <static-pressure>/systems/static/pressure-inhg</static-pressure>
-  </vertical-speed-indicator>
-  <vertical-speed-indicator>
-    <!-- vented to cabin pressure -->
+
+  <vertical-speed-indicator>                                                 <!-- vented to cabin pressure -->
     <name>cabin-rate-climb</name>
     <number>0</number>
     <static-pressure>/systems/pressurization/pressure-inhg</static-pressure>
   </vertical-speed-indicator>
+
 </PropertyList>

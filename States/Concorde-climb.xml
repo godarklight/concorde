@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <name type="string" n="0">climb</name>
+
+   <overlay>
+    <controls>
+     <autoflight>
+      <altitude-select type="int">26000</altitude-select>
+     </autoflight>
+     <gear>
+      <brake-parking-lever type="bool">false</brake-parking-lever>
+      <gear-down type="bool">false</gear-down>
+     </gear>
+    </controls>
+    <instrumentation>
+     <ins n="1">
+      <control>
+       <selector type="int">3</selector>
+      </control>
+     </ins>
+    </instrumentation>
+    <sim>
+     <presets>
+      <airspeed-kt type="double">400</airspeed-kt>
+      <altitude-ft type="double">26000</altitude-ft>
+     </presets>
+    </sim>
+   </overlay>
+
+</PropertyList>

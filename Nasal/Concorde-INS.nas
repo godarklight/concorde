@@ -11,7 +11,7 @@
 Inertial = {};
 
 Inertial.new = func {
-   var obj = { parents : [Inertial,System],
+   var obj = { parents : [Inertial,System.new("/instrumentation","ins")],
 
                last : nil,
                route : nil,
@@ -68,8 +68,6 @@ Inertial.new = func {
 };
 
 Inertial.init = func {
-   me.inherit_system("/instrumentation","ins");
-
    me.last = me.dependency["autopilot"].getChild("wp-last");
    me.waypoints = me.dependency["autopilot"].getChildren("wp");
 }
@@ -355,7 +353,7 @@ Inertial.track = func {
        if( me.waypoint != "" ) {
            me.trackdeg = me.noinstrument["track"].getValue();
            offsetdeg = me.trackdeg - me.bearingdeg;
-           offsetdeg = constant.crossnorth( offsetdeg );
+           offsetdeg = geo.normdeg180( offsetdeg );
 
            distancenm = me.waypoints[0].getChild("dist").getValue();
            offsetrad = offsetdeg * constant.DEGTORAD;

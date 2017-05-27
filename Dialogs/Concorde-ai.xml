@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-ai</name>
+  <layout>vbox</layout>
+  <width>650</width>
+
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde AI</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
+
+  <hrule><dummy/></hrule>
+
+  <text>
+    <label>Systems  ~</label>
+  </text>
+
+  <text>
+   <label></label>
+  </text>
+
+  <group>
+   <layout>hbox</layout>
+
+   <group>
+    <layout>vbox</layout>
+
+    <checkbox>
+     <halign>left</halign>
+     <label>Disable procedures (ctrl-Q key)</label>
+     <property>/controls/crew/disable</property>
+     <binding>
+      <command>property-toggle</command>
+      <property>/controls/crew/disable</property>
+     </binding>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.crewcrew.enableexport();</script>
+     </binding>
+    </checkbox>
+
+    <checkbox>
+     <halign>left</halign>
+     <label>Disable voice</label>
+     <property>/controls/voice/disable</property>
+     <binding>
+      <command>property-toggle</command>
+      <property>/controls/voice/disable</property>
+     </binding>
+     <binding>
+      <command>nasal</command>
+      <script>globals.Concorde.voicecrew.enableexport();</script>
+     </binding>
+    </checkbox>
+   </group>
+
+   <text>
+    <label></label>
+   </text>
+
+   <group>
+    <layout>vbox</layout>
+
+    <text>
+     <label>virtual crew is available</label>
+     <enabled alias="/systems/crew/serviceable"/>
+     <color>
+      <red>0.2</red>
+      <green>0.8</green>
+      <blue>0.2</blue>
+     </color>
+    </text>
+
+    <text>
+     <label>cockpit must be set manually</label>
+     <enabled alias="/controls/crew/disable"/>
+     <color>
+      <red>0.2</red>
+      <green>0.2</green>
+      <blue>0.8</blue>
+     </color>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+     <label>if virtual crew, enable voice</label>
+     <color>
+      <red>0.5</red>
+      <green>0.5</green>
+      <blue>0.5</blue>
+     </color>
+    </text>
+   </group>
+  </group>
+
+  <text>
+   <label></label>
+  </text>
+
+  <text>
+   <label></label>
+  </text>
+
+  <group>
+   <layout>vbox</layout>
+
+   <text>
+    <label>Status  ~</label>
+   </text>
+
+   <text>
+    <label></label>
+   </text>
+
+   <group>
+    <layout>hbox</layout>
+
+    <group>
+     <layout>vbox</layout>
+     <halign>left</halign>
+
+     <checkbox>
+      <label>Timeout of display</label>
+      <property>/controls/crew/timeout</property>
+      <binding>
+       <command>property-toggle</command>
+       <property>/controls/crew/timeout</property>
+      </binding>
+      <binding>
+       <command>nasal</command>
+       <script>globals.Concorde.crewscreen.wakeupexport();</script>
+      </binding>
+     </checkbox>
+    </group>
+
+    <group>
+     <layout>vbox</layout>
+     <halign>left</halign>
+
+     <input>
+      <property>/controls/crew/timeout-s</property>
+      <label>seconds</label>
+     </input>
+    </group>
+   </group>
+  </group>
+
+  <text>
+   <label></label>
+  </text>
+
+  <checkbox>
+   <label>3D</label>
+   <halign>left</halign>
+   <property>/systems/human/serviceable</property>
+   <binding>
+    <command>property-toggle</command>
+    <property>/systems/human/serviceable</property>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.crewscreen.wakeupexport();</script>
+   </binding>
+   <binding>
+    <command>nasal</command>
+    <script>globals.Concorde.crewcrew.wakeupexport();</script>
+   </binding>
+  </checkbox>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+   <layout>hbox</layout>
+
+   <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+  </group>
+</PropertyList>

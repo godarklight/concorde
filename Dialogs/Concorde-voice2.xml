@@ -4,9 +4,28 @@
   <name>Concorde-voice2</name>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde voices 2</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde voices 2</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -94,13 +113,13 @@
        </text>
 
        <checkbox>
-         <label>Voice sound, pronounced by 3D crew</label>
+         <label>Voice sound</label>
          <halign>left</halign>
          <property>/sim/sound/voices/enabled</property>
        </checkbox>
 
        <text>
-         <label>requires Festival</label>
+         <label>(to toggle, update defaults.xml and restart)</label>
          <color>
           <red>0.5</red>
           <green>0.5</green>
@@ -109,7 +128,8 @@
        </text>
 
        <text>
-         <label>(to toggle, update preferences.xml and restart)</label>
+         <label>pronounced by 3D crew</label>
+         <enabled alias="/systems/crew/serviceable"/>
          <color>
           <red>0.5</red>
           <green>0.5</green>

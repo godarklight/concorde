@@ -4,9 +4,28 @@
   <name>Concorde-procedures</name>
   <layout>vbox</layout>
 
-  <text>
-    <label>Concorde procedures</label>
-  </text>
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde procedures</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
@@ -373,15 +392,6 @@
    </button>
 
    <button>
-    <legend>Close</legend>
-    <default>true</default>
-    <key>Esc</key>
-    <binding>
-      <command>dialog-close</command>
-    </binding>
-   </button>
-
-   <button>
     <legend>Settings</legend>
     <key>s</key>
     <binding>
@@ -400,6 +410,15 @@
      <command>dialog-show</command>
      <dialog-name>Concorde-procedures2</dialog-name>
     </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
     <binding>
       <command>dialog-close</command>
     </binding>

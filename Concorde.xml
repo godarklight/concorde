@@ -6,9 +6,9 @@
 
     <fileheader>
         <author> </author>
-        <filecreationdate> 5 June 2015 </filecreationdate>
-        <version> 2.20 </version>
-        <description>Aérospatiale-BAC Concorde is a turbojet-powered supersonic passenger jet airliner that was in service from 1976 to 2003. It is one of only two supersonic transports to have entered commercial service; the other was the Tupolev Tu-144. Concorde was jointly developed and produced by Aérospatiale and the British Aircraft Corporation (BAC) under an Anglo-French treaty. It featured a maximum speed over twice the speed of sound at Mach 2.04, with seating for 92 to 128 passengers. First flown in 1969, Concorde entered service in 1976 and continued commercial flights for 27 years.</description>
+        <filecreationdate> 20 June 2015 </filecreationdate>
+        <version> 1.15 </version>
+        <description>Aerospatiale/British Aerospace Concorde</description>
 
         <license>
            <licenseName>GPL (General Public License)</licenseName>
@@ -31,8 +31,6 @@
         <note>Pushback.</note>
 
         <limitation>Model uses flaps as nose.</limitation>
-        <limitation>Cross feed by additional tanks :
-                    engine may run out of fuel above X 3 speed-up.</limitation>
         <limitation>Without an additional PID, above Mach 1,
                     autopilot heading hold would lock with a right roll.</limitation>
         <limitation>Air intake failure only on the 4 engines at once.</limitation>
@@ -462,8 +460,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 50000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 15000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 40000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 40800.0000 </damping_coeff>
             <max_steer unit="DEG"> 60.0000 </max_steer>
             <brake_group> NONE </brake_group>
             <retractable>1</retractable>
@@ -477,8 +475,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> LEFT </brake_group>
             <retractable>1</retractable>
@@ -492,8 +490,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> LEFT </brake_group>
             <retractable>1</retractable>
@@ -507,8 +505,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> RIGHT </brake_group>
             <retractable>1</retractable>
@@ -522,8 +520,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 408000.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 81600.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> RIGHT </brake_group>
             <retractable>1</retractable>
@@ -537,8 +535,8 @@
             <static_friction> 0.8000 </static_friction>
             <dynamic_friction> 0.5000 </dynamic_friction>
             <rolling_friction> 0.0200 </rolling_friction>
-            <spring_coeff unit="LBS/FT"> 100000.0000 </spring_coeff>
-            <damping_coeff unit="LBS/FT/SEC"> 25000 </damping_coeff>
+            <spring_coeff unit="LBS/FT"> 122400.0000 </spring_coeff>
+            <damping_coeff unit="LBS/FT/SEC"> 40800.0000 </damping_coeff>
             <max_steer unit="DEG"> 0.0 </max_steer>
             <brake_group> NONE </brake_group>
             <retractable>1</retractable>
@@ -1000,6 +998,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>0</feed>
             <feed>13</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1025,6 +1024,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>1</feed>
             <feed>14</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1050,6 +1050,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>2</feed>
             <feed>15</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1075,6 +1076,7 @@
                 <pitch> 0.0000 </pitch>
                 <yaw> 0.0000 </yaw>
             </orient>
+            <feed>3</feed>
             <feed>16</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -1324,6 +1326,7 @@
             - not empty, to avoid stop at launch.
             - can feed 75000 kg/h per engine (takeoff with reheat X 3 speed up) :
               25000 x 3 / 3600 = 46 lb content, if supplied every 1 s from other tanks.
+            - not used in stand alone mode.
         </documentation>
 
         <tank type="FUEL">

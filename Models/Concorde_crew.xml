@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+  <model>
+   <name>Captain glass</name>
+   <path>Aircraft/Concorde/Instruments/crew/glass.xml</path>
+   <offsets>
+    <x-m>-23.710</x-m>
+    <y-m>-0.765</y-m>
+    <z-m> 0.875</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Copilot human</name>
+   <path>Aircraft/Concorde/Instruments/crew/pilot.xml</path>
+   <offsets>
+    <x-m>-22.96</x-m>
+    <y-m> 0.458</y-m>
+    <z-m> 1.10</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Engineer human</name>
+   <path>Aircraft/Concorde/Instruments/crew/engineer.xml</path>
+   <offsets>
+    <x-m>-21.788</x-m>
+    <y-m>-0.10</y-m>
+    <z-m> 1.08</z-m>
+    <heading-deg>270</heading-deg>
+   </offsets>
+  </model>
+
+
+<!-- SEAT (the condition rotates once) -->
+
+  <animation>
+   <type>rotate</type>
+   <object-name>Engineer human</object-name>
+   <property>sim/current-view/goal-heading-offset-deg</property>
+   <offset-deg>90</offset-deg>
+   <condition>
+    <and>
+     <property>systems/seat/engineer</property>
+     <equals>
+      <property>systems/human/engineer/seat-deg</property>
+      <value>0.0</value>
+     </equals>
+     <equals>
+      <property>systems/human/engineer/seat-x-m</property>
+      <value>0.0</value>
+     </equals>
+    </and>
+   </condition>
+   <center>
+    <x-m>-21.788</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </center>
+   <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+   </axis>
+  </animation>
+ 
+  <animation>
+   <type>rotate</type>
+   <object-name>Engineer human</object-name>
+   <property>systems/human/engineer/seat-deg</property>
+   <center>
+    <x-m>-21.788</x-m>
+    <y-m>0.0</y-m>
+    <z-m>0.0</z-m>
+   </center>
+   <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+   </axis>
+  </animation>
+ 
+  <animation>
+   <type>translate</type>
+   <object-name>Engineer human</object-name>
+   <property>systems/human/engineer/seat-x-m</property>
+   <axis>
+    <x>0.0</x>
+    <y>1.0</y>
+    <z>0.0</z>
+   </axis>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>Engineer human</object-name>
+   <condition>
+    <and>
+     <property>systems/human/serviceable</property>
+     <property>controls/engineer/activ</property>
+     <not>
+      <property>systems/seat/engineer</property>
+     </not>
+     <not>
+      <property>systems/seat/overhead</property>
+     </not>
+     <equals>
+      <property>systems/human/engineer/stowe-norm</property>
+      <value>0</value>
+     </equals>
+    </and>
+   </condition>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>Copilot human</object-name>
+   <condition>
+    <and>
+     <property>systems/human/serviceable</property>
+     <property>controls/copilot/activ</property>
+     <not>
+      <property>systems/seat/copilot</property>
+     </not>
+     <equals>
+      <property>systems/human/copilot/stowe-norm</property>
+      <value>0</value>
+     </equals>
+    </and>
+   </condition>
+  </animation>
+
+
+  <!-- Other -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Captain glass</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>systems/copilot/serviceable</property>
+      <property>/controls/copilot/activ</property>
+     </and>
+     <and>
+      <property>systems/engineer/serviceable</property>
+      <property>/controls/engineer/activ</property>
+     </and>
+    </or>
+   </condition>
+  </animation>
+
+
+<!-- =============== -->
+<!-- Level Of Detail -->
+<!-- =============== -->
+
+  <animation>
+   <name>LOD crew</name>
+   <object-name>Copilot human</object-name>
+   <object-name>Engineer human</object-name>
+   <object-name>Captain glass</object-name>
+  </animation>
+
+  <animation>
+   <type>range</type>
+   <object-name>LOD crew</object-name>
+   <min-m>0</min-m>
+   <max-m>100</max-m>
+  </animation>
+
+</PropertyList>

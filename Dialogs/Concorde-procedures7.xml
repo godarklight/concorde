@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-procedures7</name>
+  <layout>vbox</layout>
+  <width>500</width>
+
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde procedures 3</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>vbox</layout>
+    <halign>center</halign>
+
+    <text>
+      <label>VOR / ADF  ~</label>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <checkbox>
+      <label>adjusts VOR and ADF to nearest airport</label>
+      <property>/controls/crew/radio/set</property>
+      <binding>
+        <command>property-toggle</command>
+        <property>/controls/crew/radio/set</property>
+      </binding>
+    </checkbox>
+
+    <text>
+      <label>in Nasal/Concorde-route.xml</label>
+      <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+      </color>
+    </text>
+
+    <text>
+      <label>(only ground and above FL 100, within 200 nm)</label>
+      <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+      </color>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <text>
+      <label></label>
+    </text>
+
+    <input>
+      <halign>left</halign>
+      <property>/controls/crew/radio/ignore</property>
+      <label>except at this airport</label>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+    </input>
+
+    <text>
+      <label>(keep defaults.xml)</label>
+      <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+      </color>
+    </text>
+
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+   <layout>hbox</layout>
+
+   <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-procedures4</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+  </group>
+</PropertyList>

@@ -3,17 +3,35 @@
 <PropertyList>
   <name>Concorde-environment2</name>
   <layout>vbox</layout>
-  <width>450</width>
+  <width>550</width>
+  
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
 
-  <text>
-    <label>Concorde environment 2</label>
-  </text>
+    <text>
+      <label>Concorde environment</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
 
   <hrule><dummy/></hrule>
 
   <group>
     <layout>vbox</layout>
-    <halign>center</halign>
 
     <text>
       <label>Icing  ~</label>
@@ -32,7 +50,6 @@
 
       <group>
        <layout>vbox</layout>
-       <halign>left</halign>
 
        <text>
          <label>Cloud (minutes)</label>
@@ -69,9 +86,32 @@
        </input>
       </group>
 
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
+      <text>
+       <label></label>
+      </text>
+
       <group>
        <layout>vbox</layout>
-       <halign>right</halign>
 
        <text>
          <label>Outside air temperature (deg C)</label>
@@ -119,6 +159,21 @@
    <button>
     <legend>Back</legend>
     <key>b</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-menu</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Page 1</legend>
+    <key>p</key>
     <binding>
       <command>dialog-apply</command>
     </binding>

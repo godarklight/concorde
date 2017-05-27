@@ -7,6 +7,12 @@
       Instrument visibility is limited by the view heading or view pitch (see each panel file).
       One takes the limit of the visual range, rounded to 5, plus/minus 5 degrees as margin.
 
+
+    Known problems  :
+    ==============
+    - is copilot seat really unsymetrical ?
+    - fuselage wall doesn't stop rotation of observer seat.
+
 -->
  
 <PropertyList>
@@ -16,7 +22,7 @@
  <!-- ======================================= -->
 
  <!-- AUTOPILOT -->
- <!--
+
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot.xml</path>
    <bottom-left>
@@ -35,7 +41,6 @@
     <z-m> 1.382</z-m>
    </top-left>
   </panel>
-  -->
 
   <panel>
    <path>Aircraft/Concorde/Panels/Concorde-autopilot-right.xml</path>
@@ -76,27 +81,7 @@
     <z-m> 1.593</z-m>
    </top-left>
   </panel>
-<!--
- <panel>
-   <path>Aircraft/Concorde/Models/Cockpit/Concorde-3d-cockpit.xml</path>
-   <bottom-left>
-    <x-m>-23.790</x-m>
-    <y-m>-0.631</y-m>
-    <z-m> 0.988</z-m>
-   </bottom-left>
-   <bottom-right>
-    <x-m>-23.790</x-m>
-    <y-m> 0.579</y-m>
-    <z-m> 0.988</z-m>
-   </bottom-right>
-   <top-left>
-    <x-m>-23.895</x-m>
-    <y-m>-0.631</y-m>
-    <z-m> 1.593</z-m>
-   </top-left>
-  </panel>
--->
-  
+
  <!-- OVERHEAD -->
 
   <panel>
@@ -565,41 +550,10 @@
    </top-left>
   </panel>
 
-<!-- STEWARD -->
-
-  <panel>
-   <path>Aircraft/Concorde/Panels/Concorde-steward.xml</path>
-   <bottom-left>
-    <x-m>-17.63</x-m>
-    <y-m>-0.51</y-m>
-    <z-m> 1.558</z-m>
-   </bottom-left>
-   <bottom-right>
-    <x-m>-17.63</x-m>
-    <y-m>-1.11</y-m>
-    <z-m> 1.558</z-m>
-   </bottom-right>
-   <top-left>
-    <x-m>-17.63</x-m>
-    <y-m>-0.51</y-m>
-    <z-m> 1.858</z-m>
-   </top-left>
-  </panel>
-
 
 <!-- ============ -->
 <!-- Instruments  -->
 <!-- ============ -->
-
-  <model>
-   <name>Captain glass</name>
-   <path>Aircraft/Concorde/Instruments/crew/glass.xml</path>
-   <offsets>
-    <x-m>-23.710</x-m>
-    <y-m>-0.765</y-m>
-    <z-m> 0.875</z-m>
-   </offsets>
-  </model>
 
 <!-- OVERHEAD -->
 
@@ -616,12 +570,68 @@
 <!-- DASH -->
 
   <model>
-   <name>Center Flood</name>
+   <name>Dash flood left</name>
+   <path>Aircraft/Concorde/Instruments/light/dash-flood.xml</path>
+   <offsets>
+    <x-m>-23.798</x-m>
+    <y-m>-0.45</y-m>
+    <z-m> 1.310</z-m>
+    <pitch-deg>-21.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Dash flood left sphere</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/flood-dash-left.xml</path>
+   <offsets>
+    <x-m>-23.798</x-m>
+    <y-m>-0.45</y-m>
+    <z-m> 1.310</z-m>
+    <pitch-deg>-21.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Dash flood center</name>
    <path>Aircraft/Concorde/Instruments/light/center-flood.xml</path>
    <offsets>
     <x-m>-23.818</x-m>
     <y-m> 0.0</y-m>
-    <z-m> 1.270</z-m>
+    <z-m> 1.279</z-m>
+    <pitch-deg>-24.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Dash flood cone</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/flood-dash-center.xml</path>
+   <offsets>
+    <x-m>-23.818</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.279</z-m>
+    <pitch-deg>-24.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Dash flood right</name>
+   <path>Aircraft/Concorde/Instruments/light/dash-flood.xml</path>
+   <offsets>
+    <x-m>-23.798</x-m>
+    <y-m> 0.45</y-m>
+    <z-m> 1.310</z-m>
+    <pitch-deg>-21.0</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Dash flood right sphere</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/flood-dash-right.xml</path>
+   <offsets>
+    <x-m>-23.798</x-m>
+    <y-m> 0.45</y-m>
+    <z-m> 1.310</z-m>
+    <pitch-deg>-21.0</pitch-deg>
    </offsets>
   </model>
 
@@ -668,6 +678,75 @@
   </model>
 
   <model>
+   <name>TMO</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/temperature.xml</path>
+   <offsets>
+    <x-m>-23.565</x-m>
+    <y-m>-0.155</y-m>
+    <z-m> 0.825</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>TMO 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/temperature.xml</path>
+   <offsets>
+    <x-m>-23.565</x-m>
+    <y-m> 0.155</y-m>
+    <z-m> 0.825</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <failure-flag>/instrumentation/temperature[1]/failure-flag</failure-flag>
+     <isa-failure-flag>/instrumentation/temperature[1]/isa-failure-flag</isa-failure-flag>
+     <tmo-sel>/instrumentation/temperature[1]/indicated-tmo-degc</tmo-sel>
+     <static-sel>/instrumentation/temperature[1]/indicated-static-degc</static-sel>
+     <isa-sel>/instrumentation/temperature[1]/isa-degc</isa-sel>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
+   <name>Audio</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-23.402</x-m>
+    <y-m>-0.155</y-m>
+    <z-m> 0.820</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Audio 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-23.402</x-m>
+    <y-m> 0.155</y-m>
+    <z-m> 0.820</z-m>
+    <pitch-deg>2</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/copilot/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/copilot/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/copilot/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/copilot/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/copilot/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/copilot/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/copilot/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/copilot/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/copilot/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/copilot/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/copilot/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/copilot/nav[1]/volume-push</nav-push2>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
    <name>Trim Cylinder</name>
    <path>Aircraft/Concorde/Instruments/pedestal/trim-cylinder.xml</path>
    <offsets>
@@ -698,11 +777,41 @@
   </model>
 
   <model>
+   <name>VHF 1</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
+   <offsets>
+    <x-m>-23.047</x-m>
+    <y-m>-0.077</y-m>
+    <z-m> 0.820</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>VHF 2</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/VHF.xml</path>
+   <offsets>
+    <x-m>-23.047</x-m>
+    <y-m> 0.077</y-m>
+    <z-m> 0.820</z-m>
+   </offsets>
+   <overlay>
+    <params>
+     <vhf-frq>/instrumentation/comm[1]/frequencies/selected-mhz</vhf-frq>
+     <vhf-stdby>/instrumentation/comm[1]/frequencies/standby-mhz</vhf-stdby>
+     <vhf-selected>/controls/audio/comm[1]/selected</vhf-selected>
+     <vhf-selected2>/controls/audio/comm[1]/standby</vhf-selected2>
+     <vhf-knob>/controls/audio/comm[1]/knob[0]</vhf-knob>
+     <vhf-knob2>/controls/audio/comm[1]/knob[1]</vhf-knob2>
+    </params>
+   </overlay>
+  </model>
+
+  <model>
    <name>INS 3</name>
    <path>Aircraft/Concorde/Instruments/INS/INS.xml</path>
    <offsets>
     <x-m>-22.920</x-m>
-    <y-m> 0.110</y-m>
+    <y-m> 0.077</y-m>
     <z-m> 0.820</z-m>
    </offsets>
    <overlay>
@@ -723,6 +832,26 @@
      <light-battery>/instrumentation/ins[2]/light/battery</light-battery>
     </params>
    </overlay>
+  </model>
+
+  <model>
+   <name>ADF</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/ADF.xml</path>
+   <offsets>
+    <x-m>-22.797</x-m>
+    <y-m>-0.077</y-m>
+    <z-m> 0.818</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>UHF</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/UHF.xml</path>
+   <offsets>
+    <x-m>-22.797</x-m>
+    <y-m> 0.077</y-m>
+    <z-m> 0.818</z-m>
+   </offsets>
   </model>
 
 <!-- CONSOLES -->
@@ -801,16 +930,6 @@
    </offsets>
   </model>
 
-  <model>
-   <name>Attendant Seat</name>
-   <path>Aircraft/Concorde/Instruments/seat/attendant.xml</path>
-   <offsets>
-    <x-m>-18.511</x-m>
-    <y-m>-0.622</y-m>
-    <z-m> 0.711</z-m>
-   </offsets>
-  </model>
-
 <!-- yokes -->
 
   <model>
@@ -841,6 +960,29 @@
 <!-- ENGINEER -->
 
   <model>
+   <name>Engineer panel flood</name>
+   <path>Aircraft/Concorde/Instruments/light/engineer-flood.xml</path>
+   <offsets>
+    <x-m>-21.828</x-m>
+    <y-m> 0.276</y-m>
+    <z-m> 1.815</z-m>
+    <heading-deg>-1.25</heading-deg>
+    <pitch-deg>-2.2</pitch-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Engineer panel flood sphere</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/flood-engineer.xml</path>
+   <offsets>
+    <x-m>-21.828</x-m>
+    <y-m> 0.276</y-m>
+    <z-m> 1.815</z-m>
+    <roll-deg>7.0</roll-deg>
+   </offsets>
+  </model>
+
+  <model>
    <name>Cold Air Outlet</name>
    <path>Aircraft/Concorde/Instruments/pressure/cold-air-outlet.xml</path>
    <offsets>
@@ -853,129 +995,164 @@
    </offsets>
   </model>
 
+  <model>
+   <name>Audio 3</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
+   <offsets>
+    <x-m>-22.110</x-m>
+    <y-m> 0.533</y-m>
+    <z-m> 0.610</z-m>
+    <heading-deg>-85</heading-deg>
+    <pitch-deg>86</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/engineer/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/engineer/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/engineer/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/engineer/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/engineer/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/engineer/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/engineer/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/engineer/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/engineer/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/engineer/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/engineer/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/engineer/nav[1]/volume-push</nav-push2>
+     <light-ctrl>/systems/lighting/level/engineer/deck</light-ctrl>
+     <light-ambient>/systems/lighting/level/engineer/deck-ambient</light-ambient>
+    </params>
+   </overlay>
+  </model>
 
-<!-- ====== -->
-<!-- Humans  -->
-<!-- ====== -->
+<!-- OBSERVER -->
 
   <model>
-   <name>Copilot human</name>
-   <path>Aircraft/Concorde/Instruments/crew/pilot.xml</path>
+   <name>Audio 4</name>
+   <path>Aircraft/Concorde/Instruments/pedestal/audio.xml</path>
    <offsets>
-    <x-m>-22.96</x-m>
-    <y-m> 0.458</y-m>
-    <z-m> 1.10</z-m>
+    <x-m>-22.380</x-m>
+    <y-m>-0.891</y-m>
+    <z-m> 1.300</z-m>
+    <heading-deg>85</heading-deg>
+    <pitch-deg>101</pitch-deg>
+   </offsets>
+   <overlay>
+    <params>
+     <vol-ctrl>/controls/audio/crew/observer/comm[0]/volume</vol-ctrl>
+     <vol-push>/controls/audio/crew/observer/comm[0]/volume-push</vol-push>
+     <vol-ctrl2>/controls/audio/crew/observer/comm[1]/volume</vol-ctrl2>
+     <vol-push2>/controls/audio/crew/observer/comm[1]/volume-push</vol-push2>
+     <adf-ctrl>/controls/audio/crew/observer/adf[0]/volume</adf-ctrl>
+     <adf-push>/controls/audio/crew/observer/adf[0]/volume-push</adf-push>
+     <adf-ctrl2>/controls/audio/crew/observer/adf[1]/volume</adf-ctrl2>
+     <adf-push2>/controls/audio/crew/observer/adf[1]/volume-push</adf-push2>
+     <nav-ctrl>/controls/audio/crew/observer/nav[0]/volume</nav-ctrl>
+     <nav-push>/controls/audio/crew/observer/nav[0]/volume-push</nav-push>
+     <nav-ctrl2>/controls/audio/crew/observer/nav[1]/volume</nav-ctrl2>
+     <nav-push2>/controls/audio/crew/observer/nav[1]/volume-push</nav-push2>
+     <light-ctrl>/systems/lighting/level/observer/panel</light-ctrl>
+     <light-ambient>/systems/lighting/level/observer/ambient</light-ambient>
+    </params>
+   </overlay>
+  </model>
+
+<!-- ROOF -->
+
+  <model>
+   <name>Roof flood lamp</name>
+   <path>Aircraft/Concorde/Instruments/light/roof-flood.xml</path>
+   <offsets>
+    <x-m>-22.40</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.796</z-m>
    </offsets>
   </model>
 
   <model>
-   <name>Engineer human</name>
-   <path>Aircraft/Concorde/Instruments/crew/engineer.xml</path>
+   <name>Roof flood cone</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/roof-flood.xml</path>
    <offsets>
-    <x-m>-21.788</x-m>
-    <y-m>-0.10</y-m>
-    <z-m> 1.02</z-m>
-    <heading-deg>270</heading-deg>
+    <x-m>-22.40</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.796</z-m>
+    <pitch-deg>34.0</pitch-deg>
    </offsets>
   </model>
-  
-<!-- SEAT (the condition rotates once) -->
- 
-  <animation>
-   <type>rotate</type>
-   <object-name>Engineer human</object-name>
-   <property>sim/current-view/goal-heading-offset-deg</property>
-   <offset-deg>90</offset-deg>
-   <condition>
-    <and>
-     <property>systems/seat/engineer</property>
-     <equals>
-      <property>systems/human/engineer/seat-deg</property>
-      <value>0.0</value>
-     </equals>
-     <equals>
-      <property>systems/human/engineer/seat-x-m</property>
-      <value>0.0</value>
-     </equals>
-    </and>
-   </condition>
-   <center>
-    <x-m>-21.788</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
-   </center>
-   <axis>
-    <x>0.0</x>
-    <y>0.0</y>
-    <z>1.0</z>
-   </axis>
-  </animation>
- 
-  <animation>
-   <type>rotate</type>
-   <object-name>Engineer human</object-name>
-   <property>systems/human/engineer/seat-deg</property>
-   <center>
-    <x-m>-21.788</x-m>
-    <y-m>0.0</y-m>
-    <z-m>0.0</z-m>
-   </center>
-   <axis>
-    <x>0.0</x>
-    <y>0.0</y>
-    <z>1.0</z>
-   </axis>
-  </animation>
- 
-  <animation>
-   <type>translate</type>
-   <object-name>Engineer human</object-name>
-   <property>systems/human/engineer/seat-x-m</property>
-   <axis>
-    <x>0.0</x>
-    <y>1.0</y>
-    <z>0.0</z>
-   </axis>
-  </animation>
 
-  <animation>
-   <type>select</type>
-   <object-name>Engineer human</object-name>
-   <condition>
-    <and>
-     <property>systems/human/serviceable</property>
-     <property>controls/engineer/activ</property>
-     <not>
-      <property>systems/seat/engineer</property>
-     </not>
-     <not>
-      <property>systems/seat/overhead</property>
-     </not>
-     <equals>
-      <property>systems/human/engineer/stowe-norm</property>
-      <value>0</value>
-     </equals>
-    </and>
-   </condition>
-  </animation>
+  <model>
+   <name>Panel spotlight</name>
+   <path>Aircraft/Concorde/Instruments/light/panel-spotlight.xml</path>
+   <offsets>
+    <x-m>-22.010</x-m>
+    <y-m>-0.2459</y-m>
+    <z-m> 1.7818</z-m>
+   </offsets>
+  </model>
 
-  <animation>
-   <type>select</type>
-   <object-name>Copilot human</object-name>
-   <condition>
-    <and>
-     <property>systems/human/serviceable</property>
-     <property>controls/copilot/activ</property>
-     <not>
-      <property>systems/seat/copilot</property>
-     </not>
-     <equals>
-      <property>systems/human/copilot/stowe-norm</property>
-      <value>0</value>
-     </equals>
-    </and>
-   </condition>
-  </animation>
+  <model>
+   <name>Panel spotlight cone</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/spot_engineer.xml</path>
+   <offsets>
+    <x-m>-22.010</x-m>
+    <y-m>-0.2459</y-m>
+    <z-m> 1.7818</z-m>
+    <pitch-deg>-3.0</pitch-deg>
+    <roll-deg>33.0</roll-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Forward roof lamp</name>
+   <path>Aircraft/Concorde/Instruments/light/roof-lamp.xml</path>
+   <offsets>
+    <x-m>-21.68</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.815</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Forward roof lamp cone</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/roof-lamp.xml</path>
+   <offsets>
+    <x-m>-21.68</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.815</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Panel spotlight 2</name>
+   <path>Aircraft/Concorde/Instruments/light/panel-spotlight.xml</path>
+   <offsets>
+    <x-m>-21.4532</x-m>
+    <y-m>-0.2459</y-m>
+    <z-m> 1.8243</z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Panel spotlight 2 cone</name>
+   <path>Aircraft/Concorde/Instruments/lightsource/spot_engineer.xml</path>
+   <offsets>
+    <x-m>-21.4532</x-m>
+    <y-m>-0.2459</y-m>
+    <z-m> 1.8243</z-m>
+    <pitch-deg>3.0</pitch-deg>
+    <roll-deg>33.0</roll-deg>
+   </offsets>
+  </model>
+
+  <model>
+   <name>Rack roof lamp</name>
+   <path>Aircraft/Concorde/Instruments/light/roof-lamp_rack.xml</path>
+   <offsets>
+    <x-m>-20.30</x-m>
+    <y-m> 0.0</y-m>
+    <z-m> 1.84</z-m>
+   </offsets>
+  </model>
 
 
 <!-- ============ -->
@@ -983,11 +1160,34 @@
 <!-- ============ -->
 
   <animation>
-   <name>Captain location</name>
-   <object-name>Captain Flood</object-name>
-   <object-name>Captain Seat</object-name>
+   <name>Captain instruments</name>
+   <object-name>Dash flood left</object-name>
    <object-name>Captain Steering</object-name>
    <object-name>Captain Yoke</object-name>
+  </animation>
+
+  <animation>
+   <name>Captain location</name>
+   <object-name>Captain Seat</object-name>
+   <object-name>Captain instruments</object-name>
+  </animation>
+
+  <animation>
+   <name>Center instruments</name>
+   <object-name>Dash flood center</object-name>
+  </animation>
+
+  <animation>
+   <name>Copilot instruments</name>
+   <object-name>Dash flood right</object-name>
+   <object-name>Copilot Steering</object-name>
+   <object-name>Copilot Yoke</object-name>
+  </animation>
+
+  <animation>
+   <name>Copilot location</name>
+   <object-name>Copilot Seat</object-name>
+   <object-name>Copilot instruments</object-name>
   </animation>
 
   <animation>
@@ -996,30 +1196,257 @@
   </animation>
 
   <animation>
-   <name>Center instruments</name>
-   <object-name>Center Flood</object-name>
-  </animation>
-
-  <animation>
-   <name>Pedestal instruments</name>
+   <name>Console instruments</name>
    <object-name>INS 1</object-name>
    <object-name>INS 2</object-name>
    <object-name>INS 3</object-name>
+   <object-name>TMO</object-name>
+   <object-name>TMO 2</object-name>
+   <object-name>Audio</object-name>
+   <object-name>Audio 2</object-name>
    <object-name>Trim Cylinder</object-name>
    <object-name>Throttle Cylinder</object-name>
+   <object-name>Brake Cylinder</object-name>
+   <object-name>VHF 1</object-name>
+   <object-name>VHF 2</object-name>
+   <object-name>ADF</object-name>
+   <object-name>UHF</object-name>
+  </animation>
+
+  <animation>
+   <name>Console lighting instruments</name>
+   <object-name>Trim Cylinder</object-name>
    <object-name>Brake Cylinder</object-name>
   </animation>
 
   <animation>
-   <name>Copilot location</name>
-   <object-name>Copilot Flood</object-name>
-   <object-name>Copilot Steering</object-name>
-   <object-name>Copilot Yoke</object-name>
+   <name>Engineer instruments</name>
+   <object-name>Cold Air Outlet</object-name>
+   <object-name>Audio 3</object-name>
+  </animation>
+
+  <animation>
+   <name>Engineer lighting instruments</name>
+   <object-name>Cold Air Outlet</object-name>
   </animation>
 
   <animation>
    <name>Engineer location</name>
-   <object-name>Cold Air Outlet</object-name>
+   <object-name>Engineer Seat</object-name>
+   <object-name>Engineer instruments</object-name>
+  </animation>
+
+  <animation>
+   <name>Observer location</name>
+   <object-name>Observer Seat</object-name>
+   <object-name>Audio 4</object-name>
+  </animation>
+
+  <animation>
+   <name>Observer 2 location</name>
+   <object-name>Observer 2 Seat</object-name>
+  </animation>
+
+  <animation>
+   <name>Roof instruments</name>
+   <object-name>Roof flood lamp</object-name>
+   <object-name>Panel spotlight</object-name>
+   <object-name>Panel spotlight 2</object-name>
+   <object-name>Forward roof lamp</object-name>
+   <object-name>Rack roof lamp</object-name>
+  </animation>
+
+  <animation>
+   <name>Roof lighting</name>
+   <object-name>Engineer Seat</object-name>
+   <object-name>Observer Seat</object-name>
+   <object-name>Observer 2 Seat</object-name>
+  </animation>
+
+  <animation>
+   <name>Cockpit instruments</name>
+   <object-name>Captain location</object-name>
+   <object-name>Center instruments</object-name>
+   <object-name>Copilot location</object-name>
+   <object-name>Overhead instruments</object-name>
+   <object-name>Console instruments</object-name>
+   <object-name>Engineer instruments</object-name>
+   <object-name>Observer location</object-name>
+   <object-name>Observer 2 location</object-name>
+   <object-name>Roof instruments</object-name>
+  </animation>
+
+
+<!-- =============== -->
+<!-- Level Of Detail -->
+<!-- =============== -->
+
+<!-- CAPTAIN -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Captain location</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/captain</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- BOTH -->
+
+  <animation>
+   <name>both</name>
+   <object-name>Overhead instruments</object-name>
+   <object-name>Center instruments</object-name>
+   <object-name>Console instruments</object-name>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>both</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>systems/human/serviceable</property>
+      <property>controls/copilot/activ</property>
+     </and>
+     <and>
+      <property>sim/current-view/internal</property>
+      <or>
+       <property>systems/seat/captain</property>
+       <property>systems/seat/copilot</property>
+      </or>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- COPILOT -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Copilot instruments</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/copilot</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+  <animation>
+   <type>select</type>
+   <object-name>Copilot Seat</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>systems/human/serviceable</property>
+      <property>controls/copilot/activ</property>
+     </and>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/copilot</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- ENGINEER -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Engineer instruments</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/engineer</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- seat is visible in engineer view, except if moved. -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Engineer Seat</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>systems/human/serviceable</property>
+      <property>controls/engineer/activ</property>
+      <or>
+       <not>
+        <property>sim/current-view/internal</property>
+       </not>
+       <not>
+        <property>systems/seat/engineer</property>
+       </not>
+      </or>
+     </and>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/engineer</property>
+      <equals>
+       <property>systems/human/engineer/stowe-norm</property>
+       <value>0</value>
+      </equals>
+      <equals>
+       <property>systems/human/engineer/seat-deg</property>
+       <value>0</value>
+      </equals>
+      <equals>
+       <property>systems/human/engineer/seat-x-m</property>
+       <value>0</value>
+      </equals>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- OBSERVER -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Observer location</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/observer</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
+  </animation>
+
+<!-- OBSERVER 2 -->
+
+  <animation>
+   <type>select</type>
+   <object-name>Observer 2 location</object-name>
+   <condition>
+    <or>
+     <and>
+      <property>sim/current-view/internal</property>
+      <property>systems/seat/observer2</property>
+     </and>
+     <property>controls/seat/all</property>
+    </or>
+   </condition>
   </animation>
 
 </PropertyList>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?> 
 
-<!--
-     The seats stop at window bottom, and pilot shoulder (A).
+<!-- the seats stop at window bottom, and pilot shoulder (A).
+
 
 
      References
@@ -44,16 +44,17 @@
  </animation>
 
  <animation>
+  <name>Seat</name>
+  <object-name>Seat_0</object-name>
+  <object-name>Seat_1</object-name>
+ </animation>
+
+ <animation>
   <name>MovingSeat</name>
   <object-name>Seat</object-name>
   <object-name>ArmrestLeft</object-name>
   <object-name>ArmrestRight</object-name>
- </animation>
-
- <animation>
-  <name>AllSeat</name>
-  <object-name>MovingSeat</object-name>
-  <object-name>RailCopilot</object-name>
+  <object-name>Boggie</object-name>
  </animation>
 
  <animation>
@@ -63,20 +64,9 @@
   <texture-prop>texture-seat</texture-prop>
  </animation>
 
- <animation>
-  <type>material</type>
-  <object-name>AllSeat</object-name>
-  <emission>
-   <red>0.66</red>
-   <green>0.68</green>
-   <blue>0.64</blue>
-   <factor-prop>systems/lighting/level/roof</factor-prop>
-  </emission> 
- </animation> 
-
 <!-- raises the armrest to reach the pedestal -->
 
- <animation>
+ <!--animation>
   <type>rotate</type>
   <object-name>ArmrestLeft</object-name>
   <offset-deg>80</offset-deg>   
@@ -93,7 +83,7 @@
    <y>1.0</y>
    <z>0.0</z>
   </axis>
- </animation>
+ </animation-->
  
  <animation>
   <type>translate</type>

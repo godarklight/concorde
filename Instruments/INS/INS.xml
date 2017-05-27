@@ -3,12 +3,7 @@
 <!-- INS at scale :
 
      - test by push.
-
-
-     OSG lighting :
-
-     - only 1 material per object (child included).
-     - groups are allowed.
+     - warning lights are not directly lighted by roof.
 
 
      TO DO :
@@ -41,13 +36,49 @@
  <path>INS.ac</path> 
 
   <animation>
-   <type>material</type>
+   <name>INS</name>
    <object-name>Plate</object-name>
+   <object-name>LeftDisplay</object-name>
+   <object-name>RightDisplay</object-name>
+   <object-name>WaypointSelector</object-name>
+   <object-name>FromToIndicator</object-name>
+   <object-name>WaypointChange</object-name>
+   <object-name>Button1</object-name>
+   <object-name>Button2</object-name>
+   <object-name>Button3</object-name>
+   <object-name>Button4</object-name>
+   <object-name>Button5</object-name>
+   <object-name>Button6</object-name>
+   <object-name>Button7</object-name>
+   <object-name>Button8</object-name>
+   <object-name>Button9</object-name>
+   <object-name>Button0</object-name>
+   <object-name>ClearButton</object-name>
+   <object-name>Plate2</object-name>
+   <object-name>DataSelector</object-name>
+   <object-name>DimControl</object-name>
+   <object-name>Switch</object-name>
+  </animation> 
+
+  <animation>
+   <type>material</type>
+   <object-name>INS</object-name>
+   <condition>
+    <or>
+     <not>
+      <property>/sim/rendering/rembrandt/enabled</property>
+     </not>
+     <less-than-equals>
+      <property>/sim/rendering/shaders/lights</property>
+      <property n="1">controls/environment/rembrandt/cockpit</property>
+     </less-than-equals>
+    </or>
+   </condition>
    <emission>
-    <red>0.71</red>
-    <green>0.79</green>
-    <blue>0.87</blue>
-    <factor-prop>systems/lighting/level/roof</factor-prop>
+    <red-prop>systems/lighting/color/flood/red</red-prop>
+    <green-prop>systems/lighting/color/flood/green</green-prop>
+    <blue-prop>systems/lighting/color/flood/blue</blue-prop>
+    <factor-prop>systems/lighting/level/panel/center</factor-prop>
    </emission> 
   </animation> 
 
@@ -866,13 +897,13 @@
    <green>1.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-hold"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -884,14 +915,14 @@
    <green>1.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-remote"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
    <factor-prop alias="../../../params/light-remote"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -903,13 +934,13 @@
    <green>1.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-insert"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -921,14 +952,14 @@
    <green>1.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-alert"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
    <factor-prop alias="../../../params/light-alert"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -940,14 +971,14 @@
    <green>1.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-battery"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
    <factor-prop alias="../../../params/light-battery"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -959,14 +990,14 @@
    <green>0.0</green>
    <blue>0.0</blue>
    <factor-prop alias="../../../params/light-warning"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </emission> 
   <ambient>
    <red>0.5</red>
    <green>0.5</green>
    <blue>0.5</blue>
    <factor-prop alias="../../../params/light-warning"/>
-   <offset-prop>systems/lighting/level/roof-ambient</offset-prop>
+   <offset-prop>systems/lighting/level/panel/center-ambient</offset-prop>
   </ambient>
  </animation> 
 
@@ -996,32 +1027,13 @@
  </text>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>WaypointSelector</object-name>
   <action>
-   <button>0</button>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/ins-waypoint"/>
-    <step>1</step>
-    <min>1</min>
-    <max>9</max>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.INSinstrument.computeexport();</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/ins-waypoint"/>
-    <step>-1</step>
+    <factor>-1</factor>
     <min>1</min>
     <max>9</max>
    </binding>
@@ -1117,33 +1129,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>DataSelector</object-name>
   <action>
-   <button>0</button>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/ins-selector"/>
-    <step>1</step>
-    <min>-3</min>
-    <max>4</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>nasal</command>
-    <script>globals.Concorde.INSinstrument.computeexport();</script>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/ins-selector"/>
-    <step>-1</step>
+    <factor>-1</factor>
     <min>-3</min>
     <max>4</max>
     <wrap>0</wrap>
@@ -1180,29 +1172,13 @@
  </animation>
 
  <animation>
-  <type>pick</type>
+  <type>knob</type>
   <object-name>DimControl</object-name>
   <action>
-   <button>0</button>
    <binding>
     <command>property-adjust</command>
     <property alias="../../../../params/ins-light"/>
-    <step>0.2</step>
-    <min>0.2</min>
-    <max>1.0</max>
-    <wrap>0</wrap>
-   </binding>
-   <binding>
-    <command>property-toggle</command>
-    <property>instrumentation/generic/click</property>
-   </binding>
-  </action>
-  <action>
-   <button>1</button>
-   <binding>
-    <command>property-adjust</command>
-    <property alias="../../../../params/ins-light"/>
-    <step>-0.2</step>
+    <factor>-0.2</factor>
     <min>0.2</min>
     <max>1.0</max>
     <wrap>0</wrap>

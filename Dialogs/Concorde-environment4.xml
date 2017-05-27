@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name>Concorde-environment4</name>
+  <layout>vbox</layout>
+  <width>500</width>
+
+  <group>
+    <layout>hbox</layout>
+    
+    <empty><stretch>1</stretch></empty>
+
+    <text>
+      <label>Concorde environment 2</label>
+    </text>
+
+    <empty><stretch>1</stretch></empty>
+
+    <button>
+      <pref-width>16</pref-width>
+      <pref-height>16</pref-height>
+      <legend></legend>
+      <keynum>27</keynum>
+      <border>2</border>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
+
+  <hrule><dummy/></hrule>
+
+  <group>
+    <layout>vbox</layout>
+
+    <group>
+     <layout>vbox</layout>
+       
+     <text>
+      <label>Rembrandt lights  ~</label>
+     </text>
+
+     <text>
+      <label></label>
+     </text>
+
+     <text>
+      <label></label>
+     </text>
+ 
+     <group>
+      <layout>hbox</layout>
+      
+      <slider>
+       <name>gear well</name>
+       <label>external</label>
+       <min>0.0</min>
+       <max>4.0</max>
+       <step>1.0</step>
+       <fraction>0.2</fraction>
+       <property>/controls/environment/rembrandt/external</property>
+       <binding>
+        <command>dialog-apply</command>
+       </binding>
+      </slider>
+
+      <text>
+       <live>true</live>
+       <label alias="/controls/environment/rembrandt/external"/>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+     </group>
+ 
+     <group>
+      <layout>hbox</layout>
+      
+      <slider>
+       <name>landing + taxi</name>
+       <label>landing</label>
+       <min>0.0</min>
+       <max>4.0</max>
+       <step>1.0</step>
+       <fraction>0.2</fraction>
+       <property>/controls/environment/rembrandt/landing</property>
+       <binding>
+        <command>dialog-apply</command>
+       </binding>
+      </slider>
+
+      <text>
+       <live>true</live>
+       <label alias="/controls/environment/rembrandt/landing"/>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+     </group>
+
+     <text>
+      <label></label>
+     </text>
+ 
+     <group>
+      <layout>hbox</layout>
+      
+      <slider>
+       <name>cockpit</name>
+       <label>cockpit</label>
+       <min>0.0</min>
+       <max>4.0</max>
+       <step>1.0</step>
+       <fraction>0.2</fraction>
+       <property>/controls/environment/rembrandt/cockpit</property>
+       <binding>
+        <command>dialog-apply</command>
+       </binding>
+      </slider>
+
+      <text>
+       <live>true</live>
+       <label alias="/controls/environment/rembrandt/cockpit"/>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+     </group>
+ 
+     <group>
+      <layout>hbox</layout>
+      
+      <slider>
+       <name>panel</name>
+       <label>panels</label>
+       <min>0.0</min>
+       <max>4.0</max>
+       <step>1.0</step>
+       <fraction>0.2</fraction>
+       <property>/controls/environment/rembrandt/panel</property>
+       <binding>
+        <command>dialog-apply</command>
+       </binding>
+      </slider>
+
+      <text>
+       <live>true</live>
+       <label alias="/controls/environment/rembrandt/panel"/>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+     </group>
+ 
+     <text>
+      <label></label>
+     </text>
+ 
+     <group>
+      <layout>hbox</layout>
+      <halign>center</halign>
+
+      <text>
+       <label>visible if slider is lower than</label>
+       <color>
+        <red>0.5</red>
+        <green>0.5</green>
+        <blue>0.5</blue>
+       </color>
+      </text>
+
+      <text>
+       <live>true</live>
+       <label alias="/sim/rendering/shaders/lights"/>
+       <color>
+        <red>0.2</red>
+        <green>0.8</green>
+        <blue>0.2</blue>
+       </color>
+      </text>
+     </group>
+
+     <text>
+      <label>(lights of shader options)</label>
+      <color>
+       <red>0.5</red>
+       <green>0.5</green>
+       <blue>0.5</blue>
+      </color>
+     </text>
+  </group>
+
+  <text>
+    <label></label>
+  </text>
+
+  <text>
+    <label></label>
+  </text>
+
+  <group>
+   <layout>hbox</layout>
+
+   <button>
+    <legend>Back</legend>
+    <key>b</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+     <command>dialog-show</command>
+     <dialog-name>Concorde-environment</dialog-name>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+   <button>
+    <legend>Close</legend>
+    <default>true</default>
+    <key>Esc</key>
+    <binding>
+      <command>dialog-apply</command>
+    </binding>
+    <binding>
+      <command>dialog-close</command>
+    </binding>
+   </button>
+
+  </group>
+</PropertyList>
